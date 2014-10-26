@@ -16,4 +16,4 @@ sh vpn-user-portal.sh
 createrepo ${HOME}/rpmbuild/RPMS/
 
 # rsync to a web server
-#rsync --delete --recursive ${HOME}/rpmbuild/RPMS fkooman@eduvpn.surfcloud.nl:/var/www/html/eduvpn
+#rsync --delete --recursive ${HOME}/rpmbuild/RPMS fkooman@ursa.uberspace.de:/var/www/virtual/fkooman/www.php-oauth.net/repo/eduVPN

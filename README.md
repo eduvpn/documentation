@@ -1,5 +1,7 @@
 # Introduction
-Both Fedora (20) and CentOS (7) are supported.
+Both Fedora (20) and CentOS >= 6.6 are supported. CentOS 7.0 is not yet 
+supported due to missing `mod_auth_mellon` support that will most likely come 
+in the 7.1 release, it was added to CentOS 6.6 only.
 
 It is highly recommended to use at least three (virtual) machines to run this.
 
@@ -19,9 +21,15 @@ place to avoid unauthorized access.
 # Docker
 See `docker` directory.
 
-# EPEL  
-**Only for CentOS 7**. See [EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F) 
-documentation.
+# Repositories
+For CentOS 6 you will need to enable 
+[EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F) 
+and [CR](https://wiki.centos.org/AdditionalResources/Repositories/CR). The CR
+repository is needed because CentOS 6.6 is not yet available at this time, and
+it is the first version to include `mod_auth_mellon`. CentOS 7.1 should also 
+be sufficient once released.
+
+For Fedora >= 20 you will not need to enable any additional repositories.
 
 # Packages
 The software is contained in two projects:
@@ -50,9 +58,6 @@ These libraries are also all packaged as RPMs. All required files for
 generating the RPMs are available in the project directories under the `rpm` 
 directory in their respective repository.
 
-For `vpn-user-portal` you need `php >= 5.4` for `vpn-cert-service` 
-`php >= 5.3.3` will suffice.
-
 # Installation
 You can regenerate the RPMs yourself from source using the files in the `rpm`
 directory of this project. On a development machine you can do the following:
@@ -68,11 +73,11 @@ This should create the RPMs in `${HOME}/rpmbuild/RPMS`, ready for install using
 copy the whole repository to a web server.
 
 If you want to create a `yum` configuration file you can put the following in 
-`/etc/yum.repos.d/fedora-eduvpn.repo`:
+`/etc/yum.repos.d/eduVPN.repo`:
 
-    [fedora-eduvpn]
-    name=Packages for eduVPN and related software
-    baseurl=http://localhost/eduvpn/RPMS
+    [eduVPN]
+    name=Packages for eduVPN and its dependencies
+    baseurl=http://localhost/eduVPN/RPMS
     enabled=1
     gpgcheck=0
 
@@ -80,34 +85,24 @@ Of course, for production environments you SHOULD use `https` and SHOULD sign
 the RPMs you generate on your trusted development machine or have some other
 secure way to deploy the packages.
 
-To sign the RPMs configure `gpg` on your system and put the following in 
-`${HOME}/.rpmmacros`:
-
-    %_signature gpg
-    %_gpg_name fkooman@tuxed.net
-
-Install `rpm-sign` and run `rpm` to sign all RPMs:
-    
-    $ sudo yum -y install rpm-sign
-    $ rpm --addsign ${HOME}/rpmbuild/RPMS/noarch/*.rpm
-
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration
-on installation. But you SHOULD update the configuration files in 
-`/etc/vpn-user-portal` and `/etc/vpn-cert-service` to suit your environment. 
-Do not forget to update the passwords and Apache configuration of both 
-`vpn-cert-service` and `vpn-user-portal`. 
+file on installation. But you SHOULD update the configuration files in 
+`/etc/vpn-user-portal` and `/etc/vpn-cert-service` to suit your environment if
+needed.
 
-You then need to run the database iniialization scripts:
+You then need to run the database initialization scripts:
 
     $ sudo -u apache vpn-cert-service-init
     $ sudo -u apache vpn-user-portal-init
 
-To generate a password hash you can use this:
+Do not forget to update the passwords and Apache configuration of both 
+`vpn-cert-service` and `vpn-user-portal`. To generate a password hash you can 
+use this:
 
     $ vpn-cert-service-generate-password-hash mySecretPass
 
-You can add the hash to `/etc/vpn-cert-service/config.ini` and the plaintext
+You can add the hash to `/etc/vpn-cert-service/config.ini` and the plain text
 value to `/etc/vpn-user-portal/config.ini`.
 
 # SAML configuration
@@ -116,7 +111,7 @@ Using the Apache module `mod_auth_mellon`. See
 documentation for more information on how to configure `mod_auth_mellon`.
 
 # Server configuration
-You can generate a OpenVPN server configuration on the `vpn-cert-service` 
+You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
 machine and copy that to OpenVPN machine:
 
     $ sudo -u apache vpn-cert-service-generate-server-config
@@ -136,4 +131,3 @@ Run this as often as you want. Probably every hour is enough. You SHOULD use
 Modify the `/etc/openvpn/server.conf` file to use the CRL.
 
 **NOTE: current connections will not be terminated if the certificate is added to the CRL, only new connections will be denied**.
-
