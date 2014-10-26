@@ -1,10 +1,9 @@
-source ./versions.sh
+#!/bin/sh
 
-# config
-PACKAGE_NAME=php-fkooman-json
-GITHUB_USER=fkooman
-GITHUB_NAME=php-lib-json
-VERSION=${PHP_FKOOMAN_JSON_VERSION}
+PACKAGE_NAME=${1}
+GITHUB_USER=${2}
+GITHUB_NAME=${3}
+VERSION=${4}
 
 # download tarball
 curl -s -L -o $HOME/rpmbuild/SOURCES/${VERSION}.tar.gz https://github.com/${GITHUB_USER}/${GITHUB_NAME}/archive/${VERSION}.tar.gz
@@ -20,6 +19,6 @@ curl -s -L -o $HOME/rpmbuild/SOURCES/${VERSION}.tar.gz https://github.com/${GITH
 
 # build package
 (
-    cd $HOME/rpmbuild/SPECS/
-    rpmbuild -ba ${PACKAGE_NAME}.spec
+    cd ${HOME}/rpmbuild/SPECS/
+    rpmbuild -bb ${PACKAGE_NAME}.spec
 )

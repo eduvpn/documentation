@@ -59,8 +59,9 @@ generating the RPMs are available in the project directories under the `rpm`
 directory in their respective repository.
 
 # Installation
-You can regenerate the RPMs yourself from source using the files in the `rpm`
-directory of this project. On a development machine you can do the following:
+You can regenerate the eduVPN RPMs (or any of its dependencies) yourself from
+source using the files in the `rpm` directory of this project. On a development 
+machine you can do the following:
 
     $ sudo yum install rpmdevtools createrepo
     $ rpmdev-setuptree
@@ -72,18 +73,30 @@ This should create the RPMs in `${HOME}/rpmbuild/RPMS`, ready for install using
 `yum`. See `build_all.sh` source for more information and an `rsync` example to
 copy the whole repository to a web server.
 
-If you want to create a `yum` configuration file you can put the following in 
-`/etc/yum.repos.d/eduVPN.repo`:
+For your convenience the RPMs are also available from two repositories, signed 
+with my GPG key:
 
-    [eduVPN]
-    name=Packages for eduVPN and its dependencies
-    baseurl=http://localhost/eduVPN/RPMS
-    enabled=1
-    gpgcheck=0
+    https://www.php-oauth.net/repo/fkooman/fkooman.repo
+    https://www.php-oauth.net/repo/eduVPN/eduVPN.repo
 
-Of course, for production environments you SHOULD use `https` and SHOULD sign
-the RPMs you generate on your trusted development machine or have some other
-secure way to deploy the packages.
+The first one contains the dependencies, the second one the actual eduVPN 
+software. The GPG key can be found here:
+
+    https://www.php-oauth.net/repo/fkooman/RPM-GPG-KEY-fkooman
+
+You can install it with `rpm --import RPM-GPG-KEY-fkooman` and then add the
+`repo` files to `/etc/yum.repos.d`.
+
+To install `vpn-cert-service`: 
+    
+    $ sudo yum -y install vpn-cert-service
+
+To install `vpn-user-portal`:
+
+    $ sudo yum -y install vpn-user-portal
+
+You will also want to install `mod_ssl`. `mod_auth_mellon` is a dependency of
+`vpn-user-portal`. 
 
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration
