@@ -38,7 +38,7 @@ RUN vpn-user-portal-init
 RUN vpn-cert-service-generate-server-config > /tmp/server.conf
 
 USER root
-# Copy the file to the web root (as root)
+# Configure OpenVPN
 RUN cp /tmp/server.conf /etc/openvpn/server.conf
 RUN chmod 600 /etc/openvpn/server.conf
 RUN rm /tmp/server.conf
