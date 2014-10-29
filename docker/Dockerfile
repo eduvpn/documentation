@@ -4,9 +4,6 @@ MAINTAINER François Kooman <fkooman@tuxed.net>
 # Add EPEL
 RUN yum -y install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; yum clean all
 
-# enable CR (contains what will be in CentOS-next)
-RUN yum -y install centos-release-cr; yum clean all
-
 # add GPG key for verifying signed packages
 RUN rpm --import https://www.php-oauth.net/repo/fkooman/RPM-GPG-KEY-fkooman
 

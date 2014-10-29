@@ -23,11 +23,9 @@ See `docker/` directory.
 
 # Repositories
 For CentOS 6 you will need to enable 
-[EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F) 
-and [CR](https://wiki.centos.org/AdditionalResources/Repositories/CR). The CR
-repository is needed because CentOS 6.6 is not yet available at this time, and
-it is the first version to include `mod_auth_mellon`. CentOS 7.1 should also 
-be sufficient once released.
+[EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F). 
+CentOS 7.1 with EPEL should also be sufficient once released (for 
+`mod_auth_mellon` support).
 
 For Fedora >= 20 you will not need to enable any additional repositories.
 
