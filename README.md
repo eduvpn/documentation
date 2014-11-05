@@ -1,33 +1,66 @@
 # Introduction
-Both Fedora (20) and CentOS >= 6.6 are supported. CentOS 7.0 is not yet 
-supported due to missing `mod_auth_mellon` support that will most likely come 
-in the 7.1 release, it was added to CentOS 6.6 only.
+This is the eduVPN deploy manual.
 
+# Software Requirements
+CentOS >= 6.6 is the only officially supported deployment platform. However, 
+it should also work on Fedora >= 20, CentOS >= 7.1 and Red Hat 
+Enterprise >= 6.6 or >= 7.1.
+
+# Hardware Requirements
 It is highly recommended to use at least three (virtual) machines to run this.
 
-1. the `vpn-cert-service` machine handling the signing/configuration management
-   an revocation. The web service MUST only available to the other two machines
-2. the `vpn-user-portal` machine handling the user interaction. It MUST have
-   access to the `vpn-cert-service` and have a password to use the API
-3. the OpenVPN machine handling the VPN connections. It does not need to have a 
-   connection to `vpn-user-portal` machine, and only needs read access to the 
-   `ca.crl` URL on the `vpn-cert-service` machine. It does not need a password
-   to access the API
+1. the `vpn-cert-service` (CERT) machine handling the signing/configuration 
+   management an revocation. The web service MUST only available to the other 
+   two machines
+2. the `vpn-user-portal` (PORTAL) machine handling the user interaction. It 
+   MUST have access to the `vpn-cert-service` and have a password to use the 
+   API
+3. the OpenVPN (VPN) machine handling the VPN connections. It does not need to 
+   have a connection to `vpn-user-portal` machine, and only needs read access 
+   to the `ca.crl` URL on the `vpn-cert-service` machine. It does not need a 
+   password to access the API
+
+# Security Considerations
+
+    +-----+         +------+         +--------+
+    |     |  VLAN1  |      |  VLAN2  |        |
+    | VPN +---------+ CERT +---------+ PORTAL |
+    |     |         |      |         |        |
+    +--+--+         +------+         +----+---+
+       |                                  |
+       |                                  |
+       | Internet                         | Internet
+          
+Of course, CERT should also get software and security updates, but it should 
+not be reachable from the Internet in any way. Only through the VLANs from 
+PORTAL and VPN.
+
+VPN should only be able to retrieve the CRL from CERT.
+PORTAL should only be allowed to send POST and DELETE requests to CERT to 
+generate and delete configurations.
 
 For testing purposes of course this can be deployed on one machine. But for
 production you MUST use at least three machines with sufficient security in 
 place to avoid unauthorized access.
 
+## Revoking a VPN server certificate
+A potential problem is the revocation of a server in case its private key falls
+into the wrong hands. In order to solve this, all clients need to become 
+aware of this fact and thus need to also obtain the CRL periodically. This is 
+a bit of a nightmare as the CRL needs to be downloaded regularly by all the
+clients. One of the potential solutions for this is use short lived server
+certificates that last e.g. one day. This is highly cumbersome.
+
+**UNSOLVED PROBLEM**
+
 # Docker
-See `docker/` directory.
+See `docker/` directory. Currently only `vpn-cert-service `and 
+`vpn-user-portal` can be tested. OpenVPN will not be running inside the 
+Docker container.
 
 # Repositories
-For CentOS 6 you will need to enable 
-[EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F). 
-CentOS 7.1 with EPEL should also be sufficient once released (for 
-`mod_auth_mellon` support).
-
-For Fedora >= 20 you will not need to enable any additional repositories.
+For CentOS/Red Hat Enterprise you will need to enable 
+[EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F).
 
 # Packages
 The software is contained in two projects:
@@ -56,7 +89,7 @@ These libraries are also all packaged as RPMs. All required files for
 generating the RPMs are available in the project directories under the `rpm` 
 directory in their respective repository.
 
-# Installation
+# Building RPMs
 You can regenerate the eduVPN RPMs (or any of its dependencies) yourself from
 source using the files in the `rpm` directory of this project. On a development 
 machine you can do the following:
@@ -71,6 +104,7 @@ This should create the RPMs in `${HOME}/rpmbuild/RPMS`, ready for install using
 `yum`. See `build_all.sh` source for more information and an `rsync` example to
 copy the whole repository to a web server.
 
+# Installation
 For your convenience the RPMs are also available from two repositories, signed 
 with my GPG key:
 
@@ -93,8 +127,8 @@ To install `vpn-user-portal`:
 
     $ sudo yum -y install vpn-user-portal
 
-You will also want to install `mod_ssl`. The `mod_auth_mellon` package is a 
-dependency of `vpn-user-portal`. 
+You will also want to install `mod_ssl`. The `mod_auth_mellon` package is an 
+(indirect) dependency of `vpn-user-portal`. 
 
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration

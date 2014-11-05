@@ -17,7 +17,7 @@ RUN curl -s -L -o /etc/yum.repos.d/eduVPN.repo https://www.php-oauth.net/repo/ed
 RUN yum -y update; yum clean all
 
 # Install dependencies (and SSL module)
-RUN yum install -y mod_ssl mod_auth_mellon openvpn vpn-cert-service vpn-user-portal; yum clean all
+RUN yum install -y mod_ssl vpn-cert-service vpn-user-portal; yum clean all
 
 # Allow connections from everywhere to the portal
 RUN sed -i 's/Require local/Require all granted/' /etc/httpd/conf.d/vpn-user-portal.conf
