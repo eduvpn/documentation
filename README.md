@@ -51,6 +51,10 @@ a bit of a nightmare as the CRL needs to be downloaded regularly by all the
 clients. One of the potential solutions for this is use short lived server
 certificates that last e.g. one day. This is highly cumbersome.
 
+Probably the easiest is to do nothing and hope that the MITM that wants to 
+attack users is not the same as the one who obtained the private key from the
+VPN server.
+
 **UNSOLVED PROBLEM**
 
 # Docker
@@ -117,7 +121,7 @@ software. The GPG key can be found here:
     https://www.php-oauth.net/repo/fkooman/RPM-GPG-KEY-fkooman
 
 You can install it with `rpm --import RPM-GPG-KEY-fkooman` and then add the
-`repo` files to `/etc/yum.repos.d`.
+`.repo` files to `/etc/yum.repos.d`.
 
 To install `vpn-cert-service`: 
     
@@ -129,6 +133,12 @@ To install `vpn-user-portal`:
 
 You will also want to install `mod_ssl`. The `mod_auth_mellon` package is an 
 (indirect) dependency of `vpn-user-portal`. 
+
+    $ sudo yum -y install mod_ssl
+
+Now enable `httpd` by default:
+
+    $ sudo chkconfig httpd on
 
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration
@@ -154,12 +164,60 @@ use this:
 You can add the hash to `/etc/vpn-cert-service/config.ini` and the plain text
 value to `/etc/vpn-user-portal/config.ini`.
 
+To configure the firewall on the machine you need to open TCP/443 for the web 
+server, UDP/1194 on the VPN host.
+
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
 [php-lib-rest-plugin-mellon](https://github.com/fkooman/php-lib-rest-plugin-mellon) 
 documentation for more information on how to configure `mod_auth_mellon`. There
 is an example line in `/etc/httpd/conf.d/vpn-user-portal.conf` to "fake"
 `mod_auth_mellon` by directly specifying the `MELLON_NAME_ID` request header.
+
+## Example
+Generate the certificate and metadata:
+
+    $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://eduvpn.surfcloud.nl/saml https://eduvpn.surfcloud.nl/saml
+
+Copy the files to the correct location:
+
+    $ sudo mkdir /etc/httpd/saml
+    $ sudo cp *.cert *.key *.xml /etc/httpd/saml/
+
+Fetch the IdP metadata from SURFconext:
+
+    $ curl -o SURFconext.xml https://engine.surfconext.nl/authentication/idp/metadata
+
+Put `SURFconext.xml` in `/etc/httpd/saml` as well.
+
+No create a configuration in `/etc/httpd.conf/saml.conf`:
+
+# This is a server-wide configuration that will add information from the Mellon session to all requests.
+<Location />
+    # Add information from the mod_auth_mellon session to the request.
+    MellonEnable "info"
+
+    # Configure the SP metadata
+    # This should be the files which were created when creating SP metadata.
+    MellonSPPrivateKeyFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.key
+
+    MellonSPCertFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.cert
+    MellonSPMetadataFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.xml
+
+    # IdP metadata. This should be the metadata file you got from the IdP.
+    MellonIdPMetadataFile /etc/httpd/saml/SURFconext.xml
+
+    # The location all endpoints should be located under.
+    # It is the URL to this location that is used as the second parameter to the metadata generation script.
+    # This path is relative to the root of the web server.
+    MellonEndpointPath /saml
+</Location>
+
+# This is a location that will trigger authentication when requested.
+<Location /vpn-user-portal>
+    # This location will trigger an authentication request to the IdP.
+    MellonEnable "auth"
+</Location>
 
 # Server configuration
 You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
@@ -169,6 +227,81 @@ machine and copy that to OpenVPN machine:
 
 Copy/paste the output and place it in `/etc/openvpn/server.conf` on your 
 OpenVPN server.
+
+Create an empty CRL list:
+
+    $ sudo touch /etc/openvpn/ca.crl
+
+To start OpenVPN and enable it on boot:
+
+    $ sudo chkconfig openvpn on
+    $ sudo service openvpn restart
+
+To enable IP forwarding set the following property in `/etc/sysctl.conf`:
+
+    net.ipv4.ip_forward = 1
+
+You also need to modify the firewall by using `system-config-firewall-tui`. 
+You need to enable the OpenVPN, SSH, HTTPS services and enable masquerading
+for `eth0`, assuming `eth0` is your interface which connects to the Internet.
+
+The output of that script in `/etc/sysconfig/iptables` looks like this:
+
+    # Firewall configuration written by system-config-firewall
+    # Manual customization of this file is not recommended.
+    *nat
+    :PREROUTING ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :POSTROUTING ACCEPT [0:0]
+    -A POSTROUTING -o eth0 -j MASQUERADE
+    COMMIT
+    *filter
+    :INPUT ACCEPT [0:0]
+    :FORWARD ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A INPUT -p icmp -j ACCEPT
+    -A INPUT -i lo -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
+    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A FORWARD -p icmp -j ACCEPT
+    -A FORWARD -i lo -j ACCEPT
+    -A FORWARD -o eth0 -j ACCEPT
+    -A INPUT -j REJECT --reject-with icmp-host-prohibited
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+    COMMIT
+
+The output of the script in `/etc/sysconfig/ip6tables` looks like this:
+
+    # Firewall configuration written by system-config-firewall
+    # Manual customization of this file is not recommended.
+    *filter
+    :INPUT ACCEPT [0:0]
+    :FORWARD ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A INPUT -p ipv6-icmp -j ACCEPT
+    -A INPUT -i lo -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 546 -d fe80::/64 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
+    -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+    COMMIT
+
+The IPv6 support is untested. To restart the firewall use the following:
+
+    $ sudo service iptables restart
+    $ sudo service ip6tables restart
+
+See Red Hat Enterprise [Documentation](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-Firewalls-FORWARD_and_NAT_Rules.html) for more information.
+
+**NOTE**: there is a missing dependency on (at least) CentOS 6.6 where you 
+still need to manually install the `system-config-firewall` package before 
+`system-config-firewall-tui` will work.
 
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
