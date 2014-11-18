@@ -226,11 +226,9 @@ machine and copy that to OpenVPN machine:
     $ sudo -u apache vpn-cert-service-generate-server-config
 
 Copy/paste the output and place it in `/etc/openvpn/server.conf` on your 
-OpenVPN server.
+OpenVPN server. Do **NOT** forget to set the permissions:
 
-Create an empty CRL list:
-
-    $ sudo touch /etc/openvpn/ca.crl
+    $ sudo chmod 0600 /etc/openvpn/server.conf
 
 To start OpenVPN and enable it on boot:
 
@@ -305,13 +303,24 @@ still need to manually install the `system-config-firewall` package before
 
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
-from `vpn-cert-service` using the following command:
+from `vpn-cert-service`. Install `vpn-crl-fetcher` on the VPN machine:
 
-    # wget -q -N https://example.org/vpn-cert-service/api.php/ca.crl -O /etc/openvpn/ca.crl
+    $ sudo yum -y install vpn-crl-fetcher
 
-Run this as often as you want. Probably every hour is enough. You SHOULD use 
-`https` and of course change the domain name to your own server.
+Now add a cronjob:
 
-Modify the `/etc/openvpn/server.conf` file to use the CRL.
+    $ sudo crontab -e
 
-**NOTE: current connections will not be terminated if the certificate is added to the CRL, only new connections will be denied**.
+Put the following information there:
+
+    */5 * * * * /usr/bin/vpn-crl-fetcher http://localhost/vpn-cert-service/api.php/ca.crl /etc/openvpn/ca.crl
+
+Run this as often as you want. The example below makes it run every 5 minutes. 
+You SHOULD use `https` and of course change the domain name to your own server.
+
+Modify the `/etc/openvpn/server.conf` file to enable using the CRL.
+
+    crl-verify /etc/openvpn/ca.crl
+
+**NOTE**: current connections will NOT be terminated if the certificate is 
+added to the CRL, only new connections will be denied.
