@@ -67,10 +67,11 @@ For CentOS/Red Hat Enterprise you will need to enable
 [EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F).
 
 # Packages
-The software is contained in two projects:
+The software is contained in these projects:
 
 - [vpn-user-portal](https://github.com/fkooman/vpn-user-portal)
 - [vpn-cert-service](https://github.com/fkooman/vpn-cert-service)
+- [vpn-crl-fetcher](https://github.com/fkooman/vpn-crl-fetcher)
 
 The component `vpn-user-portal` is the UI for the end user, protected by SAML 
 (using `mod_mellon`). It interacts with `vpn-cert-service` using a HTTP API 
@@ -79,6 +80,9 @@ protected by basic authentication.
 The `vpn-cert-service` component is responsible for all the 'low level' 
 configuration handling like running the CA, generating certificates, generating 
 configurations, handling revocations and maintaining the CRL.
+
+The `vpn-crl-fetcher` is responsible for fetching the CRL from 
+`vpn-cert-service` for use with OpenVPN on the VPN machine.
 
 These components depend on the following PHP libraries that are not available
 in EPEL or the base repository:
@@ -192,32 +196,32 @@ Put `SURFconext.xml` in `/etc/httpd/saml` as well.
 
 No create a configuration in `/etc/httpd.conf/saml.conf`:
 
-# This is a server-wide configuration that will add information from the Mellon session to all requests.
-<Location />
-    # Add information from the mod_auth_mellon session to the request.
-    MellonEnable "info"
+    # This is a server-wide configuration that will add information from the Mellon session to all requests.
+    <Location />
+        # Add information from the mod_auth_mellon session to the request.
+        MellonEnable "info"
 
-    # Configure the SP metadata
-    # This should be the files which were created when creating SP metadata.
-    MellonSPPrivateKeyFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.key
+        # Configure the SP metadata
+        # This should be the files which were created when creating SP metadata.
+        MellonSPPrivateKeyFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.key
 
-    MellonSPCertFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.cert
-    MellonSPMetadataFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.xml
+        MellonSPCertFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.cert
+        MellonSPMetadataFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.xml
 
-    # IdP metadata. This should be the metadata file you got from the IdP.
-    MellonIdPMetadataFile /etc/httpd/saml/SURFconext.xml
+        # IdP metadata. This should be the metadata file you got from the IdP.
+        MellonIdPMetadataFile /etc/httpd/saml/SURFconext.xml
 
-    # The location all endpoints should be located under.
-    # It is the URL to this location that is used as the second parameter to the metadata generation script.
-    # This path is relative to the root of the web server.
-    MellonEndpointPath /saml
-</Location>
+        # The location all endpoints should be located under.
+        # It is the URL to this location that is used as the second parameter to the metadata generation script.
+        # This path is relative to the root of the web server.
+        MellonEndpointPath /saml
+    </Location>
 
-# This is a location that will trigger authentication when requested.
-<Location /vpn-user-portal>
-    # This location will trigger an authentication request to the IdP.
-    MellonEnable "auth"
-</Location>
+    # This is a location that will trigger authentication when requested.
+    <Location /vpn-user-portal>
+        # This location will trigger an authentication request to the IdP.
+        MellonEnable "auth"
+    </Location>
 
 # Server configuration
 You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
