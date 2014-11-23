@@ -4,8 +4,8 @@
 rpmdev-wipetree
 
 # build all projects
-sh build.sh vpn-cert-service fkooman vpn-cert-service 0.1.13
-sh build.sh vpn-user-portal  fkooman vpn-user-portal  0.1.12
+sh build.sh vpn-cert-service fkooman vpn-cert-service 0.1.14
+sh build.sh vpn-user-portal  fkooman vpn-user-portal  0.2.1
 sh build.sh vpn-crl-fetcher  fkooman vpn-crl-fetcher  0.1.1
 rpm --resign ${HOME}/rpmbuild/RPMS/noarch/*.rpm
 
