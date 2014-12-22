@@ -7,10 +7,3 @@ rpmdev-wipetree
 sh build.sh vpn-cert-service fkooman vpn-cert-service 0.1.14
 sh build.sh vpn-user-portal  fkooman vpn-user-portal  0.2.1
 sh build.sh vpn-crl-fetcher  fkooman vpn-crl-fetcher  0.1.1
-rpm --resign ${HOME}/rpmbuild/RPMS/noarch/*.rpm
-
-# create a yum repo
-createrepo ${HOME}/rpmbuild/RPMS/
-
-# rsync to a web server
-rsync --recursive ${HOME}/rpmbuild/RPMS fkooman@ursa.uberspace.de:/var/www/virtual/fkooman/www.php-oauth.net/repo/eduVPN

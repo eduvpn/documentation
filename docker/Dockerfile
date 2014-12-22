@@ -4,14 +4,11 @@ MAINTAINER François Kooman <fkooman@tuxed.net>
 # Add EPEL
 RUN yum -y install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; yum clean all
 
-# add GPG key for verifying signed packages
-RUN rpm --import https://www.php-oauth.net/repo/fkooman/RPM-GPG-KEY-fkooman
+# PHP base repo 
+RUN curl -s -L -o /etc/yum.repos.d/fkooman-php-base-epel-6.repo https://copr.fedoraproject.org/coprs/fkooman/php-base/repo/epel-6/fkooman-php-base-epel-6.repo
 
-# Add fkooman repository (contains eduVPN dependencies)
-RUN curl -s -L -o /etc/yum.repos.d/fkooman.repo https://www.php-oauth.net/repo/fkooman/fkooman.repo
-
-# Add eduVPN repository (contains vpn-cert-service and vpn-user-portal)
-RUN curl -s -L -o /etc/yum.repos.d/eduVPN.repo https://www.php-oauth.net/repo/eduVPN/eduVPN.repo
+# VPN management repo
+RUN curl -s -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-6.repo https://copr.fedoraproject.org/coprs/fkooman/vpn-management/repo/epel-6/fkooman-vpn-management-epel-6.repo
 
 # Install updates
 RUN yum -y update; yum clean all

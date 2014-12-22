@@ -108,24 +108,18 @@ machine you can do the following:
     $ cd rpm
     $ sh ./build_all.sh
 
-This should create the RPMs in `${HOME}/rpmbuild/RPMS`, ready for install using
-`yum`. See `build_all.sh` source for more information and an `rsync` example to
-copy the whole repository to a web server.
+This should create SRPMs in `${HOME}/rpmbuild/SRPMS`
 
 # Installation
-For your convenience the RPMs are also available from two repositories, signed 
-with my GPG key:
+For your convenience the RPMs are also available from two COPR repositories:
 
-    https://www.php-oauth.net/repo/fkooman/fkooman.repo
-    https://www.php-oauth.net/repo/eduVPN/eduVPN.repo
+    https://copr.fedoraproject.org/coprs/fkooman/php-base/
+    https://copr.fedoraproject.org/coprs/fkooman/vpn-management/
 
 The first one contains the dependencies, the second one the actual eduVPN 
-software. The GPG key can be found here:
-
-    https://www.php-oauth.net/repo/fkooman/RPM-GPG-KEY-fkooman
-
-You can install it with `rpm --import RPM-GPG-KEY-fkooman` and then add the
-`.repo` files to `/etc/yum.repos.d`.
+software. To enable them see the instructions. For CentOS 6 you will need to
+manually copy the `repo` files to `/etc/yum.repos.d/` as the COPR plugin for 
+`yum` is not available.
 
 To install `vpn-cert-service`: 
     

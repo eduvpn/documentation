@@ -20,5 +20,5 @@ curl -s -L -o $HOME/rpmbuild/SOURCES/${VERSION}.tar.gz https://github.com/${GITH
 # build package
 (
     cd ${HOME}/rpmbuild/SPECS/
-    rpmbuild -bb ${PACKAGE_NAME}.spec
+    rpmbuild -bs ${PACKAGE_NAME}.spec
 )
