@@ -239,7 +239,9 @@ To enable IP forwarding set the following property in `/etc/sysctl.conf`:
 
 You also need to modify the firewall by using `system-config-firewall-tui`. 
 You need to enable the OpenVPN, SSH, HTTPS services and enable masquerading
-for `eth0`, assuming `eth0` is your interface which connects to the Internet.
+for `eth0`, assuming `eth0` is your interface which connects to the Internet 
+and that you are using NAT. If you use publicly routable IP adresses you do 
+not need to enable masquerading.
 
 The output of that script in `/etc/sysconfig/iptables` looks like this:
 
@@ -298,6 +300,15 @@ See Red Hat Enterprise [Documentation](https://access.redhat.com/documentation/e
 **NOTE**: there is a missing dependency on (at least) CentOS 6.6 where you 
 still need to manually install the `system-config-firewall` package before 
 `system-config-firewall-tui` will work.
+
+## IPv6
+If you also want to enable IPv6 for use by clients the server needs to have 
+an IPv6 address and a block of IPv6 addresses to give to clients. In the 
+generated server configuration there are some commented lines that show you 
+how to enable IPv6, just replace all values with your IPv6 addresses.
+
+For further tweaking see the OpenVPN IPv6 
+[wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page.
 
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
