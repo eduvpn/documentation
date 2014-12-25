@@ -290,7 +290,7 @@ The output of the script in `/etc/sysconfig/ip6tables` looks like this:
     -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
     COMMIT
 
-The IPv6 support is untested. To restart the firewall use the following:
+To restart the firewall use the following:
 
     $ sudo service iptables restart
     $ sudo service ip6tables restart
@@ -303,18 +303,18 @@ still need to manually install the `system-config-firewall` package before
 
 ## IPv6
 If you also want to enable IPv6 for use by clients the server needs to have 
-an IPv6 address and a block of IPv6 addresses to give to clients. In the 
+an IPv6 address and a range of IPv6 addresses to give to clients. In the 
 generated server configuration there are some commented lines that show you 
-how to enable IPv6, just replace all values with your IPv6 addresses.
+how to enable IPv6, just replace the IPv6 range with your range.
 
 For further tweaking see the OpenVPN IPv6 
 [wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page. 
 
 The following should be enough, change your current `proto` line and assuming 
-the first `/64` of the IP block you want to use is `2001:0610:0450::`:
+the first `/64` of the IP block you want to use is `2001:aaaa:bbbb:cccc::`:
 
     proto udp udp6
-    server-ipv6 2001:0610:0450::/64
+    server-ipv6 2001:aaaa:bbbb:cccc::/64
 
 To enable IPv6 routing add the following to `/etc/sysctl.conf`:
 
@@ -323,8 +323,8 @@ To enable IPv6 routing add the following to `/etc/sysctl.conf`:
 You also need to modify the IPv6 firewall to allow forwarding in 
 `/etc/sysconfig/ip6tables`:
 
-    -A FORWARD -o eth0 -i tun0 -s 2001:0610:0450::/64 -j ACCEPT
-    -A FORWARD -i eth0 -o tun0 -d 2001:0610:0450::/64 -j ACCEPT
+    -A FORWARD -o eth0 -i tun0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
+    -A FORWARD -i eth0 -o tun0 -d 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
 
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
