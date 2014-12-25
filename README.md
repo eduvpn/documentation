@@ -308,7 +308,23 @@ generated server configuration there are some commented lines that show you
 how to enable IPv6, just replace all values with your IPv6 addresses.
 
 For further tweaking see the OpenVPN IPv6 
-[wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page.
+[wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page. 
+
+The following should be enough, change your current `proto` line and assuming 
+the first `/64` of the IP block you want to use is `2001:0610:0450::`:
+
+    proto udp udp6
+    server-ipv6 2001:0610:0450::/64
+
+To enable IPv6 routing add the following to `/etc/sysctl.conf`:
+
+    net.ipv6.conf.all.forwarding = 1
+
+You also need to modify the IPv6 firewall to allow forwarding in 
+`/etc/sysconfig/ip6tables`:
+
+    -A FORWARD -o eth0 -i tun0 -s 2001:0610:0450::/64 -j ACCEPT
+    -A FORWARD -i eth0 -o tun0 -d 2001:0610:0450::/64 -j ACCEPT
 
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
