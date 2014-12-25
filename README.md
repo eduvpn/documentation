@@ -315,6 +315,7 @@ the first `/64` of the IP block you want to use is `2001:aaaa:bbbb:cccc::`:
 
     proto udp udp6
     server-ipv6 2001:aaaa:bbbb:cccc::/64
+    push "route-ipv6 2000::/3"
 
 To enable IPv6 routing add the following to `/etc/sysctl.conf`:
 
