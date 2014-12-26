@@ -162,8 +162,8 @@ use this:
 You can add the hash to `/etc/vpn-cert-service/config.ini` and the plain text
 value to `/etc/vpn-user-portal/config.ini`.
 
-To configure the firewall on the machine you need to open TCP/443 for the web 
-server, UDP/1194 on the VPN host.
+To configure the firewall on the machine you need to open `tcp/443` for the web 
+server, `udp/1194` on the VPN host.
 
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
@@ -243,12 +243,11 @@ for `eth0`, assuming `eth0` is your interface which connects to the Internet
 and that you are using NAT. If you use publicly routable IP adresses you do 
 not need to enable masquerading.
 
-In the example below the configurations were modified to also add `tcp/1194` 
-to be allowed through the firewall and enable routing with public IP ranges. 
-The firewall is configured in such a way that only the clients can initiate a
-connection, it is not possible to run a service on a client IP. If this is 
-required, forwarding should be explicitly allowed from `eth0` to `tun0`, like
-this for IPv4, it is similar for IPv6:
+In the example below the configurations were modified to enable routing with 
+public IP ranges. The firewall is configured in such a way that only the 
+clients can initiate a connection, it is not possible to run a service on a 
+client IP. If this is required, forwarding should be explicitly allowed from 
+`eth0` to `tun0`, like this for IPv4, it is similar for IPv6:
 
     -A FORWARD -i eth0 -o tun0 -d 11.22.33.0/23 -j ACCEPT
 
@@ -266,7 +265,6 @@ The output of that script in `/etc/sysconfig/iptables` looks like this:
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
     -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 1194 -j ACCEPT
     -A INPUT -j REJECT --reject-with icmp-host-prohibited
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -i tun0 -o eth0 -s 11.22.33.0/23 -j ACCEPT
@@ -288,7 +286,6 @@ The output of the script in `/etc/sysconfig/ip6tables` looks like this:
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
     -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 1194 -j ACCEPT
     -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -i tun0 -o eth0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
@@ -315,10 +312,9 @@ how to enable IPv6, just replace the IPv6 range with your range.
 For further tweaking see the OpenVPN IPv6 
 [wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page. 
 
-The following should be enough, change your current `proto` line and assuming 
-the first `/64` of the IP block you want to use is `2001:aaaa:bbbb:cccc::`:
+The following should be enough assuming the first `/64` of the IP block you 
+want to use is `2001:aaaa:bbbb:cccc::`:
 
-    proto udp tcp udp6 tcp6
     server-ipv6 2001:aaaa:bbbb:cccc::/64
     push "route-ipv6 2000::/3"
 
