@@ -40,10 +40,12 @@ templates.
 Due to the availability of RPM packages and the available infrastructure to 
 support software updates it will be trivial to maintain additional instances. 
 After a one-time setup the instance can be updated by just using the platform's 
-update mechanism.
+update mechanism, i.e. `yum update`.
 
 By having multiple instances it also becomes possible to easily test software 
 updates on test instances.
+
+If the software will be hosted at a central location the following 
 
 # User Authentication
 Every instance of the eduVPN service will require a separate configuration 
@@ -59,7 +61,32 @@ When providing public routeable addresses the servers need to each only contain
 a subset of the IP addresses, so not all servers can contain all IP addresses. 
 The rest of the configuration can remain the same though as for the one server
 setup. The client needs to just list the other VPN servers in the client 
-config and possibly a `randomize-hosts` option.
+configuration file and a `remote-random` option.
+
+For example:
+
+    remote vpn1.example.org
+    remote vpn2.example.org
+    remote-random
+
+This will randomly try either `vpn1.example.org` or `vpn2.example.org`.
+
+Of course, the servers will need to divide the available address space among
+themselves. In case public routable addresses are used they will need to be 
+split in multiple non-overlapping blocks. "Real" load balancing and fail over
+are not provided. Also when the client connects to any other server it will 
+get an IP address from a different range. So assuming for all our VPN clients
+we have the range `192.168.42.0/24` we can split this in 4 equally sized 
+blocks. The following `server` configuration directives would be used, one on
+each server:
+
+    server 192.168.42.0 255.255.255.192
+    server 192.168.42.64 255.255.255.192
+    server 192.168.42.128 255.255.255.192
+    server 192.168.42.192 255.255.255.192
+
+In case of load balancing one server configuration should be generated and 
+duplicated 4 times and then only the `server` line needs to be modified.
 
 # Work To Be Done
 We need to update the deployment manual to describe more configurations on how
