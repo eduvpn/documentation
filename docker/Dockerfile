@@ -29,7 +29,7 @@ USER apache
 RUN vpn-cert-service-init
 RUN vpn-user-portal-init
 # Generate Server Configuration
-RUN vpn-cert-service-generate-server-config > /tmp/server.conf
+RUN vpn-cert-service-generate-server-config vpn.example.org > /tmp/server.conf
 
 USER root
 # Configure OpenVPN
