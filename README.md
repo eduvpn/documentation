@@ -162,8 +162,19 @@ use this:
 You can add the hash to `/etc/vpn-cert-service/config.ini` and the plain text
 value to `/etc/vpn-user-portal/config.ini`.
 
-To configure the firewall on the machine you need to open `tcp/443` for the web 
-server, `udp/1194` on the VPN host.
+If you want to adapt the default templates for generating server and client
+configurations they can be copied from the default location to the 
+configuration directory:
+
+    $ sudo mkdir /etc/vpn-cert-service/views
+    $ sudo cp /usr/share/vpn-cert-service/views/server.twig /etc/vpn-cert-service/views
+    $ sudo cp /usr/share/vpn-cert-service/views/client.twig /etc/vpn-cert-service/views
+
+This mostly makes sense for the client template as that is used every time a 
+new client configuration is generated. The server configuration that is 
+generated can also easily be modified on the server, but in case you want to
+deploy a lot of servers it may make sense to already make modifications in
+the template.
 
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
