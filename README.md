@@ -232,7 +232,7 @@ No create a configuration in `/etc/httpd.conf/saml.conf`:
 You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
 machine and copy that to OpenVPN machine:
 
-    $ sudo -u apache vpn-cert-service-generate-server-config
+    $ sudo -u apache vpn-cert-service-generate-server-config vpn.example.org
 
 Copy/paste the output and place it in `/etc/openvpn/server.conf` on your 
 OpenVPN server. Do **NOT** forget to set the permissions:
