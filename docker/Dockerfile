@@ -28,17 +28,11 @@ USER apache
 # Init the databases
 RUN vpn-cert-service-init
 RUN vpn-user-portal-init
-# Generate Server Configuration
-RUN vpn-cert-service-generate-server-config vpn.example.org > /tmp/server.conf
 
-USER root
-# Configure OpenVPN
-RUN cp /tmp/server.conf /etc/openvpn/server.conf
-RUN chmod 600 /etc/openvpn/server.conf
-RUN rm /tmp/server.conf
-# Expose port 443 and 1194
+# Generate Server Configuration
+#RUN vpn-cert-service-generate-server-config vpn.example.org
+
 EXPOSE 443
-EXPOSE 1194
 # set httpd as entrypoint
 ENTRYPOINT ["/usr/sbin/httpd"]
 CMD ["-D", "FOREGROUND"]
