@@ -32,6 +32,8 @@ RUN vpn-user-portal-init
 # Generate Server Configuration
 #RUN vpn-cert-service-generate-server-config vpn.example.org
 
+USER root
+
 EXPOSE 443
 # set httpd as entrypoint
 ENTRYPOINT ["/usr/sbin/httpd"]
