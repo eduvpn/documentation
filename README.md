@@ -176,6 +176,15 @@ generated can also easily be modified on the server, but in case you want to
 deploy a lot of servers it may make sense to already make modifications in
 the template.
 
+# Time
+Make sure the time is set correctly and is kept up to date. If the offset 
+becomes too big SAML will no longer work correctly.
+
+    $ sudo ntpdate pool.ntp.org
+    $ sudo yum -y install ntp
+    $ sudo chkconfig ntpd on
+    $ sudo service ntpd start
+
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
 [php-lib-rest-plugin-mellon](https://github.com/fkooman/php-lib-rest-plugin-mellon) 

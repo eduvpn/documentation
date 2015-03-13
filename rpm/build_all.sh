@@ -4,6 +4,6 @@
 rpmdev-wipetree
 
 # build all projects
-sh build.sh vpn-cert-service fkooman vpn-cert-service 0.1.20
-sh build.sh vpn-user-portal  fkooman vpn-user-portal  0.2.7
+sh build.sh vpn-cert-service fkooman vpn-cert-service 0.1.21
+sh build.sh vpn-user-portal  fkooman vpn-user-portal  0.2.8
 sh build.sh vpn-crl-fetcher  fkooman vpn-crl-fetcher  0.1.1
