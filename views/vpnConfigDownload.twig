@@ -5,12 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>eduVPN</title>
+  <link rel="stylesheet" type="text/css" href="../css/normalize.css">
   <link rel="stylesheet" type="text/css" href="/eduVPN/css/eduVPN.css">
 </head>
 
 <body>
     <div id="container">
-        <h1>eduVPN</h1>
+        <a class="header" href="../"><h1>eduVPN</h1></a>
         <p>
             To get the VPN working you need to perform two steps:
             <ol>
@@ -28,11 +29,25 @@
 
         <h2>Configuration</h2>
         <p>You can download the configuration &quot;<strong>{{ configName|e }}</strong>&quot; in <tt>OVPN</tt> format and import it in your OpenVPN client.</p>
+
         <p class="warn">You can only download a configuration once. Create a new one for your other devices.</p>
-        <a href="{{ configName|e}}/ovpn"><button>Download Configuration</button></a>
 
+        <form class="center" method="GET" action="{{ configName|e}}/ovpn">
+            <button type="submit">Download</button>
+        </form>
 
-        <p><a href="../">Back to configurations...</a></p>
+<!--        <form class="center" method="GET" action="{{ configName|e}}/zip">-->
+<!--            <button class="simple" type="submit">Download (ZIP)</button>-->
+<!--        </form>-->
+
+        <form class="simple" method="GET" action="../">
+            <button class="simple" type="submit">&lt; Back</button>
+        </form>
+
+        <div class="footer">
+            eduVPN
+        </div>
+
     </div> <!-- /container -->
 </body>
 </html>

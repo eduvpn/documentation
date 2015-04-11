@@ -5,15 +5,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>eduVPN</title>
+  <link rel="stylesheet" type="text/css" href="../css/normalize.css">
   <link rel="stylesheet" type="text/css" href="/eduVPN/css/eduVPN.css">
 </head>
 
 <body>
     <div id="container">
-        <h1>eduVPN</h1>
+        <a class="header" href="../"><h1>eduVPN</h1></a>
+
         <p>Welcome to the eduVPN portal. Here you can manage your VPN configurations.</p>
         <p class="warn">
-This software is <strong>EXPERIMENTAL</strong>, <strong>NOT SUPPORTED</strong> and does not offer <strong>ANY</strong> guarantees.
+            This software is <strong>EXPERIMENTAL</strong>, <strong>NOT SUPPORTED</strong> and does not offer <strong>ANY</strong> guarantees.
         </p>
 
         <h2>New</h2>
@@ -21,35 +23,34 @@ This software is <strong>EXPERIMENTAL</strong>, <strong>NOT SUPPORTED</strong> a
            &quot;<em>Create</em>&quot;. Allowed characters are <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>@</code>.
         </p>
 
-        <form method="post">
+        <form class="center" method="post">
             <input type="text" name="name" placeholder="Name..." required pattern="[a-zA-Z0-9-_.@]+">
-            <input type="submit" value="Create">
+            <button type="submit">Create</button>
         </form>
 
         {% if vpnConfigurations %} <!-- existing configurations -->
         <h2>Existing</h2>
         <p>If you lost your device or no longer use the VPN you can click &quot;<em>Revoke</em>&quot;.</p>
         <table>
-            <thead>
-                <tr><th>Config</th><th>Action</th></tr>
-            </thead>
             <tbody>
             {% for config in vpnConfigurations %}
                 <tr>
-                    <td><span title="{{ config.name|e }}">{{ config.name|e|truncate(12) }}</span></td>
+                    <th>
+                        {{ config.name|e }}
+                    </th>
                     <td>
                     {% if config.status == 30 %} <!-- revoked -->
                             <button disabled="disabled">Download</button>
                             <button disabled="disabled">Revoke</button>
                     {% elseif config.status == 20 %} <!-- active -->
                             <button disabled="disabled">Download</button>
-                            <form method="post" action="{{ config.name|e }}">
+                            <form class="simple" method="post" action="{{ config.name|e }}">
                                 <input type="hidden" name="_METHOD" value="DELETE">
-                                <input type="submit" value="Revoke">
+                                <button class="simple" type="submit">Revoke</button>
                             </form>
                     {% else %}
-                            <form method="get" action="{{ config.name|e }}">
-                                <input type="submit" value="Download">
+                            <form class="simple" method="get" action="{{ config.name|e }}">
+                                <button type="submit">Download</button>
                             </form>
                             <button disabled="disabled">Revoke</button>
                     {% endif %}
@@ -59,6 +60,10 @@ This software is <strong>EXPERIMENTAL</strong>, <strong>NOT SUPPORTED</strong> a
             </tbody>
         </table>
         {% endif %} <!-- /existing configurations -->
+
+        <div class="footer">
+            eduVPN
+        </div>
 
     </div> <!-- /container -->
 </body>
