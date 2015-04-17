@@ -2,9 +2,8 @@
 This is the eduVPN deploy manual.
 
 # Software Requirements
-CentOS >= 6.6 is the only officially supported deployment platform. However, 
-it should also work on Fedora >= 20, CentOS >= 7.1 and Red Hat 
-Enterprise >= 6.6 or >= 7.1.
+CentOS >= 7.1 is the only tested deployment platform. However, it should also 
+work on Fedora >= 20 and Red Hat Enterprise >= 7.1.
 
 # Hardware Requirements
 It is highly recommended to use at least three (virtual) machines to run this.
@@ -19,6 +18,9 @@ It is highly recommended to use at least three (virtual) machines to run this.
    have a connection to `vpn-user-portal` machine, and only needs read access 
    to the `ca.crl` URL on the `vpn-cert-service` machine. It does not need a 
    password to access the API
+
+In case many users are expected, only the VPN machine needs to be distributed, 
+as that will be the place where the load will be the highest.
 
 # Security Considerations
 
@@ -49,11 +51,10 @@ into the wrong hands. In order to solve this, all clients need to become
 aware of this fact and thus need to also obtain the CRL periodically. This is 
 a bit of a nightmare as the CRL needs to be downloaded regularly by all the
 clients. One of the potential solutions for this is use short lived server
-certificates that last e.g. one day. This is highly cumbersome.
+certificates that last e.g. one day. This is cumbersome.
 
-Probably the easiest is to do nothing and hope that the MITM that wants to 
-attack users is not the same as the one who obtained the private key from the
-VPN server.
+The only real solution is to revoke all client configurations and restart 
+from scratch.
 
 **UNSOLVED PROBLEM**
 
@@ -117,7 +118,7 @@ For your convenience the RPMs are also available from two COPR repositories:
     https://copr.fedoraproject.org/coprs/fkooman/vpn-management/
 
 The first one contains the dependencies, the second one the actual eduVPN 
-software. To enable them see the instructions. For CentOS 6 you will need to
+software. To enable them see the instructions. For CentOS 7 you will need to
 manually copy the `repo` files to `/etc/yum.repos.d/` as the COPR plugin for 
 `yum` is not available.
 
@@ -136,14 +137,15 @@ You will also want to install `mod_ssl`. The `mod_auth_mellon` package is an
 
 Now enable `httpd` by default:
 
-    $ sudo chkconfig httpd on
+    $ sudo systemctl enable httpd
 
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration
 file on installation. But you SHOULD update the configuration files in 
 `/etc/vpn-user-portal` and `/etc/vpn-cert-service` to suit your environment if
 needed. For example if you want to use something else than SQlite, you need to
-setup your database first and modify the configuration.
+setup your database first and modify the configuration. You may also want to
+update the CA certificate fields to suit your deployment.
 
 You then need to run the database initialization scripts, they will populate
 the database:
@@ -173,10 +175,12 @@ configuration directory:
 This mostly makes sense for the client template as that is used every time a 
 new client configuration is generated. The server configuration that is 
 generated can also easily be modified on the server, but in case you want to
-deploy a lot of servers it may make sense to already make modifications in
-the template.
+deploy more servers it may make sense to already make modifications in the 
+template.
 
 # Time
+**CentOS 7 seems to have chrony by default?**
+
 Make sure the time is set correctly and is kept up to date. If the offset 
 becomes too big SAML will no longer work correctly.
 
@@ -241,7 +245,7 @@ No create a configuration in `/etc/httpd.conf/saml.conf`:
 You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
 machine and copy that to OpenVPN machine:
 
-    $ sudo -u apache vpn-cert-service-generate-server-config vpn.example.org
+    $ sudo -u apache vpn-cert-service-generate-server-config eduvpn.surfcloud.nl
 
 Copy/paste the output and place it in `/etc/openvpn/server.conf` on your 
 OpenVPN server. Do **NOT** forget to set the permissions:
@@ -250,11 +254,12 @@ OpenVPN server. Do **NOT** forget to set the permissions:
 
 To start OpenVPN and enable it on boot:
 
-    $ sudo chkconfig openvpn on
-    $ sudo service openvpn restart
+    $ sudo systemctl enable openvpn@server
+    $ sudo systemctl start openvpn@server
 
 To enable IP forwarding set the following property in `/etc/sysctl.conf`:
 
+**THIS IS ALL DIFFERENT IN CENTOS7**
     net.ipv4.ip_forward = 1
 
 You also need to modify the firewall by using `system-config-firewall-tui`. 
@@ -368,6 +373,9 @@ You SHOULD use `https` and of course change the domain name to your own server.
 Modify the `/etc/openvpn/server.conf` file to enable using the CRL.
 
     crl-verify /etc/openvpn/ca.crl
+
+**NOTE**: if the CRL is enabled in the OpenVPN config file, but the file is 
+missing or empty, OpenVPN will not work!
 
 **NOTE**: current connections will NOT be terminated if the certificate is 
 added to the CRL, only new connections will be denied.
