@@ -387,3 +387,8 @@ Allow the management port to be used by the OpenVPN process, by default only
     $ sudo semanage port -l | grep openvpn_port_t
     $ sudo semanage port -a -t openvpn_port_t -p tcp 7505 
 
+To allow Apache to execute the Easy RSA scripts, this is needed. Not sure 
+what to set for PHP-FPM...
+
+    $ sudo setsebool -P httpd_unified 1
+
