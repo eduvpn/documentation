@@ -379,3 +379,11 @@ missing or empty, OpenVPN will not work!
 
 **NOTE**: current connections will NOT be terminated if the certificate is 
 added to the CRL, only new connections will be denied.
+
+## SELinux
+Allow the management port to be used by the OpenVPN process, by default only
+`udp/1194` and `tcp/1194` are allowed.
+
+    $ sudo semanage port -l | grep openvpn_port_t
+    $ sudo semanage port -a -t openvpn_port_t -p tcp 7505 
+
