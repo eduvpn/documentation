@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:latest
 MAINTAINER François Kooman <fkooman@tuxed.net>
 
 # Add EPEL
@@ -14,7 +14,7 @@ RUN curl -s -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://co
 RUN yum -y update; yum clean all
 
 # Install dependencies (and SSL module)
-RUN yum install -y mod_ssl vpn-cert-service vpn-user-portal; yum clean all
+RUN yum install -y mod_ssl vpn-cert-service vpn-user-portal vpn-crl-fetcher; yum clean all
 
 # Allow connections from everywhere to the portal
 RUN sed -i 's/Require local/Require all granted/' /etc/httpd/conf.d/vpn-user-portal.conf

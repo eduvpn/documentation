@@ -3,7 +3,7 @@ These are all the files to get a Docker instance running with eduVPN.
 
 To build the Docker image:
 
-    docker build --rm -t fkooman/eduvpn .
+    docker build -t fkooman/eduvpn .
 
 To run the container:
 
