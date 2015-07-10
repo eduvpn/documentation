@@ -257,76 +257,61 @@ To start OpenVPN and enable it on boot:
     $ sudo systemctl enable openvpn@server
     $ sudo systemctl start openvpn@server
 
-To enable IP forwarding set the following property in `/etc/sysctl.conf`:
+**NOTE**: make sure to comment the line regarding the CRL as long as you don't 
+have a CRL yet, otherwise OpenVPN will not start.
 
-**THIS IS ALL DIFFERENT IN CENTOS7**
-    net.ipv4.ip_forward = 1
+## NetworkManager
 
-You also need to modify the firewall by using `system-config-firewall-tui`. 
-You need to enable the OpenVPN, SSH, HTTPS services and enable masquerading
-for `eth0`, assuming `eth0` is your interface which connects to the Internet 
-and that you are using NAT. If you use publicly routable IP adresses you do 
-not need to enable masquerading.
+## Firewall
+IP forwarding and masquerading is enabled by the `external` network zone, so 
+no need to enable it by modifying `/etc/sysctl.conf`.
 
-In the example below the configurations were modified to enable routing with 
-public IP ranges. The firewall is configured in such a way that only the 
-clients can initiate a connection, it is not possible to run a service on a 
-client IP. If this is required, forwarding should be explicitly allowed from 
-`eth0` to `tun0`, like this for IPv4, it is similar for IPv6:
+More information on firewall configuration can be found [here](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html).
 
-    -A FORWARD -i eth0 -o tun0 -d 11.22.33.0/23 -j ACCEPT
+You need to modify the firewall by using `firewall-cmd`. You need to enable 
+the OpenVPN, HTTP and HTTPS services.
 
-The output of that script in `/etc/sysconfig/iptables` looks like this:
+    $ sudo yum -y install firewalld
+    $ sudo systemctl enable firewalld
+    $ sudo systemctl start firewalld
 
-    # Firewall configuration written by system-config-firewall
-    # Manual customization of this file is not recommended.
-    *filter
-    :INPUT ACCEPT [0:0]
-    :FORWARD ACCEPT [0:0]
-    :OUTPUT ACCEPT [0:0]
-    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-    -A INPUT -p icmp -j ACCEPT
-    -A INPUT -i lo -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
-    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -j REJECT --reject-with icmp-host-prohibited
-    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-    -A FORWARD -i tun0 -o eth0 -s 11.22.33.0/23 -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-    COMMIT
+    $ sudo firewall-cmd --permanent --zone=public --remove-interface=eth0
+    $ sudo firewall-cmd --permanent --zone=external --add-interface=eth0
 
-The output of the script in `/etc/sysconfig/ip6tables` looks like this:
+    $ sudo firewall-cmd --permanent --zone=external --add-service=http --add-service=https --add-service=openvpn
 
-    # Firewall configuration written by system-config-firewall
-    # Manual customization of this file is not recommended.
-    *filter
-    :INPUT ACCEPT [0:0]
-    :FORWARD ACCEPT [0:0]
-    :OUTPUT ACCEPT [0:0]
-    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-    -A INPUT -p ipv6-icmp -j ACCEPT
-    -A INPUT -i lo -j ACCEPT
-    -A INPUT -m state --state NEW -m udp -p udp --dport 546 -d fe80::/64 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
-    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
-    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-    -A FORWARD -i tun0 -o eth0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
-    COMMIT
+If you also want to allow OpenVPN to listen on `tcp/443` you can copy the 
+OpenVPN service configuration:
 
-To restart the firewall use the following:
+    $ sudo cp /usr/lib/firewalld/services/openvpn.xml /etc/firewalld/services/openvpn.xml
 
-    $ sudo service iptables restart
-    $ sudo service ip6tables restart
+Now you can modify it and add the port there:
 
-See Red Hat Enterprise [Documentation](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-Firewalls-FORWARD_and_NAT_Rules.html) for more information.
+  <port protocol="udp" port="1194"/>
+  <port protocol="tcp" port="443"/>
 
-**NOTE**: there is a missing dependency on (at least) CentOS 6.6 where you 
-still need to manually install the `system-config-firewall` package before 
-`system-config-firewall-tui` will work.
+Make sure you also consider SELinux (see below for adding ports) and the 
+OpenVPN configuration, and don't forget to restart the firewall:
+
+    $ sudo systemctl reload firewalld
+
+Now you can set the default zone for the ethernet adapter, in this case `eth0` 
+by modifying `/etc/sysconfig/network-scripts/ifcfg-eth0` and adding 
+`ZONE=external` to it.
+
+Reboot the machine and everything should be set up correctly:
+
+    $ sudo firewall-cmd --zone=external --list-interfaces
+    eth0
+
+    $ sudo firewall-cmd --permanent --zone=external --list-interfaces
+    eth0
+
+    $ sudo firewall-cmd --zone=external --list-services
+    http https openvpn ssh
+
+    $ sudo firewall-cmd --permanent --zone=external --list-services
+    http https openvpn ssh
 
 ## IPv6
 If you also want to enable IPv6 for use by clients the server needs to have 
