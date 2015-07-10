@@ -121,6 +121,15 @@ div.footer a {
     color: #888;
 }
 
+p.note {
+    font-size: 85%;
+    color: #888;
+}
+
+p.note a {
+    color: #888;
+}
+
 @media screen and (min-width: 1100px) {
     body {
         background: url("../img/eduVPN.png") #fff 98% 20px no-repeat;
