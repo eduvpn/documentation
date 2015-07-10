@@ -199,7 +199,16 @@ is an example line in `/etc/httpd/conf.d/vpn-user-portal.conf` to "fake"
 ## Example
 Generate the certificate and metadata:
 
-    $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://eduvpn.surfcloud.nl/saml https://eduvpn.surfcloud.nl/saml
+    [centos@dev-eduvpn-org ~]$ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://dev.eduvpn.org/saml https://dev.eduvpn.org/saml
+    Output files:
+    Private key:               https_dev.eduvpn.org_saml.key
+    Certificate:               https_dev.eduvpn.org_saml.cert
+    Metadata:                  https_dev.eduvpn.org_saml.xml
+    Host:                      dev.eduvpn.org
+
+    Endpoints:
+    SingleLogoutService:       https://dev.eduvpn.org/saml/logout
+    AssertionConsumerService:  https://dev.eduvpn.org/saml/postResponse
 
 Copy the files to the correct location:
 
@@ -210,9 +219,11 @@ Fetch the IdP metadata from SURFconext:
 
     $ curl -o SURFconext.xml https://engine.surfconext.nl/authentication/idp/metadata
 
-Put `SURFconext.xml` in `/etc/httpd/saml` as well.
+Put `SURFconext.xml` in `/etc/httpd/saml` as well:
 
-No create a configuration in `/etc/httpd.conf/saml.conf`:
+    $ sudo cp SURFconext.xml /etc/httpd/saml/
+
+Now create a configuration in `/etc/httpd/conf.d/saml.conf`:
 
     # This is a server-wide configuration that will add information from the Mellon session to all requests.
     <Location />
@@ -221,10 +232,10 @@ No create a configuration in `/etc/httpd.conf/saml.conf`:
 
         # Configure the SP metadata
         # This should be the files which were created when creating SP metadata.
-        MellonSPPrivateKeyFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.key
+        MellonSPPrivateKeyFile /etc/httpd/saml/https_dev.eduvpn.org_saml.key
 
-        MellonSPCertFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.cert
-        MellonSPMetadataFile /etc/httpd/saml/https_eduvpn.surfcloud.nl_saml.xml
+        MellonSPCertFile /etc/httpd/saml/https_dev.eduvpn.org_saml.cert
+        MellonSPMetadataFile /etc/httpd/saml/https_dev.eduvpn.org_saml.xml
 
         # IdP metadata. This should be the metadata file you got from the IdP.
         MellonIdPMetadataFile /etc/httpd/saml/SURFconext.xml
@@ -241,11 +252,19 @@ No create a configuration in `/etc/httpd.conf/saml.conf`:
         MellonEnable "auth"
     </Location>
 
+Restart Apache:
+
+    $ sudo systemctl restart httpd
+
+Now you can access the server's metadata at the following URL:
+
+    https://dev.eduvpn.org/saml/metadata
+
 # Server configuration
 You can now generate a OpenVPN server configuration on the `vpn-cert-service` 
 machine and copy that to OpenVPN machine:
 
-    $ sudo -u apache vpn-cert-service-generate-server-config eduvpn.surfcloud.nl
+    $ sudo -u apache vpn-cert-service-generate-server-config dev.eduvpn.org
 
 Copy/paste the output and place it in `/etc/openvpn/server.conf` on your 
 OpenVPN server. Do **NOT** forget to set the permissions:
