@@ -19,8 +19,8 @@ RUN yum install -y mod_ssl vpn-cert-service vpn-user-portal vpn-crl-fetcher; yum
 # Allow connections from everywhere to the portal
 RUN sed -i 's/Require local/Require all granted/' /etc/httpd/conf.d/vpn-user-portal.conf
 
-# "fake" a configured mellon by setting MELLON_NAME_ID so no need for a SAML IdP
-RUN sed -i 's/#RequestHeader set MELLON_NAME_ID foo/RequestHeader set MELLON_NAME_ID foo/' /etc/httpd/conf.d/vpn-user-portal.conf
+# "fake" a configured mellon by setting MELLON-NAME-ID so no need for a SAML IdP
+RUN sed -i 's/#RequestHeader set MELLON-NAME-ID foo/RequestHeader set MELLON-NAME-ID foo/' /etc/httpd/conf.d/vpn-user-portal.conf
 
 USER apache
 # Init the databases
