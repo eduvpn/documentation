@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM docker.io/centos:latest
 MAINTAINER François Kooman <fkooman@tuxed.net>
 
 # Add EPEL
