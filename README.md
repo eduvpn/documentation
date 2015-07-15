@@ -330,8 +330,9 @@ OpenVPN service configuration:
 
 Now you can modify it and add the port there:
 
-  <port protocol="udp" port="1194"/>
-  <port protocol="tcp" port="443"/>
+
+    <port protocol="udp" port="1194"/>
+    <port protocol="tcp" port="443"/>
 
 Make sure you also consider SELinux (see below for adding ports) and the 
 OpenVPN configuration. 
@@ -363,6 +364,7 @@ To enable IPv6 routing add the following to `/etc/sysctl.conf`:
 You also need to modify the IPv6 firewall to allow forwarding in 
 `/etc/sysconfig/ip6tables`:
 
+**FIXME**: change this for CentOS7!
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -i tun0 -o eth0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
 
