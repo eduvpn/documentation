@@ -67,6 +67,11 @@ Docker container.
 For CentOS/Red Hat Enterprise you will need to enable 
 [EPEL](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F).
 
+On CentOS you can simply install the `epel-release` package as it is part of
+the CentOS extras repository (enabled by default):
+
+    $ sudo yum -y install epel-release
+
 # Packages
 The software is contained in these projects:
 
@@ -179,15 +184,7 @@ deploy more servers it may make sense to already make modifications in the
 template.
 
 # Time
-**CentOS 7 seems to have chrony by default?**
-
-Make sure the time is set correctly and is kept up to date. If the offset 
-becomes too big SAML will no longer work correctly.
-
-    $ sudo ntpdate pool.ntp.org
-    $ sudo yum -y install ntp
-    $ sudo chkconfig ntpd on
-    $ sudo service ntpd start
+CentOS 7 seems to have chrony running by default, so nothing to do here.
 
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
@@ -281,23 +278,50 @@ have a CRL yet, otherwise OpenVPN will not start.
 
 ## NetworkManager
 
+First we have to move the external interface to the `external` zone:
+
+    $ nmcli connection
+    NAME  UUID                                  TYPE            DEVICE 
+    eth0  fe518d95-e477-4549-8786-f2844c436d91  802-3-ethernet  eth0
+
+    $ nmcli --fields connection.zone connection show eth0
+    connection.zone:                        --
+
+Now we can modify the connection to be in the `external` zone:
+
+    $ sudo nmcli connection modify eth0 connection.zone external
+
+To restart NetworkManager (optional):
+
+    $ sudo systemctl restart NetworkManager
+
 ## Firewall
 IP forwarding and masquerading is enabled by the `external` network zone, so 
 no need to enable it by modifying `/etc/sysctl.conf`.
 
 More information on firewall configuration can be found [here](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html).
 
-You need to modify the firewall by using `firewall-cmd`. You need to enable 
-the OpenVPN, HTTP and HTTPS services.
+To make sure that `firewalld` is started on boot:
 
-    $ sudo yum -y install firewalld
     $ sudo systemctl enable firewalld
-    $ sudo systemctl start firewalld
 
-    $ sudo firewall-cmd --permanent --zone=public --remove-interface=eth0
-    $ sudo firewall-cmd --permanent --zone=external --add-interface=eth0
+Check that `eth0` is in the correct zone:
+
+    $ sudo firewall-cmd --get-active-zones
+    external
+      interfaces: eth0
+
+Show the services currently enabled for the `external` zone:
+
+    $ sudo firewall-cmd --permanent --zone=external --list-services
+    ssh
+
+Add the additional services required, **NOTE**: on the OpenVPN machine you
+do not need `http`, but maybe you do need `https` if you want to run OpenVPN 
+also on port `443`:
 
     $ sudo firewall-cmd --permanent --zone=external --add-service=http --add-service=https --add-service=openvpn
+    success
 
 If you also want to allow OpenVPN to listen on `tcp/443` you can copy the 
 OpenVPN service configuration:
@@ -310,27 +334,11 @@ Now you can modify it and add the port there:
   <port protocol="tcp" port="443"/>
 
 Make sure you also consider SELinux (see below for adding ports) and the 
-OpenVPN configuration, and don't forget to restart the firewall:
+OpenVPN configuration. 
 
-    $ sudo systemctl reload firewalld
+To restart `firewalld`:
 
-Now you can set the default zone for the ethernet adapter, in this case `eth0` 
-by modifying `/etc/sysconfig/network-scripts/ifcfg-eth0` and adding 
-`ZONE=external` to it.
-
-Reboot the machine and everything should be set up correctly:
-
-    $ sudo firewall-cmd --zone=external --list-interfaces
-    eth0
-
-    $ sudo firewall-cmd --permanent --zone=external --list-interfaces
-    eth0
-
-    $ sudo firewall-cmd --zone=external --list-services
-    http https openvpn ssh
-
-    $ sudo firewall-cmd --permanent --zone=external --list-services
-    http https openvpn ssh
+    $ sudo systemctl restart firewalld
 
 ## IPv6
 If you also want to enable IPv6 for use by clients the server needs to have 
@@ -347,6 +355,7 @@ want to use is `2001:aaaa:bbbb:cccc::`:
     server-ipv6 2001:aaaa:bbbb:cccc::/64
     push "route-ipv6 2000::/3"
 
+**FIXME**: is this needed for CentOS7?
 To enable IPv6 routing add the following to `/etc/sysctl.conf`:
 
     net.ipv6.conf.all.forwarding = 1
