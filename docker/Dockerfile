@@ -1,9 +1,6 @@
 FROM docker.io/centos:latest
 MAINTAINER François Kooman <fkooman@tuxed.net>
 
-# Add EPEL
-RUN yum -y install https://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-
 # PHP base repo 
 RUN curl -s -L -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedoraproject.org/coprs/fkooman/php-base/repo/epel-7/fkooman-php-base-epel-7.repo
 
@@ -12,6 +9,9 @@ RUN curl -s -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://co
 
 # Install updates
 RUN yum -y update; yum clean all
+
+# Install EPEL
+RUN yum -y install epel-release; yum clean all
 
 # Install dependencies (and SSL module)
 RUN yum install -y mod_ssl vpn-cert-service vpn-user-portal vpn-crl-fetcher; yum clean all
