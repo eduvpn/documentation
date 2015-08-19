@@ -297,7 +297,9 @@ To restart NetworkManager (optional):
 
 ## Firewall
 IP forwarding and masquerading is enabled by the `external` network zone, so 
-no need to enable it by modifying `/etc/sysctl.conf`.
+no need to enable it by modifying `/etc/sysctl.conf`. In case you want to use 
+public IP addresses masquerading should be disabled again, but forwarding 
+enabled.
 
 More information on firewall configuration can be found [here](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html).
 
@@ -330,12 +332,24 @@ OpenVPN service configuration:
 
 Now you can modify it and add the port there:
 
-
     <port protocol="udp" port="1194"/>
     <port protocol="tcp" port="443"/>
 
 Make sure you also consider SELinux (see below for adding ports) and the 
 OpenVPN configuration. 
+
+To disable masquerading:
+
+    $ sudo firewall-cmd             --zone=external --remove-masquerade
+    $ sudo firewall-cmd --permanent --zone=external --remove-masquerade
+
+To add the `tun0` interface to the trusted zone:
+
+    $ sudo firewall-cmd             --zone=trusted --add-interface=tun0
+    $ sudo firewall-cmd --permanent --zone=trusted --add-interface=tun0
+
+**XXX**: it should probably not be in the `trusted` zone, but something else, 
+but for now this works.
 
 To restart `firewalld`:
 

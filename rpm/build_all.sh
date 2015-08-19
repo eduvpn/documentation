@@ -2,7 +2,7 @@
 
 # build all projects
 rpmdev-wipetree
-sh build.sh vpn-cert-service fkooman vpn-cert-service 1.0.1
+sh build.sh vpn-cert-service fkooman vpn-cert-service 1.0.2
 scp $HOME/rpmbuild/SPECS/*.spec $HOME/rpmbuild/SRPMS/*.rpm fedorapeople.org:~/public_html/vpn-cert-service/
 
 rpmdev-wipetree
