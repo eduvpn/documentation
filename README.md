@@ -420,3 +420,42 @@ what to set for PHP-FPM...
 
     $ sudo setsebool -P httpd_unified 1
 
+# Client Management
+It is possible to view the connected clients to the server as well as killing
+a session.
+
+## Showing Active Connections
+It is easy to list the connected clients:
+
+    $ telnet localhost 7505
+    Trying ::1...
+    telnet: connect to address ::1: Connection refused
+    Trying 127.0.0.1...
+    Connected to localhost.
+    Escape character is '^]'.
+    >INFO:OpenVPN Management Interface Version 1 -- type 'help' for more info
+    __status__
+    OpenVPN CLIENT LIST
+    Updated,Tue Sep 22 09:21:42 2015
+    Common Name,Real Address,Bytes Received,Bytes Sent,Connected Since
+    **52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,12045,12540,Tue Sep 22 09:21:36 2015**
+    **52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,12478,13064,Tue Sep 22 09:20:11 2015**
+    ROUTING TABLE
+    Virtual Address,Common Name,Real Address,Last Ref
+    fd5e:1204:b851::1001,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,Tue Sep 22 09:20:11 2015
+    10.8.0.2,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,Tue Sep 22 09:21:38 2015
+    fd5e:1204:b851::1000,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,Tue Sep 22 09:21:38 2015
+    10.8.0.3,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,Tue Sep 22 09:20:11 2015
+    GLOBAL STATS
+    Max bcast/mcast queue length,0
+    END
+
+## Killing a Connection
+Also, very easy to kill an existing connection:
+
+    __kill 52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm__
+    SUCCESS: common name '52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm' found, 1 client(s) killed
+
+But note, that just killing a session does not prevent the client from 
+reconnecting. For that to work one has to revoke the certificate first and then
+kill the connection.
