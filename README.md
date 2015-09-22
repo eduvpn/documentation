@@ -295,70 +295,124 @@ To restart NetworkManager (optional):
     $ sudo systemctl restart NetworkManager
 
 ## Firewall
-IP forwarding and masquerading is enabled by the `external` network zone, so 
-no need to enable it by modifying `/etc/sysctl.conf`. In case you want to use 
-public IP addresses masquerading should be disabled again, but forwarding 
-enabled.
+I tried to get `firewalld` working, but it is not yet stable enough to do what
+we need for eduVPN. For example, there is no way to configure forwarding 
+without using NAT. Also IPv6 NAT is supposed to be supported, but it doesn't 
+work. It is preferred to use `firewalld`, but it is not yet there. We use
+`iptables` and `ip6tables` for now.
 
-More information on firewall configuration can be found [here](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html).
+    $ sudo yum remove firewalld
+    $ sudo yum -y install iptables iptables-services
+    
+The `/etc/sysconfig/iptables` file:
 
-To make sure that `firewalld` is started on boot:
+    # Firewall configuration written by system-config-firewall
+    # Manual customization of this file is not recommended.
+    *nat
+    :PREROUTING ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :POSTROUTING ACCEPT [0:0]
+    -A POSTROUTING -o eth+ -j MASQUERADE
+    COMMIT
+    *filter
+    :INPUT ACCEPT [0:0]
+    :FORWARD ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A INPUT -p icmp -j ACCEPT
+    -A INPUT -i lo -j ACCEPT
+    -A INPUT -i tun+ -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 2222 -j ACCEPT
+    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A FORWARD -p icmp -j ACCEPT
+    -A FORWARD -i lo -j ACCEPT
+    -A FORWARD -i tun+ -j ACCEPT
+    -A FORWARD -o eth+ -j ACCEPT
+    -A INPUT -j REJECT --reject-with icmp-host-prohibited
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+    COMMIT
 
-    $ sudo systemctl enable firewalld
+The `/etc/sysconfig/ip6tables` file:
 
-Check that `eth0` is in the correct zone:
+    # Firewall configuration written by system-config-firewall
+    # Manual customization of this file is not recommended.
+    *nat
+    :PREROUTING ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :POSTROUTING ACCEPT [0:0]
+    -A POSTROUTING -o eth+ -j MASQUERADE
+    COMMIT
+    *filter
+    :INPUT ACCEPT [0:0]
+    :FORWARD ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A INPUT -p ipv6-icmp -j ACCEPT
+    -A INPUT -i lo -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 546 -d fe80::/64 -j ACCEPT
+    -A INPUT -i tun+ -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+    -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 2222 -j ACCEPT
+    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    -A FORWARD -p ipv6-icmp -j ACCEPT
+    -A FORWARD -i lo -j ACCEPT
+    -A FORWARD -i tun+ -j ACCEPT
+    -A FORWARD -o eth+ -j ACCEPT
+    -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+    COMMIT
+   
+Now to enable them by default and start:
 
-    $ sudo firewall-cmd --get-active-zones
-    external
-      interfaces: eth0
+    $ sudo systemctl enable iptables
+    $ sudo systemctl enable ip6tables
+    $ sudo systemctl start iptables
+    $ sudo systemctl start ip6tables
 
-Show the services currently enabled for the `external` zone:
+Also, enable IP forwarding by adding the following lines to `/etc/sysctl.conf`:
 
-    $ sudo firewall-cmd --permanent --zone=external --list-services
-    ssh
+    net.ipv4.ip_forward = 1
+    net.ipv6.conf.all.forwarding = 1
 
-Add the additional services required, **NOTE**: on the OpenVPN machine you
-do not need `http`, but maybe you do need `https` if you want to run OpenVPN 
-also on port `443`:
+**NOTE**: there appears to be a problem with the IPv6 MTU:
 
-    $ sudo firewall-cmd --permanent --zone=external --add-service=http --add-service=https --add-service=openvpn
-    success
+    $ ping6 -M do -s 1452 -c 4 surfnet.nl
+    PING surfnet.nl(2001:610:188:410:145:100:190:243) 1452 data bytes
+    1460 bytes from 2001:610:188:410:145:100:190:243: icmp_seq=1 ttl=59 time=67.9 ms
+    1460 bytes from 2001:610:188:410:145:100:190:243: icmp_seq=2 ttl=59 time=68.3 ms
+    1460 bytes from 2001:610:188:410:145:100:190:243: icmp_seq=3 ttl=59 time=71.7 ms
+    1460 bytes from 2001:610:188:410:145:100:190:243: icmp_seq=4 ttl=59 time=68.9 ms
 
-If you also want to allow OpenVPN to listen on `tcp/443` you can copy the 
-OpenVPN service configuration:
+    --- surfnet.nl ping statistics ---
+    4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+    rtt min/avg/max/mdev = 67.934/69.252/71.727/1.508 ms
+    $ ping6 -M do -s 1453 -c 4 surfnet.nl
+    PING surfnet.nl(2001:610:188:410:145:100:190:243) 1453 data bytes
+    ping: local error: Message too long, mtu=1500
+    ping: local error: Message too long, mtu=1500
+    ping: local error: Message too long, mtu=1500
+    ping: local error: Message too long, mtu=1500
 
-    $ sudo cp /usr/lib/firewalld/services/openvpn.xml /etc/firewalld/services/openvpn.xml
+    --- surfnet.nl ping statistics ---
+    4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 2999ms
 
-Now you can modify it and add the port there:
-
-    <port protocol="udp" port="1194"/>
-    <port protocol="tcp" port="443"/>
-
-Make sure you also consider SELinux (see below for adding ports) and the 
-OpenVPN configuration. 
-
-To disable masquerading:
-
-    $ sudo firewall-cmd             --zone=external --remove-masquerade
-    $ sudo firewall-cmd --permanent --zone=external --remove-masquerade
-
-To add the `tun0` interface to the trusted zone:
-
-    $ sudo firewall-cmd             --zone=trusted --add-interface=tun0
-    $ sudo firewall-cmd --permanent --zone=trusted --add-interface=tun0
-
-**XXX**: it should probably not be in the `trusted` zone, but something else, 
-but for now this works.
-
-To restart `firewalld`:
-
-    $ sudo systemctl restart firewalld
+Also, it seems IPv4 is preferred by the client, at least on Fedora 22 using 
+NetworkManager. This needs more investigation, also for non-NAT scenarios.
 
 ## IPv6
 If you also want to enable IPv6 for use by clients the server needs to have 
 an IPv6 address and a range of IPv6 addresses to give to clients. In the 
 generated server configuration there are some commented lines that show you 
-how to enable IPv6, just replace the IPv6 range with your range.
+how to enable IPv6, just replace the IPv6 range with your range. 
+
+The firewall example above shows the use of IPv6 NAT.
 
 For further tweaking see the OpenVPN IPv6 
 [wiki](https://community.openvpn.net/openvpn/wiki/IPv6) page. 
@@ -369,15 +423,9 @@ want to use is `2001:aaaa:bbbb:cccc::`:
     server-ipv6 2001:aaaa:bbbb:cccc::/64
     push "route-ipv6 2000::/3"
 
-**FIXME**: is this needed for CentOS7?
-To enable IPv6 routing add the following to `/etc/sysctl.conf`:
-
-    net.ipv6.conf.all.forwarding = 1
-
 You also need to modify the IPv6 firewall to allow forwarding in 
 `/etc/sysconfig/ip6tables`:
 
-**FIXME**: change this for CentOS7!
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -i tun0 -o eth0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
 
@@ -434,12 +482,12 @@ It is easy to list the connected clients:
     Connected to localhost.
     Escape character is '^]'.
     >INFO:OpenVPN Management Interface Version 1 -- type 'help' for more info
-    __status__
+    status
     OpenVPN CLIENT LIST
     Updated,Tue Sep 22 09:21:42 2015
     Common Name,Real Address,Bytes Received,Bytes Sent,Connected Since
-    **52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,12045,12540,Tue Sep 22 09:21:36 2015**
-    **52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,12478,13064,Tue Sep 22 09:20:11 2015**
+    52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,12045,12540,Tue Sep 22 09:21:36 2015
+    52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,12478,13064,Tue Sep 22 09:20:11 2015
     ROUTING TABLE
     Virtual Address,Common Name,Real Address,Last Ref
     fd5e:1204:b851::1001,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,Tue Sep 22 09:20:11 2015
@@ -453,7 +501,7 @@ It is easy to list the connected clients:
 ## Killing a Connection
 Also, very easy to kill an existing connection:
 
-    __kill 52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm__
+    kill 52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm
     SUCCESS: common name '52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm' found, 1 client(s) killed
 
 But note, that just killing a session does not prevent the client from 
