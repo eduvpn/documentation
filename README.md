@@ -93,28 +93,27 @@ The `vpn-crl-fetcher` is responsible for fetching the CRL from
 These components depend on the following PHP libraries that are not available
 in EPEL or the base repository:
 
-- [php-lib-rest](https://github.com/fkooman/php-lib-rest)
-- [php-lib-rest-plugin-basic](https://github.com/fkooman/php-lib-rest-plugin-basic)
-- [php-lib-rest-plugin-mellon](https://github.com/fkooman/php-lib-rest-plugin-mellon)
-- [php-lib-ini](https://github.com/fkooman/php-lib-ini)
-- [php-lib-json](https://github.com/fkooman/php-lib-json)
+- [php-fkooman-http](https://github.com/fkooman/php-lib-http)
+- [php-fkooman-ini](https://github.com/fkooman/php-lib-ini)
+- [php-fkooman-json](https://github.com/fkooman/php-lib-json)
+- [php-fkooman-rest](https://github.com/fkooman/php-lib-rest)
+- [php-fkooman-rest-plugin-authentication](https://github.com/fkooman/php-lib-rest-plugin-authentication)
+- [php-fkooman-rest-plugin-authentication-basic](https://github.com/fkooman/php-lib-rest-plugin-authentication-basic)
+- [php-fkooman-rest-plugin-authentication-mellon](https://github.com/fkooman/php-lib-rest-plugin-authentication-mellon)
+- [php-fkooman-tpl](https://github.com/fkooman/php-lib-tpl)
+- [php-fkooman-tpl-twig](https://github.com/fkooman/php-lib-tpl-twig)
 
-These libraries are also all packaged as RPMs. All required files for 
-generating the RPMs are available in the project directories under the `rpm` 
-directory in their respective repository.
+These libraries are also all available as RPMs from the COPR repository as 
+well, and also available as RPM specs (see below).
 
 # Building RPMs
 You can regenerate the eduVPN RPMs (or any of its dependencies) yourself from
-source using the files in the `rpm` directory of this project. On a development 
-machine you can do the following:
+source using the RPM spec files.
 
-    $ sudo yum install rpmdevtools createrepo
-    $ rpmdev-setuptree
+The RPM spec files can be found here: 
 
-    $ cd rpm
-    $ sh ./build_all.sh
-
-This should create SRPMs in `${HOME}/rpmbuild/SRPMS`
+- https://github.com/fkooman/php-base-specs
+- https://github.com/fkooman/vpn-management-specs
 
 # Installation
 For your convenience the RPMs are also available from two COPR repositories:
@@ -188,7 +187,7 @@ CentOS 7 seems to have chrony running by default, so nothing to do here.
 
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
-[php-lib-rest-plugin-mellon](https://github.com/fkooman/php-lib-rest-plugin-mellon) 
+[php-fkooman-rest-plugin-authentication-mellon](https://github.com/fkooman/php-lib-rest-plugin-authentication-mellon) 
 documentation for more information on how to configure `mod_auth_mellon`. There
 is an example line in `/etc/httpd/conf.d/vpn-user-portal.conf` to "fake"
 `mod_auth_mellon` by directly specifying the `MELLON_NAME_ID` request header.
@@ -196,7 +195,7 @@ is an example line in `/etc/httpd/conf.d/vpn-user-portal.conf` to "fake"
 ## Example
 Generate the certificate and metadata:
 
-    [centos@dev-eduvpn-org ~]$ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://dev.eduvpn.org/saml https://dev.eduvpn.org/saml
+    $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://dev.eduvpn.org/saml https://dev.eduvpn.org/saml
     Output files:
     Private key:               https_dev.eduvpn.org_saml.key
     Certificate:               https_dev.eduvpn.org_saml.cert
