@@ -75,9 +75,9 @@ the CentOS extras repository (enabled by default):
 # Packages
 The software is contained in these projects:
 
-- [vpn-user-portal](https://github.com/fkooman/vpn-user-portal)
-- [vpn-cert-service](https://github.com/fkooman/vpn-cert-service)
-- [vpn-crl-fetcher](https://github.com/fkooman/vpn-crl-fetcher)
+- [vpn-user-portal](https://github.com/eduVPN/vpn-user-portal)
+- [vpn-cert-service](https://github.com/eduVPN/vpn-cert-service)
+- [vpn-crl-fetcher](https://github.com/eduVPN/vpn-crl-fetcher)
 
 The component `vpn-user-portal` is the UI for the end user, protected by SAML 
 (using `mod_mellon`). It interacts with `vpn-cert-service` using a HTTP API 
@@ -113,7 +113,7 @@ source using the RPM spec files.
 The RPM spec files can be found here: 
 
 - https://github.com/fkooman/php-base-specs
-- https://github.com/fkooman/vpn-management-specs
+- https://github.com/eduVPN/specs
 
 # Installation
 For your convenience the RPMs are also available from two COPR repositories:
