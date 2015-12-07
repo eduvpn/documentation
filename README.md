@@ -458,10 +458,28 @@ added to the CRL, only new connections will be denied.
 
 ## SELinux
 Allow the management port to be used by the OpenVPN process, by default only
-`udp/1194` and `tcp/1194` are allowed.
+`udp/1194` and `tcp/1194` are allowed:
 
     $ sudo semanage port -l | grep openvpn_port_t
-    $ sudo semanage port -a -t openvpn_port_t -p tcp 7505 
+
+Add the management port, per instance we use one port, so if you run multiple
+instances on the same host you will need multiple management ports:
+
+    $ sudo semanage port -a -t openvpn_port_t -p tcp 7505-7508
+
+If you also want OpenVPN te listen on TCP/443 you need to *modify* the existing
+port definition, as TCP/443 already has a context, for the web server:
+
+    $ sudo semanage port -m -t openvpn_port_t -p tcp 443
+
+**NOTE**: you cannot run both the web server and OpenVPN on the same port, even 
+though you would bind them to other IP addresses.
+
+The end result:
+
+    $ sudo semanage port -l | grep openvpn_port_t
+    openvpn_port_t                 tcp      7505-7508, 443, 1194
+    openvpn_port_t                 udp      1194
 
 To allow Apache to execute the Easy RSA scripts, this is needed. Not sure 
 what to set for PHP-FPM...
