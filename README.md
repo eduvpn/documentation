@@ -14,7 +14,12 @@ It is highly recommended to use at least three (virtual) machines to run this.
 2. the `vpn-user-portal` (PORTAL) machine handling the user interaction. It 
    MUST have access to the `vpn-cert-service` and have a password to use the 
    API
-3. the OpenVPN (VPN) machine handling the VPN connections. It does not need to 
+3. the `vpn-manage-portal` (MANAGE) machine handling the admin operations. It
+   MUST have access to the `vpn-cert-service` (to revoke) and the VPN machine
+   to terminate active connections. It MUST also have access to 
+   `vpn-portal-portal` to retrieve all active configurations (per user) and 
+   disable user login to the portal; 
+4. the OpenVPN (VPN) machine handling the VPN connections. It does not need to 
    have a connection to `vpn-user-portal` machine, and only needs read access 
    to the `ca.crl` URL on the `vpn-cert-service` machine. It does not need a 
    password to access the API
@@ -24,26 +29,24 @@ as that will be the place where the load will be the highest.
 
 # Security Considerations
 
-    +-----+         +------+         +--------+
-    |     |  VLAN1  |      |  VLAN2  |        |
-    | VPN +---------+ CERT +---------+ PORTAL |
-    |     |         |      |         |        |
-    +--+--+         +------+         +----+---+
-       |                                  |
-       |                                  |
-       | Internet                         | Internet
-          
-Of course, CERT should also get software and security updates, but it should 
-not be reachable from the Internet in any way. Only through the VLANs from 
-PORTAL and VPN.
+         | VPN range
+         |
+    +----+----+
+    |         |
+    | OpenVPN +-------------+------------------+----------------+
+    |         | .10         | .20              | .30            | .40
+    +----+----+         +---+---+         +----+----+      +----+----+
+         |              |       |         |         |      |         |
+         |              | Cert  |         | Portal  |      | Manage  |
+         |              |       |         |         |      |         |
+         |              +-------+         +----+----+      +----+----+
+         |                                     |                |
+         | Internet                            | Internet       | Internet
 
-VPN should only be able to retrieve the CRL from CERT.
-PORTAL should only be allowed to send POST and DELETE requests to CERT to 
-generate and delete configurations.
-
+                         
 For testing purposes of course this can be deployed on one machine. But for
-production you MUST use at least three machines with sufficient security in 
-place to avoid unauthorized access.
+production you SHOULD use four machines with sufficient security in place to 
+avoid unauthorized access.
 
 ## Revoking a VPN server certificate
 A potential problem is the revocation of a server in case its private key falls
@@ -52,16 +55,6 @@ aware of this fact and thus need to also obtain the CRL periodically. This is
 a bit of a nightmare as the CRL needs to be downloaded regularly by all the
 clients. One of the potential solutions for this is use short lived server
 certificates that last e.g. one day. This is cumbersome.
-
-The only real solution is to revoke all client configurations and restart 
-from scratch.
-
-**UNSOLVED PROBLEM**
-
-# Docker
-See `docker/` directory. Currently only `vpn-cert-service `and 
-`vpn-user-portal` can be tested. OpenVPN will not be running inside the 
-Docker container.
 
 # Repositories
 For CentOS/Red Hat Enterprise you will need to enable 
@@ -78,6 +71,7 @@ The software is contained in these projects:
 - [vpn-user-portal](https://github.com/eduVPN/vpn-user-portal)
 - [vpn-cert-service](https://github.com/eduVPN/vpn-cert-service)
 - [vpn-crl-fetcher](https://github.com/eduVPN/vpn-crl-fetcher)
+- [vpn-manage-portal](https://github.com/eduVPN/vpn-manage-portal)
 
 The component `vpn-user-portal` is the UI for the end user, protected by SAML 
 (using `mod_mellon`). It interacts with `vpn-cert-service` using a HTTP API 
@@ -89,6 +83,9 @@ configurations, handling revocations and maintaining the CRL.
 
 The `vpn-crl-fetcher` is responsible for fetching the CRL from 
 `vpn-cert-service` for use with OpenVPN on the VPN machine.
+
+The `vpn-manage-portal` is responsible for managing the VPN server, users and
+cconfigurations.
 
 These components depend on the following PHP libraries that are not available
 in EPEL or the base repository:
@@ -120,6 +117,10 @@ For your convenience the RPMs are also available from two COPR repositories:
 
     https://copr.fedoraproject.org/coprs/fkooman/php-base/
     https://copr.fedoraproject.org/coprs/fkooman/vpn-management/
+
+Install PHP:
+
+    $ sudo yum -y install php
 
 The first one contains the dependencies, the second one the actual eduVPN 
 software. To enable them see the instructions. For CentOS 7 you will need to
@@ -168,9 +169,7 @@ use this:
 You can add the hash to `/etc/vpn-cert-service/config.ini` and the plain text
 value to `/etc/vpn-user-portal/config.ini`.
 
-If you want to adapt the default templates for generating server and client
-configurations they can be copied from the default location to the 
-configuration directory:
+Copy the default server and client templates to the configuration directory:
 
     $ sudo mkdir /etc/vpn-cert-service/views
     $ sudo cp /usr/share/vpn-cert-service/views/server.twig /etc/vpn-cert-service/views
