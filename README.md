@@ -485,6 +485,50 @@ what to set for PHP-FPM...
 
     $ sudo setsebool -P httpd_unified 1
 
+# Remote Logging
+CentOS 7 uses `journald` for logging. It is super easy to forward this logging
+to a remote logging service with TCP and TLS enabled.
+
+    $ sudo yum -y install nc
+
+The following `netcat` command can be used to send the log to the remote 
+service using a `systemd` service:
+
+    $ ncat -vvv -s 1.2.3.4 --ssl --ssl-verify \
+        --ssl-trustfile /etc/pki/tls/certs/ca-bundle.crt \
+        syslog.example.org 6514
+
+You can use that command to test the connectivity. The `-s 1.2.3.4` is used
+to select the source address for connecting to the log service. The host to 
+connect to is `syslog.example.org` on port `6514`.
+
+The `systemd` service file looks like this, remove the `-vvv` from the command
+above:
+
+    [Unit]
+    Description=eduVPN remote logging
+    After=systemd-journald.service
+    Requires=systemd-journald.service
+
+    [Service]
+    ExecStart=/bin/sh -c "journalctl -u openvpn@server -f | ncat -s 1.2.3.4 --ssl --ssl-verify --ssl-trustfile /etc/pki/tls/certs/ca-bundle.crt syslog.example.org 6514"
+    TimeoutStartSec=0
+    Restart=on-failure
+    RestartSec=5s
+
+    [Install]
+    WantedBy=multi-user.target
+
+Copy this file to `/etc/systemd/system/eduVPN-log.service`. 
+
+    $ sudo systemctl enable eduVPN-log
+    $ sudo systemctl start eduVPN-log
+
+This should start sending the OpenVPN logs to the remote server. If you have
+multiple servers running, for example also openvpn@server-tls you have to add
+that as an additional `-u openvpn@server-tls` to the `journalctl` command in
+the `eduVPN-log.service` file.
+
 # Client Management
 It is possible to view the connected clients to the server as well as killing
 a session.
