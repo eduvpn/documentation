@@ -483,6 +483,32 @@ what to set for PHP-FPM...
 
     $ sudo setsebool -P httpd_unified 1
 
+To support updating the CRL at the OpenVPN servers, the OpenVPN instance needs
+the permission to access the `ca.crl` file downloaded by the web server.
+
+Store the below in `openvpn-allow-ca-read.te`:
+
+    module openvpn-allow-ca-read 1.0;
+
+    require {
+	    type openvpn_t;
+	    type httpd_sys_rw_content_t;
+	    class dir search;
+	    class file read;
+    }
+
+    #============= openvpn_t ==============
+
+    #!!!! This avc is allowed in the current policy
+    allow openvpn_t httpd_sys_rw_content_t:dir search;
+    allow openvpn_t httpd_sys_rw_content_t:file read;
+
+This policy will allow for this. Run the following as `root`:
+
+   # checkmodule -M -m -o openvpn-allow-ca-read.mod openvpn-allow-ca-read.te 
+   # semodule_package -o openvpn-allow-ca-read.pp -m openvpn-allow-ca-read.mod 
+   # semodule -i openvpn-allow-ca-read.pp 
+
 # Remote Logging
 CentOS 7 uses `journald` for logging. It is super easy to forward this logging
 to a remote logging service with TCP and TLS enabled.
