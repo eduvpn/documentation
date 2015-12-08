@@ -494,20 +494,18 @@ Store the below in `openvpn-allow-ca-read.te`:
 	    type openvpn_t;
 	    type httpd_sys_rw_content_t;
 	    class dir search;
-	    class file read;
+	    class file { read open };
     }
 
     #============= openvpn_t ==============
-
-    #!!!! This avc is allowed in the current policy
     allow openvpn_t httpd_sys_rw_content_t:dir search;
-    allow openvpn_t httpd_sys_rw_content_t:file read;
+    allow openvpn_t httpd_sys_rw_content_t:file { read open };
 
 This policy will allow for this. Run the following as `root`:
 
-   # checkmodule -M -m -o openvpn-allow-ca-read.mod openvpn-allow-ca-read.te 
-   # semodule_package -o openvpn-allow-ca-read.pp -m openvpn-allow-ca-read.mod 
-   # semodule -i openvpn-allow-ca-read.pp 
+    # checkmodule -M -m -o openvpn-allow-ca-read.mod openvpn-allow-ca-read.te 
+    # semodule_package -o openvpn-allow-ca-read.pp -m openvpn-allow-ca-read.mod 
+    # semodule -i openvpn-allow-ca-read.pp
 
 # Remote Logging
 CentOS 7 uses `journald` for logging. It is super easy to forward this logging
