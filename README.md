@@ -305,8 +305,6 @@ work. It is preferred to use `firewalld`, but it is not yet there. We use
     
 The `/etc/sysconfig/iptables` file:
 
-    # Firewall configuration written by system-config-firewall
-    # Manual customization of this file is not recommended.
     *nat
     :PREROUTING ACCEPT [0:0]
     :OUTPUT ACCEPT [0:0]
@@ -338,8 +336,6 @@ The `/etc/sysconfig/iptables` file:
 
 The `/etc/sysconfig/ip6tables` file:
 
-    # Firewall configuration written by system-config-firewall
-    # Manual customization of this file is not recommended.
     *nat
     :PREROUTING ACCEPT [0:0]
     :OUTPUT ACCEPT [0:0]
