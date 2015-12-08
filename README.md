@@ -325,11 +325,12 @@ The `/etc/sysconfig/iptables` file:
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
     -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 2222 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -p icmp -j ACCEPT
     -A FORWARD -i lo -j ACCEPT
-    -A FORWARD -i tun+ -j ACCEPT
+    -A FORWARD -i tun+ -s 10.42.42.0/24 -j ACCEPT
+    -A FORWARD -i tun+ -s 10.43.43.0/24 -j ACCEPT
     -A FORWARD -o eth+ -j ACCEPT
     -A INPUT -j REJECT --reject-with icmp-host-prohibited
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
@@ -358,11 +359,12 @@ The `/etc/sysconfig/ip6tables` file:
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
     -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
     -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
-    -A INPUT -m state --state NEW -m tcp -p tcp --dport 2222 -j ACCEPT
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -p ipv6-icmp -j ACCEPT
     -A FORWARD -i lo -j ACCEPT
-    -A FORWARD -i tun+ -j ACCEPT
+    -A FORWARD -i tun+ -s fd00:4242:4242::/64 -j ACCEPT
+    -A FORWARD -i tun+ -s fd00:4343:4343::/64 -j ACCEPT
     -A FORWARD -o eth+ -j ACCEPT
     -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
     -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
