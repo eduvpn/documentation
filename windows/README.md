@@ -1,3 +1,4 @@
+# Windows
 This page will describe how to configure Windows with OpenVPN. We will focus 
 on the official OpenVPN client for Windows. It can be downloaded 
 [here](https://openvpn.net/index.php/open-source/downloads.html).
