@@ -144,6 +144,8 @@ Now enable `httpd` by default:
 
     $ sudo systemctl enable httpd
 
+**NOTE**: set timezone in `/etc/php.ini`.
+
 # Configuration
 Both `vpn-cert-service` and `vpn-user-portal` will have a working configuration
 file on installation. But you SHOULD update the configuration files in 
