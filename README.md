@@ -186,6 +186,13 @@ template.
 # Time
 CentOS 7 seems to have chrony running by default, so nothing to do here.
 
+# VPN Server API
+
+The path `/var/lib/vpn-server-api/ca.crl` needs to be accessible by the OpenVPN
+user. So:
+
+    $ sudo chmod +x /var/lib/vpn-server-api
+
 # SAML configuration
 Using the Apache module `mod_auth_mellon`. See 
 [php-fkooman-rest-plugin-authentication-mellon](https://github.com/fkooman/php-lib-rest-plugin-authentication-mellon) 
