@@ -483,6 +483,10 @@ what to set for PHP-FPM...
 
     $ sudo setsebool -P httpd_unified 1
 
+To allow vpn-server-api to access the TCP socket for OpenVPN:
+
+    $ sudo setsebool -P httpd_can_network_connect=on
+
 To support updating the CRL at the OpenVPN servers, the OpenVPN instance needs
 the permission to access the `ca.crl` file downloaded by the web server.
 
