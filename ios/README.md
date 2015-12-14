@@ -20,5 +20,5 @@ There are two issues with using OpenVPN on iOS with eduVPN:
 To fix the first issue, you have to enable `Seamless tunnel` under 
 `Connection Settings`
 
-To fix the second issue, you have to **disabled** `Force AES-CBC ciphersuites` 
+To fix the second issue, you have to **disable** `Force AES-CBC ciphersuites` 
 under `Advanced Settings`.
