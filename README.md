@@ -256,6 +256,13 @@ Now create a configuration in `/etc/httpd/conf.d/saml.conf`:
         MellonEnable "auth"
     </Location>
 
+    <Location /vpn-admin-portal>
+        MellonEnable "auth"
+
+        MellonCond "NAME_ID" "aa3f6fade450f12aa891bf066b86921344e2a1f1" [OR]
+        MellonCond "NAME_ID" "234"
+    </Location>
+
 Restart Apache:
 
     $ sudo systemctl restart httpd
