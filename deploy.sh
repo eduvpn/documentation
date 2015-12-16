@@ -114,9 +114,6 @@ sudo setsebool -P httpd_unified 1
 # we also want to connect to the second OpenVPN instance
 sudo sed -i 's|;socket\[\] = "tcp://localhost:7506"|socket\[\] = "tcp://localhost:7506"|' /etc/vpn-server-api/config.ini
 
-# update crlPath (XXX: fix this in code!)
-sudo sed -i "s|crlPath = '/var/www/vpn-server-api/data'|crlPath = '/var/lib/vpn-server-api'|" /etc/vpn-server-api/config.ini
-
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
 
