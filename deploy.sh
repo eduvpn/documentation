@@ -62,7 +62,7 @@ sudo sh -c 'echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.con
 # https://www.ssllabs.com/ssltest/
 #
 # See also https://wiki.mozilla.org/Security/Server_Side_TLS
-sudo cp hardened_ssl.conf.diff /etc/httpd/conf.d
+sudo cp resources/hardened_ssl.conf.diff /etc/httpd/conf.d
 (
   cd /etc/httpd/conf.d
   sudo patch -p0 < hardened_ssl.conf.diff
@@ -162,13 +162,13 @@ sudo semanage port -a -t openvpn_port_t -p tcp 7505-7506
 sudo semanage port -m -t openvpn_port_t -p tcp 8443
 
 # allow OpenVPN to read the CRL from vpn-server-api
-checkmodule -M -m -o openvpn-allow-ca-read.mod openvpn-allow-ca-read.te 
-semodule_package -o openvpn-allow-ca-read.pp -m openvpn-allow-ca-read.mod 
-sudo semodule -i openvpn-allow-ca-read.pp
+checkmodule -M -m -o resources/openvpn-allow-ca-read.mod resources/openvpn-allow-ca-read.te 
+semodule_package -o resources/openvpn-allow-ca-read.pp -m resources/openvpn-allow-ca-read.mod 
+sudo semodule -i resources/openvpn-allow-ca-read.pp
 
 # Firewall
-sudo cp iptables /etc/sysconfig/iptables
-sudo cp ip6tables /etc/sysconfig/ip6tables
+sudo cp resources/iptables /etc/sysconfig/iptables
+sudo cp resources/ip6tables /etc/sysconfig/ip6tables
 # update firewall outgoing interface
 sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/iptables
 sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/ip6tables
@@ -216,7 +216,7 @@ sudo systemctl restart openvpn@server
 sudo systemctl restart openvpn@server-tcp
 
 # Copy index page
-sudo cp index.html /var/www/html/index.html
+sudo cp resources/index.html /var/www/html/index.html
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/html/index.html
 
 # ALL DONE!
