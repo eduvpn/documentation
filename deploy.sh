@@ -34,7 +34,6 @@ sudo curl -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fe
 sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services
-# XXX is firewalld installed by default?
 
 ###############################################################################
 # CERTIFICATE
@@ -75,11 +74,11 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # VPN-CONFIG-API
 ###############################################################################
 
-sudo vpn-config-api-init
+sudo -u apache vpn-config-api-init
 
 # copy the default config templates
 sudo mkdir /etc/vpn-config-api/views
-sudo cp /usr/share/vpn-config/api/views/*.twig /etc/vpn-config-api/views
+sudo cp /usr/share/vpn-config-api/views/*.twig /etc/vpn-config-api/views
 
 # update hostname in client.twig
 sudo sed -i "s/remote nl.example.org 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-config-api/views/client.twig
@@ -87,11 +86,12 @@ sudo sed -i "s/remote de.example.org 1194 udp/remote ${HOSTNAME} 8443 tcp/" /etc
 sudo sed -i "s/remote xyz.example.org 443 tcp//" /etc/vpn-config-api/views/client.twig
 
 # generate a server configuration file
-sudo -u apache sh -c "vpn-config-api-generate-server-config ${HOSTNAME}" > /etc/openvpn/server.conf
+echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
+sudo -u apache vpn-config-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
 sudo chmod 0600 /etc/openvpn/server.conf
 
-# enable the CRL
-sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
+# enable management
+sudo sed -i "s|#management localhost 7505|management localhost 7505|" /etc/openvpn/server.conf
 
 # also create a TCP config and modify it to listen on tcp/8443
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
@@ -102,6 +102,7 @@ sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.con
 sudo sed -i "s/^#port 443/port 8443/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|server 10.42.42.0 255.255.255.0|server 10.43.43.0 255.255.255.0|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|server-ipv6 fd00:4242:4242::/64|server-ipv6 fd00:4343:4343::/64|" /etc/openvpn/server-tcp.conf
+sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
 
 # allow vpn-config-api to run Easy-RSA scripts
 sudo setsebool -P httpd_unified 1
@@ -111,7 +112,7 @@ sudo setsebool -P httpd_unified 1
 ###############################################################################
 
 # we also want to connect to the second OpenVPN instance
-sudo sed -i 's|;socket[] = "tcp://localhost:7506"|socket[] = "tcp://localhost:7506"|' /etc/vpn-server-api/config.ini
+sudo sed -i 's|;socket\[\] = "tcp://localhost:7506"|socket\[\] = "tcp://localhost:7506"|' /etc/vpn-server-api/config.ini
 
 # update crlPath (XXX: fix this in code!)
 sudo sed -i "s|crlPath = '/var/www/vpn-server-api/data'|crlPath = '/var/lib/vpn-server-api'|" /etc/vpn-server-api/config.ini
@@ -134,8 +135,8 @@ sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-
 sudo vpn-user-portal-init
 
 # allow connections from everywhere
-sudo sed -i "s/Require local/#Require local/" /etc/httpd/conf.d/vpn-admin-portal.conf
-sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-admin-portal.conf
+sudo sed -i "s/Require local/#Require local/" /etc/httpd/conf.d/vpn-user-portal.conf
+sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-user-portal.conf
 # XXX in api.php thing Require local MUST stay there!
 
 ###############################################################################
@@ -161,8 +162,8 @@ sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/iptables
 sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/ip6tables
 
 # enable forwarding
-sudo sh -c 'net.ipv4.ip_forward = 1' > /etc/sysctl.conf
-sudo sh -c 'net.ipv6.conf.all.forwarding' > /etc/sysctl.conf
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
 ###############################################################################
@@ -178,7 +179,6 @@ sudo systemctl enable ip6tables
 sudo systemctl start httpd
 sudo systemctl start openvpn@server
 sudo systemctl start openvpn@server-tcp
-
 # flush existing firewall rules if they exist and activate the new ones
 sudo systemctl restart iptables
 sudo systemctl restart ip6tables
@@ -187,9 +187,18 @@ sudo systemctl restart ip6tables
 # POST INSTALL
 ###############################################################################
 
-# we need to add a VPN client configuration and revoke it in order to populate 
-# the CRL, otherwise OpenVPN is not working properly with empty CRL
+# we need to create a CRL before we can start OpenVPN with CRL checking enabled
+curl -u admin:s3cr3t -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/
+curl -u admin:s3cr3t -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
+# reload the CRL
+curl -u admin:s3cr3t -X POST http://localhost/vpn-server-api/api.php/refreshCrl
 
-# XXX ...
+# enable CRL
+sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
+sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server-tcp.conf
+
+# restart OpenVPN
+sudo systemctl restart openvpn@server
+sudo systemctl restart openvpn@server-tcp
 
 # ALL DONE!
