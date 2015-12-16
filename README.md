@@ -30,11 +30,12 @@ run the script:
 
     $ ./deploy.sh
 
-You can request a certificate from your CA after running the script. To 
-generate the CSR:
+You can request a certificate from your CA after running the script. The script
+put a `vpn.example.csr` file in the directory you ran the script from.
 
-    $ openssl xyz
+Once you obtained the certificate, you can overwrite 
+`/etc/pki/tls/certs/vpn.example.crt` with the certificate you obtained and 
+configure the certificate chain as well in `/etc/httpd/conf.d/ssl.conf`.
 
-Once obtained, you can overwrite `/etc/pki/tls/certs/vpn.example.crt` with the
-certificate you obtained and configure the certificate chain as well in 
-`/etc/httpd/conf.d/ssl.conf`.
+Make sure you check the configuration with 
+[https://www.ssllabs.com/ssltest/](https://www.ssllabs.com/ssltest/)!

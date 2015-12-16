@@ -33,7 +33,7 @@ sudo curl -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fe
 # install software
 sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
-    vpn-user-portal iptables iptables-services
+    vpn-user-portal iptables iptables-services patch
 
 ###############################################################################
 # CERTIFICATE
@@ -57,6 +57,20 @@ sudo openssl req -subj "/CN=${HOSTNAME}" -sha256 -new -x509 -key /etc/pki/tls/pr
 # https://httpd.apache.org/docs/2.4/mod/core.html#ServerTokens
 sudo sh -c 'echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf'
 
+# We took the default `/etc/httpd/conf.d/ssl.conf` file, hardened it and 
+# pointed it to the generated certificates, gives A+ on 
+# https://www.ssllabs.com/ssltest/
+#
+# See also https://wiki.mozilla.org/Security/Server_Side_TLS
+sudo cp hardened_ssl.conf.diff /etc/httpd/conf.d
+(
+  cd /etc/httpd/conf.d
+  sudo patch -p0 < hardened_ssl.conf.diff
+)
+
+# update hostname in ssl.conf
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/ssl.conf
+
 ###############################################################################
 # PHP
 ###############################################################################
@@ -74,6 +88,10 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # VPN-CONFIG-API
 ###############################################################################
 
+# we are happy with 2048 bit key as 4096 DH param takes really too long
+sudo sed -i 's/key_size = 4096/key_size = 2048/' /etc/vpn-config-api/config.ini
+
+# initialize the CA
 sudo -u apache vpn-config-api-init
 
 # copy the default config templates
