@@ -122,7 +122,6 @@ sudo setsebool -P httpd_can_network_connect=on
 ###############################################################################
 
 # allow connections from everywhere
-sudo sed -i "s/Require local/#Require local/" /etc/httpd/conf.d/vpn-admin-portal.conf
 sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-admin-portal.conf
 
 ###############################################################################
@@ -132,9 +131,7 @@ sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-
 sudo -u apache vpn-user-portal-init
 
 # allow connections from everywhere
-sudo sed -i "s/Require local/#Require local/" /etc/httpd/conf.d/vpn-user-portal.conf
 sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-user-portal.conf
-# XXX in api.php thing Require local MUST stay there!
 
 ###############################################################################
 # OPENVPN
