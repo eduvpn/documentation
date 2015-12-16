@@ -129,7 +129,7 @@ sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-
 # VPN-USER-PORTAL
 ###############################################################################
 
-sudo vpn-user-portal-init
+sudo -u apache vpn-user-portal-init
 
 # allow connections from everywhere
 sudo sed -i "s/Require local/#Require local/" /etc/httpd/conf.d/vpn-user-portal.conf
