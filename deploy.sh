@@ -181,6 +181,8 @@ sudo systemctl restart ip6tables
 # POST INSTALL
 ###############################################################################
 
+# XXX: move this to the init script of vpn-config-api, there should be a CRL
+# by default
 # we need to create a CRL before we can start OpenVPN with CRL checking enabled
 curl -u admin:s3cr3t -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/
 curl -u admin:s3cr3t -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
