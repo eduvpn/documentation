@@ -250,10 +250,14 @@ Now create a configuration in `/etc/httpd/conf.d/saml.conf`:
         MellonEndpointPath /saml
     </Location>
 
-    # This is a location that will trigger authentication when requested.
+    # These are the locations that will trigger authentication when requested.
     <Location /vpn-user-portal>
-        # This location will trigger an authentication request to the IdP.
         MellonEnable "auth"
+    </Location>
+
+    # The API is not protected by SAML
+    <Location /vpn-user-portal/api.php>
+        MellonEnable "off"
     </Location>
 
     <Location /vpn-admin-portal>
@@ -553,7 +557,7 @@ above:
     Requires=systemd-journald.service
 
     [Service]
-    ExecStart=/bin/sh -c "journalctl -u openvpn@server -f | ncat -s 1.2.3.4 --ssl --ssl-verify --ssl-trustfile /etc/pki/tls/certs/ca-bundle.crt syslog.example.org 6514"
+    ExecStart=/bin/sh -c "journalctl -u openvpn@server -f | ncat --ssl --ssl-verify --ssl-trustfile /etc/pki/tls/certs/ca-bundle.crt syslog.example.org 601"
     TimeoutStartSec=0
     Restart=on-failure
     RestartSec=5s
@@ -571,42 +575,6 @@ multiple servers running, for example also openvpn@server-tls you have to add
 that as an additional `-u openvpn@server-tls` to the `journalctl` command in
 the `eduVPN-log.service` file.
 
-# Client Management
-It is possible to view the connected clients to the server as well as killing
-a session.
-
-## Showing Active Connections
-It is easy to list the connected clients:
-
-    $ telnet localhost 7505
-    Trying ::1...
-    telnet: connect to address ::1: Connection refused
-    Trying 127.0.0.1...
-    Connected to localhost.
-    Escape character is '^]'.
-    >INFO:OpenVPN Management Interface Version 1 -- type 'help' for more info
-    status
-    OpenVPN CLIENT LIST
-    Updated,Tue Sep 22 09:21:42 2015
-    Common Name,Real Address,Bytes Received,Bytes Sent,Connected Since
-    52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,12045,12540,Tue Sep 22 09:21:36 2015
-    52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,12478,13064,Tue Sep 22 09:20:11 2015
-    ROUTING TABLE
-    Virtual Address,Common Name,Real Address,Last Ref
-    fd5e:1204:b851::1001,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,Tue Sep 22 09:20:11 2015
-    10.8.0.2,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,Tue Sep 22 09:21:38 2015
-    fd5e:1204:b851::1000,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_lappie,91.64.87.183:61098,Tue Sep 22 09:21:38 2015
-    10.8.0.3,52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm,145.100.180.235:43592,Tue Sep 22 09:20:11 2015
-    GLOBAL STATS
-    Max bcast/mcast queue length,0
-    END
-
-## Killing a Connection
-Also, very easy to kill an existing connection:
-
-    kill 52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm
-    SUCCESS: common name '52a00cbd11a8d6139c36e2d4e2dc2ee89089e078_ug_vm' found, 1 client(s) killed
-
-But note, that just killing a session does not prevent the client from 
-reconnecting. For that to work one has to revoke the certificate first and then
-kill the connection.
+You may need to add trusted CAs to the certificate database, it seems syslog-ng
+on the receiving side cannot send certificate chains, see 
+`/etc/pki/ca-trust/source/README` on CentOS for more information.
