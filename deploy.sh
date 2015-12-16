@@ -197,4 +197,8 @@ sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-ap
 sudo systemctl restart openvpn@server
 sudo systemctl restart openvpn@server-tcp
 
+# Copy index page
+sudo cp index.html /var/www/html/index.html
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/html/index.html
+
 # ALL DONE!
