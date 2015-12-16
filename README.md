@@ -13,7 +13,7 @@ and deploy instructions for various deployment scenarios.
 - Admin Portal manage users, configurations and connections
 
 It is also easy to enable SAML authentication for identity federations, this is
-documented separatedly. See [SAML](SAML.md).
+documented separately. See [SAML](SAML.md).
 
 # Base
 
