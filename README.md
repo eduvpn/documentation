@@ -446,6 +446,31 @@ You also need to modify the IPv6 firewall to allow forwarding in
     -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     -A FORWARD -i tun0 -o eth0 -s 2001:aaaa:bbbb:cccc::/64 -j ACCEPT
 
+## Source Routing
+Assuming the client IP addresses are public addresses for which traffic needs
+to be routed over an interface other than the default gateway, source routing 
+is required. For more information: http://blog.scottlowe.org/2013/05/29/a-quick-introduction-to-linux-policy-routing/
+
+eth0:   1.0.0.100 --> 1.0.0.1  (default route)
+eth1:   3.0.0.100 --> 3.0.0.1  (IP over which VPN traffic needs to be routed)
+tun0:   4.0.0.0/24 --> 3.0.0.1 (IP range for VPN clients)
+
+Traffic for the VPN clients is routed via 3.0.0.100, so traffic coming from 
+the VPN clients also needs to be routed via 3.0.0.1.
+
+As root:
+
+    # echo '100    openvpn' >> /etc/iproute2/rt_tables
+
+Now some CLI commands to make it work, see below for persistent configuration:
+
+    sudo ip rule add from 4.0.0.0/24 lookup openvpn
+    sudo ip route add default via 3.0.0.1 dev eth1 table openvpn
+
+### Persistent
+
+TBD.
+
 ## CRL
 The make the CRL work, a 'cronjob' is needed to occasionally retrieve the CRL
 from `vpn-cert-service`. Install `vpn-crl-fetcher` on the VPN machine:
