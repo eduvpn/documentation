@@ -30,6 +30,23 @@ run the script:
 
     $ ./deploy.sh
 
+# Users
+
+By default there is a user `foo` with the password `bar` for both the User 
+Portal and the Admin Portal. You can easily add new users, but you need to 
+generate a password hash. You can generate a hash like this, for example 
+below we generate one for the password `s3cr3t`:
+
+    $ php -r "require_once '/usr/share/php/password_compat/password.php'; echo password_hash('s3cr3t', PASSWORD_DEFAULT) . PHP_EOL;"
+
+Put this hash in the files `/etc/vpn-user-portal/config.ini` and 
+`/etc/vpn-admin-portal/config.ini` in the section `[BasicAuthentication]`, 
+e.g.:
+    
+    [BasicAuthentication]
+    admin = "$2y$10$i.vmEWgE9HGqlglI8wXYLeFdMWYvYJxEz5k4fjW/RLvCrCcDk0Xjy"
+
+# CA certificate
 You can request a certificate from your CA after running the script. The script
 put a `vpn.example.csr` file in the directory you ran the script from.
 
