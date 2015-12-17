@@ -176,6 +176,10 @@ sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/ip6tables
 # enable forwarding
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
+
+# forwarding disables accepting RAs on our external interface, so we have to 
+# explicitly enable it here to make IPv6 work
+echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
 ###############################################################################
