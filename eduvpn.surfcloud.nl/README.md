@@ -1,6 +1,8 @@
 # Introduction
 
-This folder describes the specific documentation for `eduvpn.surfcloud.nl`.
+This folder describes the specific documentation for `eduvpn.surfcloud.nl`. It 
+is assumed the generic installation instructions are followed from this 
+repository. This document lists the changes compared to those instructions.
 
 # SAML
 
