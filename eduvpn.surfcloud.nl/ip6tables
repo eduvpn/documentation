@@ -1,0 +1,18 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p ipv6-icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state NEW -m udp -p udp --dport 546 -d fe80::/64 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+-A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 8443 -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp6-adm-prohibited
+#-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A FORWARD -i ens32 -o tun0 -d 2001:0610:0450:4242::/64 -j ACCEPT
+-A FORWARD -i tun0 -o ens32 -s 2001:0610:0450:4242::/64 -j ACCEPT
+-A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+COMMIT
