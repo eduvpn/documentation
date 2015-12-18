@@ -26,8 +26,9 @@ The DNS servers are configured like this:
     push "dhcp-option DNS 2001:610:3:200a:192:87:36:36"
     push "dhcp-option DNS 2001:610:0:800b:195:169:124:124"
 
-The IPv6 addresses are not picked up by all OpenVPN clients, it seems Viscosity 
-on Windows picks this up, but not OpenVPN on Windows. They are ignored there.
+The IPv6 DNS addresses are not picked up by all OpenVPN clients, it seems 
+[Viscosity](https://www.sparklabs.com/viscosity/) on Windows picks this up, 
+but not OpenVPN on Windows. Other clients are untested as of now.
 
 Currently, only one OpenVPN instance, listening on `udp/1194`, is available.
 
