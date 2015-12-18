@@ -100,7 +100,7 @@ sudo cp /usr/share/vpn-config-api/views/*.twig /etc/vpn-config-api/views
 
 # update hostname in client.twig
 sudo sed -i "s/remote nl.example.org 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-config-api/views/client.twig
-sudo sed -i "s/remote de.example.org 1194 udp/remote ${HOSTNAME} 8443 tcp/" /etc/vpn-config-api/views/client.twig
+sudo sed -i "s/remote de.example.org 1194 udp/#remote ${HOSTNAME} 8443 tcp/" /etc/vpn-config-api/views/client.twig
 sudo sed -i "s/remote xyz.example.org 443 tcp//" /etc/vpn-config-api/views/client.twig
 
 # generate a server configuration file
