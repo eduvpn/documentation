@@ -6,6 +6,7 @@
 -A INPUT -p ipv6-icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
 -A INPUT -m state --state NEW -m udp -p udp --dport 1194 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 8443 -j ACCEPT
