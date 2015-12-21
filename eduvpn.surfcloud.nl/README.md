@@ -21,10 +21,15 @@ There are both public IPv4 and IPv6 addresses available:
 
 These are configured in `/etc/openvpn/server.conf`:
 
-    server 195.169.120.0 255.255.254.0
+    server 195.169.120.0 255.255.255.0
     server-ipv6 2001:610:450:4242::/64
 
-The DNS servers are configured like this:
+And `/etc/openvpn/server-tcp.conf`:
+
+    server 195.169.121.0 255.255.255.0
+    server-ipv6 2001:610:450:4343::/64
+
+The DNS servers are configured like this in both server configuration files:
 
     push "dhcp-option DNS 195.169.124.124"
     push "dhcp-option DNS 192.87.36.36"
@@ -35,7 +40,7 @@ The IPv6 DNS addresses are not picked up by all OpenVPN clients, it seems
 [Viscosity](https://www.sparklabs.com/viscosity/) on Windows picks this up, 
 but not OpenVPN on Windows. Other clients are untested as of now.
 
-Currently, only one OpenVPN instance, listening on `udp/1194`, is available.
+Two OpenVPN instances are available, one on `udp/1194` and one on `tcp/443`.
 
 # Firewall
 

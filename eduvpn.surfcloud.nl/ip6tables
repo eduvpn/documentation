@@ -12,6 +12,7 @@
 -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
 -A FORWARD -p ipv6-icmp -j ACCEPT
 -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
--A FORWARD -i tun0 -o ens32 -s 2001:0610:0450:4242::/64 -j ACCEPT
+-A FORWARD -i tun+ -o ens32 -s 2001:610:450:4242::/64 -j ACCEPT
+-A FORWARD -i tun+ -o ens32 -s 2001:610:450:4343::/64 -j ACCEPT
 -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
 COMMIT
