@@ -71,6 +71,10 @@ sudo cp resources/hardened_ssl.conf.diff /etc/httpd/conf.d
 # update hostname in ssl.conf
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/ssl.conf
 
+# change SSL and VirtualHost port to 8443
+sudo sed -i "s/Listen 443/Listen 8443/" /etc/httpd/conf.d/ssl.conf
+sudo sed -i "s/<VirtualHost _default_:443>/<VirtualHost _default_:8443>/" /etc/httpd/conf.d/ssl.conf
+
 ###############################################################################
 # PHP
 ###############################################################################
@@ -100,7 +104,7 @@ sudo cp /usr/share/vpn-config-api/views/*.twig /etc/vpn-config-api/views
 
 # update hostname in client.twig
 sudo sed -i "s/remote nl.example.org 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-config-api/views/client.twig
-sudo sed -i "s/remote de.example.org 1194 udp/#remote ${HOSTNAME} 8443 tcp/" /etc/vpn-config-api/views/client.twig
+sudo sed -i "s/remote de.example.org 1194 udp/#remote ${HOSTNAME} 443 tcp/" /etc/vpn-config-api/views/client.twig
 sudo sed -i "s/remote xyz.example.org 443 tcp//" /etc/vpn-config-api/views/client.twig
 
 # generate a server configuration file
@@ -111,13 +115,15 @@ sudo chmod 0600 /etc/openvpn/server.conf
 # enable management
 sudo sed -i "s|#management localhost 7505|management localhost 7505|" /etc/openvpn/server.conf
 
-# also create a TCP config and modify it to listen on tcp/8443
+# also create a TCP config, port share it with the web server on tcp/443
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
 
 sudo sed -i "s/^proto udp/#proto udp/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port 443/port 8443/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#port 443/port 443/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#port-share localhost 8443/port-share localhost 8443/" /etc/openvpn/server-tcp.conf
+
 sudo sed -i "s|server 10.42.42.0 255.255.255.0|server 10.43.43.0 255.255.255.0|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|server-ipv6 fd00:4242:4242::/64|server-ipv6 fd00:4343:4343::/64|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
@@ -158,8 +164,8 @@ sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-
 # allow OpenVPN to listen on its management ports
 sudo semanage port -a -t openvpn_port_t -p tcp 7505-7506
 
-# allow OpenVPN to listen on tcp/8443
-sudo semanage port -m -t openvpn_port_t -p tcp 8443
+# allow OpenVPN to listen on tcp/443
+sudo semanage port -m -t openvpn_port_t -p tcp 443
 
 # allow OpenVPN to read the CRL from vpn-server-api
 checkmodule -M -m -o resources/openvpn-allow-ca-read.mod resources/openvpn-allow-ca-read.te 
