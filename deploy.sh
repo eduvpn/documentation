@@ -74,6 +74,7 @@ sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/ssl.conf
 # change SSL and VirtualHost port to 8443
 sudo sed -i "s/Listen 443/Listen 8443/" /etc/httpd/conf.d/ssl.conf
 sudo sed -i "s/<VirtualHost _default_:443>/<VirtualHost _default_:8443>/" /etc/httpd/conf.d/ssl.conf
+sudo sed -i "s/#ServerName www.example.com:443/ServerName ${HOSTNAME}:443/" /etc/httpd/conf.d/ssl.conf
 
 ###############################################################################
 # PHP
