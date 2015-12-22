@@ -55,7 +55,7 @@ Note that `ens32` is the external interface!
 
 # User Portal
 
-The User Portal has "eduVPN" branding, which includes a logo in the top right.
+The User Portal has "eduvpn" branding, which includes a logo in the top right.
 
 ## Templates
 
