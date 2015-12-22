@@ -70,6 +70,7 @@ Install the CSS files:
 
     $ sudo mkdir -p /var/www/html/css
     $ sudo cp *.css /var/www/html/css
+    $ sudo cp bootstrap/*.css /var/www/html/css
 
 ## Images
 
