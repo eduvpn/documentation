@@ -53,16 +53,28 @@ No NAT is used, so the firewall is a bit different.
 
 Note that `ens32` is the external interface!
 
-# User Portal
+# Branding
 
-The User Portal has "eduvpn" branding, which includes a logo in the top right.
+The User and Admin Portal have "eduvpn" branding, which includes a logo in 
+the top right.
 
-## Templates
+## User Portal
+
+### Templates
 
 Install the templates:
 
     $ sudo mkdir -p /etc/vpn-user-portal/views
-    $ sudo cp *.twig /etc/vpn-user-portal/views
+    $ sudo cp vpn-user-portal/*.twig /etc/vpn-user-portal/views
+
+## Admin Portal
+
+### Templates
+
+Install the templates:
+
+    $ sudo mkdir -p /etc/vpn-admin-portal/views
+    $ sudo cp vpn-admin-portal/*.twig /etc/vpn-admin-portal/views
 
 ## CSS
 
