@@ -3,7 +3,17 @@
 # Script to deploy eduVPN on a CentOS >= 7 installation.
 #
 # Tested on CentOS 7.2
-#
+
+# TODO: 
+# - for all APIs the user:pass is admin:s3cr3t, this is not a problem because
+#   the endpoints are not reachable from the outside anyway, but it is not
+#   really good practise, update them!
+# - there is a default user:pass for the user interface and admin interface,
+#   foo:bar, which should be updated and printed at the end of the script so
+#   they are unique for every instance!
+# - look into deploying using php-fpm instead of mod_php to increase 
+#   performance of the web interfaces
+
 
 ###############################################################################
 # VARIABLES
