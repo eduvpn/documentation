@@ -14,7 +14,6 @@
 # - look into deploying using php-fpm instead of mod_php to increase 
 #   performance of the web interfaces
 
-
 ###############################################################################
 # VARIABLES
 ###############################################################################
