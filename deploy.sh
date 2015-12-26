@@ -124,6 +124,9 @@ sudo chmod 0600 /etc/openvpn/server.conf
 # enable management
 sudo sed -i "s|#management localhost 7505|management localhost 7505|" /etc/openvpn/server.conf
 
+# enable CCD
+sudo sed -i 's|#client-config-dir /var/lib/vpn-server-api/ccd|client-config-dir /var/lib/vpn-server-api/ccd|' /etc/openvpn/server.conf
+
 # also create a TCP config, port share it with the web server on tcp/443
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
 
@@ -196,6 +199,9 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/nul
 # explicitly enable it here to make IPv6 work
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
+
+# create CCD directory
+sudo -u apache mkdir -p /var/lib/vpn-server-api/ccd
 
 ###############################################################################
 # DAEMONS
