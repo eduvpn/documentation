@@ -11,7 +11,7 @@ server has the name `vpn.example` throughout the document.
 
 You can download a release:
 
-- [0.9.0](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz) ([SIG](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz.sig))
+- [0.9.0](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz) ([SIG](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz.asc))
 
 This archive contains all components of eduVPN.
 
