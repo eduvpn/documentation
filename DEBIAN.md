@@ -13,12 +13,14 @@ You can download a release:
 
 - [0.9.0](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz) ([SIG](https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-0.9.0.tar.xz.asc))
 
-This archive contains all components of eduVPN.
+This archive contains all components of eduVPN. Each component will have their
+own version, you have to use the version of the component below when you 
+read `VERSION`.
 
     $ mkdir $HOME/Downloads
     $ cd $HOME/Downloads
     $ curl -O https://storage.tuxed.net/fkooman/public/upload/eduvpn/eduvpn-VERSION.tar.xz
-    $ tar -xJf eduvpn-VERSION.tar.xz
+    $ tar -xJf eduvpn-0.9.0.tar.xz
 
 # Installation
 
@@ -35,6 +37,9 @@ Now unpack them all in `/var/www` and create symlinks:
     $ sudo ln -s vpn-admin-portal-VERSION vpn-admin-portal
 
 # Configuration
+
+**WARNING**: the 0.9.0 release still uses INI files and not YAML files, these 
+instructions are for a release that is coming soon!
 
 ## VPN Config API
 
