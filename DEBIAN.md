@@ -48,8 +48,8 @@ instructions are for a release that is coming soon!
 
 Edit `config/config.yaml` and set at least the following:
 
-    sourcePath = '/usr/share/easy-rsa'
-    targetPath = '/var/www/vpn-config-api/data/easy-rsa'
+    sourcePath: /usr/share/easy-rsa
+    targetPath: /var/www/vpn-config-api/data/easy-rsa
 
 Now you should be able to initialize the CA:
 
