@@ -1,0 +1,12 @@
+module openvpn-allow-server-api-read 1.0;
+
+require {
+    type openvpn_t;
+    type httpd_sys_rw_content_t;
+    class dir { search read };
+    class file { read open getattr };
+}
+
+#============= openvpn_t ==============
+allow openvpn_t httpd_sys_rw_content_t:dir { read search };
+allow openvpn_t httpd_sys_rw_content_t:file { read open getattr };

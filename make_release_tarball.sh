@@ -26,7 +26,7 @@ VSA_COMMIT=c2c34787dcb8c9a197c6c8cb9318b38bc3ce58a4
 D_OWNER=eduVPN
 D_REPO=documentation
 D_VERSION=${RELEASE}
-D_COMMIT=9a5e5a7e9a907cc3d4c1269283f63e2114df27a7
+D_COMMIT=47fd3e72995d065f64179ff1c6b76587cf82b4d0
 
 rm -rf ${PROJECT}-${RELEASE}
 mkdir -p ${PROJECT}-${RELEASE}
@@ -38,6 +38,7 @@ sh ../build.sh ${VUP_OWNER} ${VUP_REPO} ${VUP_VERSION} ${VUP_COMMIT}
 sh ../build.sh ${VAP_OWNER} ${VAP_REPO} ${VAP_VERSION} ${VAP_COMMIT}
 sh ../build.sh ${VCA_OWNER} ${VCA_REPO} ${VCA_VERSION} ${VCA_COMMIT}
 sh ../build.sh ${VSA_OWNER} ${VSA_REPO} ${VSA_VERSION} ${VSA_COMMIT}
+sh ../build.sh ${D_OWNER} ${D_REPO} ${D_VERSION} ${D_COMMIT}
 )
 
 tar -cJf ${PROJECT}-${RELEASE}.tar.xz ${PROJECT}-${RELEASE}

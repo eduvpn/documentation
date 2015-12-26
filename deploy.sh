@@ -177,9 +177,9 @@ sudo semanage port -a -t openvpn_port_t -p tcp 7505-7506
 sudo semanage port -m -t openvpn_port_t -p tcp 443
 
 # allow OpenVPN to read the CRL from vpn-server-api
-checkmodule -M -m -o resources/openvpn-allow-ca-read.mod resources/openvpn-allow-ca-read.te 
-semodule_package -o resources/openvpn-allow-ca-read.pp -m resources/openvpn-allow-ca-read.mod 
-sudo semodule -i resources/openvpn-allow-ca-read.pp
+checkmodule -M -m -o resources/openvpn-allow-server-api-read.mod resources/openvpn-allow-server-api-read.te 
+semodule_package -o resources/openvpn-allow-server-api-read.pp -m resources/openvpn-allow-server-api-read.mod 
+sudo semodule -i resources/openvpn-allow-server-api-read.pp
 
 # Firewall
 sudo cp resources/iptables /etc/sysconfig/iptables

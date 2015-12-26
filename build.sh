@@ -13,3 +13,4 @@ git clone https://github.com/${OWNER}/${REPO}.git ${REPO}-${VERSION}
     composer install --no-dev
 )
 tar -cJf ${REPO}-${VERSION}.tar.xz ${REPO}-${VERSION}
+rm -rf ${REPO}-${VERSION}
