@@ -11,7 +11,7 @@ TODO:
 
 - https://community.openvpn.net/openvpn/wiki/BuildingUsingGenericBuildsystem
 
-# Depdendencies
+# Dependencies
 
 We use Fedora 23 as the OS to build the Windows installer because it has 
 working cross compilers for Windows binaries.
