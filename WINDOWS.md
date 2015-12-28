@@ -26,11 +26,14 @@ We use the offical OpenVPN build system available on GitHub:
     $ git clone https://github.com/OpenVPN/openvpn-build.git
     $ cd openvpn-build/windows-nsis
 
-Update the variables to point to the latest versions of the dependencies:
+Update the variables to point to the latest versions of the dependencies, this
+matches the dependency versions of the last official Windows release from 
+`openvpn.net`:
 
     $ export OPENSSL_VERSION=1.0.1q
     $ export OPENVPN_VERSION=2.3.9
     $ export OPENVPN_GUI_VERSION=8 
+    $ export LZO_VERSION=2.09
 
 Now build the dependency cache:
 
