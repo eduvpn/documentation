@@ -103,8 +103,7 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 ###############################################################################
 
 # we are happy with 2048 bit key as 4096 DH param takes really too long
-sudo sed -i 's/key_size = 4096/key_size = 2048/' /etc/vpn-config-api/config.ini
-
+sudo sed -i "s/key_size: '4096'/key_size: '2048'" /etc/vpn-config-api/config.yaml
 # initialize the CA
 sudo -u apache vpn-config-api-init
 
@@ -120,9 +119,6 @@ sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-
 echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
 sudo -u apache vpn-config-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
 sudo chmod 0600 /etc/openvpn/server.conf
-
-# enable management
-sudo sed -i "s|#management localhost 7505|management localhost 7505|" /etc/openvpn/server.conf
 
 # enable CCD
 sudo sed -i 's|#client-config-dir /var/lib/vpn-server-api/ccd|client-config-dir /var/lib/vpn-server-api/ccd|' /etc/openvpn/server.conf
@@ -148,7 +144,8 @@ sudo setsebool -P httpd_unified 1
 ###############################################################################
 
 # we also want to connect to the second OpenVPN instance
-sudo sed -i 's|;socket\[\] = "tcp://localhost:7506"|socket\[\] = "tcp://localhost:7506"|' /etc/vpn-server-api/config.ini
+sudo sed -i 's|#- id: TCP|- id: TCP|' /etc/vpn-server-api/config.yaml
+sudo sed -i "s|#  socket: 'tcp://localhost:7506'|  socket: 'tcp://localhost:7506'|" /etc/vpn-server-api/config.yaml
 
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
