@@ -230,8 +230,8 @@ curl -u admin:s3cr3t -X DELETE http://localhost/vpn-config-api/api.php/config/re
 curl -u admin:s3cr3t -X POST http://localhost/vpn-server-api/api.php/crl/fetch
 
 # enable CRL
-sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
-sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server-tcp.conf
+sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
+sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server-tcp.conf
 
 # restart OpenVPN
 sudo systemctl restart openvpn@server
