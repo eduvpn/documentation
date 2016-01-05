@@ -103,7 +103,7 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 ###############################################################################
 
 # we are happy with 2048 bit key as 4096 DH param takes really too long
-sudo sed -i "s/key_size: '4096'/key_size: '2048'" /etc/vpn-config-api/config.yaml
+sudo sed -i "s/key_size: '4096'/key_size: '2048'/" /etc/vpn-config-api/config.yaml
 # initialize the CA
 sudo -u apache vpn-config-api-init
 
@@ -227,7 +227,7 @@ sudo systemctl restart ip6tables
 curl -u admin:s3cr3t -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
 curl -u admin:s3cr3t -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
 # reload the CRL
-curl -u admin:s3cr3t -X POST http://localhost/vpn-server-api/api.php/refreshCrl
+curl -u admin:s3cr3t -X POST http://localhost/vpn-server-api/api.php/crl/fetch
 
 # enable CRL
 sudo sed -i "s|#crl-verify /etc/openvpn/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
