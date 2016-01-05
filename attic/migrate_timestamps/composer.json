@@ -1,0 +1,12 @@
+{
+    "authors": [
+        {
+            "email": "fkooman@tuxed.net",
+            "name": "Fran\u00e7ois Kooman"
+        }
+    ],
+    "name": "fkooman/surf",
+    "require": {
+        "fkooman/cert-parser": "^1.0.0"
+    }
+}
