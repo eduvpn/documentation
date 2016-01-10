@@ -21,7 +21,7 @@ EXTERNAL_IF=eth0
 
 # only change if you know what you are doing!
 API_USER=api
-API_PASSWORD=`openssl rand -hex 16`
+API_SECRET=`openssl rand -hex 16`
 
 ###############################################################################
 # SYSTEM
@@ -231,10 +231,10 @@ sudo systemctl restart ip6tables
 # by default
 # we need to create a CRL before we can start OpenVPN with CRL checking enabled
 # this is fixed in EasyRsa3Ca backend!
-curl -u ${API_USER}:${API_PASSWORD} -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
-curl -u ${API_USER}:${API_PASSWORD} -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
+curl -u ${API_USER}:${API_SECRET} -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
+curl -u ${API_USER}:${API_SECRET} -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
 # reload the CRL
-curl -u ${API_USER}:${API_PASSWORD} -X POST http://localhost/vpn-server-api/api.php/crl/fetch
+curl -u ${API_USER}:${API_SECRET} -X POST http://localhost/vpn-server-api/api.php/crl/fetch
 
 # enable CRL
 sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
