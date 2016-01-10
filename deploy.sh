@@ -5,9 +5,6 @@
 # Tested on CentOS 7.2
 
 # TODO: 
-# - for all APIs the user:pass is admin:s3cr3t, this is not a problem because
-#   the endpoints are not reachable from the outside anyway, but it is not
-#   really good practise, update them!
 # - there is a default user:pass for the user interface and admin interface,
 #   foo:bar, which should be updated and printed at the end of the script so
 #   they are unique for every instance!
@@ -21,6 +18,10 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
+
+# only change if you know what you are doing!
+API_USER=api
+API_PASSWORD=`openssl rand -hex 16`
 
 ###############################################################################
 # SYSTEM
@@ -201,6 +202,11 @@ sudo sysctl -p
 sudo -u apache mkdir -p /var/lib/vpn-server-api/ccd
 
 ###############################################################################
+# UPDATE SECRETS
+###############################################################################
+sudo php resources/update_api_secret.php ${API_USER} ${API_SECRET}
+
+###############################################################################
 # DAEMONS
 ###############################################################################
 
@@ -224,10 +230,11 @@ sudo systemctl restart ip6tables
 # XXX: move this to the init script of vpn-config-api, there should be a CRL
 # by default
 # we need to create a CRL before we can start OpenVPN with CRL checking enabled
-curl -u admin:s3cr3t -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
-curl -u admin:s3cr3t -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
+# this is fixed in EasyRsa3Ca backend!
+curl -u ${API_USER}:${API_PASSWORD} -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
+curl -u ${API_USER}:${API_PASSWORD} -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
 # reload the CRL
-curl -u admin:s3cr3t -X POST http://localhost/vpn-server-api/api.php/crl/fetch
+curl -u ${API_USER}:${API_PASSWORD} -X POST http://localhost/vpn-server-api/api.php/crl/fetch
 
 # enable CRL
 sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
