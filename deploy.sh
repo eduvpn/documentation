@@ -155,6 +155,10 @@ sudo sed -i "s|#  socket: 'tcp://localhost:7506'|  socket: 'tcp://localhost:7506
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
 
+# we take the CRL from vpn-config-api and install it in vpn-server-api so 
+# OpenVPN will start
+sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/keys/crl.pem /var/lib/vpn-server-api/ca.crl
+
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
@@ -230,23 +234,6 @@ sudo systemctl restart ip6tables
 ###############################################################################
 # POST INSTALL
 ###############################################################################
-
-# XXX: move this to the init script of vpn-config-api, there should be a CRL
-# by default
-# we need to create a CRL before we can start OpenVPN with CRL checking enabled
-# this is fixed in EasyRsa3Ca backend!
-curl -u ${API_USER}:${API_SECRET} -d 'commonName=revoke@example.org' http://localhost/vpn-config-api/api.php/config/ >/dev/null
-curl -u ${API_USER}:${API_SECRET} -X DELETE http://localhost/vpn-config-api/api.php/config/revoke@example.org
-# reload the CRL
-curl -u ${API_USER}:${API_SECRET} -X POST http://localhost/vpn-server-api/api.php/crl/fetch
-
-# enable CRL
-sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server.conf
-sudo sed -i "s|#crl-verify /var/lib/vpn-server-api/ca.crl|crl-verify /var/lib/vpn-server-api/ca.crl|" /etc/openvpn/server-tcp.conf
-
-# restart OpenVPN
-sudo systemctl restart openvpn@server
-sudo systemctl restart openvpn@server-tcp
 
 # Copy index page
 sudo cp resources/index.html /var/www/html/index.html
