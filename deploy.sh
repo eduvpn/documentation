@@ -128,6 +128,10 @@ sudo chmod 0600 /etc/openvpn/server.conf
 # enable CCD
 sudo sed -i 's|#client-config-dir /var/lib/vpn-server-api/ccd|client-config-dir /var/lib/vpn-server-api/ccd|' /etc/openvpn/server.conf
 
+# enable the client-connect and client-disconnect scripts
+sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
+sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
+
 # also create a TCP config, port share it with the web server on tcp/443
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
 
@@ -158,6 +162,18 @@ sudo setsebool -P httpd_can_network_connect=on
 # we take the CRL from vpn-config-api and install it in vpn-server-api so 
 # OpenVPN will start
 sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/keys/crl.pem /var/lib/vpn-server-api/ca.crl
+
+# create a data directory for the connection log database, initialize the 
+# database and restore the SELinux context
+sudo mkdir -p /var/lib/openvpn
+sudo chown openvpn.openvpn /var/lib/openvpn
+sudo -u openvpn /usr/bin/vpn-server-api-init
+sudo restorecon -R /var/lib/openvpn
+
+# allow Apache to read the openvpn_var_lib_t sqlite file
+checkmodule -M -m -o resources/httpd-allow-openvpn-var-lib-t-read.mod resources/httpd-allow-openvpn-var-lib-t-read.te
+semodule_package -o resources/httpd-allow-openvpn-var-lib-t-read.pp -m resources/httpd-allow-openvpn-var-lib-t-read.mod 
+sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 
 ###############################################################################
 # VPN-ADMIN-PORTAL

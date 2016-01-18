@@ -1,0 +1,10 @@
+module httpd-allow-openvpn-var-lib-t-read 1.0;
+
+require {
+	type httpd_t;
+	type openvpn_var_lib_t;
+	class file { read lock getattr open };
+}
+
+#============= httpd_t ==============
+allow httpd_t openvpn_var_lib_t:file { read lock getattr open };
