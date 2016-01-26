@@ -22,17 +22,22 @@ user. Alice has the CN `alice`, Eve has the CN `eve`.
 
 To make this work, Alice gets an assigned IP address in the range `10.8.1.0/24`
 and Eve gets an assigned IP address in the range `10.8.2.0/24`. This is 
-accomplished by '--client-config-dir` directives below. If the CN is not 
-found the connection should be terminated with a `disable` line in the 
-`DEFAULT` file.
+accomplished by '--client-config-dir` directives below.
+
+    server 10.8.0.0 255.255.0.0 nopool
+    ccd-exclusive
+
+All other pushes can be removed from the server configuration.
 
 ## Alice
 
-    ifconfig-push 10.8.0.2 255.255.255.0
+    ifconfig-push 10.8.1.2 255.255.255.0
+    push "route 10.0.4.0 255.255.255.0"
 
 ## Eve
     
-    ifconfig-push 10.8.1.2 255.255.255.0
+    ifconfig-push 10.8.2.2 255.255.255.0
+    push "route 10.0.5.0 255.255.255.0"
 
 # Firewall
 
@@ -53,5 +58,5 @@ Where `eth0` is the outgoing interface.
 It must be possible to configure an IP/range for a particular user in the 
 management UI. Ideally only a "role" needs to be specified where the rest is 
 automated. In this case there would be two roles: "DNS servers" and 
-"HTTP servers". Selecting one would chose a free IP address in the range and 
+"HTTP servers". Selecting one would choose a free IP address in the range and 
 assign that to the user automatically on next connect.
