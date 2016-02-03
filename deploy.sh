@@ -161,7 +161,7 @@ sudo setsebool -P httpd_can_network_connect=on
 
 # we take the CRL from vpn-config-api and install it in vpn-server-api so 
 # OpenVPN will start
-sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/keys/crl.pem /var/lib/vpn-server-api/ca.crl
+sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
 
 # create a data directory for the connection log database, initialize the 
 # database and restore the SELinux context
