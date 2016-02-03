@@ -1,21 +1,20 @@
 # Introduction
 
-Allow clients to authenticate to the VPN, but only have access to a restricted
-set of resources.
+This document describes an architecture for limiting access to resources
+behind a VPN server. 
 
 # Scenarios
 
-Alice manages the DNS servers that have management LAN with range
+Alice manages the DNS servers that have a management LAN with range
 `10.0.4.0/24`, Eve manages the HTTP servers in the range `10.0.5.0/24`.
 
-When Alice uses the VPN she should only be able to access the DNS server range 
-and not the HTTP server range, and Eve should only be able to access the HTTP 
-servers range.
+When Alice uses the VPN she should only be able to access the DNS server
+management LAN range and not the HTTP server range, and vice versa.
 
 # VPN Server
 
-The VPN server has IP address `192.168.1.42`. It has the IP range `10.8.0.0/16`
-to give to clients.
+The VPN server itself has IP address `192.168.1.42`. It has the IP range 
+`10.8.0.0/16` to give to clients.
 
 The VPN server has the ability to give a specific IP address to a particular
 user. Alice has the CN `alice`, Eve has the CN `eve`.
