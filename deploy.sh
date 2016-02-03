@@ -37,8 +37,8 @@ sudo yum -y update
 sudo yum -y install epel-release
 
 # enable COPR repos
-sudo curl -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedoraproject.org/coprs/fkooman/php-base/repo/epel-7/fkooman-php-base-epel-7.repo
-sudo curl -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fedoraproject.org/coprs/fkooman/vpn-management/repo/epel-7/fkooman-vpn-management-epel-7.repo
+sudo curl -L -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/php-base/repo/epel-7/fkooman-php-base-epel-7.repo
+sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/indiecert/repo/epel-7/fkooman-indiecert-epel-7.repo
 
 # install software
 sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
