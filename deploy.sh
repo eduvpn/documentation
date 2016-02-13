@@ -18,6 +18,7 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
+KEY_SIZE=2048
 
 # only change if you know what you are doing!
 API_USER=api
@@ -43,7 +44,7 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 # install software
 sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
-    vpn-user-portal iptables iptables-services patch
+    vpn-user-portal iptables iptables-services patch sniproxy
 
 ###############################################################################
 # CERTIFICATE
@@ -107,8 +108,7 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # VPN-CONFIG-API
 ###############################################################################
 
-# we are happy with 2048 bit key as 4096 DH param takes really too long
-sudo sed -i "s/key_size: '4096'/key_size: '2048'/" /etc/vpn-config-api/config.yaml
+sudo sed -i "s/key_size: '4096'/key_size: '${KEY_SIZE}'/" /etc/vpn-config-api/config.yaml
 # initialize the CA
 sudo -u apache vpn-config-api-init
 
@@ -132,14 +132,13 @@ sudo sed -i 's|#client-config-dir /var/lib/vpn-server-api/ccd|client-config-dir 
 sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
 sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
 
-# also create a TCP config, port share it with the web server on tcp/443
+# also create a TCP config
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
 
 sudo sed -i "s/^proto udp/#proto udp/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port 443/port 443/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port-share localhost 8443/port-share localhost 8443/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#port 443/port 1194/" /etc/openvpn/server-tcp.conf
 
 sudo sed -i "s|server 10.42.42.0 255.255.255.0|server 10.43.43.0 255.255.255.0|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|server-ipv6 fd00:4242:4242::/64|server-ipv6 fd00:4343:4343::/64|" /etc/openvpn/server-tcp.conf
@@ -199,9 +198,6 @@ sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-
 # allow OpenVPN to listen on its management ports
 sudo semanage port -a -t openvpn_port_t -p tcp 7505-7506
 
-# allow OpenVPN to listen on tcp/443
-sudo semanage port -m -t openvpn_port_t -p tcp 443
-
 # allow OpenVPN to read the CRL from vpn-server-api
 checkmodule -M -m -o resources/openvpn-allow-server-api-read.mod resources/openvpn-allow-server-api-read.te 
 semodule_package -o resources/openvpn-allow-server-api-read.pp -m resources/openvpn-allow-server-api-read.mod 
@@ -227,6 +223,14 @@ sudo sysctl -p
 sudo -u apache mkdir -p /var/lib/vpn-server-api/ccd
 
 ###############################################################################
+# SNIPROXY
+###############################################################################
+
+# install the config file
+sudo cp resources/sniproxy.conf /etc/sniproxy.conf
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
+
+###############################################################################
 # UPDATE SECRETS
 ###############################################################################
 sudo php resources/update_api_secret.php ${API_USER} ${API_SECRET}
@@ -238,12 +242,14 @@ sudo php resources/update_api_secret.php ${API_USER} ${API_SECRET}
 sudo systemctl enable httpd
 sudo systemctl enable openvpn@server
 sudo systemctl enable openvpn@server-tcp
+sudo systemctl enable sniproxy
 sudo systemctl enable iptables
 sudo systemctl enable ip6tables
 
 sudo systemctl start httpd
 sudo systemctl start openvpn@server
 sudo systemctl start openvpn@server-tcp
+sudo systemctl start sniproxy
 # flush existing firewall rules if they exist and activate the new ones
 sudo systemctl restart iptables
 sudo systemctl restart ip6tables

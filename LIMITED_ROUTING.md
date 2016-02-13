@@ -59,3 +59,17 @@ management UI. Ideally only a "role" needs to be specified where the rest is
 automated. In this case there would be two roles: "DNS servers" and 
 "HTTP servers". Selecting one would choose a free IP address in the range and 
 assign that to the user automatically on next connect.
+
+
+# Server
+
+    #v4
+    server 10.42.42.0 255.255.255.0 nopool
+    ifconfig-pool 10.42.42.65 10.42.42.254
+
+    #v6
+    ifconfig-ipv6 fd00:4242:4242::/64 fd00::1
+    ifconfig-ipv6-pool fd00:4242:4242:4343::/112
+    tun-ipv6
+    push tun-ipv6
+
