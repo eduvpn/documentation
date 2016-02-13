@@ -68,28 +68,15 @@ sudo openssl req -subj "/CN=${HOSTNAME}" -sha256 -new -x509 -key /etc/pki/tls/pr
 # https://httpd.apache.org/docs/2.4/mod/core.html#ServerTokens
 sudo sh -c 'echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf'
 
-# We took the default `/etc/httpd/conf.d/ssl.conf` file, hardened it and 
-# pointed it to the generated certificates, gives A+ on 
-# https://www.ssllabs.com/ssltest/
-#
-# See also https://wiki.mozilla.org/Security/Server_Side_TLS
-sudo cp resources/hardened_ssl.conf.diff /etc/httpd/conf.d
-(
-  cd /etc/httpd/conf.d
-  sudo patch -p0 < hardened_ssl.conf.diff
-)
+# We took the default `/etc/httpd/conf.d/ssl.conf` file, hardened it, gives 
+# A+ on https://www.ssllabs.com/ssltest/
+sudo cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
+sudo cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
-# update hostname in ssl.conf
-sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/ssl.conf
-
-# change SSL and VirtualHost port to 8443
-sudo sed -i "s/Listen 443/Listen 8443/" /etc/httpd/conf.d/ssl.conf
-sudo sed -i "s/<VirtualHost _default_:443>/<VirtualHost _default_:8443>/" /etc/httpd/conf.d/ssl.conf
-sudo sed -i "s/#ServerName www.example.com:443/ServerName ${HOSTNAME}:443/" /etc/httpd/conf.d/ssl.conf
-
-# always redirect HTTP to HTTPS
-sudo cp resources/ssl_only.conf /etc/httpd/conf.d/ssl_only.conf
-sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/ssl_only.conf
+# localhost and vpn.example VirtualHost
+sudo cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
+sudo cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
 
 ###############################################################################
 # PHP
@@ -179,17 +166,13 @@ sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-# allow connections from everywhere
-sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-admin-portal.conf
+# NOP
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
 sudo -u apache vpn-user-portal-init
-
-# allow connections from everywhere
-sudo sed -i "s/#Require all granted/Require all granted/" /etc/httpd/conf.d/vpn-user-portal.conf
 
 ###############################################################################
 # OPENVPN
@@ -259,7 +242,8 @@ sudo systemctl restart ip6tables
 ###############################################################################
 
 # Copy index page
-sudo cp resources/index.html /var/www/html/index.html
-sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/html/index.html
+sudo mkdir -p /var/www/${HOSTNAME}
+sudo cp resources/index.html /var/www/${HOSTNAME}/index.html
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
 
 # ALL DONE!
