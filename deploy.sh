@@ -18,7 +18,7 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
-KEY_SIZE=2048
+KEY_SIZE=4096
 
 # only change if you know what you are doing!
 API_USER=api
@@ -128,7 +128,7 @@ sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.con
 sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
 
 sudo sed -i "s|server 10.42.42.0 255.255.255.0|server 10.43.43.0 255.255.255.0|" /etc/openvpn/server-tcp.conf
-sudo sed -i "s|server-ipv6 fd00:4242:4242::/64|server-ipv6 fd00:4343:4343::/64|" /etc/openvpn/server-tcp.conf
+sudo sed -i "s|server-ipv6 fd00:4242:4242:1194::/64|server-ipv6 fd00:4242:4242:443::/64|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
 
 # allow vpn-config-api to run Easy-RSA scripts
