@@ -38,11 +38,6 @@ The follow file you place in `/etc/httpd/conf.d/saml.conf`:
         MellonEnable "auth"
     </Location>
 
-    # The API is not protected by SAML
-    <Location /vpn-user-portal/api.php>
-        MellonEnable "off"
-    </Location>
-
     #<Location /vpn-admin-portal>
     #    MellonEnable "auth"
     #
