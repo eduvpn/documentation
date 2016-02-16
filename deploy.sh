@@ -205,6 +205,11 @@ sudo sysctl -p
 # create CCD directory
 sudo -u apache mkdir -p /var/lib/vpn-server-api/ccd
 
+# allow OpenVPN user to run /sbin/ip 
+echo "openvpn ALL=(ALL:ALL) NOPASSWD:/sbin/ip" | sudo tee /etc/sudoers.d/openvpn >/dev/null
+# disable requiretty, https://bugzilla.redhat.com/show_bug.cgi?id=1020147
+sudo sed -i "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers
+
 ###############################################################################
 # SNIPROXY
 ###############################################################################
