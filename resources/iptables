@@ -19,6 +19,5 @@ COMMIT
 -A FORWARD -p icmp -j ACCEPT
 -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 -A FORWARD -i tun+ -o eth0 -s 10.42.42.0/24 -j ACCEPT
--A FORWARD -i tun+ -o eth0 -s 10.43.43.0/24 -j ACCEPT
 -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 COMMIT

@@ -1,0 +1,15 @@
+module openvpn-allow-sudo 1.0;
+
+require {
+	type openvpn_t;
+	type sudo_exec_t;
+	type httpd_sys_rw_content_t;
+	class capability sys_resource;
+	class dir getattr;
+	class file { read execute open getattr execute_no_trans };
+}
+
+#============= openvpn_t ==============
+allow openvpn_t httpd_sys_rw_content_t:dir getattr;
+allow openvpn_t self:capability sys_resource;
+allow openvpn_t sudo_exec_t:file { read execute open getattr execute_no_trans };

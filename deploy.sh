@@ -112,9 +112,6 @@ echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
 sudo -u apache vpn-config-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
 sudo chmod 0600 /etc/openvpn/server.conf
 
-# enable CCD
-sudo sed -i 's|#client-config-dir /var/lib/vpn-server-api/ccd|client-config-dir /var/lib/vpn-server-api/ccd|' /etc/openvpn/server.conf
-
 # enable the client-connect and client-disconnect scripts
 sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
 sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
@@ -126,9 +123,6 @@ sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
-
-sudo sed -i "s|server 10.42.42.0 255.255.255.0|server 10.43.43.0 255.255.255.0|" /etc/openvpn/server-tcp.conf
-sudo sed -i "s|server-ipv6 fd00:4242:4242:1194::/64|server-ipv6 fd00:4242:4242:443::/64|" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
 
 # allow vpn-config-api to run Easy-RSA scripts
@@ -150,9 +144,9 @@ sudo setsebool -P httpd_can_network_connect=on
 sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
 sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 
-# create a data directory for the connection log database, initialize the 
-# database and restore the SELinux context
-sudo mkdir -p /var/lib/openvpn
+# create a data directory for the connection log database and pool, initialize 
+# the database and restore the SELinux context
+sudo mkdir -p /var/lib/openvpn/pool
 sudo chown openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
 sudo restorecon -R /var/lib/openvpn
@@ -186,6 +180,11 @@ checkmodule -M -m -o resources/openvpn-allow-server-api-read.mod resources/openv
 semodule_package -o resources/openvpn-allow-server-api-read.pp -m resources/openvpn-allow-server-api-read.mod 
 sudo semodule -i resources/openvpn-allow-server-api-read.pp
 
+# allow OpenVPN to execute sudo for setting routes
+checkmodule -M -m -o resources/openvpn-allow-sudo.mod resources/openvpn-allow-sudo.te 
+semodule_package -o resources/openvpn-allow-sudo.pp -m resources/openvpn-allow-sudo.mod 
+sudo semodule -i resources/openvpn-allow-sudo.pp
+
 # Firewall
 sudo cp resources/iptables /etc/sysconfig/iptables
 sudo cp resources/ip6tables /etc/sysconfig/ip6tables
@@ -202,8 +201,8 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/nul
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
-# create CCD directory
-sudo -u apache mkdir -p /var/lib/vpn-server-api/ccd
+# create static directory
+sudo -u apache mkdir -p /var/lib/vpn-server-api/static
 
 # allow OpenVPN user to run /sbin/ip 
 echo "openvpn ALL=(ALL:ALL) NOPASSWD:/sbin/ip" | sudo tee /etc/sudoers.d/openvpn >/dev/null
