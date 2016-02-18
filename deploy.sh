@@ -147,7 +147,7 @@ sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 # create a data directory for the connection log database and pool, initialize 
 # the database and restore the SELinux context
 sudo mkdir -p /var/lib/openvpn/pool
-sudo chown openvpn.openvpn /var/lib/openvpn
+sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
 sudo restorecon -R /var/lib/openvpn
 

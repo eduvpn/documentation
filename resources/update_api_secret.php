@@ -19,12 +19,11 @@ use fkooman\Config\YamlFile;
 $hashedSecrets = array(
     '/etc/vpn-config-api/config.yaml' => 'BasicAuthentication',
     '/etc/vpn-server-api/config.yaml' => 'Users',
-    '/etc/vpn-user-portal/config.yaml' => 'ApiAuthentication',
 );
 
 $plainSecrets = array(
     '/etc/vpn-user-portal/config.yaml' => array('VpnConfigApi', 'VpnServerApi'),
-    '/etc/vpn-admin-portal/config.yaml' => array('VpnServerApi', 'VpnUserPortal'),
+    '/etc/vpn-admin-portal/config.yaml' => array('VpnServerApi', 'VpnConfigApi'),
 );
 
 try {
