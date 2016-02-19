@@ -119,6 +119,7 @@ sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|clie
 # also create a TCP config
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
 
+sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
