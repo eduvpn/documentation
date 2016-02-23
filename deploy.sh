@@ -44,7 +44,8 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 # install software
 sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
-    vpn-user-portal iptables iptables-services patch sniproxy iptables-services
+    vpn-user-portal iptables iptables-services patch sniproxy \
+    iptables-services php-fpm
 
 ###############################################################################
 # CERTIFICATE
@@ -238,14 +239,18 @@ sudo systemctl enable openvpn@server-tcp
 sudo systemctl enable sniproxy
 sudo systemctl enable iptables
 sudo systemctl enable ip6tables
+sudo systemctl enable php-fpm
 
+# flush existing firewall rules if they exist and activate the new ones
+sudo systemctl restart iptables
+sudo systemctl restart ip6tables
+
+# start services
+sudo systemctl start php-fpm
 sudo systemctl start httpd
 sudo systemctl start openvpn@server
 sudo systemctl start openvpn@server-tcp
 sudo systemctl start sniproxy
-# flush existing firewall rules if they exist and activate the new ones
-sudo systemctl restart iptables
-sudo systemctl restart ip6tables
 
 ###############################################################################
 # POST INSTALL
