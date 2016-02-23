@@ -73,10 +73,15 @@ sudo sh -c 'echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.con
 sudo cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
 sudo cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
-# localhost and vpn.example VirtualHost
-sudo cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
+# VirtualHost
 sudo cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
+
+# empty the vpn-server-api and vpn-config-api configs instead of deleting as we
+# do not want to expose those to the Internet, and to prevent them from being 
+# overwritten on update
+echo -n "" | sudo tee -a /etc/httpd/conf.d/vpn-server-api.conf >/dev/null
+echo -n "" | sudo tee -a /etc/httpd/conf.d/vpn-config-api.conf >/dev/null
 
 ###############################################################################
 # PHP
