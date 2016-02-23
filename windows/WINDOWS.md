@@ -49,28 +49,9 @@ This will build both a i686 and x86_64 Windows installer.
 
 # Customizing
 
-## Run as Administrator
-
-The `openvpn-gui.manifest` needs to be modified to request the correct 
-privileges when running.
-
-    diff --git a/generic/build b/generic/build
-    index daac1ce..27edc07 100755
-    --- a/generic/build
-    +++ b/generic/build
-    @@ -301,6 +301,8 @@ build_openvpn_gui() {
-     
-     	echo "Build openvpn-gui"
-     	cd "${BUILDROOT}/openvpn-gui"* || die "cd openvpn gui"
-    +        # update manifest to always run as administrator
-    +        sed -i "s/asInvoker/requireAdministrator/" res/openvpn-gui.manifest 
-     	./configure ${CONFIGOPTS} ${EXTRA_OPENVPN_GUI_CONFIG} \
-     		|| die "Configure openvpn-gui"
-     	${MAKE} ${MAKEOPTS} ${MAKE_AUTOCONF_INSTALL_TARGET} DESTDIR="${OPENVPN_ROOT}" || die "make openvpn-gui"
-
 ## Add a configuration file
 
-Now we want to add a default config file to the 
+We want to add a default config file to the 
 `C:\Program Files\OpenVPN\Config` folder. Assuming you built the OpenVPN 
 installer according to the instructions above, we can just re-run the `nsis` 
 command to generate an updated installer with the configuration file 
