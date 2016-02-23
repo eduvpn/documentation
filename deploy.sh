@@ -8,8 +8,6 @@
 # - there is a default user:pass for the user interface and admin interface,
 #   foo:bar, which should be updated and printed at the end of the script so
 #   they are unique for every instance!
-# - look into deploying using php-fpm instead of mod_php to increase 
-#   performance of the web interfaces
 
 ###############################################################################
 # VARIABLES
