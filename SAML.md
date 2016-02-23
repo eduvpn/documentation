@@ -39,7 +39,7 @@ The follow file you place in `/etc/httpd/conf.d/saml.conf`:
     </Location>
 
     # Disable Mellon for the API
-    <Location /vpn-user-portal/index.php/api/config>
+    <Location /vpn-user-portal/api/config>
         MellonEnable "off"
     </Location>
 
