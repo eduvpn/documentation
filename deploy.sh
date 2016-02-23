@@ -42,10 +42,10 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedor
 sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/vpn-management/repo/epel-7/fkooman-vpn-management-epel-7.repo
 
 # install software
-sudo yum -y install openvpn easy-rsa mod_ssl php php-opcache httpd openssl \
+sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services patch sniproxy \
-    iptables-services php-fpm
+    iptables-services php-fpm php-cli
 
 ###############################################################################
 # CERTIFICATE
@@ -78,11 +78,12 @@ sudo cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 sudo cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
 
-# empty the vpn-server-api and vpn-config-api configs instead of deleting as we
-# do not want to expose those to the Internet, and to prevent them from being 
-# overwritten on update
+# empty the RPM httpd configs instead of deleting as we do not get them back
+# on package update
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-server-api.conf >/dev/null
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-config-api.conf >/dev/null
+echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-user-portal.conf >/dev/null
+echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-admin-portal.conf >/dev/null
 
 ###############################################################################
 # PHP
