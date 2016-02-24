@@ -166,13 +166,17 @@ sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-# NOP
+# enable template cache
+sudo sed -i "s/#templateCache/templateCache/" /etc/vpn-admin-portal/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
 sudo -u apache vpn-user-portal-init
+
+# enable template cache
+sudo sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
 
 ###############################################################################
 # OPENVPN
