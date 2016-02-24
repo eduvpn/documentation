@@ -19,7 +19,6 @@ EXTERNAL_IF=eth0
 KEY_SIZE=4096
 
 # only change if you know what you are doing!
-API_USER=api
 API_SECRET=`openssl rand -hex 16`
 
 ###############################################################################
@@ -230,7 +229,11 @@ sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
 ###############################################################################
 # UPDATE SECRETS
 ###############################################################################
-sudo php resources/update_api_secret.php ${API_USER} ${API_SECRET}
+
+# XXX update user secret
+
+# update API secret
+sudo php resources/update_api_secret.php ${API_SECRET}
 
 ###############################################################################
 # DAEMONS
