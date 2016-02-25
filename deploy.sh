@@ -161,6 +161,10 @@ checkmodule -M -m -o resources/httpd-allow-openvpn-var-lib-t-read.mod resources/
 semodule_package -o resources/httpd-allow-openvpn-var-lib-t-read.pp -m resources/httpd-allow-openvpn-var-lib-t-read.mod 
 sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 
+# install a crontab to cleanup the connection log database every day
+# (remove entries older than one month)
+echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
+
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
