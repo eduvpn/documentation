@@ -5,7 +5,7 @@ require_once '/usr/share/php/fkooman/Config/autoload.php';
 use fkooman\Config\YamlFile;
 
 $configFiles = [
-    '/etc/vpn-config-api/config.yaml' => 's',
+    '/etc/vpn-ca-api/config.yaml' => 's',
     '/etc/vpn-server-api/config.yaml' => 's',
     '/etc/vpn-user-portal/config.yaml' => 'c',
     '/etc/vpn-admin-portal/config.yaml' => 'c',

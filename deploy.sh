@@ -40,7 +40,7 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 
 # install software
 sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
-    policycoreutils-python vpn-server-api vpn-config-api vpn-admin-portal \
+    policycoreutils-python vpn-server-api vpn-ca-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services patch sniproxy \
     iptables-services php-fpm php-cli
 
@@ -78,7 +78,7 @@ sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
 # empty the RPM httpd configs instead of deleting as we do not get them back
 # on package update
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-server-api.conf >/dev/null
-echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-config-api.conf >/dev/null
+echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-ca-api.conf >/dev/null
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-user-portal.conf >/dev/null
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-admin-portal.conf >/dev/null
 
@@ -96,24 +96,24 @@ sudo sed -i 's/expose_php = On/expose_php = Off/' /etc/php.ini
 sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opcache.ini
 
 ###############################################################################
-# VPN-CONFIG-API
+# vpn-ca-api
 ###############################################################################
 
-sudo sed -i "s/key_size: '4096'/key_size: '${KEY_SIZE}'/" /etc/vpn-config-api/config.yaml
+sudo sed -i "s/key_size: '4096'/key_size: '${KEY_SIZE}'/" /etc/vpn-ca-api/config.yaml
 # initialize the CA
-sudo -u apache vpn-config-api-init
+sudo -u apache vpn-ca-api-init
 
 # copy the default config templates
-sudo mkdir /etc/vpn-config-api/views
-sudo cp /usr/share/vpn-config-api/views/*.twig /etc/vpn-config-api/views
+sudo mkdir /etc/vpn-ca-api/views
+sudo cp /usr/share/vpn-ca-api/views/*.twig /etc/vpn-ca-api/views
 
 # update hostname in client.twig
-sudo sed -i "s/remote vpn.example 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-config-api/views/client.twig
-sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-config-api/views/client.twig
+sudo sed -i "s/remote vpn.example 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-ca-api/views/client.twig
+sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-ca-api/views/client.twig
 
 # generate a server configuration file
 echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
-sudo -u apache vpn-config-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
+sudo -u apache vpn-ca-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
 sudo chmod 0600 /etc/openvpn/server.conf
 
 # enable the client-connect and client-disconnect scripts
@@ -130,7 +130,7 @@ sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.con
 sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
 sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
 
-# allow vpn-config-api to run Easy-RSA scripts
+# allow vpn-ca-api to run Easy-RSA scripts
 sudo setsebool -P httpd_unified 1
 
 ###############################################################################
@@ -144,9 +144,9 @@ sudo sed -i "s|#  socket: 'tcp://localhost:7506'|  socket: 'tcp://localhost:7506
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
 
-# we take the CRL from vpn-config-api and install it in vpn-server-api so 
+# we take the CRL from vpn-ca-api and install it in vpn-server-api so 
 # OpenVPN will start
-sudo -u apache cp /var/lib/vpn-config-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
+sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
 sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 
 # create a data directory for the connection log database and pool, initialize 
