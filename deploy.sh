@@ -11,6 +11,7 @@
 # - there is a default user:pass for the user interface and admin interface,
 #   foo:bar, which should be updated and printed at the end of the script so
 #   they are unique for every instance!
+# WTF is up with the session directory :(
 
 ###############################################################################
 # VARIABLES
@@ -141,25 +142,6 @@ sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 # (remove entries older than one month)
 echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
 
-# generate a server configuration file
-echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
-sudo -u apache vpn-server-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
-sudo chmod 0600 /etc/openvpn/server.conf
-
-# enable the client-connect and client-disconnect scripts
-sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
-sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
-
-# also create a TCP config
-sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
-
-sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
-
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
@@ -241,13 +223,11 @@ sudo php resources/update_api_secret.php
 # DAEMONS
 ###############################################################################
 
-sudo systemctl enable httpd
-sudo systemctl enable openvpn@server
-sudo systemctl enable openvpn@server-tcp
-sudo systemctl enable sniproxy
 sudo systemctl enable iptables
 sudo systemctl enable ip6tables
 sudo systemctl enable php-fpm
+sudo systemctl enable httpd
+sudo systemctl enable sniproxy
 
 # flush existing firewall rules if they exist and activate the new ones
 sudo systemctl restart iptables
@@ -256,9 +236,36 @@ sudo systemctl restart ip6tables
 # start services
 sudo systemctl start php-fpm
 sudo systemctl start httpd
+sudo systemctl start sniproxy
+
+###############################################################################
+# SERVER CONFIG
+###############################################################################
+
+# generate a server configuration file
+echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
+sudo -u apache vpn-server-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
+sudo chmod 0600 /etc/openvpn/server.conf
+
+# enable the client-connect and client-disconnect scripts
+sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
+sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
+
+# also create a TCP config
+sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
+
+sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
+
+# enable and start OpenVPN
+sudo systemctl enable openvpn@server
+sudo systemctl enable openvpn@server-tcp
 sudo systemctl start openvpn@server
 sudo systemctl start openvpn@server-tcp
-sudo systemctl start sniproxy
 
 ###############################################################################
 # POST INSTALL
