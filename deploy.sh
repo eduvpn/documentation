@@ -3,7 +3,10 @@
 # Script to deploy eduVPN on a CentOS >= 7 installation.
 #
 # Tested on CentOS 7.2
-
+#
+# NOTE: make sure you installed all updates:
+#     $ sudo yum clean all && sudo yum -y update
+#
 # TODO: 
 # - there is a default user:pass for the user interface and admin interface,
 #   foo:bar, which should be updated and printed at the end of the script so
@@ -18,14 +21,11 @@ HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
 KEY_SIZE=4096
 
-# only change if you know what you are doing!
-API_SECRET=`openssl rand -hex 16`
-
 ###############################################################################
 # SYSTEM
 ###############################################################################
 
-sudo yum -y update
+# NOP
 
 ###############################################################################
 # SOFTWARE
@@ -103,33 +103,6 @@ sudo sed -i "s/key_size: '4096'/key_size: '${KEY_SIZE}'/" /etc/vpn-ca-api/config
 # initialize the CA
 sudo -u apache vpn-ca-api-init
 
-# copy the default config templates
-sudo mkdir /etc/vpn-ca-api/views
-sudo cp /usr/share/vpn-ca-api/views/*.twig /etc/vpn-ca-api/views
-
-# update hostname in client.twig
-sudo sed -i "s/remote vpn.example 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-ca-api/views/client.twig
-sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-ca-api/views/client.twig
-
-# generate a server configuration file
-echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
-sudo -u apache vpn-ca-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
-sudo chmod 0600 /etc/openvpn/server.conf
-
-# enable the client-connect and client-disconnect scripts
-sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
-sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
-
-# also create a TCP config
-sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
-
-sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
-
 # allow vpn-ca-api to run Easy-RSA scripts
 sudo setsebool -P httpd_unified 1
 
@@ -156,6 +129,9 @@ sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
 sudo restorecon -R /var/lib/openvpn
 
+# create directory for CN configurations
+sudo -u apache mkdir -p /var/lib/vpn-server-api/config
+
 # allow Apache to read the openvpn_var_lib_t sqlite file
 checkmodule -M -m -o resources/httpd-allow-openvpn-var-lib-t-read.mod resources/httpd-allow-openvpn-var-lib-t-read.te
 semodule_package -o resources/httpd-allow-openvpn-var-lib-t-read.pp -m resources/httpd-allow-openvpn-var-lib-t-read.mod 
@@ -164,6 +140,25 @@ sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 # install a crontab to cleanup the connection log database every day
 # (remove entries older than one month)
 echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
+
+# generate a server configuration file
+echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
+sudo -u apache vpn-server-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
+sudo chmod 0600 /etc/openvpn/server.conf
+
+# enable the client-connect and client-disconnect scripts
+sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
+sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
+
+# also create a TCP config
+sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
+
+sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
+sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
@@ -180,6 +175,14 @@ sudo -u apache vpn-user-portal-init
 
 # enable template cache
 sudo sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
+
+# copy the default config templates
+sudo mkdir /etc/vpn-user-portal/views
+sudo cp /usr/share/vpn-user-portal/views/client.twig /etc/vpn-user-portal/views
+
+# update hostname in client.twig
+sudo sed -i "s/remote vpn.example 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-user-portal/views/client.twig
+sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-user-portal/views/client.twig
 
 ###############################################################################
 # OPENVPN
@@ -214,9 +217,6 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/nul
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
-# create static directory
-sudo -u apache mkdir -p /var/lib/vpn-server-api/static
-
 # allow OpenVPN user to run /sbin/ip 
 echo "openvpn ALL=(ALL:ALL) NOPASSWD:/sbin/ip" | sudo tee /etc/sudoers.d/openvpn >/dev/null
 # disable requiretty, https://bugzilla.redhat.com/show_bug.cgi?id=1020147
@@ -234,10 +234,8 @@ sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
 # UPDATE SECRETS
 ###############################################################################
 
-# XXX update user secret
-
 # update API secret
-sudo php resources/update_api_secret.php ${API_SECRET}
+sudo php resources/update_api_secret.php
 
 ###############################################################################
 # DAEMONS
