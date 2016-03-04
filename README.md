@@ -6,8 +6,8 @@ and deploy instructions for various deployment scenarios.
 # Features
 
 - OpenVPN server running allowing connections over UDP/TCP;
-- Full IPv6 support;
-- Built in CA for managing client certificates;
+- Full IPv6 support (both to the VPN service as over the VPN tunnel);
+- Builtin CA for managing client certificates;
 - User Portal to allow users to manage their own configurations for their 
   devices;
 - Admin Portal manage users, configurations and connections
@@ -39,12 +39,12 @@ below we generate one for the password `s3cr3t`:
 
     $ php -r "require_once '/usr/share/php/password_compat/password.php'; echo password_hash('s3cr3t', PASSWORD_DEFAULT) . PHP_EOL;"
 
-Put this hash in the files `/etc/vpn-user-portal/config.ini` and 
-`/etc/vpn-admin-portal/config.ini` in the section `[BasicAuthentication]`, 
+Put this hash in the files `/etc/vpn-user-portal/config.yaml` and 
+`/etc/vpn-admin-portal/config.yaml` in the section `FormAuthentication`, 
 e.g.:
     
-    [BasicAuthentication]
-    admin = "$2y$10$i.vmEWgE9HGqlglI8wXYLeFdMWYvYJxEz5k4fjW/RLvCrCcDk0Xjy"
+    FormAuthentication:
+        admin: $2y$10$i.vmEWgE9HGqlglI8wXYLeFdMWYvYJxEz5k4fjW/RLvCrCcDk0Xjy
 
 # CA certificate
 You can request a certificate from your CA after running the script. The script
