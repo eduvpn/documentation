@@ -11,7 +11,6 @@
 # - there is a default user:pass for the user interface and admin interface,
 #   foo:bar, which should be updated and printed at the end of the script so
 #   they are unique for every instance!
-# WTF is up with the session directory :(
 
 ###############################################################################
 # VARIABLES
