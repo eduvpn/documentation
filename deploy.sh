@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Script to deploy eduVPN on a CentOS >= 7 installation.
+# Script to deploy eduvpn on a CentOS >= 7 installation.
 #
 # Tested on CentOS 7.2
 #

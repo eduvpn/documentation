@@ -1,6 +1,6 @@
 # Introduction
 
-This is the eduVPN documentation repository. You can find documents, scripts
+This is the eduvpn documentation repository. You can find documents, scripts
 and deploy instructions for various deployment scenarios.
 
 # Features
@@ -21,7 +21,7 @@ For simple one server deployments and tests, we have a simple deploy script
 available you can run on a fresh CentOS 7 installation. It will configure all
 components and will be ready to use after running!
 
-    $ curl -L -O https://github.com/eduVPN/documentation/archive/master.tar.gz
+    $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
     $ tar -xzf master.tar.gz
     $ cd documentation-master
 

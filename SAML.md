@@ -1,7 +1,7 @@
 # Introduction
 
 This document describes how to configure SAML authentication for deployed
-systems. We assume you used the `deploy.sh` script to deploy eduVPN. Below we
+systems. We assume you used the `deploy.sh` script to deploy eduvpn. Below we
 assume you use `vpn.example`, but modify this domain to your own domain name!
 
 A convenient script is installed by `mod_auth_mellon` to generate all 
