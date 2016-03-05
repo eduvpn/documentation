@@ -25,8 +25,9 @@ components and will be ready to use after running!
     $ tar -xzf master.tar.gz
     $ cd documentation-master
 
-Modify `deploy.sh` to set the hostname you wish to use for the server and then
-run the script:
+Modify `deploy.sh` to set `HOSTNAME` to the name you want to use for the server 
+and possibly the `EXTERNAL_IF` parameter to point to the adapter connecting to 
+the Internet. Then run the script:
 
     $ ./deploy.sh
 
