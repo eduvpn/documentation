@@ -182,13 +182,6 @@ checkmodule -M -m -o resources/openvpn-allow-sudo.mod resources/openvpn-allow-su
 semodule_package -o resources/openvpn-allow-sudo.pp -m resources/openvpn-allow-sudo.mod 
 sudo semodule -i resources/openvpn-allow-sudo.pp
 
-# Firewall
-sudo cp resources/iptables /etc/sysconfig/iptables
-sudo cp resources/ip6tables /etc/sysconfig/ip6tables
-# update firewall outgoing interface
-sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/iptables
-sudo sed -i "s/eth0/${EXTERNAL_IF}/" /etc/sysconfig/ip6tables
-
 # enable forwarding
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
@@ -222,15 +215,9 @@ sudo php resources/update_api_secret.php
 # DAEMONS
 ###############################################################################
 
-sudo systemctl enable iptables
-sudo systemctl enable ip6tables
 sudo systemctl enable php-fpm
 sudo systemctl enable httpd
 sudo systemctl enable sniproxy
-
-# flush existing firewall rules if they exist and activate the new ones
-sudo systemctl restart iptables
-sudo systemctl restart ip6tables
 
 # start services
 sudo systemctl start php-fpm
@@ -238,7 +225,7 @@ sudo systemctl start httpd
 sudo systemctl start sniproxy
 
 ###############################################################################
-# SERVER CONFIG
+# OPENVPN SERVER CONFIG
 ###############################################################################
 
 # generate a server configuration file
@@ -265,6 +252,20 @@ sudo systemctl enable openvpn@server
 sudo systemctl enable openvpn@server-tcp
 sudo systemctl start openvpn@server
 sudo systemctl start openvpn@server-tcp
+
+###############################################################################
+# FIREWALL
+###############################################################################
+
+# the firewall is generated based on the /etc/vpn-server-api/ip.yaml file
+sudo vpn-server-api-generate-firewall --nat --install ${EXTERNAL_IF}
+
+sudo systemctl enable iptables
+sudo systemctl enable ip6tables
+
+# flush existing firewall rules if they exist and activate the new ones
+sudo systemctl restart iptables
+sudo systemctl restart ip6tables
 
 ###############################################################################
 # POST INSTALL
