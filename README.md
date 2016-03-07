@@ -60,14 +60,13 @@ Make sure you check the configuration with
 
 ## Let's Encrypt
 
+    $ sudo systemctl stop httpd
     $ sudo systemctl stop sniproxy
     $ sudo yum -y install letsencrypt
     $ letsencrypt certonly
 
 Now walk through the wizard, this should result in you getting the certificate
 for your host.
-
-    $ sudo systemctl start sniproxy
 
 Copy the generated certificates, replace `vpn.example` by your chose hostname:
 
@@ -79,4 +78,9 @@ Modify `/etc/httpd/conf.d/vpn.example.conf` by enabling the
 `SSLCertificateChainFile`:
 
     SSLCertificateChainFile /etc/pki/tls/certs/vpn.example-chain.crt
+
+Restart the web server and sniproxy again:
+
+    $ sudo systemctl start httpd
+    $ sudo systemctl start sniproxy
 
