@@ -34,16 +34,16 @@ The follow file you place in `/etc/httpd/conf.d/saml.conf`:
         MellonEndpointPath /saml
     </Location>
 
-    <Location /vpn-user-portal>
+    <Location /portal>
         MellonEnable "auth"
     </Location>
 
     # Disable Mellon for the API
-    <Location /vpn-user-portal/api/config>
+    <Location /portal/api/config>
         MellonEnable "off"
     </Location>
 
-    #<Location /vpn-admin-portal>
+    #<Location /admin>
     #    MellonEnable "auth"
     #
     #    MellonCond "NAME_ID" "aa3f6fade450f12aa891bf066b86921344e2a1f1" [OR]
@@ -54,7 +54,7 @@ Restart the web server:
 
     $ sudo systemctl restart httpd
 
-Now when you visit `https://vpn.example/vpn-user-portal/` you should be 
+Now when you visit `https://vpn.example/portal/` you should be 
 redirected to the IdP. If this works, you probably need to register your SP
 at your IdP. You can use the following URL with metadata:
 
@@ -63,17 +63,17 @@ at your IdP. You can use the following URL with metadata:
 You also need to modify the `vpn-user-portal` configuration to specify the 
 attribute that should be used to identify the users.
 
-Edit `/etc/vpn-user-portal/config.ini` and set:
+Edit `/etc/vpn-user-portal/config.yaml` and set:
         
-    authMethod = MellonAuthentication
+    authMethod: MellonAuthentication
 
 By default the NAME_ID will be used to identify the users, if you want to 
-change that change the `attribute` value under `[MellonAuthentication]`.
+change that change the `attribute` value under `MellonAuthentication`.
 
 If you want to also have `vpn-admin-portal` be protected by SAML, make sure
-you uncomment the `<Location /vpn-admin-portal>` section above and figure out 
+you uncomment the `<Location /admin>` section above and figure out 
 the attribute and values they should have to match with administrators. Also 
-modify `/etc/vpn-admin-portal/config.ini` analogue to the modifications for 
+modify `/etc/vpn-admin-portal/config.yaml` analogue to the modifications for 
 `vpn-user-portal`.
 
 That should be all!
