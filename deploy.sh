@@ -191,6 +191,13 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/nul
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
+# set sane ARP responses on interfaces
+# XXX maybe use "default" instead of all?
+# XXX enable it
+#echo "net.ipv4.conf.all.arp_announce = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
+#echo "net.ipv4.conf.all.arp_notify = 1" | sudo tee -a /etc/sysctl.conf >/dev/null
+#echo "net.ipv4.conf.all.arp_ignore=1" | sudo tee -a /etc/sysctl.conf >/dev/null
+
 # allow OpenVPN user to run /sbin/ip 
 echo "openvpn ALL=(ALL:ALL) NOPASSWD:/sbin/ip" | sudo tee /etc/sudoers.d/openvpn >/dev/null
 # disable requiretty, https://bugzilla.redhat.com/show_bug.cgi?id=1020147
