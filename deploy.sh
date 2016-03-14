@@ -92,6 +92,11 @@ sudo sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php.ini
 #https://secure.php.net/manual/en/ini.core.php#ini.expose-php
 sudo sed -i 's/expose_php = On/expose_php = Off/' /etc/php.ini
 
+# more secure PHP sessions
+# https://paragonie.com/blog/2015/04/fast-track-safe-and-secure-php-sessions
+sudo sed -i 's/session.hash_function = 0/session.hash_function = sha256/' /etc/php.ini
+sudo sed -i 's/;session.entropy_length = 32/session.entropy_length = 32/' /etc/php.ini
+
 # recommendation from https://php.net/manual/en/opcache.installation.php
 sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opcache.ini
 
@@ -239,10 +244,6 @@ sudo systemctl start sniproxy
 echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
 sudo -u apache vpn-server-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
 sudo chmod 0600 /etc/openvpn/server.conf
-
-# enable the client-connect and client-disconnect scripts
-sudo sed -i "s|#client-connect /usr/bin/vpn-server-api-client-connect|client-connect /usr/bin/vpn-server-api-client-connect|" /etc/openvpn/server.conf
-sudo sed -i "s|#client-disconnect /usr/bin/vpn-server-api-client-disconnect|client-disconnect /usr/bin/vpn-server-api-client-disconnect|" /etc/openvpn/server.conf
 
 # also create a TCP config
 sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
