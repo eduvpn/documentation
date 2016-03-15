@@ -10,7 +10,7 @@ cd ${BACKUP_DIR}
 
 # software
 tar -cf vpn-server-api.tar /var/lib/vpn-server-api /etc/vpn-server-api
-tar -cf vpn-config-api.tar /var/lib/vpn-config-api /etc/vpn-config-api
+tar -cf vpn-ca-api.tar /var/lib/vpn-ca-api /etc/vpn-ca-api
 tar -cf vpn-user-portal.tar /var/lib/vpn-user-portal /etc/vpn-user-portal
 tar -cf vpn-admin-portal.tar /var/lib/vpn-admin-portal /etc/vpn-admin-portal
 
