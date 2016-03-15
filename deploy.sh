@@ -240,25 +240,15 @@ sudo systemctl start sniproxy
 # OPENVPN SERVER CONFIG
 ###############################################################################
 
-# generate a server configuration file
+# generate the server configuration files
 echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
-sudo -u apache vpn-server-api-server-config ${HOSTNAME} | sudo tee /etc/openvpn/server.conf >/dev/null
-sudo chmod 0600 /etc/openvpn/server.conf
-
-# also create a TCP config
-sudo cp /etc/openvpn/server.conf /etc/openvpn/server-tcp.conf
-
-sudo sed -i "s/^dev tun-udp/dev tun-tcp/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^proto udp6/#proto udp6/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^port 1194/#port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#proto tcp-server/proto tcp-server/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s/^#port 1194/port 1194/" /etc/openvpn/server-tcp.conf
-sudo sed -i "s|management localhost 7505|management localhost 7506|" /etc/openvpn/server-tcp.conf
+sudo vpn-server-api-server-config ${HOSTNAME} 
+sudo chmod 0600 /etc/openvpn/*.conf
 
 # enable and start OpenVPN
-sudo systemctl enable openvpn@server
+sudo systemctl enable openvpn@server-udp
 sudo systemctl enable openvpn@server-tcp
-sudo systemctl start openvpn@server
+sudo systemctl start openvpn@server-udp
 sudo systemctl start openvpn@server-tcp
 
 ###############################################################################
