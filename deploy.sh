@@ -273,7 +273,7 @@ sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
 USER_PASS=`pwgen 12 -n 1`
 ADMIN_PASS=`pwgen 12 -n 1`
 sudo vpn-user-portal-add-user me ${USER_PASS}
-sudo vpn-admin-portal-add-user admin ${ADMIN_PASS)
+sudo vpn-admin-portal-add-user admin ${ADMIN_PASS}
 
 echo "########################################################################"
 echo "#"
