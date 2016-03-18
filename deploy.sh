@@ -7,11 +7,6 @@
 # NOTE: make sure you installed all updates:
 #     $ sudo yum clean all && sudo yum -y update
 #
-# TODO: 
-# - there is a default user:pass for the user interface and admin interface,
-#   foo:bar, which should be updated and printed at the end of the script so
-#   they are unique for every instance!
-
 ###############################################################################
 # VARIABLES
 ###############################################################################
@@ -42,7 +37,7 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-ca-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli php
+    iptables-services php-fpm php-cli php pwgen
 
 ###############################################################################
 # CERTIFICATE
@@ -274,4 +269,22 @@ sudo mkdir -p /var/www/${HOSTNAME}
 sudo cp resources/index.html /var/www/${HOSTNAME}/index.html
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
 
+# adding users
+USER_PASS=`pwgen 12 -n 1`
+ADMIN_PASS=`pwgen 12 -n 1`
+sudo vpn-user-portal-add-user me ${USER_PASS}
+sudo vpn-admin-portal-add-user admin ${ADMIN_PASS)
+
+echo "########################################################################"
+echo "#"
+echo "# Admin Portal"
+echo "#     https://${HOST_NAME}/admin"
+echo "#         User: admin"
+echo "#         Pass: ${ADMIN_PASS}"
+echo "# User Portal"
+echo "#     https://${HOST_NAME}/portal"
+echo "#         User: me"
+echo "#         Pass: ${USER_PASS}"
+echo "#"
+echo "########################################################################"
 # ALL DONE!
