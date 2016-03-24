@@ -37,7 +37,7 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-ca-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli php pwgen php-mcrypt
+    iptables-services php-fpm php-cli php pwgen php-mcrypt php-pecl-libsodium
 
 ###############################################################################
 # CERTIFICATE
