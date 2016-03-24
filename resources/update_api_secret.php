@@ -1,14 +1,15 @@
 <?php
 
 require_once '/usr/share/php/fkooman/Config/autoload.php';
+require_once '/usr/share/php/random_compat/autoload.php';
 
 use fkooman\Config\YamlFile;
 
-$vupvca = bin2hex(openssl_random_pseudo_bytes(16));
-$vupvsa = bin2hex(openssl_random_pseudo_bytes(16));
-$vapvca = bin2hex(openssl_random_pseudo_bytes(16));
-$vapvsa = bin2hex(openssl_random_pseudo_bytes(16));
-$vsavca = bin2hex(openssl_random_pseudo_bytes(16));
+$vupvca = bin2hex(random_bytes(16));
+$vupvsa = bin2hex(random_bytes(16));
+$vapvca = bin2hex(random_bytes(16));
+$vapvsa = bin2hex(random_bytes(16));
+$vsavca = bin2hex(random_bytes(16));
 
 #$vupvca = 'XXX-vpn-user-portal/vpn-ca-api-XXX';
 #$vupvsa = 'XXX-vpn-user-portal/vpn-server-api-XXX';
