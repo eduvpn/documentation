@@ -7,6 +7,15 @@
 # NOTE: make sure you installed all updates:
 #     $ sudo yum clean all && sudo yum -y update
 #
+# NOTE: make sure the HOSTNAME used below can be resolved, either in DNS 
+#       or with a /etc/hosts entry, e.g.:
+#
+#           10.20.30.44 vpn.example
+#
+# NOTE: edit the variables below if you need to. Set the correct HOSTNAME and
+#       the interface connecting to the Internet from your machine
+#
+
 ###############################################################################
 # VARIABLES
 ###############################################################################
@@ -37,7 +46,7 @@ sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr
 sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python vpn-server-api vpn-ca-api vpn-admin-portal \
     vpn-user-portal iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli php pwgen php-mcrypt php-pecl-libsodium
+    iptables-services php-fpm php-cli php pwgen php-pecl-libsodium
 
 ###############################################################################
 # CERTIFICATE

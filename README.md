@@ -27,7 +27,14 @@ components and will be ready to use after running!
 
 Modify `deploy.sh` to set `HOSTNAME` to the name you want to use for the server 
 and possibly the `EXTERNAL_IF` parameter to point to the adapter connecting to 
-the Internet. Then run the script:
+the Internet. 
+
+Make sure the `HOSTNAME` you use can be resolved through DNS or is set in your
+`/etc/hosts` file on the machine you want to access the service from, e.g.:
+
+    10.20.30.40 vpn.example
+
+Then run the script:
 
     $ ./deploy.sh
 
