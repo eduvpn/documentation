@@ -15,6 +15,10 @@
 # NOTE: edit the variables below if you need to. Set the correct HOSTNAME and
 #       the interface connecting to the Internet from your machine
 #
+# TODO:
+# - clean SELinux stuff to one section, not scatered all over the place
+# - make this script work on Fedora out of the box, not just CentOS
+#
 
 ###############################################################################
 # VARIABLES
@@ -69,8 +73,8 @@ sudo openssl req -subj "/CN=${HOSTNAME}" -sha256 -new -x509 -key /etc/pki/tls/pr
 # https://httpd.apache.org/docs/2.4/mod/core.html#ServerTokens
 sudo sh -c 'echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf'
 
-# We took the default `/etc/httpd/conf.d/ssl.conf` file, hardened it, gives 
-# A+ on https://www.ssllabs.com/ssltest/
+# Use a hardended ssl.conf instead of the default, gives A+ on
+# https://www.ssllabs.com/ssltest/
 sudo cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
 sudo cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
@@ -78,7 +82,7 @@ sudo cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 sudo cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
 
-# empty the RPM httpd configs instead of deleting as we do not get them back
+# empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-server-api.conf >/dev/null
 echo "# emptied by deploy.sh" | sudo tee /etc/httpd/conf.d/vpn-ca-api.conf >/dev/null
