@@ -23,7 +23,6 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
-KEY_SIZE=4096
 
 ###############################################################################
 # SYSTEM
@@ -108,7 +107,6 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # vpn-ca-api
 ###############################################################################
 
-sudo sed -i "s/key_size: '4096'/key_size: '${KEY_SIZE}'/" /etc/vpn-ca-api/config.yaml
 # initialize the CA
 sudo -u apache vpn-ca-api-init
 
