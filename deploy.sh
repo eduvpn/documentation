@@ -45,11 +45,13 @@ sudo yum -y install epel-release
 sudo curl -L -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/php-base/repo/epel-7/fkooman-php-base-epel-7.repo
 sudo curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/vpn-management/repo/epel-7/fkooman-vpn-management-epel-7.repo
 
-# install software
+# install software (dependencies)
 sudo yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
-    policycoreutils-python vpn-server-api vpn-ca-api vpn-admin-portal \
-    vpn-user-portal iptables iptables-services patch sniproxy \
+    policycoreutils-python iptables iptables-services patch sniproxy \
     iptables-services php-fpm php-cli php pwgen php-pecl-libsodium
+
+# install software (VPN packages)
+sudo yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # CERTIFICATE
@@ -120,10 +122,6 @@ sudo setsebool -P httpd_unified 1
 ###############################################################################
 # VPN-SERVER-API
 ###############################################################################
-
-# we also want to connect to the second OpenVPN instance
-sudo sed -i 's|#- id: TCP|- id: TCP|' /etc/vpn-server-api/config.yaml
-sudo sed -i "s|#  socket: 'tcp://localhost:7506'|  socket: 'tcp://localhost:7506'|" /etc/vpn-server-api/config.yaml
 
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
