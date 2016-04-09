@@ -126,6 +126,10 @@ sudo setsebool -P httpd_unified 1
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
 
+# update the IPv4 CIDR and IPv4 prefix to random IP ranges
+# XXX only works in `simple` branch of vpn-server-api for now
+#sudo php resources/update_ip.php
+
 # we take the CRL from vpn-ca-api and install it in vpn-server-api so 
 # OpenVPN will start
 sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
