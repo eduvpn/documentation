@@ -126,18 +126,17 @@ sudo setsebool -P httpd_unified 1
 # allow vpn-server-api to connect to OpenVPN management interface
 sudo setsebool -P httpd_can_network_connect=on
 
-# update the IPv4 CIDR and IPv4 prefix to random IP ranges
-# XXX only works in `simple` branch of vpn-server-api for now
-#sudo php resources/update_ip.php
+# update the IPv4 CIDR and IPv6 prefix to random IP ranges
+sudo php resources/update_ip.php
 
 # we take the CRL from vpn-ca-api and install it in vpn-server-api so 
 # OpenVPN will start
 sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
 sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 
-# create a data directory for the connection log database and pool, initialize 
+# create a data directory for the connection log database, initialize 
 # the database and restore the SELinux context
-sudo mkdir -p /var/lib/openvpn/pool
+sudo mkdir -p /var/lib/openvpn
 sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
 sudo restorecon -R /var/lib/openvpn
@@ -190,17 +189,14 @@ checkmodule -M -m -o resources/openvpn-allow-server-api-read.mod resources/openv
 semodule_package -o resources/openvpn-allow-server-api-read.pp -m resources/openvpn-allow-server-api-read.mod 
 sudo semodule -i resources/openvpn-allow-server-api-read.pp
 
-# allow OpenVPN to execute sudo for setting routes
-checkmodule -M -m -o resources/openvpn-allow-sudo.mod resources/openvpn-allow-sudo.te 
-semodule_package -o resources/openvpn-allow-sudo.pp -m resources/openvpn-allow-sudo.mod 
-sudo semodule -i resources/openvpn-allow-sudo.pp
-
 # enable forwarding
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 
 # forwarding disables accepting RAs on our external interface, so we have to 
-# explicitly enable it here to make IPv6 work
+# explicitly enable it here to make IPv6 work. This is only needed for deploys
+# with native IPv6 obtained via router advertisements, not for fixed IPv6 
+# configurations
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
 
@@ -210,11 +206,6 @@ sudo sysctl -p
 #echo "net.ipv4.conf.all.arp_announce = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 #echo "net.ipv4.conf.all.arp_notify = 1" | sudo tee -a /etc/sysctl.conf >/dev/null
 #echo "net.ipv4.conf.all.arp_ignore=1" | sudo tee -a /etc/sysctl.conf >/dev/null
-
-# allow OpenVPN user to run /sbin/ip 
-echo "openvpn ALL=(ALL:ALL) NOPASSWD:/sbin/ip" | sudo tee /etc/sudoers.d/openvpn >/dev/null
-# disable requiretty, https://bugzilla.redhat.com/show_bug.cgi?id=1020147
-sudo sed -i "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers
 
 ###############################################################################
 # SNIPROXY
