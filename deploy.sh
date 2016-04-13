@@ -17,7 +17,6 @@
 #
 # TODO:
 # - make this script work on Fedora out of the box, not just CentOS
-#
 
 ###############################################################################
 # VARIABLES
@@ -56,7 +55,16 @@ sudo yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 # SELINUX
 ###############################################################################
 
-# here we do all SELinux tweaking
+# allow Apache to connect to PHP-FPM
+sudo setsebool -P httpd_can_network_connect=1
+
+# allow OpenVPN to listen on its management ports
+sudo semanage port -a -t openvpn_port_t -p tcp 11940-11949
+
+# install a custom module to allow reading/writing to OpenVPN/httpd paths
+checkmodule -M -m -o resources/vpn-management.mod resources/vpn-management.te
+semodule_package -o resources/vpn-management.pp -m resources/vpn-management.mod 
+sudo semodule -i resources/vpn-management.pp
 
 ###############################################################################
 # CERTIFICATE
@@ -121,15 +129,9 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # initialize the CA
 sudo -u apache vpn-ca-api-init
 
-# allow vpn-ca-api to run Easy-RSA scripts
-#sudo setsebool -P httpd_unified 1
-
 ###############################################################################
 # VPN-SERVER-API
 ###############################################################################
-
-# allow vpn-server-api to connect to OpenVPN management interface
-#sudo setsebool -P httpd_can_network_connect=on
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges
 sudo php resources/update_ip.php
@@ -144,15 +146,9 @@ sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 sudo mkdir -p /var/lib/openvpn
 sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
-#sudo restorecon -R /var/lib/openvpn
 
 # create directory for CN configurations
 sudo -u apache mkdir -p /var/lib/vpn-server-api/config
-
-# allow Apache to read the openvpn_var_lib_t sqlite file
-#checkmodule -M -m -o resources/httpd-allow-openvpn-var-lib-t-read.mod resources/httpd-allow-openvpn-var-lib-t-read.te
-#semodule_package -o resources/httpd-allow-openvpn-var-lib-t-read.pp -m resources/httpd-allow-openvpn-var-lib-t-read.mod 
-#sudo semodule -i resources/httpd-allow-openvpn-var-lib-t-read.pp
 
 # install a crontab to cleanup the connection log database every day
 # (remove entries older than one month)
@@ -186,14 +182,6 @@ sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-
 # OPENVPN
 ###############################################################################
 
-# allow OpenVPN to listen on its management ports
-#sudo semanage port -a -t openvpn_port_t -p tcp 7505-7506
-
-# allow OpenVPN to read the CRL from vpn-server-api
-#checkmodule -M -m -o resources/openvpn-allow-server-api-read.mod resources/openvpn-allow-server-api-read.te 
-#semodule_package -o resources/openvpn-allow-server-api-read.pp -m resources/openvpn-allow-server-api-read.mod 
-#sudo semodule -i resources/openvpn-allow-server-api-read.pp
-
 # enable forwarding
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/null
@@ -204,13 +192,6 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf >/dev/nul
 # configurations
 echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
 sudo sysctl -p
-
-# set sane ARP responses on interfaces
-# XXX maybe use "default" instead of all?
-# XXX enable it
-#echo "net.ipv4.conf.all.arp_announce = 2" | sudo tee -a /etc/sysctl.conf >/dev/null
-#echo "net.ipv4.conf.all.arp_notify = 1" | sudo tee -a /etc/sysctl.conf >/dev/null
-#echo "net.ipv4.conf.all.arp_ignore=1" | sudo tee -a /etc/sysctl.conf >/dev/null
 
 ###############################################################################
 # SNIPROXY

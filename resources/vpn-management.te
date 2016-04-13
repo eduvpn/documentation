@@ -1,0 +1,14 @@
+module vpn-management 1.0;
+
+require {
+	type openvpn_t;
+	type httpd_sys_rw_content_t;
+	type var_lib_t;
+	class file { read lock write getattr open };
+	class dir { search getattr };
+}
+
+#============= openvpn_t ==============
+allow openvpn_t httpd_sys_rw_content_t:dir { search getattr };
+allow openvpn_t httpd_sys_rw_content_t:file { read getattr open };
+allow openvpn_t var_lib_t:file { read write getattr open lock };
