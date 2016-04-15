@@ -17,6 +17,8 @@
 #
 # TODO:
 # - make this script work on Fedora out of the box, not just CentOS
+# - no longer have a client.twig configuration, but generate it like the 
+#   server config, ideally dynamically
 
 ###############################################################################
 # VARIABLES
@@ -141,8 +143,8 @@ sudo php resources/update_ip.php
 sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
 sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
 
-# create a data directory for the connection log database, initialize 
-# the database and restore the SELinux context
+# create a data directory for the connection log database, initialize the
+# database
 sudo mkdir -p /var/lib/openvpn
 sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
@@ -175,8 +177,7 @@ sudo mkdir /etc/vpn-user-portal/views
 sudo cp /usr/share/vpn-user-portal/views/client.twig /etc/vpn-user-portal/views
 
 # update hostname in client.twig
-sudo sed -i "s/remote vpn.example 1194 udp/remote ${HOSTNAME} 1194 udp/" /etc/vpn-user-portal/views/client.twig
-sudo sed -i "s/remote vpn.example 443 tcp/remote ${HOSTNAME} 443 tcp/" /etc/vpn-user-portal/views/client.twig
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-user-portal/views/client.twig
 
 ###############################################################################
 # OPENVPN
