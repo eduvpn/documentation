@@ -19,7 +19,6 @@
 # - make this script work on Fedora out of the box, not just CentOS
 # - no longer have a client.twig configuration, but generate it like the 
 #   server config, ideally dynamically
-# - test the various set things under SYSTEM
 
 ###############################################################################
 # VARIABLES
@@ -34,9 +33,9 @@ EXTERNAL_IF=eth0
 ###############################################################################
 
 # https://lobste.rs/c/4lfcnm (danielrheath)
-#set -e # stop the script on errors
-#set -u # unset variables are an error
-#set -o pipefail # piping a failed process into a successful one is an arror
+set -e # stop the script on errors
+set -u # unset variables are an error
+set -o pipefail # piping a failed process into a successful one is an arror
 
 ###############################################################################
 # SOFTWARE
