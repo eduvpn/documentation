@@ -17,8 +17,6 @@
 #
 # TODO:
 # - make this script work on Fedora out of the box, not just CentOS
-# - no longer have a client.twig configuration, but generate it like the 
-#   server config, ideally dynamically
 
 ###############################################################################
 # VARIABLES
@@ -152,6 +150,9 @@ sudo mkdir -p /var/lib/openvpn
 sudo chown -R openvpn.openvpn /var/lib/openvpn
 sudo -u openvpn /usr/bin/vpn-server-api-init
 
+# fix SELinux label on /var/lib/openvpn, not sure why this is needed... 
+sudo restorecon -R /var/lib/openvpn
+
 # create directory for CN configurations
 sudo -u apache mkdir -p /var/lib/vpn-server-api/config
 
@@ -175,12 +176,8 @@ sudo -u apache vpn-user-portal-init
 # enable template cache
 sudo sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
 
-# copy the default config templates
-sudo mkdir /etc/vpn-user-portal/views
-sudo cp /usr/share/vpn-user-portal/views/client.twig /etc/vpn-user-portal/views
-
-# update hostname in client.twig
-sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-user-portal/views/client.twig
+# update hostname clients will connect to
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-user-portal/config.yaml
 
 ###############################################################################
 # OPENVPN
