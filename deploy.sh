@@ -61,7 +61,9 @@ sudo yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 # allow Apache to connect to PHP-FPM
 sudo setsebool -P httpd_can_network_connect=1
 
-# allow OpenVPN to listen on its management ports
+# allow OpenVPN to listen on its management ports, and some additional VPN 
+# ports for load balancing
+sudo semanage port -a -t openvpn_port_t -p udp 1195-1199
 sudo semanage port -a -t openvpn_port_t -p tcp 11940-11949
 
 # install a custom module to allow reading/writing to OpenVPN/httpd paths
@@ -232,10 +234,15 @@ sudo vpn-server-api-server-config ${HOSTNAME}
 sudo chmod 0600 /etc/openvpn/*.conf
 
 # enable and start OpenVPN
-sudo systemctl enable openvpn@server-udp
-sudo systemctl enable openvpn@server-tcp
-sudo systemctl start openvpn@server-udp
-sudo systemctl start openvpn@server-tcp
+sudo systemctl enable openvpn@server-udp1194
+sudo systemctl enable openvpn@server-udp1195
+sudo systemctl enable openvpn@server-udp1196
+sudo systemctl enable openvpn@server-tcp1194
+
+sudo systemctl start openvpn@server-udp1194
+sudo systemctl start openvpn@server-udp1195
+sudo systemctl start openvpn@server-udp1196
+sudo systemctl start openvpn@server-tcp1194
 
 ###############################################################################
 # FIREWALL
