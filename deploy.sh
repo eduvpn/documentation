@@ -155,9 +155,6 @@ sudo -u openvpn /usr/bin/vpn-server-api-init
 # fix SELinux label on /var/lib/openvpn, not sure why this is needed... 
 sudo restorecon -R /var/lib/openvpn
 
-# create directory for CN configurations
-sudo -u apache mkdir -p /var/lib/vpn-server-api/config
-
 # install a crontab to cleanup the connection log database every day
 # (remove entries older than one month)
 echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
