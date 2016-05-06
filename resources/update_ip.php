@@ -25,6 +25,6 @@ echo sprintf('IPv6 prefix: %s', $v6).PHP_EOL;
 
 $yamlFile = new YamlFile('/etc/vpn-server-api/ip.yaml');
 $configData = $yamlFile->readConfig();
-$configData['v4']['range'] = $v4;
-$configData['v6']['prefix'] = $v6;
+$configData['range'] = $v4;
+$configData['range6'] = $v6;
 $yamlFile->writeConfig($configData);

@@ -131,6 +131,9 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # vpn-ca-api
 ###############################################################################
 
+# set the CA name
+#sudo sed -i "s/ca_cn: VPN CA/ca_cn: VPN CA for ${HOSTNAME}/" /etc/vpn-ca-api/config.yaml
+
 # initialize the CA
 sudo -u apache vpn-ca-api-init
 
