@@ -131,7 +131,7 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 # vpn-ca-api
 ###############################################################################
 
-# set the CA name
+# XXX set the CA name to not have the same name for all instances
 #sudo sed -i "s/ca_cn: VPN CA/ca_cn: VPN CA for ${HOSTNAME}/" /etc/vpn-ca-api/config.yaml
 
 # initialize the CA
@@ -143,6 +143,10 @@ sudo -u apache vpn-ca-api-init
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges
 sudo php resources/update_ip.php
+
+# XXX update DNS servers to use the ones already configured in /etc/resolv.conf
+# for VPN clients
+#echo [\'`cat /etc/resolv.conf  | grep ^nameserver | cut -d ' ' -f 2 | xargs | sed "s/\ /','/g"`\']
 
 # we take the CRL from vpn-ca-api and install it in vpn-server-api so 
 # OpenVPN will start
