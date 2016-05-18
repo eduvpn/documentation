@@ -7,13 +7,32 @@ and deploy instructions for various deployment scenarios.
 
 - OpenVPN server running allowing connections over UDP/TCP;
 - Full IPv6 support (both to the VPN service as over the VPN tunnel);
+- Support both NAT and routable IP addresses;
 - Builtin CA for managing client certificates;
 - User Portal to allow users to manage their own configurations for their 
   devices;
-- Admin Portal manage users, configurations and connections
+- Admin Portal manage users, configurations and connections;
+- Two-factor authentication (TOTP) support with user self-enrollment;
+- Deployment scenarios:
+  - Route all traffic over the VPN (for safer Internet usage on untrusted 
+    networks);
+  - Route only some traffic over the VPN (for access to the organization 
+    network);
+- Allow or block client-to-client traffic
 
-It is also easy to enable SAML authentication for identity federations, this is
-documented separately. See [SAML](SAML.md).
+The VPN server is working with and tested on a variety of platforms and 
+clients:
+  - Windows (OpenVPN Community Client, Viscosity)
+  - OS X (Tunnelblick, Viscosity)
+  - Android (OpenVPN Connect, OpenVPN for Android)
+  - iOS (OpenVPN Connect)
+  - Linux (NetworkManager/CLI)
+
+# Authentication 
+
+By default a username/password login is used, but it is easy to enable SAML 
+authentication for identity federations, this is documented separately. See 
+[SAML](SAML.md).
 
 # Base
 
