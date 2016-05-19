@@ -63,8 +63,8 @@ sudo setsebool -P httpd_can_network_connect=1
 
 # allow OpenVPN to listen on its management ports, and some additional VPN 
 # ports for load balancing
-sudo semanage port -a -t openvpn_port_t -p udp 1195-1199
-sudo semanage port -a -t openvpn_port_t -p tcp 11940-11949
+sudo semanage port -a -t openvpn_port_t -p udp 1195-1201    # allow up to 8 instances
+sudo semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
 
 # install a custom module to allow reading/writing to OpenVPN/httpd paths
 checkmodule -M -m -o resources/vpn-management.mod resources/vpn-management.te
@@ -235,24 +235,16 @@ sudo systemctl start sniproxy
 # generate the server configuration files
 echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
 sudo vpn-server-api-server-config ${HOSTNAME} 
-sudo chmod 0600 /etc/openvpn/*.conf
 
 # enable and start OpenVPN
-sudo systemctl enable openvpn@server-udp1194
-sudo systemctl enable openvpn@server-udp1195
-sudo systemctl enable openvpn@server-udp1196
-sudo systemctl enable openvpn@server-tcp1194
-
-sudo systemctl start openvpn@server-udp1194
-sudo systemctl start openvpn@server-udp1195
-sudo systemctl start openvpn@server-udp1196
-sudo systemctl start openvpn@server-tcp1194
+sudo systemctl enable openvpn@server-default-{0,1,2,3}
+sudo systemctl start openvpn@server-default-{0,1,2,3}
 
 ###############################################################################
 # FIREWALL
 ###############################################################################
 
-# the firewall is generated based on the /etc/vpn-server-api/ip.yaml file
+# the firewall is generated based on the /etc/vpn-server-api/pools.yaml file
 sudo vpn-server-api-generate-firewall --nat --install ${EXTERNAL_IF}
 
 sudo systemctl enable iptables

@@ -10,7 +10,7 @@
  * The IPv6 address is generated according to RFC 4193 (Global ID), it results 
  * in a /48 network.
  *
- * The addresses are written to /etc/vpn-server-api/ip.yaml
+ * The addresses are written to /etc/vpn-server-api/pools.yaml
  */
 require_once '/usr/share/php/fkooman/Config/autoload.php';
 require_once '/usr/share/php/random_compat/autoload.php';
@@ -23,8 +23,8 @@ $v6 = sprintf('fd%s:%s:%s::/48', bin2hex(random_bytes(1)), bin2hex(random_bytes(
 echo sprintf('IPv4 CIDR  : %s', $v4).PHP_EOL;
 echo sprintf('IPv6 prefix: %s', $v6).PHP_EOL;
 
-$yamlFile = new YamlFile('/etc/vpn-server-api/ip.yaml');
+$yamlFile = new YamlFile('/etc/vpn-server-api/pools.yaml');
 $configData = $yamlFile->readConfig();
-$configData['range'] = $v4;
-$configData['range6'] = $v6;
+$configData['pools']['default']['range'] = $v4;
+$configData['pools']['default']['range6'] = $v6;
 $yamlFile->writeConfig($configData);
