@@ -17,14 +17,28 @@ require_once '/usr/share/php/random_compat/autoload.php';
 
 use fkooman\Config\YamlFile;
 
-$v4 = sprintf('10.%s.%s.0/24', hexdec(bin2hex(random_bytes(1))), hexdec(bin2hex(random_bytes(1))));
-$v6 = sprintf('fd%s:%s:%s::/48', bin2hex(random_bytes(1)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)));
+try {
+    if (2 !== $argc) {
+        throw new Exception('please specify the external interface');
+    }
 
-echo sprintf('IPv4 CIDR  : %s', $v4).PHP_EOL;
-echo sprintf('IPv6 prefix: %s', $v6).PHP_EOL;
+    $extIf = $argv[1];
+    $v4 = sprintf('10.%s.%s.0/24', hexdec(bin2hex(random_bytes(1))), hexdec(bin2hex(random_bytes(1))));
+    $v6 = sprintf('fd%s:%s:%s::/48', bin2hex(random_bytes(1)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)));
 
-$yamlFile = new YamlFile('/etc/vpn-server-api/pools.yaml');
-$configData = $yamlFile->readConfig();
-$configData['pools']['default']['range'] = $v4;
-$configData['pools']['default']['range6'] = $v6;
-$yamlFile->writeConfig($configData);
+    echo sprintf('IPv4 CIDR  : %s', $v4).PHP_EOL;
+    echo sprintf('IPv6 prefix: %s', $v6).PHP_EOL;
+
+    $yamlFile = new YamlFile('/etc/vpn-server-api/pools.yaml');
+    $configData = $yamlFile->readConfig();
+    $configData['pools']['default']['range'] = $v4;
+    $configData['pools']['default']['range6'] = $v6;
+    # enable NAT
+    $configData['pools']['default']['useNat'] = true;
+    $configData['pools']['default']['extIf'] = $extIf;
+
+    $yamlFile->writeConfig($configData);
+} catch (Exception $e) {
+    echo sprintf('ERROR: %s', $e->getMessage()).PHP_EOL;
+    exit(1);
+}

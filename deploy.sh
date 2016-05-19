@@ -141,8 +141,9 @@ sudo -u apache vpn-ca-api-init
 # VPN-SERVER-API
 ###############################################################################
 
-# update the IPv4 CIDR and IPv6 prefix to random IP ranges
-sudo php resources/update_ip.php
+# update the IPv4 CIDR and IPv6 prefix to random IP ranges, enable NAT and 
+# set the extIf
+sudo php resources/update_ip.php ${EXTERNAL_IF}
 
 # XXX update DNS servers to use the ones already configured in /etc/resolv.conf
 # for VPN clients
@@ -245,7 +246,7 @@ sudo systemctl start openvpn@server-default-{0,1,2,3}
 ###############################################################################
 
 # the firewall is generated based on the /etc/vpn-server-api/pools.yaml file
-sudo vpn-server-api-generate-firewall --nat --install ${EXTERNAL_IF}
+sudo vpn-server-api-generate-firewall --install
 
 sudo systemctl enable iptables
 sudo systemctl enable ip6tables
