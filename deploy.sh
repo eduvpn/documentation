@@ -234,8 +234,8 @@ sudo systemctl start sniproxy
 ###############################################################################
 
 # generate the server configuration files
-echo "**** GENERATING SERVER CONFIG, THIS WILL TAKE A LONG TIME... ****"
-sudo vpn-server-api-server-config ${HOSTNAME} 
+echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
+sudo vpn-server-api-server-config --generate ${HOSTNAME} 
 
 # enable and start OpenVPN
 sudo systemctl enable openvpn@server-default-{0,1,2,3}
