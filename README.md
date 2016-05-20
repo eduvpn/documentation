@@ -5,11 +5,12 @@ and deploy instructions for various deployment scenarios.
 
 # Features
 
-- OpenVPN server running allowing connections over UDP/TCP;
-- Full IPv6 support (both to the VPN service as over the VPN tunnel);
-- Support both NAT and routable IP addresses;
-- Builtin CA for managing client certificates;
-- User Portal to allow users to manage their own configurations for their 
+- OpenVPN server accepting connections on `UDP/1194` and `TCP/443`;
+- Support (out of the box) multiple UDP instances for load sharing purposes;
+- IPv6 support both outside and inside the VPN tunnel;
+- Support NAT and routable IP addresses;
+- CA for managing client certificates;
+- User Portal to allow users to manage their configurations for their 
   devices;
 - Admin Portal manage users, configurations and connections;
 - Two-factor authentication (TOTP) support with user self-enrollment;
@@ -19,6 +20,7 @@ and deploy instructions for various deployment scenarios.
   - Route only some traffic over the VPN (for access to the organization 
     network);
 - Allow or block client-to-client traffic
+- Ability to disable all OpenVPN logging
 
 The VPN server is working with and tested on a variety of platforms and 
 clients:
@@ -30,11 +32,15 @@ clients:
 
 # Authentication 
 
-By default a username/password login is used, but it is easy to enable SAML 
-authentication for identity federations, this is documented separately. See 
-[SAML](SAML.md).
+By default a user name/password login on the User/Admin portal is used, but it 
+is easy to enable SAML authentication for identity federations, this is 
+documented separately. See [SAML](SAML.md).
 
-# Base
+For connecting to the VPN service by default only certificates are used, no 
+additional user name/password authentication. It is possible to enable Two-factor
+authentication to require an additional TOTP.
+
+# Deployment
 
 For simple one server deployments and tests, we have a simple deploy script 
 available you can run on a fresh CentOS 7 installation. It will configure all
@@ -60,7 +66,8 @@ Then run the script:
 # Users
 
 By default there is a user `me` with a generated password for the User Portal
-and a user `admin` with a generated paassword for the Admin Portal.
+and a user `admin` with a generated password for the Admin Portal. Those are
+printed at the end of the deploy script.
 
 If you want to update/add users you can use the `vpn-user-portal-add-user` and
 `vpn-admin-portal-add-user` scripts:
