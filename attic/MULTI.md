@@ -39,8 +39,8 @@ the pools.
     pools:
         default:
             name: Default Pool
-            **listen: 192.0.2.1**
-            **hostName: default.vpn.example**
+            listen: 192.0.2.1
+            hostName: default.vpn.example
             extIf: eth0
             useNat: true
             range: 10.42.42.0/24
@@ -50,9 +50,9 @@ the pools.
 
         office:
             name: Office
-            **listen: 192.0.2.2**
-            **hostName: office.vpn.example**
-            **extIf: eth1**
+            listen: 192.0.2.2
+            hostName: office.vpn.example
+            extIf: eth1
             useNat: false
             range: 192.168.1.0/24
             range6: 'fd00:1234:5678::/48'
@@ -88,15 +88,15 @@ updated. Currently it has:
 
 This needs to be changed:
 
-    listen **192.0.2.1**:443 {
+    listen 192.0.2.1:443 {
         proto tls
-        fallback **127.42.0.1**:1194
+        fallback 127.42.0.1:1194
         table https_hosts
     }
 
-    listen **192.0.2.2**:443 {
+    listen 192.0.2.2:443 {
         proto tls
-        fallback **127.42.1.1**:1194
+        fallback 127.42.1.1:1194
         table https_hosts
     }
 
@@ -113,13 +113,13 @@ addresses for the VPN server are `2001:db8::192:0:2:1/64` and
 
 First `/etc/sniproxy.conf`:
 
-    listen **[2001:db8::192:0:2:1]**:443 {
+    listen [2001:db8::192:0:2:1]:443 {
         proto tls
         fallback 127.42.0.1:1194
         table https_hosts
     }
 
-    listen **[2001:db8::192:0:2:2]**:443 {
+    listen [2001:db8::192:0:2:2]:443 {
         proto tls
         fallback 127.42.1.1:1194
         table https_hosts
