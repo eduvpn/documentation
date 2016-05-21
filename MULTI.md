@@ -10,6 +10,9 @@ These can be configured separately.
 
 # Default Configuration
 
+The current pool configuration can be found at 
+`/etc/vpn-server-api/pools.yaml`.
+
     pools:
         default:
             name: Default Pool
