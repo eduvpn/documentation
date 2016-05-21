@@ -19,8 +19,9 @@ and deploy instructions for various deployment scenarios.
     networks);
   - Route only some traffic over the VPN (for access to the organization 
     network);
-- Allow or block client-to-client traffic
-- Ability to disable all OpenVPN logging
+  - Client-to-client only networking;
+- Support multiple deployment scenarios [simultaneously](MULTI.md); 
+- Ability to disable all OpenVPN logging;
 
 The VPN server is working with and tested on a variety of platforms and 
 clients:
