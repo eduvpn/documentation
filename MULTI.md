@@ -71,14 +71,10 @@ Authentication for which the user has to enroll in the user portal.
 
 # Additional Configuration
 
-The above supports connecting over IPv4 only, IPv6 inside the VPN still works,
-but in order to restore IPv6 connectivity (and TCP support) a number of 
-changes have to be made to the server configuration.
+The above supports connecting over IPv4 to UDP only. To restore TCP 
+connectivity over IPv4 `/etc/sniproxy.conf` needs to be modified.
 
-## sniproxy
-
-To make the TCP/443 fallback work again, the `/etc/sniproxy.conf` needs to be
-updated. Currently it has:
+It currently has:
 
     listen 443 {
         proto tls
@@ -111,7 +107,7 @@ addresses for the VPN server are `2001:db8::192:0:2:1/64` and
 
 ### TCP
 
-First `/etc/sniproxy.conf`:
+First add these to the existing configuration in `/etc/sniproxy.conf`:
 
     listen [2001:db8::192:0:2:1]:443 {
         proto tls
@@ -127,6 +123,9 @@ First `/etc/sniproxy.conf`:
 
 ### UDP 
 
+**TODO**: document this better, also automatically start this on boot, check
+performance impact, test this with various clients, ...
+
 The UDP case is a bit more tricky. One can use `socat` like this:
 
     $ socat UDP6-LISTEN:1194,bind=[2001:db8::192:0:2:1] UDP4:192.0.2.1:1194
@@ -136,6 +135,3 @@ The UDP case is a bit more tricky. One can use `socat` like this:
     $ socat UDP6-LISTEN:1194,bind=[2001:db8::192:0:2:2] UDP4:192.0.2.2:1194
     $ socat UDP6-LISTEN:1195,bind=[2001:db8::192:0:2:2] UDP4:192.0.2.2:1195
     $ socat UDP6-LISTEN:1196,bind=[2001:db8::192:0:2:2] UDP4:192.0.2.2:1196
-
-**TODO**: document this better, also automatically start this on boot, check
-performance impact, test this with various clients, ...
