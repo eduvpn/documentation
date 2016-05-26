@@ -21,7 +21,7 @@ and deploy instructions for various deployment scenarios.
     network);
   - Client-to-client only networking;
 - Support multiple deployment scenarios [simultaneously](MULTI.md); 
-- Group ACL support
+- Group [ACL](ACL.md) support
 - Ability to disable all OpenVPN logging;
 
 The VPN server is working with and tested on a variety of platforms and 
