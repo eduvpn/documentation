@@ -5,10 +5,10 @@ and deploy instructions for various deployment scenarios.
 
 # Features
 
-- OpenVPN server accepting connections on `UDP/1194` and `TCP/443`;
+- OpenVPN server accepting connections on various UDP ports and `TCP/443`;
 - Support (out of the box) multiple UDP instances for load sharing purposes;
 - IPv6 support both outside and inside the VPN tunnel;
-- Support NAT and routable IP addresses;
+- Support both NAT and routable IP addresses;
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
   devices;
@@ -21,6 +21,7 @@ and deploy instructions for various deployment scenarios.
     network);
   - Client-to-client only networking;
 - Support multiple deployment scenarios [simultaneously](MULTI.md); 
+- Group ACL support
 - Ability to disable all OpenVPN logging;
 
 The VPN server is working with and tested on a variety of platforms and 
