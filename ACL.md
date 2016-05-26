@@ -53,8 +53,9 @@ should be of this format:
         }
     }
 
-The shows that the user `me` is a member of the group `default` and the user
-`you` a member of both `office` and `default`.
+As with StaticAcl, the name of the group must match the Pool ID. This 
+shows that the user `me` is a member of the group `default` and the user `you` 
+a member of both `office` and `default`.
 
 If there is any error with the HTTP request, or the data is malformed will 
 be the same as the user not being a member of any groups.
