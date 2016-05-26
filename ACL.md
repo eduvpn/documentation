@@ -34,26 +34,30 @@ specified in `/etc/vpn-server-api/pools.yaml`.
     aclMethod: RemoteAcl
 
     RemoteAcl:
-        apiBaseUrl: https://example.org/groups
+        apiUrl: https://example.org/groups
 
-This backend will fetch the URL by appending the user ID to the `apiBaseUrl` 
-and expecting a JSON document. For example when the user ID is `me`, the 
-request URL will be `https://example.org/groups/me`. The result should be 
-of this format:
+This backend will fetch the URL and expecting a JSON document. The result 
+should be of this format:
 
     {
-        "memberOf": [
-            "default"
-        ]
+        "data": {
+            "groups": {
+                "me": [
+                    "default"
+                ],
+                "you": [
+                    "office",
+                    "default"
+                ]
+            }
+        }
     }
 
+The shows that the user `me` is a member of the group `default` and the user
+`you` a member of both `office` and `default`.
 
-If the user does not exist (yet) or has no groups, the empty list should be
-returned:
-
-    {
-        "memberOf": []
-    }
+If there is any error with the HTTP request, or the data is malformed will 
+be the same as the user not being a member of any groups.
 
 ## VootAcl
 
