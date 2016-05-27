@@ -101,6 +101,11 @@ This needs to be changed:
 
 This makes everything work again for connecting over IPv4.
 
+**NOTE**: there is an issue with `sniproxy` at system startup. It will not
+be able to bind to the IPv6 address(es), after boot `sniproxy` needs to be 
+manually (re)started... Not sure what is going on there exactly. Probably it is
+started too early.
+
 ## IPv6
 
 If you also want to allow connecting to the VPN service over IPv6, additional
