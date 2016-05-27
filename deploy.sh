@@ -40,6 +40,9 @@ set -o pipefail # piping a failed process into a successful one is an arror
 # SOFTWARE
 ###############################################################################
 
+# remove NetworkManager and firewalld
+sudo yum -y remove NetworkManager firewalld
+
 # enable EPEL
 sudo yum -y install epel-release
 
