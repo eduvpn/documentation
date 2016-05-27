@@ -25,7 +25,7 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
-CA_CN=VPN CA
+CA_CN="VPN CA"
 
 ###############################################################################
 # SYSTEM
