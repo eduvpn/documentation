@@ -150,6 +150,9 @@ sudo php resources/update_ip.php ${EXTERNAL_IF}
 # for VPN clients
 #echo [\'`cat /etc/resolv.conf  | grep ^nameserver | cut -d ' ' -f 2 | xargs | sed "s/\ /','/g"`\']
 
+# update hostname clients will connect to
+sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/pools.yaml
+
 # we take the CRL from vpn-ca-api and install it in vpn-server-api so 
 # OpenVPN will start
 sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
@@ -183,9 +186,6 @@ sudo -u apache vpn-user-portal-init
 
 # enable template cache
 sudo sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
-
-# update hostname clients will connect to
-sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-user-portal/config.yaml
 
 ###############################################################################
 # OPENVPN
