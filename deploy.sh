@@ -25,7 +25,6 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
-CA_CN="VPN CA"
 
 ###############################################################################
 # SYSTEM
@@ -134,9 +133,6 @@ sudo sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.
 ###############################################################################
 # vpn-ca-api
 ###############################################################################
-
-# set CN for VPN CA
-sudo sed -i "s/ca_cn: 'VPN CA'/ca_cn: '${CA_CN}'/" /etc/vpn-ca-api/config.yaml
 
 # initialize the CA
 sudo -u apache vpn-ca-api-init
