@@ -13,7 +13,7 @@ and deploy instructions for various deployment scenarios.
 - User Portal to allow users to manage their configurations for their 
   devices;
 - Admin Portal manage users, configurations and connections;
-- Two-factor authentication (TOTP) support with user self-enrollment;
+- [Two-factor authentication](2FA.md) (TOTP) support with user self-enrollment;
 - Deployment scenarios:
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
