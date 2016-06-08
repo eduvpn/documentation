@@ -259,6 +259,12 @@ sudo systemctl restart ip6tables
 # POST INSTALL
 ###############################################################################
 
+# Secure OpenSSH
+# Override the algorithms and ciphers. By default CentOS 7 is not really secure
+# See also: https://discovery.cryptosense.com
+echo "KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1" | sudo tee -a /etc/ssh/sshd_config >/dev/null
+echo "Ciphers chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com" | sudo tee -a /etc/ssh/sshd_config >/dev/null
+
 # Copy index page
 sudo mkdir -p /var/www/${HOSTNAME}
 sudo cp resources/index.html /var/www/${HOSTNAME}/index.html
