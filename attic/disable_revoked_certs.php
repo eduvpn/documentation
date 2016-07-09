@@ -1,6 +1,6 @@
 <?php
 
-require_once '/usr/share/vpn-ca-api/src/autoload.php';
+require_once '/usr/share/vpn-ca-api/src/fkooman/VPN/CA/autoload.php';
 #require_once '/var/www/vpn-ca-api/vendor/autoload.php';
 
 use fkooman\VPN\CA\IndexParser;
