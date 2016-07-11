@@ -152,11 +152,6 @@ sudo php resources/update_ip.php ${EXTERNAL_IF}
 # update hostname clients will connect to
 sudo sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/pools.yaml
 
-# we take the CRL from vpn-ca-api and install it in vpn-server-api so 
-# OpenVPN will start
-sudo -u apache cp /var/lib/vpn-ca-api/easy-rsa/pki/crl.pem /var/lib/vpn-server-api/ca.crl
-sudo chmod 0644 /var/lib/vpn-server-api/ca.crl
-
 # create a data directory for the connection log database, initialize the
 # database
 sudo mkdir -p /var/lib/openvpn
