@@ -12,6 +12,9 @@ $indexPath = '/var/lib/vpn-ca-api/easy-rsa/pki/index.txt'; # EasyRSA3
 $commonNamesDir = '/var/lib/vpn-server-api/common_names/disabled';
 #$commonNamesDir = '/var/www/vpn-server-api/data/common_names/disabled';
 
+// create dir if it does not yet exists
+@mkdir($commonNamesDir, 0700, true);
+
 // find the revoked CNs 
 $i = new IndexParser($indexPath);
 $certList = $i->getCertList();
