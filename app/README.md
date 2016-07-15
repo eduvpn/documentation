@@ -60,7 +60,7 @@ requiring user involvement:
 
 # User Experience
 
-![App Flow](app_flow.png)
+![App Flow](app_flow.jpg)
 
 # Architecture 
 
