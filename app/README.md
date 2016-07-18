@@ -16,7 +16,7 @@ Assuming you want to use eduvpn on Android you need to go through these steps:
 
 1. Install "OpenVPN for Android" from the Google Play store;
 2. Open a browser and go to `https://eduvpn.surfcloud.nl/`;
-3. Choose your insitute;
+3. Choose your institute;
 4. Authenticate using your institution account;
 5. Create a new configuration in the portal and store the download on the 
    shared phone storage;
@@ -120,7 +120,9 @@ way possible and generate an installable application (APK).
 
 The "OpenVPN for Android" application from Arne Schwabe SHOULD be used. This is 
 free software and can be integrated directly in the eduvpn app. This is 
-documented in the source repository of OpenVPN for Android.
+documented in the source repository of OpenVPN for Android. It may be possible
+to use the OpenVPN for Android API, but this may be a problem when the user 
+will still need to install the OpenVPN for Android application separately. 
 
 The application MUST be built from source using only free software components
 and tools. 
@@ -150,6 +152,12 @@ unless there are very good reasons for not doing that.
 2. The list of eduvpn instances MUST be very easy to update;
 3. It MUST be possible to manually specify an instance by its URL in case it 
    is not yet listed in the eduvpn app;
+
+# PoC
+
+A proof of concept application is available 
+[here](https://github.com/eduvpn/android). It more or less works, but still
+has lots of issues, and is far from complete, see also the TODO section there.
 
 # References
 
