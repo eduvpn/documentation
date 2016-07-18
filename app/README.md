@@ -121,8 +121,8 @@ way possible and generate an installable application (APK).
 The "OpenVPN for Android" application from Arne Schwabe SHOULD be used. This is 
 free software and can be integrated directly in the eduvpn app. This is 
 documented in the source repository of OpenVPN for Android. It may be possible
-to use the OpenVPN for Android API, but this may be a problem when the user 
-will still need to install the OpenVPN for Android application separately. 
+to use the OpenVPN for Android API when OpenVPN for Android is already 
+installed, or its installation could be requested/triggered.
 
 The application MUST be built from source using only free software components
 and tools. 
@@ -152,6 +152,7 @@ unless there are very good reasons for not doing that.
 2. The list of eduvpn instances MUST be very easy to update;
 3. It MUST be possible to manually specify an instance by its URL in case it 
    is not yet listed in the eduvpn app;
+4. Root permissions MUST NOT be required;
 
 # PoC
 
