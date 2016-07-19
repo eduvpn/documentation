@@ -36,6 +36,16 @@ set -u # unset variables are an error
 set -o pipefail # piping a failed process into a successful one is an arror
 
 ###############################################################################
+# LOGGING
+###############################################################################
+
+# CentOS forwards to syslog, but we want to use journald, enable persistent
+# storage, but only for 31 days
+sudo sed -i 's/^#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
+sudo sed -i 's/^#MaxRetentionSec=/MaxRetentionSec=2678400/' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+
+###############################################################################
 # SOFTWARE
 ###############################################################################
 
