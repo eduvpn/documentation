@@ -64,16 +64,20 @@ requiring user involvement:
 
 # Architecture 
 
-The software running eduvpn is designed in such a way that every organization 
-using eduvpn will have their own completely independent instance running on 
-their own domain name.
-
-The application will need to be completely independent on any of the instances.
+Everyone can deploy their own instance of eduvpn. The application MUST be able
+to connect to a predefined list of instances, but also to instances not yet 
+added to this list.
 
 # API 
 
-The app can use a HTTP REST API protected using OAuth 2.0 (RFC 6749) in 
-combination with Bearer tokens (RFC 6750).
+The eduvpn services exposes an API that can be used by the application to 
+obtain a configuration. This API is protected using OAuth 2.0 (RFC 6749). This 
+makes it possible to integrate the application with an instance without 
+requiring a specific authentication mechanism. This way it becomes possible to 
+support e.g. SAML or OpenID Connect without modifying the application. 
+
+OAuth 2.0 will here be in essence used as a way to provision an 
+application/device specific password called a Bearer token (RFC 6750).
 
 ## Discovery
 
