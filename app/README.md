@@ -157,7 +157,10 @@ unless there are very good reasons for not doing that.
 3. It MUST be possible to manually specify an instance by its URL in case it 
    is not yet listed in the eduvpn app;
 4. Root permissions MUST NOT be required;
-
+5. The license MUST be compatible with OpenVPN and OpenVPN for Android, this 
+   means it MUST be released under the GPL license. An exact license still 
+   needs to be determined, but initially the GPLv3 (or later) MUST be used.
+ 
 # PoC
 
 A proof of concept application is available 
