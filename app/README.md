@@ -62,6 +62,8 @@ requiring user involvement:
 
 ![App Flow](app_flow.png)
 
+[See Big Version](app_flow_big.png)
+
 # Architecture 
 
 Everyone can deploy their own instance of eduvpn. The application MUST be able
