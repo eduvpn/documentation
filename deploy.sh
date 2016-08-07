@@ -177,11 +177,11 @@ echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-ser
 
 # install a crontab to parse the journal and write the output to a log file 
 # every hour
-echo '@hourly journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' | sudo tee /etc/cron.d/vpn-server-api-log >/dev/null
+echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' | sudo tee /etc/cron.d/vpn-server-api-log >/dev/null
 
 # automatically generate statistics
 # XXX hopefully it won't interfere with the above @hourly for writing the log...
-echo '@daily vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
+echo '@daily root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
