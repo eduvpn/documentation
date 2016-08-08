@@ -175,13 +175,11 @@ sudo restorecon -R /var/lib/openvpn
 # code reuse
 echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
 
-# install a crontab to parse the journal and write the output to a log file 
-# every hour
+# parse the journal and write out JSON file with logs every hour
 echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' | sudo tee /etc/cron.d/vpn-server-api-log >/dev/null
 
-# automatically generate statistics
-# XXX hopefully it won't interfere with the above @hourly for writing the log...
-echo '@daily root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
+# automatically generate statistics @ 00:15
+echo '15 0 * * * root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
