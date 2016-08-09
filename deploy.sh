@@ -145,7 +145,7 @@ sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opc
 ###############################################################################
 
 # initialize the CA
--u apache vpn-ca-api-init
+sudo -u apache vpn-ca-api-init
 
 ###############################################################################
 # VPN-SERVER-API
@@ -166,7 +166,7 @@ sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/pools.yaml
 # database
 mkdir -p /var/lib/openvpn
 chown -R openvpn.openvpn /var/lib/openvpn
--u openvpn /usr/bin/vpn-server-api-init
+sudo -u openvpn /usr/bin/vpn-server-api-init
 
 # fix SELinux label on /var/lib/openvpn, not sure why this is needed...
 restorecon -R /var/lib/openvpn
@@ -182,7 +182,7 @@ sed -i "s/#templateCache/templateCache/" /etc/vpn-admin-portal/config.yaml
 # VPN-USER-PORTAL
 ###############################################################################
 
--u apache vpn-user-portal-init
+sudo -u apache vpn-user-portal-init
 
 # enable template cache
 sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
