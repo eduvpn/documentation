@@ -28,7 +28,7 @@ The VPN server is working with and tested on a variety of platforms and
 clients:
   - Windows (OpenVPN Community Client, Viscosity)
   - OS X (Tunnelblick, Viscosity)
-  - Android (OpenVPN Connect, OpenVPN for Android)
+  - Android (OpenVPN for Android, OpenVPN Connect)
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
 
@@ -63,7 +63,7 @@ Make sure the `HOSTNAME` you use can be resolved through DNS or is set in your
 
 Then run the script:
 
-    $ ./deploy.sh
+    $ sudo ./deploy.sh
 
 # Users
 

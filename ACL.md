@@ -12,9 +12,10 @@ The ACLs need to be configured in `/etc/vpn-server-api/acl.yaml` and
 Add
 
     enableAcl: true
+    aclGroupList: [all]
 
 To `/etc/vpn-server-api/pools.yaml` for the pool you want to enable the ACL 
-for.
+for. Here, the group with identifier `all` is given access.
 
 There are a number of backends available to fetch group membership 
 information and they are configured in `/etc/vpn-server-api/acl.yaml`.
@@ -24,42 +25,20 @@ information and they are configured in `/etc/vpn-server-api/acl.yaml`.
     aclMethod: StaticAcl
 
     StaticAcl:
-        default: [me]
+        all:
+            displayName: All
+            members: [foo, bar]
+        students:
+            displayName: Students
+            members: [foo]
+        employees:
+            displayName: Employees
+            members: [bar]
 
-Here you can add the various user IDs to the pool ID to give them access to
-the pool. Make sure the pool ID, here `default` matches with the ID as 
-specified in `/etc/vpn-server-api/pools.yaml`.
-
-### RemoteAcl
-
-    aclMethod: RemoteAcl
-
-    RemoteAcl:
-        apiUrl: https://example.org/groups
-
-This backend will fetch the URL and expecting a JSON document. The result 
-should be of this format:
-
-    {
-        "data": {
-            "groups": {
-                "me": [
-                    "default"
-                ],
-                "you": [
-                    "office",
-                    "default"
-                ]
-            }
-        }
-    }
-
-As with StaticAcl, the name of the group must match the Pool ID. This 
-shows that the user `me` is a member of the group `default` and the user `you` 
-a member of both `office` and `default`.
-
-If there is any error with the HTTP request, or the data is malformed will 
-be the same as the user not being a member of any groups.
+Here you can add the various user IDs to the group ID to give them access to
+the pool. Make sure the group ID, here `all`, `students` and `employees` 
+matches with the ID as specified in `/etc/vpn-server-api/pools.yaml` in 
+`aclGroupList`.
 
 ### VootAcl
 
@@ -76,21 +55,14 @@ memberships. The example below is for the
         # the directory where VOOT tokens are stored per user
         tokenDir: /var/lib/vpn-server-api/users/voot_tokens
 
-        # the key is the VOOT group ID, the value is an array with pool IDs
-        aclMapping:
-            'urn:voot:group:one': [default]
-            'urn:voot:group:two': [default, other]
-
-The mapping between pools and group identifiers is specified in `aclMapping`. 
-So in the example above, if the user is a member of the group with identifier 
-`urn:voot:group:two` they have access to both the `default` pool and the 
-`other` pool.
+The group identifiers as returned by the VOOT API calls need to be specified
+in the `aclGroupList` in `/etc/vpn-server-api/pools.yaml`. 
 
 This module works together with the portal to obtain an access token per user
 that will be used to retrieve the group membership. The portal also needs to
 be configured for the VootAcl, in `/etc/vpn-user-portal/config.yaml`: 
 
-    enableVoot: false
+    enableVoot: true
     Voot:
         clientId: my_client_id
         clientSecret: my_client_secret
@@ -98,8 +70,8 @@ be configured for the VootAcl, in `/etc/vpn-user-portal/config.yaml`:
         tokenEndpoint: https://authz.surfconext.nl/oauth/token
 
 Here the `clientId` and `clientSecret` need to be replaced with the actual 
-secrets obtained when registering the portal. The `redirect_uri` that needs to
-be registered is `https://DOMAIN.TLD/portal/_voot/callback`.
+secrets obtained when registering the portal for SURFconext. The 
+redirect URI that needs to be registered is 
+`https://DOMAIN.TLD/portal/_voot/callback`.
 
-Currently, the user needs to manually trigger the process of obtaining the 
-groups from the VOOT provider on the "Account" page.
+The group membership will be automatically obtained when the user logs in.
