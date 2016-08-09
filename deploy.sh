@@ -267,12 +267,14 @@ echo '@daily openvpn vpn-server-api-housekeeping' > /etc/cron.d/vpn-server-api-h
 # parse the journal and write out JSON file with logs every hour
 echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' > /etc/cron.d/vpn-server-api-log
 # execute now
-journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json
+# XXX pipe fail so script stops here, bleh! 
+#journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json
 
 # automatically generate statistics @ 00:15
 echo '15 0 * * * root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' > /etc/cron.d/vpn-server-api-stats
 # execute now
-vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json
+# XXX pipe fail above so script stops here, bleh, do not run for now! 
+#vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json
 
 # Secure OpenSSH
 # Override the algorithms and ciphers. By default CentOS 7 is not really secure
