@@ -171,16 +171,6 @@ sudo -u openvpn /usr/bin/vpn-server-api-init
 # fix SELinux label on /var/lib/openvpn, not sure why this is needed... 
 sudo restorecon -R /var/lib/openvpn
 
-# install a crontab to cleanup the old OTP entries stored to protect against
-# code reuse
-echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
-
-# parse the journal and write out JSON file with logs every hour
-echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' | sudo tee /etc/cron.d/vpn-server-api-log >/dev/null
-
-# automatically generate statistics @ 00:15
-echo '15 0 * * * root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
-
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
@@ -269,6 +259,20 @@ sudo systemctl restart ip6tables
 ###############################################################################
 # POST INSTALL
 ###############################################################################
+
+# install a crontab to cleanup the old OTP entries stored to protect against
+# 2FA code reuse
+echo '@daily openvpn vpn-server-api-housekeeping' | sudo tee /etc/cron.d/vpn-server-api-housekeeping >/dev/null
+
+# parse the journal and write out JSON file with logs every hour
+echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' | sudo tee /etc/cron.d/vpn-server-api-log >/dev/null
+# execute now 
+sudo journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json
+
+# automatically generate statistics @ 00:15
+echo '15 0 * * * root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' | sudo tee /etc/cron.d/vpn-server-api-stats >/dev/null
+# execute now
+sudo vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json
 
 # Secure OpenSSH
 # Override the algorithms and ciphers. By default CentOS 7 is not really secure
