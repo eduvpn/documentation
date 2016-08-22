@@ -7,7 +7,7 @@
  * Random value for the second and third octet, e.g: 10.53.129.0/24
  *
  * IPv6:
- * The IPv6 address is generated according to RFC 4193 (Global ID), it results 
+ * The IPv6 address is generated according to RFC 4193 (Global ID), it results
  * in a /48 network.
  *
  * The addresses are written to /etc/vpn-server-api/pools.yaml
@@ -24,7 +24,7 @@ try {
 
     $extIf = $argv[1];
     $v4 = sprintf('10.%s.%s.0/24', hexdec(bin2hex(random_bytes(1))), hexdec(bin2hex(random_bytes(1))));
-    $v6 = sprintf('fd%s:%s:%s::/48', bin2hex(random_bytes(1)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)));
+    $v6 = sprintf('fd%s:%s:%s:%s::/60', bin2hex(random_bytes(1)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2) & hex2bin('fff0')));
 
     echo sprintf('IPv4 CIDR  : %s', $v4).PHP_EOL;
     echo sprintf('IPv6 prefix: %s', $v6).PHP_EOL;
@@ -33,7 +33,7 @@ try {
     $configData = $yamlFile->readConfig();
     $configData['pools']['default']['range'] = $v4;
     $configData['pools']['default']['range6'] = $v6;
-    # enable NAT
+    // enable NAT
     $configData['pools']['default']['useNat'] = true;
     $configData['pools']['default']['extIf'] = $extIf;
 
