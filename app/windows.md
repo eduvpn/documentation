@@ -114,19 +114,19 @@ These operating systems should be supported by the eduVPN application.
 - All versions of Microsoft Windows 7 with Service Pack 1
 - All versions of Microsoft Windows 8.1
 - All versions of Microsoft Windows 10
+
+#### Nice to have operating system versions
+These operating systems are not necessary, but if they will work without considerable extra effort it will be a bonus.
 - All versions of Microsoft Windows Server 2008¹
 - All versions of Microsoft Windows Server 2008 R2¹
 - All versions of Microsoft Windows Server 2012¹
 - All versions of Microsoft Windows Server 2012 R2¹
 - All versions of Microsoft Windows Server 2016¹
-
-¹ Only versions with a GUI. So no Core-editions or Nano-versions.
-
-#### Nice to have operating system versions
-These operating systems are not necessary, but if they will work without considerable extra effort it will be a bonus.
 - All versions of Microsoft Windows Vista are supported.
 - All versions of Microsoft Windows 7 (without Service Pack 1) are supported
 - All versions of Microsoft Windows 8 are supported.
+
+¹ Only versions with a GUI. So no Core-editions or Nano-versions.
 
 #### Versions that should not be supported
 These operating systems should not be supported. They are insecure, old, crappy and evil ;).
