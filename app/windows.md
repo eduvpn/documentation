@@ -3,7 +3,7 @@ NOTE: Still under construction! Not definitive.
 
 # Windows Functional Requirements
 
-This document describes the functional requirements of eduVPN for Windows. This means it will describe *what* the application must be capable of and not necessarily how, although there will be some implementation suggestions mentioned throughout and some acceptance criteria as well.
+This document describes the functional requirements of eduVPN for Windows. This means it will describe *what* the application must be capable of and not necessarily how, although there will be some implementation suggestions mentioned throughout and some acceptance criteria as well. 
 
 ## Supported versions of Windows
 
