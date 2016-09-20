@@ -133,14 +133,10 @@ These operating systems should not be supported. They are insecure, old, crappy 
 - All versions of Microsoft Windows XP and lower.
 
 ## Principle
+Anyone with a computer with just Microsoft Visual Studio Community 2015 (or newer when available) on it MUST be 
+able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe). 
 
-
-**Principle**: anyone with a computer with just Microsoft Visual Studio Community 2015 (or newer when available) on it MUST be 
-able to build the application and its dependencies from source in the easiest 
-way possible and generate an installable application (exe).
-
-The 'OpenVPN GUI' (community edition) application from OpenVPN SHOULD be used. This is 
-free software and can be integrated directly in the eduVPN app. 
+The 'OpenVPN service' from OpenVPN SHOULD be used. This is free software and can be integrated directly in the eduVPN app. The eduVPN application should integrate with the OpenVPN service.
 
 The application MUST (if it is in any way possible) be built from source using only free software components
 and tools. 
