@@ -5,31 +5,6 @@ NOTE: Still under construction! Not definitive.
 
 This document describes the functional requirements of eduVPN for Windows. This means it will describe *what* the application must be capable of and not necessarily how, although there will be some implementation suggestions mentioned throughout and some acceptance criteria as well. 
 
-## Supported versions of Windows
-
-#### Required operating system versions
-These operating systems should be supported by the eduVPN application.
-- All versions of Microsoft Windows 7 with Service Pack 1
-- All versions of Microsoft Windows 8.1
-- All versions of Microsoft Windows 10
-- All versions of Microsoft Windows Server 2008¹
-- All versions of Microsoft Windows Server 2008 R2¹
-- All versions of Microsoft Windows Server 2012¹
-- All versions of Microsoft Windows Server 2012 R2¹
-- All versions of Microsoft Windows Server 2016¹
-
-¹ Only versions with a GUI. So no Core-editions or Nano-versions.
-
-#### Nice to have operating system versions
-These operating systems are not necessary, but if they will work without considerable extra effort it will be a bonus.
-- All versions of Microsoft Windows Vista are supported.
-- All versions of Microsoft Windows 7 (without Service Pack 1) are supported
-- All versions of Microsoft Windows 8 are supported.
-
-#### Versions that should not be supported
-These operating systems should not be supported. They are insecure, old, crappy and evil ;).
-- All versions of Microsoft Windows XP and lower.
-
 # Why an eduVPN App?
 
 Configuring eduvpn on your Windows device is quite involved, i.e. it 
@@ -133,60 +108,59 @@ simpler.
  
 # Development
 
-The target platform should be Android >= 4.
+## Supported versions of Windows
+#### Required operating system versions
+These operating systems should be supported by the eduVPN application.
+- All versions of Microsoft Windows 7 with Service Pack 1
+- All versions of Microsoft Windows 8.1
+- All versions of Microsoft Windows 10
+- All versions of Microsoft Windows Server 2008¹
+- All versions of Microsoft Windows Server 2008 R2¹
+- All versions of Microsoft Windows Server 2012¹
+- All versions of Microsoft Windows Server 2012 R2¹
+- All versions of Microsoft Windows Server 2016¹
 
-**Principle**: anyone with a computer with just Android Studio on it MUST be 
+¹ Only versions with a GUI. So no Core-editions or Nano-versions.
+
+#### Nice to have operating system versions
+These operating systems are not necessary, but if they will work without considerable extra effort it will be a bonus.
+- All versions of Microsoft Windows Vista are supported.
+- All versions of Microsoft Windows 7 (without Service Pack 1) are supported
+- All versions of Microsoft Windows 8 are supported.
+
+#### Versions that should not be supported
+These operating systems should not be supported. They are insecure, old, crappy and evil ;).
+- All versions of Microsoft Windows XP and lower.
+
+## Principle
+
+
+**Principle**: anyone with a computer with just Microsoft Visual Studio on it MUST be 
 able to build the application and its dependencies from source in the easiest 
-way possible and generate an installable application (APK).
+way possible and generate an installable application (exe).
 
-The "OpenVPN for Android" application from Arne Schwabe SHOULD be used. This is 
-free software and can be integrated directly in the eduvpn app. This is 
-documented in the source repository of OpenVPN for Android. It may be possible
-to use the OpenVPN for Android API when OpenVPN for Android is already 
-installed, or its installation could be requested/triggered.
+The 'OpenVPN GUI' (community edition) application from OpenVPN SHOULD be used. This is 
+free software and can be integrated directly in the eduVPN app. 
 
-The application MUST be built from source using only free software components
+The application MUST (if it is in any way possible) be built from source using only free software components
 and tools. 
-
-It must be made available to at least these two App stores:
-
-* [Google Play](https://play.google.com/)
-* [F-Droid](https://f-droid.org/)
-
-The requirement for being available through F-Droid means that no Google 
-proprietary libraries may be used, e.g. "Google Cloud Messaging" and that the 
-application can be built from source straight from a public repository. See 
-also the F-Droid Inclusion Policy.
 
 In case additional dependencies are required, they should be clearly mentioned 
 in the main README, MUST be free software as well, MUST have compatible 
 licensing.
 
-No proprietary tools may be used for building, deploying, signing or publishing
-the application. Best practices as documented by Google MUST be followed
-unless there are very good reasons for not doing that. 
-
 ## Additional Requirements
 
-1. The downloaded VPN configuration and/or other secrets MUST be only stored in 
-   protected storage that is only available to the eduvpn application;
+1. If possible: the downloaded VPN configuration and/or other secrets MUST be only stored in 
+   secure storage that is only available to the eduvpn application;
 2. The list of eduvpn instances MUST be very easy to update;
 3. It MUST be possible to manually specify an instance by its URL in case it 
    is not yet listed in the eduvpn app;
-4. Root permissions MUST NOT be required;
-5. The license MUST be compatible with OpenVPN and OpenVPN for Android, this 
+4. The license MUST be compatible with OpenVPN and OpenVPN GUI, this 
    means it MUST be released under the GPL license. An exact license still 
    needs to be determined, but initially the GPLv3 (or later) MUST be used.
- 
-# PoC
-
-A proof of concept application is available 
-[here](https://github.com/eduvpn/android). It more or less works, but still
-has lots of issues, and is far from complete, see also the TODO section there.
 
 # References
 
-* [OpenVPN for Android](https://github.com/schwabe/ics-openvpn)
 * RFC 6749 [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
 * RFC 6750 [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750)
-* [F-Droid Inclusion Policy](https://f-droid.org/wiki/page/Inclusion_Policy)
