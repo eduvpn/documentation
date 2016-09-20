@@ -135,7 +135,7 @@ These operating systems should not be supported. They are insecure, old, crappy 
 ## Principle
 
 
-**Principle**: anyone with a computer with just Microsoft Visual Studio on it MUST be 
+**Principle**: anyone with a computer with just Microsoft Visual Studio Community 2015 (or newer when available) on it MUST be 
 able to build the application and its dependencies from source in the easiest 
 way possible and generate an installable application (exe).
 
