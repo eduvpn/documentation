@@ -21,7 +21,7 @@ enable the ACL for. Here, the group with identifier `all` is given access.
 There are a number of backends available to fetch group membership 
 information and they are also configured here.
 
-### StaticAcl
+### StaticProvider
 
     groupProviders:
         StaticProvider:
@@ -39,7 +39,7 @@ Here you can add the various user IDs to the group ID to give them access to
 the pool. Make sure the group ID, here `all`, `students` and `employees` 
 matches with the ID as specified in `aclGroupList` in your pool configuration.
 
-### VootAcl
+### VootProvider
 
 This method uses the [VOOT protocol](http://openvoot.org/) to retrieve group 
 memberships. The example below is for the 
