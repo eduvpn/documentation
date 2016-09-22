@@ -182,6 +182,8 @@ restorecon -R /var/lib/openvpn
 
 sudo mkdir /etc/vpn-admin-portal/${HOSTNAME}
 sudo cp /usr/share/doc/vpn-admin-portal/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+sudo chown root.apache /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+sudo chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
@@ -189,6 +191,8 @@ sudo cp /usr/share/doc/vpn-admin-portal/config.yaml.example /etc/vpn-admin-porta
 
 sudo mkdir /etc/vpn-user-portal/${HOSTNAME}
 sudo cp /usr/share/doc/vpn-user-portal/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+sudo chown root.apache /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+sudo chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # OPENVPN
@@ -249,7 +253,7 @@ systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
 # FIREWALL
 ###############################################################################
 
-# the firewall is generated based on the /etc/vpn-server-api/pools.yaml file
+# generate and install the firewall
 vpn-server-api-generate-firewall --install
 
 systemctl enable iptables
