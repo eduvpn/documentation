@@ -74,11 +74,11 @@ printed at the end of the deploy script.
 If you want to update/add users you can use the `vpn-user-portal-add-user` and
 `vpn-admin-portal-add-user` scripts:
 
-    $ sudo vpn-user-portal-add-user john s3cr3t
+    $ sudo vpn-user-portal-add-user -i vpn.example -u john -p s3cr3t
 
 Or to update the existing `admin` password:
 
-    $ sudo vpn-admin-portal-add-user admin 3xtr4s3cr3t
+    $ sudo vpn-admin-portal-add-user -i vpn.example -u admin -p 3xtr4s3cr3t
 
 # CA certificate
 You can request a certificate from your CA after running the script. The script
@@ -86,7 +86,8 @@ put a `vpn.example.csr` file in the directory you ran the script from.
 
 Once you obtained the certificate, you can overwrite 
 `/etc/pki/tls/certs/vpn.example.crt` with the certificate you obtained and 
-configure the certificate chain as well in `/etc/httpd/conf.d/ssl.conf`.
+configure the certificate chain as well in `/etc/httpd/conf.d/ssl.conf`. Feel
+free to use [Let's Encrypt](https://letsencrypt.org/).
 
 Make sure you check the configuration with 
 [https://www.ssllabs.com/ssltest/](https://www.ssllabs.com/ssltest/)!

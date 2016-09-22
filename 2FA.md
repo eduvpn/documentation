@@ -4,8 +4,7 @@ The software supports two-factor authentication (2FA) for connecting to the
 VPN.
 
 The users can enroll themselves in the portal on the "Account" page. This is
-only effective if 2FA is actually enabled on the VPN server. This can be 
-checked in the admin portal on the "Info" page.
+only effective if 2FA is actually enabled on the VPN server.
 
 At the moment only 
 [TOTP](https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm) is 
@@ -13,8 +12,8 @@ supported.
 
 ## Enrollment
 
-The portal can be used for enrollment on the "Info" page. A QR code is shown 
-that can be scanned by an application (see below) or the secret can be 
+The user portal can be used for enrollment on the "Account" page. A QR code is 
+shown that can be scanned by an application (see below) or the secret can be 
 manually copy/pasted in a TOTP application.
 
 ![OTP enrollment](img/otp_enroll.png)
@@ -22,14 +21,15 @@ manually copy/pasted in a TOTP application.
 A user can **not** cancel the enrollment. This is on purpose as allowing the 
 user to remove the 2FA would be a security risk.
 
-**NOTE**: the admin portal does not yet have the ability to manually remove the
-2FA for a particular user, this will come in a future release.
+An administrator can delete the OTP secret for a particular user in the 
+admin portal.
 
 ## Applications
 
 ### Command Line
 
-You can test the deploying using a command line tool, [oathtool](http://www.nongnu.org/oath-toolkit/):
+You can test the deploying using a command line tool, 
+[oathtool](http://www.nongnu.org/oath-toolkit/):
 
     $ oathtool --totp -b K5LY7VPKBFQJZQBU
 

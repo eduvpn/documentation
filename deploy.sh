@@ -56,13 +56,13 @@ yum -y remove NetworkManager firewalld
 yum -y install epel-release
 
 # enable COPR repos
-curl -L -o /etc/yum.repos.d/fkooman-php-base-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/php-base/repo/epel-7/fkooman-php-base-epel-7.repo
-curl -L -o /etc/yum.repos.d/fkooman-vpn-management-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/vpn-management/repo/epel-7/fkooman-vpn-management-epel-7.repo
+curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install software (dependencies)
 yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli php pwgen php-pecl-libsodium
+    iptables-services php-fpm php-cli psmisc net-tools php pwgen \
+    php-pecl-libsodium
 
 # install software (VPN packages)
 yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
@@ -145,28 +145,33 @@ sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opc
 ###############################################################################
 
 # initialize the CA
-sudo -u apache vpn-ca-api-init
+sudo mkdir /etc/vpn-ca-api/${HOSTNAME}
+sudo cp /usr/share/doc/vpn-ca-api/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+sudo chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+sudo chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+
+sudo -u apache vpn-ca-api-init -i ${HOSTNAME}
 
 ###############################################################################
 # VPN-SERVER-API
 ###############################################################################
 
+sudo mkdir /etc/vpn-server-api/${HOSTNAME}
+sudo cp /usr/share/doc/vpn-server-api/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
+sudo chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
+sudo chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
+
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges, enable NAT and
 # set the extIf
-php resources/update_ip.php ${EXTERNAL_IF}
-
-# XXX update DNS servers to use the ones already configured in /etc/resolv.conf
-# for VPN clients
-#echo [\'`cat /etc/resolv.conf  | grep ^nameserver | cut -d ' ' -f 2 | xargs | sed "s/\ /','/g"`\']
+php resources/update_ip.php ${HOSTNAME} ${EXTERNAL_IF}
 
 # update hostname clients will connect to
-sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/pools.yaml
+sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
-# create a data directory for the connection log database, initialize the
-# database
+# create a data directory for the OTP log, initialize the database
 mkdir -p /var/lib/openvpn
 chown -R openvpn.openvpn /var/lib/openvpn
-sudo -u openvpn /usr/bin/vpn-server-api-init
+sudo -u openvpn vpn-server-api-init -i ${HOSTNAME}
 
 # fix SELinux label on /var/lib/openvpn, not sure why this is needed...
 restorecon -R /var/lib/openvpn
@@ -175,17 +180,15 @@ restorecon -R /var/lib/openvpn
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-# enable template cache
-sed -i "s/#templateCache/templateCache/" /etc/vpn-admin-portal/config.yaml
+sudo mkdir /etc/vpn-admin-portal/${HOSTNAME}
+sudo cp /usr/share/doc/vpn-admin-portal/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-sudo -u apache vpn-user-portal-init
-
-# enable template cache
-sed -i "s/#templateCache/templateCache/" /etc/vpn-user-portal/config.yaml
+sudo mkdir /etc/vpn-user-portal/${HOSTNAME}
+sudo cp /usr/share/doc/vpn-user-portal/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # OPENVPN
@@ -236,11 +239,11 @@ systemctl start sniproxy
 
 # generate the server configuration files
 echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
-vpn-server-api-server-config --generate ${HOSTNAME}
+vpn-server-api-server-config -i ${HOSTNAME} --generate ${HOSTNAME}
 
 # enable and start OpenVPN
-systemctl enable openvpn@server-default-{0,1,2,3}
-systemctl start openvpn@server-default-{0,1,2,3}
+systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
+systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
 
 ###############################################################################
 # FIREWALL
@@ -265,16 +268,16 @@ systemctl restart ip6tables
 echo '@daily openvpn vpn-server-api-housekeeping' > /etc/cron.d/vpn-server-api-housekeeping
 
 # parse the journal and write out JSON file with logs every hour
-echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json' > /etc/cron.d/vpn-server-api-log
+echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
 # execute now
 # XXX pipe fail so script stops here, bleh! 
-#journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal > /var/lib/vpn-server-api/log.json
+#journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal
 
 # automatically generate statistics @ 00:15
-echo '15 0 * * * root vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json' > /etc/cron.d/vpn-server-api-stats
+echo '15 0 * * * root vpn-server-api-stats' > /etc/cron.d/vpn-server-api-stats
 # execute now
 # XXX pipe fail above so script stops here, bleh, do not run for now! 
-#vpn-server-api-stats /var/lib/vpn-server-api/log.json /var/lib/vpn-server-api/stats.json
+#vpn-server-api-stats
 
 # Secure OpenSSH
 # Override the algorithms and ciphers. By default CentOS 7 is not really secure
@@ -292,8 +295,8 @@ sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
 # adding users
 USER_PASS=`pwgen 12 -n 1`
 ADMIN_PASS=`pwgen 12 -n 1`
-vpn-user-portal-add-user me ${USER_PASS}
-vpn-admin-portal-add-user admin ${ADMIN_PASS}
+vpn-user-portal-add-user  -i ${HOSTNAME} -u me    -p ${USER_PASS}
+vpn-admin-portal-add-user -i ${HOSTNAME} -u admin -p ${ADMIN_PASS}
 
 echo "########################################################################"
 echo "#"
