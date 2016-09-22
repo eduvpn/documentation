@@ -7,14 +7,35 @@ Pools, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can
 contain many options. These are described in this document, together with their
 default values.
 
+The VPN pools are configured in the `vpnPools` section, e.g.:
+
+    vpnPools:
+        internet:
+            displayName: Internet Access
+            hostName: vpn.example
+            ...
+            ...
+
+Here `internet` is the internal identifier that will be used to keep track 
+of the various pools you may define here.
+
+If you modify any of these values as described below, you need to regenerate 
+the server configuration and the firewall:
+
+    $ sudo vpn-server-api-server-config -i vpn.example
+    $ sudo vpn-server-api-generate-firewall -i
+
+**TODO**: write a tool that automatically enables the OpenVPN units and 
+restarts the processes, or at least give a copy/paste solution.
+
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
-| `displayName`      | The name of the pool as shown to the user | yes | _N/A_ |
+| `displayName`      | The name of the pool as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
-| `listen`           | The *IPv4* address the OpenVPN process will listen on | no | `0.0.0.0` |
+| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only one pool and one instance | no | `0.0.0.0` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `true` |
 | `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity | no | `false` | 
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `true` | 
