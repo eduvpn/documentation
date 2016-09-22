@@ -4,8 +4,8 @@ For this document we assume your _instance_ is running as
 `https://vpn.example/`, change the domain name accordingly.
 
 Pools, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can 
-contain many options. These are described in this document, together with their
-default values.
+contain many options to support various deployment scenarios. These are 
+described in this document, together with their default values.
 
 The VPN pools are configured in the `vpnPools` section, e.g.:
 

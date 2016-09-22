@@ -14,7 +14,7 @@ and deploy instructions for various deployment scenarios.
   devices;
 - Admin Portal manage users, configurations and connections;
 - [Two-factor authentication](2FA.md) (TOTP) support with user self-enrollment;
-- Deployment scenarios:
+- [Deployment scenarios](POOL_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
   - Route only some traffic over the VPN (for access to the organization 
