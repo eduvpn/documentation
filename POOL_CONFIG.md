@@ -5,7 +5,8 @@ For this document we assume your _instance_ is running as
 
 Pools, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can 
 contain many options to support various deployment scenarios. These are 
-described in this document, together with their default values.
+described in this document, together with their default values. Read more 
+about multi-pool configurations [here](MULTI_POOL.md).
 
 The VPN pools are configured in the `vpnPools` section, e.g.:
 
