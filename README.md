@@ -20,8 +20,9 @@ and deploy instructions for various deployment scenarios.
   - Route only some traffic over the VPN (for access to the organization 
     network);
   - Client-to-client only networking;
-- Support multiple deployment scenarios [simultaneously](MULTI.md); 
-- Group [ACL](ACL.md) support
+- Support multiple deployment scenarios [simultaneously](MULTI_POOL.md);
+- Support [multiple instances](MULTI_INSTANCE.md); 
+- Group [ACL](ACL.md) support;
 - Ability to disable all OpenVPN logging;
 
 The VPN server is working with and tested on a variety of platforms and 
