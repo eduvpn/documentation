@@ -49,3 +49,4 @@ restarts the processes, or at least give a copy/paste solution.
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true` | no | `[]` |
 | `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | _N/A_ |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
+| `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. In case `processCount` is 2, 4 or 8 the last OpenVPN process will use TCP | no | `4` |
