@@ -146,7 +146,7 @@ sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opc
 
 # initialize the CA
 sudo mkdir /etc/vpn-ca-api/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-ca-api/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+sudo cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 sudo chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 sudo chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 
@@ -157,7 +157,7 @@ sudo -u apache vpn-ca-api-init -i ${HOSTNAME}
 ###############################################################################
 
 sudo mkdir /etc/vpn-server-api/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-server-api/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
+sudo cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
 sudo chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
 sudo chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
@@ -181,7 +181,7 @@ restorecon -R /var/lib/openvpn
 ###############################################################################
 
 sudo mkdir /etc/vpn-admin-portal/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-admin-portal/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+sudo cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 sudo chown root.apache /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 sudo chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
@@ -190,7 +190,7 @@ sudo chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 ###############################################################################
 
 sudo mkdir /etc/vpn-user-portal/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-user-portal/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+sudo cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 sudo chown root.apache /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 sudo chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
