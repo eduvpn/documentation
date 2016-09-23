@@ -145,10 +145,10 @@ sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opc
 ###############################################################################
 
 # initialize the CA
-sudo mkdir /etc/vpn-ca-api/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
-sudo chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
-sudo chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-ca-api/${HOSTNAME}
+cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 
 sudo -u apache vpn-ca-api-init -i ${HOSTNAME}
 
@@ -156,17 +156,14 @@ sudo -u apache vpn-ca-api-init -i ${HOSTNAME}
 # VPN-SERVER-API
 ###############################################################################
 
-sudo mkdir /etc/vpn-server-api/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
-sudo chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
-sudo chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-server-api/${HOSTNAME}
+cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
+chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
+chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges, enable NAT and
 # set the extIf
 php resources/update_ip.php ${HOSTNAME} ${EXTERNAL_IF}
-
-# update hostname clients will connect to
-sed -i "s/vpn.example/${HOSTNAME}/" /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
 # create a data directory for the OTP log, initialize the database
 mkdir -p /var/lib/openvpn
@@ -180,19 +177,19 @@ restorecon -R /var/lib/openvpn
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-sudo mkdir /etc/vpn-admin-portal/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
-sudo chown root.apache /etc/vpn-user-portal/${HOSTNAME}/config.yaml
-sudo chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-admin-portal/${HOSTNAME}
+cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+chown root.apache /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-sudo mkdir /etc/vpn-user-portal/${HOSTNAME}
-sudo cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
-sudo chown root.apache /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
-sudo chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-user-portal/${HOSTNAME}
+cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+chown root.apache /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # OPENVPN
