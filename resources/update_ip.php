@@ -33,6 +33,7 @@ try {
     $configFile = sprintf('/etc/vpn-server-api/%s/config.yaml', $hostName);
     $configData = Yaml::parse(file_get_contents($configFile));
 
+    $configData['vpnPools']['internet']['hostName'] = $hostName;
     $configData['vpnPools']['internet']['range'] = $v4;
     $configData['vpnPools']['internet']['range6'] = $v6;
     $configData['vpnPools']['internet']['extIf'] = $extIf;
