@@ -219,7 +219,7 @@ sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
 ###############################################################################
 
 # update API secret
-php resources/update_api_secret.php
+php resources/update_api_secret.php ${HOSTNAME}
 
 ###############################################################################
 # DAEMONS
@@ -275,7 +275,7 @@ echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-se
 #journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal
 
 # automatically generate statistics @ 00:15
-echo '15 0 * * * root vpn-server-api-stats' > /etc/cron.d/vpn-server-api-stats
+echo "15 0 * * * root vpn-server-api-stats -i ${HOSTNAME}" > /etc/cron.d/vpn-server-api-stats
 # execute now
 # XXX pipe fail above so script stops here, bleh, do not run for now! 
 #vpn-server-api-stats
