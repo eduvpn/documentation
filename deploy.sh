@@ -227,6 +227,8 @@ php resources/update_api_secret.php ${HOSTNAME}
 
 systemctl enable php-fpm
 systemctl enable httpd
+
+# XXX also here copy the service file and start after network-online.target
 systemctl enable sniproxy
 
 # start services
@@ -241,6 +243,14 @@ systemctl start sniproxy
 # generate the server configuration files
 echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
 vpn-server-api-server-config -i ${HOSTNAME} --generate ${HOSTNAME}
+
+# we need to make a copy of the openvpn service as we want it to only start on
+# boot when the network is available. We need this because in 
+# multi-pool/multi-instance we do not bind to 0.0.0.0 any longer
+# As we don't yet use networkd we have to modify the service file a bit, see 
+# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+cp /usr/lib/systemd/system/openvpn@.service /etc/systemd/system/openvpn@.service
+sed -i 's/After=network.target/After=network-online.target/' /etc/systemd/system/openvpn@.service
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
