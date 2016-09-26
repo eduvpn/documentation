@@ -25,7 +25,7 @@ providing it with the following query parameters, they are all required:
 * `client_id`: the ID that was registered, see below;
 * `redirect_uri`; the URL that was registered, see below;
 * `response_type`: this is always `token`;
-* `scope`: this can be `create_config`, `server_pools`, or both;
+* `scope`: this is always `config`;
 * `state`: a cryptographically secure random string, to avoid CSRF;
 
 The `authorization_endpoint` URL together with the query parameters is then 
@@ -43,13 +43,12 @@ how to use the API.
 ### Pool List
 
 **SUBJECT TO CHANGE**
+
 **NOT YET IMPLEMENTED**
 
 This call will show the available VPN pools for this instance. This will allow
 the application to show the user which pools are available and some basic 
 information, e.g. whether or not two-factor authentication is enabled.
-
-This request requires the scope `pool_list`.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://vpn.example/portal/api/pool_list
@@ -72,8 +71,6 @@ The response looks like this:
 
 **SUBJECT TO CHANGE**
 
-This request requires the scope `create_config`.
-
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "configName=MyConfig&poolId=internet" \
         https://vpn.example/portal/api/create_config
@@ -82,7 +79,7 @@ This will send a HTTP POST to the API endpoint, `/create_config` with the
 parameters `configName` and `poolId` to indicate for which pool a configuration
 is downloaded. The `configName` MUST be unique per user.
 
-The acceptable values for `poolId` can be discovered using the `/server_pools` 
+The acceptable values for `poolId` can be discovered using the `/pool_list` 
 call.
 
 The response will be an OpenVPN configuration file.
@@ -102,7 +99,5 @@ The following options are available:
     apiConsumers:
         vpn-companion:
             redirect_uri: 'vpn://import/callback'
-            scope: ['create_config', 'pool_list']
 
-Here `vpn-companion` is the `client_id`. The `scope` field indicated which 
-scopes this client is allowed to request.
+Here `vpn-companion` is the `client_id`.
