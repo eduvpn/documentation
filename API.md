@@ -2,7 +2,7 @@
 
 The portal has an API for use by applications. It is protected using OAuth 2.0
 [[RFC 6749](https://tools.ietf.org/html/rfc6749), 
-[RFC 6750](https://tools.ietf.org/html/rfc6749)] and uses the same 
+[RFC 6750](https://tools.ietf.org/html/rfc6750)] and uses the same 
 authentication mechanism as the portal itself.
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
