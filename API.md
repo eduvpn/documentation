@@ -44,8 +44,6 @@ how to use the API.
 
 **SUBJECT TO CHANGE**
 
-**NOT YET IMPLEMENTED**
-
 This call will show the available VPN pools for this instance. This will allow
 the application to show the user which pools are available and some basic 
 information, e.g. whether or not two-factor authentication is enabled.
