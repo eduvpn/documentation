@@ -88,12 +88,19 @@ instance. The following information will be made available through this
 document:
 
 * The `authorization_endpoint` for OAuth 2.0 authorization;
-* The `token_endpoint` for OAuth 2.0 token exchange;
 * The `api_endpoint` for interacting with the API using Bearer tokens;
-* ...
-* ...
 
-The exact format is still to be determined.
+The exact format is still to be determined, proposal:
+
+```
+{
+    "api_endpoint": "https://vpn.example/portal/api",
+    "api_version": "1.0",
+    "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
+}
+```
+
+This document would be hosted on `https://vpn.example/info.json`.
 
 ## Authorization
 
