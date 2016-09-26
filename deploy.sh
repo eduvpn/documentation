@@ -302,6 +302,9 @@ systemctl restart sshd
 mkdir -p /var/www/${HOSTNAME}
 cp resources/index.html /var/www/${HOSTNAME}/index.html
 sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
+# Copy server info JSON file
+cp resources/info.json /var/www/${HOSTNAME}/info.json
+sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/info.json
 
 # adding users
 USER_PASS=`pwgen 12 -n 1`
