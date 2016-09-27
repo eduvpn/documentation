@@ -140,6 +140,11 @@ sed -i 's/;session.entropy_length = 32/session.entropy_length = 32/' /etc/php.in
 # recommendation from https://php.net/manual/en/opcache.installation.php
 sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opcache.ini
 
+# mbstring
+sed -i 's/;mbstring.internal_encoding = EUC-JP/mbstring.internal_encoding = UTF-8/' /etc/php.ini
+sed -i 's/;mbstring.http_input = auto/mbstring.http_input = UTF-8/' /etc/php.ini
+sed -i 's/;mbstring.http_output = SJIS/mbstring.http_output = UTF-8/' /etc/php.ini
+
 ###############################################################################
 # vpn-ca-api
 ###############################################################################
