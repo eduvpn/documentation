@@ -95,7 +95,7 @@ The exact format is still to be determined, proposal:
 ```
 {
     "api_endpoint": "https://vpn.example/portal/api",
-    "api_version": "1.0",
+    "api_version": "0.1",
     "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
 }
 ```
@@ -149,6 +149,11 @@ The requirement for being available through F-Droid means that no Google
 proprietary libraries may be used, e.g. "Google Cloud Messaging" and that the 
 application can be built from source straight from a public repository. See 
 also the F-Droid Inclusion Policy.
+
+The signing key+certificate and the Google Account used to submit the 
+application MUST be made available as well as to allow for submission of 
+updates independent of the developers of the Android application, e.g. to 
+push updates to the list of organizations embedded in the application.
 
 In case additional dependencies are required, they should be clearly mentioned 
 in the main README, MUST be free software as well, MUST have compatible 
