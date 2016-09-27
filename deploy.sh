@@ -233,7 +233,9 @@ php resources/update_api_secret.php ${HOSTNAME}
 systemctl enable php-fpm
 systemctl enable httpd
 
-# XXX also here copy the service file and start after network-online.target
+# also wait for the network to be up to start sniproxy 
+cp /usr/lib/systemd/system/sniproxy.service /etc/systemd/system/sniproxy.service
+sed -i 's/After=network.target/After=network-online.target/' /etc/systemd/system/sniproxy.service
 systemctl enable sniproxy
 
 # start services
