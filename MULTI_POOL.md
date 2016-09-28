@@ -70,6 +70,8 @@ need to be made.
 
 ## OpenVPN
 
+    $ su -c 'for F in `ls /etc/systemd/system/multi-user.target.wants/*openvpn*`; do B=`basename $F` ; systemctl disable $B ; done;'
+
     $ TODO stop old, disable old
 
     $ sudo vpn-server-api-server-config -i vpn.example
@@ -107,7 +109,11 @@ default configuration:
         vpn.example 127.42.101.100:8443
     }
 
-The modification will look like this:
+The modification will look like this. Note the `listen` line where the IP 
+address now matches the `listen` directive from the above pool config. In the
+line with `fallback` the IP address used is the one on which the OpenVPN 
+process listens. For the first pool, this is `internet` here the IP address is
+`127.42.101.100`, for the next it is `127.42.101.101` and so on.
 
     user sniproxy
     pidfile /var/run/sniproxy.pid
