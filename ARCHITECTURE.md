@@ -18,11 +18,12 @@ or network filters where UDP connections are blocked or broken.
 
 ## Apache
 
-Apache the software together. Both the user visible components (User Portal and 
-Admin Portal), as well as the internal services (Server API and CA API) are all 
-routed through Apache. The communication between the components is also done
-through Apache. This makes it possible to separate the components in different
-containers, VMs or even physical machines.
+[Apache](https://httpd.apache.org/) binds he software together. Both the user 
+visible components (User Portal and Admin Portal), as well as the internal 
+services (Server API and CA API) are all 
+[routed through Apache](resources/vpn.example.conf). The communication between 
+the components is also done through Apache. This makes it possible to separate 
+the components in different containers, VMs or even physical machines.
 
 ## PHP FPM
 
