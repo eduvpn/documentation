@@ -34,6 +34,10 @@ clients:
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
 
+# Architecture
+
+The architecure is described in a [separate document](ARCHITECTURE.md).
+
 # Authentication 
 
 By default a user name/password login on the User/Admin portal is used, but it 
