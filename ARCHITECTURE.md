@@ -3,7 +3,7 @@
 This document describes the architecture of the software, its components and
 how it interacts.
 
-# Stack
+# "Stack"
 
 This image describes the "default" configuration of the software using the 
 `deploy.sh` script found in this repository.
@@ -40,9 +40,9 @@ connect over `TCP/443`.
 
 ## User Portal
 
-The User Portal allows end users using a web browser to create configurations, 
-i.e. certificates, enroll for two-factor authentication and disable their 
-certificates when losing a device. 
+The [User Portal](https://github.com/eduvpn/vpn-user-portal) allows end users 
+using a web browser to create configurations, i.e. certificates, enroll for 
+two-factor authentication and disable their certificates when losing a device. 
 
 In addition to using a web browser to access the portal, an OAuth 2.0 protected
 API is also available. This can e.g. be used by applications running on a 
@@ -53,19 +53,28 @@ The User Portal interacts with the Server API and CA API.
 
 ## Admin Portal
 
-The Admin Portal allows administrators using a web browser to manage user's 
-configurations (certificates). It also has to option to disable (and re-enable)
-certificates, throw away user's two-factor secret, and completely block and 
-unblock users. It can also be used to view currently connected clients, get
-an overview of the usage (stats) and search the connection logs.
+The [Admin Portal](https://github.com/eduvpn/vpn-admin-portal) allows 
+administrators using a web browser to manage user's configurations 
+(certificates). It also has to option to disable (and re-enable) certificates, 
+throw away user's two-factor secret, and completely block and unblock users. It 
+can also be used to view currently connected clients, get an overview of the 
+usage (stats) and search the connection logs.
 
 The Admin Portal interacts with the Server API and CA API.
 
 ## CA API
 
-The CA API is responsible for everything related to certificates. It can be
-used to generate user certificates and server certificates.
+The [CA API](https://github.com/eduvpn/vpn-ca-api) is responsible for 
+everything related to certificates. It can be used to generate user 
+certificates and server certificates.
 
 ## Server API
 
-...
+The [Server API](https://github.com/eduvpn/vpn-server-api) is responsible for 
+storing the list of disabled users and certificates, the two-factor secrets of
+the users and the group membership information.
+
+It also contains the scripts that the OpenVPN instances will use when a client
+connects, to handle the connect events, to verify if they are allow to connect,
+handle disconnect events and verifying the OTP keys if two-factor 
+authentication is enabled.

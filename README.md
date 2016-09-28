@@ -23,7 +23,7 @@ and deploy instructions for various deployment scenarios.
   - Client-to-client only networking;
 - Support multiple deployment scenarios [simultaneously](MULTI_POOL.md);
 - Support [multiple instances](MULTI_INSTANCE.md); 
-- Group [ACL](ACL.md) support;
+- Group [ACL](ACL.md) support, including [VOOT](http://openvoot.org/);
 - Ability to disable all OpenVPN logging;
 
 The VPN server is working with and tested on a variety of platforms and 
