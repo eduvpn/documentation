@@ -8,7 +8,7 @@ how it interacts.
 This image describes the "default" configuration of the software using the 
 `deploy.sh` script found in this repository.
 
-![Stack](img/stack.png)
+![Stack](img/stack.jpg)
 
 ## sniproxy
 
