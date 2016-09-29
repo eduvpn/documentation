@@ -23,32 +23,10 @@ Now copy the metadata as well:
 
     $ sudo cp SURFconext.xml /etc/httpd/saml
 
-The follow file you place in `/etc/httpd/conf.d/saml.conf`:
-
-    <Location />
-        MellonEnable "info"
-        MellonSPPrivateKeyFile /etc/httpd/saml/https_vpn.example_saml.key
-        MellonSPCertFile /etc/httpd/saml/https_vpn.example_saml.cert
-        MellonSPMetadataFile /etc/httpd/saml/https_vpn.example_saml.xml
-        MellonIdPMetadataFile /etc/httpd/saml/SURFconext.xml
-        MellonEndpointPath /saml
-    </Location>
-
-    <Location /portal>
-        MellonEnable "auth"
-    </Location>
-
-    # Disable Mellon for the API
-    <Location /portal/api/config>
-        MellonEnable "off"
-    </Location>
-
-    #<Location /admin>
-    #    MellonEnable "auth"
-    #
-    #    MellonCond "NAME_ID" "aa3f6fade450f12aa891bf066b86921344e2a1f1" [OR]
-    #    MellonCond "NAME_ID" "234"
-    #</Location>
+Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
+there. Make sure you modify the lines that refer to certificates and keys and
+if you want to enable SAML for the admin portal as well, be sure to add some 
+user IDs to the `MellonCond` lines.
 
 Restart the web server:
 
