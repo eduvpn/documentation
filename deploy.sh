@@ -15,6 +15,9 @@
 # NOTE: edit the variables below if you need to. Set the correct HOSTNAME and
 #       the interface connecting to the Internet from your machine
 #
+# NOTE: please configure your network with NetworkManager! NetworkManager 
+#       and its cli tool will be installed below and enabled
+#
 # TODO:
 # - make this script work on Fedora out of the box, not just CentOS
 
@@ -49,8 +52,8 @@ systemctl restart systemd-journald
 # SOFTWARE
 ###############################################################################
 
-# remove NetworkManager and firewalld
-yum -y remove NetworkManager firewalld
+# remove firewalld, does not yet do what we need
+yum -y remove firewalld
 
 # enable EPEL
 yum -y install epel-release
@@ -62,7 +65,8 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorain
 yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
     policycoreutils-python iptables iptables-services patch sniproxy \
     iptables-services php-fpm php-cli psmisc net-tools php pwgen \
-    php-pecl-libsodium
+    php-pecl-libsodium NetworkManager NetworkManager-config-server \
+    NetworkManager-tui
 
 # install software (VPN packages)
 yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
@@ -232,11 +236,12 @@ php resources/update_api_secret.php ${HOSTNAME}
 
 systemctl enable php-fpm
 systemctl enable httpd
-
-# also wait for the network to be up to start sniproxy 
-cp /usr/lib/systemd/system/sniproxy.service /etc/systemd/system/sniproxy.service
-sed -i 's/After=network.target/After=network-online.target/' /etc/systemd/system/sniproxy.service
 systemctl enable sniproxy
+systemctl enable NetworkManager
+# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+# we need this for sniproxy and openvpn to start only when the network is up
+# because we bind to other addresses than 0.0.0.0 and ::
+systemctl enable NetworkManager-wait-online
 
 # start services
 systemctl start php-fpm
@@ -250,14 +255,6 @@ systemctl start sniproxy
 # generate the server configuration files
 echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
 vpn-server-api-server-config -i ${HOSTNAME} --generate ${HOSTNAME}
-
-# we need to make a copy of the openvpn service as we want it to only start on
-# boot when the network is available. We need this because in 
-# multi-pool/multi-instance we do not bind to 0.0.0.0 any longer
-# As we don't yet use networkd we have to modify the service file a bit, see 
-# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
-cp /usr/lib/systemd/system/openvpn@.service /etc/systemd/system/openvpn@.service
-sed -i 's/After=network.target/After=network-online.target/' /etc/systemd/system/openvpn@.service
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
