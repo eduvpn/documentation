@@ -100,7 +100,9 @@ The exact format is still to be determined, proposal:
 }
 ```
 
-This document would be hosted on `https://vpn.example/info.json`.
+This document would be hosted on `https://vpn.example/info.json`. More 
+documentation on the API can be found 
+[here](https://github.com/eduvpn/documentation/blob/master/API.md).
 
 ## Authorization
 
