@@ -15,6 +15,8 @@ ACL and have two-factor authentication enabled as to provide extra security.
 We assume the instance is running as `https://vpn.example/` and was deployed 
 using the provided deploy script.
 
+**TODO**: create a deploy-like script to add a pool.
+
 ## Internet
 
 The default [configuration](POOL_CONFIG.md) is called `internet` and routes all 
