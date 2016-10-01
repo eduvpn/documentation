@@ -37,9 +37,9 @@ restarts the processes, or at least give a copy/paste solution.
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
 | `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only one pool and one instance | no | `0.0.0.0` |
-| `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `true` |
+| `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
 | `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity | no | `false` | 
-| `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `true` | 
+| `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
 | `routes`           | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false` | no | `[]` |
 | `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client, only used when `defaultGateway` is `true` | no | `[]` |
 | `twoFactor`        | Whether or not to enable two-factor authentication, see [Two-factor](2FA.md) documentation | no | `false` |
