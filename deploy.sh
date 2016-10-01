@@ -171,7 +171,7 @@ chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
 chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip -i ${HOSTNAME} -p internet -e ${EXTERNAL_IF}
+vpn-server-api-update-ip -i ${HOSTNAME} -h ${HOSTNAME} -p internet -e ${EXTERNAL_IF}
 
 # create a data directory for the OTP log, initialize the database
 mkdir -p /var/lib/openvpn
