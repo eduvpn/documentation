@@ -279,7 +279,7 @@ systemctl restart ip6tables
 
 # install a crontab to cleanup the old OTP entries stored to protect against
 # 2FA code reuse
-echo '@daily openvpn vpn-server-api-housekeeping' > /etc/cron.d/vpn-server-api-housekeeping
+echo "@daily openvpn vpn-server-api-housekeeping -i ${HOSTNAME}" > /etc/cron.d/vpn-server-api-housekeeping
 
 # parse the journal and write out JSON file with logs every hour
 echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
