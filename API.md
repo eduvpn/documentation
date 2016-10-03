@@ -40,6 +40,10 @@ Using the `access_token` some additional server information can be obtained,
 as well as configurations created. The examples below will use cURL to show 
 how to use the API.
 
+If the API responds with a 401 it may mean that the user revoked the 
+application's permission. Permission to use the API needs to be request again
+in that case.
+
 ### Pool List
 
 **SUBJECT TO CHANGE**
@@ -81,6 +85,65 @@ The acceptable values for `poolId` can be discovered using the `/pool_list`
 call.
 
 The response will be an OpenVPN configuration file.
+
+### System Messages
+
+**SUBJECT TO CHANGE**
+**NOT YET IMPLEMENTED**
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        https://vpn.example/portal/api/system_messages
+
+The application is able to access the `system_messages` endpoint to see if 
+there are any notifications available. Currently this can be a simple plain 
+text message. In the future other types of notifications can be added, like 
+requesting a configuration change in the client.
+
+    {
+        "data": {
+            "messages": [
+                {
+                    "date": "2007-04-05T14:30Z",
+                    "content": "Maintenance between 7 and 8am on Thursday October 26th 2016 (CEST). The VPN will be unavailable during this time",
+                    "type": "notification"
+                }
+            ]
+        }
+    }
+
+The date/time is in 
+[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) 
+format.
+
+**TODO**: the notifications will be kept forever, or only current ones? Should
+the client keep a list of 'viewed' notifications? Do we need to add a guid 
+field or something similar that is unique for every notification? How often do
+we need to query the `system_messages` endpoint?
+
+### User Messages
+
+**SUBJECT TO CHANGE**
+**NOT YET IMPLEMENTED**
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        https://vpn.example/portal/api/user_messages
+
+These are messages specific to the user. It can contain a message about the 
+user being blocked, or other personal messages from the VPN administrator.
+
+    {
+        "data": {
+            "messages": [
+                {
+                    "date": "2007-04-05T14:30Z",
+                    "content": "Your account has been blocked because of a malware infection, please contact support at support@example.org",
+                    "type": "notification"
+                }
+            ]
+        }
+    }
+
+Same considerations apply as for the `system_messages` call.
 
 # Registration
 

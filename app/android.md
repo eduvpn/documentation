@@ -70,6 +70,42 @@ Everyone can deploy their own instance of eduvpn. The application MUST be able
 to connect to a predefined list of instances, but also to instances not yet 
 added to this list.
 
+# Update Instance List
+
+The list of instances available to connect to MUST be updatable by modifying
+a JSON file on a to be determined location, e.g. 
+`https://www.eduvpn.nl/instances.json`. This file will contain the name of 
+the instance, a link to a logo and the base URL.
+
+**PRELIMINARY FORMAT**
+
+    {
+        "list_version": "0.1",
+        "instances": [
+            {
+                "base_uri": "https://eduvpn.surfcloud.nl/",
+                "display_name": "SURFnet Public VPN service",
+                "logo_uri": "https://www.eduvpn.nl/logos/eduvpn.png"
+            },
+            {
+                "base_uri": "https://labrat.eduvpn.nl/",
+                "display_name": "SURFnet VPN service (Development)",
+                "logo_uri": "https://www.eduvpn.nl/logos/labrat.png"
+            }
+        ]
+    }
+
+On application startup (and periodically when running constantly, e.g. once a
+day) this document is retrieved and the content used to overwrite the built-in
+or previously update list of instances. If the retrieval fails, the last known
+good update (or initially built-in list) is used.
+
+**DISCUSS**: maybe we can encode the logos as base64 in the JSON file instead
+of providing URLs. That would be more efficient, but also increase the file 
+size. What is the best approach here? HTTP caching? Caching in the app? Only
+update the logo when the JSON file is updated? How to determine if an update
+is needed? ETag? Last-Modified HTTP headers? Do we need multi-language support?
+
 # API 
 
 The eduvpn services exposes an API that can be used by the application to 
@@ -81,28 +117,7 @@ support e.g. SAML or OpenID Connect without modifying the application.
 OAuth 2.0 will here be in essence used as a way to provision an 
 application/device specific password called a Bearer token (RFC 6750).
 
-## Discovery
-
-Each instance will provide a JSON document with information about that 
-instance. The following information will be made available through this 
-document:
-
-* The `authorization_endpoint` for OAuth 2.0 authorization;
-* The `api_endpoint` for interacting with the API using Bearer tokens;
-
-The exact format is still to be determined, proposal:
-
-```
-{
-    "api_endpoint": "https://vpn.example/portal/api",
-    "api_version": "0.1",
-    "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
-}
-```
-
-This document would be hosted on `https://vpn.example/info.json`. More 
-documentation on the API can be found 
-[here](https://github.com/eduvpn/documentation/blob/master/API.md).
+See [API](https://github.com/eduvpn/documentation/blob/master/API.md).
 
 ## Authorization
 
