@@ -12,6 +12,7 @@ and deploy instructions for various deployment scenarios.
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
   devices;
+- Multi Language support in the User Portal;
 - OAuth 2.0 [API](API.md) for integration with applications;
 - Admin Portal manage users, configurations and connections;
 - [Two-factor authentication](2FA.md) (TOTP) support with user self-enrollment;
