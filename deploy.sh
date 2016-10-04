@@ -56,7 +56,11 @@ systemctl restart systemd-journald
 yum -y remove firewalld
 
 # enable EPEL
-yum -y install epel-release
+yum -y install epel-release yum-utils
+
+# enable Remi PHP 7.0 repository
+yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum-config-manager --enable remi-php70
 
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
@@ -130,24 +134,7 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 # PHP
 ###############################################################################
 
-# Set PHP timezone, to suppress errors in the log
-sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php.ini
-
-#https://secure.php.net/manual/en/ini.core.php#ini.expose-php
-sed -i 's/expose_php = On/expose_php = Off/' /etc/php.ini
-
-# more secure PHP sessions
-# https://paragonie.com/blog/2015/04/fast-track-safe-and-secure-php-sessions
-sed -i 's/session.hash_function = 0/session.hash_function = sha256/' /etc/php.ini
-sed -i 's/;session.entropy_length = 32/session.entropy_length = 32/' /etc/php.ini
-
-# recommendation from https://php.net/manual/en/opcache.installation.php
-sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=60/' /etc/php.d/opcache.ini
-
-# mbstring
-sed -i 's/;mbstring.internal_encoding = EUC-JP/mbstring.internal_encoding = UTF-8/' /etc/php.ini
-sed -i 's/;mbstring.http_input = auto/mbstring.http_input = UTF-8/' /etc/php.ini
-sed -i 's/;mbstring.http_output = SJIS/mbstring.http_output = UTF-8/' /etc/php.ini
+cp resources/php_settings.ini /etc/php.d/10-eduvpn.ini
 
 ###############################################################################
 # vpn-ca-api
@@ -159,7 +146,7 @@ cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/c
 chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 
-sudo -u apache vpn-ca-api-init -i ${HOSTNAME}
+sudo -u apache vpn-ca-api-init --instance ${HOSTNAME}
 
 ###############################################################################
 # VPN-SERVER-API
@@ -171,12 +158,12 @@ chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
 chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip -i ${HOSTNAME} -p internet -e ${EXTERNAL_IF}
+vpn-server-api-update-ip --instance ${HOSTNAME} --pool internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
 
 # create a data directory for the OTP log, initialize the database
 mkdir -p /var/lib/openvpn
 chown -R openvpn.openvpn /var/lib/openvpn
-sudo -u openvpn vpn-server-api-init -i ${HOSTNAME}
+sudo -u openvpn vpn-server-api-init --instance ${HOSTNAME}
 
 # fix SELinux label on /var/lib/openvpn, not sure why this is needed...
 restorecon -R /var/lib/openvpn
@@ -253,7 +240,7 @@ systemctl start sniproxy
 
 # generate the server configuration files
 echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
-vpn-server-api-server-config -i ${HOSTNAME} --generate ${HOSTNAME}
+vpn-server-api-server-config --instance ${HOSTNAME} --generate --cn ${HOSTNAME}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
@@ -279,16 +266,16 @@ systemctl restart ip6tables
 
 # install a crontab to cleanup the old OTP entries stored to protect against
 # 2FA code reuse
-echo "@daily openvpn vpn-server-api-housekeeping -i ${HOSTNAME}" > /etc/cron.d/vpn-server-api-housekeeping
+echo "@daily openvpn /usr/sbin/vpn-server-api-housekeeping --instance ${HOSTNAME}" > /etc/cron.d/vpn-server-api-housekeeping
 
 # parse the journal and write out JSON file with logs every hour
-echo '@hourly root journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
+echo '@hourly root /bin/journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect | /usr/sbin/vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
 # execute now
 # XXX pipe fail so script stops here, bleh! 
 #journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal
 
 # automatically generate statistics @ 00:15
-echo "15 0 * * * root vpn-server-api-stats -i ${HOSTNAME}" > /etc/cron.d/vpn-server-api-stats
+echo "@daily root /usr/sbin/vpn-server-api-stats --instance ${HOSTNAME}" > /etc/cron.d/vpn-server-api-stats
 # execute now
 # XXX pipe fail above so script stops here, bleh, do not run for now! 
 #vpn-server-api-stats
@@ -312,8 +299,8 @@ sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/info.json
 # adding users
 USER_PASS=`pwgen 12 -n 1`
 ADMIN_PASS=`pwgen 12 -n 1`
-vpn-user-portal-add-user  -i ${HOSTNAME} -u me    -p ${USER_PASS}
-vpn-admin-portal-add-user -i ${HOSTNAME} -u admin -p ${ADMIN_PASS}
+vpn-user-portal-add-user  --instance ${HOSTNAME} --user me    --pass ${USER_PASS}
+vpn-admin-portal-add-user --instance ${HOSTNAME} --user admin --pass ${ADMIN_PASS}
 
 echo "########################################################################"
 echo "#"
