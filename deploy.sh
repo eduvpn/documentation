@@ -60,7 +60,7 @@ yum -y install epel-release yum-utils
 
 # enable Remi PHP 7.0 repository
 yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum-config-manager --enable remi-php70
+yum-config-manager --enable remi-php70 >/dev/null
 
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
