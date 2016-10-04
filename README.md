@@ -81,11 +81,11 @@ printed at the end of the deploy script.
 If you want to update/add users you can use the `vpn-user-portal-add-user` and
 `vpn-admin-portal-add-user` scripts:
 
-    $ sudo vpn-user-portal-add-user -i vpn.example -u john -p s3cr3t
+    $ sudo vpn-user-portal-add-user --instance vpn.example --user john --pass s3cr3t
 
 Or to update the existing `admin` password:
 
-    $ sudo vpn-admin-portal-add-user -i vpn.example -u admin -p 3xtr4s3cr3t
+    $ sudo vpn-admin-portal-add-user --instance vpn.example --user admin --pass 3xtr4s3cr3t
 
 # CA certificate
 You can request a certificate from your CA after running the script. The script
