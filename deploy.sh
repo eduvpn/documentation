@@ -66,7 +66,7 @@ yum-config-manager --enable remi-php70 >/dev/null
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install software (dependencies)
-yum -y install openvpn easy-rsa mod_ssl php-opcache httpd openssl \
+yum -y install openvpn mod_ssl php-opcache httpd openssl \
     policycoreutils-python iptables iptables-services patch sniproxy \
     iptables-services php-fpm php-cli psmisc net-tools php pwgen \
     php-pecl-libsodium NetworkManager NetworkManager-config-server \
