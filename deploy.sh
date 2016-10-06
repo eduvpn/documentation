@@ -157,16 +157,11 @@ cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOS
 chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
 chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
+# OTP log for two-factor auth
+sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
+
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${HOSTNAME} --pool internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
-
-# create a data directory for the OTP log, initialize the database
-mkdir -p /var/lib/openvpn
-chown -R openvpn.openvpn /var/lib/openvpn
-sudo -u openvpn vpn-server-api-init --instance ${HOSTNAME}
-
-# fix SELinux label on /var/lib/openvpn, not sure why this is needed...
-restorecon -R /var/lib/openvpn
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
