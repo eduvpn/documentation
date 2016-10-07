@@ -23,8 +23,8 @@ of the various pools you may define here.
 If you modify any of these values as described below, you need to regenerate 
 the server configuration and the firewall:
 
-    $ sudo vpn-server-api-server-config -i vpn.example
-    $ sudo vpn-server-api-generate-firewall -i
+    $ sudo vpn-server-api-server-config --instance vpn.example
+    $ sudo vpn-server-api-generate-firewall --install
 
 **TODO**: write a tool that automatically enables the OpenVPN units and 
 restarts the processes, or at least give a copy/paste solution.

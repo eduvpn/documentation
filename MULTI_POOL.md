@@ -76,7 +76,7 @@ need to be made.
 
     $ TODO stop old, disable old
 
-    $ sudo vpn-server-api-server-config -i vpn.example
+    $ sudo vpn-server-api-server-config --instance vpn.example
     
     $ TODO enable new, start new
 
@@ -84,7 +84,7 @@ need to be made.
 
 Generate the new firewall:
 
-    $ sudo vpn-server-api-generate-firewall -i
+    $ sudo vpn-server-api-generate-firewall --install
 
 Restart the firewall:
 

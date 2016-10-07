@@ -29,7 +29,7 @@ fixing IPv6
 The file `/etc/vpn-ca-api/vpn.bar.org/config.yaml` can be modified if needed. 
 Now to initialize the CA for this instance:
 
-    $ sudo -u apache vpn-ca-api-init -i vpn.bar.org
+    $ sudo -u apache vpn-ca-api-init --instance vpn.bar.org
 
 That's it for the CA.
 
@@ -49,7 +49,7 @@ there MUST incorporate the `instanceNumber`. So assuming you choose `5` as your
 section can be updated, see [Pool Configuration](POOL_CONFIG.md) for more 
 information.
 
-    $ sudo -u openvpn vpn-server-api-init -i vpn.bar.org
+    $ sudo -u apache vpn-server-api-init --instance vpn.bar.org
 
 In order to create the server configurations, first the other components must
 be set up.
@@ -64,7 +64,7 @@ to the correct IP address as mentioned above.
 
 To add a user:
 
-    $ sudo vpn-user-portal-add-user -i vpn.bar.org -u foo -p bar
+    $ sudo vpn-user-portal-add-user --instance vpn.bar.org --user foo --pass bar
 
 # Admin Portal
 
@@ -76,7 +76,7 @@ to the correct IP address as mentioned above.
 
 To add a user:
 
-    $ sudo vpn-admin-portal-add-user -i vpn.bar.org -u foo -p bar
+    $ sudo vpn-admin-portal-add-user --instance vpn.bar.org --user foo --pass bar
 
 # Apache
 
@@ -96,7 +96,7 @@ for where to store the certificate and chain.
 Now that this works, it should be possible to generate the server configuration
 for your new instance.
 
-    $ sudo vpn-server-api-server-config -i vpn.bar.org --generate vpn01.bar.org
+    $ sudo vpn-server-api-server-config --instance vpn.bar.org --generate --cn vpn01.bar.org
 
 And the firewall:
 
