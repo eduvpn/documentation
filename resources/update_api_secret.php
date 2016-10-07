@@ -10,12 +10,14 @@ $vupvsa = bin2hex(random_bytes(16));
 $vapvca = bin2hex(random_bytes(16));
 $vapvsa = bin2hex(random_bytes(16));
 $vsavca = bin2hex(random_bytes(16));
+$vsavsa = bin2hex(random_bytes(16));
 
 //$vupvca = 'XXX-vpn-user-portal/vpn-ca-api-XXX';
 //$vupvsa = 'XXX-vpn-user-portal/vpn-server-api-XXX';
 //$vapvca = 'XXX-vpn-admin-portal/vpn-ca-api-XXX';
 //$vapvsa = 'XXX-vpn-admin-portal/vpn-server-api-XXX';
 //$vsavca = 'XXX-vpn-server-api/vpn-ca-api-XXX';
+//$vsavsa = 'XXX-vpn-server-api/vpn-server-api-XXX';
 
 try {
     if (2 !== $argc) {
@@ -43,10 +45,12 @@ try {
             'config' => sprintf('/etc/vpn-server-api/%s/config.yaml', $hostName),
             'apiProviders' => [
                 'vpn-ca-api' => $vsavca,
+                'vpn-server-api' => $vsavsa,
             ],
             'apiConsumers' => [
                 'vpn-user-portal' => $vupvsa,
                 'vpn-admin-portal' => $vapvsa,
+                'vpn-server-api' => $vsavsa,
             ],
         ],
         'vpn-ca-api' => [
