@@ -20,17 +20,21 @@ manually copy/pasted in a TOTP application. Users currently cannot remove their
 user in the admin portal.
 
 Before the user is enrolled:
+
 ![OTP pre-enroll](img/2fa/account_pre.png)
 
 The enrollment process:
+
 ![OTP enrollment](img/2fa/enroll.png)
 
 After the user is enrolled:
+
 ![OTP post-enroll](img/2fa/account_post.png)
 
 ## Authenticating
 
 Authenticating to the (user) portal when the user is enrolled for 2FA:
+
 ![OTP auth](img/2fa/otp_auth.png)
 
 ## OTP Applications
@@ -70,7 +74,7 @@ VPN. The client will ask for a user name and password. The user name MUST be
 
 For example with the community client of OpenVPN on Windows you will see this:
 
-![OTP on Windows](img/windows_otp.png)
+![OTP on Windows](img/2fa/windows_otp.png)
 
 # Enabling 2FA for VPNs
 
