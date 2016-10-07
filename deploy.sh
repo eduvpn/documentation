@@ -134,7 +134,7 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 # PHP
 ###############################################################################
 
-cp resources/php_settings.ini /etc/php.d/10-eduvpn.ini
+cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 
 ###############################################################################
 # vpn-ca-api
