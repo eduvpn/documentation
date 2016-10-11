@@ -89,40 +89,53 @@ The response will be an OpenVPN configuration file.
 ### System Messages
 
 **SUBJECT TO CHANGE**
+
 **NOT YET IMPLEMENTED**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://vpn.example/portal/api/system_messages
 
 The application is able to access the `system_messages` endpoint to see if 
-there are any notifications available. Currently this can be a simple plain 
-text message. In the future other types of notifications can be added, like 
-requesting a configuration change in the client.
+there are any notifications available. There are two types of messages:
+
+* `notification`: a simple plain text message in the `content` field;
+* `maintenance`: an (optional) simple plain text message in the `content` field
+  and a `start` and `end` field with the timestamp;
+
+All message types have the `date` field indicating the date the message was 
+created. This can be used as a unique identifier.
+
+The `date`, `start` and `end` fields are in
+[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) 
+format. **Seconds are also included!**.
+
+An example:
 
     {
         "data": {
             "messages": [
                 {
-                    "date": "2007-04-05T14:30Z",
-                    "content": "Maintenance between 7 and 8am on Thursday October 26th 2016 (CEST). The VPN will be unavailable during this time",
-                    "type": "notification"
+                    "date": "2007-04-05T14:30:33Z",
+                    "end": "2016-10-30T08:00:00Z",
+                    "start": "2016-10-30T06:00:00Z",
+                    "type": "maintenance"
+                },
+                {
+                    "content": "We will shut down this VPN service per January 1st 2010!",
+                    "date": "2009-03-01T13:31:09Z"
                 }
             ]
         }
     }
 
-The date/time is in 
-[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) 
-format.
-
-**TODO**: the notifications will be kept forever, or only current ones? Should
-the client keep a list of 'viewed' notifications? Do we need to add a guid 
-field or something similar that is unique for every notification? How often do
-we need to query the `system_messages` endpoint?
+The messages of type `maintenance` will be available through the API until they 
+are no longer relevant. Messages of type `notification` will be always 
+available through the API until an administrator (manually) removes it.
 
 ### User Messages
 
 **SUBJECT TO CHANGE**
+
 **NOT YET IMPLEMENTED**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
@@ -135,7 +148,7 @@ user being blocked, or other personal messages from the VPN administrator.
         "data": {
             "messages": [
                 {
-                    "date": "2007-04-05T14:30Z",
+                    "date": "2007-04-05T14:30:00Z",
                     "content": "Your account has been blocked because of a malware infection, please contact support at support@example.org",
                     "type": "notification"
                 }
