@@ -31,6 +31,7 @@ restarts the processes, or at least give a copy/paste solution.
 
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
+| `poolNumber`       | The number of this pool, every pool per instance has a unique number | yes | _N/A_ |
 | `displayName`      | The name of the pool as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |

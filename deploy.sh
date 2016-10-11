@@ -235,7 +235,7 @@ systemctl start sniproxy
 
 # generate the server configuration files
 echo "**** CREATING SERVER CONFIG, MAY TAKE A LONG TIME DUE TO DH PARAMS... ****"
-vpn-server-api-server-config --instance ${HOSTNAME} --generate --cn ${HOSTNAME}
+vpn-server-api-server-config --instance ${HOSTNAME} --pool internet --generate --cn ${HOSTNAME}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
