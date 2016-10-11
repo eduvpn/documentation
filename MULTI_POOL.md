@@ -2,9 +2,9 @@
 
 Every VPN [instance](MULTI_INSTANCE.md) supports multiple "pools". This means 
 that every instance can host multiple "deployment scenarios". For instance 
-there can be two pools, one for employees and one for network administrators. 
-They can have completely different configurations, ACLs based on group 
-membership and optionally two-factor authentication.
+there can be two pools, one for employees, `office`, and one for network 
+administrators, `admin`. They can have completely different configurations, 
+ACLs based on group membership and optionally two-factor authentication.
 
 Below a configuration example is given for exactly this scenario. An 
 organization has employees and administrators. The employees can access the VPN
@@ -15,54 +15,48 @@ ACL and have two-factor authentication enabled as to provide extra security.
 We assume the instance is running as `https://vpn.example/` and was deployed 
 using the provided deploy script.
 
-**TODO**: create a deploy-like script to add a pool.
+The configuration is done in `/etc/vpn-server-api/vpn.example/config.yaml`.
 
-## Internet
+## Configuration
 
-The default [configuration](POOL_CONFIG.md) is called `internet` and routes all 
-traffic from the client IP addresses using NAT over the external interface. The
-current configuration can be found in 
-`/etc/vpn-server-api/vpn.example/config.yaml`:
-
-    vpnPools:
-        internet:
-            displayName: 'Internet Access'
-            extIf: eth0
-            hostName: vpn.example
-            range: 10.0.0.0/24
-            range6: 'fd00:4242:4242::/48'
-            dns: [8.8.8.8, 8.8.4.4, '2001:4860:4860::8888', '2001:4860:4860::8844']
-
-## Office
-
-Now, we can add an additional pool here that is for employees wanting to access
-the company network, but it is important to add the `listen` directive to the
-`internet` pool. It must be a unique IP address per pool, that is reachable by 
-clients:
+First we configure the `office` pool. Clients will get an IP address in the 
+range `10.0.5.0/24`. The clients will have access to the organization's 
+networks `192.168.0.0/24` and `192.168.1.0/24`. The administrators will get
+an IP address in the range `10.0.10.0/24` and have access to the additional
+network `192.168.5.0/24`.
 
     vpnPools:
         internet:
-            ...
-            listen: 192.0.2.1
-
-        office:
+            poolNumber: 1
             displayName: 'Office'
-            extIf: eth1
+            extIf: eth0
+            listen: 192.0.2.1
+            hostName: office.vpn.example
+            range: 10.0.5.0/24
+            range6: 'fd10:0:5::/48'
+            routes: ['192.168.0.0/24', '192.168.1.0/24']
+
+        admin:
+            poolNumber: 2
+            displayName: 'Administrators'
+            extIf: eth0
             listen: 192.0.2.2
-            hostName: office-vpn.example
-            range: 192.168.5.0/24
-            range6: 'fd00:1111:1111:1110::/60'
-            useNat: false
-            defaultGateway: false
-            routes: [192.168.1.0/24, 192.168.2.0/24]
+            hostName: admin.vpn.example
+            range: 10.0.10.0/24
+            range6: 'fd10:0:10::/48'
+            routes: ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24']
+            twoFactor: true
+            enableAcl: true
+            aclGroupList: [admin]
+            aclGroupProvider: StaticGroups
 
-We assume here that `eth1` is connected to the office LAN and that the ranges
-`192.168.1.0/24` and `192.168.2.0/24` are pushed to the client so they can 
-reach the machines in the network.
+    groupProviders:
+        StaticProvider:
+            admin:
+                displayName: Administrators
+                members: [john, jane]
 
-It is also easy to add an [ACL](ACL.md) to the pool, or require 
-[two-factor authentication](2FA.md). [More](POOL_CONFIG.md) configuration 
-options are available.
+[More](POOL_CONFIG.md) configuration options are available.
 
 # Deploy
 
@@ -70,26 +64,24 @@ In order to activate, new configuration files for the OpenVPN processes need
 to be generated, the processes restarted and some other configuration changes
 need to be made.
 
-## OpenVPN
+**TODO**: we need to remove any old configurations and stop old VPN processes
 
-    $ su -c 'for F in `ls /etc/systemd/system/multi-user.target.wants/*openvpn*`; do B=`basename $F` ; systemctl disable $B ; done;'
+To generate the new configuration files and certificates for the newly 
+created pools, run these commands:
 
-    $ TODO stop old, disable old
-
-    $ sudo vpn-server-api-server-config --instance vpn.example
-    
-    $ TODO enable new, start new
-
-## Firewall
-
-Generate the new firewall:
-
+    $ sudo vpn-server-api-server-config --instance vpn.example --pool office \
+        --generate --cn office01.vpn.example
+    $ sudo vpn-server-api-server-config --instance vpn.example --pool admin \
+        --generate --cn admin01.vpn.example
     $ sudo vpn-server-api-generate-firewall --install
 
 Restart the firewall:
 
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
+
+
+$ su -c 'for F in `ls /etc/systemd/system/multi-user.target.wants/*openvpn*`; do B=`basename $F` ; systemctl disable $B ; done;'
 
 ## sniproxy
 
@@ -120,14 +112,14 @@ process listens. For the first pool, this is `internet` here the IP address is
     user sniproxy
     pidfile /var/run/sniproxy.pid
 
-    # vpn.example
+    # office.vpn.example
     listen 192.0.2.1:443 {
         proto tls
         fallback 127.42.101.100:1194
         table https_hosts
     }
 
-    # office-vpn.example
+    # admin.vpn.example
     listen 192.0.2.2:443 {
         proto tls
         fallback 127.42.101.101:1194

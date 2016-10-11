@@ -96,7 +96,7 @@ for where to store the certificate and chain.
 Now that this works, it should be possible to generate the server configuration
 for your new instance.
 
-    $ sudo vpn-server-api-server-config --instance vpn.bar.org --generate --cn vpn01.bar.org
+    $ sudo vpn-server-api-server-config --instance vpn.bar.org --pool internet --generate --cn vpn01.bar.org
 
 And the firewall:
 

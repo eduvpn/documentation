@@ -89,7 +89,7 @@ Assuming your instance is called `vpn.example`, you need to modify
 
 Now the server configuration needs to be regenerated:
 
-    $ sudo vpn-server-api-server-config --instance vpn.example
+    $ sudo vpn-server-api-server-config --instance vpn.example --pool internet
 
 Also, the VPN processes need to be restarted:
 
