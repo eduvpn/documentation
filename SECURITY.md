@@ -40,6 +40,3 @@ and configurations.
     tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA
     auth SHA256
     cipher AES-256-CBC
-
-The current version of the (server) crypto configuration can be found 
-[here](https://github.com/eduvpn/vpn-server-api/blob/master/src/SURFnet/VPN/Server/Config/OpenVpn.php).
