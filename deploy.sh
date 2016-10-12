@@ -225,9 +225,16 @@ systemctl enable NetworkManager
 systemctl enable NetworkManager-wait-online
 
 # start services
-systemctl start php-fpm
-systemctl start httpd
-systemctl start sniproxy
+systemctl restart NetworkManager
+systemctl restart NetworkManager-wait-online
+systemctl restart php-fpm
+systemctl restart httpd
+systemctl restart sniproxy
+
+# VMware tools, does nothing when not running on VMware
+yum -y install open-vm-tools
+systemctl enable vmtoolsd
+systemctl restart vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
