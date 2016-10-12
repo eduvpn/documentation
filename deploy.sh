@@ -123,6 +123,9 @@ cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
 sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
 
+# Make Apache not listen on port 80 anymore, sniproxy will take care of that
+sed -i "s/Listen 80/#Listen 80/" /etc/httpd/conf/httpd.conf
+
 # empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
 echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-server-api.conf
