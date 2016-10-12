@@ -122,7 +122,8 @@ An example:
                 },
                 {
                     "content": "We will shut down this VPN service per January 1st 2010!",
-                    "date": "2009-03-01T13:31:09Z"
+                    "date": "2009-03-01T13:31:09Z",
+                    "type": "notification"
                 }
             ]
         }
