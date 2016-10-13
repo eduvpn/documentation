@@ -1,7 +1,16 @@
 This document contains information about the security of the software, more 
 specifically the specific configuration choices that were made.
 
-# DH
+# OpenVPN
+
+## Crypto
+
+    tls-version-min 1.2
+    tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA
+    auth SHA256
+    cipher AES-256-CBC
+
+## Diffie-Hellman
 
 We use a hard coded DH parameter file generated using OpenSSL running on 
 Fedora 24, specifically `openssl-1.0.2j-1.fc24.x86_64`.
@@ -33,13 +42,6 @@ using the above command and store the file in `/etc/vpn-server-api/dh.pem`.
 Make sure to regenerate (all) server configurations, or manually copy the 
 `dh.pem` to `/etc/openvpn/tls/<instance>/<pool>/dh.pem` for all your pools
 and configurations.
-
-# Crypto
-
-    tls-version-min 1.2
-    tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA
-    auth SHA256
-    cipher AES-256-CBC
 
 # PHP
 
