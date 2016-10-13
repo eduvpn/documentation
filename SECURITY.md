@@ -40,3 +40,37 @@ and configurations.
     tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA
     auth SHA256
     cipher AES-256-CBC
+
+# PHP
+
+The software, by default, when using the `deploy.sh` script uses PHP 5.4. This
+is not without risks. That version is no longer maintained by the PHP project
+and depends fully on the Red Hat engineers that update it when (security) 
+issues appear.
+
+A number of issues have been identified and workarounds provided:
+
+- missing `random_int` and `random_bytes` that were introduced in PHP 7;
+- [session fixation](https://en.wikipedia.org/wiki/Session_fixation) for which 
+  a workaround exists;
+
+The configuration updates we made to PHP are all listed 
+[here](resources/99-eduvpn.ini).
+
+## Random
+
+For providing random numbers we use the PHP 5.x polyfill 
+[paragonie/random_compat](https://github.com/paragonie/random_compat), this 
+comes with an additional warning as we really do NOT want to use the OpenSSL 
+fallback as that is considered insecure for generating (crypto) random numbers.
+
+The polyfill will try first libsodium and if that is missing it will fallback 
+to `/dev/urandom` which is alright. We just have to make really sure that 
+`/dev/urandom` is available to PHP.
+
+## Sessions
+
+In PHP >= 5.5.2 there is a way to prevent session fixation. There is a PHP 
+[option](https://secure.php.net/manual/en/session.configuration.php#ini.session.use-strict-mode)
+for this. Unfortunately we need to support PHP 5.4, so we have to implement a
+[workaround](https://paragonie.com/blog/2015/04/fast-track-safe-and-secure-php-sessions).

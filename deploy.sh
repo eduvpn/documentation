@@ -52,25 +52,26 @@ systemctl restart systemd-journald
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld, does not yet do what we need
+# remove firewalld, does not yet do what we need (missing IPv6 NAT capability)
 yum -y remove firewalld
 
 # enable EPEL
 yum -y install epel-release yum-utils
 
-# enable Remi PHP 7.0 repository
-yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum-config-manager --enable remi-php70 >/dev/null
+## enable Remi PHP 7.0 repository
+#yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+#yum-config-manager --enable remi-php70 >/dev/null
 
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
+# install NetworkManager, if not yet installed
+yum -y install NetworkManager NetworkManager-config-server NetworkManager-tui
+
 # install software (dependencies)
 yum -y install openvpn mod_ssl php-opcache httpd openssl \
     policycoreutils-python iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli psmisc net-tools php pwgen \
-    php-pecl-libsodium NetworkManager NetworkManager-config-server \
-    NetworkManager-tui
+    iptables-services php-fpm php-cli psmisc net-tools php pwgen
 
 # install software (VPN packages)
 yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
