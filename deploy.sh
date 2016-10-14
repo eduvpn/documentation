@@ -16,7 +16,7 @@
 #       the interface connecting to the Internet from your machine
 #
 # NOTE: please configure your network with NetworkManager! NetworkManager 
-#       and its cli tool will be installed below and enabled
+#       will be installed below and enabled
 #
 # TODO:
 # - make this script work on Fedora out of the box, not just CentOS
@@ -62,7 +62,7 @@ yum -y install epel-release
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install NetworkManager, if not yet installed
-yum -y install NetworkManager NetworkManager-config-server NetworkManager-tui
+yum -y install NetworkManager
 
 # install software (dependencies)
 yum -y install openvpn mod_ssl php-opcache httpd openssl \
@@ -137,7 +137,7 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 
 ###############################################################################
-# vpn-ca-api
+# VPN-CA-API
 ###############################################################################
 
 # initialize the CA
