@@ -1,16 +1,20 @@
+**WIP**
+
+# Security
+
 This document contains information about the security of the software, more 
 specifically the specific configuration choices that were made.
 
-# OpenVPN
+## OpenVPN
 
-## Crypto
+### Crypto
 
     tls-version-min 1.2
     tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA
     auth SHA256
     cipher AES-256-CBC
 
-## Diffie-Hellman
+### Diffie-Hellman
 
 We use a hard coded DH parameter file generated using OpenSSL running on 
 Fedora 24, specifically `openssl-1.0.2j-1.fc24.x86_64`.
@@ -43,7 +47,7 @@ Make sure to regenerate (all) server configurations, or manually copy the
 `dh.pem` to `/etc/openvpn/tls/<instance>/<pool>/dh.pem` for all your pools
 and configurations.
 
-# PHP
+## PHP
 
 The software, by default, when using the `deploy.sh` script uses PHP 5.4. This
 is not without risks. That version is no longer maintained by the PHP project
@@ -59,7 +63,7 @@ A number of issues have been identified and workarounds provided:
 The configuration updates we made to PHP are all listed 
 [here](resources/99-eduvpn.ini).
 
-## Random
+### Random
 
 For providing random numbers we use the PHP 5.x polyfill 
 [paragonie/random_compat](https://github.com/paragonie/random_compat), this 
@@ -70,7 +74,7 @@ The polyfill will try first libsodium and if that is missing it will fallback
 to `/dev/urandom` which is alright. We just have to make really sure that 
 `/dev/urandom` is available to PHP.
 
-## Sessions
+### Sessions
 
 In PHP >= 5.5.2 there is a way to prevent session fixation. There is a PHP 
 [option](https://secure.php.net/manual/en/session.configuration.php#ini.session.use-strict-mode)
