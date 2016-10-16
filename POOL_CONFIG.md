@@ -37,8 +37,7 @@ restarts the processes, or at least give a copy/paste solution.
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
-| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only 
-one pool and one instance | no | `0.0.0.0` |
+| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only one pool and one instance | no | `0.0.0.0` |
 | `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `poolNumber` with a chose IP | no | _N/A_ |
 | `hasProxy`         | Whether or not [SNI Proxy](https://github.com/dlundquist/sniproxy) is used to share TCP/443, if true will listen on `managementIp` (TCP/1194), if false on `listen` (TCP/443) | no | `true` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
