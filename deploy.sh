@@ -65,7 +65,7 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorain
 yum -y install NetworkManager
 
 # install software (dependencies)
-yum -y install openvpn mod_ssl php-opcache httpd openssl \
+yum -y install openvpn mod_ssl php-opcache httpd telnet openssl \
     policycoreutils-python iptables iptables-services patch sniproxy \
     iptables-services php-fpm php-cli psmisc net-tools php pwgen
 
