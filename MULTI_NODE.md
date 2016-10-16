@@ -62,11 +62,9 @@ other nodes.
 
 ### TODO
 
-- introduce a special pool config?! a 'virtual' one that has additional 
-nodes? 
-- rething the config options? `displayName`, etc.
-- allow pool entries to be unlisted for users? `isVisible`?
-
+- think more about whether `multiNode` will work like this?! Or do we need
+  just need multiple pools that have different IP addresses but somehow only
+  show up once in the portal and admin?
 
 ## More Locations
 
