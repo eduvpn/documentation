@@ -80,19 +80,24 @@ the instance, a link to a logo and the base URL.
 **PRELIMINARY FORMAT**
 
     {
-        "list_version": "0.1",
         "instances": [
             {
-                "base_uri": "https://eduvpn.surfcloud.nl/",
-                "display_name": "SURFnet Public VPN service",
-                "logo_uri": "https://www.eduvpn.nl/logos/eduvpn.png"
+                "info_uri": "https://vpn.tuxed.net/info.json",
+                "display_name": "Fran\u00e7ois (vpN.tuxed.net)",
+                "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             },
             {
-                "base_uri": "https://labrat.eduvpn.nl/",
-                "display_name": "SURFnet VPN service (Development)",
-                "logo_uri": "https://www.eduvpn.nl/logos/labrat.png"
+                "info_uri": "https://labrat.eduvpn.nl/info.json",
+                "display_name": "SURFnet (labrat.eduvpn.nl)",
+                "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
+            },
+            {
+                "info_uri": "https://vpx.tuxed.net/info.json",
+                "display_name": "Fran\u00e7ois (vpX.tuxed.net)",
+                "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             }
-        ]
+        ],
+        "list_version": 1
     }
 
 On application startup (and periodically when running constantly, e.g. once a
@@ -105,6 +110,11 @@ of providing URLs. That would be more efficient, but also increase the file
 size. What is the best approach here? HTTP caching? Caching in the app? Only
 update the logo when the JSON file is updated? How to determine if an update
 is needed? ETag? Last-Modified HTTP headers? Do we need multi-language support?
+Do we need to maybe host the logo at the instance itself and publish it in the
+`info.json`?
+
+**NOTE** the `list_version` indicates the list _format_, it does not talk 
+about the content!
 
 # API 
 
