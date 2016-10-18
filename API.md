@@ -121,14 +121,14 @@ An example:
         "data": {
             "messages": [
                 {
-                    "date": "2007-04-05T14:30:33Z",
-                    "end": "2016-10-30T08:00:00Z",
-                    "start": "2016-10-30T06:00:00Z",
+                    "date": "2016-10-20T18:00:00Z",
+                    "end": "2016-10-30T07:00:00Z",
+                    "start": "2016-10-30T08:00:00Z",
                     "type": "maintenance"
                 },
                 {
-                    "content": "We will shut down this VPN service per January 1st 2010!",
-                    "date": "2009-03-01T13:31:09Z",
+                    "content": "We will shut down this VPN service per January 1st 2017!",
+                    "date": "2016-10-25T09:00:00Z",
                     "type": "notification"
                 }
             ]
@@ -155,8 +155,8 @@ user being blocked, or other personal messages from the VPN administrator.
         "data": {
             "messages": [
                 {
-                    "date": "2007-04-05T14:30:00Z",
                     "content": "Your account has been blocked because of a malware infection, please contact support at support@example.org",
+                    "date": "2016-10-15T09:00:00Z",
                     "type": "notification"
                 }
             ]
