@@ -138,8 +138,6 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # initialize the CA
 mkdir /etc/vpn-ca-api/${HOSTNAME}
 cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
-chown root.apache /etc/vpn-ca-api/${HOSTNAME}/config.yaml
-chmod 0640 /etc/vpn-ca-api/${HOSTNAME}/config.yaml
 
 sudo -u apache vpn-ca-api-init --instance ${HOSTNAME}
 
@@ -169,8 +167,6 @@ cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${H
 
 mkdir /etc/vpn-admin-portal/${HOSTNAME}
 cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
-chown root.apache /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
-chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
@@ -178,8 +174,6 @@ chmod 0640 /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
 
 mkdir /etc/vpn-user-portal/${HOSTNAME}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
-chown root.apache /etc/vpn-user-portal/${HOSTNAME}/config.yaml
-chmod 0640 /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # OPENVPN
