@@ -12,10 +12,16 @@ document can be retrieved from `https://vpn.example/info.json`.
 The contents look like this:
 
     {
-        "api_endpoint": "https://vpn.example/portal/api",
+        "api": {
+            "create_config": "https://vpn.example/portal/api/create_config",
+            "profile_list": "https://vpn.example/portal/api/profile_list",
+            "system_messages": "https://vpn.example/portal/api/system_messages",
+            "user_messages": "https://vpn.example/portal/api/user_messages"
+        },
         "api_version": 1,
         "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
     }
+
 
 ## Authorization Request 
 
@@ -44,22 +50,22 @@ If the API responds with a 401 it may mean that the user revoked the
 application's permission. Permission to use the API needs to be request again
 in that case.
 
-### Pool List
+### Profile List
 
 **SUBJECT TO CHANGE**
 
-This call will show the available VPN pools for this instance. This will allow
-the application to show the user which pools are available and some basic 
-information, e.g. whether or not two-factor authentication is enabled.
+This call will show the available VPN profiles for this instance. This will 
+allow the application to show the user which profiles are available and some 
+basic information, e.g. whether or not two-factor authentication is enabled.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api/pool_list
+        https://vpn.example/portal/api/profile_list
 
 The response looks like this:
 
     {
         "data": {
-            "pool_list": [
+            "profile_list": [
                 {
                     "display_name": "Internet Access",
                     "pool_id": "internet",
