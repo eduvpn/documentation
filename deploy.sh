@@ -70,7 +70,7 @@ yum -y install openvpn mod_ssl php-opcache httpd telnet openssl \
     iptables-services php-fpm php-cli psmisc net-tools php pwgen
 
 # install software (VPN packages)
-yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
+yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # SELINUX
@@ -83,11 +83,6 @@ setsebool -P httpd_can_network_connect=1
 # ports for load balancing
 semanage port -a -t openvpn_port_t -p udp 1195-1201    # allow up to 8 instances
 semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
-
-# install a custom module to allow reading/writing to OpenVPN/httpd paths
-checkmodule -M -m -o resources/vpn-management.mod resources/vpn-management.te
-semodule_package -o resources/vpn-management.pp -m resources/vpn-management.mod
-semodule -i resources/vpn-management.pp
 
 ###############################################################################
 # CERTIFICATE
@@ -154,14 +149,19 @@ sudo -u apache vpn-ca-api-init --instance ${HOSTNAME}
 
 mkdir /etc/vpn-server-api/${HOSTNAME}
 cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
-chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
-chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
 
 # OTP log for two-factor auth
 sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${HOSTNAME} --pool internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
+
+###############################################################################
+# VPN-SERVER-NODE
+###############################################################################
+
+mkdir /etc/vpn-server-node/${HOSTNAME}
+cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
@@ -241,7 +241,7 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-api-server-config --instance ${HOSTNAME} --pool internet --generate --cn ${HOSTNAME}
+vpn-server-node-server-config --instance ${HOSTNAME} --pool internet --generate --cn ${HOSTNAME}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
@@ -252,7 +252,7 @@ systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
 ###############################################################################
 
 # generate and install the firewall
-vpn-server-api-generate-firewall --install
+vpn-server-node-generate-firewall --install
 
 systemctl enable iptables
 systemctl enable ip6tables
@@ -270,7 +270,7 @@ systemctl restart ip6tables
 echo "@daily root /usr/sbin/vpn-server-api-housekeeping --instance ${HOSTNAME}" > /etc/cron.d/vpn-server-api-housekeeping
 
 # parse the journal and write out JSON file with logs every hour
-echo '@hourly root /bin/journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect | /usr/sbin/vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
+echo '@hourly root /bin/journalctl -o json -t vpn-server-node-client-connect -t vpn-server-node-client-disconnect | /usr/sbin/vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
 # execute now
 # XXX pipe fail so script stops here, bleh! 
 #journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal

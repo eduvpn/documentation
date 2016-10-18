@@ -70,7 +70,7 @@ yum -y install openvpn php-opcache openssl telnet \
     iptables-services php-cli psmisc net-tools pwgen
 
 # install software (VPN packages)
-yum -y install vpn-server-api
+yum -y install vpn-server-node
 
 ###############################################################################
 # SELINUX
@@ -80,11 +80,6 @@ yum -y install vpn-server-api
 # ports for load balancing
 semanage port -a -t openvpn_port_t -p udp 1195-1201    # allow up to 8 instances
 semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
-
-# install a custom module to allow reading/writing to OpenVPN/httpd paths
-checkmodule -M -m -o resources/vpn-management.mod resources/vpn-management.te
-semodule_package -o resources/vpn-management.pp -m resources/vpn-management.mod
-semodule -i resources/vpn-management.pp
 
 ###############################################################################
 # PHP
@@ -96,13 +91,8 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # VPN-SERVER-API
 ###############################################################################
 
-mkdir /etc/vpn-server-api/${HOSTNAME}
-cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
-chown apache.openvpn /etc/vpn-server-api/${HOSTNAME}/config.yaml
-chmod 0440 /etc/vpn-server-api/${HOSTNAME}/config.yaml
-
-# OTP log for two-factor auth
-sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
+mkdir /etc/vpn-server-node/${HOSTNAME}
+cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
 
 ###############################################################################
 # OPENVPN
