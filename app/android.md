@@ -82,18 +82,18 @@ the instance, a link to a logo and the base URL.
     {
         "instances": [
             {
-                "info_uri": "https://vpn.tuxed.net/info.json",
                 "display_name": "Fran\u00e7ois (vpN.tuxed.net)",
+                "base_uri": "https://vpn.tuxed.net/",
                 "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             },
             {
-                "info_uri": "https://labrat.eduvpn.nl/info.json",
                 "display_name": "SURFnet (labrat.eduvpn.nl)",
+                "base_uri": "https://labrat.eduvpn.nl/",
                 "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             },
             {
-                "info_uri": "https://vpx.tuxed.net/info.json",
                 "display_name": "Fran\u00e7ois (vpX.tuxed.net)",
+                "base_uri": "https://vpx.tuxed.net/",
                 "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             }
         ],
