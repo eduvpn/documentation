@@ -18,7 +18,7 @@ The contents look like this:
             "system_messages": "https://vpn.example/portal/api/system_messages",
             "user_messages": "https://vpn.example/portal/api/user_messages"
         },
-        "api_version": 1,
+        "version": 1,
         "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
     }
 

@@ -97,7 +97,7 @@ the instance, a link to a logo and the base URL.
                 "logo_uri": "https://eduvpn.surfcloud.nl/img/placeholder.png"
             }
         ],
-        "list_version": 1
+        "version": 1
     }
 
 On application startup (and periodically when running constantly, e.g. once a
@@ -113,7 +113,7 @@ is needed? ETag? Last-Modified HTTP headers? Do we need multi-language support?
 Do we need to maybe host the logo at the instance itself and publish it in the
 `info.json`?
 
-**NOTE** the `list_version` indicates the list _format_, it does not talk 
+**NOTE** the `version` field indicates the list _format_, it does not talk 
 about the content!
 
 # API 
