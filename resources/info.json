@@ -1,5 +1,5 @@
 {
     "api_endpoint": "https://vpn.example/portal/api",
-    "api_version": "0.1",
+    "api_version": 1,
     "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
 }

@@ -13,7 +13,7 @@ The contents look like this:
 
     {
         "api_endpoint": "https://vpn.example/portal/api",
-        "api_version": "0.1",
+        "api_version": 1,
         "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
     }
 
@@ -61,9 +61,9 @@ The response looks like this:
         "data": {
             "pool_list": [
                 {
-                    "displayName": "Internet Access",
-                    "poolId": "internet",
-                    "twoFactor": false
+                    "display_name": "Internet Access",
+                    "pool_id": "internet",
+                    "two_factor": false
                 }
             ]
         }
@@ -74,14 +74,14 @@ The response looks like this:
 **SUBJECT TO CHANGE**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        -d "configName=MyConfig&poolId=internet" \
+        -d "config_name=MyConfig&pool_id=internet" \
         https://vpn.example/portal/api/create_config
 
 This will send a HTTP POST to the API endpoint, `/create_config` with the 
-parameters `configName` and `poolId` to indicate for which pool a configuration
-is downloaded. The `configName` MUST be unique per user.
+parameters `config_name` and `pool_id` to indicate for which pool a 
+configuration is downloaded. The `config_name` MUST be unique per user.
 
-The acceptable values for `poolId` can be discovered using the `/pool_list` 
+The acceptable values for `pool_id` can be discovered using the `/pool_list` 
 call.
 
 The response will be an OpenVPN configuration file.
