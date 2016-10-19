@@ -39,7 +39,7 @@ restarts the processes, or at least give a copy/paste solution.
 | `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
 | `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only one pool and one instance | no | `0.0.0.0` |
 | `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `poolNumber` with a chosen IP | no | _N/A_ |
-| `hasProxy`         | Whether or not [SNI Proxy](https://github.com/dlundquist/sniproxy) is used to share TCP/443, if true will listen on `managementIp` (TCP/1194), if false on `listen` (TCP/443) | no | `true` |
+| `dedicatedNode`    | Whether or not the node is dedicated to only run OpenVPN instances, it will listen on `::` supporting IPv6 as well | no | `false` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
 | `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity | no | `false` | 
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
