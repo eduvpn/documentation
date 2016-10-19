@@ -39,9 +39,9 @@ NdWOSJxYsvki1w9JePcg39nImSi9jLpSp/3c1XrWsby7RdN8zgbZOSsCAQI=
 -----END DH PARAMETERS-----
 ```
 
-This file is part of the `vpn-server-api` project and stored in the `config` 
+This file is part of the `vpn-server-node` project and stored in the `config` 
 directory. If you want to generate your own DH parameters, you can do so 
-using the above command and store the file in `/etc/vpn-server-api/dh.pem`.
+using the above command and store the file in `/etc/vpn-server-node/dh.pem`.
 
 Make sure to regenerate (all) server configurations, or manually copy the 
 `dh.pem` to `/etc/openvpn/tls/<instance>/<pool>/dh.pem` for all your pools

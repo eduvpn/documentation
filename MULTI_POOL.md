@@ -71,11 +71,11 @@ need to be made.
 To generate the new configuration files and certificates for the newly 
 created pools, run these commands:
 
-    $ sudo vpn-server-api-server-config --instance vpn.example --pool office \
+    $ sudo vpn-server-node-server-config --instance vpn.example --pool office \
         --generate --cn office01.vpn.example
-    $ sudo vpn-server-api-server-config --instance vpn.example --pool admin \
+    $ sudo vpn-server-node-server-config --instance vpn.example --pool admin \
         --generate --cn admin01.vpn.example
-    $ sudo vpn-server-api-generate-firewall --install
+    $ sudo vpn-server-node-generate-firewall --install
 
 Restart the firewall:
 

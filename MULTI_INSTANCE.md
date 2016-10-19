@@ -45,16 +45,24 @@ Now this configuration file MUST be modified.
     instanceNumber: 1
 
 This line MUST be changed, into something unique. Every `instanceNumber` can 
-only occur once. You also need to modify the `apiUri`. The IP address mentioned
-there MUST incorporate the `instanceNumber`. So assuming you choose `5` as your
-`instanceNumber`, the IP address should become `127.42.105.100`. The `vpnPools`
-section can be updated, see [Pool Configuration](POOL_CONFIG.md) for more 
-information.
+only occur once, here we choose:
+
+    instanceNumber: 5
+
+The `vpnPools` section can be updated, see 
+[Pool Configuration](POOL_CONFIG.md) for more information.
 
     $ sudo -u apache vpn-server-api-init --instance vpn.bar.org
 
-In order to create the server configurations, first the other components must
-be set up.
+# Server Node
+
+    $ sudo mkdir /etc/vpn-server-node/vpn.bar.org
+    $ sudo cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/vpn.bar.org/config.yaml
+
+Here in this configuration file you also need to modify the `apiUrl` to point 
+to the correct IP address. The IP address will be `127.42.10x.100`, where `x` 
+is the `instanceNumber`, so in this example it will be `127.42.105.100` 
+because `instanceNumber` is `5`.
 
 # User Portal
 
@@ -62,7 +70,7 @@ be set up.
     $ sudo cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/vpn.bar.org/config.yaml
 
 Here in this configuration file you also need to modify the `apiUrl` to point 
-to the correct IP address as mentioned above.
+to the correct IP address, `127.42.105.100`.
 
 To add a user:
 
@@ -74,7 +82,7 @@ To add a user:
     $ sudo cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/vpn.bar.org/config.yaml
 
 Here in this configuration file you also need to modify the `apiUrl` to point 
-to the correct IP address as mentioned above.
+to the correct IP address, `127.42.105.100`.
 
 To add a user:
 
@@ -86,23 +94,27 @@ For the new instance you can copy the
 [Apache template](https://raw.githubusercontent.com/eduvpn/documentation/master/resources/vpn.example.conf) 
 to  `/etc/httpd/conf.d/vpn.bar.org.conf`. Replace all occurrences of 
 `vpn.example` in that file with `vpn.bar.org`. Also update the IP addresses
-used there to match the one from before.
+used there, i.e. replace `127.42.101.100` with `127.42.105.100`.
 
 You then install a new certificate for `vpn.bar.org` as well, see the template
 for where to store the certificate and chain.
 
     $ sudo systemctl restart httpd
 
-# Server API (2)
+# Server Node (2)
 
 Now that this works, it should be possible to generate the server configuration
 for your new instance.
 
-    $ sudo vpn-server-api-server-config --instance vpn.bar.org --pool internet --generate --cn vpn01.bar.org
+    $ sudo vpn-server-node-server-config --instance vpn.bar.org --pool internet --generate --cn vpn01.bar.org
+    $ sudo systemctl enable openvpn@server-vpn.bar.org-internet-{0,1,2,3}
+    $ sudo systemctl start openvpn@server-vpn.bar.org-internet-{0,1,2,3}
 
 And the firewall:
 
-    $ sudo vpn-server-api-generate-firewall --install
+    $ sudo vpn-server-node-generate-firewall --install
+    $ sudo systemctl restart iptables
+    $ sudo systemctl restart ip6tables
 
 # sniproxy
 
