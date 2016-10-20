@@ -29,8 +29,7 @@ there is an error fetching the new `info.json` display error.
 we _just_ fetched the `instances.json`. So if this gives an error, we cannot do
 anything, just display it to the user.
 
-If there is _no_ `access_token`, obtain it and store it in the _provider_ 
-cache. 
+If there is _no_ `access_token`, go to (10)
 
 If there is an `access_token` for this provider in the _provider_ cache, use it
 together with the `profile_list` endpoint to try to fetch the profile list.
@@ -88,3 +87,23 @@ the settings. Move to 1.
 Show information about the current connection.
 
 Allow the user to disconnect, doing this moves to 1.
+
+## Get Access Token (10)
+
+At the `authorization_endpoint` we can obtain an `access_token`. Open a 
+browser window to the `authorization_endpoint` with the required parameters. 
+The user is here requested to login and approve the request, if the user 
+approves the `access_token` will be part of the URL fragment of the 
+`redirect_uri` to the application. 
+
+Store the `access_token` in the _provider_ cache if successful.
+
+The user can also _decline_ to approve, then an error is returned as part of
+the fragment. Also deal with this, by saying the user did not approve and 
+without this approval the app cannot continue.
+
+If there is a problem with any of the URLs, delete the `info.json` from the 
+cache.
+
+Move to (3).
+
