@@ -21,7 +21,7 @@ Here `internet` is the profile identifier. The identifier is used internally to
 keep track of the various profiles you may have.
 
 If you modify any of these values as described below, you need to regenerate 
-the server configuration, see the [Apply Changes](#applychanges) section below.
+the server configuration, see the [Apply Changes](#apply-changes) section below.
 
 ## Options
 
