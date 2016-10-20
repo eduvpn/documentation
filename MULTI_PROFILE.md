@@ -15,8 +15,8 @@ to access the organization's resources, while the administrators can access
 additional networks to manage servers. The administrators are determined by the
 ACL and have two-factor authentication enabled as to provide extra security.
 
-We assume the instance is running as `https://vpn.example/` and was deployed 
-using the provided deploy script.
+We assume the instance is running as `https://vpn.example/` and was initially
+deployed using the provided deploy script.
 
 The configuration is done in `/etc/vpn-server-api/vpn.example/config.yaml`.
 
@@ -67,39 +67,65 @@ In order to activate, new configuration files for the OpenVPN processes need
 to be generated, the processes restarted and some other configuration changes
 need to be made.
 
-**TODO**: we need to remove any old configurations and stop old VPN processes
+## Disable Old Configuration
 
-To generate the new configuration files and certificates for the newly 
+If you are currently running the default `vpn.example` with the `internet` 
+profile you can disable and stop them like this:
+
+    $ sudo systemctl stop    openvpn@server-vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl disable openvpn@server-vpn.example-internet-{0,1,2,3}
+ 
+Remove the old configuration files, and the certificates/keys:
+
+    $ sudo rm /etc/openvpn/server-vpn.example-internet-{0,1,2,3}.conf
+    $ sudo rm -rf /etc/openvpn/tls/vpn.example/internet
+
+## Generate New Configuration
+ 
+To generate the new configuration files and certificates/keys for the newly 
 created profiles, run these commands:
 
     $ sudo vpn-server-node-server-config --instance vpn.example --profile office \
         --generate --cn office01.vpn.example
     $ sudo vpn-server-node-server-config --instance vpn.example --profile admin \
         --generate --cn admin01.vpn.example
+
+Enable them on boot and start them:
+
+    $ sudo systemctl enable openvpn@server-vpn.example-office-{0,1,2,3}
+    $ sudo systemctl enable openvpn@server-vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl start  openvpn@server-vpn.example-office-{0,1,2,3}
+    $ sudo systemctl start  openvpn@server-vpn.example-admin-{0,1,2,3}
+
+Regenerate and restart the firewall:
+
     $ sudo vpn-server-node-generate-firewall --install
-
-Restart the firewall:
-
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
 
-
-$ su -c 'for F in `ls /etc/systemd/system/multi-user.target.wants/*openvpn*`; do B=`basename $F` ; systemctl disable $B ; done;'
-
-## sniproxy
+## SNI Proxy
 
 It is no longer possible for sniproxy to listen on `0.0.0.0` as it is 
 impossible to detect which OpenVPN connection over `TCP/443` belongs to which
 profile, so sniproxy must also bind to the IP addresses as defined above. The 
-default configuration:
+default configuration, as shows below needs to be modified:
 
     user sniproxy
     pidfile /var/run/sniproxy.pid
+
+    listen 80 {
+        proto http
+        table http_hosts
+    }
 
     listen 443 {
         proto tls
         fallback 127.42.101.100:1194
         table https_hosts
+    }
+
+    table http_hosts {
+        vpn.example 127.42.101.100:8080
     }
 
     table https_hosts {
@@ -112,10 +138,22 @@ the line with `fallback` the IP address used is the one on which the OpenVPN
 process listens. For the first profile, this is `internet` here the IP address 
 is `127.42.101.100`, for the next it is `127.42.101.101` and so on.
 
+**TODO**: it does not really make sense that the web server will listen on both
+IP addresses, we should have different host names for the OpenVPN endpoints, 
+e.g. `internet.vpn.example` and `office.vpn.example`, then this is not needed
+like this! We could even get rid of sniproxy if we have separate IP addresses
+for the web interface and the OpenVPN processes. We should use sniproxy only
+for 'single IP deploys'
+
     user sniproxy
     pidfile /var/run/sniproxy.pid
 
     # office.vpn.example
+    listen 192.0.2.1:80 {
+        proto http
+        table http_hosts
+    }
+
     listen 192.0.2.1:443 {
         proto tls
         fallback 127.42.101.100:1194
@@ -123,10 +161,19 @@ is `127.42.101.100`, for the next it is `127.42.101.101` and so on.
     }
 
     # admin.vpn.example
+    listen 192.0.2.2:80 {
+        proto http
+        table http_hosts
+    }
+
     listen 192.0.2.2:443 {
         proto tls
         fallback 127.42.101.101:1194
         table https_hosts
+    }
+
+    table http_hosts {
+        vpn.example 127.42.101.100:8080
     }
 
     table https_hosts {
