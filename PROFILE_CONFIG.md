@@ -21,7 +21,7 @@ Here `internet` is the profile identifier. The identifier is used internally to
 keep track of the various profiles you may have.
 
 If you modify any of these values as described below, you need to regenerate 
-the server configuration, see the [Activate](#activate) section below.
+the server configuration, see the [Apply Changes](#applychanges) section below.
 
 ## Options
 
@@ -50,7 +50,7 @@ the server configuration, see the [Activate](#activate) section below.
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. In case `processCount` is 2, 4 or 8 the last OpenVPN process will use TCP | no | `4` |
 
-## Activate
+## Apply Changes
 
 Assuming you made changes in the instance `vpn.example` in the profile 
 `internet`, you would regenerate the configuration like this:
