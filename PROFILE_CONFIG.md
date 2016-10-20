@@ -1,14 +1,14 @@
 # Profile Configuration
 
-For this document we assume your _instance_ is running as 
-`https://vpn.example/`, change the domain name accordingly.
+For this document we assume your _instance_ is `vpn.example`, change the domain 
+name accordingly in the examples below.
 
-Profiles, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can 
-contain many options to support various deployment scenarios. These are 
-described in this document, together with their default values. Read more 
-about multi-profile configurations [here](MULTI_PROFILE.md).
+Profiles, are configured in `/etc/vpn-server-api/vpn.example/config.yaml` and
+can contain many options to support various deployment scenarios. These are 
+described in the table below.
 
-The VPN profiles are configured in the `vpnProfiles` section, e.g.:
+To modify any of the options, modify the file mentioned above and look for the
+`vpnProfiles` section under the profile identifier, e.g.:
 
     vpnProfiles:
         internet:
@@ -17,17 +17,13 @@ The VPN profiles are configured in the `vpnProfiles` section, e.g.:
             ...
             ...
 
-Here `internet` is the internal identifier that will be used to keep track 
-of the various profiles you may define here.
+Here `internet` is the profile identifier. The identifier is used internally to
+keep track of the various profiles you may have.
 
 If you modify any of these values as described below, you need to regenerate 
-the server configuration and the firewall:
+the server configuration, see the [Activate](#activate) section below.
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
-    $ sudo vpn-server-node-generate-firewall --install
-
-**TODO**: write a tool that automatically enables the OpenVPN units and 
-restarts the processes, or at least give a copy/paste solution.
+## Options
 
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
@@ -36,7 +32,7 @@ restarts the processes, or at least give a copy/paste solution.
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
-| `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
+| `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any profile and instance, the default can only be used if there is only one profile and one instance | no | `0.0.0.0` |
 | `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | _N/A_ |
 | `dedicatedNode`    | Whether or not the node is dedicated to only run OpenVPN instances, it will listen on `::` supporting IPv6 as well | no | `false` |
@@ -53,3 +49,24 @@ restarts the processes, or at least give a copy/paste solution.
 | `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | _N/A_ |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. In case `processCount` is 2, 4 or 8 the last OpenVPN process will use TCP | no | `4` |
+
+## Activate
+
+Assuming you made changes in the instance `vpn.example` in the profile 
+`internet`, you would regenerate the configuration like this:
+
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
+
+To restart all OpenVPN processes belonging to the profile `internet` for the 
+instance `vpn.example` do this:
+
+    $ sudo systemctl restart openvpn@server-vpn.example-internet-{0,3}
+
+To regenerate and install the new firewall rules, run this:
+
+    $ sudo vpn-server-node-generate-firewall --install
+
+To activate the firewall, do this:
+
+    $ sudo systemctl restart iptables
+    $ sudo systemctl restart ip6tables
