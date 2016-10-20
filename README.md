@@ -18,13 +18,13 @@ and deploy instructions for various deployment scenarios.
 - Admin Portal manage users, configurations and connections;
 - [Two-factor authentication](2FA.md) (TOTP) support with user self-enrollment
   for both access to the portal(s) and the VPN;
-- [Deployment scenarios](POOL_CONFIG.md):
+- [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
   - Route only some traffic over the VPN (for access to the organization 
     network);
   - Client-to-client only networking;
-- Support multiple deployment scenarios [simultaneously](MULTI_POOL.md);
+- Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - Support [multiple instances](MULTI_INSTANCE.md);
 - Support for [multiple nodes](MULTI_NODE.md) for better redundancy or access
   points in different locations;

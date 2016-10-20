@@ -2,8 +2,8 @@
 
 The VPN service supports group ACLs, i.e. require users to be a member of a 
 certain group before allowing downloading configurations and to access to the 
-VPN service for pools that have ACLs enabled. Below we assume you are deploying 
-for the instance with domain `vpn.example`.
+VPN service for profiles that have ACLs enabled. Below we assume you are 
+deploying for the instance with domain `vpn.example`.
 
 The ACLs need to be configured in `/etc/vpn-server-api/vpn.example/config.yaml`.
 
@@ -15,7 +15,7 @@ Add
     aclGroupProvider: StaticProvider
     aclGroupList: [all]
 
-To `/etc/vpn-server-api/vpn.example/config.yaml` for the pool you want to 
+To `/etc/vpn-server-api/vpn.example/config.yaml` for the profile you want to 
 enable the ACL for. Here, the group with identifier `all` is given access.
 
 There are a number of backends available to fetch group membership 
@@ -36,8 +36,9 @@ information and they are also configured here.
                 members: [bar]
 
 Here you can add the various user IDs to the group ID to give them access to
-the pool. Make sure the group ID, here `all`, `students` and `employees` 
-matches with the ID as specified in `aclGroupList` in your pool configuration.
+the profile. Make sure the group ID, here `all`, `students` and `employees` 
+matches with the ID as specified in `aclGroupList` in your profile 
+configuration.
 
 ### VootProvider
 
@@ -46,7 +47,7 @@ memberships. The example below is for the
 [SURFteams](https://teams.surfconext.nl) component of 
 [SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
 
-Set `aclGroupProvider` in your pool configuration to `VootProvider` and 
+Set `aclGroupProvider` in your profile configuration to `VootProvider` and 
 add `VootProvider` to the `groupProviders` section:
 
     groupProviders:
@@ -54,7 +55,7 @@ add `VootProvider` to the `groupProviders` section:
             apiUrl: 'https://voot.surfconext.nl/me/groups'
 
 The group identifiers as returned by the VOOT API calls need to be specified
-in the `aclGroupList` in your pool configuration.
+in the `aclGroupList` in your profile configuration.
 
 This module works together with the portal to obtain an access token per user
 that will be used to retrieve the group membership. The portal also needs to

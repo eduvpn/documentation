@@ -68,7 +68,7 @@ The response looks like this:
             "profile_list": [
                 {
                     "display_name": "Internet Access",
-                    "pool_id": "internet",
+                    "profile_id": "internet",
                     "two_factor": false
                 }
             ]
@@ -80,15 +80,15 @@ The response looks like this:
 **SUBJECT TO CHANGE**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        -d "config_name=MyConfig&pool_id=internet" \
+        -d "config_name=MyConfig&profile_id=internet" \
         https://vpn.example/portal/api/create_config
 
 This will send a HTTP POST to the API endpoint, `/create_config` with the 
-parameters `config_name` and `pool_id` to indicate for which pool a 
+parameters `config_name` and `profile_id` to indicate for which profile a 
 configuration is downloaded. The `config_name` MUST be unique per user.
 
-The acceptable values for `pool_id` can be discovered using the `/pool_list` 
-call.
+The acceptable values for `profile_id` can be discovered using the 
+`/profile_list` call.
 
 The response will be an OpenVPN configuration file.
 

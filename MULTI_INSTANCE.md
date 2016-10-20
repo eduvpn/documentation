@@ -8,8 +8,8 @@ e.g. it can support both `https://vpn.foo.org/` and `https://vpn.bar.org`.
 
 These instances are completely separated, they have their own configuration 
 folders, their own CA, their own data store and run their own OpenVPN 
-processes. Every instance can again have their own pools again, see 
-[Multi Pools](MULTI_POOLS.md).
+processes. Every instance can again have their own profiles again, see 
+[Multi Profile](MULTI_PROFILE.md).
 
 In the below example we will add the `vpn.bar.org` instance to the existing
 `vpn.example` instance.
@@ -49,8 +49,8 @@ only occur once, here we choose:
 
     instanceNumber: 5
 
-The `vpnPools` section can be updated, see 
-[Pool Configuration](POOL_CONFIG.md) for more information.
+The `vpnProfiles` section can be updated, see 
+[Profile Configuration](PROFILE_CONFIG.md) for more information.
 
     $ sudo -u apache vpn-server-api-init --instance vpn.bar.org
 
@@ -106,7 +106,7 @@ for where to store the certificate and chain.
 Now that this works, it should be possible to generate the server configuration
 for your new instance.
 
-    $ sudo vpn-server-node-server-config --instance vpn.bar.org --pool internet --generate --cn vpn01.bar.org
+    $ sudo vpn-server-node-server-config --instance vpn.bar.org --profile internet --generate --cn vpn01.bar.org
     $ sudo systemctl enable openvpn@server-vpn.bar.org-internet-{0,1,2,3}
     $ sudo systemctl start openvpn@server-vpn.bar.org-internet-{0,1,2,3}
 

@@ -1,16 +1,16 @@
-# Pool Configuration
+# Profile Configuration
 
 For this document we assume your _instance_ is running as 
 `https://vpn.example/`, change the domain name accordingly.
 
-Pools, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can 
+Profiles, as configured in `/etc/vpn-server-api/vpn.example/config.yaml` can 
 contain many options to support various deployment scenarios. These are 
 described in this document, together with their default values. Read more 
-about multi-pool configurations [here](MULTI_POOL.md).
+about multi-profile configurations [here](MULTI_PROFILE.md).
 
-The VPN pools are configured in the `vpnPools` section, e.g.:
+The VPN profiles are configured in the `vpnProfiles` section, e.g.:
 
-    vpnPools:
+    vpnProfiles:
         internet:
             displayName: Internet Access
             hostName: vpn.example
@@ -18,12 +18,12 @@ The VPN pools are configured in the `vpnPools` section, e.g.:
             ...
 
 Here `internet` is the internal identifier that will be used to keep track 
-of the various pools you may define here.
+of the various profiles you may define here.
 
 If you modify any of these values as described below, you need to regenerate 
 the server configuration and the firewall:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool internet
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
     $ sudo vpn-server-node-generate-firewall --install
 
 **TODO**: write a tool that automatically enables the OpenVPN units and 
@@ -31,14 +31,14 @@ restarts the processes, or at least give a copy/paste solution.
 
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
-| `poolNumber`       | The number of this pool, every pool per instance has a unique number | yes | _N/A_ |
-| `displayName`      | The name of the pool as shown in the user and admin portals | yes | _N/A_ |
+| `profileNumber`       | The number of this profile, every profile per instance has a unique number | yes | _N/A_ |
+| `displayName`      | The name of the profile as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client will connect to | yes | _N/A_ |
-| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any pool and instance, the default can only be used if there is only one pool and one instance | no | `0.0.0.0` |
-| `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `poolNumber` with a chosen IP | no | _N/A_ |
+| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any profile and instance, the default can only be used if there is only one profile and one instance | no | `0.0.0.0` |
+| `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | _N/A_ |
 | `dedicatedNode`    | Whether or not the node is dedicated to only run OpenVPN instances, it will listen on `::` supporting IPv6 as well | no | `false` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
 | `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity | no | `false` | 

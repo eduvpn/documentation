@@ -81,7 +81,7 @@ For example with the community client of OpenVPN on Windows you will see this:
 Assuming your instance is called `vpn.example`, you need to modify 
 `/etc/vpn-server-api/vpn.example/config.yaml`:
 
-    vpnPools:
+    vpnProfiles:
         internet:
             :
             twoFactor: true
@@ -89,7 +89,7 @@ Assuming your instance is called `vpn.example`, you need to modify
 
 Now the server configuration needs to be regenerated:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool internet
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
 
 Also, the VPN processes need to be restarted:
 

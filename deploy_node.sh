@@ -133,7 +133,7 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-#vpn-server-api-server-config --instance ${HOSTNAME} --pool internet --generate --cn ${HOSTNAME}
+#vpn-server-api-server-config --instance ${HOSTNAME} --profile internet --generate --cn ${HOSTNAME}
 
 # enable and start OpenVPN
 #systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}

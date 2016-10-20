@@ -152,7 +152,7 @@ cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOS
 sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --instance ${HOSTNAME} --pool internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
+vpn-server-api-update-ip --instance ${HOSTNAME} --profile internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
 
 ###############################################################################
 # VPN-SERVER-NODE
@@ -235,7 +235,7 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --pool internet --generate --cn ${HOSTNAME}
+vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn ${HOSTNAME}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}

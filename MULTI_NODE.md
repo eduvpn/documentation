@@ -27,14 +27,14 @@ There are two scenarios where this can be useful:
 
 In this scenario we create a "controller" node that runs the user portal, admin
 portal and CA. It will share a (virtual) network with the other nodes that are
-just running OpenVPN. This is configured by adding additional pools to 
+just running OpenVPN. This is configured by adding additional profiles to 
 `/etc/vpn-server-api/vpn.example/config.yaml`.
 
 **THIS IS CURRENTLY NOT WORKING!!**
 
-    vpnPools:
+    vpnProfiles:
         internet:
-            poolNumber: 1
+            profileNumber: 1
             displayName: 'Internet Access'
             extIf: eth0
             useNat: true
@@ -57,7 +57,7 @@ just running OpenVPN. This is configured by adding additional pools to
                     listen: 192.0.2.66
 
 Notice the changing `listen` and `managementIp`, `range` and `range6` values 
-between the pools. The `listen` address indicates the address used by the 
+between the profiles. The `listen` address indicates the address used by the 
 nodes, the `managementIp` is the address on the private virtual network 
 between the instances. The `useProxy` option makes the OpenVPN instance 
 listen on `TCP/443` directly as there won't be a SNI Proxy instance for 
@@ -69,7 +69,7 @@ other nodes.
 ### TODO
 
 - think more about whether `multiNode` will work like this?! Or do we need
-  just need multiple pools that have different IP addresses but somehow only
+  just need multiple profiles that have different IP addresses but somehow only
   show up once in the portal and admin?
 
 ## More Locations
@@ -77,16 +77,16 @@ other nodes.
 The scenario here is the same as above, except we need to use something to 
 establish a secure channel between the "controller" node and the OpenVPN nodes
 and the various nodes **do** need to be listed for the user and administrator
-as separate pools.
+as separate profiles.
 
 You can use the `deploy_node.sh` script on a fresh CentOS install.
 
 We can use e.g. [PeerVPN](https://peervpn.net/) for this. It can create a 
 virtual network between all the nodes. 
 
-vpnPools:
+vpnProfiles:
     europe:
-        poolNumber: 1
+        profileNumber: 1
         displayName: 'Internet Access (Europe)'
         extIf: eth0
         useNat: true
@@ -100,7 +100,7 @@ vpnPools:
         managementIp: 10.10.10.2
 
     asia:
-        poolNumber: 2
+        profileNumber: 2
         displayName: 'Internet Access (Asia)'
         extIf: eth0
         useNat: true
@@ -181,9 +181,9 @@ PeerVPN is ready.
 
 On `europe.vpn.example`:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool europe --generate --cn europe01.vpn.example
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile europe --generate --cn europe01.vpn.example
 
 On `asia.vpn.example`:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool asia --generate --cn asia01.vpn.example
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile asia --generate --cn asia01.vpn.example
 

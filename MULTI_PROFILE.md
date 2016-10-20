@@ -1,12 +1,13 @@
 **WIP**
 
-# Multi Pool
+# Multi Profile
 
-Every VPN [instance](MULTI_INSTANCE.md) supports multiple "pools". This means 
-that every instance can host multiple "deployment scenarios". For instance 
-there can be two pools, one for employees, `office`, and one for network 
-administrators, `admin`. They can have completely different configurations, 
-ACLs based on group membership and optionally two-factor authentication.
+Every VPN [instance](MULTI_INSTANCE.md) supports multiple "profiles". This 
+means that every instance can host multiple "deployment scenarios". For 
+instance there can be two profiles, one for employees, `office`, and one for 
+network administrators, `admin`. They can have completely different 
+configurations, ACLs based on group membership and optionally two-factor 
+authentication.
 
 Below a configuration example is given for exactly this scenario. An 
 organization has employees and administrators. The employees can access the VPN
@@ -21,15 +22,15 @@ The configuration is done in `/etc/vpn-server-api/vpn.example/config.yaml`.
 
 ## Configuration
 
-First we configure the `office` pool. Clients will get an IP address in the 
+First we configure the `office` profile. Clients will get an IP address in the 
 range `10.0.5.0/24`. The clients will have access to the organization's 
 networks `192.168.0.0/24` and `192.168.1.0/24`. The administrators will get
 an IP address in the range `10.0.10.0/24` and have access to the additional
 network `192.168.5.0/24`.
 
-    vpnPools:
+    vpnProfiles:
         internet:
-            poolNumber: 1
+            profileNumber: 1
             displayName: 'Office'
             extIf: eth0
             listen: 192.0.2.1
@@ -39,7 +40,7 @@ network `192.168.5.0/24`.
             routes: ['192.168.0.0/24', '192.168.1.0/24']
 
         admin:
-            poolNumber: 2
+            profileNumber: 2
             displayName: 'Administrators'
             extIf: eth0
             listen: 192.0.2.2
@@ -58,7 +59,7 @@ network `192.168.5.0/24`.
                 displayName: Administrators
                 members: [john, jane]
 
-[More](POOL_CONFIG.md) configuration options are available.
+[More](PROFILE_CONFIG.md) configuration options are available.
 
 # Deploy
 
@@ -69,11 +70,11 @@ need to be made.
 **TODO**: we need to remove any old configurations and stop old VPN processes
 
 To generate the new configuration files and certificates for the newly 
-created pools, run these commands:
+created profiles, run these commands:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool office \
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile office \
         --generate --cn office01.vpn.example
-    $ sudo vpn-server-node-server-config --instance vpn.example --pool admin \
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile admin \
         --generate --cn admin01.vpn.example
     $ sudo vpn-server-node-generate-firewall --install
 
@@ -89,7 +90,7 @@ $ su -c 'for F in `ls /etc/systemd/system/multi-user.target.wants/*openvpn*`; do
 
 It is no longer possible for sniproxy to listen on `0.0.0.0` as it is 
 impossible to detect which OpenVPN connection over `TCP/443` belongs to which
-pool, so sniproxy must also bind to the IP addresses as defined above. The 
+profile, so sniproxy must also bind to the IP addresses as defined above. The 
 default configuration:
 
     user sniproxy
@@ -106,10 +107,10 @@ default configuration:
     }
 
 The modification will look like this. Note the `listen` line where the IP 
-address now matches the `listen` directive from the above pool config. In the
-line with `fallback` the IP address used is the one on which the OpenVPN 
-process listens. For the first pool, this is `internet` here the IP address is
-`127.42.101.100`, for the next it is `127.42.101.101` and so on.
+address now matches the `listen` directive from the above profile config. In 
+the line with `fallback` the IP address used is the one on which the OpenVPN 
+process listens. For the first profile, this is `internet` here the IP address 
+is `127.42.101.100`, for the next it is `127.42.101.101` and so on.
 
     user sniproxy
     pidfile /var/run/sniproxy.pid
