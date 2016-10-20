@@ -51,13 +51,15 @@ Move to (5).
 
 Do we already have a configuration for this particular provider and profile? 
 
-If yes move to (1). 
+If yes move to (1) or (6) (maybe allow the user to explicity choose to 
+connect?)
 
 If no, obtain the configuration from the `create_config` endpoint from 
 `info.json` together with the `access_token`. Store, it as an OpenVPN 
 configuration. 
 
-If this is OK, move to (1)
+If this is OK, move to (1) or (6) (maybe allow the user to explicity choose to 
+connect?)
 
 If this returns a `4xx` error, delete the `info.json` and `access_token` from 
 the cache and move to (3) again.
