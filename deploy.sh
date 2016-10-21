@@ -53,8 +53,12 @@ cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
 DEVICE="tap0"
 ONBOOT="yes"
 TYPE="Tap"
-IPADDR0=10.42.101.101
+# for the web services
+IPADDR0=10.42.101.100
 PREFIX0=16
+# for the OpenVPN instances
+IPADDR1=10.42.101.101
+PREFIX1=16
 EOF
 
 # activate the interface
