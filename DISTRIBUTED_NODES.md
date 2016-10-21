@@ -35,7 +35,6 @@ configure the following:
             dns: [8.8.8.8, 8.8.4.4, '2001:4860:4860::8888', '2001:4860:4860::8844']
             dedicatedNode: true
             listen: '::'
-            managementIp: 10.10.10.2
 
         asia:
             profileNumber: 2
@@ -49,7 +48,6 @@ configure the following:
             dns: [8.8.8.8, 8.8.4.4, '2001:4860:4860::8888', '2001:4860:4860::8844']
             dedicatedNode: true
             listen: '::'
-            managementIp: 10.10.10.3
 
 **NOTE**: make sure the DNS entries, `europe.vpn.example` and 
 `asia.vpn.example` point to the OpenVPN nodes for IPv4 (and optionally IPv6).
@@ -57,6 +55,7 @@ configure the following:
 ### Firewall
 
 **TODO**: `deploy_controller` should set this up properly, it is static anyway.
+`udp/7000` should be open
 
 ### PeerVPN
 
@@ -68,21 +67,33 @@ Generate the `psk` using `pwgen -s 32 -n 1`.
     interface tap0
     port 7000
 
+Enable and activate PeerVPN:
+
+    $ sudo systemctl enable peervpn@vpn
+    $ sudo systemctl start peervpn@vpn
+
+## Nodes
+
+### Tap
+
+To configure the `tap` interfaces on the nodes, give them the IP address 
+based on the `instanceNumber` and `profileNumber` from the configuration above.
+The IP address will be `10.42.(100 + instanceNumber).(100 + profileNumber)`.
+
+Given the configuration above, `europe.vpn.example` will be `10.42.101.101` 
+and `asia.vpn.example` will be `10.42.101.102`.
+
 `/etc/sysconfig/network-scripts/ifcfg-tap0`:
 
     DEVICE="tap0"
     ONBOOT="yes"
     TYPE="Tap"
-    IPADDR=10.42.42.1
-    PREFIX=24
+    IPADDR0=10.42.101.101
+    PREFIX0=16
 
-Enable and activate PeerVPN:
+Start the `tap0` interface:
 
     $ sudo ifup tap0
-    $ sudo systemctl enable peervpn@vpn
-    $ sudo systemctl start peervpn@vpn
-
-## Nodes
 
 ### PeerVPN
 
@@ -92,27 +103,14 @@ Enable and activate PeerVPN:
     psk P2vH0aYuhVZZGZOITWvYer3p1qo57D2w
     interface tap0
 
-To configure the `tap` interfaces on the nodes, give each of them the matching
-`managementIp` from the controller configuration above.
-
-`/etc/sysconfig/network-scripts/ifcfg-tap0` (replace the `IPADDR` with the
-IP address from `managementIp`):
-
-    DEVICE="tap0"
-    ONBOOT="yes"
-    TYPE="Tap"
-    IPADDR=10.42.42.X
-    PREFIX=24
-
 Enable and activate PeerVPN:
 
-    $ sudo ifup tap0
     $ sudo systemctl enable peervpn@vpn
     $ sudo systemctl start peervpn@vpn
 
 Make sure you can reach the controller:
 
-    $ ping 10.42.42.1
+    $ ping 10.42.101.100
 
 ### Firewall Configuration
 
@@ -121,9 +119,9 @@ Update `/etc/vpn-server-node/firewall.yaml` to enable `tap0` under
 
 ### VPN Configuration
 
-Update `/etc/vpn-server-node/vpn.example/config.yaml` to point the `apiUri` to 
-`10.42.42.1`  and copy/paste the `userPass` from the controller node 
-configuration from `/etc/vpn-ca-api/vpn.example/config.yaml` and 
+Update `/etc/vpn-server-node/vpn.example/config.yaml`, copy/paste the 
+`userPass` from the controller node configuration from 
+`/etc/vpn-ca-api/vpn.example/config.yaml` and 
 `/etc/vpn-server-api/vpn.example/config.yaml` to allow this node to talk to 
 the APIs.
 
