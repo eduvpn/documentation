@@ -53,26 +53,12 @@ cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
 DEVICE="tap0"
 ONBOOT="yes"
 TYPE="Tap"
-# for the web services
 IPADDR0=10.42.101.100
 PREFIX0=16
-# for the OpenVPN instances
-IPADDR1=10.42.101.101
-PREFIX1=16
 EOF
 
 # activate the interface
 ifup tap0
-
-###############################################################################
-# LOGGING
-###############################################################################
-
-# CentOS forwards to syslog, but we want to use journald, enable persistent
-# storage, but only for 31 days
-sed -i 's/^#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
-sed -i 's/^#MaxRetentionSec=/MaxRetentionSec=2678400/' /etc/systemd/journald.conf
-systemctl restart systemd-journald
 
 ###############################################################################
 # SOFTWARE
@@ -91,12 +77,12 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorain
 yum -y install NetworkManager
 
 # install software (dependencies)
-yum -y install openvpn mod_ssl php-opcache httpd telnet openssl \
-    policycoreutils-python iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli psmisc net-tools php pwgen
+yum -y install mod_ssl php-opcache httpd telnet openssl peervpn php-fpm \
+    policycoreutils-pythonpatch php-cli psmisc net-tools php pwgen iptables \
+    iptables-services
 
 # install software (VPN packages)
-yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
+yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # SELINUX
@@ -104,11 +90,6 @@ yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-us
 
 # allow Apache to connect to PHP-FPM
 setsebool -P httpd_can_network_connect=1
-
-# allow OpenVPN to listen on its management ports, and some additional VPN
-# ports for load balancing
-semanage port -a -t openvpn_port_t -p udp 1195-1201    # allow up to 8 instances
-semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
 
 ###############################################################################
 # CERTIFICATE
@@ -135,14 +116,11 @@ echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
-cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
+cp resources/controller/ssl.conf /etc/httpd/conf.d/ssl.conf
 
 # VirtualHost
-cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
+cp resources/controller/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
 sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
-
-# Make Apache not listen on port 80 anymore, sniproxy will take care of that
-sed -i "s/Listen 80/#Listen 80/" /etc/httpd/conf/httpd.conf
 
 # empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
@@ -178,14 +156,7 @@ cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOS
 sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --instance ${HOSTNAME} --profile internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
-
-###############################################################################
-# VPN-SERVER-NODE
-###############################################################################
-
-mkdir /etc/vpn-server-node/${HOSTNAME}
-cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
+vpn-server-api-update-ip --instance ${HOSTNAME} --profile internet --host internet.${HOSTNAME} --ext ${EXTERNAL_IF}
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
@@ -202,29 +173,6 @@ mkdir /etc/vpn-user-portal/${HOSTNAME}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
 
 ###############################################################################
-# OPENVPN
-###############################################################################
-
-# enable forwarding
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-echo 'net.ipv6.conf.all.forwarding = 1' >> /etc/sysctl.conf
-
-# forwarding disables accepting RAs on our external interface, so we have to
-# explicitly enable it here to make IPv6 work. This is only needed for deploys
-# with native IPv6 obtained via router advertisements, not for fixed IPv6
-# configurations
-echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" >> /etc/sysctl.conf
-sysctl -p
-
-###############################################################################
-# SNIPROXY
-###############################################################################
-
-# install the config file
-cp resources/sniproxy.conf /etc/sniproxy.conf
-sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
-
-###############################################################################
 # UPDATE SECRETS
 ###############################################################################
 
@@ -232,24 +180,28 @@ sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
 php resources/update_api_secret.php ${HOSTNAME}
 
 ###############################################################################
+# PEERVPN
+###############################################################################
+
+PEERVPN_PSK=`pwgen -s 32 -n 1`
+cat << EOF > /etc/peervpn/vpn.conf
+psk ${PEERVPN_PSK}
+port 7000
+interface tap0
+EOF
+
+###############################################################################
 # DAEMONS
 ###############################################################################
 
 systemctl enable php-fpm
 systemctl enable httpd
-systemctl enable sniproxy
-systemctl enable NetworkManager
-# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
-# we need this for sniproxy and openvpn to start only when the network is up
-# because we bind to other addresses than 0.0.0.0 and ::
-systemctl enable NetworkManager-wait-online
+systemctl enable peervpn@vpn
 
 # start services
-systemctl restart NetworkManager
-systemctl restart NetworkManager-wait-online
 systemctl restart php-fpm
 systemctl restart httpd
-systemctl restart sniproxy
+systemctl restart peervpn@vpn
 
 # VMware tools, does nothing when not running on VMware
 yum -y install open-vm-tools
@@ -257,22 +209,11 @@ systemctl enable vmtoolsd
 systemctl restart vmtoolsd
 
 ###############################################################################
-# OPENVPN SERVER CONFIG
-###############################################################################
-
-# generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn ${HOSTNAME}
-
-# enable and start OpenVPN
-systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
-systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
-
-###############################################################################
 # FIREWALL
 ###############################################################################
 
-# generate and install the firewall
-vpn-server-node-generate-firewall --install
+cp resources/controller/iptables /etc/sysconfig/iptables
+cp resources/controller/ip6tables /etc/sysconfig/ip6tables
 
 systemctl enable iptables
 systemctl enable ip6tables
@@ -336,6 +277,8 @@ echo "# User Portal"
 echo "#     https://${HOSTNAME}/portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
+echo "#"
+echo "# PeerVPN PSK: ${PEERVPN_PSK}"
 echo "#"
 echo "########################################################################"
 # ALL DONE!

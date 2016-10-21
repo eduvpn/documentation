@@ -68,22 +68,27 @@ try {
 
     foreach ($configFiles as $tokenId => $c) {
         $configFile = $c['config'];
-        $configData = Yaml::parse(file_get_contents($configFile));
-        if (array_key_exists('apiProviders', $c)) {
-            // apiProviders
-            foreach ($c['apiProviders'] as $k => $v) {
-                $configData['apiProviders'][$k]['userPass'] = $v;
-            }
-        }
-        if (array_key_exists('apiConsumers', $c)) {
-            // apiConsumers
-            foreach ($c['apiConsumers'] as $k => $v) {
-                $configData['apiConsumers'][$k] = $v;
-            }
-        }
 
-        if (false === @file_put_contents($configFile, Yaml::dump($configData, 3))) {
-            throw new RuntimeException(sprintf('unable to write "%s"', $configFile));
+        // if we deploy a controller node, the vpn-server-node directory is
+        // not available, but that is okay!
+        if (@file_exists($configFile)) {
+            $configData = Yaml::parse(file_get_contents($configFile));
+            if (array_key_exists('apiProviders', $c)) {
+                // apiProviders
+                foreach ($c['apiProviders'] as $k => $v) {
+                    $configData['apiProviders'][$k]['userPass'] = $v;
+                }
+            }
+            if (array_key_exists('apiConsumers', $c)) {
+                // apiConsumers
+                foreach ($c['apiConsumers'] as $k => $v) {
+                    $configData['apiConsumers'][$k] = $v;
+                }
+            }
+
+            if (false === @file_put_contents($configFile, Yaml::dump($configData, 3))) {
+                throw new RuntimeException(sprintf('unable to write "%s"', $configFile));
+            }
         }
     }
 } catch (Exception $e) {
