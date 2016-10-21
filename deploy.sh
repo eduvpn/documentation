@@ -39,6 +39,25 @@ set -u # unset variables are an error
 set -o pipefail # piping a failed process into a successful one is an arror
 
 ###############################################################################
+# NETWORK 
+###############################################################################
+
+# configure the TAP device as this IP address will be used for running the 
+# management services, this is also shared by running PeerVPN
+
+# if you have any other means to establish connection to the other nodes, e.g. 
+# a private network between virtual machines that can also be used, just 
+# configure this IP on that device
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
+DEVICE="tap0"
+ONBOOT="yes"
+TYPE="Tap"
+IPADDR0=10.42.101.101
+PREFIX0=16
+EOF
+
+###############################################################################
 # LOGGING
 ###############################################################################
 
