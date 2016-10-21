@@ -64,9 +64,9 @@ Generate the `psk` using `pwgen -s 32 -n 1`.
 
 `/etc/peervpn/vpn.conf`:
 
-    networkname VPN
     psk P2vH0aYuhVZZGZOITWvYer3p1qo57D2w
     interface tap0
+    port 7000
 
 `/etc/sysconfig/network-scripts/ifcfg-tap0`:
 
@@ -89,7 +89,6 @@ Enable and activate PeerVPN:
 `/etc/peervpn/vpn.conf`:
 
     initpeers vpn.example 7000
-    networkname VPN
     psk P2vH0aYuhVZZGZOITWvYer3p1qo57D2w
     interface tap0
 
