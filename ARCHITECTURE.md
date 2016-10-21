@@ -8,9 +8,13 @@ how it interacts.
 This image describes the "default" configuration of the software using the 
 `deploy.sh` script found in this repository.
 
+**NOTE**: the picture below is a bit out of date, there is now also 
+"Server Node" that controls the OpenVPN instances and handles the connections, 
+this functionality moved from the Server API to Server Node.
+
 ![Stack](img/stack.jpg)
 
-## sniproxy
+## SNI Proxy
 
 [sniproxy](https://github.com/dlundquist/sniproxy) is used to share `TCP/443` 
 between Apache and the OpenVPN TCP instance. This is to avoid broken networks
@@ -18,7 +22,7 @@ or network filters where UDP connections are blocked or broken.
 
 ## Apache
 
-[Apache](https://httpd.apache.org/) binds he software together. Both the user 
+[Apache](https://httpd.apache.org/) binds the software together. Both the user 
 visible components (User Portal and Admin Portal), as well as the internal 
 services (Server API and CA API) are all 
 [routed through Apache](resources/vpn.example.conf). The communication between 
@@ -75,7 +79,7 @@ The [Server API](https://github.com/eduvpn/vpn-server-api) is responsible for
 storing the list of disabled users and certificates, the two-factor secrets of
 the users and the group membership information.
 
-It also contains the scripts that the OpenVPN instances will use when a client
-connects, to handle the connect events, to verify if they are allow to connect,
-handle disconnect events and verifying the OTP keys if two-factor 
-authentication is enabled.
+## Server Node
+
+The [Server Node](https://github.com/eduvpn/vpn-server-node) is responsible for 
+configuring the OpenVPN instances and handle client connections.
