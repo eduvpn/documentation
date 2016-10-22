@@ -1,25 +1,8 @@
 #!/bin/sh
 
-# Script to deploy eduvpn on a CentOS >= 7 installation.
 #
-# Tested on CentOS 7.2
+# Deploy Controller
 #
-# NOTE: make sure you installed all updates:
-#     $ sudo yum clean all && sudo yum -y update
-#
-# NOTE: make sure the HOSTNAME used below can be resolved, either in DNS
-#       or with a /etc/hosts entry, e.g.:
-#
-#           10.20.30.44 vpn.example
-#
-# NOTE: edit the variables below if you need to. Set the correct HOSTNAME and
-#       the interface connecting to the Internet from your machine
-#
-# NOTE: please configure your network with NetworkManager! NetworkManager 
-#       will be installed below and enabled
-#
-# TODO:
-# - make this script work on Fedora out of the box, not just CentOS
 
 ###############################################################################
 # VARIABLES
@@ -78,7 +61,7 @@ yum -y install NetworkManager
 
 # install software (dependencies)
 yum -y install mod_ssl php-opcache httpd telnet openssl peervpn php-fpm \
-    policycoreutils-pythonpatch php-cli psmisc net-tools php pwgen iptables \
+    policycoreutils-python patch php-cli psmisc net-tools php pwgen iptables \
     iptables-services
 
 # install software (VPN packages)
