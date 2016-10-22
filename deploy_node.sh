@@ -123,6 +123,18 @@ echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" >> /etc/sysctl.conf
 sysctl -p
 
 ###############################################################################
+# PEERVPN
+###############################################################################
+
+cat << EOF > /etc/peervpn/vpn.conf
+initpeers ${HOSTNAME} 7000
+psk ${PEERVPN_PSK}
+interface tap0
+EOF
+
+chmod 600 /etc/peervpn/vpn.conf
+
+###############################################################################
 # DAEMONS
 ###############################################################################
 
@@ -131,10 +143,12 @@ systemctl enable NetworkManager
 # we need this for sniproxy and openvpn to start only when the network is up
 # because we bind to other addresses than 0.0.0.0 and ::
 systemctl enable NetworkManager-wait-online
+systemctl enable peervpn@vpn
 
 # start services
 systemctl restart NetworkManager
 systemctl restart NetworkManager-wait-online
+systemctl restart peervpn@vpn
 
 # VMware tools, does nothing when not running on VMware
 yum -y install open-vm-tools
@@ -142,23 +156,11 @@ systemctl enable vmtoolsd
 systemctl restart vmtoolsd
 
 ###############################################################################
-# PEERVPN
-###############################################################################
-
-cat << EOF > /etc/peervpn/vpn.conf
-psk ${PEERVPN_PSK}
-port 7000
-interface tap0
-EOF
-
-chmod 600 /etc/peervpn/vpn.conf
-
-###############################################################################
 # OPENVPN SERVER CONFIG
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn ${HOSTNAME}
+vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn internet.${HOSTNAME}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
