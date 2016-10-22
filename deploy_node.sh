@@ -103,6 +103,9 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 
 mkdir /etc/vpn-server-node/${HOSTNAME}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
+cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${HOSTNAME}/firewall.yaml
+
+sed -i "s/#- tap0/- tap0/" /etc/vpn-server-node/${HOSTNAME}/firewall.yaml
 
 sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/${HOSTNAME}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${HOSTNAME}/config.yaml
