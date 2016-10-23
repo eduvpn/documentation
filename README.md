@@ -54,29 +54,28 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
-For simple one server deployments and tests, we have a simple deploy script 
-available you can run on a fresh CentOS 7 installation. It will configure all
-components and will be ready to use after running!
+For simple one server deployments and tests, we have a deploy script available 
+you can run on a fresh CentOS 7 installation. It will configure all components 
+and will be ready to use after running!
 
     $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
     $ tar -xzf master.tar.gz
     $ cd documentation-master
 
-Modify `deploy.sh` to set `HOSTNAME` to the name you want to use for the server 
-and possibly the `EXTERNAL_IF` parameter to point to the adapter connecting to 
-the Internet. 
+Modify `deploy.sh` to set `INSTANCE` to the FQDN DNS name of the host you want 
+to use for the server, e.g. `vpn.example` and modify the `EXTERNAL_IF` 
+parameter to point to the adapter connecting to the Internet, e.g. `eth0`.
 
-Make sure the `HOSTNAME` you use can be resolved through DNS _OR_ is set in 
-your `/etc/hosts` file on the machine you want to access the service from, 
-e.g.:
+Make sure the host name configured in `INSTANCE` can be resolved through DNS.
 
-    10.20.30.40 vpn.example
-
-Then run the script:
+To run the script:
 
     $ sudo ./deploy.sh
 
-# Users
+For more advanced deployment scenarios using multiple nodes, see the 
+documentation on [distributed nodes](DISTRIBUTED_NODES.md).
+
+## Users
 
 By default there is a user `me` with a generated password for the User Portal
 and a user `admin` with a generated password for the Admin Portal. Those are
@@ -91,9 +90,10 @@ Or to update the existing `admin` password:
 
     $ sudo vpn-admin-portal-add-user --instance vpn.example --user admin --pass 3xtr4s3cr3t
 
-# CA certificate
-You can request a certificate from your CA after running the script. The script
-put a `vpn.example.csr` file in the directory you ran the script from.
+## CA certificate
+You can request a certificate from your CA after running the script for the 
+web server. The script put a `vpn.example.csr` file in the directory you ran 
+the script from.
 
 Once you obtained the certificate, you can overwrite 
 `/etc/pki/tls/certs/vpn.example.crt` with the certificate you obtained and 

@@ -9,7 +9,7 @@
 ###############################################################################
 
 # VARIABLES
-HOSTNAME=vpn.example
+INSTANCE=vpn.example
 EXTERNAL_IF=eth0
 PEERVPN_PSK=12345678
 CA_API_USER_PASS=aabbcc
@@ -101,14 +101,14 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # VPN-SERVER-NODE
 ###############################################################################
 
-mkdir /etc/vpn-server-node/${HOSTNAME}
-cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
-cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${HOSTNAME}/firewall.yaml
+mkdir /etc/vpn-server-node/${INSTANCE}
+cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
+cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
-sed -i "s/#- tap0/- tap0/" /etc/vpn-server-node/${HOSTNAME}/firewall.yaml
+sed -i "s/#- tap0/- tap0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
-sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/${HOSTNAME}/config.yaml
-sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${HOSTNAME}/config.yaml
+sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # OPENVPN
@@ -130,7 +130,7 @@ sysctl -p
 ###############################################################################
 
 cat << EOF > /etc/peervpn/vpn.conf
-initpeers ${HOSTNAME} 7000
+initpeers ${INSTANCE} 7000
 psk ${PEERVPN_PSK}
 interface tap0
 EOF
@@ -163,11 +163,11 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --profile ${PROFILE} --generate --cn ${PROFILE}.${HOSTNAME}
+vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}.${INSTANCE}
 
 # enable and start OpenVPN
-systemctl enable openvpn@server-${HOSTNAME}-${PROFILE}-{0,1,2,3}
-systemctl start openvpn@server-${HOSTNAME}-${PROFILE}-{0,1,2,3}
+systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-{0,1,2,3}
+systemctl start openvpn@server-${INSTANCE}-${PROFILE}-{0,1,2,3}
 
 ###############################################################################
 # FIREWALL

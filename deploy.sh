@@ -9,7 +9,7 @@
 ###############################################################################
 
 # VARIABLES
-HOSTNAME=vpn.example
+INSTANCE=vpn.example
 EXTERNAL_IF=eth0
 
 ###############################################################################
@@ -98,14 +98,14 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
 ###############################################################################
 
 # Generate the private key
-openssl genrsa -out /etc/pki/tls/private/${HOSTNAME}.key 4096
-chmod 600 /etc/pki/tls/private/${HOSTNAME}.key
+openssl genrsa -out /etc/pki/tls/private/${INSTANCE}.key 4096
+chmod 600 /etc/pki/tls/private/${INSTANCE}.key
 
 # Create the CSR (can be used to obtain real certificate!)
-openssl req -subj "/CN=${HOSTNAME}" -sha256 -new -key /etc/pki/tls/private/${HOSTNAME}.key -out ${HOSTNAME}.csr
+openssl req -subj "/CN=${INSTANCE}" -sha256 -new -key /etc/pki/tls/private/${INSTANCE}.key -out ${INSTANCE}.csr
 
 # Create the (self signed) certificate and install it
-openssl req -subj "/CN=${HOSTNAME}" -sha256 -new -x509 -key /etc/pki/tls/private/${HOSTNAME}.key -out /etc/pki/tls/certs/${HOSTNAME}.crt
+openssl req -subj "/CN=${INSTANCE}" -sha256 -new -x509 -key /etc/pki/tls/private/${INSTANCE}.key -out /etc/pki/tls/certs/${INSTANCE}.crt
 
 ###############################################################################
 # APACHE
@@ -121,8 +121,8 @@ cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
 # VirtualHost
-cp resources/vpn.example.conf /etc/httpd/conf.d/${HOSTNAME}.conf
-sed -i "s/vpn.example/${HOSTNAME}/" /etc/httpd/conf.d/${HOSTNAME}.conf
+cp resources/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
+sed -i "s/vpn.example/${INSTANCE}/" /etc/httpd/conf.d/${INSTANCE}.conf
 
 # Make Apache not listen on port 80 anymore, sniproxy will take care of that
 sed -i "s/Listen 80/#Listen 80/" /etc/httpd/conf/httpd.conf
@@ -145,44 +145,44 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 ###############################################################################
 
 # initialize the CA
-mkdir /etc/vpn-ca-api/${HOSTNAME}
-cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-ca-api/${INSTANCE}
+cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
 
-sudo -u apache vpn-ca-api-init --instance ${HOSTNAME}
+sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
 
 ###############################################################################
 # VPN-SERVER-API
 ###############################################################################
 
-mkdir /etc/vpn-server-api/${HOSTNAME}
-cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-server-api/${INSTANCE}
+cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 # OTP log for two-factor auth
-sudo -u apache vpn-server-api-init --instance ${HOSTNAME}
+sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --instance ${HOSTNAME} --profile internet --host ${HOSTNAME} --ext ${EXTERNAL_IF}
+vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INSTANCE} --ext ${EXTERNAL_IF}
 
 ###############################################################################
 # VPN-SERVER-NODE
 ###############################################################################
 
-mkdir /etc/vpn-server-node/${HOSTNAME}
-cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-server-node/${INSTANCE}
+cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-admin-portal/${HOSTNAME}
-cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-admin-portal/${INSTANCE}
+cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-user-portal/${HOSTNAME}
-cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${HOSTNAME}/config.yaml
+mkdir /etc/vpn-user-portal/${INSTANCE}
+cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # OPENVPN
@@ -205,14 +205,14 @@ sysctl -p
 
 # install the config file
 cp resources/sniproxy.conf /etc/sniproxy.conf
-sed -i "s/vpn.example/${HOSTNAME}/" /etc/sniproxy.conf
+sed -i "s/vpn.example/${INSTANCE}/" /etc/sniproxy.conf
 
 ###############################################################################
 # UPDATE SECRETS
 ###############################################################################
 
 # update API secret
-php resources/update_api_secret.php ${HOSTNAME}
+php resources/update_api_secret.php ${INSTANCE}
 
 ###############################################################################
 # DAEMONS
@@ -244,11 +244,11 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn ${HOSTNAME}
+vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate --cn ${INSTANCE}
 
 # enable and start OpenVPN
-systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
-systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
+systemctl enable openvpn@server-${INSTANCE}-internet-{0,1,2,3}
+systemctl start openvpn@server-${INSTANCE}-internet-{0,1,2,3}
 
 ###############################################################################
 # FIREWALL
@@ -278,7 +278,7 @@ systemctl restart sshd
 
 # install a crontab to cleanup the old OTP entries stored to protect against
 # 2FA code reuse
-echo "@daily root /usr/sbin/vpn-server-api-housekeeping --instance ${HOSTNAME}" > /etc/cron.d/vpn-server-api-housekeeping
+echo "@daily root /usr/sbin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
 
 # parse the journal and write out JSON file with logs every hour
 echo '@hourly root /bin/journalctl -o json -t vpn-server-node-client-connect -t vpn-server-node-client-disconnect | /usr/sbin/vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
@@ -287,33 +287,33 @@ echo '@hourly root /bin/journalctl -o json -t vpn-server-node-client-connect -t 
 #journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal
 
 # automatically generate statistics @ 00:15
-echo "@daily root /usr/sbin/vpn-server-api-stats --instance ${HOSTNAME}" > /etc/cron.d/vpn-server-api-stats
+echo "@daily root /usr/sbin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
 # execute now
 # XXX pipe fail above so script stops here, bleh, do not run for now! 
 #vpn-server-api-stats
 
 # Copy index page
-mkdir -p /var/www/${HOSTNAME}
-cp resources/index.html /var/www/${HOSTNAME}/index.html
-sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/index.html
+mkdir -p /var/www/${INSTANCE}
+cp resources/index.html /var/www/${INSTANCE}/index.html
+sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/index.html
 # Copy server info JSON file
-cp resources/info.json /var/www/${HOSTNAME}/info.json
-sed -i "s/vpn.example/${HOSTNAME}/" /var/www/${HOSTNAME}/info.json
+cp resources/info.json /var/www/${INSTANCE}/info.json
+sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
 
 # adding users
 USER_PASS=`pwgen 12 -n 1`
 ADMIN_PASS=`pwgen 12 -n 1`
-vpn-user-portal-add-user  --instance ${HOSTNAME} --user me    --pass ${USER_PASS}
-vpn-admin-portal-add-user --instance ${HOSTNAME} --user admin --pass ${ADMIN_PASS}
+vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass ${USER_PASS}
+vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass ${ADMIN_PASS}
 
 echo "########################################################################"
 echo "#"
 echo "# Admin Portal"
-echo "#     https://${HOSTNAME}/admin"
+echo "#     https://${INSTANCE}/admin"
 echo "#         User: admin"
 echo "#         Pass: ${ADMIN_PASS}"
 echo "# User Portal"
-echo "#     https://${HOSTNAME}/portal"
+echo "#     https://${INSTANCE}/portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
 echo "#"
