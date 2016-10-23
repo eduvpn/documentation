@@ -1,25 +1,8 @@
 #!/bin/sh
 
-# Script to deploy eduvpn on a CentOS >= 7 installation.
 #
-# Tested on CentOS 7.2
+# Deploy
 #
-# NOTE: make sure you installed all updates:
-#     $ sudo yum clean all && sudo yum -y update
-#
-# NOTE: make sure the HOSTNAME used below can be resolved, either in DNS
-#       or with a /etc/hosts entry, e.g.:
-#
-#           10.20.30.44 vpn.example
-#
-# NOTE: edit the variables below if you need to. Set the correct HOSTNAME and
-#       the interface connecting to the Internet from your machine
-#
-# NOTE: please configure your network with NetworkManager! NetworkManager 
-#       will be installed below and enabled
-#
-# TODO:
-# - make this script work on Fedora out of the box, not just CentOS
 
 ###############################################################################
 # VARIABLES
@@ -282,6 +265,14 @@ systemctl restart iptables
 systemctl restart ip6tables
 
 ###############################################################################
+# SSHD
+###############################################################################
+
+cp resources/sshd_config /etc/ssh/sshd_config
+chmod 0600 /etc/ssh/sshd_config
+systemctl restart sshd
+
+###############################################################################
 # POST INSTALL
 ###############################################################################
 
@@ -300,17 +291,6 @@ echo "@daily root /usr/sbin/vpn-server-api-stats --instance ${HOSTNAME}" > /etc/
 # execute now
 # XXX pipe fail above so script stops here, bleh, do not run for now! 
 #vpn-server-api-stats
-
-# Secure OpenSSH
-sed -i "s/^#PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
-sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config 
-# Override the algorithms and ciphers. By default CentOS 7 is not really secure
-# See also: https://discovery.cryptosense.com
-echo "" >> /etc/ssh/sshd_config # first newline, because default file does not end with new line
-echo "KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1" >> /etc/ssh/sshd_config
-echo "Ciphers chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com" >> /etc/ssh/sshd_config
-# restart OpenSSH
-systemctl restart sshd
 
 # Copy index page
 mkdir -p /var/www/${HOSTNAME}

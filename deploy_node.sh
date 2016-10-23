@@ -11,11 +11,11 @@
 # VARIABLES
 HOSTNAME=vpn.example
 EXTERNAL_IF=eth0
-
-# replace the values below with the values from the controller
 PEERVPN_PSK=12345678
 CA_API_USER_PASS=aabbcc
 SERVER_API_USER_PASS=ccbbaa
+MANAGEMENT_IP=10.42.101.101
+PROFILE=internet
 
 ###############################################################################
 # SYSTEM
@@ -41,7 +41,7 @@ cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
 DEVICE="tap0"
 ONBOOT="yes"
 TYPE="Tap"
-IPADDR1=10.42.101.101
+IPADDR1=${MANAGEMENT_IP}
 PREFIX1=16
 EOF
 
@@ -163,11 +163,11 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${HOSTNAME} --profile internet --generate --cn internet.${HOSTNAME}
+vpn-server-node-server-config --instance ${HOSTNAME} --profile ${PROFILE} --generate --cn ${PROFILE}.${HOSTNAME}
 
 # enable and start OpenVPN
-systemctl enable openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
-systemctl start openvpn@server-${HOSTNAME}-internet-{0,1,2,3}
+systemctl enable openvpn@server-${HOSTNAME}-${PROFILE}-{0,1,2,3}
+systemctl start openvpn@server-${HOSTNAME}-${PROFILE}-{0,1,2,3}
 
 ###############################################################################
 # FIREWALL
@@ -184,18 +184,11 @@ systemctl restart iptables
 systemctl restart ip6tables
 
 ###############################################################################
-# POST INSTALL
+# SSHD
 ###############################################################################
 
-# Secure OpenSSH
-sed -i "s/^#PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
-sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config 
-# Override the algorithms and ciphers. By default CentOS 7 is not really secure
-# See also: https://discovery.cryptosense.com
-echo "" >> /etc/ssh/sshd_config # first newline, because default file does not end with new line
-echo "KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1" >> /etc/ssh/sshd_config
-echo "Ciphers chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com" >> /etc/ssh/sshd_config
-# restart OpenSSH
+cp resources/sshd_config /etc/ssh/sshd_config
+chmod 0600 /etc/ssh/sshd_config
 systemctl restart sshd
 
 # ALL DONE!
