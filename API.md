@@ -119,7 +119,7 @@ An example:
 
     {
         "data": {
-            "messages": [
+            "system_messages": [
                 {
                     "date": "2016-10-20T07:00:00Z",
                     "end": "2016-10-30T08:00:00Z",
@@ -153,7 +153,7 @@ user being blocked, or other personal messages from the VPN administrator.
 
     {
         "data": {
-            "messages": [
+            "user_messages": [
                 {
                     "content": "Your account has been blocked because of a malware infection, please contact support at support@example.org",
                     "date": "2016-10-15T09:00:00Z",
