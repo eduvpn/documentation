@@ -158,8 +158,15 @@ systemctl restart vmtoolsd
 vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}01.${INSTANCE}
 
 # enable and start OpenVPN
-systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-{0,1,2,3}
-systemctl start openvpn@server-${INSTANCE}-${PROFILE}-{0,1,2,3}
+systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-0
+systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-1
+systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-2
+systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-3
+
+systemctl start openvpn@server-${INSTANCE}-${PROFILE}-0
+systemctl start openvpn@server-${INSTANCE}-${PROFILE}-1
+systemctl start openvpn@server-${INSTANCE}-${PROFILE}-2
+systemctl start openvpn@server-${INSTANCE}-${PROFILE}-3
 
 ###############################################################################
 # FIREWALL
