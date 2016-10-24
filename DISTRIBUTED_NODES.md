@@ -39,11 +39,10 @@ below, of course you can modify the various fields to match your situation.
             useNat: true
             defaultGateway: true
             hostName: europe.vpn.example
-            range: 10.0.0.0/24
-            range6: 'fd00:4242:4242::/48'
+            range: 10.20.30.0/24
+            range6: 'fd00:1020:30::/48'
             dns: [8.8.8.8, 8.8.4.4, '2001:4860:4860::8888', '2001:4860:4860::8844']
-            dedicatedNode: true
-            listen: '::'
+            portShare: false
 
         asia:
             profileNumber: 2
@@ -52,11 +51,10 @@ below, of course you can modify the various fields to match your situation.
             useNat: true
             defaultGateway: true
             hostName: asia.vpn.example
-            range: 10.20.30.0/24
-            range6: 'fd00:4445:4647::/48'
+            range: 10.20.31.0/24
+            range6: 'fd00:1020:31::/48'
             dns: [8.8.8.8, 8.8.4.4, '2001:4860:4860::8888', '2001:4860:4860::8844']
-            dedicatedNode: true
-            listen: '::'
+            portShare: false
 
 **NOTE**: make sure the DNS entries, `europe.vpn.example` and 
 `asia.vpn.example` point to the OpenVPN nodes for IPv4 (and optionally IPv6).
