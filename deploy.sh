@@ -175,7 +175,7 @@ mkdir /etc/vpn-user-portal/${INSTANCE}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
-# OPENVPN
+# NETWORK
 ###############################################################################
 
 # enable forwarding

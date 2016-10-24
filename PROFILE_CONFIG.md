@@ -33,9 +33,9 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
-| `listen`           | The *IPv4* address the OpenVPN process will listen on, **MUST** be unique between any profile and instance, the default can only be used if there is only one profile and one instance | no | `0.0.0.0` |
+| `listen`           | The address the OpenVPN process will listen on, **MUST** be unique between any profile and instance, the default can only be used if there is only one profile and one instance | no | `::` |
 | `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | _N/A_ |
-| `dedicatedNode`    | Whether or not the node is dedicated to only run OpenVPN instances, it will listen on `::` supporting IPv6 as well | no | `false` |
+| `portShare`        | Whether or not the `TCP/443` is already used by SNI Proxy | no | `true` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
 | `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity | no | `false` | 
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
