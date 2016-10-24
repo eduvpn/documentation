@@ -5,6 +5,19 @@ allow users to choose the PoP closest to their location to e.g. reduce the
 latency. This document assumes we have 3 VMs, it can also be done with less, 
 i.e. 2 VMs, but that will not be described here.
 
+# Security
+
+At this time, the nodes in the network MUST trust each other. A 
+breach of one of them has consequences for the entire network of nodes! The 
+threat model does NOT include containing a breach of one of the nodes. For 
+example, a breached node can:
+
+- contact all other nodes and access the OpenVPN management interfaces;
+  - listing current connections (including the real client IPs);
+  - killing connections;
+- obtain additional VPN server certificates;
+- ...
+
 ## Controller
 
 Install the controller with the `deploy_controller.sh` script. Make sure you 
