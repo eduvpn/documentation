@@ -222,19 +222,10 @@ systemctl restart sshd
 # 2FA code reuse
 echo "@daily root /usr/sbin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
 
-# parse the journal and write out JSON file with logs every hour
-echo '@hourly root /bin/journalctl -o json -t vpn-server-node-client-connect -t vpn-server-node-client-disconnect | /usr/sbin/vpn-server-api-parse-journal' > /etc/cron.d/vpn-server-api-log
-# execute now
-# XXX pipe fail so script stops here, bleh! 
-#journalctl -o json -t vpn-server-api-client-connect -t vpn-server-api-client-disconnect 2>/dev/null | vpn-server-api-parse-journal
+###############################################################################
+# WEB
+###############################################################################
 
-# automatically generate statistics @ 00:15
-echo "@daily root /usr/sbin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
-# execute now
-# XXX pipe fail above so script stops here, bleh, do not run for now! 
-#vpn-server-api-stats
-
-# Copy index page
 mkdir -p /var/www/${INSTANCE}
 cp resources/index.html /var/www/${INSTANCE}/index.html
 sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/index.html
@@ -242,7 +233,10 @@ sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/index.html
 cp resources/info.json /var/www/${INSTANCE}/info.json
 sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
 
-# adding users
+###############################################################################
+# USERS
+###############################################################################
+
 USER_PASS=`pwgen 12 -n 1`
 ADMIN_PASS=`pwgen 12 -n 1`
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass ${USER_PASS}

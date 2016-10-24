@@ -49,16 +49,6 @@ EOF
 ifup tap0
 
 ###############################################################################
-# LOGGING
-###############################################################################
-
-# CentOS forwards to syslog, but we want to use journald, enable persistent
-# storage, but only for 31 days
-sed -i 's/^#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
-sed -i 's/^#MaxRetentionSec=/MaxRetentionSec=2678400/' /etc/systemd/journald.conf
-systemctl restart systemd-journald
-
-###############################################################################
 # SOFTWARE
 ###############################################################################
 
