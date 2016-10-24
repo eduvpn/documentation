@@ -101,18 +101,20 @@ sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/
 sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
-# OPENVPN
+# NETWORK
 ###############################################################################
 
-# enable forwarding
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-echo 'net.ipv6.conf.all.forwarding = 1' >> /etc/sysctl.conf
+{
+    # enable forwarding
+    echo 'net.ipv4.ip_forward = 1'
+    echo 'net.ipv6.conf.all.forwarding = 1'
+    # forwarding disables accepting RAs on our external interface, so we have to
+    # explicitly enable it here to make IPv6 work. This is only needed for deploys
+    # with native IPv6 obtained via router advertisements, not for fixed IPv6
+    # configurations
+    echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2"
+} >> /etc/sysctl.conf
 
-# forwarding disables accepting RAs on our external interface, so we have to
-# explicitly enable it here to make IPv6 work. This is only needed for deploys
-# with native IPv6 obtained via router advertisements, not for fixed IPv6
-# configurations
-echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" >> /etc/sysctl.conf
 sysctl -p
 
 ###############################################################################
@@ -153,7 +155,7 @@ systemctl restart vmtoolsd
 ###############################################################################
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}.${INSTANCE}
+vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}01.${INSTANCE}
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-{0,1,2,3}

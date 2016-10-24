@@ -178,15 +178,17 @@ cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${I
 # NETWORK
 ###############################################################################
 
-# enable forwarding
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-echo 'net.ipv6.conf.all.forwarding = 1' >> /etc/sysctl.conf
+{
+    # enable forwarding
+    echo 'net.ipv4.ip_forward = 1'
+    echo 'net.ipv6.conf.all.forwarding = 1'
+    # forwarding disables accepting RAs on our external interface, so we have to
+    # explicitly enable it here to make IPv6 work. This is only needed for deploys
+    # with native IPv6 obtained via router advertisements, not for fixed IPv6
+    # configurations
+    echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2"
+} >> /etc/sysctl.conf
 
-# forwarding disables accepting RAs on our external interface, so we have to
-# explicitly enable it here to make IPv6 work. This is only needed for deploys
-# with native IPv6 obtained via router advertisements, not for fixed IPv6
-# configurations
-echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2" >> /etc/sysctl.conf
 sysctl -p
 
 ###############################################################################
@@ -285,10 +287,10 @@ sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
 # USERS
 ###############################################################################
 
-USER_PASS=`pwgen 12 -n 1`
-ADMIN_PASS=`pwgen 12 -n 1`
-vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass ${USER_PASS}
-vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass ${ADMIN_PASS}
+USER_PASS=$(pwgen 12 -n 1)
+ADMIN_PASS=$(pwgen 12 -n 1)
+vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
+vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
 echo "#"

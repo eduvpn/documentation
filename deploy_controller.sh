@@ -165,7 +165,7 @@ php resources/update_api_secret.php ${INSTANCE}
 # PEERVPN
 ###############################################################################
 
-PEERVPN_PSK=`pwgen -s 32 -n 1`
+PEERVPN_PSK=$(pwgen -s 32 -n 1)
 cat << EOF > /etc/peervpn/vpn.conf
 psk ${PEERVPN_PSK}
 port 7000
@@ -237,10 +237,10 @@ sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
 # USERS
 ###############################################################################
 
-USER_PASS=`pwgen 12 -n 1`
-ADMIN_PASS=`pwgen 12 -n 1`
-vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass ${USER_PASS}
-vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass ${ADMIN_PASS}
+USER_PASS=$(pwgen 12 -n 1)
+ADMIN_PASS=$(pwgen 12 -n 1)
+vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
+vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
 echo "#"
