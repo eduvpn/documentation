@@ -268,7 +268,7 @@ systemctl restart sshd
 
 # install a crontab to cleanup the old OTP entries stored to protect against
 # 2FA code reuse
-echo "@daily root /usr/sbin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
+echo "@hourly root /usr/sbin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
 
 ###############################################################################
 # WEB

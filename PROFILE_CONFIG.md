@@ -27,7 +27,7 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
-| `profileNumber`       | The number of this profile, every profile per instance has a unique number | yes | _N/A_ |
+| `profileNumber`    | The number of this profile, every profile per instance has a unique number | yes | _N/A_ |
 | `displayName`      | The name of the profile as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
@@ -46,7 +46,7 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |
 | `enableAcl`        | Whether or not to enable ACLs for controlling who can connect | no | `false` |
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true` | no | `[]` |
-| `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | _N/A_ |
+| `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | `StaticProvider` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. In case `processCount` is 2, 4 or 8 the last OpenVPN process will use TCP | no | `4` |
 
