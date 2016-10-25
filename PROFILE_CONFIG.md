@@ -77,7 +77,8 @@ If you run [Multi Instance](MULTI_INSTANCE.md) or
 [Multi Profile](MULTI_PROFILE.md) you MUST choose a unique `listen` address per
 profile, which means you cannot use the special address `::` and thus lose the
 IPv4+IPv6 connectivity option. You can manually work around this by using a 
-proxy like [socat](http://www.dest-unreach.org/socat/).
+proxy like [socat](http://www.dest-unreach.org/socat/) and configure SNI Proxy
+to also forward IPv6 traffic.
 
 ## Apply Changes
 
