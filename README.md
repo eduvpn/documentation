@@ -5,7 +5,7 @@ and deploy instructions for various deployment scenarios.
 
 # Features
 
-- OpenVPN server accepting connections on various UDP ports and `TCP/443`;
+- OpenVPN server accepting connections on various UDP ports and `tcp/443`;
 - Support (out of the box) multiple UDP instances for load sharing purposes;
 - Full IPv6 support inside the VPN tunnel and outer tunnel;
 - Support both NAT and routable IP addresses;

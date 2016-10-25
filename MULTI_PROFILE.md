@@ -106,7 +106,7 @@ Regenerate and restart the firewall:
 ## SNI Proxy
 
 It is no longer possible for sniproxy to listen on `0.0.0.0` as it is 
-impossible to detect which OpenVPN connection over `TCP/443` belongs to which
+impossible to detect which OpenVPN connection over `tcp/443` belongs to which
 profile, so sniproxy must also bind to the IP addresses as defined above. The 
 default configuration, as shows below needs to be modified:
 
