@@ -13,7 +13,7 @@ everything runs on one (virtual) machine with one IP adddress.
 
 ## SNI Proxy
 
-[sniproxy](https://github.com/dlundquist/sniproxy) is used to share `TCP/443` 
+[SNI Proxy](https://github.com/dlundquist/sniproxy) is used to share `TCP/443` 
 between Apache and the OpenVPN TCP instance. This is to avoid broken networks
 or network filters where UDP connections are blocked or broken.
 

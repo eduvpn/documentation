@@ -48,7 +48,36 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true` | no | `[]` |
 | `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | `StaticProvider` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
-| `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. In case `processCount` is 2, 4 or 8 the last OpenVPN process will use TCP | no | `4` |
+| `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. See [OpenVPN Processes](#openvpn-processes) | no | `4` |
+
+### OpenVPN Processes
+
+This number determines the number op OpenVPN processes that are being used for
+this particular node. The table below is influenced by the `portShare` and 
+`listen` configuration options, see below.
+
+| `processCount` | Protocol/Port |
+|----------------|---------------|
+| 1              | `udp/1194`            |
+| 2              | `udp/1194`, `tcp/443` |
+| 4 (default)    | `udp/1194`, `udp/1195`, `tcp/1194`, `tcp/443` |
+| 8              | `udp/1194`, `udp/1195`, `udp/1196`, `udp/1197`, `udp/1198`, `tcp/1194`, `tcp/1195` `tcp/443` |
+
+By default, `listen` is `::` which is a special address that allows OpenVPN to
+receive connections both on IPv4 and IPv6. If you manually set `listen`, it 
+will only listen on the specified address and family.
+
+The `portShare` option indicates that you use SNI Proxy to share the `tcp/443` 
+connection with the web server. In that case, OpenVPN will not listen on 
+`tcp/443` but on the next consecutive port available, e.g. when `processCount` 
+is 4, it will listen on `tcp/1195` and SNI Proxy will forward non-SNI traffic
+to this port. 
+
+If you run [Multi Instance](MULTI_INSTANCE.md) or 
+[Multi Profile](MULTI_PROFILE.md) you MUST choose a unique `listen` address per
+profile, which means you cannot use the special address `::` and thus lose the
+IPv4+IPv6 connectivity option. You can manually work around this by using a 
+proxy like [socat](http://www.dest-unreach.org/socat/).
 
 ## Apply Changes
 
