@@ -7,8 +7,7 @@ and deploy instructions for various deployment scenarios.
 
 - OpenVPN server accepting connections on various UDP ports and `TCP/443`;
 - Support (out of the box) multiple UDP instances for load sharing purposes;
-- IPv6 support inside the VPN tunnel;
-  - IPv6 in the outer tunnel requires additional setup;
+- Full IPv6 support inside the VPN tunnel and outer tunnel;
 - Support both NAT and routable IP addresses;
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
