@@ -300,7 +300,6 @@ vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PAS
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
-echo "#"
 echo "# Admin Portal"
 echo "#     https://${INSTANCE}/admin"
 echo "#         User: admin"
@@ -309,6 +308,5 @@ echo "# User Portal"
 echo "#     https://${INSTANCE}/portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
-echo "#"
 echo "########################################################################"
 # ALL DONE!
