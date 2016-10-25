@@ -61,7 +61,7 @@ this particular node. The table below is influenced by the `portShare` and
 | 1              | `udp/1194`            |
 | 2              | `udp/1194`, `tcp/443` |
 | 4 (default)    | `udp/1194`, `udp/1195`, `tcp/1194`, `tcp/443` |
-| 8              | `udp/1194`, `udp/1195`, `udp/1196`, `udp/1197`, `udp/1198`, `tcp/1194`, `tcp/1195` `tcp/443` |
+| 8              | `udp/1194`, `udp/1195`, `udp/1196`, `udp/1197`, `udp/1198`, `tcp/1194`, `tcp/1195`, `tcp/443` |
 
 By default, `listen` is `::` which is a special address that allows OpenVPN to
 receive connections both on IPv4 and IPv6. If you manually set `listen`, it 
@@ -89,7 +89,7 @@ Assuming you made changes in the instance `vpn.example` in the profile
 To restart all OpenVPN processes belonging to the profile `internet` for the 
 instance `vpn.example` do this:
 
-    $ sudo systemctl restart openvpn@server-vpn.example-internet-{0,3}
+    $ sudo systemctl restart openvpn@server-vpn.example-internet-{0,1,2,3}
 
 To regenerate and install the new firewall rules, run this:
 
