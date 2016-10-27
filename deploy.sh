@@ -81,6 +81,7 @@ setsebool -P httpd_can_network_connect=1
 # allow OpenVPN to listen on its management ports, and some additional VPN
 # ports for load balancing
 semanage port -a -t openvpn_port_t -p udp 1195-1201    # allow up to 8 instances
+semanage port -a -t openvpn_port_t -p tcp 1195-1201    # allow up to 8 instances
 semanage port -a -t openvpn_port_t -p tcp 11940-11947  # allow up to 8 instances
 
 ###############################################################################
