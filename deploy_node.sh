@@ -94,6 +94,7 @@ rm -rf /etc/vpn-server-node/*
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
+cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
 cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
 sed -i "s/#- tap0/- tap0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml

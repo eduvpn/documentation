@@ -68,6 +68,9 @@ yum -y install NetworkManager openvpn mod_ssl php-opcache httpd telnet \
 # install software (VPN packages)
 yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 
+# update packages to make sure we have latest version of everything
+yum -y update
+
 ###############################################################################
 # SELINUX
 ###############################################################################
@@ -166,6 +169,9 @@ vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INST
 rm -rf /etc/vpn-server-node/*
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
+
+cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
+cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/firewall.yaml
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
