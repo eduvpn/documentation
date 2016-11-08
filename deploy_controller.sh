@@ -55,13 +55,10 @@ yum -y install epel-release
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
-# install NetworkManager, if not yet installed
-yum -y install NetworkManager
-
 # install software (dependencies)
-yum -y install mod_ssl php-opcache httpd telnet openssl peervpn php-fpm \
-    policycoreutils-python patch php-cli psmisc net-tools php pwgen iptables \
-    iptables-services
+yum -y install NetworkManager mod_ssl php-opcache httpd telnet openssl \
+    php-fpm policycoreutils-python patch php-cli psmisc net-tools php pwgen \
+    iptables iptables-services open-vm-tools
 
 # install software (VPN packages)
 yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
@@ -121,8 +118,11 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # VPN-CA-API
 ###############################################################################
 
-# initialize the CA
-mkdir /etc/vpn-ca-api/${INSTANCE}
+# delete existing data
+rm -rf /etc/vpn-ca-api/*
+rm -rf /var/lib/vpn-ca-api/*
+
+mkdir -p /etc/vpn-ca-api/${INSTANCE}
 cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
 
 sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
@@ -131,7 +131,11 @@ sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
 # VPN-SERVER-API
 ###############################################################################
 
-mkdir /etc/vpn-server-api/${INSTANCE}
+# delete existing data
+rm -rf /etc/vpn-server-api/*
+rm -rf /var/lib/vpn-server-api/*
+
+mkdir -p /etc/vpn-server-api/${INSTANCE}
 cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 # OTP log for two-factor auth
@@ -144,14 +148,22 @@ vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host intern
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-admin-portal/${INSTANCE}
+# deleting existing data
+rm -rf /etc/vpn-admin-portal/*
+rm -rf /var/lib/vpn-admin-portal/*
+
+mkdir -p /etc/vpn-admin-portal/${INSTANCE}
 cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-user-portal/${INSTANCE}
+# deleting existing data
+rm -rf /etc/vpn-user-portal/*
+rm -rf /var/lib/vpn-user-portal/*
+
+mkdir -p /etc/vpn-user-portal/${INSTANCE}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
@@ -181,15 +193,12 @@ chmod 600 /etc/peervpn/vpn.conf
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable peervpn@vpn
+systemctl enable vmtoolsd
 
 # start services
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart peervpn@vpn
-
-# VMware tools, does nothing when not running on VMware
-yum -y install open-vm-tools
-systemctl enable vmtoolsd
 systemctl restart vmtoolsd
 
 ###############################################################################

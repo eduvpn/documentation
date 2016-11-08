@@ -61,13 +61,10 @@ yum -y install epel-release
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
-# install NetworkManager, if not yet installed
-yum -y install NetworkManager
-
 # install software (dependencies)
-yum -y install openvpn php-opcache telnet openssl peervpn \
+yum -y install NetworkManager openvpn php-opcache telnet openssl peervpn \
     policycoreutils-python iptables iptables-services patch \
-    iptables-services php-cli psmisc net-tools pwgen
+    iptables-services php-cli psmisc net-tools pwgen open-vm-tools
 
 # install software (VPN packages)
 yum -y install vpn-server-node
@@ -92,7 +89,10 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # VPN-SERVER-NODE
 ###############################################################################
 
-mkdir /etc/vpn-server-node/${INSTANCE}
+# remove existing data
+rm -rf /etc/vpn-server-node/*
+
+mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
@@ -140,20 +140,20 @@ systemctl enable NetworkManager
 # because we bind to other addresses than 0.0.0.0 and ::
 systemctl enable NetworkManager-wait-online
 systemctl enable peervpn@vpn
+systemctl enable vmtoolsd
 
 # start services
 systemctl restart NetworkManager
 systemctl restart NetworkManager-wait-online
 systemctl restart peervpn@vpn
-
-# VMware tools, does nothing when not running on VMware
-yum -y install open-vm-tools
-systemctl enable vmtoolsd
 systemctl restart vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
 ###############################################################################
+
+# remove existing config
+rm -rf /etc/openvpn/*
 
 # generate the server configuration files
 vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}01.${INSTANCE}
