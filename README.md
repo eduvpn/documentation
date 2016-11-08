@@ -57,6 +57,14 @@ For simple one server deployments and tests, we have a deploy script available
 you can run on a fresh CentOS 7 installation. It will configure all components 
 and will be ready to use after running!
 
+Not all "cloud" instances will work, because they modify CentOS, by e.g. 
+disabling SELinux or other (network) changes. We test only with the official 
+CentOS [Minimal ISO](https://centos.org/download/) and the official 
+[Cloud](https://wiki.centos.org/Download) images.
+
+**NOTE**: make sure SELinux is **enabled** and the filesystem correctly 
+(re)labeled! Look [here](https://wiki.centos.org/HowTos/SELinux).
+
     $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
     $ tar -xzf master.tar.gz
     $ cd documentation-master
