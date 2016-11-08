@@ -106,18 +106,14 @@ sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-n
 # NETWORK
 ###############################################################################
 
-{
-    # enable forwarding
-    echo 'net.ipv4.ip_forward = 1'
-    echo 'net.ipv6.conf.all.forwarding = 1'
-    # forwarding disables accepting RAs on our external interface, so we have to
-    # explicitly enable it here to make IPv6 work. This is only needed for deploys
-    # with native IPv6 obtained via router advertisements, not for fixed IPv6
-    # configurations
-    echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2"
-} >> /etc/sysctl.conf
+cat << EOF > /etc/sysctl.d/42-eduvpn.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+# disable below for static IPv6 configurations
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+EOF
 
-sysctl -p
+sysctl --system
 
 ###############################################################################
 # PEERVPN

@@ -200,21 +200,14 @@ cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${I
 # NETWORK
 ###############################################################################
 
-# FIXME we should not add these again if the script is running more than once,
-# maybe we can just update this file without caring what was there?
+cat << EOF > /etc/sysctl.d/42-eduvpn.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+# disable below for static IPv6 configurations
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+EOF
 
-{
-    # enable forwarding
-    echo 'net.ipv4.ip_forward = 1'
-    echo 'net.ipv6.conf.all.forwarding = 1'
-    # forwarding disables accepting RAs on our external interface, so we have to
-    # explicitly enable it here to make IPv6 work. This is only needed for deploys
-    # with native IPv6 obtained via router advertisements, not for fixed IPv6
-    # configurations
-    echo "net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2"
-} >> /etc/sysctl.conf
-
-sysctl -p
+sysctl --system
 
 ###############################################################################
 # SNIPROXY
