@@ -51,7 +51,7 @@ ifup tap0
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld, too complicated
+# remove firewalld, too complicated to get to work reliably for now
 yum -y remove firewalld
 
 # enable EPEL
@@ -60,13 +60,10 @@ yum -y install epel-release
 # enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
-# install NetworkManager, if not yet installed
-yum -y install NetworkManager
-
 # install software (dependencies)
-yum -y install openvpn mod_ssl php-opcache httpd telnet openssl \
-    policycoreutils-python iptables iptables-services patch sniproxy \
-    iptables-services php-fpm php-cli psmisc net-tools php pwgen
+yum -y install NetworkManager openvpn mod_ssl php-opcache httpd telnet \
+    openssl policycoreutils-python iptables iptables-services patch sniproxy \
+    open-vm-tools iptables-services php-fpm php-cli psmisc net-tools php pwgen
 
 # install software (VPN packages)
 yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
@@ -116,7 +113,7 @@ cp resources/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
 sed -i "s/vpn.example/${INSTANCE}/" /etc/httpd/conf.d/${INSTANCE}.conf
 
 # Make Apache not listen on port 80 anymore, sniproxy will take care of that
-sed -i "s/Listen 80/#Listen 80/" /etc/httpd/conf/httpd.conf
+sed -i "s/^Listen 80$/#Listen 80/" /etc/httpd/conf/httpd.conf
 
 # empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
@@ -135,8 +132,11 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 # VPN-CA-API
 ###############################################################################
 
-# initialize the CA
-mkdir /etc/vpn-ca-api/${INSTANCE}
+# delete existing data
+rm -rf /etc/vpn-ca-api/*
+rm -rf /var/lib/vpn-ca-api/*
+
+mkdir -p /etc/vpn-ca-api/${INSTANCE}
 cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
 
 sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
@@ -145,7 +145,11 @@ sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
 # VPN-SERVER-API
 ###############################################################################
 
-mkdir /etc/vpn-server-api/${INSTANCE}
+# delete existing data
+rm -rf /etc/vpn-server-api/*
+rm -rf /var/lib/vpn-server-api/*
+
+mkdir -p /etc/vpn-server-api/${INSTANCE}
 cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 # OTP log for two-factor auth
@@ -158,26 +162,40 @@ vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INST
 # VPN-SERVER-NODE
 ###############################################################################
 
-mkdir /etc/vpn-server-node/${INSTANCE}
+# deleting existing data
+rm -rf /etc/vpn-server-node/*
+
+mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-admin-portal/${INSTANCE}
+# deleting existing data
+rm -rf /etc/vpn-admin-portal/*
+rm -rf /var/lib/vpn-admin-portal/*
+
+mkdir -p /etc/vpn-admin-portal/${INSTANCE}
 cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-mkdir /etc/vpn-user-portal/${INSTANCE}
+# deleting existing data
+rm -rf /etc/vpn-user-portal/*
+rm -rf /var/lib/vpn-user-portal/*
+
+mkdir -p /etc/vpn-user-portal/${INSTANCE}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # NETWORK
 ###############################################################################
+
+# FIXME we should not add these again if the script is running more than once,
+# maybe we can just update this file without caring what was there?
 
 {
     # enable forwarding
@@ -219,6 +237,7 @@ systemctl enable NetworkManager
 # we need this for sniproxy and openvpn to start only when the network is up
 # because we bind to other addresses than 0.0.0.0 and ::
 systemctl enable NetworkManager-wait-online
+systemctl enable vmtoolsd
 
 # start services
 systemctl restart NetworkManager
@@ -226,15 +245,14 @@ systemctl restart NetworkManager-wait-online
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart sniproxy
-
-# VMware tools, does nothing when not running on VMware
-yum -y install open-vm-tools
-systemctl enable vmtoolsd
 systemctl restart vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
 ###############################################################################
+
+# remove existing configurations
+rm -rf /etc/openvpn/*
 
 # generate the server configuration files
 vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate --cn ${INSTANCE}
