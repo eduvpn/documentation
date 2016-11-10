@@ -21,6 +21,9 @@ set -e # stop the script on errors
 set -u # unset variables are an error
 set -o pipefail # piping a failed process into a successful one is an arror
 
+# update packages to make sure we have latest version of everything
+yum -y clean expire-cache && yum -y update
+
 ###############################################################################
 # NETWORK 
 ###############################################################################
@@ -67,9 +70,6 @@ yum -y install NetworkManager openvpn mod_ssl php-opcache httpd telnet \
 
 # install software (VPN packages)
 yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
-
-# update packages to make sure we have latest version of everything
-yum -y update
 
 ###############################################################################
 # SELINUX

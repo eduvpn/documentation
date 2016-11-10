@@ -20,6 +20,9 @@ set -e # stop the script on errors
 set -u # unset variables are an error
 set -o pipefail # piping a failed process into a successful one is an arror
 
+# update packages to make sure we have latest version of everything
+yum -y clean expire-cache && yum -y update
+
 ###############################################################################
 # NETWORK 
 ###############################################################################

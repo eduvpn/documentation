@@ -178,7 +178,7 @@ The following options are available:
     #enableOAuth: true
     # OAuth 2.0 consumers
     apiConsumers:
-        vpn-companion:
-            redirect_uri: 'vpn://import/callback'
+    nl.eduvpn.app:
+        redirect_uri: 'nl.eduvpn.app://import/callback'
 
-Here `vpn-companion` is the `client_id`.
+Here `nl.eduvpn.app` is the `client_id`.
