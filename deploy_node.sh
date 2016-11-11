@@ -11,11 +11,15 @@
 # VARIABLES
 INSTANCE=vpn.example
 EXTERNAL_IF=eth0
-PEERVPN_PSK=12345678
 CA_API_USER_PASS=aabbcc
 SERVER_API_USER_PASS=ccbbaa
 MANAGEMENT_IP=10.42.101.101
 PROFILE=internet
+
+# **NOTE**: 
+# the file /etc/tinc/vpn/hosts/${INSTANCE} from the controller should be placed
+# here in the same directory, this will allow tinc to connect to the controller
+# and perform the node configuration
 
 ###############################################################################
 # SYSTEM
@@ -33,23 +37,16 @@ yum -y clean expire-cache && yum -y update
 # NETWORK 
 ###############################################################################
 
-# configure the TAP device as this IP address will be used for running the 
-# management services, this is also shared by running PeerVPN
-
-# if you have any other means to establish connection to the other nodes, e.g. 
-# a private network between virtual machines that can also be used, just 
-# configure this IP on that device
-
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
-DEVICE="tap0"
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
+DEVICE="br0"
 ONBOOT="yes"
-TYPE="Tap"
-IPADDR1=${MANAGEMENT_IP}
-PREFIX1=16
+TYPE="Bridge"
+IPADDR0=${MANAGEMENT_IP}
+PREFIX0=16
 EOF
 
 # activate the interface
-ifup tap0
+ifup br0
 
 ###############################################################################
 # SOFTWARE
@@ -100,7 +97,7 @@ cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${I
 cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
 cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
-sed -i "s/#- tap0/- tap0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml
+sed -i "s/#- br0/- br0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
 sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
@@ -119,33 +116,54 @@ EOF
 sysctl --system
 
 ###############################################################################
-# PEERVPN
+# TINC
 ###############################################################################
 
-cat << EOF > /etc/peervpn/vpn.conf
-initpeers ${INSTANCE} 7000
-psk ${PEERVPN_PSK}
-interface tap0
+rm -rf /etc/tinc
+mkdir -p /etc/tinc/vpn
+
+cat << EOF > /etc/tinc/vpn/tinc.conf
+Name = $(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')
+ConnectTo = $(echo ${INSTANCE} | sed 's/\./_/g')
+Mode = switch
 EOF
 
-chmod 600 /etc/peervpn/vpn.conf
+cat << EOF > /etc/tinc/vpn/tinc-up
+#!/bin/sh
+/sbin/ifconfig \${INTERFACE} 0.0.0.0
+/sbin/brctl addif br0 \${INTERFACE}
+EOF
+
+cat << EOF > /etc/tinc/vpn/tinc-down
+#!/bin/sh
+/sbin/brctl delif br0 \${INTERFACE}
+/sbin/ifconfig \${INTERFACE} down
+EOF
+
+chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
+
+mkdir -p /etc/tinc/vpn/hosts
+touch /etc/tinc/vpn/hosts/$(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')
+
+echo "\n\n" | tincd -n vpn -K 4096
+
+# copy controller file to the correct place
+cp $(${INSTANCE} | sed 's/\./_/g') /etc/tinc/vpn/hosts
 
 ###############################################################################
 # DAEMONS
 ###############################################################################
 
 systemctl enable NetworkManager
-# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
-# we need this for sniproxy and openvpn to start only when the network is up
-# because we bind to other addresses than 0.0.0.0 and ::
 systemctl enable NetworkManager-wait-online
-systemctl enable peervpn@vpn
+systemctl enable tinc
+systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
 systemctl restart NetworkManager
 systemctl restart NetworkManager-wait-online
-systemctl restart peervpn@vpn
+systemctl restart tinc@vpn
 systemctl restart vmtoolsd
 
 ###############################################################################
