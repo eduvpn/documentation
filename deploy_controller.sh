@@ -212,12 +212,16 @@ echo "\n\n" | tincd -n vpn -K 4096
 # DAEMONS
 ###############################################################################
 
+systemctl enable NetworkManager
+systemctl enable NetworkManager-wait-online
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
+systemctl restart NetworkManager
+systemctl restart NetworkManager-wait-online
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart tinc@vpn
