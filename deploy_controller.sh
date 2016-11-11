@@ -24,28 +24,6 @@ set -o pipefail # piping a failed process into a successful one is an arror
 yum -y clean expire-cache && yum -y update
 
 ###############################################################################
-# NETWORK 
-###############################################################################
-
-# configure the TAP device as this IP address will be used for running the 
-# management services, this is also shared by running PeerVPN
-
-# if you have any other means to establish connection to the other nodes, e.g. 
-# a private network between virtual machines that can also be used, just 
-# configure this IP on that device
-
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
-DEVICE="tap0"
-ONBOOT="yes"
-TYPE="Tap"
-IPADDR0=10.42.101.100
-PREFIX0=16
-EOF
-
-# activate the interface
-ifup tap0
-
-###############################################################################
 # SOFTWARE
 ###############################################################################
 
@@ -61,7 +39,7 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorain
 # install software (dependencies)
 yum -y install NetworkManager mod_ssl php-opcache httpd telnet openssl \
     php-fpm policycoreutils-python patch php-cli psmisc net-tools php pwgen \
-    iptables iptables-services open-vm-tools
+    iptables iptables-services open-vm-tools tinc bridge-utils
 
 # install software (VPN packages)
 yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
@@ -177,17 +155,60 @@ cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${I
 php resources/update_api_secret.php ${INSTANCE}
 
 ###############################################################################
-# PEERVPN
+# NETWORK 
 ###############################################################################
 
-PEERVPN_PSK=$(pwgen -s 32 -n 1)
-cat << EOF > /etc/peervpn/vpn.conf
-psk ${PEERVPN_PSK}
-port 7000
-interface tap0
+# configure a bridge device as this IP address will be used for running the 
+# management services, this is also shared by running tinc
+
+# if you have any other means to establish connection to the other nodes, e.g. 
+# a private network between virtual machines that can also be used, just 
+# configure this IP on that device
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
+DEVICE="br0"
+ONBOOT="yes"
+TYPE="Bridge"
+IPADDR0=10.42.101.100
+PREFIX0=16
 EOF
 
-chmod 600 /etc/peervpn/vpn.conf
+# activate the interface
+ifup br0
+
+###############################################################################
+# TINC
+###############################################################################
+
+mkdir -p /etc/tinc/vpn
+yes | tincd -n vpn -K 4096
+
+cat << EOF > /etc/tinc/vpn/tinc.conf
+Name = $(echo ${INSTANCE} | sed 's/\./_/g')
+Mode = switch
+EOF
+
+cat << EOF > /etc/tinc/vpn/tinc-up
+#!/bin/sh
+/sbin/ifconfig ${INTERFACE} 0.0.0.0
+/sbin/brctl addif br0 ${INTERFACE}
+EOF
+
+cat << EOF > /etc/tinc/vpn/tinc-down
+#!/bin/sh
+/sbin/brctl delif br0 ${INTERFACE}
+/sbin/ifconfig \${INTERFACE} down
+EOF
+
+chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
+
+PUBLIC_KEY=$(cat /etc/tinc/vpn/rsa_key.pub)
+
+mkdir -p /etc/tinc/vpn/hosts
+cat << EOF > /etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')
+Address ${INSTANCE}
+${PUBLIC_KEY}
+EOF
 
 ###############################################################################
 # DAEMONS
@@ -195,13 +216,13 @@ chmod 600 /etc/peervpn/vpn.conf
 
 systemctl enable php-fpm
 systemctl enable httpd
-systemctl enable peervpn@vpn
+systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
 systemctl restart php-fpm
 systemctl restart httpd
-systemctl restart peervpn@vpn
+systemctl restart tinc@vpn
 systemctl restart vmtoolsd
 
 ###############################################################################
