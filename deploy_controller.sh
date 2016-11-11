@@ -206,7 +206,7 @@ cat << EOF > /etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')
 Address ${INSTANCE}
 EOF
 
-yes | tincd -n vpn -K 4096
+echo "\n\n" | tincd -n vpn -K 4096
 
 ###############################################################################
 # DAEMONS
