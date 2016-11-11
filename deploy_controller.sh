@@ -159,11 +159,10 @@ php resources/update_api_secret.php ${INSTANCE}
 ###############################################################################
 
 # configure a bridge device as this IP address will be used for running the 
-# management services, this is also shared by running tinc
-
+# management services, this can also be shared by running tinc
 # if you have any other means to establish connection to the other nodes, e.g. 
 # a private network between virtual machines that can also be used, just 
-# configure this IP on that device
+# add the interface to the bridge
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
 DEVICE="br0"
@@ -180,6 +179,7 @@ ifup br0
 # TINC
 ###############################################################################
 
+rm -rf /etc/tinc
 mkdir -p /etc/tinc/vpn
 
 cat << EOF > /etc/tinc/vpn/tinc.conf

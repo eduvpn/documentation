@@ -28,17 +28,16 @@ yum -y clean expire-cache && yum -y update
 # NETWORK 
 ###############################################################################
 
-# configure the TAP device as this IP address will be used for running the 
-# management services, this is also shared by running PeerVPN
-
+# configure a bridge device as this IP address will be used for running the 
+# management services, this can also be shared by running tinc
 # if you have any other means to establish connection to the other nodes, e.g. 
 # a private network between virtual machines that can also be used, just 
-# configure this IP on that device
+# add the interface to the bridge
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-tap0
-DEVICE="tap0"
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
+DEVICE="br0"
 ONBOOT="yes"
-TYPE="Tap"
+TYPE="Bridge"
 # for the web services
 IPADDR0=10.42.101.100
 PREFIX0=16
@@ -48,7 +47,7 @@ PREFIX1=16
 EOF
 
 # activate the interface
-ifup tap0
+ifup br0
 
 ###############################################################################
 # SOFTWARE
@@ -66,7 +65,8 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorain
 # install software (dependencies)
 yum -y install NetworkManager openvpn mod_ssl php-opcache httpd telnet \
     openssl policycoreutils-python iptables iptables-services patch sniproxy \
-    open-vm-tools iptables-services php-fpm php-cli psmisc net-tools php pwgen
+    open-vm-tools iptables-services php-fpm php-cli psmisc net-tools php \
+    bridge-utils
 
 # install software (VPN packages)
 yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
