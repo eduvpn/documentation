@@ -181,7 +181,6 @@ ifup br0
 ###############################################################################
 
 mkdir -p /etc/tinc/vpn
-yes | tincd -n vpn -K 4096
 
 cat << EOF > /etc/tinc/vpn/tinc.conf
 Name = $(echo ${INSTANCE} | sed 's/\./_/g')
@@ -190,25 +189,24 @@ EOF
 
 cat << EOF > /etc/tinc/vpn/tinc-up
 #!/bin/sh
-/sbin/ifconfig ${INTERFACE} 0.0.0.0
-/sbin/brctl addif br0 ${INTERFACE}
+/sbin/ifconfig \${INTERFACE} 0.0.0.0
+/sbin/brctl addif br0 \${INTERFACE}
 EOF
 
 cat << EOF > /etc/tinc/vpn/tinc-down
 #!/bin/sh
-/sbin/brctl delif br0 ${INTERFACE}
+/sbin/brctl delif br0 \${INTERFACE}
 /sbin/ifconfig \${INTERFACE} down
 EOF
 
 chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
 
-PUBLIC_KEY=$(cat /etc/tinc/vpn/rsa_key.pub)
-
 mkdir -p /etc/tinc/vpn/hosts
 cat << EOF > /etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')
 Address ${INSTANCE}
-${PUBLIC_KEY}
 EOF
+
+yes | tincd -n vpn -K 4096
 
 ###############################################################################
 # DAEMONS
