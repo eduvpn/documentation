@@ -126,7 +126,7 @@ rm -rf /etc/tinc
 mkdir -p /etc/tinc/vpn
 
 cat << EOF > /etc/tinc/vpn/tinc.conf
-Name = ${TINC_NAME}
+Name = ${TINC_NODE_NAME}
 ConnectTo = ${TINC_INSTANCE_NAME}
 Mode = switch
 EOF
@@ -152,6 +152,8 @@ cat "/etc/tinc/vpn/hosts/${TINC_NODE_NAME}"
 echo "---- /cut ----"
 echo
 echo "Put the above in /etc/tinc/vpn/hosts/${TINC_NODE_NAME} on the controller"
+echo "And restart tinc:"
+echo "    sudo systemctl restart tinc@vpn"
 echo 
 echo "Press enter to continue..."
 read
