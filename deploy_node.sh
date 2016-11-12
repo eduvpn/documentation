@@ -62,7 +62,7 @@ yum -y install epel-release
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install software (dependencies)
-yum -y install NetworkManager openvpn php-opcache telnet openssl peervpn \
+yum -y install NetworkManager openvpn php-opcache telnet openssl tinc \
     policycoreutils-python iptables iptables-services patch \
     iptables-services php-cli psmisc net-tools pwgen open-vm-tools
 
@@ -139,7 +139,7 @@ printf "\n\n" | tincd -n vpn -K 4096
 
 # copy controller file to the correct place
 # XXX check if the file is there, bail otherwise, at start of this script!
-cp "$(${INSTANCE} | sed 's/\./_/g')" /etc/tinc/vpn/hosts
+cp "$(echo ${INSTANCE} | sed 's/\./_/g')" /etc/tinc/vpn/hosts
 
 ###############################################################################
 # DAEMONS
