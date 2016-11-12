@@ -152,8 +152,8 @@ cat "/etc/tinc/vpn/hosts/${TINC_NODE_NAME}"
 echo "---- /cut ----"
 echo
 echo "Put the above in /etc/tinc/vpn/hosts/${TINC_NODE_NAME} on the controller"
-echo "And restart tinc:"
-echo "    sudo systemctl restart tinc@vpn"
+echo "And reload tinc:"
+echo "    sudo systemctl reload tinc@vpn"
 echo 
 echo "Press enter to continue..."
 read
