@@ -11,8 +11,8 @@
 # VARIABLES
 INSTANCE=vpn.example
 EXTERNAL_IF=eth0
-CA_API_USER_PASS=aabbcc
-SERVER_API_USER_PASS=ccbbaa
+VPN_SERVER_NODE_VPN_CA_API=aabbcc
+VPN_SERVER_NODE_VPN_SERVER_API=ccbbaa
 MANAGEMENT_IP=10.42.101.101
 PROFILE=internet
 
@@ -99,8 +99,8 @@ cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/$
 
 sed -i "s/#- br0/- br0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml
 
-sed -i "s/userPass: aabbcc/userPass: ${CA_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
-sed -i "s/userPass: ccbbaa/userPass: ${SERVER_API_USER_PASS}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # NETWORK
@@ -128,27 +128,18 @@ ConnectTo = $(echo ${INSTANCE} | sed 's/\./_/g')
 Mode = switch
 EOF
 
-cat << EOF > /etc/tinc/vpn/tinc-up
-#!/bin/sh
-/sbin/ifconfig \${INTERFACE} 0.0.0.0
-/sbin/brctl addif br0 \${INTERFACE}
-EOF
-
-cat << EOF > /etc/tinc/vpn/tinc-down
-#!/bin/sh
-/sbin/brctl delif br0 \${INTERFACE}
-/sbin/ifconfig \${INTERFACE} down
-EOF
-
+cp resources/tinc-up /etc/tinc/vpn/tinc-up
+cp resources/tinc-down /etc/tinc/vpn/tinc-down
 chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
 
 mkdir -p /etc/tinc/vpn/hosts
-touch /etc/tinc/vpn/hosts/$(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')
+touch "/etc/tinc/vpn/hosts/$(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')"
 
-echo "\n\n" | tincd -n vpn -K 4096
+printf "\n\n" | tincd -n vpn -K 4096
 
 # copy controller file to the correct place
-cp $(${INSTANCE} | sed 's/\./_/g') /etc/tinc/vpn/hosts
+# XXX check if the file is there, bail otherwise, at start of this script!
+cp "$(${INSTANCE} | sed 's/\./_/g')" /etc/tinc/vpn/hosts
 
 ###############################################################################
 # DAEMONS
@@ -156,7 +147,7 @@ cp $(${INSTANCE} | sed 's/\./_/g') /etc/tinc/vpn/hosts
 
 systemctl enable NetworkManager
 systemctl enable NetworkManager-wait-online
-systemctl enable tinc
+systemctl enable tinc # make sure tinc will wait for the network @ boot
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 

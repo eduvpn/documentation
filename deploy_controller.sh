@@ -152,7 +152,7 @@ cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${I
 ###############################################################################
 
 # update API secret
-php resources/update_api_secret.php ${INSTANCE}
+API_SECRETS=$(php resources/update_api_secret.php ${INSTANCE})
 
 ###############################################################################
 # NETWORK 
@@ -187,18 +187,8 @@ Name = $(echo ${INSTANCE} | sed 's/\./_/g')
 Mode = switch
 EOF
 
-cat << EOF > /etc/tinc/vpn/tinc-up
-#!/bin/sh
-/sbin/ifconfig \${INTERFACE} 0.0.0.0
-/sbin/brctl addif br0 \${INTERFACE}
-EOF
-
-cat << EOF > /etc/tinc/vpn/tinc-down
-#!/bin/sh
-/sbin/brctl delif br0 \${INTERFACE}
-/sbin/ifconfig \${INTERFACE} down
-EOF
-
+cp resources/tinc-up /etc/tinc/vpn/tinc-up
+cp resources/tinc-down /etc/tinc/vpn/tinc-down
 chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
 
 mkdir -p /etc/tinc/vpn/hosts
@@ -206,7 +196,7 @@ cat << EOF > /etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')
 Address ${INSTANCE}
 EOF
 
-echo "\n\n" | tincd -n vpn -K 4096
+printf "\n\n" | tincd -n vpn -K 4096
 
 ###############################################################################
 # DAEMONS
@@ -216,6 +206,7 @@ systemctl enable NetworkManager
 systemctl enable NetworkManager-wait-online
 systemctl enable php-fpm
 systemctl enable httpd
+systemctl enable tinc # make sure tinc will wait for the network @ boot
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
@@ -280,6 +271,9 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
+VPN_SERVER_NODE_VPN_CA_API=$(echo "${API_SECRETS}" | grep VPN_SERVER_NODE_VPN_CA_API | cut -d '=' -f 2)
+VPN_SERVER_NODE_VPN_SERVER_API=$(echo "${API_SECRETS}" | grep VPN_SERVER_NODE_VPN_SERVER_API | cut -d '=' -f 2)
+
 echo "########################################################################"
 echo "# Admin Portal"
 echo "#     https://${INSTANCE}/admin"
@@ -290,4 +284,24 @@ echo "#     https://${INSTANCE}/portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
 echo "########################################################################"
+echo
+echo "########################################################################"
+echo "# Variables for the deploy_node.sh script:"
+echo "#"
+echo "# INSTANCE=${INSTANCE}"
+echo "# VPN_SERVER_NODE_VPN_CA_API=${VPN_SERVER_NODE_VPN_CA_API}"
+echo "# VPN_SERVER_NODE_VPN_SERVER_API=${VPN_SERVER_NODE_VPN_SERVER_API}"
+echo "# MANAGEMENT_IP=10.42.101.101"
+echo "# PROFILE=internet"
+echo "#"
+echo "########################################################################"
+echo 
+echo "########################################################################"
+echo "# tinc host file for the nodes to connect to the controller"
+echo "########################################################################"
+
+echo "--- cut ---"
+cat "/etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')"
+echo "--- /cut ---"
+
 # ALL DONE!

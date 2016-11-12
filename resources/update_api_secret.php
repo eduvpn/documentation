@@ -16,8 +16,15 @@ $vsnvsa = bin2hex(random_bytes(16));
 //$vupvsa = 'XXX-vpn-user-portal/vpn-server-api-XXX';
 //$vapvca = 'XXX-vpn-admin-portal/vpn-ca-api-XXX';
 //$vapvsa = 'XXX-vpn-admin-portal/vpn-server-api-XXX';
-//$vsnvca = 'XXX-vpn-server-api/vpn-ca-api-XXX';
-//$vsnvsa = 'XXX-vpn-server-api/vpn-server-api-XXX';
+//$vsnvca = 'XXX-vpn-server-node/vpn-ca-api-XXX';
+//$vsnvsa = 'XXX-vpn-server-node/vpn-server-api-XXX';
+
+echo sprintf('VPN_USER_PORTAL_VPN_CA_API=%s', $vupvca).PHP_EOL;
+echo sprintf('VPN_USER_PORTAL_VPN_SERVER_API=%s', $vupvsa).PHP_EOL;
+echo sprintf('VPN_ADMIN_PORTAL_VPN_CA_API=%s', $vapvca).PHP_EOL;
+echo sprintf('VPN_ADMIN_PORTAL_VPN_SERVER_API=%s', $vapvsa).PHP_EOL;
+echo sprintf('VPN_SERVER_NODE_VPN_CA_API=%s', $vsnvca).PHP_EOL;
+echo sprintf('VPN_SERVER_NODE_VPN_SERVER_API=%s', $vsnvsa).PHP_EOL;
 
 try {
     if (2 !== $argc) {
