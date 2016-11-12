@@ -179,11 +179,13 @@ ifup br0
 # TINC
 ###############################################################################
 
+TINC_INSTANCE_NAME=$(echo ${INSTANCE} | sed 's/\./_/g')
+
 rm -rf /etc/tinc
 mkdir -p /etc/tinc/vpn
 
 cat << EOF > /etc/tinc/vpn/tinc.conf
-Name = $(echo ${INSTANCE} | sed 's/\./_/g')
+Name = ${TINC_INSTANCE_NAME}
 Mode = switch
 EOF
 
@@ -192,11 +194,13 @@ cp resources/tinc-down /etc/tinc/vpn/tinc-down
 chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
 
 mkdir -p /etc/tinc/vpn/hosts
-cat << EOF > /etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')
+cat << EOF > "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}"
 Address ${INSTANCE}
 EOF
 
 printf "\n\n" | tincd -n vpn -K 4096
+
+cp resources/tinc\@.service /etc/systemd/system
 
 ###############################################################################
 # DAEMONS
@@ -206,7 +210,6 @@ systemctl enable NetworkManager
 systemctl enable NetworkManager-wait-online
 systemctl enable php-fpm
 systemctl enable httpd
-systemctl enable tinc # make sure tinc will wait for the network @ boot
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
@@ -298,10 +301,12 @@ echo "########################################################################"
 echo 
 echo "########################################################################"
 echo "# tinc host file for the nodes to connect to the controller"
+echo "# put this in the deploy directory as ${TINC_INSTANCE_NAME} before"
+echo "# running deploy_node.sh"
 echo "########################################################################"
-
+echo
 echo "--- cut ---"
-cat "/etc/tinc/vpn/hosts/$(echo ${INSTANCE} | sed 's/\./_/g')"
+cat "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}"
 echo "--- /cut ---"
 
 # ALL DONE!

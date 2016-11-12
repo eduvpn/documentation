@@ -119,12 +119,15 @@ sysctl --system
 # TINC
 ###############################################################################
 
+TINC_INSTANCE_NAME=$(echo ${INSTANCE} | sed 's/\./_/g')
+TINC_NODE_NAME=$(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')
+
 rm -rf /etc/tinc
 mkdir -p /etc/tinc/vpn
 
 cat << EOF > /etc/tinc/vpn/tinc.conf
-Name = $(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')
-ConnectTo = $(echo ${INSTANCE} | sed 's/\./_/g')
+Name = ${TINC_NAME}
+ConnectTo = ${TINC_INSTANCE_NAME}
 Mode = switch
 EOF
 
@@ -133,13 +136,25 @@ cp resources/tinc-down /etc/tinc/vpn/tinc-down
 chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
 
 mkdir -p /etc/tinc/vpn/hosts
-touch "/etc/tinc/vpn/hosts/$(echo ${PROFILE}.${INSTANCE} | sed 's/\./_/g')"
+touch "/etc/tinc/vpn/hosts/${TINC_NODE_NAME}"
 
 printf "\n\n" | tincd -n vpn -K 4096
 
+cp resources/tinc\@.service /etc/systemd/system
+
 # copy controller file to the correct place
 # XXX check if the file is there, bail otherwise, at start of this script!
-cp "$(echo ${INSTANCE} | sed 's/\./_/g')" /etc/tinc/vpn/hosts
+cp "${TINC_INSTANCE_NAME}" /etc/tinc/vpn/hosts
+
+# now we have to copy the public key to the controller, out of band for now
+echo "---- cut ----"
+cat "/etc/tinc/vpn/hosts/${TINC_NODE_NAME}"
+echo "---- /cut ----"
+echo
+echo "Put the above in /etc/tinc/vpn/hosts/${TINC_NODE_NAME} on the controller"
+echo 
+echo "Press enter to continue..."
+read
 
 ###############################################################################
 # DAEMONS
@@ -147,7 +162,6 @@ cp "$(echo ${INSTANCE} | sed 's/\./_/g')" /etc/tinc/vpn/hosts
 
 systemctl enable NetworkManager
 systemctl enable NetworkManager-wait-online
-systemctl enable tinc # make sure tinc will wait for the network @ boot
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
