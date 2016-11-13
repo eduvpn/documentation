@@ -95,9 +95,10 @@ rm -rf /etc/vpn-server-node/*
 mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
-cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/${INSTANCE}/firewall.yaml
+cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/firewall.yaml
 
-sed -i "s/#- br0/- br0/" /etc/vpn-server-node/${INSTANCE}/firewall.yaml
+sed -i "s/#trustedInterfaces/trustedInterfaces/" /etc/vpn-server-node/firewall.yaml
+sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
 
 sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
