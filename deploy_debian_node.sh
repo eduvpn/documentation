@@ -91,17 +91,13 @@ sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" ${INSTA
 
 ln -s /etc/openvpn /opt/vpn-server-node/openvpn-config
 
-rm /usr/sbin/vpn-server-node-*
-ln -s /opt/vpn-server-node/bin/client-connect.php /usr/sbin/vpn-server-node-client-connect
-ln -s /opt/vpn-server-node/bin/client-disconnect.php /usr/sbin/vpn-server-node-client-disconnect
-ln -s /opt/vpn-server-node/bin/verify-otp.php /usr/sbin/vpn-server-node-verify-otp
-ln -s /opt/vpn-server-node/bin/generate-firewall.php /usr/sbin/vpn-server-node-generate-firewall
-ln -s /opt/vpn-server-node/bin/server-config.php /usr/sbin/vpn-server-node-server-config
+# XXX fix the user name!
 
-chmod +x /opt/vpn-server-node/client-connect.php
-chmod +x /opt/vpn-server-node/client-disconnect.php
-chmod +x /opt/vpn-server-node/verify-otp.php
-chmod +x /opt/vpn-server-node/generate-firewall.php
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-connect /usr/libexec/vpn-server-node-client-connect
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-disconnect /usr/libexec/vpn-server-node-client-disconnect
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-verify-otp /usr/libexec/vpn-server-node-verify-otp
+ln -s /opt/vpn-server-node/bin/vpn-server-node-generate-firewall /usr/bin/vpn-server-node-generate-firewall
+ln -s /opt/vpn-server-node/bin/vpn-server-node-server-config /usr/bin/vpn-server-node-server-config
 )
 
 ###############################################################################

@@ -293,8 +293,8 @@ systemctl restart sshd
 # POST INSTALL
 ###############################################################################
 
-echo "@hourly root /usr/sbin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
-echo "@daily apache /usr/sbin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
+echo "@hourly root /usr/bin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
+echo "@daily apache /usr/bin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
 
 # run the statistics script for the first time to not generate errors in the
 # admin
