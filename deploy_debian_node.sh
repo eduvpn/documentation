@@ -38,7 +38,7 @@ apt-get update && apt-get dist-upgrade
 ###############################################################################
 
 apt-get install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
-    curl git
+    curl git php5-curl
 
 ###############################################################################
 # NETWORK 
@@ -76,8 +76,12 @@ cp resources/99-eduvpn.ini /etc/php5/cli/conf.d/99-eduvpn.ini
 
 (
 cd /opt
+rm -rf vpn-server-node
 git clone https://github.com/eduvpn/vpn-server-node.git
-cd vpn-server-node/config
+cd vpn-server-node
+curl -O https://getcomposer.org/download/1.2.2/composer.phar
+php composer.phar install
+cd config
 mkdir vpn.example
 cp config.yaml.example vpn.example/config.yaml
 cp firewall.yaml.example firewall.yaml
@@ -85,11 +89,14 @@ sed -i "s/#- br0/- br0/" firewall.yaml
 sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" ${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" ${INSTANCE}/config.yaml
 
-ln -s /opt/vpn-server-node/client-connect.php /usr/sbin/vpn-server-node-client-connect
-ln -s /opt/vpn-server-node/client-disconnect.php /usr/sbin/vpn-server-node-client-disconnect
-ln -s /opt/vpn-server-node/verify-otp.php /usr/sbin/vpn-server-node-verify-otp
-ln -s /opt/vpn-server-node/generate-firewall.php /usr/sbin/vpn-server-node-generate-firewall
-ln -s /opt/vpn-server-node/server-config.php /usr/sbin/vpn-server-node-server-config
+ln -s /etc/openvpn /opt/vpn-server-node/openvpn-config
+
+rm /usr/sbin/vpn-server-node-*
+ln -s /opt/vpn-server-node/bin/client-connect.php /usr/sbin/vpn-server-node-client-connect
+ln -s /opt/vpn-server-node/bin/client-disconnect.php /usr/sbin/vpn-server-node-client-disconnect
+ln -s /opt/vpn-server-node/bin/verify-otp.php /usr/sbin/vpn-server-node-verify-otp
+ln -s /opt/vpn-server-node/bin/generate-firewall.php /usr/sbin/vpn-server-node-generate-firewall
+ln -s /opt/vpn-server-node/bin/server-config.php /usr/sbin/vpn-server-node-server-config
 
 chmod +x /opt/vpn-server-node/client-connect.php
 chmod +x /opt/vpn-server-node/client-disconnect.php
@@ -145,10 +152,7 @@ read
 ###############################################################################
 
 systemctl enable tinc@vpn
-systemctl enable vmtoolsd
-
 systemctl restart tinc@vpn
-systemctl restart vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
