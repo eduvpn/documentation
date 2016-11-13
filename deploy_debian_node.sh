@@ -88,14 +88,15 @@ cp firewall.yaml.example firewall.yaml
 sed -i "s/#- br0/- br0/" firewall.yaml
 sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" ${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" ${INSTANCE}/config.yaml
+sed -i "s/vpnUser: openvpn/vpnUser: nobody/" ${INSTANCE}/config.yaml
+sed -i "s/vpnGroup: openvpn/vpnGroup: nogroup/" ${INSTANCE}/config.yaml
 
 ln -s /etc/openvpn /opt/vpn-server-node/openvpn-config
-
-# XXX fix the user name!
 
 ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-connect /usr/libexec/vpn-server-node-client-connect
 ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-disconnect /usr/libexec/vpn-server-node-client-disconnect
 ln -s /opt/vpn-server-node/libexec/vpn-server-node-verify-otp /usr/libexec/vpn-server-node-verify-otp
+
 ln -s /opt/vpn-server-node/bin/vpn-server-node-generate-firewall /usr/bin/vpn-server-node-generate-firewall
 ln -s /opt/vpn-server-node/bin/vpn-server-node-server-config /usr/bin/vpn-server-node-server-config
 )
