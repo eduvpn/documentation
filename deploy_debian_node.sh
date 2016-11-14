@@ -38,7 +38,7 @@ apt-get update && apt-get -y dist-upgrade
 ###############################################################################
 
 apt-get -y  install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
-    curl php5-curl
+    curl php5-curl iptables-persistent
 
 ###############################################################################
 # NETWORK 
@@ -181,14 +181,10 @@ systemctl start openvpn@server-${INSTANCE}-${PROFILE}-3
 ###############################################################################
 
 # generate and install the firewall
-#vpn-server-node-generate-firewall --install
+vpn-server-node-generate-firewall --install --debian
 
-#systemctl enable iptables
-#systemctl enable ip6tables
-
-# flush existing firewall rules if they exist and activate the new ones
-#systemctl restart iptables
-#systemctl restart ip6tables
+systemctl enable netfilter-persistent
+systemctl restart netfilter-persistent
 
 ###############################################################################
 # SSHD
