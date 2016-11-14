@@ -25,6 +25,9 @@ PROFILE=debian
 # SYSTEM
 ###############################################################################
 
+# use upstream OpenVPN as the one in Debian is too old, we need to be able
+# to determine the IPv6 address assigned to clients on connect which is only
+# available in OpenVPN >= 2.3.9
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add -
 echo "deb http://build.openvpn.net/debian/openvpn/stable jessie main" > /etc/apt/sources.list.d/openvpn-aptrepo.list
 
