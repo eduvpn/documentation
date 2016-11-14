@@ -31,13 +31,13 @@ set -u # unset variables are an error
 set -o pipefail # piping a failed process into a successful one is an arror
 
 # update packages to make sure we have latest version of everything
-apt-get update && apt-get dist-upgrade
+apt-get update && apt-get -y dist-upgrade
 
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
-apt-get install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
+apt-get -y  install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
     curl php5-curl
 
 ###############################################################################
@@ -76,12 +76,12 @@ cp resources/99-eduvpn.ini /etc/php5/cli/conf.d/99-eduvpn.ini
 
 (
 cd /opt
-rm vpn-server-node
-rm -rf vpn-server-node-1.0.0
+rm vpn-server-node || true
+rm -rf vpn-server-node-1.0.0 || true
 curl -O https://eduvpn.surfcloud.nl/release/vpn-server-node-1.0.0.tar.xz
 ln -s vpn-server-node-1.0.0 vpn-server-node
 
-cd config
+cd vpn-server-node/config
 mkdir vpn.example
 cp config.yaml.example vpn.example/config.yaml
 cp firewall.yaml.example firewall.yaml
@@ -95,12 +95,14 @@ sed -i "s/vpnGroup: openvpn/vpnGroup: nogroup/" ${INSTANCE}/config.yaml
 
 ln -s /etc/openvpn /opt/vpn-server-node/openvpn-config
 
-ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-connect /usr/libexec/vpn-server-node-client-connect
-ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-disconnect /usr/libexec/vpn-server-node-client-disconnect
-ln -s /opt/vpn-server-node/libexec/vpn-server-node-verify-otp /usr/libexec/vpn-server-node-verify-otp
+# debian does not have libexec
+mkdir -p /usr/libexec
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-connect /usr/libexec/vpn-server-node-client-connect || true
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-client-disconnect /usr/libexec/vpn-server-node-client-disconnect || true
+ln -s /opt/vpn-server-node/libexec/vpn-server-node-verify-otp /usr/libexec/vpn-server-node-verify-otp || true
 
-ln -s /opt/vpn-server-node/bin/vpn-server-node-generate-firewall /usr/bin/vpn-server-node-generate-firewall
-ln -s /opt/vpn-server-node/bin/vpn-server-node-server-config /usr/bin/vpn-server-node-server-config
+ln -s /opt/vpn-server-node/bin/vpn-server-node-generate-firewall /usr/bin/vpn-server-node-generate-firewall || true
+ln -s /opt/vpn-server-node/bin/vpn-server-node-server-config /usr/bin/vpn-server-node-server-config || true
 )
 
 ###############################################################################
