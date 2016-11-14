@@ -49,6 +49,7 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `aclGroupProvider` | The provider to use for retrieving group membership, see [ACL](ACL.md) documentation | no | `StaticProvider` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `processCount`     | The number of OpenVPN processes to use for this range, MUST be 1, 2, 4 or 8. See [OpenVPN Processes](#openvpn-processes) | no | `4` |
+| `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
 
 ### OpenVPN Processes
 
