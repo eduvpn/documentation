@@ -125,6 +125,9 @@ sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ethXXX
 
+# disable portShare, no need to share TCP/443 on dedicated nodes
+sed -i "s/portShare: true/portShare: false/" /etc/vpn-server-api/${INSTANCE}/config.yaml
+
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
