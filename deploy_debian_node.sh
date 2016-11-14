@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Deploy Node
@@ -38,7 +38,7 @@ apt-get update && apt-get dist-upgrade
 ###############################################################################
 
 apt-get install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
-    curl git php5-curl
+    curl php5-curl
 
 ###############################################################################
 # NETWORK 
@@ -76,16 +76,18 @@ cp resources/99-eduvpn.ini /etc/php5/cli/conf.d/99-eduvpn.ini
 
 (
 cd /opt
-rm -rf vpn-server-node
-git clone https://github.com/eduvpn/vpn-server-node.git
-cd vpn-server-node
-curl -O https://getcomposer.org/download/1.2.2/composer.phar
-php composer.phar install
+rm vpn-server-node
+rm -rf vpn-server-node-1.0.0
+curl -O https://eduvpn.surfcloud.nl/release/vpn-server-node-1.0.0.tar.xz
+ln -s vpn-server-node-1.0.0 vpn-server-node
+
 cd config
 mkdir vpn.example
 cp config.yaml.example vpn.example/config.yaml
 cp firewall.yaml.example firewall.yaml
+sed -i "s/#trustedInterfaces/trustedInterfaces/" firewall.yaml
 sed -i "s/#- br0/- br0/" firewall.yaml
+
 sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" ${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" ${INSTANCE}/config.yaml
 sed -i "s/vpnUser: openvpn/vpnUser: nobody/" ${INSTANCE}/config.yaml
