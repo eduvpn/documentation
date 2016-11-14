@@ -25,6 +25,9 @@ PROFILE=debian
 # SYSTEM
 ###############################################################################
 
+wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add -
+echo "deb http://build.openvpn.net/debian/openvpn/stable jessie main" > /etc/apt/sources.list.d/openvpn-aptrepo.list
+
 # https://lobste.rs/c/4lfcnm (danielrheath)
 set -e # stop the script on errors
 set -u # unset variables are an error
