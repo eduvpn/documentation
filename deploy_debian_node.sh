@@ -44,6 +44,10 @@ apt-get -y  install openvpn php5-cli tinc open-vm-tools bridge-utils xz-utils \
 # NETWORK 
 ###############################################################################
 
+# OpenStack image does not include the interfaces.d directory by default 
+# in the interfaces file
+echo "source /etc/network/interfaces.d/*" >> /etc/network/interfaces
+
 cat << EOF > /etc/network/interfaces.d/br0
 auto br0
 iface br0 inet static
