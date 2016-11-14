@@ -79,11 +79,12 @@ cd /opt
 rm vpn-server-node || true
 rm -rf vpn-server-node-1.0.0 || true
 curl -O https://eduvpn.surfcloud.nl/release/vpn-server-node-1.0.0.tar.xz
+tar -xJf vpn-server-node-1.0.0.tar.xz
 ln -s vpn-server-node-1.0.0 vpn-server-node
 
 cd vpn-server-node/config
-mkdir vpn.example
-cp config.yaml.example vpn.example/config.yaml
+mkdir ${INSTANCE}
+cp config.yaml.example ${INSTANCE}/config.yaml
 cp firewall.yaml.example firewall.yaml
 sed -i "s/#trustedInterfaces/trustedInterfaces/" firewall.yaml
 sed -i "s/#- br0/- br0/" firewall.yaml
