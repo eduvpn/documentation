@@ -111,14 +111,11 @@ cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/c
 ###############################################################################
 
 # delete existing data
-rm -rf /etc/vpn-server-api/*
-rm -rf /var/lib/vpn-server-api/*
+rm -rf /etc/vpn-server-api/${INSTANCE}
+rm -rf /var/lib/vpn-server-api/${INSTANCE}
 
 mkdir -p /etc/vpn-server-api/${INSTANCE}
 cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
-
-# OTP log for two-factor auth
-sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ethXXX
