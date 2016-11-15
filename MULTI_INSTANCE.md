@@ -29,9 +29,6 @@ fixing IPv6
     $ sudo cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/vpn.bar.org/config.yaml
 
 The file `/etc/vpn-ca-api/vpn.bar.org/config.yaml` can be modified if needed. 
-Now to initialize the CA for this instance:
-
-    $ sudo -u apache vpn-ca-api-init --instance vpn.bar.org
 
 That's it for the CA.
 
@@ -51,8 +48,6 @@ only occur once, here we choose:
 
 The `vpnProfiles` section can be updated, see 
 [Profile Configuration](PROFILE_CONFIG.md) for more information.
-
-    $ sudo -u apache vpn-server-api-init --instance vpn.bar.org
 
 # Server Node
 
