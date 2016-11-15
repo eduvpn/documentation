@@ -136,13 +136,11 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 ###############################################################################
 
 # delete existing data
-rm -rf /etc/vpn-ca-api/*
-rm -rf /var/lib/vpn-ca-api/*
+rm -rf /etc/vpn-ca-api/${INSTANCE}
+rm -rf /var/lib/vpn-ca-api/${INSTANCE}
 
 mkdir -p /etc/vpn-ca-api/${INSTANCE}
 cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
-
-sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
 
 ###############################################################################
 # VPN-SERVER-API
