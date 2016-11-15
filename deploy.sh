@@ -163,13 +163,14 @@ sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api
 ###############################################################################
 
 # deleting existing data
-rm -rf /etc/vpn-server-node/*
+rm -rf /etc/vpn-server-node/${INSTANCE}
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
-
-cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
-cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/firewall.yaml
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
+
+# point to our CA API and Server API
+sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-ADMIN-PORTAL

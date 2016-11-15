@@ -90,18 +90,20 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 ###############################################################################
 
 # remove existing data
-rm -rf /etc/vpn-server-node/*
+rm -rf /etc/vpn-server-node/${INSTANCE}
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
-cp /usr/share/doc/vpn-server-node-*/dh.pem /etc/vpn-server-node/dh.pem
-cp /usr/share/doc/vpn-server-node-*/firewall.yaml.example /etc/vpn-server-node/firewall.yaml
 
 sed -i "s/#trustedInterfaces/trustedInterfaces/" /etc/vpn-server-node/firewall.yaml
 sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
 
 sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+
+# point to our CA API and Server API
+sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # NETWORK
