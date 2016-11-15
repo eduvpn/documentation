@@ -156,6 +156,8 @@ cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INS
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INSTANCE} --ext ${EXTERNAL_IF}
 
+sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api/${INSTANCE}/config.yaml
+
 ###############################################################################
 # VPN-SERVER-NODE
 ###############################################################################

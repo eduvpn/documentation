@@ -34,10 +34,10 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
-| `managementIp`     | Override the assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | _N/A_ |
+| `managementIp`     | Override the auto assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | `auto` |
 | `portShare`        | Indicate that the OpenVPN processes cannot take `tcp/443` but share it with a web server, see [OpenVPN Processes](#openvpn-processes) | no | `true` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
-| `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity to avoid timeouts | no | `false` | 
+| `forward6`         | Whether or not to forward IPv6 traffic, useful when your VPN server does not have IPv6 connectivity to avoid timeouts | no | `true` | 
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
 | `routes`           | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false` | no | `[]` |
 | `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client, only used when `defaultGateway` is `true` | no | `[]` |
