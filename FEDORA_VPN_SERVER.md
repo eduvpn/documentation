@@ -145,7 +145,7 @@ files in the correct location:
     $ sudo cp /etc/letsencrypt/live/vpn.example.org/chain.pem /etc/pki/tls/certs/vpn.example.org-chain.crt
     $ sudo cp /etc/letsencrypt/live/vpn.example.org/privkey.pem /etc/pki/tls/private/vpn.example.org.key
 
-Modify `/etc/httpd/conf.d/ssl.conf` and modify these lines:
+Open `/etc/httpd/conf.d/ssl.conf` and modify these lines:
 
     SSLCertificateFile /etc/pki/tls/certs/vpn.example.org.crt
     SSLCertificateKeyFile /etc/pki/tls/private/vpn.example.org.key
