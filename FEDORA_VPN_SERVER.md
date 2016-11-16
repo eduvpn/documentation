@@ -60,7 +60,7 @@ depending on your system.
 
 Initialize the certificate authority (CA):
 
-    $ sudo -u apache vpn-server-ca-init --instance default
+    $ sudo -u apache vpn-ca-api-init --instance default
 
 ### Server
 
