@@ -170,9 +170,58 @@ to `true`.
 
 ## Advanced
 
+### Port Share
+
 By default, OpenVPN will only listen on `udp/1194`, the default port of 
-OpenVPN.
+OpenVPN. In order to avoid most firewalls it makes sense to also listen on 
+`tcp/443`, the HTTPS port. Because Apache is already listening there, we need
+a way to share the port between Apache and OpenVPN.
 
-**TBD...**
+First, we create an additional OpenVPN process. Modify 
+`/etc/vpn-server-api/default/config.yaml` and change `processCount` from `1` to 
+`2`.
 
-For big deployments, look [here](https://github.com/eduvpn/documentation).
+We need an additional management port that OpenVPN can use:
+
+    $ sudo semanage port -a -t openvpn_port_t -p tcp 11941
+
+Regenerate the server configuration, and enable it:
+
+    $ sudo vpn-server-node-server-config --instance default --profile internet
+    $ sudo systemctl enable openvpn@server-default-internet-1
+    $ sudo systemctl start openvpn@server-default-internet-1
+
+Install SNI Proxy:
+
+    $ sudo dnf -y install sniproxy
+
+Modify `/etc/httpd/conf.d/ssl.conf` and change the following:
+
+| Before | After |
+| ------ | ----- |
+| `Listen 443 https`                | `Listen 8443 https` |
+| `<VirtualHost _default_:443>`     | `<VirtualHost _default_:8443>` |
+| `#ServerName www.example.com:443` | `ServerName https://vpn.example.org:443` |
+
+Then, restart Apache:
+    
+    $ sudo systemctl restart httpd
+
+Add the following snippet to `/etc/sniproxy.conf`:
+
+    listen 443 {
+        proto tls
+        fallback localhost:1194
+        table https_hosts
+    }
+
+    table https_hosts {
+        vpn.example.org localhost:8443
+    }
+
+Start and enable SNI Proxy:
+
+    $ sudo systemctl enable sniproxy
+    $ sudo systemctl start sniproxy
+
+That's it!
