@@ -138,7 +138,28 @@ configure it.
     $ sudo systemctl stop httpd
     $ sudo certbot certonly
 
-**TBD...**
+Follow the certbot instructions. After obtaining the certificate, copy the
+files in the correct location:
+
+    $ sudo cp /etc/letsencrypt/live/vpn.example.org/cert.pem /etc/pki/tls/certs/vpn.example.org.crt
+    $ sudo cp /etc/letsencrypt/live/vpn.example.org/chain.pem /etc/pki/tls/certs/vpn.example.org-chain.crt
+    $ sudo cp /etc/letsencrypt/live/vpn.example.org/privkey.pem /etc/pki/tls/private/vpn.example.org.key
+
+Modify `/etc/httpd/conf.d/ssl.conf` and modify these lines:
+
+    SSLCertificateFile /etc/pki/tls/certs/vpn.example.org.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/vpn.example.org.key
+    SSLCertificateChainFile /etc/pki/tls/certs/vpn.example.org-chain.crt
+
+Restart Apache:
+
+    $ sudo systemctl start httpd
+
+Make sure you test your configuration by doing a 
+[SSL Server Test](https://www.ssllabs.com/ssltest/) and updating the 
+configuration in `ssl.conf` as required. A good resource is the 
+[Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/) 
+to further tighten the security.
 
 ### Secure Cookies
 
