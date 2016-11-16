@@ -171,6 +171,9 @@ rm -rf /etc/vpn-server-node/${INSTANCE}
 mkdir -p /etc/vpn-server-node/${INSTANCE}
 cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
 
+# add instance for firewall generation instead of default
+sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
+
 # point to our CA API and Server API
 sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-server-node/${INSTANCE}/config.yaml
