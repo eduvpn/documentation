@@ -1,11 +1,8 @@
-This document describes how to install a VPN server on Fedora >= 24. 
+# VPN on Fedora
 
-This is a very simple configuration for a couple of users, not for "enterprise"
-usage.
-
-For serious deployments, look [here](https://github.com/eduvpn/documentation).
-
-We assume you run on `vpn.example.org`.
+This document describes how to install a VPN server on Fedora >= 24. This is a 
+very simple configuration for a couple of users, not for big deployments. We 
+will assume you will run on `vpn.example.org`, change this to your host name.
 
 # Install
 
@@ -68,7 +65,7 @@ Initialize the certificate authority (CA):
 ## Server
 
 Modify `/etc/vpn-server-api/default/config.yaml` and set `hostName` to your 
-server's hostname, here `vpn.example.org`.
+server's host name, here `vpn.example.org`.
 
 You can also modify other options there to suit your requirements.
 
@@ -146,7 +143,7 @@ configure it.
     $ sudo systemctl stop httpd
     $ sudo certbot certonly
 
-**TBD**
+**TBD...**
 
 ## Secure Cookies
 
@@ -160,4 +157,6 @@ to `true`.
 By default, OpenVPN will only listen on `udp/1194`, the default port of 
 OpenVPN.
 
-**TBD**
+**TBD...**
+
+For big deployments, look [here](https://github.com/eduvpn/documentation).
