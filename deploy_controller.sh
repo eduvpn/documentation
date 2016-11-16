@@ -106,6 +106,8 @@ rm -rf /var/lib/vpn-ca-api/${INSTANCE}
 mkdir -p /etc/vpn-ca-api/${INSTANCE}
 cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
 
+sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
+
 ###############################################################################
 # VPN-SERVER-API
 ###############################################################################
@@ -129,22 +131,30 @@ sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api
 ###############################################################################
 
 # deleting existing data
-rm -rf /etc/vpn-admin-portal/*
-rm -rf /var/lib/vpn-admin-portal/*
+rm -rf /etc/vpn-admin-portal/${INSTANCE}
+rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
 cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+
+# point to our CA API and Server API
+sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
 # deleting existing data
-rm -rf /etc/vpn-user-portal/*
-rm -rf /var/lib/vpn-user-portal/*
+rm -rf /etc/vpn-user-portal/${INSTANCE}
+rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
+
+# point to our CA API and Server API
+sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # UPDATE SECRETS
