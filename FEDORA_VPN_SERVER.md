@@ -130,12 +130,7 @@ iOS, macOS and Windows.
 After getting things to work, you SHOULD configure TLS, make sure DNS is 
 working properly first.
 
-    $ sudo dnf -y install mod_ssl
-
-You can obtain a valid certificate using the certbot tool of the Let's Encrypt
-project:
-
-    $ sudo dnf -y install certbot
+    $ sudo dnf -y install mod_ssl certbot
 
 Currently, certbot can only obtain a certificate for you, not automatically 
 configure it. 

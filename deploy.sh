@@ -159,6 +159,7 @@ cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INS
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INSTANCE} --ext ${EXTERNAL_IF}
 
 sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api/${INSTANCE}/config.yaml
+sed -i "s/processCount: 1/processCount: 4/" /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-SERVER-NODE
