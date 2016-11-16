@@ -224,4 +224,5 @@ Start and enable SNI Proxy:
     $ sudo systemctl enable sniproxy
     $ sudo systemctl start sniproxy
 
-That's it!
+If you now download a new configuration in the user portal, you'll notice that
+there is an extra `remote` line specifying `tcp/443`.
