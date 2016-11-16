@@ -159,7 +159,9 @@ Make sure you test your configuration by doing a
 [SSL Server Test](https://www.ssllabs.com/ssltest/) and updating the 
 configuration in `ssl.conf` as required. A good resource is the 
 [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/) 
-to further tighten the security.
+to further tighten the security. Don't forget 
+[securityheaders.io](https://securityheaders.io/) to make sure you also follow
+their advice.
 
 ### Secure Cookies
 
