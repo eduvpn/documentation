@@ -268,16 +268,21 @@ rm -rf /etc/openvpn/*
 # generate the server configuration files
 vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate --cn ${INSTANCE}
 
-# enable and start OpenVPN
-systemctl enable openvpn@server-${INSTANCE}-internet-0
-systemctl enable openvpn@server-${INSTANCE}-internet-1
-systemctl enable openvpn@server-${INSTANCE}-internet-2
-systemctl enable openvpn@server-${INSTANCE}-internet-3
+# use upstream hardenend OpenVPN systemd unit file
+cp resources/openvpn-server@.service /etc/systemd/system/openvpn-server@.service
+# symlink to work with new systemd unit file
+ln -s /etc/openvpn /etc/openvpn/server
 
-systemctl start openvpn@server-${INSTANCE}-internet-0
-systemctl start openvpn@server-${INSTANCE}-internet-1
-systemctl start openvpn@server-${INSTANCE}-internet-2
-systemctl start openvpn@server-${INSTANCE}-internet-3
+# enable and start OpenVPN
+systemctl enable openvpn-server@${INSTANCE}-internet-0
+systemctl enable openvpn-server@${INSTANCE}-internet-1
+systemctl enable openvpn-server@${INSTANCE}-internet-2
+systemctl enable openvpn-server@${INSTANCE}-internet-3
+
+systemctl start openvpn-server@${INSTANCE}-internet-0
+systemctl start openvpn-server@${INSTANCE}-internet-1
+systemctl start openvpn-server@${INSTANCE}-internet-2
+systemctl start openvpn-server@${INSTANCE}-internet-3
 
 ###############################################################################
 # FIREWALL

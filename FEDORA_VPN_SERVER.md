@@ -94,8 +94,8 @@ Generate a configuration, including certificates:
 
 Enable OpenVPN on boot, and start it:
 
-    $ sudo systemctl enable openvpn@server-default-internet-0
-    $ sudo systemctl start openvpn@server-default-internet-0
+    $ sudo systemctl enable openvpn@default-internet-0
+    $ sudo systemctl start openvpn@default-internet-0
 
 ### Firewall
 
@@ -190,8 +190,8 @@ We need an additional management port that OpenVPN can use:
 Regenerate the server configuration, and enable it:
 
     $ sudo vpn-server-node-server-config --instance default --profile internet
-    $ sudo systemctl enable openvpn@server-default-internet-1
-    $ sudo systemctl start openvpn@server-default-internet-1
+    $ sudo systemctl enable openvpn@default-internet-1
+    $ sudo systemctl start openvpn@default-internet-1
 
 Install SNI Proxy:
 
