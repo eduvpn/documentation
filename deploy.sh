@@ -308,10 +308,6 @@ systemctl restart sshd
 echo "@hourly root /usr/bin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
 echo "@daily apache /usr/bin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
 
-# run the statistics script for the first time to not generate errors in the
-# admin
-sudo -u apache vpn-server-api-stats --instance ${INSTANCE}
-
 ###############################################################################
 # WEB
 ###############################################################################
