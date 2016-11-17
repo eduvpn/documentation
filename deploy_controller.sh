@@ -257,8 +257,7 @@ systemctl restart sshd
 # POST INSTALL
 ###############################################################################
 
-echo "@hourly root /usr/bin/vpn-server-api-housekeeping --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-housekeeping
-echo "@daily apache /usr/bin/vpn-server-api-stats --instance ${INSTANCE}" > /etc/cron.d/vpn-server-api-stats
+sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-server-api
 
 ###############################################################################
 # WEB
