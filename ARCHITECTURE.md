@@ -95,6 +95,6 @@ there is no web server listening on server nodes.
 
 The controller and nodes communicate with each other over a virtual network,
 this can either be a private VLAN between the hosts, or 
-[PeerVPN](https://peervpn.net) or basically any other (virtual) networking 
-system. PeerVPN is configured with the `deploy_controller.sh` and 
+[tinc](https://tinc-vpn.org/) or basically any other (virtual) networking 
+system. Tinc is configured with the `deploy_controller.sh` and 
 `deploy_node.sh` scripts.
