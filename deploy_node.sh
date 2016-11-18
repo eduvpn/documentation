@@ -146,6 +146,7 @@ touch "/etc/tinc/vpn/hosts/${TINC_NODE_NAME}"
 printf "\n\n" | tincd -n vpn -K 4096
 
 cp resources/tinc\@.service /etc/systemd/system
+systemctl daemon-reload
 
 # copy controller file to the correct place
 # XXX check if the file is there, bail otherwise, at start of this script!
@@ -190,6 +191,8 @@ vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --gene
 
 # use upstream hardenend OpenVPN systemd unit file
 cp resources/openvpn-server@.service /etc/systemd/system/openvpn-server@.service
+systemctl daemon-reload
+
 # symlink to work with new systemd unit file
 ln -s /etc/openvpn /etc/openvpn/server
 
