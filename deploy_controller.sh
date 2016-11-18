@@ -27,7 +27,7 @@ yum -y clean expire-cache && yum -y update
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld, too complicated
+# remove firewalld if it is installed, too complicated
 yum -y remove firewalld
 
 # enable EPEL

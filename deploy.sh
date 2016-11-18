@@ -53,7 +53,7 @@ ifup br0
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld, too complicated to get to work reliably for now
+# remove firewalld if it is installed, too complicated
 yum -y remove firewalld
 
 # enable EPEL
@@ -63,10 +63,8 @@ yum -y install epel-release
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install software (dependencies)
-yum -y install NetworkManager openvpn mod_ssl php-opcache httpd telnet \
-    openssl policycoreutils-python iptables iptables-services patch sniproxy \
-    open-vm-tools iptables-services php-fpm php-cli psmisc net-tools php \
-    bridge-utils
+yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables \
+    iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
 
 # install software (VPN packages)
 yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
