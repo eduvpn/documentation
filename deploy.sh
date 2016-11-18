@@ -63,7 +63,7 @@ yum -y install epel-release
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
 
 # install software (dependencies)
-yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables \
+yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
     iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
 
 # install software (VPN packages)
@@ -268,6 +268,8 @@ vpn-server-node-server-config --instance ${INSTANCE} --profile internet --genera
 
 # use upstream hardenend OpenVPN systemd unit file
 cp resources/openvpn-server@.service /etc/systemd/system/openvpn-server@.service
+systemctl daemon-reload
+
 # symlink to work with new systemd unit file
 ln -s /etc/openvpn /etc/openvpn/server
 
