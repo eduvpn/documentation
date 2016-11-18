@@ -186,7 +186,7 @@ systemctl restart vmtoolsd
 rm -rf /etc/openvpn/*
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}01.${INSTANCE}
+vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate
 
 # use upstream hardenend OpenVPN systemd unit file
 cp resources/openvpn-server@.service /etc/systemd/system/openvpn-server@.service

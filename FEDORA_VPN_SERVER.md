@@ -90,7 +90,7 @@ make the API available:
 
 Generate a configuration, including certificates:
 
-    $ sudo vpn-server-node-server-config --instance default --profile internet --generate --cn vpn01.example.org
+    $ sudo vpn-server-node-server-config --instance default --profile internet --generate
 
 Enable OpenVPN on boot, and start it:
 

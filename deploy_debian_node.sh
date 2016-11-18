@@ -174,7 +174,7 @@ systemctl restart tinc@vpn
 rm -rf /etc/openvpn/*
 
 # generate the server configuration files
-vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate --cn ${PROFILE}01.${INSTANCE}
+vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate
 
 # enable and start OpenVPN
 systemctl enable openvpn@server-${INSTANCE}-${PROFILE}-0
