@@ -72,8 +72,8 @@ need to be made.
 If you are currently running the default `vpn.example` with the `internet` 
 profile you can disable and stop them like this:
 
-    $ sudo systemctl stop    openvpn@server-vpn.example-internet-{0,1,2,3}
-    $ sudo systemctl disable openvpn@server-vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl stop    openvpn-server@vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl disable openvpn-server@vpn.example-internet-{0,1,2,3}
  
 Remove the old configuration files, and the certificates/keys:
 
@@ -92,10 +92,10 @@ created profiles, run these commands:
 
 Enable them on boot and start them:
 
-    $ sudo systemctl enable openvpn@server-vpn.example-office-{0,1,2,3}
-    $ sudo systemctl enable openvpn@server-vpn.example-admin-{0,1,2,3}
-    $ sudo systemctl start  openvpn@server-vpn.example-office-{0,1,2,3}
-    $ sudo systemctl start  openvpn@server-vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl enable openvpn-server@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl enable openvpn-server@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl start  openvpn-server@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl start  openvpn-server@vpn.example-admin-{0,1,2,3}
 
 Regenerate and restart the firewall:
 

@@ -102,8 +102,8 @@ Now that this works, it should be possible to generate the server configuration
 for your new instance.
 
     $ sudo vpn-server-node-server-config --instance vpn.bar.org --profile internet --generate
-    $ sudo systemctl enable openvpn@server-vpn.bar.org-internet-{0,1,2,3}
-    $ sudo systemctl start openvpn@server-vpn.bar.org-internet-{0,1,2,3}
+    $ sudo systemctl enable openvpn-server@vpn.bar.org-internet-{0,1,2,3}
+    $ sudo systemctl start openvpn-server@vpn.bar.org-internet-{0,1,2,3}
 
 And the firewall:
 

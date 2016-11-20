@@ -92,7 +92,7 @@ Assuming you made changes in the instance `vpn.example` in the profile
 To restart all OpenVPN processes belonging to the profile `internet` for the 
 instance `vpn.example` do this:
 
-    $ sudo systemctl restart openvpn@server-vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl restart openvpn-server@vpn.example-internet-{0,1,2,3}
 
 To regenerate and install the new firewall rules, run this:
 
