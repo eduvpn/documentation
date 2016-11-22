@@ -1,14 +1,20 @@
 # VPN on Fedora
 
-This document describes how to install a VPN server on Fedora >= 24. This is a 
-very simple configuration for a couple of users, not for big deployments. We 
-will assume you will run on `vpn.example.org`, change this to your host name.
+This document describes how to install a VPN server on Fedora. Installations
+were tested on Fedora 24 (PHP 5) and Fedora 25 (PHP 7).
+
+This is a very simple configuration for a couple of users, not for big 
+deployments. We will assume you will run on `vpn.example.org`, change this to 
+your host name.
+
+Currently, [firewalld](http://www.firewalld.org/) is not supported. Either 
+disable or remove it.
 
 ## Install
 
     $ sudo dnf -y copr enable fkooman/eduvpn-dev
     $ sudo dnf -y install vpn-server-api vpn-ca-api vpn-server-node \
-        vpn-user-portal vpn-admin-portal php iptables-services
+        vpn-user-portal vpn-admin-portal php iptables iptables-services
 
 ## Configuration
 
@@ -45,7 +51,8 @@ Allow the OpenVPN process to listen on its management port, `tcp/11940`:
 
 If you want to accept connections to the user and admin portal from everywhere 
 and not just `localhost`, modify `/etc/httpd/conf.d/vpn-user-portal.conf` and
-`/etc/httpd/conf.d/vpn-admin-portal.conf` and enable `Require all granted`.
+`/etc/httpd/conf.d/vpn-admin-portal.conf` and remove the `#` in front of 
+`Require all granted` and add one in front of `Require local`.
 
 Enable Apache on boot, but do not yet start it:
 
@@ -213,12 +220,12 @@ Add the following snippet to `/etc/sniproxy.conf`:
 
     listen 443 {
         proto tls
-        fallback localhost:1194
+        fallback 127.0.0.1:1194
         table https_hosts
     }
 
     table https_hosts {
-        vpn.example.org localhost:8443
+        vpn.example.org 127.0.0.1:8443
     }
 
 Start and enable SNI Proxy:
