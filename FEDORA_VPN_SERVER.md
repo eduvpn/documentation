@@ -7,8 +7,8 @@ This is a very simple configuration for a couple of users, not for big
 deployments. We will assume you will run on `vpn.example.org`, change this to 
 your host name.
 
-Currently, [firewalld](http://www.firewalld.org/) is not supported. Either 
-disable or remove it.
+Currently, [firewalld](http://www.firewalld.org/) is not supported due to its 
+complexity. Either disable and/or remove it.
 
 ## Install
 
