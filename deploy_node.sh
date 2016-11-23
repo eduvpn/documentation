@@ -34,21 +34,6 @@ set -o pipefail # piping a failed process into a successful one is an arror
 yum -y clean expire-cache && yum -y update
 
 ###############################################################################
-# NETWORK 
-###############################################################################
-
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
-DEVICE="br0"
-ONBOOT="yes"
-TYPE="Bridge"
-IPADDR0=${MANAGEMENT_IP}
-PREFIX0=16
-EOF
-
-# activate the interface
-ifup br0
-
-###############################################################################
 # SOFTWARE
 ###############################################################################
 
@@ -68,6 +53,21 @@ yum -y install NetworkManager openvpn php-opcache telnet openssl tinc \
 
 # install software (VPN packages)
 yum -y install vpn-server-node
+
+###############################################################################
+# NETWORK 
+###############################################################################
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
+DEVICE="br0"
+ONBOOT="yes"
+TYPE="Bridge"
+IPADDR0=${MANAGEMENT_IP}
+PREFIX0=16
+EOF
+
+# activate the interface
+ifup br0
 
 ###############################################################################
 # SELINUX
@@ -168,14 +168,15 @@ read
 # DAEMONS
 ###############################################################################
 
-systemctl enable NetworkManager
-systemctl enable NetworkManager-wait-online
+# DigitalOcean does not support NetworkManager
+systemctl enable NetworkManager || true
+systemctl enable NetworkManager-wait-online || true
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager
-systemctl restart NetworkManager-wait-online
+systemctl restart NetworkManager || true
+systemctl restart NetworkManager-wait-online || true
 systemctl restart tinc@vpn
 systemctl restart vmtoolsd
 
