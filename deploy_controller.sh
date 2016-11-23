@@ -15,11 +15,6 @@ INSTANCE=vpn.example
 # SYSTEM
 ###############################################################################
 
-# https://lobste.rs/c/4lfcnm (danielrheath)
-set -e # stop the script on errors
-set -u # unset variables are an error
-set -o pipefail # piping a failed process into a successful one is an arror
-
 # update packages to make sure we have latest version of everything
 yum -y clean expire-cache && yum -y update
 
@@ -50,8 +45,7 @@ yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 
 # SELinux enabled?
 /usr/sbin/selinuxenabled
-if [ $? == 0 ]
-then
+if [ "$?" -eq 0 ]; then
     # allow Apache to connect to PHP-FPM
     setsebool -P httpd_can_network_connect=1
 fi

@@ -25,11 +25,6 @@ PROFILE=internet
 # SYSTEM
 ###############################################################################
 
-# https://lobste.rs/c/4lfcnm (danielrheath)
-set -e # stop the script on errors
-set -u # unset variables are an error
-set -o pipefail # piping a failed process into a successful one is an arror
-
 # update packages to make sure we have latest version of everything
 yum -y clean expire-cache && yum -y update
 
@@ -58,6 +53,8 @@ yum -y install vpn-server-node
 # NETWORK 
 ###############################################################################
 
+ifdown br0 || true
+
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
 DEVICE="br0"
 ONBOOT="yes"
@@ -78,8 +75,7 @@ ifup br0
 
 # SELinux enabled?
 /usr/sbin/selinuxenabled
-if [ $? == 0 ]
-then
+if [ "$?" -eq 0 ]; then
     semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
     semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
     semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
@@ -168,7 +164,7 @@ echo "And reload tinc:"
 echo "    sudo systemctl reload tinc@vpn"
 echo 
 echo "Press enter to continue..."
-read
+read -r
 
 ###############################################################################
 # DAEMONS
