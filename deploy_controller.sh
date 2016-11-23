@@ -137,6 +137,9 @@ rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
 cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
+# enable secure cookies
+sed -i "s|secureCookies: false|secureCookies: true|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml 
+
 # point to our CA API and Server API
 sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
@@ -151,6 +154,9 @@ rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
 cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
+
+# enable secure cookies
+sed -i "s|secureCookies: false|secureCookies: true|" /etc/vpn-user-portal/${INSTANCE}/config.yaml 
 
 # point to our CA API and Server API
 sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
