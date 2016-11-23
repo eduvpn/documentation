@@ -75,9 +75,15 @@ ifup br0
 
 # allow OpenVPN to listen on its management ports, and some additional VPN
 # ports for load balancing
-semanage port -a -t openvpn_port_t -p udp 1195-1201 || true   # allow up to 8 instances
-semanage port -a -t openvpn_port_t -p tcp 1195-1201 || true   # allow up to 8 instances
-semanage port -a -t openvpn_port_t -p tcp 11940-11947 || true # allow up to 8 instances
+
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ $? == 0 ]
+then
+    semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
+    semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
+    semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
+fi
 
 ###############################################################################
 # PHP
@@ -168,7 +174,7 @@ read
 # DAEMONS
 ###############################################################################
 
-# DigitalOcean does not support NetworkManager
+# DigitalOcean does not support NetworkManager...
 systemctl enable NetworkManager || true
 systemctl enable NetworkManager-wait-online || true
 systemctl enable tinc@vpn

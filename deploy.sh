@@ -25,6 +25,26 @@ set -o pipefail # piping a failed process into a successful one is an arror
 yum -y clean expire-cache && yum -y update
 
 ###############################################################################
+# SOFTWARE
+###############################################################################
+
+# remove firewalld if it is installed, too complicated
+yum -y remove firewalld
+
+# enable EPEL
+yum -y install epel-release
+
+# enable COPR repos
+curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
+
+# install software (dependencies)
+yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
+    iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
+
+# install software (VPN packages)
+yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
+
+###############################################################################
 # NETWORK 
 ###############################################################################
 
@@ -50,37 +70,22 @@ EOF
 ifup br0
 
 ###############################################################################
-# SOFTWARE
-###############################################################################
-
-# remove firewalld if it is installed, too complicated
-yum -y remove firewalld
-
-# enable EPEL
-yum -y install epel-release
-
-# enable COPR repos
-curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
-
-# install software (dependencies)
-yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
-    iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
-
-# install software (VPN packages)
-yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
-
-###############################################################################
 # SELINUX
 ###############################################################################
 
-# allow Apache to connect to PHP-FPM
-setsebool -P httpd_can_network_connect=1
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ $? == 0 ]
+then
+    # allow Apache to connect to PHP-FPM
+    setsebool -P httpd_can_network_connect=1
 
-# allow OpenVPN to listen on its management ports, and some additional VPN
-# ports for load balancing
-semanage port -a -t openvpn_port_t -p udp 1195-1201 || true   # allow up to 8 instances
-semanage port -a -t openvpn_port_t -p tcp 1195-1201 || true   # allow up to 8 instances
-semanage port -a -t openvpn_port_t -p tcp 11940-11947 || true # allow up to 8 instances
+    # allow OpenVPN to listen on its management ports, and some additional VPN
+    # ports for load balancing
+    semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
+    semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
+    semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
+fi
 
 ###############################################################################
 # CERTIFICATE
@@ -241,16 +246,16 @@ php resources/update_api_secret.php ${INSTANCE}
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable sniproxy
-systemctl enable NetworkManager
+systemctl enable NetworkManager || true
 # https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
 # we need this for sniproxy and openvpn to start only when the network is up
 # because we bind to other addresses than 0.0.0.0 and ::
-systemctl enable NetworkManager-wait-online
+systemctl enable NetworkManager-wait-online || true
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager
-systemctl restart NetworkManager-wait-online
+systemctl restart NetworkManager || true
+systemctl restart NetworkManager-wait-online || true
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart sniproxy

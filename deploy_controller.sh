@@ -48,8 +48,13 @@ yum -y install vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
 # SELINUX
 ###############################################################################
 
-# allow Apache to connect to PHP-FPM
-setsebool -P httpd_can_network_connect=1
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ $? == 0 ]
+then
+    # allow Apache to connect to PHP-FPM
+    setsebool -P httpd_can_network_connect=1
+fi
 
 ###############################################################################
 # CERTIFICATE
@@ -216,16 +221,16 @@ cp resources/tinc\@.service /etc/systemd/system
 # DAEMONS
 ###############################################################################
 
-systemctl enable NetworkManager
-systemctl enable NetworkManager-wait-online
+systemctl enable NetworkManager || true
+systemctl enable NetworkManager-wait-online || true
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager
-systemctl restart NetworkManager-wait-online
+systemctl restart NetworkManager || true
+systemctl restart NetworkManager-wait-online || true
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart tinc@vpn

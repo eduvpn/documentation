@@ -16,9 +16,10 @@ AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
 AcceptEnv XMODIFIERS
 Subsystem	sftp	/usr/libexec/openssh/sftp-server
 
-# Changes (2016-10-23, frko)
+# Changes (2016-11-23, frko)
 PasswordAuthentication no
-PermitRootLogin no
+# Allow root, but only with certificate (DigitalOcean)
+PermitRootLogin yes
 X11Forwarding no
 # @see https://discovery.cryptosense.com
 KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1
