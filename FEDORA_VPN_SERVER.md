@@ -12,8 +12,13 @@ complexity. Either disable and/or remove it.
 
 ## Install
 
-    $ sudo dnf -y copr enable fkooman/eduvpn-dev
-    $ sudo dnf -y install vpn-server-api vpn-ca-api vpn-server-node \
+Enable the VPN repository:
+
+    $ sudo dnf -y copr enable fkooman/eduvpn-testing
+
+Install the required packages:
+
+    $ sudo dnf -y install vpn-server-api vpn-server-node \
         vpn-user-portal vpn-admin-portal php iptables iptables-services
 
 ## Configuration
@@ -63,18 +68,16 @@ Enable Apache on boot, but do not yet start it:
 Modify `/etc/php.ini` and set `date.timezone` to e.g. `UTC` or `Europe/Berlin`
 depending on your system.
 
-### CA 
-
-Initialize the certificate authority (CA):
-
-    $ sudo -u apache vpn-ca-api-init --instance default
-
 ### Server
 
 Modify `/etc/vpn-server-api/default/config.yaml` and set `hostName` to your 
 server's host name, here `vpn.example.org`.
 
 You can also modify other options there to suit your requirements.
+
+Initialize the certificate authority (CA):
+
+    $ sudo -u apache vpn-server-api-init --instance default
 
 ### User Portal
 
@@ -172,7 +175,7 @@ their advice.
 
 ### Secure Cookies
 
-In order to force cookies to be only sent over HTTPS, you need to modify the 
+In order to force cookies to be only sent over HTTPS, you SHOULD modify the 
 files `/etc/vpn-user-portal/default/config.yaml` and 
 `/etc/vpn-admin-portal/default/config.yaml` and set the `secureCookie` option
 to `true`.
