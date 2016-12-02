@@ -102,7 +102,7 @@ sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
 # add instance for firewall generation instead of default
 sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
 
-sed -i "s/userPass: XXX-vpn-server-node/vpn-server-api-XXX/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|userPass: XXX-vpn-server-node/vpn-server-api-XXX|userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 # point to our CA API and Server API
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
