@@ -238,3 +238,27 @@ Start and enable SNI Proxy:
 
 If you now download a new configuration in the user portal, you'll notice that
 there is an extra `remote` line specifying `tcp/443`.
+
+### Two-Factor Authentication
+
+Users can enroll themselves for two-factor authentication for the user and 
+admin portal out of the box via the "Account" tab in the user portal. See the
+documentation in the user portal for more information on supported two-factor
+applications.
+
+To enable it for connecting to the VPN server, modify 
+`/etc/vpn-server-api/default/config.yaml` and set `twoFactor` to `true` under
+the `internet` profile.
+
+Regenerate the server configuration, and restart the OpenVPN process:
+
+    $ sudo vpn-server-node-server-config --instance default --profile internet
+    $ sudo systemctl restart openvpn@default-internet-0
+
+After this, if users want to download a new configuration, they will be forced 
+to enroll for two-factor authentication first before being allowed to download 
+the configuration. Existing users will need to update their VPN-configuration
+or download a new configuration.
+
+The two-factor authentication will require users to provide the user name 
+`totp` and a 6 digit TOTP key generated with the OTP application.
