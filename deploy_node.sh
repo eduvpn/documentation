@@ -11,7 +11,6 @@
 # VARIABLES
 INSTANCE=vpn.example
 EXTERNAL_IF=eth0
-VPN_SERVER_NODE_VPN_CA_API=aabbcc
 VPN_SERVER_NODE_VPN_SERVER_API=ccbbaa
 MANAGEMENT_IP=10.42.101.101
 PROFILE=internet
@@ -39,7 +38,8 @@ yum -y remove firewalld
 yum -y install epel-release
 
 # enable COPR repos
-curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
+curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
+    https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
 yum -y install NetworkManager openvpn php-opcache telnet openssl tinc \
@@ -102,12 +102,10 @@ sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
 # add instance for firewall generation instead of default
 sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
 
-sed -i "s/userPass: aabbcc/userPass: ${VPN_SERVER_NODE_VPN_CA_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
-sed -i "s/userPass: ccbbaa/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s/userPass: XXX-vpn-server-node/vpn-server-api-XXX/userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}/" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 # point to our CA API and Server API
-sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # NETWORK

@@ -5,25 +5,16 @@ require_once '/usr/share/php/Symfony/Component/Yaml/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
-$vupvca = bin2hex(random_bytes(16));
 $vupvsa = bin2hex(random_bytes(16));
-$vapvca = bin2hex(random_bytes(16));
 $vapvsa = bin2hex(random_bytes(16));
-$vsnvca = bin2hex(random_bytes(16));
 $vsnvsa = bin2hex(random_bytes(16));
 
-//$vupvca = 'XXX-vpn-user-portal/vpn-ca-api-XXX';
 //$vupvsa = 'XXX-vpn-user-portal/vpn-server-api-XXX';
-//$vapvca = 'XXX-vpn-admin-portal/vpn-ca-api-XXX';
 //$vapvsa = 'XXX-vpn-admin-portal/vpn-server-api-XXX';
-//$vsnvca = 'XXX-vpn-server-node/vpn-ca-api-XXX';
 //$vsnvsa = 'XXX-vpn-server-node/vpn-server-api-XXX';
 
-echo sprintf('VPN_USER_PORTAL_VPN_CA_API=%s', $vupvca).PHP_EOL;
 echo sprintf('VPN_USER_PORTAL_VPN_SERVER_API=%s', $vupvsa).PHP_EOL;
-echo sprintf('VPN_ADMIN_PORTAL_VPN_CA_API=%s', $vapvca).PHP_EOL;
 echo sprintf('VPN_ADMIN_PORTAL_VPN_SERVER_API=%s', $vapvsa).PHP_EOL;
-echo sprintf('VPN_SERVER_NODE_VPN_CA_API=%s', $vsnvca).PHP_EOL;
 echo sprintf('VPN_SERVER_NODE_VPN_SERVER_API=%s', $vsnvsa).PHP_EOL;
 
 try {
@@ -37,14 +28,12 @@ try {
         'vpn-user-portal' => [
             'config' => sprintf('/etc/vpn-user-portal/%s/config.yaml', $hostName),
             'apiProviders' => [
-                'vpn-ca-api' => $vupvca,
                 'vpn-server-api' => $vupvsa,
             ],
         ],
         'vpn-admin-portal' => [
             'config' => sprintf('/etc/vpn-admin-portal/%s/config.yaml', $hostName),
             'apiProviders' => [
-                'vpn-ca-api' => $vapvca,
                 'vpn-server-api' => $vapvsa,
             ],
         ],
@@ -56,18 +45,9 @@ try {
                 'vpn-server-node' => $vsnvsa,
             ],
         ],
-        'vpn-ca-api' => [
-            'config' => sprintf('/etc/vpn-ca-api/%s/config.yaml', $hostName),
-            'apiConsumers' => [
-                'vpn-user-portal' => $vupvca,
-                'vpn-admin-portal' => $vapvca,
-                'vpn-server-node' => $vsnvca,
-            ],
-        ],
         'vpn-server-node' => [
             'config' => sprintf('/etc/vpn-server-node/%s/config.yaml', $hostName),
             'apiProviders' => [
-                'vpn-ca-api' => $vsnvca,
                 'vpn-server-api' => $vsnvsa,
             ],
         ],

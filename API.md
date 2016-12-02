@@ -64,14 +64,15 @@ basic information, e.g. whether or not two-factor authentication is enabled.
 The response looks like this:
 
     {
-        "data": {
-            "profile_list": [
+        "profile_list": {
+            "data": [
                 {
                     "display_name": "Internet Access",
                     "profile_id": "internet",
                     "two_factor": false
                 }
-            ]
+            ],
+            "ok": true
         }
     }
 
@@ -80,12 +81,12 @@ The response looks like this:
 **SUBJECT TO CHANGE**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        -d "config_name=MyConfig&profile_id=internet" \
+        -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
         https://vpn.example/portal/api/create_config
 
 This will send a HTTP POST to the API endpoint, `/create_config` with the 
-parameters `config_name` and `profile_id` to indicate for which profile a 
-configuration is downloaded. The `config_name` MUST be unique per user.
+parameters `display_name` and `profile_id` to indicate for which profile a 
+configuration is downloaded.
 
 The acceptable values for `profile_id` can be discovered using the 
 `/profile_list` call.
@@ -118,20 +119,15 @@ format. **Seconds are also included!**.
 An example:
 
     {
-        "data": {
-            "system_messages": [
+        "system_messages": {
+            "data": [
                 {
-                    "date": "2016-10-20T07:00:00Z",
-                    "end": "2016-10-30T08:00:00Z",
-                    "start": "2016-10-30T07:00:00Z",
-                    "type": "maintenance"
-                },
-                {
-                    "content": "We will shut down this VPN service per January 1st 2017!",
-                    "date": "2016-10-25T09:00:00Z",
+                    "content": "Hello World!",
+                    "date": "2016-12-02T10:42:08Z",
                     "type": "notification"
                 }
-            ]
+            ],
+            "ok": true
         }
     }
 
@@ -152,14 +148,15 @@ These are messages specific to the user. It can contain a message about the
 user being blocked, or other personal messages from the VPN administrator.
 
     {
-        "data": {
-            "user_messages": [
+        "user_messages": {
+            "data": [
                 {
-                    "content": "Your account has been blocked because of a malware infection, please contact support at support@example.org",
-                    "date": "2016-10-15T09:00:00Z",
+                    "content": "Your account has been disabled. Please contact support.",
+                    "date": "2016-12-02T10:43:10Z",
                     "type": "notification"
                 }
-            ]
+            ],
+            "ok": true
         }
     }
 

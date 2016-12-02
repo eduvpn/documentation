@@ -30,14 +30,15 @@ yum -y remove firewalld
 yum -y install epel-release
 
 # enable COPR repos
-curl -L -o /etc/yum.repos.d/fkooman-eduvpn-dev-epel-7.repo https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-dev/repo/epel-7/fkooman-eduvpn-dev-epel-7.repo
+curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
+    https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
 yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
     iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
 
 # install software (VPN packages)
-yum -y install vpn-server-node vpn-server-api vpn-ca-api vpn-admin-portal vpn-user-portal
+yum -y install vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # NETWORK 
@@ -118,7 +119,6 @@ sed -i "s/^Listen 80$/#Listen 80/" /etc/httpd/conf/httpd.conf
 # empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
 echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-server-api.conf
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-ca-api.conf
 echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-user-portal.conf
 echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 
@@ -127,19 +127,6 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 ###############################################################################
 
 cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
-
-###############################################################################
-# VPN-CA-API
-###############################################################################
-
-# delete existing data
-rm -rf /etc/vpn-ca-api/${INSTANCE}
-rm -rf /var/lib/vpn-ca-api/${INSTANCE}
-
-mkdir -p /etc/vpn-ca-api/${INSTANCE}
-cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/${INSTANCE}/config.yaml
-
-sudo -u apache vpn-ca-api-init --instance ${INSTANCE}
 
 ###############################################################################
 # VPN-SERVER-API
@@ -158,6 +145,9 @@ vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INST
 sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api/${INSTANCE}/config.yaml
 sed -i "s/processCount: 1/processCount: 4/" /etc/vpn-server-api/${INSTANCE}/config.yaml
 
+# init the CA
+sudo -u apache vpn-server-api-init --instance ${INSTANCE}
+
 ###############################################################################
 # VPN-SERVER-NODE
 ###############################################################################
@@ -171,9 +161,8 @@ cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/${I
 # add instance for firewall generation instead of default
 sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
 
-# point to our CA API and Server API
-sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+# point to our Server API
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
@@ -189,9 +178,8 @@ cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/$
 # enable secure cookies
 sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml 
 
-# point to our CA API and Server API
-sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+# point to our Server API
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # VPN-USER-PORTAL
@@ -207,9 +195,8 @@ cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/${I
 # enable secure cookies
 sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-user-portal/${INSTANCE}/config.yaml 
 
-# point to our CA API and Server API
-sed -i "s|localhost/vpn-ca-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8009|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
+# point to our Server API
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 ###############################################################################
 # NETWORK
