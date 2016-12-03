@@ -12,7 +12,6 @@ The ACLs need to be configured in `/etc/vpn-server-api/vpn.example/config.yaml`.
 Add
 
     enableAcl: true
-    aclGroupProvider: StaticProvider
     aclGroupList: [all]
 
 To `/etc/vpn-server-api/vpn.example/config.yaml` for the profile you want to 
@@ -47,8 +46,7 @@ memberships. The example below is for the
 [SURFteams](https://teams.surfconext.nl) component of 
 [SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
 
-Set `aclGroupProvider` in your profile configuration to `VootProvider` and 
-add `VootProvider` to the `groupProviders` section:
+Add `VootProvider` to the `groupProviders` section:
 
     groupProviders:
         VootProvider:

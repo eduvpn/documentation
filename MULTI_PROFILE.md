@@ -51,7 +51,6 @@ network `192.168.5.0/24`.
             twoFactor: true
             enableAcl: true
             aclGroupList: [admin]
-            aclGroupProvider: StaticGroups
 
     groupProviders:
         StaticProvider:
