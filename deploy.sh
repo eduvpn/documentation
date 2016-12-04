@@ -224,7 +224,7 @@ sed -i "s/vpn.example/${INSTANCE}/" /etc/sniproxy.conf
 ###############################################################################
 
 # update API secret
-php resources/update_api_secret.php ${INSTANCE}
+vpn-server-api-update-api-secrets --instance ${INSTANCE}
 
 ###############################################################################
 # DAEMONS

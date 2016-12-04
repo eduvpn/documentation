@@ -155,7 +155,7 @@ sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${I
 ###############################################################################
 
 # update API secret
-API_SECRETS=$(php resources/update_api_secret.php ${INSTANCE})
+vpn-server-api-update-api-secrets --instance ${INSTANCE}
 
 ###############################################################################
 # NETWORK 
@@ -272,8 +272,6 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
-VPN_SERVER_NODE_VPN_SERVER_API=$(echo "${API_SECRETS}" | grep VPN_SERVER_NODE_VPN_SERVER_API | cut -d '=' -f 2)
-
 echo "########################################################################"
 echo "# Admin Portal"
 echo "#     https://${INSTANCE}/admin"
@@ -289,7 +287,7 @@ echo "########################################################################"
 echo "# Variables for the deploy_node.sh script:"
 echo "#"
 echo "# INSTANCE=${INSTANCE}"
-echo "# VPN_SERVER_NODE_VPN_SERVER_API=${VPN_SERVER_NODE_VPN_SERVER_API}"
+echo "# VPN_SERVER_NODE_VPN_SERVER_API=(see config file)"
 echo "# MANAGEMENT_IP=10.42.101.101"
 echo "# PROFILE=internet"
 echo "#"
