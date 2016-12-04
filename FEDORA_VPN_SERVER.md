@@ -189,7 +189,14 @@ OpenVPN. In order to avoid most firewalls it makes sense to also listen on
 `tcp/443`, the HTTPS port. Because Apache is already listening there, we need
 a way to share the port between Apache and OpenVPN.
 
-First, we create an additional OpenVPN process. Modify 
+We will be using SNI Proxy. This means that all HTTP traffic appears to come 
+from `localhost`, so the filtering in Apache no longer works. This exposes the 
+API to the web. To make this less of a problem, the default API secrets MUST be 
+updated: 
+
+    $ sudo vpn-server-api-update-api-secrets --instance default
+
+Once that taken care of, we create an additional OpenVPN process. Modify 
 `/etc/vpn-server-api/default/config.yaml` and change `processCount` from `1` to 
 `2`.
 
