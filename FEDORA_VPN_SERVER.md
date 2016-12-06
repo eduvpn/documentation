@@ -77,19 +77,19 @@ You can also modify other options there to suit your requirements.
 
 Initialize the certificate authority (CA):
 
-    $ sudo -u apache vpn-server-api-init --instance default
+    $ sudo -u apache vpn-server-api-init
 
 ### User Portal
 
 Add a user:
 
-    $ sudo vpn-user-portal-add-user --instance default --user foo --pass bar
+    $ sudo vpn-user-portal-add-user --user foo --pass bar
 
 ### Admin Portal
 
 Add a user:
 
-    $ sudo vpn-admin-portal-add-user --instance default --user foo --pass bar
+    $ sudo vpn-admin-portal-add-user --user foo --pass bar
 
 ### OpenVPN Config
 
@@ -100,7 +100,7 @@ make the API available:
 
 Generate a configuration, including certificates:
 
-    $ sudo vpn-server-node-server-config --instance default --profile internet --generate
+    $ sudo vpn-server-node-server-config --profile internet --generate
 
 Enable OpenVPN on boot, and start it:
 
@@ -194,7 +194,7 @@ from `localhost`, so the filtering in Apache no longer works. This exposes the
 API to the web. To make this less of a problem, the default API secrets MUST be 
 updated: 
 
-    $ sudo vpn-server-api-update-api-secrets --instance default
+    $ sudo vpn-server-api-update-api-secrets
 
 Once that taken care of, we create an additional OpenVPN process. Modify 
 `/etc/vpn-server-api/default/config.yaml` and change `processCount` from `1` to 
@@ -206,7 +206,7 @@ We need an additional management port that OpenVPN can use:
 
 Regenerate the server configuration, and enable it:
 
-    $ sudo vpn-server-node-server-config --instance default --profile internet
+    $ sudo vpn-server-node-server-config --profile internet
     $ sudo systemctl enable openvpn@default-internet-1
     $ sudo systemctl start openvpn@default-internet-1
 
@@ -259,7 +259,7 @@ the `internet` profile.
 
 Regenerate the server configuration, and restart the OpenVPN process:
 
-    $ sudo vpn-server-node-server-config --instance default --profile internet
+    $ sudo vpn-server-node-server-config --profile internet
     $ sudo systemctl restart openvpn@default-internet-0
 
 After this, if users want to download a new configuration, they will be forced 
