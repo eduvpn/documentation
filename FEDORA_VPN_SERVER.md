@@ -1,16 +1,15 @@
-# VPN on Fedora
+This document describes how to install a VPN server on Fedora or CentOS. 
+Installations are tested on CentOS 7 (PHP 5) and Fedora 25 (PHP 7).
 
-This document describes how to install a VPN server on Fedora. Installations
-were tested on Fedora 24 (PHP 5) and Fedora 25 (PHP 7).
-
-This is a very simple configuration for a couple of users, not for big 
-deployments. We will assume you will run on `vpn.example.org`, change this to 
-your host name.
+We will assume you will run on `vpn.example.org`, change this to your host 
+name.
 
 Currently, [firewalld](http://www.firewalld.org/) is not supported due to its 
-complexity. Either disable and/or remove it.
+complexity. Please disable and/or remove it:
 
-## Install
+    $ sudo dnf remove firewalld
+
+# Installation
 
 Enable the VPN repository:
 
@@ -21,9 +20,9 @@ Install the required packages:
     $ sudo dnf -y install vpn-server-api vpn-server-node \
         vpn-user-portal vpn-admin-portal php iptables iptables-services
 
-## Configuration
+# Configuration
 
-### Sysctl
+## sysctl
 
 Add the following to `/etc/sysctl.conf` to allow IPv4 and IPv6 forwarding:
 
@@ -41,7 +40,7 @@ Activate the changes:
 
     $ sudo sysctl --system
 
-### SELinux
+## SELinux
 
 Apache needs to connect to OpenVPN using a socket, so we need to allow that 
 here.
@@ -52,7 +51,7 @@ Allow the OpenVPN process to listen on its management port, `tcp/11940`:
 
     $ sudo semanage port -a -t openvpn_port_t -p tcp 11940
 
-### Apache
+## Apache
 
 If you want to accept connections to the user and admin portal from everywhere 
 and not just `localhost`, modify `/etc/httpd/conf.d/vpn-user-portal.conf` and
@@ -63,15 +62,18 @@ Enable Apache on boot, but do not yet start it:
 
     $ sudo systemctl enable httpd
 
-### PHP
+## PHP
 
 Modify `/etc/php.ini` and set `date.timezone` to e.g. `UTC` or `Europe/Berlin`
 depending on your system.
 
-### Server
+## Server
 
-Modify `/etc/vpn-server-api/default/config.yaml` and set `hostName` to your 
-server's host name, here `vpn.example.org`.
+Modify `/etc/vpn-server-api/default/config.yaml` and set `hostName` to the 
+host name you want your VPN clients to connect to. It is a good idea to add
+the profile identifier to the host name to make it easier to support multiple 
+nodes in the future. So, in this case we would set the `hostName` field to 
+`internet.vpn.example.org`.
 
 You can also modify other options there to suit your requirements.
 
@@ -79,19 +81,19 @@ Initialize the certificate authority (CA):
 
     $ sudo -u apache vpn-server-api-init
 
-### User Portal
+## User Portal
 
 Add a user:
 
     $ sudo vpn-user-portal-add-user --user foo --pass bar
 
-### Admin Portal
+## Admin Portal
 
 Add a user:
 
     $ sudo vpn-admin-portal-add-user --user foo --pass bar
 
-### OpenVPN Config
+## OpenVPN Config
 
 Before we can generate an OpenVPN configuration, we need to start Apache to 
 make the API available:
@@ -107,7 +109,7 @@ Enable OpenVPN on boot, and start it:
     $ sudo systemctl enable openvpn@default-internet-0
     $ sudo systemctl start openvpn@default-internet-0
 
-### Firewall
+## Firewall
 
 Modify `/etc/vpn-server-node/firewall.yaml` if you want.
 
@@ -122,7 +124,7 @@ Enable and start the firewall:
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
 
-## Using
+# Using
 
 The user and admin portals should now be available at 
 `http://vpn.example.org/vpn-user-portal` and 
@@ -133,9 +135,9 @@ You can easily import it in NetworkManager. The OpenVPN configuration file is
 fully supported in NetworkManager on Fedora >= 24. It also works on Android, 
 iOS, macOS and Windows.
 
-## Security
+# Security
 
-### TLS
+## TLS
 
 After getting things to work, you SHOULD configure TLS, make sure DNS is 
 working properly first.
@@ -173,16 +175,16 @@ to further tighten the security. Don't forget
 [securityheaders.io](https://securityheaders.io/) to make sure you also follow
 their advice.
 
-### Secure Cookies
+## Secure Cookies
 
 In order to force cookies to be only sent over HTTPS, you SHOULD modify the 
 files `/etc/vpn-user-portal/default/config.yaml` and 
 `/etc/vpn-admin-portal/default/config.yaml` and set the `secureCookie` option
 to `true`.
 
-## Advanced
+# Advanced
 
-### Port Share
+## Port Share
 
 By default, OpenVPN will only listen on `udp/1194`, the default port of 
 OpenVPN. In order to avoid most firewalls it makes sense to also listen on 
@@ -246,7 +248,7 @@ Start and enable SNI Proxy:
 If you now download a new configuration in the user portal, you'll notice that
 there is an extra `remote` line specifying `tcp/443`.
 
-### Two-Factor Authentication
+## Two-Factor Authentication
 
 Users can enroll themselves for two-factor authentication for the user and 
 admin portal out of the box via the "Account" tab in the user portal. See the
@@ -264,7 +266,7 @@ Regenerate the server configuration, and restart the OpenVPN process:
 
 After this, if users want to download a new configuration, they will be forced 
 to enroll for two-factor authentication first before being allowed to download 
-the configuration. Existing users will need to update their VPN-configuration
+the configuration. Existing users will need to update their VPN configuration
 or download a new configuration.
 
 The two-factor authentication will require users to provide the user name 
