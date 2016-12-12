@@ -16,29 +16,53 @@ EXTERNAL_IF=eth0
 # SYSTEM
 ###############################################################################
 
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ "$?" -ne 0 ]
+then
+    echo "Please enable SELinux before running this script!"
+    exit 1
+fi
+
+if [ -f /etc/fedora-release ]
+then
+    # Fedora
+    PACKAGE_MANAGER=/usr/bin/dnf
+else
+    # CentOS / RHEL 
+    PACKAGE_MANAGER=/usr/bin/yum
+fi
+
 # update packages to make sure we have latest version of everything
-yum -y clean expire-cache && yum -y update
+${PACKAGE_MANAGER} -y clean expire-cache && ${PACKAGE_MANAGER} -y update
 
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
 # remove firewalld if it is installed, too complicated
-yum -y remove firewalld
-
-# enable EPEL
-yum -y install epel-release
+${PACKAGE_MANAGER} -y remove firewalld
 
 # enable COPR repos
-curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
-    https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
+if [ -f /etc/fedora-release ]
+then
+    # Fedora
+    dnf -y copr enable fkooman/eduvpn-testing
+else
+    # enable EPEL
+    ${PACKAGE_MANAGER} -y install epel-release
+
+    # CentOS/RHEL
+    curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
+        https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
+fi
 
 # install software (dependencies)
-yum -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
+${PACKAGE_MANAGER} -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \
     iptables-services sniproxy open-vm-tools php-fpm php-cli php bridge-utils
 
 # install software (VPN packages)
-yum -y install vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # NETWORK 
@@ -69,18 +93,14 @@ ifup br0
 # SELINUX
 ###############################################################################
 
-# SELinux enabled?
-/usr/sbin/selinuxenabled
-if [ "$?" -eq 0 ]; then
-    # allow Apache to connect to PHP-FPM
-    setsebool -P httpd_can_network_connect=1
+# allow Apache to connect to PHP-FPM
+setsebool -P httpd_can_network_connect=1
 
-    # allow OpenVPN to listen on its management ports, and some additional VPN
-    # ports for load balancing
-    semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
-    semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
-    semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
-fi
+# allow OpenVPN to listen on its management ports, and some additional VPN
+# ports for load balancing
+semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
+semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
+semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
 
 ###############################################################################
 # CERTIFICATE

@@ -10,6 +10,7 @@
 
 # VARIABLES
 INSTANCE=vpn.example
+EXTERNAL_IF=eth0
 
 ###############################################################################
 # SYSTEM
@@ -106,7 +107,7 @@ mkdir -p /etc/vpn-server-api/${INSTANCE}
 cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ethXXX
+vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ${EXTERNAL_IF}
 
 # disable portShare, no need to share TCP/443 on dedicated nodes
 sed -i "s/portShare: true/portShare: false/" /etc/vpn-server-api/${INSTANCE}/config.yaml
@@ -272,6 +273,9 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
+TINC_CONFIG=$(cat "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}" | base64)
+API_SECRET=$(cat /etc/vpn-server-api/${INSTANCE}/config.yaml | grep vpn-server-node | awk {'print $2'})
+
 echo "########################################################################"
 echo "# Admin Portal"
 echo "#     https://${INSTANCE}/admin"
@@ -284,23 +288,15 @@ echo "#         Pass: ${USER_PASS}"
 echo "########################################################################"
 echo
 echo "########################################################################"
-echo "# Variables for the deploy_node.sh script:"
+echo "# Variables for the top of the deploy_node.sh script:"
 echo "#"
 echo "# INSTANCE=${INSTANCE}"
-echo "# VPN_SERVER_NODE_VPN_SERVER_API=(see config file)"
+echo "# EXTERNAL_IF=${EXTERNAL_IF}"
 echo "# MANAGEMENT_IP=10.42.101.101"
 echo "# PROFILE=internet"
+echo "# API_SECRET=${API_SECRET}"
+echo "# TINC_CONFIG=${TINC_CONFIG}"
 echo "#"
 echo "########################################################################"
-echo 
-echo "########################################################################"
-echo "# tinc host file for the nodes to connect to the controller"
-echo "# put this in the deploy directory as ${TINC_INSTANCE_NAME} before"
-echo "# running deploy_node.sh"
-echo "########################################################################"
-echo
-echo "--- cut ---"
-cat "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}"
-echo "--- /cut ---"
 
 # ALL DONE!
