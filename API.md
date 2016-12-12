@@ -106,15 +106,21 @@ The application is able to access the `system_messages` endpoint to see if
 there are any notifications available. There are two types of messages:
 
 * `notification`: a simple plain text message in the `content` field;
+* `motd`: the "message of the day" (MotD) of the service, to be displayed to
+  users on login or when establishing a connection to the VPN;
 * `maintenance`: an (optional) simple plain text message in the `content` field
   and a `start` and `end` field with the timestamp;
 
 All message types have the `date` field indicating the date the message was 
 created. This can be used as a unique identifier.
 
+**TODO**: change `date` to `date_time` as it is not just a "date" field.
+
 The `date`, `start` and `end` fields are in
 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) 
 format. **Seconds are also included!**.
+
+**TODO**: rename `start` to `begin`.
 
 An example:
 
