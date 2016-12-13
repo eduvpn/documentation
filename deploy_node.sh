@@ -9,45 +9,48 @@
 ###############################################################################
 
 # VARIABLES
+# copy/paste these from the output of the deploy_controller.sh script
 INSTANCE=vpn.example
 EXTERNAL_IF=eth0
-VPN_SERVER_NODE_VPN_SERVER_API=ccbbaa
 MANAGEMENT_IP=10.42.101.101
 PROFILE=internet
-
-# **NOTE**: 
-# the file /etc/tinc/vpn/hosts/${INSTANCE} from the controller should be placed
-# here in the same directory, this will allow tinc to connect to the controller
-# and perform the node configuration
+API_SECRET=abcdef
+TINC_CONFIG=AABBCC==
 
 ###############################################################################
 # SYSTEM
 ###############################################################################
 
-# update packages to make sure we have latest version of everything
-yum -y clean expire-cache && yum -y update
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ "$?" -ne 0 ]
+then
+    echo "Please enable SELinux before running this script!"
+    exit 1
+fi
+
+PACKAGE_MANAGER=/usr/bin/yum
 
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
 # remove firewalld if it is installed, too complicated
-yum -y remove firewalld
+${PACKAGE_MANAGER} -y remove firewalld
 
 # enable EPEL
-yum -y install epel-release
+${PACKAGE_MANAGER} -y install epel-release
 
-# enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-yum -y install NetworkManager openvpn php-opcache telnet openssl tinc \
-    policycoreutils-python iptables iptables-services patch \
-    iptables-services php-cli psmisc net-tools pwgen open-vm-tools bridge-utils
+${PACKAGE_MANAGER} -y install NetworkManager openvpn php-opcache openssl tinc \
+    policycoreutils-python iptables iptables-services iptables-services \
+    php-cli psmisc open-vm-tools bridge-utils
 
 # install software (VPN packages)
-yum -y install vpn-server-node
+${PACKAGE_MANAGER} -y install vpn-server-node
 
 ###############################################################################
 # NETWORK 
@@ -73,13 +76,9 @@ ifup br0
 # allow OpenVPN to listen on its management ports, and some additional VPN
 # ports for load balancing
 
-# SELinux enabled?
-/usr/sbin/selinuxenabled
-if [ "$?" -eq 0 ]; then
-    semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
-    semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
-    semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
-fi
+semanage port -a -t openvpn_port_t -p udp 1195-1201     # allow up to 8 instances
+semanage port -a -t openvpn_port_t -p tcp 1195-1201     # allow up to 8 instances
+semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instances
 
 ###############################################################################
 # PHP
@@ -102,7 +101,7 @@ sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
 # add instance for firewall generation instead of default
 sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
 
-sed -i "s|userPass: XXX-vpn-server-node/vpn-server-api-XXX|userPass: ${VPN_SERVER_NODE_VPN_SERVER_API}|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|userPass: XXX-vpn-server-node/vpn-server-api-XXX|userPass: ${API_SECRET}|" /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 # point to our CA API and Server API
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
@@ -148,9 +147,7 @@ printf "\n\n" | tincd -n vpn -K 4096
 cp resources/tinc\@.service /etc/systemd/system
 systemctl daemon-reload
 
-# copy controller file to the correct place
-# XXX check if the file is there, bail otherwise, at start of this script!
-cp "${TINC_INSTANCE_NAME}" /etc/tinc/vpn/hosts
+echo ${TINC_CONFIG} | base64 -d | tee /etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME} >/dev/null
 
 # now we have to copy the public key to the controller, out of band for now
 echo "---- cut ----"
