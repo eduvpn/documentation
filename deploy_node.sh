@@ -94,7 +94,7 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 rm -rf /etc/vpn-server-node/${INSTANCE}
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
-cp /etc/vpn-server-node/default/config.yaml.example /etc/vpn-server-node/${INSTANCE}/config.yaml
+cp /etc/vpn-server-node/default/config.yaml /etc/vpn-server-node/${INSTANCE}/config.yaml
 
 sed -i "s/#trustedInterfaces/trustedInterfaces/" /etc/vpn-server-node/firewall.yaml
 sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml

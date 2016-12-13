@@ -106,7 +106,7 @@ rm -rf /etc/vpn-server-api/${INSTANCE}
 rm -rf /var/lib/vpn-server-api/${INSTANCE}
 
 mkdir -p /etc/vpn-server-api/${INSTANCE}
-cp /etc/vpn-server-api/default/config.yaml.example /etc/vpn-server-api/${INSTANCE}/config.yaml
+cp /etc/vpn-server-api/default/config.yaml /etc/vpn-server-api/${INSTANCE}/config.yaml
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ${EXTERNAL_IF}
@@ -128,7 +128,7 @@ rm -rf /etc/vpn-admin-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
-cp /etc/vpn-admin-portal/default/config.yaml.example /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-admin-portal/default/config.yaml /etc/vpn-admin-portal/${INSTANCE}/config.yaml
 
 # enable secure cookies
 sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml 
@@ -145,7 +145,7 @@ rm -rf /etc/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
-cp /etc/vpn-user-portal/default/config.yaml.example /etc/vpn-user-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-user-portal/default/config.yaml /etc/vpn-user-portal/${INSTANCE}/config.yaml
 
 # enable secure cookies
 sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-user-portal/${INSTANCE}/config.yaml 
