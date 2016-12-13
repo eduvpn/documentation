@@ -52,8 +52,6 @@ in that case.
 
 ### Profile List
 
-**SUBJECT TO CHANGE**
-
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available and some 
 basic information, e.g. whether or not two-factor authentication is enabled.
@@ -78,8 +76,6 @@ The response looks like this:
 
 ### Create a Configuration
 
-**SUBJECT TO CHANGE**
-
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
         https://vpn.example/portal/api/create_config
@@ -95,32 +91,24 @@ The response will be an OpenVPN configuration file.
 
 ### System Messages
 
-**SUBJECT TO CHANGE**
-
-**NOT YET IMPLEMENTED**
-
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://vpn.example/portal/api/system_messages
 
 The application is able to access the `system_messages` endpoint to see if 
-there are any notifications available. There are two types of messages:
+there are any notifications available. These are the types of messages:
 
-* `notification`: a simple plain text message in the `content` field;
-* `motd`: the "message of the day" (MotD) of the service, to be displayed to
-  users on login or when establishing a connection to the VPN;
-* `maintenance`: an (optional) simple plain text message in the `content` field
-  and a `start` and `end` field with the timestamp;
+* `notification`: a plain text message in the `message` field;
+* `motd`: a plain text "message of the day" (MotD) of the service, to be 
+  displayed to users on login or when establishing a connection to the VPN;
+* `maintenance`: an (optional) plain text message in the `message` field
+  and a `begin` and `end` field with the timestamp;
 
-All message types have the `date` field indicating the date the message was 
-created. This can be used as a unique identifier.
+All message types have the `date_time` field indicating the date the message 
+was created. This can be used as a unique identifier.
 
-**TODO**: change `date` to `date_time` as it is not just a "date" field.
-
-The `date`, `start` and `end` fields are in
+The `date_time`, `begin` and `end` fields are in
 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations) 
-format. **Seconds are also included!**.
-
-**TODO**: rename `start` to `begin`.
+format. Note that seconds are also included.
 
 An example:
 
@@ -128,8 +116,8 @@ An example:
         "system_messages": {
             "data": [
                 {
-                    "content": "Hello World!",
-                    "date": "2016-12-02T10:42:08Z",
+                    "message": "Hello World!",
+                    "date_time": "2016-12-02T10:42:08Z",
                     "type": "notification"
                 }
             ],
@@ -143,22 +131,24 @@ available through the API until an administrator (manually) removes it.
 
 ### User Messages
 
-**SUBJECT TO CHANGE**
-
-**NOT YET IMPLEMENTED**
-
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://vpn.example/portal/api/user_messages
 
 These are messages specific to the user. It can contain a message about the 
 user being blocked, or other personal messages from the VPN administrator.
 
+These are the types of messages:
+
+* `notification`: a plain text message in the `message` field;
+
+An example:
+
     {
         "user_messages": {
             "data": [
                 {
-                    "content": "Your account has been disabled. Please contact support.",
-                    "date": "2016-12-02T10:43:10Z",
+                    "message": "Your account has been disabled. Please contact support.",
+                    "date_time": "2016-12-02T10:43:10Z",
                     "type": "notification"
                 }
             ],
