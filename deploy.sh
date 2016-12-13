@@ -24,17 +24,7 @@ then
     exit 1
 fi
 
-if [ -f /etc/fedora-release ]
-then
-    # Fedora
-    PACKAGE_MANAGER=/usr/bin/dnf
-else
-    # CentOS / RHEL 
-    PACKAGE_MANAGER=/usr/bin/yum
-fi
-
-# update packages to make sure we have latest version of everything
-${PACKAGE_MANAGER} -y clean expire-cache && ${PACKAGE_MANAGER} -y update
+PACKAGE_MANAGER=/usr/bin/yum
 
 ###############################################################################
 # SOFTWARE
@@ -43,19 +33,11 @@ ${PACKAGE_MANAGER} -y clean expire-cache && ${PACKAGE_MANAGER} -y update
 # remove firewalld if it is installed, too complicated
 ${PACKAGE_MANAGER} -y remove firewalld
 
-# enable COPR repos
-if [ -f /etc/fedora-release ]
-then
-    # Fedora
-    dnf -y copr enable fkooman/eduvpn-testing
-else
-    # enable EPEL
-    ${PACKAGE_MANAGER} -y install epel-release
+# enable EPEL
+${PACKAGE_MANAGER} -y install epel-release
 
-    # CentOS/RHEL
-    curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
-        https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
-fi
+curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
+    https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install NetworkManager openvpn mod_ssl php-opcache httpd iptables pwgen \

@@ -16,41 +16,43 @@ EXTERNAL_IF=eth0
 # SYSTEM
 ###############################################################################
 
-# update packages to make sure we have latest version of everything
-yum -y clean expire-cache && yum -y update
+# SELinux enabled?
+/usr/sbin/selinuxenabled
+if [ "$?" -ne 0 ]
+then
+    echo "Please enable SELinux before running this script!"
+    exit 1
+fi
+
+PACKAGE_MANAGER=/usr/bin/yum
 
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
 # remove firewalld if it is installed, too complicated
-yum -y remove firewalld
+${PACKAGE_MANAGER} -y remove firewalld
 
 # enable EPEL
-yum -y install epel-release
+${PACKAGE_MANAGER} -y install epel-release
 
-# enable COPR repos
 curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-yum -y install NetworkManager mod_ssl php-opcache httpd telnet openssl \
+${PACKAGE_MANAGER} -y install NetworkManager mod_ssl php-opcache httpd telnet openssl \
     php-fpm policycoreutils-python patch php-cli psmisc net-tools php pwgen \
     iptables iptables-services open-vm-tools tinc bridge-utils
 
 # install software (VPN packages)
-yum -y install vpn-server-api vpn-admin-portal vpn-user-portal
+${PACKAGE_MANAGER} -y install vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # SELINUX
 ###############################################################################
 
-# SELinux enabled?
-/usr/sbin/selinuxenabled
-if [ "$?" -eq 0 ]; then
-    # allow Apache to connect to PHP-FPM
-    setsebool -P httpd_can_network_connect=1
-fi
+# allow Apache to connect to PHP-FPM
+setsebool -P httpd_can_network_connect=1
 
 ###############################################################################
 # CERTIFICATE
@@ -273,8 +275,8 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
-TINC_CONFIG=$(cat "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}" | base64)
-API_SECRET=$(cat /etc/vpn-server-api/${INSTANCE}/config.yaml | grep vpn-server-node | awk {'print $2'})
+TINC_CONFIG=$(base64 < "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}")
+API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${INSTANCE}/config.yaml | cut -d ":" -f 2 | xargs)
 
 echo "########################################################################"
 echo "# Admin Portal"
