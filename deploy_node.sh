@@ -147,7 +147,7 @@ printf "\n\n" | tincd -n vpn -K 4096
 cp resources/tinc\@.service /etc/systemd/system
 systemctl daemon-reload
 
-echo ${TINC_CONFIG} | base64 -d | tee /etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME} >/dev/null
+echo ${TINC_CONFIG} | base64 -d | tee "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}" >/dev/null
 
 # now we have to copy the public key to the controller, out of band for now
 echo "---- cut ----"
