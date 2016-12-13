@@ -200,10 +200,10 @@ systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-1
 systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-2
 systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-3
 
-systemctl start openvpn-server@${INSTANCE}-${PROFILE}-0
-systemctl start openvpn-server@${INSTANCE}-${PROFILE}-1
-systemctl start openvpn-server@${INSTANCE}-${PROFILE}-2
-systemctl start openvpn-server@${INSTANCE}-${PROFILE}-3
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-0
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-1
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-2
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-3
 
 ###############################################################################
 # FIREWALL

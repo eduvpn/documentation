@@ -275,7 +275,7 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
-TINC_CONFIG=$(base64 < "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}")
+TINC_CONFIG=$(base64 -w 0 < "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}")
 API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${INSTANCE}/config.yaml | cut -d ":" -f 2 | xargs)
 
 echo "########################################################################"
