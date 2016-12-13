@@ -177,6 +177,9 @@ systemctl restart NetworkManager-wait-online || true
 systemctl restart tinc@vpn
 systemctl restart vmtoolsd
 
+# wait a bit, so hopefully tinc is up and we can reach the controller...
+sleep 10
+
 ###############################################################################
 # OPENVPN SERVER CONFIG
 ###############################################################################
