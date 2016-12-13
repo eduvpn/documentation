@@ -50,6 +50,8 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal vp
 # NETWORK 
 ###############################################################################
 
+ifdown br0
+
 # configure a bridge device as this IP address will be used for running the 
 # management services, this can also be shared by running tinc
 # if you have any other means to establish connection to the other nodes, e.g. 
