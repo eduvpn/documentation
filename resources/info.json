@@ -1,9 +1,9 @@
 {
     "api": {
-        "create_config": "https://vpn.example/portal/api/create_config",
-        "profile_list": "https://vpn.example/portal/api/profile_list",
-        "system_messages": "https://vpn.example/portal/api/system_messages",
-        "user_messages": "https://vpn.example/portal/api/user_messages"
+        "create_config": "https://vpn.example/portal/api.php/create_config",
+        "profile_list": "https://vpn.example/portal/api.php/profile_list",
+        "system_messages": "https://vpn.example/portal/api.php/system_messages",
+        "user_messages": "https://vpn.example/portal/api.php/user_messages"
     },
     "version": 1,
     "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
