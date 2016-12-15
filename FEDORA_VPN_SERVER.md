@@ -1,19 +1,19 @@
-This document describes how to install a VPN server on Fedora or CentOS. 
-Installations are tested on CentOS 7 (PHP 5) and Fedora 25 (PHP 7).
+# Fedora VPN Server
+
+This document describes how to install a VPN server on Fedora >= 25. 
 
 We will assume you will run on `vpn.example.org`, change this to your host 
 name.
-
-Currently, [firewalld](http://www.firewalld.org/) is not supported due to its 
-complexity. Please disable and/or remove it:
-
-    $ sudo dnf remove firewalld
 
 # Installation
 
 Enable the VPN repository:
 
     $ sudo dnf -y copr enable fkooman/eduvpn-testing
+
+Remove firewalld, we do not support it:
+
+    $ sudo dnf -y remove firewalld
 
 Install the required packages:
 
