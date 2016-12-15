@@ -17,8 +17,9 @@ Enable the VPN repository:
 
 Install the required packages:
 
-    $ sudo dnf -y install vpn-server-api vpn-server-node \
-        vpn-user-portal vpn-admin-portal php iptables iptables-services
+    $ sudo dnf -y install \
+        vpn-server-api vpn-server-node vpn-user-portal vpn-admin-portal \
+        php php-cli iptables iptables-services
 
 # Configuration
 
@@ -271,3 +272,60 @@ or download a new configuration.
 
 The two-factor authentication will require users to provide the user name 
 `totp` and a 6 digit TOTP key generated with the OTP application.
+
+## Using PHP-FPM
+
+Switching to PHP-FPM will improve the performance substantially. First, 
+install PHP-FPM:
+
+    $ sudo dnf -y install php-fpm php-cli
+
+Remove the obsolete `php` package:
+
+    $ sudo dnf remove php
+
+**NOTE**: in case `php-cli` also gets removed by this, install it again!
+
+Enable and start PHP-FPM:
+
+    $ sudo systemctl enable php-fpm
+    $ sudo systemctl start php-fpm
+
+Now, modify the configuration in `/etc/httpd/conf.d/vpn-user-portal.conf`,
+`/etc/httpd/conf.d/vpn-admin-portal.conf` and 
+`/etc/httpd/conf.d/vpn-server-api.conf` and remove the comment from the PHP-FPM
+lines.
+
+Restart Apache:
+
+    $ sudo systemctl restart httpd
+
+That's it!
+
+## API
+
+There is also an API available for (mobile) applications to integrate with the
+VPN software.
+
+The API needs to be enabled, by modifying 
+`/etc/vpn-user-portal/default/config.yaml` and setting `enableOAuth` to `true`. 
+By default, this will then allow the listed application(s) to use the API. 
+
+A document for "API discovery" needs to be installed called `info.json` and 
+placed in `/var/www/html/info.json`, change the host name accordingly:
+
+    {
+        "api": {
+            "create_config": "https://vpn.example.org/vpn-user-portal/api.php/create_config",
+            "profile_list": "https://vpn.example.org/vpn-user-portal/api.php/profile_list",
+            "system_messages": "https://vpn.example.org/vpn-user-portal/api.php/system_messages",
+            "user_messages": "https://vpn.example.org/vpn-user-portal/api.php/user_messages"
+        },
+        "version": 1,
+        "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/_oauth/authorize"
+    }
+
+**Proof of Concept**: there is a PoC application available, eduVPN for Android, 
+[here](https://eduvpn.surfcloud.nl/app/) that can use this API. After 
+installing it, add an "Other" provider and use `https://vpn.example.org` as the
+address.
