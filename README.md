@@ -53,10 +53,13 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
-**PLEASE USE THIS TO EVALUATE THE SOFTWARE**
+**PLEASE USE THESE INSTRUCTIONS TO EVALUATE THE SOFTWARE**
 
 For simple evaluations see the [Fedora](FEDORA_VPN_SERVER.md) document, it 
 contains all steps to get the software running on a fresh Fedora VM.
+
+The deployment was succesfully tested on the Fedora 25 image @ 
+[DigitalOcean](https://www.digitalocean.com/).
 
 # Advanced
 For simple one server deployments and tests, we have a deploy script available 
