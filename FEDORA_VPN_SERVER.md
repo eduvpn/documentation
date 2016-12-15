@@ -5,6 +5,11 @@ This document describes how to install a VPN server on Fedora >= 25.
 We will assume you will run on `vpn.example.org`, change this to your host 
 name.
 
+Make sure you have all updates installed, and rebooted the machine before 
+continuing: 
+
+    $ sudo dnf -y --refresh update
+
 # Installation
 
 Enable the VPN repository:
@@ -278,7 +283,7 @@ The two-factor authentication will require users to provide the user name
 Switching to PHP-FPM will improve the performance substantially. First, 
 install PHP-FPM:
 
-    $ sudo dnf -y install php-fpm php-cli
+    $ sudo dnf -y install php-fpm
 
 Remove the obsolete `php` package:
 
