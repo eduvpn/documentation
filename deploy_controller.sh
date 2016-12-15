@@ -40,8 +40,8 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install NetworkManager mod_ssl php-opcache httpd telnet openssl \
-    php-fpm policycoreutils-python patch php-cli psmisc net-tools php pwgen \
+${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd openssl \
+    php-fpm policycoreutils-python php-cli pwgen \
     iptables iptables-services open-vm-tools tinc bridge-utils
 
 # install software (VPN packages)
@@ -94,6 +94,9 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 ###############################################################################
 # PHP
 ###############################################################################
+
+# switch to unix socket, default in newer PHP versions, but not on CentOS 7
+sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fpm.d/www.conf
 
 cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 

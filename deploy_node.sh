@@ -45,9 +45,9 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install NetworkManager openvpn php-opcache openssl tinc \
-    policycoreutils-python iptables iptables-services iptables-services \
-    php-cli psmisc open-vm-tools bridge-utils
+${PACKAGE_MANAGER} -y install NetworkManager php-opcache tinc \
+    policycoreutils-python iptables iptables-services \
+    php-cli open-vm-tools bridge-utils
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node
