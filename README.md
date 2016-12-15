@@ -53,6 +53,12 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
+**PLEASE USE THIS TO EVALUATE THE SOFTWARE**
+
+For simple evaluations see the [Fedora](FEDORA_VPN_SERVER.md) document, it 
+contains all steps to get the software running on a fresh Fedora VM.
+
+# Advanced
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh CentOS 7 installation. It will configure all components 
 and will be ready to use after running!
