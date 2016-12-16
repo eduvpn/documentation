@@ -24,7 +24,7 @@ Install the required packages:
 
     $ sudo dnf -y install \
         vpn-server-api vpn-server-node vpn-user-portal vpn-admin-portal \
-        php php-cli iptables iptables-services
+        httpd php iptables iptables-services
 
 # Configuration
 
@@ -285,11 +285,9 @@ install PHP-FPM:
 
     $ sudo dnf -y install php-fpm
 
-Remove the obsolete `php` package:
+Remove the package containing the Apache PHP module:
 
     $ sudo dnf remove php
-
-**NOTE**: in case `php-cli` also gets removed by this, install it again!
 
 Enable and start PHP-FPM:
 
@@ -307,7 +305,7 @@ Restart Apache:
 
 That's it!
 
-## API
+## API / Applications
 
 There is also an API available for (mobile) applications to integrate with the
 VPN software.
