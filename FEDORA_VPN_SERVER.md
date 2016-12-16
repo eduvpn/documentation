@@ -265,10 +265,12 @@ To enable it for connecting to the VPN server, modify
 `/etc/vpn-server-api/default/config.yaml` and set `twoFactor` to `true` under
 the `internet` profile.
 
-Regenerate the server configuration, and restart the OpenVPN process:
+Regenerate the server configuration, and restart the OpenVPN process, if you 
+enabled "Port Share" you also need to restart `openvpn@default-internet-1`.
 
     $ sudo vpn-server-node-server-config --profile internet
     $ sudo systemctl restart openvpn@default-internet-0
+    $ #sudo systemctl restart openvpn@default-internet-1
 
 After this, if users want to download a new configuration, they will be forced 
 to enroll for two-factor authentication first before being allowed to download 
