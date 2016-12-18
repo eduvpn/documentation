@@ -60,9 +60,10 @@ to the IP address using a web browser and go from there.
 
 [![Dply](https://dply.co/b.svg)](https://dply.co/b/Sck1PeeV) 
 
-For simple, more advanced evaluations see the [Fedora](FEDORA_VPN_SERVER.md) 
-document, it contains all steps to get the software running on a fresh Fedora 
-VM.
+For more control see the [Fedora](FEDORA_VPN_SERVER.md) document, it contains 
+all steps to get the software running on a fresh Fedora VM, with more advanced
+features like port sharing, TLS using Let's Encrypt and two-factor 
+authentication.
 
 The deployment was succesfully tested on the official Fedora 25 cloud image, 
 as well as the Fedora 25 image @ [DigitalOcean](https://www.digitalocean.com/).
