@@ -17,7 +17,7 @@ sed -i 's/#Require all granted/Require all granted/' /etc/httpd.conf/vpn-user-po
 sed -i 's/#Require all granted/Require all granted/' /etc/httpd.conf/vpn-admin-portal.conf
 vpn-user-portal-add-user --user foo --pass bar
 vpn-admin-portal-add-user --user foo --pass bar
-vpn-server-api-update-ip --profile internet --host ${EXTERNAL_IP} --ext ${EXTERNAL_IF}
+vpn-server-api-update-ip --profile internet --host "${EXTERNAL_IP}" --ext "${EXTERNAL_IF}"
 systemctl start httpd
 vpn-server-node-server-config --profile internet --generate
 systemctl enable openvpn@default-internet-0

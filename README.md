@@ -1,5 +1,3 @@
-[][![Dply](https://dply.co/b.svg)](https://dply.co/b/3F7J7TkV) 
-
 # Introduction
 
 This is the eduvpn documentation repository. You can find documents, scripts
