@@ -53,6 +53,8 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
+[![Dply](https://dply.co/b.svg)](https://dply.co/b/Sck1PeeV) 
+
 **PLEASE USE THESE INSTRUCTIONS TO EVALUATE THE SOFTWARE**
 
 For simple evaluations see the [Fedora](FEDORA_VPN_SERVER.md) document, it 
