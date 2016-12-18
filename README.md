@@ -53,15 +53,19 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
+You can use a test deploy with the button below to test the software in its 
+most basic configuration for free for 2 hours! After the VM started you need
+to wait for a bit for the deploy scripts to finish running, then you can browse
+to the IP address using a web browser and go from there.
+
 [![Dply](https://dply.co/b.svg)](https://dply.co/b/Sck1PeeV) 
 
-**PLEASE USE THESE INSTRUCTIONS TO EVALUATE THE SOFTWARE**
+For simple, more advanced evaluations see the [Fedora](FEDORA_VPN_SERVER.md) 
+document, it contains all steps to get the software running on a fresh Fedora 
+VM.
 
-For simple evaluations see the [Fedora](FEDORA_VPN_SERVER.md) document, it 
-contains all steps to get the software running on a fresh Fedora VM.
-
-The deployment was succesfully tested on the Fedora 25 image @ 
-[DigitalOcean](https://www.digitalocean.com/).
+The deployment was succesfully tested on the official Fedora 25 cloud image, 
+as well as the Fedora 25 image @ [DigitalOcean](https://www.digitalocean.com/).
 
 # Advanced
 For simple one server deployments and tests, we have a deploy script available 
