@@ -287,7 +287,7 @@ install PHP-FPM:
 
     $ sudo dnf -y install php-fpm
 
-Remove the package containing the Apache PHP module:
+Remove the package containing the Apache "mod_php" PHP module:
 
     $ sudo dnf remove php
 
@@ -295,11 +295,6 @@ Enable and start PHP-FPM:
 
     $ sudo systemctl enable php-fpm
     $ sudo systemctl start php-fpm
-
-Now, modify the configuration in `/etc/httpd/conf.d/vpn-user-portal.conf`,
-`/etc/httpd/conf.d/vpn-admin-portal.conf` and 
-`/etc/httpd/conf.d/vpn-server-api.conf` and remove the comment from the PHP-FPM
-lines.
 
 Restart Apache:
 

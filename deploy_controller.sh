@@ -41,7 +41,7 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd openssl \
-    php-fpm policycoreutils-python php-cli pwgen \
+    php-fpm policycoreutils-python php php-cli pwgen \
     iptables iptables-services open-vm-tools tinc bridge-utils
 
 # install software (VPN packages)
