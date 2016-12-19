@@ -41,7 +41,7 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd iptables pwgen \
-    iptables-services sniproxy open-vm-tools php php-fpm php-cli bridge-utils
+    iptables-services sniproxy open-vm-tools php-fpm php-cli bridge-utils
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
@@ -134,6 +134,13 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fpm.d/www.conf
 
 cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
+
+# work around to create the session directory, otherwise we have to intstall
+# the PHP package, this is only on CentOS
+mkdir -p /var/lib/php/session
+chown -R root.apache /var/lib/php/session
+chmod 0770 /var/lib/php/session
+restorecon -R /var/lib/php/session
 
 ###############################################################################
 # VPN-SERVER-API
