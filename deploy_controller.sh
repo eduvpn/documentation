@@ -124,7 +124,7 @@ vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host intern
 # disable portShare, no need to share TCP/443 on dedicated nodes
 sed -i "s|'portShare' => true|'portShare' => false|" /etc/vpn-server-api/${INSTANCE}/config.php
 sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
-sed -i "s|'processCount': 1|'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
+sed -i "s|'processCount' => 1|'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
 
 # init the CA
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}

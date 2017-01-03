@@ -179,6 +179,9 @@ systemctl restart vmtoolsd
 # wait a bit, so hopefully tinc is up and we can reach the controller...
 sleep 10
 
+# ping the controller, hopefully the connection will be established...
+ping -c 4 10.42.101.100
+
 ###############################################################################
 # OPENVPN SERVER CONFIG
 ###############################################################################
