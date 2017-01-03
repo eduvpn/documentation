@@ -116,15 +116,15 @@ rm -rf /etc/vpn-server-api/${INSTANCE}
 rm -rf /var/lib/vpn-server-api/${INSTANCE}
 
 mkdir -p /etc/vpn-server-api/${INSTANCE}
-cp /etc/vpn-server-api/default/config.yaml /etc/vpn-server-api/${INSTANCE}/config.yaml
+cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${INSTANCE}/config.php
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ${EXTERNAL_IF}
 
 # disable portShare, no need to share TCP/443 on dedicated nodes
-sed -i "s/portShare: true/portShare: false/" /etc/vpn-server-api/${INSTANCE}/config.yaml
-sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api/${INSTANCE}/config.yaml
-sed -i "s/processCount: 1/processCount: 4/" /etc/vpn-server-api/${INSTANCE}/config.yaml
+sed -i "s|'portShare' => true|'portShare' => false|" /etc/vpn-server-api/${INSTANCE}/config.php
+sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
+sed -i "s|'processCount': 1|'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
 
 # init the CA
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}
@@ -138,13 +138,13 @@ rm -rf /etc/vpn-admin-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
-cp /etc/vpn-admin-portal/default/config.yaml /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-admin-portal/default/config.php /etc/vpn-admin-portal/${INSTANCE}/config.php
 
 # enable secure cookies
-sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml 
+sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-admin-portal/${INSTANCE}/config.php 
 
 # point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.php
 
 ###############################################################################
 # VPN-USER-PORTAL
@@ -155,13 +155,13 @@ rm -rf /etc/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
-cp /etc/vpn-user-portal/default/config.yaml /etc/vpn-user-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-user-portal/default/config.php /etc/vpn-user-portal/${INSTANCE}/config.php
 
 # enable secure cookies
-sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-user-portal/${INSTANCE}/config.yaml 
+sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-user-portal/${INSTANCE}/config.php 
 
 # point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.php
 
 ###############################################################################
 # UPDATE SECRETS
@@ -286,7 +286,7 @@ vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PAS
 vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
 
 TINC_CONFIG=$(base64 -w 0 < "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}")
-API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${INSTANCE}/config.yaml | cut -d ":" -f 2 | xargs)
+API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${INSTANCE}/config.php | cut -d "'" -f 4)
 
 echo "########################################################################"
 echo "# Admin Portal"
