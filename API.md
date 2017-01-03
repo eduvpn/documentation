@@ -163,15 +163,16 @@ Same considerations apply as for the `system_messages` call.
 The OAuth client application can be registered in the user portal, in the 
 following file, where `vpn.example` is the instance you want to configure:
 
-    /etc/vpn-user-portal/vpn.example/config.yaml
+    /etc/vpn-user-portal/vpn.example/config.php
 
 The following options are available:
 
-    enableOAuth: false
-    #enableOAuth: true
-    # OAuth 2.0 consumers
-    apiConsumers:
-    nl.eduvpn.app:
-        redirect_uri: 'nl.eduvpn.app://import/callback'
+    'enableOAuth' => true,
+    // OAuth 2.0 consumers
+    'apiConsumers' => [
+        'nl.eduvpn.app' => [
+            'redirect_uri' => 'nl.eduvpn.app://import/callback',
+        ],
+    ],
 
 Here `nl.eduvpn.app` is the `client_id`.

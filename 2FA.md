@@ -79,13 +79,17 @@ For example with the community client of OpenVPN on Windows you will see this:
 # Enabling 2FA for VPNs
 
 Assuming your instance is called `vpn.example`, you need to modify 
-`/etc/vpn-server-api/vpn.example/config.yaml`:
+`/etc/vpn-server-api/vpn.example/config.php`:
 
-    vpnProfiles:
-        internet:
-            :
-            twoFactor: true
-            :
+    'vpnProfiles' => [
+        'internet' => [
+            'profileNumber' => 1,
+            'displayName' => 'Internet Access',
+            ...
+            ...
+            'twoFactor' => true,
+        ],
+    ],
 
 Now the server configuration needs to be regenerated:
 

@@ -3,19 +3,21 @@
 For this document we assume your _instance_ is `vpn.example`, change the domain 
 name accordingly in the examples below.
 
-Profiles, are configured in `/etc/vpn-server-api/vpn.example/config.yaml` and
+Profiles, are configured in `/etc/vpn-server-api/vpn.example/config.php` and
 can contain many options to support various deployment scenarios. These are 
 described in the table below.
 
 To modify any of the options, modify the file mentioned above and look for the
 `vpnProfiles` section under the profile identifier, e.g.:
 
-    vpnProfiles:
-        internet:
-            displayName: Internet Access
-            hostName: vpn.example
+    'vpnProfiles' => [
+        'internet' => [
+            'profileNumber' => 1,
+            'displayName' => 'Internet Access',
             ...
             ...
+        ],
+    ],
 
 Here `internet` is the profile identifier. The identifier is used internally to
 keep track of the various profiles you may have.
