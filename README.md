@@ -15,8 +15,8 @@ and deploy instructions for various deployment scenarios.
 - Multi Language support in the User Portal;
 - OAuth 2.0 [API](API.md) for integration with applications;
 - Admin Portal manage users, configurations and connections;
-- [Two-factor authentication](2FA.md) (TOTP) support with user self-enrollment
-  for both access to the portal(s) and the VPN;
+- [Two-factor authentication](2FA.md) (TOTP, YubiKey) support with user 
+  self-enrollment for both access to the portal(s) and the VPN;
 - [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
