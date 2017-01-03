@@ -41,9 +41,9 @@ at your IdP. You can use the following URL with metadata:
 You also need to modify the `vpn-user-portal` configuration to specify the 
 attribute that should be used to identify the users.
 
-Edit `/etc/vpn-user-portal/vpn.example/config.yaml` and set:
+Edit `/etc/vpn-user-portal/vpn.example/config.php` and set:
         
-    authMethod: MellonAuthentication
+    'authMethod' => 'MellonAuthentication'
 
 By default the NAME_ID will be used to identify the users, if you want to 
 change that change the `attribute` value under `MellonAuthentication`.
@@ -51,7 +51,7 @@ change that change the `attribute` value under `MellonAuthentication`.
 If you want to also have `vpn-admin-portal` be protected by SAML, make sure
 you uncomment the `<Location /admin>` section above and figure out 
 the attribute and values they should have to match with administrators. Also 
-modify `/etc/vpn-admin-portal/vpn.example/config.yaml` analogue to the 
+modify `/etc/vpn-admin-portal/vpn.example/config.php` analogue to the 
 modifications for `vpn-user-portal`.
 
 That should be all!
