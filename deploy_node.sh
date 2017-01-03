@@ -94,17 +94,16 @@ cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 rm -rf /etc/vpn-server-node/${INSTANCE}
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
-cp /etc/vpn-server-node/default/config.yaml /etc/vpn-server-node/${INSTANCE}/config.yaml
+cp /etc/vpn-server-node/default/config.php /etc/vpn-server-node/${INSTANCE}/config.php
 
-sed -i "s/#trustedInterfaces/trustedInterfaces/" /etc/vpn-server-node/firewall.yaml
-sed -i "s/#- br0/- br0/" /etc/vpn-server-node/firewall.yaml
+sed -i "s|//'br0'|'br0'|" /etc/vpn-server-node/firewall.php
 # add instance for firewall generation instead of default
-sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
+sed -i "s|'default'|'${INSTANCE}'|" /etc/vpn-server-node/firewall.php
 
-sed -i "s|userPass: XXX-vpn-server-node/vpn-server-api-XXX|userPass: ${API_SECRET}|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${API_SECRET}|" /etc/vpn-server-node/${INSTANCE}/config.php
 
 # point to our CA API and Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.php
 
 ###############################################################################
 # NETWORK
