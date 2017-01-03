@@ -151,13 +151,13 @@ rm -rf /etc/vpn-server-api/${INSTANCE}
 rm -rf /var/lib/vpn-server-api/${INSTANCE}
 
 mkdir -p /etc/vpn-server-api/${INSTANCE}
-cp /etc/vpn-server-api/default/config.yaml /etc/vpn-server-api/${INSTANCE}/config.yaml
+cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${INSTANCE}/config.php
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INSTANCE} --ext ${EXTERNAL_IF}
 
-sed -i "s/managementIp: 127.0.0.1/#managementIp: 127.0.0.1/" /etc/vpn-server-api/${INSTANCE}/config.yaml
-sed -i "s/processCount: 1/processCount: 4/" /etc/vpn-server-api/${INSTANCE}/config.yaml
+sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
+sed -i "s|'processCount' => 1|//'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
 
 # init the CA
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}
@@ -170,13 +170,13 @@ sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 rm -rf /etc/vpn-server-node/${INSTANCE}
 
 mkdir -p /etc/vpn-server-node/${INSTANCE}
-cp /etc/vpn-server-node/default/config.yaml /etc/vpn-server-node/${INSTANCE}/config.yaml
+cp /etc/vpn-server-node/default/config.php /etc/vpn-server-node/${INSTANCE}/config.php
 
 # add instance for firewall generation instead of default
-sed -i "s|- default|- ${INSTANCE}|" /etc/vpn-server-node/firewall.yaml
+sed -i "s|'default'|'${INSTANCE}'|" /etc/vpn-server-node/firewall.php
 
 # point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-server-node/${INSTANCE}/config.php
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
@@ -187,13 +187,13 @@ rm -rf /etc/vpn-admin-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
-cp /etc/vpn-admin-portal/default/config.yaml /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-admin-portal/default/config.php /etc/vpn-admin-portal/${INSTANCE}/config.php
 
 # enable secure cookies
-sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml 
+sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-admin-portal/${INSTANCE}/config.php 
 
 # point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.php
 
 ###############################################################################
 # VPN-USER-PORTAL
@@ -204,13 +204,13 @@ rm -rf /etc/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
-cp /etc/vpn-user-portal/default/config.yaml /etc/vpn-user-portal/${INSTANCE}/config.yaml
+cp /etc/vpn-user-portal/default/config.php /etc/vpn-user-portal/${INSTANCE}/config.php
 
 # enable secure cookies
-sed -i "s|secureCookie: false|secureCookie: true|" /etc/vpn-user-portal/${INSTANCE}/config.yaml 
+sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-user-portal/${INSTANCE}/config.php 
 
 # point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.yaml
+sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.php
 
 ###############################################################################
 # NETWORK

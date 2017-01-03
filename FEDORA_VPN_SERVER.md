@@ -75,7 +75,7 @@ depending on your system.
 
 ## Server
 
-Modify `/etc/vpn-server-api/default/config.yaml` and set `hostName` to the 
+Modify `/etc/vpn-server-api/default/config.php` and set `hostName` to the 
 host name you want your VPN clients to connect to. It is a good idea to add
 the profile identifier to the host name to make it easier to support multiple 
 nodes in the future. So, in this case we would set the `hostName` field to 
@@ -117,7 +117,7 @@ Enable OpenVPN on boot, and start it:
 
 ## Firewall
 
-Modify `/etc/vpn-server-node/firewall.yaml` if you want.
+Modify `/etc/vpn-server-node/firewall.php` if you want.
 
 Generate the firewall:
 
@@ -184,8 +184,8 @@ their advice.
 ## Secure Cookies
 
 In order to force cookies to be only sent over HTTPS, you SHOULD modify the 
-files `/etc/vpn-user-portal/default/config.yaml` and 
-`/etc/vpn-admin-portal/default/config.yaml` and set the `secureCookie` option
+files `/etc/vpn-user-portal/default/config.php` and 
+`/etc/vpn-admin-portal/default/config.php` and set the `secureCookie` option
 to `true`.
 
 # Advanced
@@ -205,7 +205,7 @@ updated:
     $ sudo vpn-server-api-update-api-secrets
 
 Once that taken care of, we create an additional OpenVPN process. Modify 
-`/etc/vpn-server-api/default/config.yaml` and change `processCount` from `1` to 
+`/etc/vpn-server-api/default/config.php` and change `processCount` from `1` to 
 `2`.
 
 We need an additional management port that OpenVPN can use:
@@ -262,7 +262,7 @@ documentation in the user portal for more information on supported two-factor
 applications.
 
 To enable it for connecting to the VPN server, modify 
-`/etc/vpn-server-api/default/config.yaml` and set `twoFactor` to `true` under
+`/etc/vpn-server-api/default/config.php` and set `twoFactor` to `true` under
 the `internet` profile.
 
 Regenerate the server configuration, and restart the OpenVPN process, if you 
@@ -308,7 +308,7 @@ There is also an API available for (mobile) applications to integrate with the
 VPN software.
 
 The API needs to be enabled, by modifying 
-`/etc/vpn-user-portal/default/config.yaml` and setting `enableOAuth` to `true`. 
+`/etc/vpn-user-portal/default/config.php` and setting `enableOAuth` to `true`. 
 By default, this will then allow the listed application(s) to use the API. 
 
 A document for "API discovery" needs to be installed called `info.json` and 
