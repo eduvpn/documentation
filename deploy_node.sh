@@ -53,21 +53,14 @@ ${PACKAGE_MANAGER} -y install NetworkManager php-opcache tinc \
 ${PACKAGE_MANAGER} -y install vpn-server-node
 
 ###############################################################################
-# NETWORK 
+# NETWORK
 ###############################################################################
 
-ifdown br0 || true
+systemctl enable NetworkManager
+systemctl restart NetworkManager
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
-DEVICE="br0"
-ONBOOT="yes"
-TYPE="Bridge"
-IPADDR0=${MANAGEMENT_IP}
-PREFIX0=16
-EOF
-
-# activate the interface
-ifup br0
+# create a bridge for the management service(s)
+nmcli connection add type bridge ifname br0 ip4 ${MANAGEMENT_IP}/16
 
 ###############################################################################
 # SELINUX
@@ -164,15 +157,11 @@ read -r
 # DAEMONS
 ###############################################################################
 
-# DigitalOcean does not support NetworkManager...
-systemctl enable NetworkManager || true
-systemctl enable NetworkManager-wait-online || true
+systemctl enable NetworkManager-wait-online
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager || true
-systemctl restart NetworkManager-wait-online || true
 systemctl restart tinc@vpn
 systemctl restart vmtoolsd
 

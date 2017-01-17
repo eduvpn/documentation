@@ -30,9 +30,6 @@ PACKAGE_MANAGER=/usr/bin/yum
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld if it is installed, too complicated
-${PACKAGE_MANAGER} -y remove firewalld
-
 # enable EPEL
 ${PACKAGE_MANAGER} -y install epel-release
 
@@ -40,12 +37,34 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd openssl \
-    php-fpm policycoreutils-python php-cli pwgen \
-    iptables iptables-services open-vm-tools tinc bridge-utils
+${PACKAGE_MANAGER} -y install firewalld openssl NetworkManager mod_ssl \
+    php-opcache httpd openssl php-fpm policycoreutils-python php-cli pwgen \
+    open-vm-tools tinc bridge-utils
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-api vpn-admin-portal vpn-user-portal
+
+###############################################################################
+# NETWORK
+###############################################################################
+
+systemctl enable NetworkManager
+systemctl restart NetworkManager
+
+# create a bridge for the management service(s)
+nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16
+# add it to the "trusted" zone
+nmcli connection modify bridge-br0 connection.zone trusted
+
+###############################################################################
+# FIREWALL
+###############################################################################
+
+systemctl enable firewalld
+systemctl restart firewalld
+
+# ssh is already added by default
+firewall-cmd --permanent --zone=public --add-service=http --add-service=https --add-service=tinc
 
 ###############################################################################
 # SELINUX
@@ -171,27 +190,6 @@ sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${I
 vpn-server-api-update-api-secrets --instance ${INSTANCE}
 
 ###############################################################################
-# NETWORK 
-###############################################################################
-
-# configure a bridge device as this IP address will be used for running the 
-# management services, this can also be shared by running tinc
-# if you have any other means to establish connection to the other nodes, e.g. 
-# a private network between virtual machines that can also be used, just 
-# add the interface to the bridge
-
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
-DEVICE="br0"
-ONBOOT="yes"
-TYPE="Bridge"
-IPADDR0=10.42.101.100
-PREFIX0=16
-EOF
-
-# activate the interface
-ifup br0
-
-###############################################################################
 # TINC
 ###############################################################################
 
@@ -222,34 +220,18 @@ cp resources/tinc\@.service /etc/systemd/system
 # DAEMONS
 ###############################################################################
 
-systemctl enable NetworkManager || true
-systemctl enable NetworkManager-wait-online || true
+systemctl enable NetworkManager-wait-online
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable tinc@vpn
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager || true
-systemctl restart NetworkManager-wait-online || true
+systemctl restart firewalld
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart tinc@vpn
 systemctl restart vmtoolsd
-
-###############################################################################
-# FIREWALL
-###############################################################################
-
-cp resources/controller/iptables /etc/sysconfig/iptables
-cp resources/controller/ip6tables /etc/sysconfig/ip6tables
-
-systemctl enable iptables
-systemctl enable ip6tables
-
-# flush existing firewall rules if they exist and activate the new ones
-systemctl restart iptables
-systemctl restart ip6tables
 
 ###############################################################################
 # SSHD

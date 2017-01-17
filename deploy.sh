@@ -47,31 +47,14 @@ ${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd i
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
-# NETWORK 
+# NETWORK
 ###############################################################################
 
-ifdown br0
+systemctl enable NetworkManager
+systemctl restart NetworkManager
 
-# configure a bridge device as this IP address will be used for running the 
-# management services, this can also be shared by running tinc
-# if you have any other means to establish connection to the other nodes, e.g. 
-# a private network between virtual machines that can also be used, just 
-# add the interface to the bridge
-
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br0
-DEVICE="br0"
-ONBOOT="yes"
-TYPE="Bridge"
-# for the web services
-IPADDR0=10.42.101.100
-PREFIX0=16
-# for the OpenVPN instances
-IPADDR1=10.42.101.101
-PREFIX1=16
-EOF
-
-# activate the interface
-ifup br0
+# create a bridge for the management service(s)
+nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16, 10.42.101.101/16
 
 ###############################################################################
 # SELINUX
@@ -247,16 +230,13 @@ vpn-server-api-update-api-secrets --instance ${INSTANCE}
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable sniproxy
-systemctl enable NetworkManager || true
 # https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
 # we need this for sniproxy and openvpn to start only when the network is up
 # because we bind to other addresses than 0.0.0.0 and ::
-systemctl enable NetworkManager-wait-online || true
+systemctl enable NetworkManager-wait-online
 systemctl enable vmtoolsd
 
 # start services
-systemctl restart NetworkManager || true
-systemctl restart NetworkManager-wait-online || true
 systemctl restart php-fpm
 systemctl restart httpd
 systemctl restart sniproxy
