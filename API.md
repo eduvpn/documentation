@@ -76,6 +76,8 @@ The response looks like this:
 
 ### Create a Configuration
 
+**DEPRECATED IN API VERSION 2**
+
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
         https://vpn.example/portal/api/create_config
@@ -224,3 +226,4 @@ In API version 2, two calls were added:
 * `GET` to `/profile_config` to obtain only the configuration file, without 
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
+* **DEPRECATED** `POST` to `/create_config`, use the newly added API calls
