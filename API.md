@@ -89,6 +89,43 @@ The acceptable values for `profile_id` can be discovered using the
 
 The response will be an OpenVPN configuration file.
 
+### Create a Certificate 
+
+**API VERSION 2 ONLY**
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        -d "display_name=eduVPN%20for%20Android" \
+        https://vpn.example/portal/api/create_certificate
+
+This will send a HTTP POST to the API endpoint, `/create_certificate` with the 
+parameter `display_name`. It will only create a certificate and return the 
+public and private key.
+
+    {
+        "create_certificate": {
+            "data": {
+                "certificate": "-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----",
+                "private_key": "-----BEGIN PRIVATE KEY----- ... -----END PRIVATE KEY-----"
+            },
+            "ok": true
+        }
+    }
+
+The certificate and the private key need to be combined with a profile 
+configuration as `<cert>` and `<key>` that can be obtained through the 
+`/get_config` call.
+
+### Profile Config
+
+**API VERSION 2 ONLY**
+
+Only get the profile configuration without certificate and private key.
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        "https://vpn.example/portal/api/profile_config?profile_id=internet"
+
+The response will be an OpenVPN configuration file.
+
 ### System Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
@@ -176,3 +213,14 @@ The following options are available:
     ],
 
 Here `nl.eduvpn.app` is the `client_id`.
+
+# Changelog
+
+In API version 2, two calls were added:
+
+* `POST` to `/create_certificate` to create a `private_key` and 
+  `certificate` for an instance to be used with all profiles. This makes it 
+  possible to use one key pair per instance;
+* `GET` to `/profile_config` to obtain only the configuration file, without 
+  generating a key pair. This means the configuration can easily be refetched 
+  in case an update is needed without creating a new key pair;
