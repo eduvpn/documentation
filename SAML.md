@@ -49,9 +49,9 @@ By default the NAME_ID will be used to identify the users, if you want to
 change that change the `attribute` value under `MellonAuthentication`.
 
 If you want to also have `vpn-admin-portal` be protected by SAML, make sure
-you uncomment the `<Location /admin>` section above and figure out 
-the attribute and values they should have to match with administrators. Also 
-modify `/etc/vpn-admin-portal/vpn.example/config.php` analogue to the 
-modifications for `vpn-user-portal`.
+you uncomment the `<Location /admin>` section in 
+`/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
+are associated with the administrator(s). 
 
-That should be all!
+Also modify `/etc/vpn-admin-portal/vpn.example/config.php` in the same way as 
+the user portal.
