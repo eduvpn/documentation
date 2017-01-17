@@ -1,116 +1,54 @@
-**WIP**
-
 # Multi Instance
 
-The software supports deploying various instances on one machine. This means
-that one installation can host multiple VPN installations on multiple domains,
-e.g. it can support both `https://vpn.foo.org/` and `https://vpn.bar.org`.
+The software supports deploying various instances without requiring a new host
+for a new instance. This means that one installation can host multiple VPN 
+installations on multiple domains, e.g. it can support both 
+`https://vpn.foo.org/` and `https://vpn.bar.org`.
 
-These instances are completely separated, they have their own configuration 
+These instances are separated, they have their own configuration 
 folders, their own CA, their own data store and run their own OpenVPN 
 processes. Every instance can again have their own profiles again, see 
 [Multi Profile](MULTI_PROFILE.md).
 
-In the below example we will add the `vpn.bar.org` instance to the existing
-`vpn.example` instance.
+Technically it _is_ possible to run everything on one host, but that will 
+quickly become complicated, regarding SNI Proxy and port sharing. This is *NOT* 
+supported.
 
-**TODO**: create a deploy-like script to add an instance.
-**TODO**: use the script to sync the secrets
-**TODO**: (optionally) use the IP address generator script
-**TODO**: write script to set the instanceNumber and the IP addresses
-**TODO**: write script to generate sniproxy.conf based on the configs
-**TODO**: write script to generate httpd.conf based on the configs
-**TODO**: add `listen6` directive to config for use by sniproxy and socat for 
-fixing IPv6
+We recommend using (at least) two machines, one controller (running the
+portals, API and CA) and a "node" running the OpenVPN processes.
 
-# CA API
+# Network
 
-    $ sudo mkdir /etc/vpn-ca-api/vpn.bar.org
-    $ sudo cp /usr/share/doc/vpn-ca-api-*/config.yaml.example /etc/vpn-ca-api/vpn.bar.org/config.yaml
+We assume you have two nodes, connected using a "private" network that is not 
+reachable over the Internet. You can configure a "private VLAN" in the VM 
+platform that exposes an extra NIC in the VMs or use something like 
+[tinc](https://www.tinc-vpn.org/) to create a virtual private network.
 
-The file `/etc/vpn-ca-api/vpn.bar.org/config.yaml` can be modified if needed. 
+# Controller
 
-That's it for the CA.
+On the controller machine you install `vpn-user-portal`, `vpn-admin-portal` 
+and `vpn-server-api`. 
 
-# Server API
+You configure the IP addresses of the instances on this interface. Every 
+instance will have a unique number configured in 
+`/etc/vpn-server-api/<FQDN>/config.php` called `instanceNumber`, if you 
+have three instances, e.g. `1`, `2` and `3` you bind the IP addresses 
+`10.42.101.100`, `10.42.102.100` and `10.42.103.100` to the private network 
+interface. Make sure each instance has `managementIp` set to `auto` and 
+`portShare` to `false`.
 
-    $ sudo mkdir /etc/vpn-server-api/vpn.bar.org
-    $ sudo cp /usr/share/doc/vpn-server-api-*/config.yaml.example /etc/vpn-server-api/vpn.bar.org/config.yaml
+Every instance gets their own HTTP configuration file in 
+`/etc/httpd/conf.d/<FQDN>.conf` that reflects these IP addresses as well. See
+`resources/controller/vpn.example.conf` for a template.
 
-Now this configuration file MUST be modified. 
+The `deploy_controller.sh` script sets up one instance and sets up tinc to 
+communicate with the node(s). This script can be used to set up the first 
+instance, and add more instances later manually.
 
-    instanceNumber: 1
+Every instance needs to be "initialized" to create the CA and related DB:
 
-This line MUST be changed, into something unique. Every `instanceNumber` can 
-only occur once, here we choose:
+    $ sudo vpn-server-api-init --instance <FQDN>
 
-    instanceNumber: 5
+# Node
 
-The `vpnProfiles` section can be updated, see 
-[Profile Configuration](PROFILE_CONFIG.md) for more information.
-
-# Server Node
-
-    $ sudo mkdir /etc/vpn-server-node/vpn.bar.org
-    $ sudo cp /usr/share/doc/vpn-server-node-*/config.yaml.example /etc/vpn-server-node/vpn.bar.org/config.yaml
-
-Here in this configuration file you also need to modify the `apiUrl` to point 
-to the correct IP address. The IP address will be `127.42.10x.100`, where `x` 
-is the `instanceNumber`, so in this example it will be `127.42.105.100` 
-because `instanceNumber` is `5`.
-
-# User Portal
-
-    $ sudo mkdir /etc/vpn-user-portal/vpn.bar.org
-    $ sudo cp /usr/share/doc/vpn-user-portal-*/config.yaml.example /etc/vpn-user-portal/vpn.bar.org/config.yaml
-
-Here in this configuration file you also need to modify the `apiUrl` to point 
-to the correct IP address, `127.42.105.100`.
-
-To add a user:
-
-    $ sudo vpn-user-portal-add-user --instance vpn.bar.org --user foo --pass bar
-
-# Admin Portal
-
-    $ sudo mkdir /etc/vpn-admin-portal/vpn.bar.org
-    $ sudo cp /usr/share/doc/vpn-admin-portal-*/config.yaml.example /etc/vpn-admin-portal/vpn.bar.org/config.yaml
-
-Here in this configuration file you also need to modify the `apiUrl` to point 
-to the correct IP address, `127.42.105.100`.
-
-To add a user:
-
-    $ sudo vpn-admin-portal-add-user --instance vpn.bar.org --user foo --pass bar
-
-# Apache
-
-For the new instance you can copy the 
-[Apache template](https://raw.githubusercontent.com/eduvpn/documentation/master/resources/vpn.example.conf) 
-to  `/etc/httpd/conf.d/vpn.bar.org.conf`. Replace all occurrences of 
-`vpn.example` in that file with `vpn.bar.org`. Also update the IP addresses
-used there, i.e. replace `127.42.101.100` with `127.42.105.100`.
-
-You then install a new certificate for `vpn.bar.org` as well, see the template
-for where to store the certificate and chain.
-
-    $ sudo systemctl restart httpd
-
-# Server Node (2)
-
-Now that this works, it should be possible to generate the server configuration
-for your new instance.
-
-    $ sudo vpn-server-node-server-config --instance vpn.bar.org --profile internet --generate
-    $ sudo systemctl enable openvpn-server@vpn.bar.org-internet-{0,1,2,3}
-    $ sudo systemctl start openvpn-server@vpn.bar.org-internet-{0,1,2,3}
-
-And the firewall:
-
-    $ sudo vpn-server-node-generate-firewall --install
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
-
-# sniproxy
-
-TBD.
+On the node machine you install `vpn-server-node`.

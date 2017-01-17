@@ -95,7 +95,9 @@ Regenerate and restart the firewall:
 
 # SNI Proxy
 
-**NOTE**: this is only needed when running everything on one host!
+**NOTE**: this is only needed when running everything on one host! If you set
+`portShare` to `false` in the configuration above, OpenVPN will directly claim
+`tcp/443`.
 
 SNI Proxy must be used to make `tcp/443` available for clients to connect to.
 
