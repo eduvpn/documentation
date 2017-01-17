@@ -27,10 +27,13 @@ and deploy instructions for various deployment scenarios.
 - Support [multiple instances](MULTI_INSTANCE.md);
 - Support for [multiple nodes](DISTRIBUTED_NODES.md) in different locations;
 - Group [ACL](ACL.md) support, including [VOOT](http://openvoot.org/);
-- Ability to disable all OpenVPN logging;
+- Ability to disable all OpenVPN logging (default);
+
+# Client Support
 
 The VPN server is working with and tested on a variety of platforms and 
 clients:
+
   - Windows (OpenVPN Community Client, Viscosity)
   - OS X (Tunnelblick, Viscosity)
   - Android (OpenVPN for Android, OpenVPN Connect)
@@ -49,7 +52,7 @@ documented separately. See [SAML](SAML.md).
 
 For connecting to the VPN service by default only certificates are used, no 
 additional user name/password authentication. It is possible to enable 
-[2FA](2FA.md) to require an additional TOTP.
+[2FA](2FA.md) to require an additional TOTP or YubiKey.
 
 # Deployment
 

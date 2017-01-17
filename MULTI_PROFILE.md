@@ -1,100 +1,91 @@
-**WIP**
-
 # Multi Profile
 
-Every VPN [instance](MULTI_INSTANCE.md) supports multiple "profiles". This 
-means that every instance can host multiple "deployment scenarios". For 
-instance there can be two profiles, one for employees, `office`, and one for 
-network administrators, `admin`. They can have completely different 
-configurations, ACLs based on group membership and optionally two-factor 
-authentication.
+It is possible to add additional "profiles" to a VPN service. This is useful 
+when you for example have two categories of users using the same VPN server,
+e.g. "employees" and "administrators". 
 
-Below a configuration example is given for exactly this scenario. An 
-organization has employees and administrators. The employees can access the VPN
-to access the organization's resources, while the administrators can access 
-additional networks to manage servers. The administrators are determined by the
-ACL and have two-factor authentication enabled as to provide extra security.
+**NOTE**: it is *NOT* recommended to use a single machine/VM for this, as this
+will require using SNI Proxy, see below.
 
-We assume the instance is running as `https://vpn.example/` and was initially
-deployed using the provided deploy script.
+**NOTE**: every profile needs their own dedicated IPv4 or IPv6 address. 
+OpenVPN can not listen on both an IPv4 address and and IPv6 address, unless it
+is the special address `::`, which is only possible if there is only one 
+profile. This becomes so complicated because we want to make `tcp/443` 
+available for _every_ profile for clients to connect to.
 
-The configuration is done in `/etc/vpn-server-api/vpn.example/config.yaml`.
+See this [issue](https://github.com/eduvpn/vpn-server-node/issues/8) for a 
+possible solution for needing the complicated "listen" solution.
 
-## Configuration
+# Configuration
 
-First we configure the `office` profile. Clients will get an IP address in the 
-range `10.0.5.0/24`. The clients will have access to the organization's 
-networks `192.168.0.0/24` and `192.168.1.0/24`. The administrators will get
-an IP address in the range `10.0.10.0/24` and have access to the additional
-network `192.168.5.0/24`.
+The configuration takes place in `/etc/vpn-server-api/vpn.example/config.php`, 
+assuming you are using `vpn.example`. Here we define two profiles, `office` and
+`admin`:
 
-    vpnProfiles:
-        internet:
-            profileNumber: 1
-            displayName: 'Office'
-            extIf: eth0
-            listen: 192.0.2.1
-            hostName: office.vpn.example
+    'vpnProfiles' => [
+
+        // Office Employees
+        'office' => [
+            'profileNumber' => 1,
+            'displayName' => 'Office',
+            ...
+            ...
+            'extIf' => 'eth0',
+            'listen' => '192.0.2.1',
+            'portShare' => true,        // if everything on one host
+            'hostName' => 'office.vpn.example',
             range: 10.0.5.0/24
             range6: 'fd10:0:5::/48'
             routes: ['192.168.0.0/24', '192.168.1.0/24']
+        ],
 
-        admin:
-            profileNumber: 2
-            displayName: 'Administrators'
-            extIf: eth0
-            listen: 192.0.2.2
-            hostName: admin.vpn.example
+        // Administrators
+        'admin' => [
+            'profileNumber' => 2,
+            'displayName' => 'Administrators',
+            ...
+            ...
+            'extIf' => 'eth0',
+            'listen' => '192.0.2.2',
+            'portShare' => true,        // if everything on one host
+            'hostName' => 'admin.vpn.example',
             range: 10.0.10.0/24
             range6: 'fd10:0:10::/48'
             routes: ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24']
-            twoFactor: true
-            enableAcl: true
-            aclGroupList: [admin]
+        ],
+    ],
 
-    groupProviders:
-        StaticProvider:
-            admin:
-                displayName: Administrators
-                members: [john, jane]
+In this scenario, `extIf` is actually the interface where the traffic needs 
+to go, so the "LAN" interface of the VPN server. The IP address mentioned in
+`listen` MUST be bound to the DNS name specified in `hostName`.
 
-[More](PROFILE_CONFIG.md) configuration options are available.
+# Additional Configuration
 
-# Deploy
+It is e.g. possible to activate [Two-factor Authentication](2FA.md) for the 
+`admin` profile, or see [Profile Configuration](PROFILE_CONFIG.md) for more
+configuration options.
 
-In order to activate, new configuration files for the OpenVPN processes need
-to be generated, the processes restarted and some other configuration changes
-need to be made.
+# Activate
 
-## Disable Old Configuration
+If you had an old profile, e.g. the default `internet`, it needs to be stopped
+first, and can be removed:
 
-If you are currently running the default `vpn.example` with the `internet` 
-profile you can disable and stop them like this:
-
-    $ sudo systemctl stop    openvpn-server@vpn.example-internet-{0,1,2,3}
-    $ sudo systemctl disable openvpn-server@vpn.example-internet-{0,1,2,3}
- 
-Remove the old configuration files, and the certificates/keys:
-
-    $ sudo rm /etc/openvpn/server-vpn.example-internet-{0,1,2,3}.conf
+    $ sudo systemctl stop    openvpn@vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl disable openvpn@vpn.example-internet-{0,1,2,3}
+    $ sudo rm /etc/openvpn/vpn.example-internet-{0,1,2,3}.conf
     $ sudo rm -rf /etc/openvpn/tls/vpn.example/internet
 
-## Generate New Configuration
- 
-To generate the new configuration files and certificates/keys for the newly 
-created profiles, run these commands:
+Now the new configurations can be generated:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile office \
-        --generate --cn office01.vpn.example
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile admin \
-        --generate --cn admin01.vpn.example
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile office --generate 
+    $ sudo vpn-server-node-server-config --instance vpn.example --profile admin --generate
 
-Enable them on boot and start them:
+Enable and start them:
 
-    $ sudo systemctl enable openvpn-server@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl enable openvpn-server@vpn.example-admin-{0,1,2,3}
-    $ sudo systemctl start  openvpn-server@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl start  openvpn-server@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl enable openvpn@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl enable openvpn@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl start  openvpn@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl start  openvpn@vpn.example-admin-{0,1,2,3}
 
 Regenerate and restart the firewall:
 
@@ -102,47 +93,13 @@ Regenerate and restart the firewall:
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
 
-## SNI Proxy
+# SNI Proxy
 
-It is no longer possible for sniproxy to listen on `0.0.0.0` as it is 
-impossible to detect which OpenVPN connection over `tcp/443` belongs to which
-profile, so sniproxy must also bind to the IP addresses as defined above. The 
-default configuration, as shows below needs to be modified:
+**NOTE**: this is only needed when running everything on one host!
 
-    user sniproxy
-    pidfile /var/run/sniproxy.pid
+SNI Proxy must be used to make `tcp/443` available for clients to connect to.
 
-    listen 80 {
-        proto http
-        table http_hosts
-    }
-
-    listen 443 {
-        proto tls
-        fallback 127.42.101.100:1194
-        table https_hosts
-    }
-
-    table http_hosts {
-        vpn.example 127.42.101.100:8080
-    }
-
-    table https_hosts {
-        vpn.example 127.42.101.100:8443
-    }
-
-The modification will look like this. Note the `listen` line where the IP 
-address now matches the `listen` directive from the above profile config. In 
-the line with `fallback` the IP address used is the one on which the OpenVPN 
-process listens. For the first profile, this is `internet` here the IP address 
-is `127.42.101.100`, for the next it is `127.42.101.101` and so on.
-
-**TODO**: it does not really make sense that the web server will listen on both
-IP addresses, we should have different host names for the OpenVPN endpoints, 
-e.g. `internet.vpn.example` and `office.vpn.example`, then this is not needed
-like this! We could even get rid of sniproxy if we have separate IP addresses
-for the web interface and the OpenVPN processes. We should use sniproxy only
-for 'single IP deploys'
+The file `/etc/sniproxy.conf` should look like this:
 
     user sniproxy
     pidfile /var/run/sniproxy.pid
@@ -182,5 +139,3 @@ for 'single IP deploys'
 Then, to restart sniproxy:
 
     $ sudo systemctl restart sniproxy
-
-That should be all!
