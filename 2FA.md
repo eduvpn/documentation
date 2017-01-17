@@ -48,7 +48,7 @@ Now the server configuration needs to be regenerated:
 
 Also, the VPN processes need to be restarted:
 
-    $ sudo systemctl restart openvpn@vpn.example-internet-{0,3}
+    $ sudo systemctl restart openvpn@vpn.example-internet-{0,1,2,3}
 
 ## Connecting to the VPN
 
