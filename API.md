@@ -9,7 +9,9 @@ The OAuth and API endpoints can be discovered by requesting a JSON document
 from the instance. Assuming the instance is located at `vpn.example`, the 
 document can be retrieved from `https://vpn.example/info.json`. 
 
-The contents look like this:
+**New implementations MUST use API version 2**.
+
+### Version 1
 
     {
         "api": {
@@ -22,6 +24,19 @@ The contents look like this:
         "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
     }
 
+### Version 2
+
+    {
+        "api": {
+            "profile_config": "https://vpn.example/portal/api/profile_config",
+            "create_certificate": "https://vpn.example/portal/api/create_certificate",
+            "profile_list": "https://vpn.example/portal/api/profile_list",
+            "system_messages": "https://vpn.example/portal/api/system_messages",
+            "user_messages": "https://vpn.example/portal/api/user_messages"
+        },
+        "version": 2,
+        "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
+    }
 
 ## Authorization Request 
 
@@ -114,8 +129,8 @@ public and private key.
     }
 
 The certificate and the private key need to be combined with a profile 
-configuration as `<cert>` and `<key>` that can be obtained through the 
-`/get_config` call.
+configuration as `<cert>...</cert>` and `<key>...</key>` that can be obtained 
+through the `/profile_config` call.
 
 ### Profile Config
 
@@ -211,6 +226,8 @@ The following options are available:
     'apiConsumers' => [
         'nl.eduvpn.app' => [
             'redirect_uri' => 'nl.eduvpn.app://import/callback',
+            'response_type' => 'code',
+            'display_name' => 'eduVPN for Android'
         ],
     ],
 
@@ -226,4 +243,16 @@ In API version 2, two calls were added:
 * `GET` to `/profile_config` to obtain only the configuration file, without 
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
-* **DEPRECATED** `POST` to `/create_config`, use the newly added API calls
+
+The following call is **DEPRECATED** and will be removed in the future:
+
+* `POST` to `/create_config`, use the newly added API calls
+
+For security reasons, API 2 switches to the _authorization code_ flow, together 
+with mitigations described in the following documents:
+
+* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07)
+* [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
+
+In particular, the use of PKCE is enforced, and the `response_type` MUST be 
+`code` for the authorization request.
