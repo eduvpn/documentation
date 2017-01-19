@@ -54,7 +54,7 @@ systemctl enable NetworkManager
 systemctl restart NetworkManager
 
 # create a bridge for the management service(s)
-nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16, 10.42.101.101/16
+nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16,10.42.101.101/16
 
 ###############################################################################
 # SELINUX
