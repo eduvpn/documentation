@@ -59,6 +59,7 @@ ${PACKAGE_MANAGER} -y install vpn-server-node
 systemctl enable NetworkManager
 systemctl restart NetworkManager
 
+nmcli connection del bridge-br0 2>/dev/null # delete if it is already there...
 # create a bridge for the management service(s)
 nmcli connection add type bridge ifname br0 ip4 ${MANAGEMENT_IP}/16
 
