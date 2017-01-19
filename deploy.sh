@@ -55,7 +55,7 @@ systemctl enable NetworkManager
 systemctl restart NetworkManager
 
 # create a bridge for the management service(s)
-nmcli connection del bridge-br0 # delete if it is already there...
+nmcli connection del bridge-br0 2>/dev/null # delete if it is already there...
 nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16,10.42.101.101/16
 
 ###############################################################################
