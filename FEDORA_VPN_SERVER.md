@@ -316,13 +316,23 @@ placed in `/var/www/html/info.json`, change the host name accordingly:
 
     {
         "api": {
-            "create_config": "https://vpn.example.org/vpn-user-portal/api.php/create_config",
-            "profile_list": "https://vpn.example.org/vpn-user-portal/api.php/profile_list",
-            "system_messages": "https://vpn.example.org/vpn-user-portal/api.php/system_messages",
-            "user_messages": "https://vpn.example.org/vpn-user-portal/api.php/user_messages"
-        },
-        "version": 1,
-        "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/_oauth/authorize"
+            "http://eduvpn.org/api#1": {
+                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
+                "create_config": "https://vpn.example/portal/api.php/create_config",
+                "profile_list": "https://vpn.example/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example/portal/api.php/system_messages",
+                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+            },
+            "http://eduvpn.org/api#2": {
+                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
+                "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
+                "profile_config": "https://vpn.example/portal/api.php/profile_config",
+                "profile_list": "https://vpn.example/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example/portal/api.php/system_messages",
+                "token_endpoint": "https://vpn.example/portal/_oauth/token",
+                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+            }
+        }
     }
 
 **Proof of Concept**: there is a PoC application available, eduVPN for Android, 
