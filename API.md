@@ -1,42 +1,41 @@
 # API
 
-The portal has an API for use by applications. It is protected using OAuth 2.0
-[[RFC 6749](https://tools.ietf.org/html/rfc6749), 
-[RFC 6750](https://tools.ietf.org/html/rfc6750)] and uses the same 
-authentication mechanism as the portal itself.
+The portal has an API for use by applications. It is protected using OAuth 2.0,
+the following documents are relevant for implementators:
+
+* [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749), 
+* [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750)] 
+* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07)
+* [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
+
+## Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
 from the instance. Assuming the instance is located at `vpn.example`, the 
 document can be retrieved from `https://vpn.example/info.json`. 
 
-**New implementations MUST use API version 2**.
-
-### Version 1
-
     {
         "api": {
-            "create_config": "https://vpn.example/portal/api/create_config",
-            "profile_list": "https://vpn.example/portal/api/profile_list",
-            "system_messages": "https://vpn.example/portal/api/system_messages",
-            "user_messages": "https://vpn.example/portal/api/user_messages"
-        },
-        "version": 1,
-        "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
+            "http://eduvpn.org/api#1": {
+                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
+                "create_config": "https://vpn.example/portal/api.php/create_config",
+                "profile_list": "https://vpn.example/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example/portal/api.php/system_messages",
+                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+            },
+            "http://eduvpn.org/api#2": {
+                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
+                "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
+                "profile_config": "https://vpn.example/portal/api.php/profile_config",
+                "profile_list": "https://vpn.example/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example/portal/api.php/system_messages",
+                "token_endpoint": "https://vpn.example/portal/_oauth/token",
+                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+            }
+        }
     }
 
-### Version 2
-
-    {
-        "api": {
-            "profile_config": "https://vpn.example/portal/api/profile_config",
-            "create_certificate": "https://vpn.example/portal/api/create_certificate",
-            "profile_list": "https://vpn.example/portal/api/profile_list",
-            "system_messages": "https://vpn.example/portal/api/system_messages",
-            "user_messages": "https://vpn.example/portal/api/user_messages"
-        },
-        "version": 2,
-        "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize"
-    }
+**NOTE**: new implementation MUST use `http://eduvpn.org/api#2`.
 
 ## Authorization Request 
 
