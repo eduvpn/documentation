@@ -3,9 +3,9 @@
 The portal has an API for use by applications. It is protected using OAuth 2.0,
 the following documents are relevant for implementators:
 
-* [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749), 
-* [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750)] 
-* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07)
+* [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749);
+* [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750);
+* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07);
 * [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
 
 ## Discovery
