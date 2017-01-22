@@ -26,6 +26,7 @@ document can be retrieved from `https://vpn.example/info.json`.
             "http://eduvpn.org/api#2": {
                 "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
                 "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
+                "create_config": "https://vpn.example/portal/api.php/create_config",
                 "profile_config": "https://vpn.example/portal/api.php/profile_config",
                 "profile_list": "https://vpn.example/portal/api.php/profile_list",
                 "system_messages": "https://vpn.example/portal/api.php/system_messages",
@@ -71,7 +72,7 @@ allow the application to show the user which profiles are available and some
 basic information, e.g. whether or not two-factor authentication is enabled.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api/profile_list
+        https://vpn.example/portal/api.php/profile_list
 
 The response looks like this:
 
@@ -90,11 +91,9 @@ The response looks like this:
 
 ### Create a Configuration
 
-**DEPRECATED IN API VERSION 2**
-
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
-        https://vpn.example/portal/api/create_config
+        https://vpn.example/portal/api.php/create_config
 
 This will send a HTTP POST to the API endpoint, `/create_config` with the 
 parameters `display_name` and `profile_id` to indicate for which profile a 
@@ -111,7 +110,7 @@ The response will be an OpenVPN configuration file.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android" \
-        https://vpn.example/portal/api/create_certificate
+        https://vpn.example/portal/api.php/create_certificate
 
 This will send a HTTP POST to the API endpoint, `/create_certificate` with the 
 parameter `display_name`. It will only create a certificate and return the 
@@ -138,14 +137,14 @@ through the `/profile_config` call.
 Only get the profile configuration without certificate and private key.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        "https://vpn.example/portal/api/profile_config?profile_id=internet"
+        "https://vpn.example/portal/api.php/profile_config?profile_id=internet"
 
 The response will be an OpenVPN configuration file.
 
 ### System Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api/system_messages
+        https://vpn.example/portal/api.php/system_messages
 
 The application is able to access the `system_messages` endpoint to see if 
 there are any notifications available. These are the types of messages:
@@ -185,7 +184,7 @@ available through the API until an administrator (manually) removes it.
 ### User Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api/user_messages
+        https://vpn.example/portal/api.php/user_messages
 
 These are messages specific to the user. It can contain a message about the 
 user being blocked, or other personal messages from the VPN administrator.
@@ -242,10 +241,6 @@ In API version 2, two calls were added:
 * `GET` to `/profile_config` to obtain only the configuration file, without 
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
-
-The following call is **DEPRECATED** and will be removed in the future:
-
-* `POST` to `/create_config`, use the newly added API calls
 
 For security reasons, API 2 switches to the _authorization code_ flow, together 
 with mitigations described in the following documents:
