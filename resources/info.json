@@ -13,7 +13,7 @@
             "profile_config": "https://vpn.example/portal/api.php/profile_config",
             "profile_list": "https://vpn.example/portal/api.php/profile_list",
             "system_messages": "https://vpn.example/portal/api.php/system_messages",
-            "token_endpoint": "https://vpn.example/portal/_oauth/token",
+            "token_endpoint": "https://vpn.example/portal/oauth.php/token",
             "user_messages": "https://vpn.example/portal/api.php/user_messages"
         }
     }
