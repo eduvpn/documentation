@@ -252,8 +252,6 @@ sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-server-api
 ###############################################################################
 
 mkdir -p /var/www/${INSTANCE}
-cp resources/index.html /var/www/${INSTANCE}/index.html
-sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/index.html
 # Copy server info JSON file
 cp resources/info.json /var/www/${INSTANCE}/info.json
 sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
