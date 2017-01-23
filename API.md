@@ -212,20 +212,36 @@ Same considerations apply as for the `system_messages` call.
 
 # Registration
 
-The OAuth client application can be registered in the user portal, in the 
+The OAuth client application(s) can be registered in the user portal, in the 
 following file, where `vpn.example` is the instance you want to configure:
 
     /etc/vpn-user-portal/vpn.example/config.php
 
 The following options are available:
 
-    'enableOAuth' => true,
-    // OAuth 2.0 consumers
-    'apiConsumers' => [
-        'nl.eduvpn.app' => [
-            'redirect_uri' => 'nl.eduvpn.app://import/callback',
-            'response_type' => 'code',
-            'display_name' => 'eduVPN for Android'
+    'Api' => [
+        // access_tokens expire after 3 months
+        'tokenExpiry' => 3*31*24*3600,
+
+        // OAuth 2.0 consumers
+        'consumerList' => [
+            // API 1 Apps
+            'nl.eduvpn.app' => [
+                'redirect_uri' => 'nl.eduvpn.app://import/callback',
+                'response_type' => 'token',
+                'display_name' => 'eduVPN for Android',
+            ],
+            // API 2 Apps
+            //'nl.eduvpn.app.android' => [
+            //    'redirect_uri' => 'nl.eduvpn.app.android://api/callback',
+            //    'response_type' => 'code',
+            //    'display_name' => 'eduVPN for Android',
+            //],
+            //'nl.eduvpn.app.windows' => [
+            //    'redirect_uri' => 'nl.eduvpn.app.windows://api/callback',
+            //    'response_type' => 'code',
+            //    'display_name' => 'eduVPN for Windows',
+            //],
         ],
     ],
 
