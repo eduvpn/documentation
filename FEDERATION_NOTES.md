@@ -60,18 +60,19 @@ The third solution is a lightweight version of the second scenario that creates 
 but doesn't need to. This way, it is very easy to set up a VPN server without requiring (CA) signing. Just accepting tokens from foreign NRENs is sufficient. 
 
 The fourth options is plausible, but creates a very big single point of failure and doesn't leverage
- 
+
+# Preferred scenario 3
 The way this could work is that there is a central "token distribution" service that is connected to eduGAIN that allow VPN apps to obtain an access token that
 can be used at all VPN services. The VPN services would verify this token using public key crypto (or by using a callback to the token distribution service) and 
 allow or reject the API call(s).
  
-# Abuse
+# Abuse handlign for scenario 3
  
 Suppose user X of NREN Y is abusing the VPN service of NREN Z. In that case, the access token can be revoked, together with the issues certificates at that
 particular NREN instance and abuse can be indicated at the central token distribution point where the identity of the user can be established if necessary, and 
 optionally blocked from all other VPN providers as well.
 
-# Implementation
+# Implementation steps for scenario 3
  
 1. implement eduGAIN solution (for web);
 2. implement API that can accept (local|foreign) tokens;
