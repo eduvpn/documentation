@@ -66,7 +66,7 @@ The way this could work is that there is a central "token distribution" service 
 can be used at all VPN services. The VPN services would verify this token using public key crypto (or by using a callback to the token distribution service) and 
 allow or reject the API call(s).
  
-# Abuse handlign for scenario 3
+# Abuse handling for scenario 3
  
 Suppose user X of NREN Y is abusing the VPN service of NREN Z. In that case, the access token can be revoked, together with the issues certificates at that
 particular NREN instance and abuse can be indicated at the central token distribution point where the identity of the user can be established if necessary, and 
