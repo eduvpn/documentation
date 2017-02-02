@@ -14,14 +14,15 @@ that make it interesting:
    NOS), Netflix, Google and Apple stores.
 
 Running a (local) VPN service typically gives the users only the first two 
-benefits. However, many (commercial) VPN provides install servers in data 
+benefits. However, many (commercial) VPN providers install servers in data 
 centers all around the world to be able to provide benefits 3 and 4. In 
-addition it allow the user to choose an endpoint close to their own location
+addition it allows the user to choose an endpoint close to their own location
 and thus reducing the latency.
 
-Within the context of collaboration in a research and education context, there 
-are a number of approaches that will allow for optimizing this, by distributing 
-the costs and work required to obtain those same benefits. Two approaches:
+Within the National Research and Education Network (NREN) community, there 
+are a number of approaches that will allow for optimizing the common commercial 
+VPN provider approach. NREN's are by nature already spread around the globe and
+are used to collaborate. Two approaches are feasible:
  
 1. Allow NREN in country X to run (virtual/containerized) VPN machines in the 
    data center(s) of NREN in country Y and vice versa;
@@ -29,7 +30,7 @@ the costs and work required to obtain those same benefits. Two approaches:
    allow users of all participating NRENs to use all instances.
  
 Both those scenarios are plausible, however the first scenario requires a lot 
-of maintenance and monitoring in (possibly) foreign data centers. This can 
+of maintenance and central monitoring in (possibly) foreign data centers. This can 
 probably partly be automated, but seems best avoided. The second scenario where 
 an NREN is only responsible for their own servers in their own data center(s) 
 while allowing "guest" access seems preferable.
