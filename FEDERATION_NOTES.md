@@ -33,16 +33,14 @@ Both those scenarios are plausible, however the first scenario requires a lot
 of maintenance and central monitoring in (possibly) foreign data centers. This can 
 probably partly be automated, but seems best avoided. The second scenario where 
 an NREN is only responsible for their own servers in their own data center(s) 
-while allowing "guest" access seems preferable.
- 
-The second approach already has services that follow this model:
- 
-1. eduroam for accessing wireless networks in other countries operated by other 
-   NRENs or their members using the "home" credentials;
+while allowing "guest" access seems preferable. Also because this scenario looks
+similar as proven service models in the NREN community like:
+  
+1. eduroam for accessing wireless networks in other locations and even countries operated by other NRENs or their members using the "home" credentials;
 2. eduGAIN for (federated) SAML web based authentication where a user can use 
    their "home" credentials to authenticate to service providers.
  
-Using the "eduroam model" would require the use of RADIUS to handle the 
+Using the "eduroam model" fully would require the use of RADIUS to handle the 
 user credentials in a secure fashion. This would be a great approach, but 
 unfortunately there are no (cross platform) VPN clients available that provide 
 this functionality.
