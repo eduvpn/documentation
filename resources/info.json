@@ -10,6 +10,7 @@
         "http://eduvpn.org/api#2": {
             "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
             "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
+            "create_config": "https://vpn.example/portal/api.php/create_config",
             "profile_config": "https://vpn.example/portal/api.php/profile_config",
             "profile_list": "https://vpn.example/portal/api.php/profile_list",
             "system_messages": "https://vpn.example/portal/api.php/system_messages",
