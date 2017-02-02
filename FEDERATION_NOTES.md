@@ -28,8 +28,10 @@ countries around the world, offering additional benefits:
 4. high availability: with many available endpoints in many countries, there is 
    a bigger chance of getting a connection to the VPN;
 
-NRENs typically have high performance networks and are the perfect place to 
-install additional VPN nodes for a federated VPN model.
+A National Research and Education Network (NREN) typically has high performance 
+networks and are by nature already spread around the globe and are used to 
+collaborate. the perfect place to install additional VPN nodes for a federated 
+VPN model.
 
 ## Requirements
 
