@@ -33,7 +33,7 @@ networks and are by nature already spread around the globe and are used to
 collaborate. the perfect place to install additional VPN nodes for a federated 
 VPN model.
 
-## Requirements
+## Tech Requirements
 
 There are two important requirements for the federated VPN model:
 
@@ -41,12 +41,6 @@ There are two important requirements for the federated VPN model:
    be possible to link this back to the account of an individual;
 2. it must be possible to (immediately) stop abuse when it is observed, without
    necessarily knowing the identity of the user;
-
-It is important that the procedure for determining the (real) identity of the 
-user who's account was used in an abuse scenario is NOT technical, but MUST 
-require (digital) paperwork. Stopping abuse MUST NOT require knowing the 
-identity of the user first, and stopping abuse SHOULD be effectively 
-immediately.
 
 Because an identity federation will be used, we assume that all users have only 
 one account, that of their home institute that can be used and cannot create 
@@ -97,39 +91,39 @@ trained to do just this for many years now, so it may not be such a big deal.
 There are a number of ways to improve on this, if needed:
  
 1. Improve the eduGAIN/SAML flow to make it less of a hassle for the user;
-2. Create a CA structure where each VPN provider becomes a "sub-CA" in this 
+2. Create a CA hierarchy where each VPN provider becomes a "sub-CA" in this 
    structure;
 3. Make the existing API of the participating VPN instances accept "foreign" 
    tokens to obtain access to the VPN;
 4. Run one central primary controller node (with the portals) with distributed 
    VPN nodes per NREN.
  
-### Improving eduGAIN/SAML
+### -1- Improve the eduGAIN/SAML flow
 
 For many NRENs using SAML, with or without eduGAIN is their pride and glory. 
 Working around its limitations seems too easy. Instead of fixing the user 
 experience (UX), it would mean working around it. That in itself could be seen 
 as a good reason to go with this solution and improve the UX for the users.
 
-## CA hierarchy 
+## -2- Create a CA hierarchy 
 
-This is interesting and could totally work. It is the perfect lock-in scenario 
-where all NRENs work together and create an additional governing unit for 
+This is an interesting scenario and could technically seen 'work'. It is a joint lock-in scenario 
+where all NRENs work closely together and create an additional governing unit for 
 maintaining the root CA. Having one (root) CA under which all server and 
 client certificates are issued is a neat looking solution from an architectural 
 point of view. However, it also can become quite complex: managing a CA is not 
 easy. However, some of the work done in eduroam could possibly be reused in 
 keeping this manageable.
 
-### Foreign API Tokens 
+### -3- Foreign API Tokens 
 
 This is a lightweight version of the second scenario that creates less 
-coupling, and there the federation aspect is an add-on, that can be enabled by 
-the server operators, but doesn't need to. This way, it is very easy to set up 
-a VPN server without requiring (CA) signing. Just accepting tokens from 
+coupling, and the federation aspect is an add-on, that may be enabled by 
+the VPN operator, but there is no hard requirement to do so. In this scenario, it is very easy to set up 
+a VPN server without the need for a CA structure. Just accepting tokens from 
 foreign NRENs is sufficient. 
 
-### Central Controller Node
+### -4- One Central Controller Node
 
 This is also possible, but creates a very big single point of failure, and 
 doesn't give any control over the VPN nodes to the NRENs running them.
