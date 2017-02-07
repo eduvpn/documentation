@@ -8,11 +8,37 @@ the following documents are relevant for implementations:
 * [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07);
 * [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
 
-## Discovery
+## Instance Discovery
+
+A list of all available instances is available on 
+`https://static.eduvpn.nl/instances.json`. That document can be used to 
+discover the various instances that should be listed in the application.
+
+    {
+        "instances": [
+            ...
+
+            {
+                "base_uri": "https://demo.eduvpn.nl/",
+                "display_name": "eduVPN Demo",
+                "logo_uri": "https://static.eduvpn.nl/demo.png"
+            },
+
+            ...
+        ],
+        "version": 1
+    }
+
+The `base_uri` can be used to perform the API Discovery, see below. The other
+fields can be used to improve the UI for users using the application by 
+providing a logo and a human readable name for the instance.
+
+## API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
-from the instance. Assuming the instance is located at `vpn.example`, the 
-document can be retrieved from `https://vpn.example/info.json`. 
+from the instance, either based on the `base_uri` from the Instance Discovery,
+or from a "domain name". Assuming the instance is located at `vpn.example`, 
+the document can be retrieved from `https://vpn.example/info.json`.
 
     {
         "api": {
@@ -42,11 +68,11 @@ document can be retrieved from `https://vpn.example/info.json`.
 
 The `authorization_endpoint` is then used to obtain an access token by 
 providing it with the following query parameters, they are all required, 
-despite what the OAuth 2.0 RFC prescribes:
+despite some of the,m being OPTIONAL according to the OAuth specification:
 
 * `client_id`: the ID that was registered, see below;
 * `redirect_uri`; the URL that was registered, see below;
-* `response_type`: this is always `code`;
+* `response_type`: always `code`;
 * `scope`: this is always `config`;
 * `state`: a cryptographically secure random string, to avoid CSRF;
 * `code_challenge_method`: always `S256`; 
@@ -60,8 +86,8 @@ MUST be the same as the `state` parameter value of the initial request. The
 response also includes `expires_in` that indicates when the access token 
 will expire.
 
-There are a number of example applications that implement OAuth 2.0 
-"Native Apps" like this in a secure fashion, they can be leveraged:
+There are a number of example applications that implement the OAuth 2.0 
+"Native Apps" profile like described above in a secure fashion:
 
 * [Android](https://github.com/openid/AppAuth-Android)
 * [iOS](https://github.com/openid/AppAuth-iOS)
