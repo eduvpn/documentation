@@ -1,7 +1,7 @@
 # API
 
 The portal has an API for use by applications. It is protected using OAuth 2.0,
-the following documents are relevant for implementators:
+the following documents are relevant for implementations:
 
 * [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749);
 * [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750);
@@ -36,24 +36,36 @@ document can be retrieved from `https://vpn.example/info.json`.
         }
     }
 
-**NOTE**: new implementation MUST use `http://eduvpn.org/api#2`.
+**NOTE**: new implementations MUST use `http://eduvpn.org/api#2`.
 
 ## Authorization Request 
 
 The `authorization_endpoint` is then used to obtain an access token by 
-providing it with the following query parameters, they are all required:
+providing it with the following query parameters, they are all required, 
+despite what the OAuth 2.0 RFC prescribes:
 
 * `client_id`: the ID that was registered, see below;
 * `redirect_uri`; the URL that was registered, see below;
-* `response_type`: this is always `token`;
+* `response_type`: this is always `code`;
 * `scope`: this is always `config`;
 * `state`: a cryptographically secure random string, to avoid CSRF;
+* `code_challenge_method`: always `S256`; 
+* `code_challenge`: the code challenge (see RFC 7636).
 
 The `authorization_endpoint` URL together with the query parameters is then 
-openened using a browser, and eventually redirected to the `redirect_uri` where
-the application can extract the `access_token` field from the URL fragement. 
-The `state` parameter is also added to the fragement of the `redirect_uri` and 
-MUST be the same as the `state` parameter value of the initial request.
+opened using a browser, and eventually redirected to the `redirect_uri` where
+the application can extract the `access_token` field from the URL fragment. 
+The `state` parameter is also added to the fragment of the `redirect_uri` and 
+MUST be the same as the `state` parameter value of the initial request. The 
+response also includes `expires_in` that indicates when the access token 
+will expire.
+
+There are a number of example applications that implement OAuth 2.0 
+"Native Apps" like this in a secure fashion, they can be leveraged:
+
+* [Android](https://github.com/openid/AppAuth-Android)
+* [iOS](https://github.com/openid/AppAuth-iOS)
+* [Windows](https://github.com/googlesamples/oauth-apps-for-windows)
 
 ## Using the API
 
@@ -63,7 +75,8 @@ how to use the API.
 
 If the API responds with a 401 it may mean that the user revoked the 
 application's permission. Permission to use the API needs to be request again
-in that case.
+in that case. The URLs MUST be taken from the `info.json` document described
+above.
 
 ### Profile List
 
@@ -153,7 +166,7 @@ there are any notifications available. These are the types of messages:
 * `motd`: a plain text "message of the day" (MotD) of the service, to be 
   displayed to users on login or when establishing a connection to the VPN;
 * `maintenance`: an (optional) plain text message in the `message` field
-  and a `begin` and `end` field with the timestamp;
+  and a `begin` and `end` field with the time stamp;
 
 All message types have the `date_time` field indicating the date the message 
 was created. This can be used as a unique identifier.
