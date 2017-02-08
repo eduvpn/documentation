@@ -68,7 +68,7 @@ the document can be retrieved from `https://vpn.example/info.json`.
 
 The `authorization_endpoint` is then used to obtain an access token by 
 providing it with the following query parameters, they are all required, 
-despite some of the,m being OPTIONAL according to the OAuth specification:
+despite some of them being OPTIONAL according to the OAuth specification:
 
 * `client_id`: the ID that was registered, see below;
 * `redirect_uri`; the URL that was registered, see below;
@@ -129,6 +129,12 @@ The response looks like this:
     }
 
 ### Create a Configuration
+
+A call that can be used to get a full working OpenVPN configuration file 
+including certificate and key. This MUST NOT be used by "Native Apps". Instead
+the separate `/create_certificate` and `/profile_config` MUST be used as they 
+allow for obtaining a new configuration without generating a new 
+certificate/key.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
@@ -285,6 +291,30 @@ The following options are available:
     ],
 
 Here `nl.eduvpn.app` is the `client_id`.
+
+# Building Applications
+
+There are a number of things to consider when building an application using 
+this API. The most important being handling the OAuth 2.0 tokens and the 
+VPN configurations.
+
+1. OAuth tokens can be revoked or expire. The application will need to deal
+   with this. If a token no longer works (or is about to expire) a new token
+   needs to be obtained (though user interaction with the browser). In the 
+   future, the "refresh token" MAY be implemented in case of token expiry.
+2. VPN server configuration can change which would require an update to the 
+   configuration of the client. This does not necessarily mean a new client 
+   certificate is required as well. It could for example be a change in allowed
+   encryption ciphers, or additional/new hosts to connect to;
+3. VPN (client) certificates can expire. The application needs to deal with 
+   obtaining a new certificate if the old one expired, or is about to expire;
+4. VPN (CA) certificates can expire. By default, the VPN server has a CA that 
+   expires after 5 years. If this happens, a new client certificate and new 
+   configuration needs to be obtained.
+
+## Flow
+
+TBD.
 
 # Changelog
 
