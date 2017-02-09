@@ -23,9 +23,7 @@ The built package(s) can be found in `build/out/RPMS/noarch`.
 # TODO 
 
 * We are currently building as _root_, that is not good;
-* Use "create_repo" or something like this to be able to build eduVPN packages
-  dependening on other packages created using this builder;
 * Sign packages;
 * Do not depend on Docker registry version of CentOS, or make sure that it is 
   properly signed and vetted;
-* Do not require an SRPM, but built directly from source (tar).
+* Do not require an SRPM, but built directly from source (tar) or commit. 
