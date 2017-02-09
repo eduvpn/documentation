@@ -301,7 +301,8 @@ VPN configurations.
 1. OAuth tokens can be revoked or expire. The application will need to deal
    with this. If a token no longer works (or is about to expire) a new token
    needs to be obtained (though user interaction with the browser). In the 
-   future, the "refresh token" MAY be implemented in case of token expiry.
+   future, the "refresh token" flow will be implemented for dealing with token
+   expiry;
 2. VPN server configuration can change which would require an update to the 
    configuration of the client. This does not necessarily mean a new client 
    certificate is required as well. It could for example be a change in allowed
