@@ -98,9 +98,6 @@ To run the script:
 
     $ sudo ./deploy.sh
 
-For more advanced deployment scenarios using multiple nodes, see the 
-documentation on [distributed nodes](DISTRIBUTED_NODES.md).
-
 ## Users
 
 By default there is a user `me` with a generated password for the User Portal
