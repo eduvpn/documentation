@@ -2,9 +2,12 @@
 EXTERNAL_IF=eth0
 EXTERNAL_IP=$(ifconfig ${EXTERNAL_IF} | grep inet | grep netmask | awk {'print $2'})
 dnf -y --refresh update
+# need to install iptables and iptables-services separately for some reason...
+dnf -y install iptables
+dnf -y install iptables-services 
 dnf -y copr enable fkooman/eduvpn-testing
 dnf -y remove firewalld
-dnf -y install vpn-server-api vpn-server-node vpn-user-portal vpn-admin-portal httpd php iptables iptables-services
+dnf -y install vpn-server-api vpn-server-node vpn-user-portal vpn-admin-portal httpd php
 echo 'net.ipv4.ip_forward = 1' | tee /etc/sysctl.conf > /dev/null
 sysctl --system
 setsebool -P httpd_can_network_connect=1
