@@ -59,8 +59,8 @@ additional user name/password authentication. It is possible to enable
 
 You can use a test deploy with the button below to test the software in its 
 most basic configuration for free for 2 hours! After the VM started you need
-to wait for a bit for the deploy scripts to finish running, then you can browse
-to the IP address using a web browser and go from there.
+to wait for a bit for the deploy scripts to finish running (> 10 minutes), 
+then you can browse to the IP address using a web browser and go from there.
 
 [![Dply](https://dply.co/b.svg)](https://dply.co/b/bQyRCv4h) 
 
