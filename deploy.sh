@@ -197,6 +197,9 @@ sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-user-portal/
 # point to our Server API
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.php
 
+# generate OAuth keyPair
+vpn-user-portal-init --instance ${INSTANCE}
+
 ###############################################################################
 # NETWORK
 ###############################################################################

@@ -89,6 +89,11 @@ Initialize the certificate authority (CA):
 
 ## User Portal
 
+Generate and configure an OAuth keyPair in 
+`/etc/vpn-user-portal/default/config.php`:
+
+    $ sudo vpn-user-portal-init
+
 Add a user:
 
     $ sudo vpn-user-portal-add-user --user foo --pass bar
