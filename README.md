@@ -42,7 +42,8 @@ clients:
 
 # Architecture
 
-The architecure is described in a [separate document](ARCHITECTURE.md).
+The architecure is described in a [separate document](ARCHITECTURE.md). 
+**NOT UP TO DATE**
 
 # Authentication 
 

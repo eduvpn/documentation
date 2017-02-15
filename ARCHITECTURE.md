@@ -1,3 +1,5 @@
+**NOT UP TO DATE**
+
 # Architecture
 
 This document describes the architecture of the software, its components and

@@ -15,6 +15,7 @@ sed -i 's/Require local/#Require local/' /etc/httpd/conf.d/vpn-user-portal.conf
 sed -i 's/Require local/#Require local/' /etc/httpd/conf.d/vpn-admin-portal.conf
 sed -i 's/#Require all granted/Require all granted/' /etc/httpd/conf.d/vpn-user-portal.conf
 sed -i 's/#Require all granted/Require all granted/' /etc/httpd/conf.d/vpn-admin-portal.conf
+vpn-user-portal-init
 vpn-user-portal-add-user --user foo --pass bar
 vpn-admin-portal-add-user --user foo --pass bar
 vpn-server-api-update-ip --profile internet --host "${EXTERNAL_IP}" --ext "${EXTERNAL_IF}" --reject6
