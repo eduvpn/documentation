@@ -11,15 +11,13 @@ that make it interesting:
 3. prevent retaliation when using the Internet, e.g. DoS to your (home) IP;
 4. circumvent state or corporate censorship, e.g. be able to use Twitter or 
    Facebook when traveling abroad in certain jurisdictions;
-5. circumvent geo-blocking, e.g. watch BBC iPlayer when traveling;
 
 These features can be accomplished by running your own VPN server in the 
 country of origin in a "non-federated" scenario. However, many (commercial) 
 VPN providers offer their users to choose different "endpoints" in various 
 countries around the world, offering additional benefits:
 
-1. circumvent geo-blocking for services from other countries than your own, 
-   e.g. watch BBC iPlayer content when you are not from the UK;
+1. For researchers or journalist, research the effects of geo-location, for example how adds change depending of the geo-location;
 2. use an endpoint in another jurisdiction where downloading copyrighted 
    material using BitTorrent is not illegal (enough);
 3. optimize performance, e.g. when traveling to a country on the other 
