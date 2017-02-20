@@ -106,7 +106,7 @@ to fix this, because the session-time is controlled by the Identity Provider (Id
 
 When choosing the eduGAIN scenario every single eduVPN instance has to be added to eduGAIN, which
 looks odd from a eduGAIN perspective as-if they are 'competing' services. 
-It makes more sense to create a federated user experience on the application layar.
+It makes more sense to create a federated user experience on the application layer.
 
 
 ## -2- Create a CA hierarchy 
