@@ -85,12 +85,10 @@ eduGAIN). The downside however is that the user experience can be considered
 "not so smooth", since for every new NREN the user must authenticate with 
 eduGAIN/SAML again for every other VPN instance. This would require opening the 
 browser, potentially choose the "home" institute again and login there. 
-Although this needs to happen only once per NREN. To be fair, users have been 
-trained to do just this for many years now, so it may not be such a big deal.
  
 There are a number of ways to improve on this, if needed:
  
-1. Improve the eduGAIN/SAML flow to make it less of a hassle for the user;
+1. Improve the eduGAIN/SAML flow if possible;
 2. Create a CA hierarchy where each VPN provider becomes a "sub-CA" in this 
    structure;
 3. Make the existing API of the participating VPN instances accept "foreign" 
@@ -98,12 +96,20 @@ There are a number of ways to improve on this, if needed:
 4. Run one central primary controller node (with the portals) with distributed 
    VPN nodes per NREN.
  
-### -1- Improve the eduGAIN/SAML flow
+### -1- Improve the eduGAIN/SAML flow, if possible
 
 For many NRENs using SAML, with or without eduGAIN is their pride and glory. 
-Working around its limitations seems too easy. Instead of fixing the user 
-experience (UX), it would mean working around it. That in itself could be seen 
-as a good reason to go with this solution and improve the UX for the users.
+There are many services which have been eduGAIN enabled thus enabling eduVPN is
+technically trivial. Important is a single sign-on experience even when choosing between eduVPN instances
+located internationally. When using the eduGAIN approach the single sign-on user experience
+will be strongly limited, because the session-time will expire usually within a few hours. This
+forces the user to relogin when choosing another eduVPN instance. Unfortunately there is no way
+to fix this, because the session-time is controlled by the Identity Provider (IdP) and not by the Service Provider (SP).
+
+When choosing the eduGAIN scenario every single eduVPN instance has to be added to eduGAIN, which
+looks odd from a eduGAIN perspective as-if they are 'competing' services. 
+It makes more sense to create a federated user experience on the application layar.
+
 
 ## -2- Create a CA hierarchy 
 
