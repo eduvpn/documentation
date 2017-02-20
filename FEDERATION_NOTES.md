@@ -17,7 +17,7 @@ country of origin in a "non-federated" scenario. However, many (commercial)
 VPN providers offer their users to choose different "endpoints" in various 
 countries around the world, offering additional benefits:
 
-1. For researchers or journalist, research the effects of geo-location, for example how adds change depending of the geo-location;
+1. For researchers or journalist, research the effects of geo-location, for example how ads change depending of the geo-location;
 2. use an endpoint in another jurisdiction where downloading copyrighted 
    material using BitTorrent is not illegal (enough);
 3. optimize performance, e.g. when traveling to a country on the other 
