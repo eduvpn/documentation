@@ -1,18 +1,41 @@
-# API
+# Introduction
 
-The portal has an API for use by applications. It is protected using OAuth 2.0,
-the following documents are relevant for implementations:
+This document describes the API provided by the VPN portal. The API can be used
+by applications wanting to integrate with the VPN software to make it easy for
+users to configure their VPN.
+
+# Standards
+
+OAuth 2.0 is used to provide the API. The following documents are relevant for 
+implementations and should be followed to the letter except when stated 
+differently:
 
 * [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749);
 * [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750);
 * [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07);
 * [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
 
+Implementing OAuth 2.0 correctly is not easy, there are a number of sample 
+applications available for various platforms that can (and probably should) be 
+used as a basis:
+
+* [Android](https://github.com/openid/AppAuth-Android)
+* [iOS](https://github.com/openid/AppAuth-iOS)
+* [Windows](https://github.com/googlesamples/oauth-apps-for-windows)
+
+# Definitions
+
+A VPN service running at a particular domain is called an _instance_, e.g. 
+`demo.eduvpn.nl`. An instance can have multiple _profiles_, e.g. 
+`internet` and `office`.
+
 ## Instance Discovery
 
-A list of all available instances is available on 
-`https://static.eduvpn.nl/instances.json`. That document can be used to 
-discover the various instances that should be listed in the application.
+For an application to discover which instances are available to show to the 
+user a JSON document can be retrieved. For example eduVPN has a document 
+available at `https://static.eduvpn.nl/instances.json`.
+
+The document looks like this:
 
     {
         "instances": [
@@ -25,44 +48,45 @@ discover the various instances that should be listed in the application.
             },
 
             ...
-        ],
-        "version": 1
+        ]
     }
 
 The `base_uri` can be used to perform the API Discovery, see below. The other
-fields can be used to improve the UI for users using the application by 
-providing a logo and a human readable name for the instance.
+fields can be used to enhance the UI for users using the application by 
+providing a logo and a human readable name for the instance. Users also SHOULD
+have the option to provide their own `base_uri` in the application UI if their
+favorite provider is not listed.
 
 ## API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
-from the instance, either based on the `base_uri` from the Instance Discovery,
-or from a "domain name". Assuming the instance is located at `vpn.example`, 
-the document can be retrieved from `https://vpn.example/info.json`.
+from the instance, based on the `base_uri` from the "Instance Discovery" 
+above. This is the content of `https://demo.eduvpn.nl/info.json`:
 
     {
         "api": {
             "http://eduvpn.org/api#1": {
-                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
-                "create_config": "https://vpn.example/portal/api.php/create_config",
-                "profile_list": "https://vpn.example/portal/api.php/profile_list",
-                "system_messages": "https://vpn.example/portal/api.php/system_messages",
-                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+                "authorization_endpoint": "https://demo.eduvpn.nl/portal/_oauth/authorize",
+                "create_config": "https://demo.eduvpn.nl/portal/api.php/create_config",
+                "profile_list": "https://demo.eduvpn.nl/portal/api.php/profile_list",
+                "system_messages": "https://demo.eduvpn.nl/portal/api.php/system_messages",
+                "user_messages": "https://demo.eduvpn.nl/portal/api.php/user_messages"
             },
             "http://eduvpn.org/api#2": {
-                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
-                "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
-                "create_config": "https://vpn.example/portal/api.php/create_config",
-                "profile_config": "https://vpn.example/portal/api.php/profile_config",
-                "profile_list": "https://vpn.example/portal/api.php/profile_list",
-                "system_messages": "https://vpn.example/portal/api.php/system_messages",
-                "token_endpoint": "https://vpn.example/portal/_oauth/token",
-                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+                "authorization_endpoint": "https://demo.eduvpn.nl/portal/_oauth/authorize",
+                "create_certificate": "https://demo.eduvpn.nl/portal/api.php/create_certificate",
+                "create_config": "https://demo.eduvpn.nl/portal/api.php/create_config",
+                "profile_config": "https://demo.eduvpn.nl/portal/api.php/profile_config",
+                "profile_list": "https://demo.eduvpn.nl/portal/api.php/profile_list",
+                "system_messages": "https://demo.eduvpn.nl/portal/api.php/system_messages",
+                "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token",
+                "user_messages": "https://demo.eduvpn.nl/portal/api.php/user_messages"
             }
         }
     }
 
-**NOTE**: new implementations MUST use `http://eduvpn.org/api#2`.
+
+**NOTE**: new implementations MUST use `http://eduvpn.org/api#2`!
 
 ## Authorization Request 
 
@@ -86,13 +110,6 @@ MUST be the same as the `state` parameter value of the initial request. The
 response also includes `expires_in` that indicates when the access token 
 will expire.
 
-There are a number of example applications that implement the OAuth 2.0 
-"Native Apps" profile like described above in a secure fashion:
-
-* [Android](https://github.com/openid/AppAuth-Android)
-* [iOS](https://github.com/openid/AppAuth-iOS)
-* [Windows](https://github.com/googlesamples/oauth-apps-for-windows)
-
 ## Using the API
 
 Using the `access_token` some additional server information can be obtained, 
@@ -100,7 +117,7 @@ as well as configurations created. The examples below will use cURL to show
 how to use the API.
 
 If the API responds with a 401 it may mean that the user revoked the 
-application's permission. Permission to use the API needs to be request again
+application's permission. Permission to use the API needs to be requested again
 in that case. The URLs MUST be taken from the `info.json` document described
 above.
 
@@ -111,7 +128,7 @@ allow the application to show the user which profiles are available and some
 basic information, e.g. whether or not two-factor authentication is enabled.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api.php/profile_list
+        https://demo.eduvpn.nl/portal/api.php/profile_list
 
 The response looks like this:
 
@@ -138,16 +155,16 @@ certificate/key.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android&profile_id=internet" \
-        https://vpn.example/portal/api.php/create_config
+        https://demo.eduvpn.nl/portal/api.php/create_config
 
 This will send a HTTP POST to the API endpoint, `/create_config` with the 
 parameters `display_name` and `profile_id` to indicate for which profile a 
 configuration is downloaded.
 
 The acceptable values for `profile_id` can be discovered using the 
-`/profile_list` call.
+`/profile_list` call as shown above.
 
-The response will be an OpenVPN configuration file.
+The response will be an OpenVPN configuration file that can be used "as-is".
 
 ### Create a Certificate 
 
@@ -155,7 +172,7 @@ The response will be an OpenVPN configuration file.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android" \
-        https://vpn.example/portal/api.php/create_certificate
+        https://demo.eduvpn.nl/portal/api.php/create_certificate
 
 This will send a HTTP POST to the API endpoint, `/create_certificate` with the 
 parameter `display_name`. It will only create a certificate and return the 
@@ -175,6 +192,10 @@ The certificate and the private key need to be combined with a profile
 configuration as `<cert>...</cert>` and `<key>...</key>` that can be obtained 
 through the `/profile_config` call.
 
+**NOTE**: a certificate is valid for ALL _profiles_ of a particular _instance_, 
+so if an instance has e.g. the profiles `internet` and `office`, only one 
+certificate is required!
+
 ### Profile Config
 
 **API VERSION 2 ONLY**
@@ -182,14 +203,15 @@ through the `/profile_config` call.
 Only get the profile configuration without certificate and private key.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        "https://vpn.example/portal/api.php/profile_config?profile_id=internet"
+        "https://demo.eduvpn.nl/portal/api.php/profile_config?profile_id=internet"
 
-The response will be an OpenVPN configuration file.
+The response will be an OpenVPN configuration file without the `<cert>` and 
+`<key>` fields.
 
 ### System Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api.php/system_messages
+        https://demo.eduvpn.nl/portal/api.php/system_messages
 
 The application is able to access the `system_messages` endpoint to see if 
 there are any notifications available. These are the types of messages:
@@ -229,7 +251,7 @@ available through the API until an administrator (manually) removes it.
 ### User Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn.example/portal/api.php/user_messages
+        https://demo.eduvpn.nl/portal/api.php/user_messages
 
 These are messages specific to the user. It can contain a message about the 
 user being blocked, or other personal messages from the VPN administrator.
@@ -258,9 +280,9 @@ Same considerations apply as for the `system_messages` call.
 # Registration
 
 The OAuth client application(s) can be registered in the user portal, in the 
-following file, where `vpn.example` is the instance you want to configure:
+following file, where `demo.eduvpn.nl` is the instance you want to configure:
 
-    /etc/vpn-user-portal/vpn.example/config.php
+    /etc/vpn-user-portal/demo.eduvpn.nl/config.php
 
 The following options are available:
 
@@ -300,13 +322,14 @@ VPN configurations.
 
 1. OAuth tokens can be revoked or expire. The application will need to deal
    with this. If a token no longer works (or is about to expire) a new token
-   needs to be obtained (though user interaction with the browser). In the 
-   future, the "refresh token" flow will be implemented for dealing with token
-   expiry;
+   needs to be obtained (though user interaction with the browser). If a 
+   "refresh token" was provided by the token endpoint, that MUST be used 
+   instead;
 2. VPN server configuration can change which would require an update to the 
    configuration of the client. This does not necessarily mean a new client 
    certificate is required as well. It could for example be a change in allowed
-   encryption ciphers, or additional/new hosts to connect to;
+   encryption ciphers, or additional/new hosts to connect to, this is why the 
+   VPN configuration needs to be obtained before every connection attempt;
 3. VPN (client) certificates can expire. The application needs to deal with 
    obtaining a new certificate if the old one expired, or is about to expire;
 4. VPN (CA) certificates can expire. By default, the VPN server has a CA that 
