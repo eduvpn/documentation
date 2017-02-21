@@ -314,31 +314,9 @@ The following options are available:
 
 Here `nl.eduvpn.app` is the `client_id`.
 
-# Building Applications
-
-There are a number of things to consider when building an application using 
-this API. The most important being handling the OAuth 2.0 tokens and the 
-VPN configurations.
-
-1. OAuth tokens can be revoked or expire. The application will need to deal
-   with this. If a token no longer works (or is about to expire) a new token
-   needs to be obtained (though user interaction with the browser). If a 
-   "refresh token" was provided by the token endpoint, that MUST be used 
-   instead;
-2. VPN server configuration can change which would require an update to the 
-   configuration of the client. This does not necessarily mean a new client 
-   certificate is required as well. It could for example be a change in allowed
-   encryption ciphers, or additional/new hosts to connect to, this is why the 
-   VPN configuration needs to be obtained before every connection attempt;
-3. VPN (client) certificates can expire. The application needs to deal with 
-   obtaining a new certificate if the old one expired, or is about to expire;
-4. VPN (CA) certificates can expire. By default, the VPN server has a CA that 
-   expires after 5 years. If this happens, a new client certificate and new 
-   configuration needs to be obtained.
-
 ## Flow
 
-TBD.
+See [Application Flow](APP_FLOW.md).
 
 # Changelog
 
