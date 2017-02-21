@@ -116,8 +116,7 @@ where all NRENs work closely together and create an additional governing unit fo
 maintaining the root CA. Having one (root) CA under which all server and 
 client certificates are issued is a neat looking solution from an architectural 
 point of view. However, it also can become quite complex: managing a CA is not 
-easy. However, some of the work done in eduroam could possibly be reused in 
-keeping this manageable.
+easy and there are no proven large scale CA setups within the NREN community. This is definitely not the most preferred scenario.
 
 ### -3- Foreign API Tokens 
 
