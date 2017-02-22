@@ -71,18 +71,33 @@ provided.
 A connection to a VPN server can fail for a number of reasons:
 
 1. The server is offline;
+   * Show error to the user to try again later, or try other server from the
+     configuration, but typically OpenVPN takes care of that already;
 2. The VPN CA is expired;
+   * If the obtained profile configuration includes the expired CA, there is 
+     not much to do except show error. This needs to be resolved on the server;
 3. the VPN server certificate is expired;
+   * Show error, this needs to be fixed on the server;
 4. The VPN client certificate is expired;
+   * Obtain a new client certificate;
 5. The 2FA credential is invalid or missing;
+   * OpenVPN will return an authentication error in this case, ask for 2FA 
+     credential again;
 6. The user account is blocked;
+   * OpenVPN will return an authentication error in this case, show a message;
 7. The user is not, or no longer allowed to use a particular profile (ACL);
+   * OpenVPN will return an authentication error in this case, give an error;
 
 The application should deal with all this situations, deal with the issue 
 automatically if possible, and if not show an appropriate error message.
 
 **NOTE**: a blocked user will still be able to do everything using the API, 
 connecting the VPN will be blocked though.
+
+**NOTE**: for various situations the OpenVPN process will give the same error,
+i.e. for 2FA error, blocked user or ACL issues the same "authentication error"
+is returned. We have to think about a way to provide the real error to the 
+appplication, possibly through a user message (TBD).
 
 # API 
 
