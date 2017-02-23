@@ -147,7 +147,7 @@ The response looks like this:
 
 ### User Info
 
-**NOT YET IMPLEMENTED**
+**API VERSION 2 ONLY**
 
 This call will show information about the user, whether or not the user is 
 enrolled for 2FA and whether or not the user is prevented from connecting to
@@ -169,8 +169,6 @@ The response looks like this:
             "ok": true
         }
     }
-
-See [Issue](https://github.com/eduvpn/vpn-user-portal/issues/64).
 
 ### Create a Configuration
 
@@ -347,7 +345,7 @@ See [Application Flow](APP_FLOW.md).
 
 # Changelog
 
-In API version 2, two calls were added:
+In API version 2, some calls were added:
 
 * `POST` to `/create_certificate` to create a `private_key` and 
   `certificate` for an instance to be used with all profiles. This makes it 
@@ -355,6 +353,7 @@ In API version 2, two calls were added:
 * `GET` to `/profile_config` to obtain only the configuration file, without 
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
+* `GET` to `/user_info` to obtain user information.
 
 For security reasons, API 2 switches to the _authorization code_ flow, together 
 with mitigations described in the following documents:
