@@ -56,23 +56,13 @@ issues appear.
 
 A number of issues have been identified and workarounds provided:
 
-- missing `random_int` and `random_bytes` that were introduced in PHP 7;
+- PHP 5.4 does not have a CSPRNG, so we use 
+  [pecl-libsodium](https://paragonie.com/book/pecl-libsodium) instead;
 - [session fixation](https://en.wikipedia.org/wiki/Session_fixation) for which 
-  a workaround exists;
+  a workaround exists that is implemented;
 
 The configuration updates we made to PHP are all listed 
 [here](resources/99-eduvpn.ini).
-
-### Random
-
-For providing random numbers we use the PHP 5.x polyfill 
-[paragonie/random_compat](https://github.com/paragonie/random_compat), this 
-comes with an additional warning as we really do NOT want to use the OpenSSL 
-fallback as that is considered insecure for generating (crypto) random numbers.
-
-The polyfill will try first libsodium and if that is missing it will fallback 
-to `/dev/urandom` which is alright. We just have to make really sure that 
-`/dev/urandom` is available to PHP.
 
 ### Sessions
 
@@ -80,3 +70,57 @@ In PHP >= 5.5.2 there is a way to prevent session fixation. There is a PHP
 [option](https://secure.php.net/manual/en/session.configuration.php#ini.session.use-strict-mode)
 for this. Unfortunately we need to support PHP 5.4, so we have to implement a
 [workaround](https://paragonie.com/blog/2015/04/fast-track-safe-and-secure-php-sessions).
+
+## Threat Model
+
+We will consider the following scenarios:
+
+1. A user uses the VPN to safely use the Internet;
+2. An organization uses the VPN to allow employees to access the internal 
+   resources;
+
+The main purpose of scenario 1 is to avoid being MITMed, e.g. to prevent 
+JavaScript injection in an attempt to exploit the web browser, or avoid 
+surveillance. An attack that would make either possible basically makes the 
+VPN useless, or even more dangerous than not using the VPN in the first place.
+
+There are a number of attacks that could result in this MITM:
+
+1. The VPN server itself is compromised allowing the attacker to snoop all 
+   traffic and modify it;
+2. The CA is compromised, allowing creation of valid VPN server certificates;
+3. The "upstream" ISP running the VPN service is compromised and under 
+   surveillance;
+
+### Server Compromise
+
+TBD.
+
+#### Recovery
+
+TBD.
+
+### CA 
+
+Because of the nature of the VPN service, the CA needs to be "online", i.e. it 
+should be able to sign certificates on demand. There are a number of 
+countermeasures that could be taken to avoid compromising the CA by using e.g. 
+a hardware HSM that contains the CA. This is currently not done because that 
+actually is quite complicated in a (managed) VM platform.
+
+It would be very interesting to investigate if it is possible to have a 
+separate CA for signing the client certificates and a different one for server 
+certificates so that generating server certificates requires an offline CA. 
+
+However, if a VPN server certificate is stolen it can be used to intercept 
+client connections by hijacking DNS.
+
+#### Recovery
+
+In order to recover, the entire CA needs to be regenerated including all 
+client and server certificates.
+
+### Compromised ISP
+
+This is out of scope of this threat model, but is mentioned anyway for 
+completeness.
