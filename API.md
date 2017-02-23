@@ -80,6 +80,7 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
                 "profile_list": "https://demo.eduvpn.nl/portal/api.php/profile_list",
                 "system_messages": "https://demo.eduvpn.nl/portal/api.php/system_messages",
                 "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token",
+                "user_info": "https://demo.eduvpn.nl/portal/api.php/user_info",
                 "user_messages": "https://demo.eduvpn.nl/portal/api.php/user_messages"
             }
         }
