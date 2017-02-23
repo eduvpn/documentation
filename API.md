@@ -145,6 +145,33 @@ The response looks like this:
         }
     }
 
+### User Info
+
+**NOT YET IMPLEMENTED**
+
+This call will show information about the user, whether or not the user is 
+enrolled for 2FA and whether or not the user is prevented from connecting to
+the VPN.
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        https://demo.eduvpn.nl/portal/api.php/user_info
+
+The response looks like this:
+
+    {
+        "user_info": {
+            "data": [
+                {
+                    "two_factor_enrolled": false,
+                    "is_disabled": false
+                }
+            ],
+            "ok": true
+        }
+    }
+
+See [Issue](https://github.com/eduvpn/vpn-user-portal/issues/64).
+
 ### Create a Configuration
 
 A call that can be used to get a full working OpenVPN configuration file 

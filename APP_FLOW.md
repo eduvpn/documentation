@@ -14,23 +14,30 @@ A VPN service running at a particular domain is called an _instance_, e.g.
 This assumes the user already configured the application with their favorite 
 VPN instance and profile and that there are no errors.
 
-1. User launches app;
-2. User selects their VPN instance/profile of choice;
-3. Application performs discovery (fetches `info.json` from instance);
-4. Application fetches system and user messages using endpoints from 
-   `info.json` together with the already stored OAuth access token and displays 
-   them to the user;
-5. Application fetches VPN configuration for the chosen profile (using OAuth 
-   access token);
-6. Application combines VPN configuration with already stored client 
-   certificate and key;
-7. Application (optionally) asks for second factor;
-8. Application starts VPN with combined configuration;
-9. Application shows basic VPN connection details, e.g. IP address.
+1.  User launches app;
+2.  User selects their VPN instance/profile of choice;
+3.  Application performs discovery (fetches `info.json` from instance);
+4.  Application fetches user info;
+5.  Application fetches system and user messages using endpoints from 
+    `info.json` together with the already stored OAuth access token and displays 
+    them to the user;
+6.  Application fetches VPN configuration for the chosen profile (using OAuth 
+    access token);
+7.  Application combines VPN configuration with already stored client 
+    certificate and key;
+8.  Application (optionally) asks for second factor;
+9.  Application starts VPN with combined configuration;
+10. Application shows basic VPN connection details, e.g. IP address.
 
 Step 3 is needed as the API configuration, e.g. endpoints, can change over 
-time. Step 5 is needed as the server configuration can change over time, e.g. 
+time. Step 6 is needed as the server configuration can change over time, e.g. 
 new TLS cipher configuration or new VPN endpoints.
+
+Step 4 exposes whether or not the user is enrolled for 2FA, and whether or not
+the user is blocked. This information should be used by the application before
+attempting to connect. If a profile requires 2FA and the user is not enrolled,
+this should be indicated to the user and the enrollment process started by 
+opening the browser.
 
 # Enrollment
 
@@ -48,7 +55,7 @@ After the enrollment the Basic Flow is executed starting at step 4.
 
 # Configuration
 
-Steps 5 and 6 consist of obtaining the current VPN configuration, and combining
+Steps 6 and 7 consist of obtaining the current VPN configuration, and combining
 this configuration with the client certificate and key.
 
 Obtained configurations have everything, except the client certificate and 
@@ -92,12 +99,16 @@ The application should deal with all this situations, deal with the issue
 automatically if possible, and if not show an appropriate error message.
 
 **NOTE**: a blocked user will still be able to do everything using the API, 
-connecting the VPN will be blocked though.
+connecting the VPN will be blocked though, this information is also exposed
+through the `/user_info` call.
 
 **NOTE**: for various situations the OpenVPN process will give the same error,
 i.e. for 2FA error, blocked user or ACL issues the same "authentication error"
-is returned. We have to think about a way to provide the real error to the 
-appplication, possibly through a user message (TBD).
+is returned. A profile is not listed in the `/profile_list` call if the user is
+not member of the required groups (anymore) and the `/user_info` call will 
+indicate whether the user is blocked. So it is possible that a `/profile_list` 
+no longer shows a previously configured VPN profile because the user no longer 
+has access. Appropriate errors need to be shown to the user.
 
 # API 
 
