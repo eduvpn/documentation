@@ -1,5 +1,5 @@
 # Introduction
-Some information (such as the motives behind these apps and their benefits) are already outlined in the Android functional requirements. As of such they will not be repeated here. This document will consist of:
+Some information (such as the motives behind these apps and their benefits) are already outlined in the Android functional requirements, as of such they will not be repeated here. This document will consist of:
 
 * Functional requirements
 * Application flow
@@ -29,7 +29,11 @@ eduVPN will be made available on the eduVPN website and the Windows Store.
 * It *must* be possible to manually specify an instance by its URL (in case it is nog listed in instances.json).
 * Administrator privileges *must not* be required.
 * The license *must* be compatible with OpenVPN for Windows and / or other used components. An exact license needs to be determined, but initially the GPLv3 (or later) *must* be used.
-* 
+* The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means, including, but not limited to:
+  * publish the Contribution,
+  * modify the Contribution, to prepare derivative works based upon or containing the Contribution and to combine the Contribution with other software code,
+  * reproduce the Contribution in original or modified form,
+  * distribute, to make the Contribution available to the public, display and publicly perform the Contribution in original or modified form.
 
 
 # Application flow
@@ -37,6 +41,11 @@ The [application flow](https://github.com/eduvpn/documentation/blob/master/app/w
 
 # Application design
 The application design describes the interface, design choices, looks and the user experience.
+
+## Design
+The design is 
+
+## Control and manage
 
 ## User flow
 
