@@ -11,6 +11,11 @@ The functional requirements describe *what* the application must be capable of a
 ## Supported operating systems
 The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8.1 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome.
 
+## Authorization
+Each eduVPN or Let's Connect! instance can configure their own authentication method. It could be a simple username and password, ir be integrated in a SAML federation like SURFconext. This is of no consequence to the app since it will only use OAuth 2.0 tokens to interact with the instance.
+
+The OAuth flow is explained in more details in the [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md).
+
 ## Development
 * *Principe 1*: Anyone with a computer with just Microsoft Visual Basic Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
 * *Principle 2*: Anyone with a computer with \*NIX *should* be able to build the application and its dependencies from source in the easiest way possible by script and generate an installable application (exe).
@@ -46,15 +51,17 @@ The design is based on other Windows Universal Apps that had some similarities w
 * There is no footer, and thus no SURFnet logo.
 
 ## Control and manage
-The application resides in the icon tray on the user's taskbar. When clicked with a single or double left mouse button, the UI will show above the icon (as shown in the screenshot). When the cross in the right top of the UI is clicked, the eduVPN will return to the icon tray. To really close eduVPN, one must right click the icon and click "Exit".
+The application resides in the icon tray on the user's taskbar. When not connected, the normal eduVPN logo will be the app icon. When connected the icon turns green, as shown on the screenshot below.
 
-![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/4-wallpaper.jpg "Screenshot eduVPN Windows application")
+When clicked with a single or double left mouse button, the UI will show above the icon (as shown in the screenshot). When the cross in the right top of the UI is clicked, the eduVPN will return to the icon tray closing the UI but not the VPN-connection or application itself. To really exit eduVPN, one must right click the icon and click "Exit".
+
+![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/4-wallpaper-desktop.jpg "Screenshot eduVPN Windows application")
 
 ## User flow
+The primary user flow (of the most important parts of the UI) is listed in the picture below. Note that there are no mockups for the settings tab and the view log window, these should be created in line with this design and the operating system (just like we did on Android).
 
 ![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/5-user-flow.png "User flow")
 
-## 
-
-
 # References
+* [OpenVPN (GUI) 2.4.X](https://openvpn.net/index.php/open-source/downloads.html)
+* [Previous Android version of these docs](https://github.com/eduvpn/documentation/tree/master/app/android)
