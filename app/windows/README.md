@@ -29,12 +29,7 @@ eduVPN will be made available on the eduVPN website and the Windows Store.
 * It *must* be possible to manually specify an instance by its URL (in case it is nog listed in instances.json).
 * Administrator privileges *must not* be required.
 * The license *must* be compatible with OpenVPN for Windows and / or other used components. An exact license needs to be determined, but initially the GPLv3 (or later) *must* be used.
-* The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means, including, but not limited to:
-  * publish the Contribution,
-  * modify the Contribution, to prepare derivative works based upon or containing the Contribution and to combine the Contribution with other software code,
-  * reproduce the Contribution in original or modified form,
-  * distribute, to make the Contribution available to the public, display and publicly perform the Contribution in original or modified form.
-
+* The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means.
 
 # Application flow
 The [application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) describes how the application should work with the API and provides an overview of all the steps within the application.
@@ -43,9 +38,17 @@ The [application flow](https://github.com/eduvpn/documentation/blob/master/app/w
 The application design describes the interface, design choices, looks and the user experience.
 
 ## Design
-The design is 
+The design is based on other Windows Universal Apps that had some similarities with our Android application. Although the app looks a lot like the Android app, some elements are quite different. A few examples:
+
+* There is a three button menu in the top of the application.
+* The Connection tab consists of one page with notifications and and connection info.
+* There is a dedicated back button left to the tab title.
+* There is no footer, and thus no SURFnet logo.
 
 ## Control and manage
+The application resides in the icon tray on the user's taskbar. When clicked with a single or double left mouse button, the UI will show above the icon (as shown in the screenshot). When the cross in the right top of the UI is clicked, the eduVPN will return to the icon tray. To really close eduVPN, one must right click the icon and click "Exit".
+
+![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/4-wallpaper.jpg "Screenshot eduVPN Windows application")
 
 ## User flow
 
