@@ -9,12 +9,20 @@ Some information (such as the motives behind these apps and their benefits) are 
 The functional requirements describe *what* the application must be capable of and not necessarily *how*. The [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) will provide an in depth view on how the application should work.
 
 ## Supported operating systems
-The application *must* be compatible with Micrsoft's Windows desktop and mobile 8 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome.
+The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8.1 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome.
 
 ## Development
+* *Principe 1*: Anyone with a computer with just Microsoft Visual Basic Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
+* *Principle 2*: Anyone with a computer with \*NIX *should* be able to build the application and its dependencies from source in the easiest way possible by script and generate an installable application (exe).
+* All used components (core, dependencies etc.) in the application *must* be free software.
+* In contrary to the Android application (where everything *must* be build from source) the OpenVPN 2.4 binary *may* be provided with the eduVPN application.
+* In case additional dependencies are required, they *must* be clearly mentioned in the main README, *must* be free software and *must* have compatible licensing.
+* The official OpenVPN for Windows application *must* be used. This is free software and can be integrated directly in the eduVPN application (through binary or from source, see bullet 4).
 
 ## Publishing
-The application 
+eduVPN will be made available on the eduVPN website and the Windows Store.
+
+* The application *must* be compatible with the Windows Store and its guidelines. 
 
 ## Additional requirements
 * The downloaded VPN configuration and/or other secrets *must* be only stored in protected storage that is only available to the eduvpn application.
