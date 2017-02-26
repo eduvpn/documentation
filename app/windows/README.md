@@ -1,11 +1,11 @@
-# Introduction
+# 1. Introduction
 Some information (such as the motives behind these apps and their benefits) are already outlined in the Android functional requirements, as of such they will not be repeated here. This document will consist of:
 
 * Functional requirements
 * Application flow
 * Application design
 
-# Functional requirements
+# 2. Functional requirements
 The functional requirements describe *what* the application must be capable of and not necessarily *how*. The [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) will provide an in depth view on how the application should work.
 
 ## Supported operating systems
@@ -38,10 +38,10 @@ eduVPN will be made available on the eduVPN website (executable) and the Windows
 * The license *must* be compatible with OpenVPN for Windows and / or other used components. An exact license needs to be determined, but initially the GPLv3 (or later) *must* be used.
 * The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means.
 
-# Application flow
+# 3. Application flow
 The [application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) describes how the application should work with the API and provides an overview of all the steps within the application.
 
-# Application design
+# 4. Application design
 The application design describes the interface, design choices, looks and the user experience.
 
 ## Design
@@ -65,9 +65,9 @@ The primary user flow (of the most important parts of the UI) is listed in the p
 
 ![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/5-user-flow.png "User flow")
 
-# Things to think about
+# 5. Things to think about
 * On Android, users download the app through the Play Store of F-Droid. Both will alert the user when updates are available, but this will not be the case on Windows since a lot of users don't user the Windows Store (and with good reason). How can we alert users that their app needs an update? Are there UWP native methods for this?
 
-# References
+# 6. References
 * [OpenVPN (GUI) 2.4.X](https://openvpn.net/index.php/open-source/downloads.html)
 * [Previous Android version of these docs](https://github.com/eduvpn/documentation/tree/master/app/android)
