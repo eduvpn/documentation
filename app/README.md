@@ -3,5 +3,4 @@ The eduVPN and Let's Connect! projects aim to provide native applications for co
 
 * Functional requirements describes what the application must be capable of (functionality, architecture).
 * Technical application flow describes how the application should work (API, steps).
-* User application flow shows the flow from a user's perspective.
-* Mockup of the user interface shows the design of the UI.
+* Application design shows the flow from a user's perspective and the UI design.
