@@ -9,7 +9,7 @@ Some information (such as the motives behind these apps and their benefits) are 
 The functional requirements describe *what* the application must be capable of and not necessarily *how*. The [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) will provide an in depth view on how the application should work.
 
 ## Supported operating systems
-The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8.1 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome.
+The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8.1 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome because of Win32. We will start with UWP.
 
 ## Authorization
 Each eduVPN or Let's Connect! instance can configure their own authentication method. It could be a simple username and password, ir be integrated in a SAML federation like SURFconext. This is of no consequence to the app since it will only use OAuth 2.0 tokens to interact with the instance.
@@ -49,6 +49,7 @@ The design is based on other Windows Universal Apps that had some similarities w
 * The Connection tab consists of one page with notifications and and connection info.
 * There is a dedicated back button left to the tab title.
 * There is no footer, and thus no SURFnet logo.
+* The Segoe UI font is used for all text.
 
 ## Control and manage
 The application resides in the icon tray on the user's taskbar. When not connected, the normal eduVPN logo will be the app icon. When connected the icon turns green, as shown on the screenshot below.
