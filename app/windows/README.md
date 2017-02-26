@@ -25,9 +25,11 @@ The OAuth flow is explained in more details in the [Application flow](https://gi
 * The official OpenVPN for Windows application *must* be used. This is free software and can be integrated directly in the eduVPN application (through binary or from source, see bullet 4).
 
 ## Publishing
-eduVPN will be made available on the eduVPN website and the Windows Store.
+eduVPN will be made available on the eduVPN website (executable) and the Windows Store.
 
-* The application *must* be compatible with the Windows Store and its guidelines. 
+* The application *must* be compatible with the Windows Store and its guidelines.
+* The application *must* be automatically updated when the Windows Store variant is chosen by the user.
+* The application can be updated with preservation of the addedd profiles when the user downloads the exe and installs the new version of the app. 
 
 ## Additional requirements
 * The downloaded VPN configuration and/or other secrets *must* be only stored in protected storage that is only available to the eduvpn application.
@@ -62,6 +64,9 @@ When clicked with a single or double left mouse button, the UI will show above t
 The primary user flow (of the most important parts of the UI) is listed in the picture below. Note that there are no mockups for the settings tab and the view log window, these should be created in line with this design and the operating system (just like we did on Android).
 
 ![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/5-user-flow.png "User flow")
+
+# Things to think about
+* On Android, users download the app through the Play Store of F-Droid. Both will alert the user when updates are available, but this will not be the case on Windows since a lot of users don't user the Windows Store (and with good reason). How can we alert users that their app needs an update? Are there UWP native methods for this?
 
 # References
 * [OpenVPN (GUI) 2.4.X](https://openvpn.net/index.php/open-source/downloads.html)
