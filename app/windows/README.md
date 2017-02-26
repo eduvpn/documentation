@@ -18,23 +18,22 @@ The OAuth flow is explained in more details in the [Application flow](https://gi
 
 ## Development
 * *Principe 1*: Anyone with a computer with just Microsoft Visual Basic Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
-* *Principle 2*: Anyone with a computer with \*NIX *should* be able to build the application and its dependencies from source in the easiest way possible by script and generate an installable application (exe).
 * All used components (core, dependencies etc.) in the application *must* be free software.
 * In contrary to the Android application (where everything *must* be build from source) the OpenVPN 2.4 binary *may* be provided with the eduVPN application.
 * In case additional dependencies are required, they *must* be clearly mentioned in the main README, *must* be free software and *must* have compatible licensing.
-* The official OpenVPN for Windows application *must* be used. This is free software and can be integrated directly in the eduVPN application (through binary or from source, see bullet 4).
+* The official OpenVPN for Windows application *must* be used. This is free software and can be integrated directly in the eduVPN application (through binary or from source, see the fourth bullet).
 
 ## Publishing
 eduVPN will be made available on the eduVPN website (executable) and the Windows Store.
 
 * The application *must* be compatible with the Windows Store and its guidelines.
 * The application *must* be automatically updated when the Windows Store variant is chosen by the user.
-* The application can be updated with preservation of the addedd profiles when the user downloads the exe and installs the new version of the app. 
+* The application can be updated with preservation of the added profiles when the user downloads the exe and installs the new version of the app. 
 
 ## Additional requirements
 * The downloaded VPN configuration and/or other secrets *must* be only stored in protected storage that is only available to the eduvpn application.
-* It *must* be possible to manually specify an instance by its URL (in case it is nog listed in instances.json).
-* Administrator privileges *must not* be required.
+* It *must* be possible to manually specify an instance by its URL (in case it is not listed in instances.json).
+* Administrator privileges *must not* be required at runtime (after installation has been completed).
 * The license *must* be compatible with OpenVPN for Windows and / or other used components. An exact license needs to be determined, but initially the GPLv3 (or later) *must* be used.
 * The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means.
 
