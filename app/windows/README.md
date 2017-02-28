@@ -6,7 +6,7 @@ Some information (such as the motives behind these apps and their benefits) are 
 * Application design
 
 # 2. Functional requirements
-The functional requirements describe *what* the application must be capable of and not necessarily *how*. The [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) will provide an in depth view on how the application should work.
+The functional requirements describe *what* the application must be capable of and not necessarily *how*. The [Application flow](https://github.com/eduvpn/documentation/blob/master/app/APP_FLOW.md) will provide an in depth view on how the application should work.
 
 ## Supported operating systems
 The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8.1 and higher. Windows 7 is also still being used by our institutions, but developing the eduVPN application for Windows 7 proves to be more troublesome because of Win32. We will start with UWP.
@@ -14,7 +14,7 @@ The application *must* be compatible with Micrsoft's Windows Desktop and Phone 8
 ## Authorization
 Each eduVPN or Let's Connect! instance can configure their own authentication method. It could be a simple username and password, ir be integrated in a SAML federation like SURFconext. This is of no consequence to the app since it will only use OAuth 2.0 tokens to interact with the instance.
 
-The OAuth flow is explained in more details in the [Application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md).
+The OAuth flow is explained in more details in the [Application flow](https://github.com/eduvpn/documentation/blob/master/app/APP_FLOW.md).
 
 ## Development
 * *Principe 1*: Anyone with a computer with just Microsoft Visual Basic Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
@@ -38,7 +38,7 @@ eduVPN will be made available on the eduVPN website (executable) and the Windows
 * The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means.
 
 # 3. Application flow
-The [application flow](https://github.com/eduvpn/documentation/blob/master/app/windows/6-APP_FLOW.md) describes how the application should work with the API and provides an overview of all the steps within the application.
+The [application flow](https://github.com/eduvpn/documentation/blob/master/app/APP_FLOW.md) describes how the application should work with the API and provides an overview of all the steps within the application.
 
 # 4. Application design
 The application design describes the interface, design choices, looks and the user experience.
