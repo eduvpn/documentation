@@ -155,28 +155,31 @@ working properly first.
 
     $ sudo dnf -y install mod_ssl certbot
 
-Currently, certbot can only obtain a certificate for you, not automatically 
-configure it. 
+Currently, [certbot](https://certbot.eff.org/) can only obtain a certificate 
+for you, not automatically configure it. 
 
     $ sudo systemctl stop httpd
     $ sudo certbot certonly
 
-Follow the certbot instructions. After obtaining the certificate, copy the
-files in the correct location:
+Follow the certbot "wizard". Open `/etc/httpd/conf.d/ssl.conf` and modify 
+these lines:
 
-    $ sudo cp /etc/letsencrypt/live/vpn.example.org/cert.pem /etc/pki/tls/certs/vpn.example.org.crt
-    $ sudo cp /etc/letsencrypt/live/vpn.example.org/chain.pem /etc/pki/tls/certs/vpn.example.org-chain.crt
-    $ sudo cp /etc/letsencrypt/live/vpn.example.org/privkey.pem /etc/pki/tls/private/vpn.example.org.key
+    SSLCertificateFile /etc/letsencrypt/live/vpn.example.org/cert.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/vpn.example.org/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/vpn.example.org/chain.pem
 
-Open `/etc/httpd/conf.d/ssl.conf` and modify these lines:
-
-    SSLCertificateFile /etc/pki/tls/certs/vpn.example.org.crt
-    SSLCertificateKeyFile /etc/pki/tls/private/vpn.example.org.key
-    SSLCertificateChainFile /etc/pki/tls/certs/vpn.example.org-chain.crt
-
-Restart Apache:
+Start Apache again:
 
     $ sudo systemctl start httpd
+
+Add the following to your `/etc/cron.daily/certbot`:
+
+    #!/bin/sh
+    /usr/bin/certbot renew --pre-hook "systemctl stop httpd" --post-hook "systemctl start httpd" -q
+
+Then, make the file executable:
+
+    $ chmod 0755 /etc/cron.daily/certbot
 
 Make sure you test your configuration by doing a 
 [SSL Server Test](https://www.ssllabs.com/ssltest/) and updating the 
