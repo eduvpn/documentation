@@ -71,7 +71,7 @@ Enable Apache on boot, but do not yet start it:
 ## PHP
 
 Modify `/etc/php.ini` and set `date.timezone` to e.g. `UTC` or `Europe/Berlin`
-depending on your system.
+depending on your system's timezone configuration.
 
 ## Server
 
@@ -290,7 +290,7 @@ The two-factor authentication will require users to provide the user name
 
 ## Using PHP-FPM
 
-Switching to PHP-FPM will improve the performance substantially. First, 
+Switching to PHP-FPM can potentially improve the performance. First, 
 install PHP-FPM:
 
     $ sudo dnf -y install php-fpm
@@ -325,25 +325,27 @@ placed in `/var/www/html/info.json`, change the host name accordingly:
     {
         "api": {
             "http://eduvpn.org/api#1": {
-                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
-                "create_config": "https://vpn.example/portal/api.php/create_config",
-                "profile_list": "https://vpn.example/portal/api.php/profile_list",
-                "system_messages": "https://vpn.example/portal/api.php/system_messages",
-                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+                "authorization_endpoint": "https://vpn.example.org/portal/_oauth/authorize",
+                "create_config": "https://vpn.example.org/portal/api.php/create_config",
+                "profile_list": "https://vpn.example.org/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example.org/portal/api.php/system_messages",
+                "user_messages": "https://vpn.example.org/portal/api.php/user_messages"
             },
             "http://eduvpn.org/api#2": {
-                "authorization_endpoint": "https://vpn.example/portal/_oauth/authorize",
-                "create_certificate": "https://vpn.example/portal/api.php/create_certificate",
-                "profile_config": "https://vpn.example/portal/api.php/profile_config",
-                "profile_list": "https://vpn.example/portal/api.php/profile_list",
-                "system_messages": "https://vpn.example/portal/api.php/system_messages",
-                "token_endpoint": "https://vpn.example/portal/_oauth/token",
-                "user_messages": "https://vpn.example/portal/api.php/user_messages"
+                "authorization_endpoint": "https://vpn.example.org/portal/_oauth/authorize",
+                "create_certificate": "https://vpn.example.org/portal/api.php/create_certificate",
+                "create_config": "https://vpn.example.org/portal/api.php/create_config",
+                "profile_config": "https://vpn.example.org/portal/api.php/profile_config",
+                "profile_list": "https://vpn.example.org/portal/api.php/profile_list",
+                "system_messages": "https://vpn.example.org/portal/api.php/system_messages",
+                "token_endpoint": "https://vpn.example.org/portal/oauth.php/token",
+                "user_info": "https://vpn.example.org/portal/api.php/user_info",
+                "user_messages": "https://vpn.example.org/portal/api.php/user_messages"
             }
         }
     }
 
-**Proof of Concept**: there is a PoC application available, eduVPN for Android, 
-[here](https://eduvpn.surfcloud.nl/app/) that can use this API. After 
-installing it, add an "Other" provider and use `https://vpn.example.org` as the
-address.
+**Proof of Concept**: there is a PoC application available in the Google Play 
+store called "eduVPN". It can also be downloaded 
+[here](https://app.eduvpn.nl/). After installing it, add an "Other" provider 
+and use `https://vpn.example.org` as the address.
