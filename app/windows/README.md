@@ -35,7 +35,7 @@ eduVPN will be made available on the eduVPN website (executable) and the Windows
 * It *must* be possible to manually specify an instance by its URL (in case it is not listed in instances.json).
 * Administrator privileges *must not* be required at runtime (after installation has been completed).
 * The license *must* be compatible with OpenVPN for Windows and / or other used components. An exact license needs to be determined, but initially the GPLv3 (or later) *must* be used.
-* The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) receives a worldwide, royalty-free, perpetual and irrevocable license with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties under the Copyright covering the Contribution to use the Contribution by all means.
+* The eduVPN project within the [Commons Conservancy](https://commonsconservancy.org/) is owner of the app, code etc.
 
 # 3. Application flow
 The [application flow](https://github.com/eduvpn/documentation/blob/master/app/APP_FLOW.md) describes how the application should work with the API and provides an overview of all the steps within the application.
