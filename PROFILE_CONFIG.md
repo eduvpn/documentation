@@ -33,7 +33,7 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `displayName`      | The name of the profile as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
-| `range6`           | The IPv6 range of the network that will be assigned to clients | yes | _N/A_ | 
+| `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 124 and divible by 4 | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
 | `managementIp`     | Override the auto assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | `auto` |
