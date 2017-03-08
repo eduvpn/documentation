@@ -9,7 +9,7 @@ build.
 We assume you have a fresh CentOS 7 machine, add the following software to it. 
 
     $ sudo yum -y install epel-release
-    $ sudo yum -y install fedora-packager docker
+    $ sudo yum -y install fedora-packager docker rpm-sign
 
 Enable and start Docker:
 
@@ -66,8 +66,47 @@ there are any problems in the build, e.g. missing dependencies.
     $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/in:Z -v $HOME/rpmbuild:/out:Z -i -t eduvpn/builder /build.sh SRPMS/$(basename $(ls $HOME/rpmbuild/SRPMS/$i*.src.rpm)); done
 
 This should build all the packages and also have a fully functional YUM 
-repository!
+repository in `$HOME/rpmbuild`.
 
 # Signing Packages
 
-TBD.
+Create a GPG signing key:
+
+    $ gpg --gen-key
+
+Export the key, assuming you used `eduvpn@surfnet.nl` as the email address for
+the GPG key.
+
+    $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduvpn
+
+This `RPM-GPG-KEY-eduvpn` needs to be distributed to the nodes that want to 
+install the software and imported there:
+
+    $ sudo rpm --import RPM-GPG-KEY-eduvpn
+
+Add the following to `$HOME/.rpmmacros`:
+
+    %_signature gpg
+    %_gpg_name eduvpn@surfnet.nl
+
+Change owner, the builder made all files owned by the `root` user.
+
+    $ sudo chown -R $(id -u).$(id -g) $HOME/rpmbuild
+
+Sign all packages:
+
+    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/*
+
+That's all! Now copy the `$HOME/rpmbuild` to a web server and create the 
+following snippet in `/etc/yum.repos.d/eduvpn.repo`:
+
+    [eduvpn]
+    name=eduVPN
+    baseurl=https://example.org/packages/
+    type=rpm-md
+    gpgcheck=1
+    repo_gpgcheck=0
+    enabled=1
+    enabled_metadata=1
+
+That's all!
