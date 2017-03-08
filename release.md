@@ -16,7 +16,7 @@ all dependencies that are not (yet) packaged for EPEL.
 | vpn-admin-portal                     | eduVPN/vpn-admin-portal          | 4108dbc9fd76ecb4f07a8ad9c22e8639c3af7cdf | 1.0.0   |
 | vpn-server-api                       | eduVPN/vpn-server-api            | b033bc06c80da189b4bab6a946d44a4a3177a955 | 1.0.0   |
 | vpn-server-node                      | eduVPN/vpn-server-node           | 1eeea38bb9d7bfacd01d017bd7fae353cfc82f45 | 1.0.0   |
-| vpn-user-portal                      | eduVPN/vpn-user-portal           | a7f58d5e50f4f3decedbc99c6397a6a3e819b3cf | 1.0.0   |
+| vpn-user-portal                      | eduVPN/vpn-user-portal           | fb00e24d877ec0b0b6c0c5d66c8cf1063ae6add3 | 1.0.0   |
 
 ## Preparation
 
