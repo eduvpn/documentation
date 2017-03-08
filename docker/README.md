@@ -21,7 +21,7 @@ The built package(s) can be found in `build/out/RPMS/noarch`.
 
 # TODO 
 
-* We are currently building as _root_, that is not good;
+* We are currently building as _root_, that is not particularly good;
 * Sign packages;
 * Do not depend on Docker registry version of CentOS, or make sure that it is 
   properly signed and vetted;

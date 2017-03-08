@@ -17,3 +17,45 @@ all dependencies that are not (yet) packaged for EPEL.
 | vpn-server-api                       | eduVPN/vpn-server-api            | b033bc06c80da189b4bab6a946d44a4a3177a955 | 1.0.0   |
 | vpn-server-node                      | eduVPN/vpn-server-node           | 1eeea38bb9d7bfacd01d017bd7fae353cfc82f45 | 1.0.0   |
 | vpn-user-portal                      | eduVPN/vpn-user-portal           | 4c2a0f7aedeed6ba2405bdd8bcb14997b6fc6c94 | 1.0.0   |
+
+## Preparation
+
+We assuming you work on a fresh CentOS 7 machine:
+
+Install the dependencies:
+
+    $ sudo yum -y install epel-release
+    $ sudo yum -y install fedora-packager
+
+Get the RPM spec files:
+
+    $ git clone https://github.com/eduVPN/specs.git
+
+## Getting Tarballs
+
+    $ curl -O -L https://github.com/<GitHub>/archive/<Git Hash>/<GitHub After Slash>-<Version>-<Git Hash>.tar.gz
+
+For example:
+
+    $ curl -O -L https://github.com/Bacon/BaconQrCode/archive/031a2ce68c5794064b49d11775b2daf45c96e21c/BaconQrCode-1.0.1-031a2ce68c5794064b49d11775b2daf45c96e21c.tar.gz
+
+## Generating SRPM
+
+If you just want to build the (S)RPM package, you get the accompanying `spec` 
+file from the `eduVPN/specs` repository.
+
+Copy the source to the right location:
+
+    $ rpmdev-setuptree
+    $ cp BaconQrCode-1.0.1-031a2ce68c5794064b49d11775b2daf45c96e21c.tar.gz $HOME/rpmbuild/SOURCES
+    $ cp specs/php-bacon-bacon-qr-code.spec $HOME/rpmbuild/SPECS
+
+If there are any other files that start with `php-bacon-bacon-qr-code` in the 
+`specs/` folder, copy them to `SOURCES`.
+
+Create the SRPM:
+
+    $ cd $HOME/rpmbuild/SPECS
+    $ rpmbuild -bs php-bacon-bacon-qr-code.spec
+
+With the SRPMs, you can now use the Docker builder to actually create the RPMs.
