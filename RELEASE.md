@@ -88,13 +88,17 @@ Add the following to `$HOME/.rpmmacros`:
     %_signature gpg
     %_gpg_name eduvpn@surfnet.nl
 
-Change owner, the builder made all files owned by the `root` user.
+Change owner, Docker made all files owned by the `root` user.
 
     $ sudo chown -R $(id -u).$(id -g) $HOME/rpmbuild
 
 Sign all packages:
 
-    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/*
+    $ rpm --digest-algo=sha256 --addsign $HOME/rpmbuild/RPMS/noarch/*
+
+Recreate the repository data:
+
+    $ createrepo_c $HOME/rpmbuild
 
 Sign the metadata:
 
