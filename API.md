@@ -73,15 +73,9 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
                 "user_messages": "https://demo.eduvpn.nl/portal/api.php/user_messages"
             },
             "http://eduvpn.org/api#2": {
+                "api_base_uri": "https://demo.eduvpn.nl/portal/api.php",
                 "authorization_endpoint": "https://demo.eduvpn.nl/portal/_oauth/authorize",
-                "create_certificate": "https://demo.eduvpn.nl/portal/api.php/create_certificate",
-                "create_config": "https://demo.eduvpn.nl/portal/api.php/create_config",
-                "profile_config": "https://demo.eduvpn.nl/portal/api.php/profile_config",
-                "profile_list": "https://demo.eduvpn.nl/portal/api.php/profile_list",
-                "system_messages": "https://demo.eduvpn.nl/portal/api.php/system_messages",
-                "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token",
-                "user_info": "https://demo.eduvpn.nl/portal/api.php/user_info",
-                "user_messages": "https://demo.eduvpn.nl/portal/api.php/user_messages"
+                "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token"
             }
         }
     }
