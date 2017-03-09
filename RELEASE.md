@@ -115,6 +115,7 @@ following snippet in `/etc/yum.repos.d/eduvpn.repo`:
     repo_gpgcheck=1
     enabled=1
     enabled_metadata=1
+    gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduvpn
 
 That's all!
 
