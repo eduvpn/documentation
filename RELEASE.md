@@ -76,7 +76,7 @@ there are any problems in the build, e.g. missing dependencies.
         vpn-user-portal\
       )
 
-    $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/in:Z -v $HOME/rpmbuild:/out:Z -i -t eduvpn/builder /build.sh SRPMS/$(basename $(ls $HOME/rpmbuild/SRPMS/$i*.src.rpm)); done
+    $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/rpm:Z -i -t eduvpn/builder /build.sh $(basename $(ls $HOME/rpmbuild/$i*.src.rpm)); done
 
 This should build all the packages and also have a fully functional YUM 
 repository in `$HOME/rpmbuild`.
@@ -95,21 +95,21 @@ the GPG key.
 This `RPM-GPG-KEY-eduvpn` needs to be distributed to the nodes that want to 
 install the software and imported there:
 
-    $ sudo rpm --import RPM-GPG-KEY-eduvpn
+    $ sudo rpm --import RPM-GPG-KEY-eduVPN
 
 Add the following to `$HOME/.rpmmacros`:
 
     %_signature gpg
-    %{_gpg_name} eduvpn@surfnet.nl
-    %{_gpg_digest_algo} sha256
+    %_gpg_name eduvpn@surfnet.nl
+    %_gpg_digest_algo sha256
 
 Change owner, Docker made all files owned by the `root` user.
 
     $ sudo chown -R $(id -u).$(id -g) $HOME/rpmbuild
 
-Sign all packages:
+Sign all (S)RPM packages:
 
-    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/*
+    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/* $HOME/rpmbuild/SRPMS/*
 
 (Re)create the repository data:
 
@@ -128,7 +128,7 @@ following snippet in `/etc/yum.repos.d/eduVPN.repo`:
     gpgcheck=1
     repo_gpgcheck=1
     enabled=1
-    gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduvpn
+    gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduVPN
     skip_if_unavailable=False
 
 That's all!
