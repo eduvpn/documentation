@@ -48,7 +48,7 @@ Alright, that should be enough to launch our Docker builder!
 The `eduVPN/documentation` repository contains a `Dockerfile` for building
 RPMs.
 
-    $ cd $HOME/documentation/docker
+    $ cd $HOME/documentation/release
 
 Create the Docker builder image:
 

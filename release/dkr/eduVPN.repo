@@ -1,0 +1,4 @@
+[eduVPN]
+name=eduVPN
+baseurl=file:///rpm
+enabled=1
