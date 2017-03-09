@@ -16,9 +16,8 @@ Enable and start Docker:
     $ sudo systemctl enable docker
     $ sudo systemctl start docker
 
-Clone the `eduVPN/specs` and `eduVPN/documentation` repository:
+Clone the `eduVPN/documentation` repository:
 
-    $ git clone https://github.com/eduVPN/specs.git
     $ git clone https://github.com/eduVPN/documentation.git
 
 # Creating SRPMs
@@ -27,7 +26,7 @@ First we need to generate the SRPMs files for the software.
 
     $ cd $HOME
     $ rpmdev-setuptree
-    $ cd $HOME/specs
+    $ cd $HOME/documentation/rpm
 
 Copy the auxilary files to `$HOME/rpmbuild/SOURCES`:
 
@@ -97,16 +96,25 @@ Sign all packages:
 
     $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/*
 
+Sign the metadata:
+
+    $ gpg --detach-sign --armor $HOME/rpmbuild/repodata/repomd.xml
+
 That's all! Now copy the `$HOME/rpmbuild` to a web server and create the 
 following snippet in `/etc/yum.repos.d/eduvpn.repo`:
 
     [eduvpn]
     name=eduVPN
-    baseurl=https://example.org/packages/
+    baseurl=https://static.eduvpn.nl/rpm/
     type=rpm-md
     gpgcheck=1
-    repo_gpgcheck=0
+    repo_gpgcheck=1
     enabled=1
     enabled_metadata=1
 
 That's all!
+
+# Sources
+
+* https://blog.packagecloud.io/eng/2014/11/24/howto-gpg-sign-verify-rpm-packages-yum-repositories/
+
