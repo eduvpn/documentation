@@ -61,7 +61,21 @@ Every package that gets built will be added to the repository available to the
 Docker image. This way, all dependencies get pulled in and we can find out if
 there are any problems in the build, e.g. missing dependencies.
 
-    $ export PKGS=(php-bacon-bacon-qr-code php-christian-riesen-base32 php-christian-riesen-otp php-paragonie-constant-time-encoding php-fkooman-oauth2-client php-fkooman-oauth2-server php-fkooman-yubitwee vpn-lib-common vpn-admin-portal vpn-server-api vpn-server-node vpn-user-portal)
+    $ export PKGS=(\
+        php-bacon-bacon-qr-code\
+        php-christian-riesen-base32\
+        php-christian-riesen-otp\
+        php-paragonie-constant-time-encoding\
+        php-fkooman-oauth2-client\
+        php-fkooman-oauth2-server\
+        php-fkooman-yubitwee\
+        vpn-lib-common\
+        vpn-admin-portal\
+        vpn-server-api\
+        vpn-server-node\
+        vpn-user-portal\
+      )
+
     $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/in:Z -v $HOME/rpmbuild:/out:Z -i -t eduvpn/builder /build.sh SRPMS/$(basename $(ls $HOME/rpmbuild/SRPMS/$i*.src.rpm)); done
 
 This should build all the packages and also have a fully functional YUM 
@@ -86,7 +100,8 @@ install the software and imported there:
 Add the following to `$HOME/.rpmmacros`:
 
     %_signature gpg
-    %_gpg_name eduvpn@surfnet.nl
+    %{_gpg_name} eduvpn@surfnet.nl
+    %{_gpg_digest_algo} sha256
 
 Change owner, Docker made all files owned by the `root` user.
 
@@ -94,28 +109,27 @@ Change owner, Docker made all files owned by the `root` user.
 
 Sign all packages:
 
-    $ rpm --digest-algo=sha256 --addsign $HOME/rpmbuild/RPMS/noarch/*
+    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/*
 
-Recreate the repository data:
+(Re)create the repository data:
 
     $ createrepo_c $HOME/rpmbuild
 
 Sign the metadata:
 
-    $ gpg --detach-sign --armor $HOME/rpmbuild/repodata/repomd.xml
+    $ gpg --detach-sign --digest-algo sha256 --armor $HOME/rpmbuild/repodata/repomd.xml
 
 That's all! Now copy the `$HOME/rpmbuild` to a web server and create the 
-following snippet in `/etc/yum.repos.d/eduvpn.repo`:
+following snippet in `/etc/yum.repos.d/eduVPN.repo`:
 
-    [eduvpn]
+    [eduVPN]
     name=eduVPN
     baseurl=https://static.eduvpn.nl/rpm/
-    type=rpm-md
     gpgcheck=1
     repo_gpgcheck=1
     enabled=1
-    enabled_metadata=1
     gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduvpn
+    skip_if_unavailable=False
 
 That's all!
 
