@@ -1,0 +1,4 @@
+RANDOM_DELAY=10
+
+@hourly apache /usr/bin/vpn-server-api-housekeeping --instance default
+@daily apache /usr/bin/vpn-server-api-stats --instance default

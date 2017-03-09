@@ -1,0 +1,86 @@
+From 8f16a007ea94f65894c8c71e0aaeba83e0d13993 Mon Sep 17 00:00:00 2001
+From: Ben Scholzen <mail@dasprids.de>
+Date: Sat, 26 Nov 2016 14:47:45 +0100
+Subject: [PATCH] Fix unit tests on PHP 7.1 and add PHP 5.6 to test matrix
+
+---
+ .gitignore                                        | 2 ++
+ .travis.yml                                       | 4 +++-
+ composer.json                                     | 3 +++
+ tests/BaconQrCode/Common/BitArrayTest.php         | 6 +++++-
+ tests/BaconQrCode/Common/ReedSolomonCodecTest.php | 6 +++++-
+ 5 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 35c1bcd..c4fcf18 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,3 +1,5 @@
++composer.lock
++vendor
+ nbproject
+ .idea
+ .buildpath
+diff --git a/.travis.yml b/.travis.yml
+index 4e554be..60690f0 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -3,7 +3,9 @@ php:
+   - 5.3
+   - 5.4
+   - 5.5
++  - 5.6
+   - 7.0
++  - 7.1
+   - hhvm
+ 
+-script: phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml tests
+\ No newline at end of file
++script: ./vendor/bin/phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml tests
+diff --git a/composer.json b/composer.json
+index 47f442d..7947259 100644
+--- a/composer.json
++++ b/composer.json
+@@ -22,5 +22,8 @@
+         "psr-0": {
+             "BaconQrCode": "src/"
+         }
++    },
++    "require-dev": {
++        "phpunit/phpunit": "^5.6"
+     }
+ }
+diff --git a/tests/BaconQrCode/Common/BitArrayTest.php b/tests/BaconQrCode/Common/BitArrayTest.php
+index 06aa4e1..81bcbce 100644
+--- a/tests/BaconQrCode/Common/BitArrayTest.php
++++ b/tests/BaconQrCode/Common/BitArrayTest.php
+@@ -94,7 +94,11 @@ public function testGetNextSet4()
+ 
+     public function testGetNextSet5()
+     {
+-        mt_srand(hexdec('deadbeef'));
++        if (defined('MT_RAND_PHP')) {
++            mt_srand(0xdeadbeef, MT_RAND_PHP);
++        } else {
++            mt_srand(0xdeadbeef);
++        }
+ 
+         for ($i = 0; $i < 10; $i++) {
+             $array  = new BitArray(mt_rand(1, 100));
+diff --git a/tests/BaconQrCode/Common/ReedSolomonCodecTest.php b/tests/BaconQrCode/Common/ReedSolomonCodecTest.php
+index 99a6c72..604641a 100644
+--- a/tests/BaconQrCode/Common/ReedSolomonCodecTest.php
++++ b/tests/BaconQrCode/Common/ReedSolomonCodecTest.php
+@@ -38,7 +38,11 @@ public static function tabProvider()
+      */
+     public function testCodec($symbolSize, $generatorPoly, $firstRoot, $primitive, $numRoots)
+     {
+-        mt_srand(0xdeadbeef);
++        if (defined('MT_RAND_PHP')) {
++            mt_srand(0xdeadbeef, MT_RAND_PHP);
++        } else {
++            mt_srand(0xdeadbeef);
++        }
+ 
+         $blockSize = (1 << $symbolSize) - 1;
+         $dataSize  = $blockSize - $numRoots;
