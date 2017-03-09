@@ -1,4 +1,5 @@
 [eduVPN]
 name=eduVPN
+skip_if_unavailable=True
 baseurl=file:///rpm
 enabled=1

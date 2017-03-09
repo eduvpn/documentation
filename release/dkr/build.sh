@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# setup the build dir
-rpmdev-setuptree
-
 # install dependencies for building
 yum-builddep -y "/rpm/SRPMS/${1}"
 

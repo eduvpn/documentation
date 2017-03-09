@@ -76,7 +76,7 @@ there are any problems in the build, e.g. missing dependencies.
         vpn-user-portal\
       )
 
-    $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/rpm:Z -i -t eduvpn/builder /build.sh $(basename $(ls $HOME/rpmbuild/$i*.src.rpm)); done
+    $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/rpm:Z -i -t eduvpn/builder /build.sh $(basename $(ls $HOME/rpmbuild/SRPMS/$i*.src.rpm)); done
 
 This should build all the packages and also have a fully functional YUM 
 repository in `$HOME/rpmbuild`.
