@@ -4,7 +4,7 @@
 rpmdev-setuptree
 
 # install dependencies for building
-yum deplist "/rpm/SRPMS/${1}" | awk '/provider:/ {print $2}' | sort -u | xargs yum -y install
+yum-builddep -y "/rpm/SRPMS/${1}"
 
 # rebuild package
 rpmbuild --rebuild "/rpm/SRPMS/${1}"
