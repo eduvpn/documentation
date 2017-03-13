@@ -31,3 +31,6 @@ Same rules apply.
 
     $ ./copr_build.sh php-fkooman-oauth2-client
 
+# CentOS/Fedora Package Review
+
+* [php-paragonie-constant-time-encoding](https://bugzilla.redhat.com/show_bug.cgi?id=1431766)
