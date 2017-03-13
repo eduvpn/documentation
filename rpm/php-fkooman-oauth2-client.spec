@@ -4,19 +4,20 @@
 
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
-%global github_commit           4207dd0cedd56a9a74633fed28b6acb4e09acf05
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+
+%global commit0 4207dd0cedd56a9a74633fed28b6acb4e09acf05
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.7%{?dist}
+Release:    0.8%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
 License:    AGPLv3+
 
 URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
 BuildArch:  noarch
 
@@ -47,7 +48,7 @@ application. It has minimal dependencies, but still tries to be secure.
 The main purpose is to be compatible with PHP 5.4.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%setup -n %{github_name}-%{commit0}
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -67,7 +68,7 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -77,6 +78,9 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
+* Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.8
+- rebuilt
+
 * Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.7
 - rebuilt
 
