@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           4108dbc9fd76ecb4f07a8ad9c22e8639c3af7cdf
+%global github_commit           ef29c30079e3bb3cc1d8232fbf8c7194be8714dd
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
 Version:    1.0.0
-Release:    0.36%{?dist}
+Release:    0.37%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -26,8 +26,10 @@ BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-spl
+BuildRequires:  php-gettext
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(twig/twig) < 2
+BuildRequires:  php-composer(twig/extensions)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
@@ -35,8 +37,10 @@ Requires:   php(language) >= 5.4.0
 Requires:   php-cli
 Requires:   php-date
 Requires:   php-spl
+Requires:   php-gettext
 Requires:   vpn-lib-common
 Requires:   php-composer(twig/twig) < 2
+Requires:   php-composer(twig/extensions)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -67,6 +71,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
     '%{_datadir}/php/Twig/autoload.php',
+    '%{_datadir}/php/Twig/Extensions/autoload.php',
 ));
 AUTOLOAD
 
@@ -74,7 +79,7 @@ AUTOLOAD
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr web views %{buildroot}%{_datadir}/%{name}
+cp -pr web views locale %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
 mkdir -p %{buildroot}%{_bindir}
@@ -122,11 +127,15 @@ fi
 %{_datadir}/%{name}/data
 %{_datadir}/%{name}/views
 %{_datadir}/%{name}/config
+%{_datadir}/%{name}/locale
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
 %doc README.md CHANGES.md composer.json config/config.php.example
 %license LICENSE
 
 %changelog
+* Wed Mar 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
+- rebuilt
+
 * Wed Feb 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.36
 - rebuilt
 
