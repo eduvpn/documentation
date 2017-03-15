@@ -11,7 +11,7 @@
 
 Name:       php-%{composer_vendor}-constant-time-encoding
 Version:    1.0.1
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Constant-Time Character Encoding in PHP Projects
 
 Group:      System Environment/Libraries
@@ -25,6 +25,7 @@ BuildArch:  noarch
 BuildRequires:  php(language) >= 5.3.0
 BuildRequires:  php-mbstring
 BuildRequires:  php-spl
+BuildRequires:  php-pcre
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  %{_bindir}/phpunit
@@ -33,7 +34,6 @@ Requires:   php(language) >= 5.3.0
 Requires:   php-mbstring
 Requires:   php-spl
 Requires:   php-composer(fedora/autoloader)
-Requires:   php-composer(paragonie/random_compat)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -52,9 +52,6 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Autoload::addPsr4('ParagonIE\\ConstantTime\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/random_compat/autoload.php'
-));
 AUTOLOAD
 
 %install
@@ -62,14 +59,27 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{buildroot}%{_datadir}/php/%{composer_namespace}/autoload.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
+EOF
+phpunit --no-coverage --verbose
 
 %files
+%dir %{_datadir}/php/ParagonIE
 %{_datadir}/php/%{composer_namespace}
 %doc README.md composer.json
 %license LICENSE.txt
 
 %changelog
+* Wed Mar 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-4
+- own parent directory
+- remove Requires paragonie/random_compat, only needed for build
+- BuildRequire php-pcre
+- rework check autoloader
+
 * Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-3
 - better follow SourceURL package guidelines for GH
 
