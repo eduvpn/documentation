@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           cb48cf6f88254741ee728ad9b657117cb1bb4295
+%global github_commit           a4c1331841bb4a2883df32ee52c9359cf1517eaf
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
 Version:    1.0.0
-Release:    0.92%{?dist}
+Release:    0.93%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -36,8 +36,6 @@ BuildRequires:  php-spl
 BuildRequires:  php-libsodium
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(fedora/autoloader)
-BuildRequires:  php-composer(twig/twig) < 2
-BuildRequires:  php-composer(twig/extensions)
 BuildRequires:  php-composer(bacon/bacon-qr-code)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
@@ -57,8 +55,6 @@ Requires:   php-libsodium
 Requires:   php-spl
 Requires:   vpn-lib-common
 Requires:   php-composer(fedora/autoloader)
-Requires:   php-composer(twig/twig) < 2
-Requires:   php-composer(twig/extensions)
 Requires:   php-composer(bacon/bacon-qr-code)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
@@ -91,8 +87,6 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
-    '%{_datadir}/php/Twig/autoload.php',
-    '%{_datadir}/php/Twig/Extensions/autoload.php',
     '%{_datadir}/php/BaconQrCode/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Server/autoload.php',
@@ -158,92 +152,8 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.93
+- rebuilt
+
 * Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.92
-- rebuilt
-
-* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.91
-- rebuilt
-
-* Wed Mar 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.90
-- rebuilt
-
-* Wed Mar 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.89
-- rebuilt
-
-* Thu Mar 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.88
-- rebuilt
-
-* Thu Feb 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.87
-- rebuilt
-
-* Mon Feb 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.86
-- rebuilt
-
-* Tue Feb 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.85
-- rebuilt
-
-* Tue Feb 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.84
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.83
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.82
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.81
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.80
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.79
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.78
-- rebuilt
-
-* Tue Jan 31 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.77
-- rebuilt
-
-* Thu Jan 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.76
-- rebuilt
-
-* Thu Jan 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.75
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.74
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.73
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.72
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.71
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.70
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.69
-- rebuilt
-
-* Sun Jan 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.68
-- rebuilt
-
-* Sun Jan 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.67
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.66
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.65
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.64
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
 - rebuilt

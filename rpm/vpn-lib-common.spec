@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           ee497fc26e20141aefbc639dae7822b93a4a631f
+%global github_commit           133a1b46101c58a7ec8ec348b01d4bdf4c95570f
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
 Version:    1.0.0
-Release:    0.37%{?dist}
+Release:    0.38%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -29,6 +29,8 @@ BuildRequires:  php-spl
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(ircmaxell/password-compat)
+BuildRequires:  php-composer(twig/twig) < 2
+BuildRequires:  php-composer(twig/extensions)
 BuildRequires:  %{_bindir}/phpunit
 
 Requires:   php(language) >= 5.4.0
@@ -45,6 +47,8 @@ Requires:   php-spl
 Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(psr/log)
 Requires:   php-composer(ircmaxell/password-compat)
+Requires:   php-composer(twig/twig) < 2
+Requires:   php-composer(twig/extensions)
 
 %description
 Common VPN library.
@@ -61,6 +65,8 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Psr/Log/autoload.php',
     '%{_datadir}/php/password_compat/password.php',
+    '%{_datadir}/php/Twig/autoload.php',
+    '%{_datadir}/php/Twig/Extensions/autoload.php',
 ));
 AUTOLOAD
 
@@ -79,6 +85,9 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
+* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.38
+- rebuilt
+
 * Wed Feb 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
 - rebuilt
 

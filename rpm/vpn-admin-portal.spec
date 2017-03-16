@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           fb190b0d56e2a589959992a2baa38f568c654b83
+%global github_commit           57e5e9245420d1bf80a2b0e675eebc6d6689abb4
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
 Version:    1.0.0
-Release:    0.41%{?dist}
+Release:    0.42%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -29,7 +29,6 @@ BuildRequires:  php-spl
 BuildRequires:  php-gettext
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(twig/twig) < 2
-BuildRequires:  php-composer(twig/extensions)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
@@ -40,7 +39,6 @@ Requires:   php-spl
 Requires:   php-gettext
 Requires:   vpn-lib-common
 Requires:   php-composer(twig/twig) < 2
-Requires:   php-composer(twig/extensions)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -71,7 +69,6 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
     '%{_datadir}/php/Twig/autoload.php',
-    '%{_datadir}/php/Twig/Extensions/autoload.php',
 ));
 AUTOLOAD
 
@@ -133,71 +130,5 @@ fi
 %license LICENSE
 
 %changelog
-* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
-- rebuilt
-
-* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.40
-- rebuilt
-
-* Wed Mar 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.39
-- rebuilt
-
-* Wed Mar 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.38
-- rebuilt
-
-* Wed Mar 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
-- rebuilt
-
-* Wed Feb 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.36
-- rebuilt
-
-* Tue Feb 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.35
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.34
-- rebuilt
-
-* Sun Jan 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.33
-- rebuilt
-
-* Thu Jan 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.32
-- rebuilt
-
-* Tue Jan 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.31
-- rebuilt
-
-* Tue Jan 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.30
-- rebuilt
-
-* Thu Jan 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.29
-- rebuilt
-
-* Thu Jan 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.28
-- rebuilt
-
-* Wed Jan 04 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.27
-- rebuilt
-
-* Tue Jan 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.26
-- rebuilt
-
-* Tue Jan 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
-- rebuilt
-
-* Tue Jan 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.24
-- rebuilt
-
-* Wed Dec 28 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
-- rebuilt
-
-* Mon Dec 19 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
-- rebuilt
-
-* Fri Dec 16 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
-- rebuilt
-
-* Fri Dec 16 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
-- rebuilt
-
-* Thu Dec 15 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.19
+* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
 - rebuilt
