@@ -63,7 +63,6 @@ there are any problems in the build, e.g. missing dependencies.
 
     $ export PKGS=(\
         php-bacon-bacon-qr-code\
-        php-christian-riesen-base32\
         php-christian-riesen-otp\
         php-paragonie-constant-time-encoding\
         php-fkooman-oauth2-client\
