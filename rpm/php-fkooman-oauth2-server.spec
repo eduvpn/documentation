@@ -4,19 +4,20 @@
 
 %global github_owner            fkooman
 %global github_name             php-oauth2-server
-%global github_commit           c375945baa1eb73c106f3cb106aa9446ae78cf22
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+
+%global commit0 c375945baa1eb73c106f3cb106aa9446ae78cf22
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.24%{?dist}
+Release:    0.25%{?dist}
 Summary:    Very simple OAuth 2.0 server
 
 Group:      System Environment/Libraries
 License:    AGPLv3+
 
 URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
 BuildArch:  noarch
 
@@ -51,7 +52,7 @@ application. It has minimal dependencies, but still tries to be secure.
 The main purpose is to be compatible with PHP 5.4.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%setup -n %{github_name}-%{commit0}
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -69,7 +70,12 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{buildroot}%{_datadir}/php/%{composer_namespace}/autoload.php';
+EOF
+phpunit --no-coverage --verbose
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -79,74 +85,5 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
-* Thu Mar 09 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.24
+* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
 - rebuilt
-
-* Wed Mar 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
-- rebuilt
-
-* Tue Feb 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.19
-- rebuilt
-
-* Wed Feb 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.18
-- rebuilt
-
-* Tue Jan 31 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.17
-- rebuilt
-
-* Thu Jan 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.16
-- rebuilt
-
-* Thu Jan 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.15
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.14
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.13
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.12
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.11
-- rebuilt
-
-* Wed Jan 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.10
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.9
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.8
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.6
-- rebuilt
-
-* Mon Jan 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
-- rebuilt
-
-* Sun Jan 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
-- rebuilt
-
-* Fri Jan 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
-- initial package
