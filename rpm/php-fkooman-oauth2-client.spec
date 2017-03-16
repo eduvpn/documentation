@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 4207dd0cedd56a9a74633fed28b6acb4e09acf05
+%global commit0 9883f4bc1d58e9a12d3a525cc789b8b1173fcf5f
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.8%{?dist}
+Release:    0.9%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -23,6 +23,7 @@ BuildArch:  noarch
 
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
+BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-spl
 BuildRequires:  php-standard
@@ -33,6 +34,7 @@ BuildRequires:  %{_bindir}/phpunit
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
+Requires:   php-date
 Requires:   php-json
 Requires:   php-spl
 Requires:   php-standard
@@ -68,7 +70,12 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{buildroot}%{_datadir}/php/%{composer_namespace}/autoload.php';
+EOF
+phpunit --no-coverage --verbose
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -78,67 +85,8 @@ phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{compo
 %license LICENSE
 
 %changelog
+* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.9
+- rebuilt
+
 * Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.8
 - rebuilt
-
-* Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.7
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.6
-- rebuilt
-
-* Thu Feb 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.5
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.4
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.3
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 4.1.0-0.2
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 4.0.1-2
-- rebuilt
-
-* Thu Jan 19 2017 François Kooman <fkooman@tuxed.net> - 4.0.1-1
-- update to 4.0.1
-
-* Wed Jan 04 2017 François Kooman <fkooman@tuxed.net> - 4.0.0-1
-- update to 4.0.0
-
-* Tue Jan 03 2017 François Kooman <fkooman@tuxed.net> - 3.0.2-1
-- update to 3.0.2
-- fix dependency version constraint
-
-* Mon Dec 12 2016 François Kooman <fkooman@tuxed.net> - 3.0.1-2
-- remove dependencies no longer used
-
-* Mon Dec 12 2016 François Kooman <fkooman@tuxed.net> - 3.0.1-1
-- update to 3.0.1
-- license changed to AGPLv3+
-
-* Fri Nov 25 2016 François Kooman <fkooman@tuxed.net> - 3.0.0-1
-- update to 3.0.0
-
-* Thu Nov 24 2016 François Kooman <fkooman@tuxed.net> - 2.0.2-2
-- fix typo in description
-- remove BuildRoot
-- remove clean section
-- fix directory ownership
-
-* Tue Nov 15 2016 François Kooman <fkooman@tuxed.net> - 2.0.2-1
-- update to 2.0.2
-
-* Thu Sep 29 2016 François Kooman <fkooman@tuxed.net> - 2.0.1-1
-- update to 2.0.1
-
-* Wed Sep 21 2016 François Kooman <fkooman@tuxed.net> - 2.0.0-1
-- update to 2.0.0
-
-* Sat Jun 04 2016 François Kooman <fkooman@tuxed.net> - 1.0.1-1
-- update to 1.0.1
-
-* Mon May 30 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-1
-- initial package
