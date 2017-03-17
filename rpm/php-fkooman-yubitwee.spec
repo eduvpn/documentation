@@ -4,19 +4,20 @@
 
 %global github_owner            fkooman
 %global github_name             php-yubitwee
-%global github_commit           210072bc79f44ccad36784220b42de3eb07358d3
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+
+%global commit0 b5ba783164f9e04810ee07d0337b4acb78d161e1
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.6%{?dist}
+Release:    0.7%{?dist}
 Summary:    YubiKey Validator
 
 Group:      System Environment/Libraries
 License:    AGPLv3+
 
 URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
 BuildArch:  noarch
 
@@ -49,7 +50,7 @@ Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 A very simple, secure YubiKey OTP Validator with pluggable HTTP client.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%setup -n %{github_name}-%{commit0}
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -67,7 +68,7 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -77,20 +78,5 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
-* Mon Feb 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.6
+* Fri Mar 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
 - rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
-- rebuilt
-
-* Mon Feb 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
-- rebuilt
-
-* Tue Jan 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
-- rebuilt
-
-* Tue Jan 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
-- initial package
