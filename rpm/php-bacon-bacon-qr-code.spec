@@ -9,7 +9,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.1
-Release:    5%{?dist}
+Release:    6%{?dist}
 Summary:    QR Code Generator for PHP 
 
 Group:      System Environment/Libraries
@@ -64,6 +64,9 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
+* Fri Mar 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-6
+- rebuilt
+
 * Sat Nov 26 2016 François Kooman <fkooman@tuxed.net> - 1.0.1-5
 - fix building with PHP 7.1
 
