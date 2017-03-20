@@ -132,6 +132,20 @@ following snippet in `/etc/yum.repos.d/eduVPN.repo`:
 
 That's all!
 
+# Updating
+
+If a package gets updated, pull the repository and for all changed packages
+run the following tools as instructed above, or individually from the `rpm/` 
+directory:
+
+* `spectool -g -R file.spec`;
+* `rpmbuild -bs file.spec`;
+
+You can then set the `PKGS` variable to only contain the updated package 
+names and run the `docker` command again.
+
+Do not forget to sign the repository and metadata again.
+
 # Sources
 
 * https://blog.packagecloud.io/eng/2014/11/24/howto-gpg-sign-verify-rpm-packages-yum-repositories/
