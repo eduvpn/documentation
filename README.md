@@ -121,8 +121,34 @@ the script from.
 
 Once you obtained the certificate, you can overwrite 
 `/etc/pki/tls/certs/vpn.example.crt` with the certificate you obtained and 
-configure the certificate chain as well in `/etc/httpd/conf.d/ssl.conf`. Feel
-free to use [Let's Encrypt](https://letsencrypt.org/).
+configure the certificate chain as well in 
+`/etc/httpd/conf.d/vpn.example.conf`. 
+
+Feel free to use [Let's Encrypt](https://letsencrypt.org/) as well using the 
+`certbot` tool! 
+
+    $ sudo yum -y install certbot
+    $ sudo systemctl stop httpd
+    $ sudo certbot certonly
+
+Follow the "wizard".
+
+There are example lines provided in `/etc/httpd/conf.d/vpn.example.conf`. 
+Activate those and restart Apache:
+
+    $ sudo systemctl start httpd
+
+In order to enable automatic renewal of the certificates, add the file 
+`/etc/cron.daily/certbot`:
+
+    #!/bin/sh
+    /usr/bin/certbot renew --pre-hook "systemctl stop httpd" --post-hook "systemctl start httpd" -q
+
+Make it executable:
+
+    $ sudo chmod 0711 /etc/cron.daily/certbot
+
+That should be all :-)
 
 Make sure you check the configuration with 
 [https://www.ssllabs.com/ssltest/](https://www.ssllabs.com/ssltest/)!
