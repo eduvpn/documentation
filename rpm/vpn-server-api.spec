@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           a9b118e2754f71ce5be644db696b0ad49b3c729a
+%global github_commit           da2aa47bc591b1846d2bc55c3b52ae5103ff3810
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
 Version:    1.0.0
-Release:    0.56%{?dist}
+Release:    0.57%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -38,6 +38,7 @@ BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(christian-riesen/otp)
 BuildRequires:  php-composer(fkooman/yubitwee)
+BuildRequires:  php-composer(fkooman/oauth2-client)
 
 Requires:   crontabs
 Requires:   openvpn
@@ -65,6 +66,7 @@ Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(psr/log)
 Requires:   php-composer(christian-riesen/otp)
 Requires:   php-composer(fkooman/yubitwee)
+Requires:   php-composer(fkooman/oauth2-client)
 
 Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
@@ -102,6 +104,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
     '%{_datadir}/php/Otp/autoload.php',
     '%{_datadir}/php/Psr/Log/autoload.php',
     '%{_datadir}/php/fkooman/YubiTwee/autoload.php',
+    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',   
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
 ));
 AUTOLOAD
@@ -173,6 +176,9 @@ fi
 %license LICENSE
 
 %changelog
+* Wed Mar 29 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.57
+- rebuilt
+
 * Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.56
 - rebuilt
 
