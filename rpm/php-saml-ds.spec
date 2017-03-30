@@ -4,12 +4,12 @@
 
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           7b930bb97d7c0e6359c267eaace684f2edcb30e7
+%global github_commit           e45f8d9a7275957cad320aa1018dc90d93a37f44
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.21%{?dist}
+Release:    0.23%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -24,19 +24,24 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
-
+BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-filter
+BuildRequires:  php-pecl-imagick
 BuildRequires:  php-json
+BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-xml
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
+Requires:   php-curl
 Requires:   php-date
 Requires:   php-filter
+Requires:   php-pecl-imagick
 Requires:   php-json
+Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-xml
 Requires:   php-composer(twig/twig) < 2
@@ -127,6 +132,12 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
+- rebuilt
+
+* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
+- rebuilt
+
 * Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
 - rebuilt
 
