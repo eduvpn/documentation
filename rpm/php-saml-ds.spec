@@ -4,12 +4,12 @@
 
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           cd3f294a2e537cec0e7e65553051304906d681a6
+%global github_commit           241054e823441fa9f149da97fe92c5979c041f36
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.26%{?dist}
+Release:    0.27%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -132,6 +132,9 @@ fi
 %license LICENSE
 
 %changelog
+* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.27
+- rebuilt
+
 * Sun Apr 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.26
 - rebuilt
 
