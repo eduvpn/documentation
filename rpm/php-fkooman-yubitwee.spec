@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-yubitwee
 
-%global commit0 b5ba783164f9e04810ee07d0337b4acb78d161e1
+%global commit0 5bff2f1a28742a6251157421fa0a97337474ea59
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.7%{?dist}
+Release:    1%{?dist}
 Summary:    YubiKey Validator
 
 Group:      System Environment/Libraries
@@ -78,5 +78,5 @@ phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{compo
 %license LICENSE
 
 %changelog
-* Fri Mar 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
-- rebuilt
+* Tue Apr 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
+- initial package
