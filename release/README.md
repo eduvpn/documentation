@@ -62,7 +62,6 @@ Docker image. This way, all dependencies get pulled in and we can find out if
 there are any problems in the build, e.g. missing dependencies.
 
     $ export PKGS=(\
-        php-paragonie-constant-time-encoding\
         php-bacon-bacon-qr-code\
         php-christian-riesen-otp\
         php-fkooman-oauth2-client\
