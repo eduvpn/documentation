@@ -68,7 +68,7 @@ from the client certificate and private key.
 
 # OAuth
 
-Many of the OAuth considerations are part of [API.md](API.md). An application
+Many of the OAuth considerations are part of [API](https://github.com/eduvpn/documentation/blob/master/API.md). An application
 will have to deal with expiring access tokens, revoked access tokens and 
 refreshing them when needed, possibly using refresh tokens if they were 
 provided.
@@ -113,7 +113,7 @@ has access. Appropriate errors need to be shown to the user.
 # API 
 
 More details on the API can be found in the separate 
-[API documentation](API.md).
+[API](https://github.com/eduvpn/documentation/blob/master/API.md).
 
 # Future
 
