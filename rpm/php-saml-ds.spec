@@ -4,12 +4,12 @@
 
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           9af37d08c646eb29fcb634ab00b124aebba2a27f
+%global github_commit           bbecfb18458a21c6f821cf63b667ffba0a671ce5
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.37%{?dist}
+Release:    0.42%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -90,8 +90,7 @@ cd bin
 for phpFileName in $(ls *)
 do
     binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
+    install -Dpm755 ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
 done
 )
 
@@ -103,7 +102,18 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SAML\\DS\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -132,112 +142,16 @@ fi
 %license LICENSE
 
 %changelog
-* Sun Apr 09 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
+* Sun Apr 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
 - rebuilt
 
-* Fri Apr 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.36
+* Sun Apr 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
 - rebuilt
 
-* Fri Apr 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.35
+* Fri Apr 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.40
 - rebuilt
 
-* Thu Apr 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.34
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.33
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.32
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.31
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.30
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.29
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.28
-- rebuilt
-
-* Wed Apr 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.27
-- rebuilt
-
-* Sun Apr 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.26
-- rebuilt
-
-* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
-- rebuilt
-
-* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.24
-- rebuilt
-
-* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
-- rebuilt
-
-* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
-- rebuilt
-
-* Thu Mar 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
-- rebuilt
-
-* Tue Mar 28 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
-- rebuilt
-
-* Tue Mar 28 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.19
-- rebuilt
-
-* Fri Mar 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.18
-- rebuilt
-
-* Fri Mar 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.17
-- rebuilt
-
-* Fri Mar 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.16
-- rebuilt
-
-* Fri Mar 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.15
-- rebuilt
-
-* Thu Mar 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.14
-- rebuilt
-
-* Thu Mar 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.13
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.12
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.11
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.10
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.9
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.8
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
-- rebuilt
-
-* Wed Mar 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.6
-- rebuilt
-
-* Tue Mar 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
-- rebuilt
-
-* Tue Mar 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
-- rebuilt
-
-* Tue Mar 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
-- rebuilt
-
-* Tue Mar 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
+* Fri Apr 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.39
 - rebuilt
 
 * Tue Mar 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
