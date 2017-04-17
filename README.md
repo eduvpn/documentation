@@ -1,7 +1,14 @@
 # Introduction
 
-This is the eduvpn documentation repository. You can find documents, scripts
-and deploy instructions for various deployment scenarios.
+**NOTE**: if you are an end-user of eduVPN and want to contact someone, please
+contact [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
+
+This is the eduVPN deploy documentation repository. This documentation is meant
+for system administrators that want to deploy their own VPN service based on 
+the code that is also used in eduVPN.
+
+You can find documentation, scripts and deploy instructions for various 
+scenarios.
 
 # Features
 
