@@ -75,13 +75,18 @@ depending on your system's timezone configuration.
 
 ## Server
 
-Modify `/etc/vpn-server-api/default/config.php` and set `hostName` to the 
-host name you want your VPN clients to connect to. It is a good idea to add
-the profile identifier to the host name to make it easier to support multiple 
-nodes in the future. So, in this case we would set the `hostName` field to 
-`internet.vpn.example.org`.
+For a really simple setup, there is a helper script that will configure the
+basics for you and generate a (hopefully) unique IPv6 range and a random IPv4
+range to avoid conflicts with existing RFC 1918 networks as much as possible:
+ 
+    $ sudo vpn-server-api-update-ip --profile internet --host vpn.example.org --ext eth0
 
-You can also modify other options there to suit your requirements.
+The `--profile` option modifies the profile `internet`, which is the default 
+profile in the configuration file. The `--ext` option indicates the network interface that 
+connects to the Internet.
+
+In addition, you can modify `/etc/vpn-server-api/default/config.php` and change
+some more settings. 
 
 Initialize the certificate authority (CA):
 

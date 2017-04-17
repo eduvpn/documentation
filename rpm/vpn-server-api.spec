@@ -9,7 +9,7 @@
 
 Name:       vpn-server-api
 Version:    1.0.0
-Release:    0.60%{?dist}
+Release:    0.61%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -176,6 +176,9 @@ fi
 %license LICENSE
 
 %changelog
+* Mon Apr 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.61
+- rebuilt
+
 * Thu Apr 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.60
 - rebuilt
 
