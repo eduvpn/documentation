@@ -17,7 +17,7 @@ Each eduVPN or Let's Connect! instance can configure their own authentication me
 The OAuth flow is explained in more details in the [Application flow](https://github.com/eduvpn/documentation/blob/master/app/APP_FLOW.md).
 
 ## Development
-* *Principe 1*: Anyone with a computer with just Microsoft Visual Basic Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
+* *Principe 1*: Anyone with a computer with just Microsoft Visual Studio Community *must* be able to build the application and its dependencies from source in the easiest way possible and generate an installable application (exe).
 * All used components (core, dependencies etc.) in the application *must* be free software.
 * In contrary to the Android application (where everything *must* be build from source) the OpenVPN 2.4 binary *may* be provided with the eduVPN application.
 * In case additional dependencies are required, they *must* be clearly mentioned in the main README, *must* be free software and *must* have compatible licensing.
