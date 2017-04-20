@@ -52,9 +52,13 @@ memberships. The example below is for the
 [SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
 
 Add `VootProvider` to the `groupProviders` section:
-
+    
     'groupProviders' => [
         'VootProvider' => [
+            'clientId' => 'my_client_id',
+            'clientSecret' => 'my_client_secret',
+            'authorizationEndpoint' => 'https://authz.surfconext.nl/oauth/authorize',
+            'tokenEndpoint' => 'https://authz.surfconext.nl/oauth/token',
             'apiUrl' => 'https://voot.surfconext.nl/me/groups',
         ],
     ],
