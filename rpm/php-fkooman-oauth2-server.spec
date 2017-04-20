@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-server
 
-%global commit0 c375945baa1eb73c106f3cb106aa9446ae78cf22
+%global commit0 7ca2f396833e432bb2aa5ded625ebf147b36dff6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.25%{?dist}
+Release:    0.26%{?dist}
 Summary:    Very simple OAuth 2.0 server
 
 Group:      System Environment/Libraries
@@ -73,9 +73,15 @@ cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 mkdir vendor
 cat << 'EOF' | tee vendor/autoload.php
 <?php
-require_once '%{buildroot}%{_datadir}/php/%{composer_namespace}/autoload.php';
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('fkooman\\OAuth\\Server\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
-phpunit --no-coverage --verbose
+
+%{_bindir}/phpunit --verbose
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -85,5 +91,8 @@ phpunit --no-coverage --verbose
 %license LICENSE
 
 %changelog
+* Thu Apr 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.26
+- rebuilt
+
 * Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
 - rebuilt
