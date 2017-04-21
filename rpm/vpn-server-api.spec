@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           0deb8d1e7cf8b75466316435407a393a454d083d
+%global github_commit           d7a7a8733cccf772351f75728af1fb05ea8c302f
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
 Version:    1.0.0
-Release:    0.61%{?dist}
+Release:    0.64%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -146,7 +146,18 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Server\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -176,6 +187,15 @@ fi
 %license LICENSE
 
 %changelog
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.64
+- rebuilt
+
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
+- rebuilt
+
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.62
+- rebuilt
+
 * Mon Apr 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.61
 - rebuilt
 

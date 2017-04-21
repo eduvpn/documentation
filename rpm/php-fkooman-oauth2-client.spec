@@ -5,16 +5,16 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 4878829d33b810f935e1be51d0e0698e5f06d14a
+%global commit0 3a8ed10d5e7caa7d407ff1b755aeb1cff7439ece
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.11%{?dist}
+Release:    0.15%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
-License:    AGPLv3+
+License:    MIT
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
@@ -23,6 +23,7 @@ BuildArch:  noarch
 
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
+BuildRequires:  php-session
 BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-spl
@@ -30,10 +31,12 @@ BuildRequires:  php-standard
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(psr/log)
 BuildRequires:  %{_bindir}/phpunit
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
+Requires:   php-session
 Requires:   php-date
 Requires:   php-json
 Requires:   php-spl
@@ -41,6 +44,7 @@ Requires:   php-standard
 Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(paragonie/random_compat)
+Requires:   php-composer(psr/log)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -61,6 +65,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
     '%{_datadir}/php/random_compat/autoload.php',
+    '%{_datadir}/php/Psr/Log/autoload.php',
 ));
 
 AUTOLOAD
@@ -73,10 +78,15 @@ cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 mkdir vendor
 cat << 'EOF' | tee vendor/autoload.php
 <?php
-require_once '%{buildroot}%{_datadir}/php/%{composer_namespace}/autoload.php';
-EOF
-phpunit --no-coverage --verbose
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('fkooman\\OAuth\\Client\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 %files
 %dir %{_datadir}/php/fkooman
 %dir %{_datadir}/php/fkooman/OAuth
@@ -85,6 +95,18 @@ phpunit --no-coverage --verbose
 %license LICENSE
 
 %changelog
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.15
+- rebuilt
+
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.14
+- rebuilt
+
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.13
+- rebuilt
+
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.12
+- rebuilt
+
 * Wed Mar 29 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.11
 - rebuilt
 

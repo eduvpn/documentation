@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           889d66bb57716db2bd99a92ecd512926c9951acc
+%global github_commit           d9b7373c092cee48ea60b57276e6eeb30a4b467a
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
 Version:    1.0.0
-Release:    0.101%{?dist}
+Release:    0.102%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -119,7 +119,18 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -152,6 +163,9 @@ fi
 %license LICENSE
 
 %changelog
+* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.102
+- rebuilt
+
 * Tue Apr 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.101
 - rebuilt
 
