@@ -44,4 +44,33 @@ By giving access tokens a short lifetime, e.g. 1 hour, there would be no need
 to revoke the tokens. In any case, that would be no different from the central
 OAuth server.
 
+So, how does an app discover federated instances? The `instances.json` has a 
+`federated` boolean and `public_key` string in it, that indicates if it accepts 
+other instances' public keys.
 
+    {
+        "instances": [
+            ...
+
+            {
+                "base_uri": "https://federated.eduvpn.nl/",
+                "display_name": "eduVPN (NL)",
+                "logo_uri": "https://static.eduvpn.nl/federated.png",
+                "federated": true,
+                "public_key": "XXX"
+            },
+
+            ...
+        ]
+    }
+
+This way, the application can distinguish between "normal" instances, and 
+"federated" instances. 
+
+**XXX**: not sure about publishing the public key in here... it is useless for
+the application, it would only be used by other servers to sync the list of 
+other servers. So it should probably be somewhere else... That said, it should
+probably be a completely different file altogether, e.g. `federation.json` that
+contains all the servers that accept "guest" access tokens from other 
+instances. But how do we make sure all "federated" instances have the same
+list of public keys they accept?

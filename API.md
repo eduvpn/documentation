@@ -43,7 +43,7 @@ The document looks like this:
 
             {
                 "base_uri": "https://demo.eduvpn.nl/",
-                "display_name": "eduVPN Demo",
+                "display_name": "eduVPN (demo.eduvpn.nl)",
                 "logo_uri": "https://static.eduvpn.nl/demo.png"
             },
 
