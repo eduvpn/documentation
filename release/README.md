@@ -72,6 +72,7 @@ there are any problems in the build, e.g. missing dependencies.
         vpn-server-api\
         vpn-server-node\
         vpn-user-portal\
+        php-saml-ds\
       )
 
     $ for i in "${PKGS[@]}"; do sudo docker run --rm -v $HOME/rpmbuild:/rpm:Z -i -t eduvpn/builder /build.sh $(basename $(ls $HOME/rpmbuild/SRPMS/$i*.src.rpm)); done
