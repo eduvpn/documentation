@@ -7,7 +7,7 @@
 
 Name:       vpn-lib-common
 Version:    1.0.0
-Release:    0.49%{?dist}
+Release:    0.51%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -85,6 +85,12 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
+* Tue Apr 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.51
+- rebuilt
+
+* Tue Apr 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.50
+- rebuilt
+
 * Mon Apr 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.49
 - rebuilt
 
