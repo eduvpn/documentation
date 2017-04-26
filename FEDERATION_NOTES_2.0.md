@@ -1,13 +1,15 @@
 # Federation 2.0
 
-Our initial proposal was to have a central OAuth server that issues tokens to 
+# In the beginning...
+Our initial proposal, to facilitate federated VPN usage, was to have a central OAuth server that issues tokens to 
 users that authenticate first using an IdP registered in eduGAIN. This way, the 
 VPN instances can accept tokens from this central server to allow the 
-applications to interact with it. To set this up, there is a need for an OAuth 
-server first, centrally managed, the users will also need to authenticate here 
-and this will mean a SAML connection to eduGAIN IdPs. It would be better if we
+applications to interact with it. This requires a centrally managed OAuth 
+server for which every user needs to authenticate in order to use the federated VPN functionality.
+Big disadvantage is that all eduGAIN IdP's need to be SAML connected to every single eduVPN server in the world to make it work. This doesn't scale very well and requires too much day to day maitenance It would be better if we
 could avoid that and organize trust in a different way.
 
+# Federation 2.0
 Since the VPN instances all have their own OAuth server already with public 
 key crypto, they could publish their public key in a central registry and 
 allow any user with an access token signed by any of the published VPN server 
@@ -16,13 +18,13 @@ all that is needed would be a centrally managed "registry" file containing a
 list of participating VPN servers and their OAuth public key.
 
 The challenge is getting the public keys distributed to all the participating
-instances. There are a number of approaches:
+eduVPN instances. There are a number of approaches:
 
 1. create a list of instances and their public keys and have all instance 
    administrators manually copy/paste them in their configuration;
 2. periodically fetch this list and automatically configure the listed public 
    keys;
-3. create a token validation service; when a token is used at any of the 
+3. On demand validation. Create a token validation service; when a token is used at any of the 
    instances, the instance will contact a central service to validate the 
    token.
 
@@ -32,9 +34,9 @@ which prevents them from getting a new valid OAuth token. In acute situations,
 the particular user can directly be blocked in the admin of the instance that
 is being abused.
 
-## Security
+## Considerations
 
-The first approach is easy, we assume that the administrator makes sure the 
+The first approach is easy but requires regular manual labor, we assume that the administrator makes sure the 
 public keys are correct out-of-band.
 
 To automatically do this, the second approach, we need some kind of signature 
@@ -42,16 +44,17 @@ on the registry file (offline) signed by a trusted party. HTTPS is not
 sufficient. We have to implement a robust update mechanism.
 
 The third approach seems a lot of work, and creates an immediate SPoF. The 
-service MUST always be online. It is much nicer to have just a simple JSON 
-file.
+central validating service MUST always be online.
+
+The most feasible approach is to go for the second approach by offering a JSON-file which includes the participating VPN servers and their OAuth public key.
 
 ## Discovery
 
-The application will get two discoveries. One for the "Secure Access" use case
+The eduVPN client apps will have two discoveries. One for the "Secure Access" use case
 where the VPN is used to access protected resources at an organization, and one
 for the "Secure Internet" use case to access the Internet more safely.
 
-The "Secure Access" discovery is already there, in the current Android App. 
+The "Secure Access" discovery was already implemented in API 1.0 which is supported in the current Android App. 
 
 The "Secure Internet" discovery will need to be added, where the discovery 
 works exactly the same, except the user will only need to authenticate to their
