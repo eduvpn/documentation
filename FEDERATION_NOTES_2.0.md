@@ -5,72 +5,101 @@ users that authenticate first using an IdP registered in eduGAIN. This way, the
 VPN instances can accept tokens from this central server to allow the 
 applications to interact with it. To set this up, there is a need for an OAuth 
 server first, centrally managed, the users will also need to authenticate here 
-and this will mean a SAML connection to eduGAIN IdPs.
+and this will mean a SAML connection to eduGAIN IdPs. It would be better if we
+could avoid that and organize trust in a different way.
 
 Since the VPN instances all have their own OAuth server already with public 
 key crypto, they could publish their public key in a central registry and 
 allow any user with an access token signed by any of the published VPN server 
-public keys to access their service. Instead of running a central OAuth server 
-all that is needed would be a centrally managed "metadata" file containing a 
+public keys to access the services. Instead of running a central OAuth server 
+all that is needed would be a centrally managed "registry" file containing a 
 list of participating VPN servers and their OAuth public key.
 
-All VPN instances would need to periodically fetch a copy of this file to be
-able to accept users from other VPN instances. This is a weak point, if this
-mechanism does not work, or is stopped, the users from newly added VPN 
-instances will not get access to other instances.
+The challenge is getting the public keys distributed to all the participating
+instances. There are a number of approaches:
 
-A better solution would probably be a callback endpoint that the VPN services 
-could use to verify a token, they do not need to update their list of 
-participating VPN services, but instead could just query a server to validate
-an access token for them. To this end, the access token will probably also need 
-to contain the "issuer" field in order to lookup the matching public key. This 
-is currently missing, but easily added. The central service is then only an 
-access token validator, and not a complete OAuth server. The VPN service does 
-then not revalidate the OAuth token for the duration of its lifetime.
+1. create a list of instances and their public keys and have all instance 
+   administrators manually copy/paste them in their configuration;
+2. periodically fetch this list and automatically configure the listed public 
+   keys;
+3. create a token validation service; when a token is used at any of the 
+   instances, the instance will contact a central service to validate the 
+   token.
 
-Each VPN service provider could also "white list" VPN services that are allowed
-for guest access. They could just copy/paste public keys in the server 
-configuration file. This is the easiest thing to do, and maybe a good first 
-step.
+We assume all access tokens have a life time of 1 hour, so we will NOT 
+implement revocation. A user will need to be blocked at their "home" instance
+which prevents them from getting a new valid OAuth token. In acute situations,
+the particular user can directly be blocked in the admin of the instance that
+is being abused.
 
-Another option would be to fetch public keys from a central point, so the 
-public key would be fetched on first occurrence of a signed access_token with
-an unknown public key. Issue with this is revoking of public keys of VPN 
-services. They are typically long lived. So, the service would periodically 
-need to verify if the public key is still valid, similar to CRL/OCSP. This 
-seems too complex to get right...
+## Security
 
-By giving access tokens a short lifetime, e.g. 1 hour, there would be no need
-to revoke the tokens. In any case, that would be no different from the central
-OAuth server.
+The first approach is easy, we assume that the administrator makes sure the 
+public keys are correct out-of-band.
 
-So, how does an app discover federated instances? The `instances.json` has a 
-`federated` boolean and `public_key` string in it, that indicates if it accepts 
-other instances' public keys.
+To automatically do this, the second approach, we need some kind of signature 
+on the registry file (offline) signed by a trusted party. HTTPS is not 
+sufficient. We have to implement a robust update mechanism.
+
+The third approach seems a lot of work, and creates an immediate SPoF. The 
+service MUST always be online. It is much nicer to have just a simple JSON 
+file.
+
+## Discovery
+
+The application will get two discoveries. One for the "Secure Access" use case
+where the VPN is used to access protected resources at an organization, and one
+for the "Secure Internet" use case to access the Internet more safely.
+
+The "Secure Access" discovery is already there, in the current Android App. 
+
+The "Secure Internet" discovery will need to be added, where the discovery 
+works exactly the same, except the user will only need to authenticate to their
+"home instance", e.g. the one where their IdP is connected to:
+
+    In which country is your home institute located?
+  
+    [ NL ]
+    [ DE ]
+    [ NO ]
+    [ US ]
+
+The user would login to their "home" instance and after that, the obtained 
+access token can be used at all those instances, no need to login any more!
+
+In addition to `instances.json` 
+[example](https://static.eduvpn.nl/instances.json), we also have a 
+`federation.json`:
 
     {
         "instances": [
-            ...
-
             {
-                "base_uri": "https://federated.eduvpn.nl/",
-                "display_name": "eduVPN (NL)",
-                "logo_uri": "https://static.eduvpn.nl/federated.png",
-                "federated": true,
-                "public_key": "XXX"
+                "base_uri": "https://nl.eduvpn.org/",
+                "display_name": "The Netherlands",
+                "logo_uri": "https://static.eduvpn.org/img/nl.png",
+                "public_key": "qwaWQ5LFQwuQKNQM9H0VyK9IqFimNIpPWXMtg3va3Go="
             },
-
-            ...
-        ]
+            {
+                "base_uri": "https://be.eduvpn.org/",
+                "display_name": "Belgium",
+                "logo_uri": "https://static.eduvpn.org/img/be.png",
+                "public_key": "KGfKv2zBzOkpIsJzKwpQEfNy0In1ZeMam+5MJydbynQ="
+            },
+            {
+                "base_uri": "https://no.eduvpn.org/",
+                "display_name": "Norway",
+                "logo_uri": "https://static.eduvpn.org/img/no.png",
+                "public_key": "rHI0rYyQbUB2k2dcbNoakjo+lpGTCrzLAPe7lfYwDL4="
+            },
+            {
+                "base_uri": "https://us.eduvpn.org/",
+                "display_name": "United States of America",
+                "logo_uri": "https://static.eduvpn.org/img/us.png",
+                "public_key": "AS8X/Iz1o6XDe6oFm0UxvYZhljaAnWz4YtAOr06Q/vw="
+            },
+        ],
+        "version": 1
     }
 
-This way, the application can distinguish between "normal" instances, and 
-"federated" instances. 
-
-**XXX**: not sure about publishing the public key in here... it is useless for
-the application, it would only be used by other servers to sync the list of 
-other servers. So it should probably be somewhere else... That said, it should
-probably be a completely different file altogether, e.g. `federation.json` that
-contains all the servers that accept "guest" access tokens from other 
-instances. But how do we make sure all "federated" instances have the same
-list of public keys they accept?
+The `public_key` field is used by the federated instances to know the public
+key of the other instances, it is not used by the application.
