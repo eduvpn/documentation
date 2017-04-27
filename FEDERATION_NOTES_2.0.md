@@ -56,9 +56,8 @@ for the "Secure Internet" use case to access the Internet more safely.
 
 The "Secure Access" discovery was already implemented in API 1.0 which is supported in the current Android App. 
 
-The "Secure Internet" discovery will need to be added, where the discovery 
-works exactly the same, except the user will only need to authenticate to their
-"home instance", e.g. the one where their IdP is connected to:
+The federated discovery will need to be added as part of the "Secure Internet" use case. In essence the discovery 
+works exactly the same as "Secure Access", except the user will authenticates at the eduVPN instance created for both "Secure Internet" and federation usage:
 
     In which country is your home institute located?
   
@@ -69,6 +68,8 @@ works exactly the same, except the user will only need to authenticate to their
 
 The user would login to their "home" instance and after that, the obtained 
 access token can be used at all those instances, no need to login any more!
+
+Note: the country selection part can be removed because a user has already choosen his preferred IdP, so we know the default country.
 
 In addition to `instances.json` 
 [example](https://static.eduvpn.nl/instances.json), we also have a 
