@@ -9,6 +9,12 @@ required files to configure the SAML SP:
 
     $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
 
+You can now modify the `https_vpn.example_saml.xml` file. Make sure the 
+`<NameIDFormat>` is set to 
+`urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
+
+    $ sed -i 's/urn:oasis:names:tc:SAML:2.0:nameid-format:transient/urn:oasis:names:tc:SAML:2.0:nameid-format:persistent/' https_vpn.example_saml.xml
+
 Copy the files:
 
     $ sudo mkdir /etc/httpd/saml
