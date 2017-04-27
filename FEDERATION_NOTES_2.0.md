@@ -1,6 +1,6 @@
 # Federation 2.0
 
-# In the beginning...
+## In the beginning...
 Our initial proposal, to facilitate federated VPN usage, was to have a central OAuth server that issues tokens to 
 users that authenticate first using an IdP registered in eduGAIN. This way, the 
 VPN instances can accept tokens from this central server to allow the 
@@ -9,7 +9,7 @@ server for which every user needs to authenticate in order to use the federated 
 Big disadvantage is that all eduGAIN IdP's need to be SAML connected to every single eduVPN server in the world to make it work. This doesn't scale very well and requires too much day to day maitenance It would be better if we
 could avoid that and organize trust in a different way.
 
-# Federation 2.0
+## Federation 2.0
 Since the VPN instances all have their own OAuth server already with public 
 key crypto, they could publish their public key in a central registry and 
 allow any user with an access token signed by any of the published VPN server 
@@ -34,7 +34,7 @@ which prevents them from getting a new valid OAuth token. In acute situations,
 the particular user can directly be blocked in the admin of the instance that
 is being abused.
 
-## Considerations
+### Considerations
 
 The first approach is easy but requires regular manual labor, we assume that the administrator makes sure the 
 public keys are correct out-of-band.
@@ -48,7 +48,7 @@ central validating service MUST always be online.
 
 The most feasible approach is to go for the second approach by offering a JSON-file which includes the participating VPN servers and their OAuth public key.
 
-## Discovery
+### Discovery
 
 The eduVPN client apps will have two discoveries. One for the "Secure Access" use case
 where the VPN is used to access protected resources at an organization, and one
