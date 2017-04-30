@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           2c37b185cfbe9b77265f017c020d9be26fc342a5
+%global github_commit           c7ba18987a3b04067eecf7aa4fe5e9daf0d17d55
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
 Version:    1.0.0
-Release:    0.30%{?dist}
+Release:    0.31%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -107,7 +107,18 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 ln -s ../../../etc/openvpn %{buildroot}%{_datadir}/%{name}/openvpn-config
 
 %check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Node\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 
 %files
 %defattr(-,root,root,-)
@@ -126,6 +137,9 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/a
 %license LICENSE
 
 %changelog
+* Sun Apr 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.31
+- rebuilt
+
 * Wed Apr 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.30
 - rebuilt
 
