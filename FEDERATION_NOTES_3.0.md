@@ -5,13 +5,12 @@
 We want to allow the users of our (mobile) eduVPN application to seamlessly 
 switch between independent, NREN operated and controlled, eduVPN instances 
 around the globe. We want to be able to trace abuse back to the user 
-responsible, with help from the NREN the user's "home" institute falls under, 
-and to be able to immediately stop abuse in progress.
+responsible, with help from the user's "home" institute, 
+and to be able to effectively remediate abuse in progress.
 
-Example: a Dutch student can choose an eduVPN endpoint in Australia without 
-requiring any other action than choosing it in the application.
+Example: a Dutch student can choose an eduVPN endpoint in Australia just by clicking in the eduVPN app on country Australia.
 
-## Why
+## Why VPN
 
 Having a VPN service available to use the Internet has a number of features 
 that make it interesting:
@@ -31,8 +30,7 @@ leveraged in the realm of research and education:
 
 1. For researchers or journalists, research the effects of geo location, for 
    example how (web) personalization changes depending of the geo location;
-2. use an endpoint in another jurisdiction where downloading copyrighted 
-   material e.g. using BitTorrent is not illegal;
+2. use an endpoint in another jurisdiction because specific countries have privacy friendly legislation;
 3. optimize performance, e.g. when traveling to a country on the other 
    side of the planet, connect to the "local" NREN provided VPN server instead 
    of your own NREN's server;
@@ -66,27 +64,27 @@ institutes as well as guest access.
 
 ## Current Situation
 
-Currently the VPN application is able to "discover" eduVPN instances by 
+Currently the eduVPN application is able to "discover" eduVPN instances by 
 downloading a JSON document from a web server (registry). This file contains 
 all "known" (and vetted) instances that will be shown in the application. The 
 user can choose the instance they want, and have access to. 
 
-These instances are connected to an identity federation for user 
+The instances are connected to an identity federation for user 
 authentication, they provide a convenient user and admin portal for both 
 downloading a configuration as well as managing the instance through the web 
 browser.
 
-In addition, a (mobile) application uses OAuth to obtain an access token for a 
+In addition, the eduVPN app uses OAuth to obtain an access token for a 
 particular instance to e.g. obtain a VPN configuration that can then be used to 
 connect to the VPN, without requiring the user to login to the portal to 
 (manually) download the configuration.
 
-All participating NRENs could deploy their own eduVPN instance with the 
+All participating NRENs should deploy their own eduVPN instance with the 
 "Secure Internet" profile and link it to eduGAIN. That way, the instance will 
 be open for guest use!
 
 However, for every eduVPN instance the user would need to authenticate again,
-as part of the OAuth flow. This involves opening a web browser from within the 
+as part of the OAuth flow. So if an user already is using 'secure internet' he should re-authenticate when choosing 'secure access', because it's running on a different instance. This involves opening a web browser from within the 
 application and performing authentication and authorization for every instance.
 
 ## Optimizations
