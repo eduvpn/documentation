@@ -31,8 +31,7 @@ Now copy the metadata as well:
 
 Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
 there. Make sure you modify the lines that refer to certificates and keys and
-if you want to enable SAML for the admin portal as well, be sure to add some 
-user IDs to the `MellonCond` lines.
+if you want to enable SAML for the admin portal as well.
 
 Restart the web server:
 
@@ -61,3 +60,7 @@ are associated with the administrator(s).
 
 Also modify `/etc/vpn-admin-portal/vpn.example/config.php` in the same way as 
 the user portal.
+
+**NOTE** if you want to restrict access to the admin portal, you MUST also set 
+some mechanism, either through userId or entitlement authorization, see the 
+example configuration file in `/etc/vpn-admin-portal/default/config.php`!
