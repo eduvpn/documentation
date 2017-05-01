@@ -62,7 +62,7 @@ For the federation purpose, other NRENs only need to provide one
 "Secure Internet" instance that allows access from both their own member 
 institutes as well as guest access.
 
-## Current Situation
+## Current eduVPN status
 
 Currently the eduVPN application is able to "discover" eduVPN instances by 
 downloading a JSON document from a web server (registry). This file contains 
@@ -87,24 +87,24 @@ However, for every eduVPN instance the user would need to authenticate again,
 as part of the OAuth flow. So if an user already is using 'secure internet' he should re-authenticate when choosing 'secure access', because it's running on a different instance. This involves opening a web browser from within the 
 application and performing authentication and authorization for every instance.
 
-## Optimizations
+## How to implement federation
 
-There are a number of approaches we considered to improve on this:
+There are a number of approaches how to implement federation within eduVPN:
 
-1. Do nothing: it works as is, but it is a bit cumbersome for the user, for 
+1. "Do nothing": leave the eduVPN design as is and connect every single eduVPN server to eduGAIN, for 
    every chosen endpoint a new OAuth credential needs to be obtained, involving 
    opening the browser, doing the OAuth dance (IdP discovery, authentication,
-   authorization);
+   authorization).;
 2. Create a CA hierarchy. All (federated) eduVPN instances run under the same
    root CA by creating sub-CAs for all participating instances, which will 
    allow users of the various instances to connect to other instances;
-3. Create a central controller node and deploy only the VPN-nodes around the
+3. Develop a central eduVPN controller node and centrally deploy and manage the VPN-nodes around the
    world;
 4. Create a central OAuth server, linked to eduGAIN for user authentication 
    that provides OAuth tokens that can be used at all the instances that trust 
    this OAuth server (using public key crypto signed OAuth tokens, the public
    key could be set in the default configuration of the VPN instances); 
-5. Create a registry (e.g. signed JSON document) of vetted instances and their 
+5. Create a registry (e.g. signed JSON document) of vetted eduVPN instances and their 
    OAuth public keys. So a key obtained at one instance can be verified by the 
    other instances.
 
@@ -119,7 +119,7 @@ There are a number of approaches we considered to improve on this:
 ### Cons
 
 * Not so smooth user experience;
-* Every eduVPN instance needs to connect to eduGAIN individually;
+* Every eduVPN instance needs to connect to eduGAIN individually, so within eduGAIN there will be a long list of eduVPN servers per NREN;
 
 ## 2
 
@@ -159,7 +159,7 @@ There are a number of approaches we considered to improve on this:
 ### Cons
 
 * No need to reciprocate;
-* Requires central OAuth server (SPoF);
+* Requires central OAuth server (potential SPoF);
 * no "caching" option if the OAuth server is offline;
 * need (automated) public key rollover mechanism in case the OAuth token 
   signing key needs changing (see Cons at 3);
