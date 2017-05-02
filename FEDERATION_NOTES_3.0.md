@@ -162,7 +162,7 @@ There are a number of approaches how to implement federation within eduVPN:
 * Requires central OAuth server (potential SPoF);
 * no "caching" option if the OAuth server is offline;
 * need (automated) public key rollover mechanism in case the OAuth token 
-  signing key needs changing (see Cons at 3);
+  signing key needs changing (see Cons at 5);
 
 ## 5
 
