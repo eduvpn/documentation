@@ -17,7 +17,7 @@ that make it interesting:
  
 1. protect against local eavesdropping and manipulation of your traffic, e.g. 
    insecure free WiFi in a coffee shop;
-2. prevent tracking by IP address;
+2. prevent tracking of IP address by services/websites you visit;
 3. prevent retaliation when using the Internet, e.g. DoS to your (home) IP;
 4. circumvent state or corporate censorship, e.g. be able to use Twitter or 
    Facebook when traveling abroad in certain jurisdictions;
