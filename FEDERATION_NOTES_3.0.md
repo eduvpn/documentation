@@ -185,8 +185,9 @@ There are a number of approaches how to implement federation within eduVPN:
 
 * Participating VPN servers need the ability to update the list of trusted
   keys, i.e. to accept newly deployed federated instances;
-* Users need to know which instance their IdP is connected to in order to 
-  select it first to obtain an access token to use there and elsewhere;
+* Users need to know which instance, i.e. their country, their IdP is connected 
+  to in order to select it first to obtain an access token to use there and 
+  elsewhere;
 
 ## Analysis
 
