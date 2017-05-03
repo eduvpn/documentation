@@ -155,6 +155,8 @@ There are a number of approaches how to implement federation within eduVPN:
 * Only one OAuth public key needs to be trusted by the eduVPN instances;
 * Can just add IdPs from eduGAIN to OAuth server to make it work for more 
   users;
+* Easier for users, they do not need to know which eduVPN their IdP is 
+  connected to;
 
 ### Cons
 
@@ -183,6 +185,8 @@ There are a number of approaches how to implement federation within eduVPN:
 
 * Participating VPN servers need the ability to update the list of trusted
   keys, i.e. to accept newly deployed federated instances;
+* Users need to know which instance their IdP is connected to in order to 
+  select it first to obtain an access token to use there and elsewhere;
 
 ## Analysis
 
