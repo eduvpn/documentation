@@ -169,7 +169,7 @@ The response looks like this:
 
 A call that can be used to get a full working OpenVPN configuration file 
 including certificate and key. This MUST NOT be used by "Native Apps". Instead
-the separate `/create_certificate` and `/profile_config` MUST be used as they 
+the separate `/create_keypair` and `/profile_config` MUST be used as they 
 allow for obtaining a new configuration without generating a new 
 certificate/key.
 
@@ -192,14 +192,14 @@ The response will be an OpenVPN configuration file that can be used "as-is".
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android" \
-        https://demo.eduvpn.nl/portal/api.php/create_certificate
+        https://demo.eduvpn.nl/portal/api.php/create_keypair
 
-This will send a HTTP POST to the API endpoint, `/create_certificate` with the 
+This will send a HTTP POST to the API endpoint, `/create_keypair` with the 
 parameter `display_name`. It will only create a certificate and return the 
 public and private key.
 
     {
-        "create_certificate": {
+        "create_keypair": {
             "data": {
                 "certificate": "-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----",
                 "private_key": "-----BEGIN PRIVATE KEY----- ... -----END PRIVATE KEY-----"
@@ -342,7 +342,7 @@ See [Application Flow](APP_FLOW.md).
 
 In API version 2, some calls were added:
 
-* `POST` to `/create_certificate` to create a `private_key` and 
+* `POST` to `/create_keypair` to create a `private_key` and 
   `certificate` for an instance to be used with all profiles. This makes it 
   possible to use one key pair per instance;
 * `GET` to `/profile_config` to obtain only the configuration file, without 
