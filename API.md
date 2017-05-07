@@ -381,3 +381,6 @@ with mitigations described in the following documents:
 
 In particular, the use of PKCE is enforced, and the `response_type` MUST be 
 `code` for the authorization request.
+
+In version 2, the `instances.json` is also signed, so the signature MUST be 
+validated by the consuming client.
