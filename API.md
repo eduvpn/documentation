@@ -57,6 +57,28 @@ providing a logo and a human readable name for the instance. Users also SHOULD
 have the option to provide their own `base_uri` in the application UI if their
 favorite provider is not listed.
 
+### Validation
+
+When downloading the instance discovery file, you also MUST fetch the signature 
+file, which is located in the same folder, but has the `.sig` extension, e.g. 
+`https://static.eduvpn.nl/instances.json.sig`.
+
+Using [libsodium](https://download.libsodium.org/doc/) you can verify the 
+signature using the public key(s) that you hard code in your application.
+
+You can cache this file and periodically request a new version. You MUST allow
+the user to manually trigger a reload though.
+
+The flow:
+
+1. Download `instances.json`;
+2. Download `instances.json.sig`;
+3. Verify the signature using libsodium and the public key stored in your 
+   application
+4. If you already have a cached version, verify the `seq` field of the new file
+   is higher than the `seq` in the cached copy;
+5. Overwrite the cached version if appropriate.
+ 
 ## API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
