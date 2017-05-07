@@ -65,7 +65,9 @@ file, which is located in the same folder, but has the `.sig` extension, e.g.
 
 Using [libsodium](https://download.libsodium.org/doc/) you can verify the 
 signature using the public key(s) that you hard code in your application. The 
-signature file contains the Base64-encoded signature.
+signature file contains the Base64-encoded signature. See 
+[this](https://download.libsodium.org/doc/bindings_for_other_languages/) 
+document for various language bindings.
 
 You can cache this file and periodically request a new version. You MUST allow
 the user to manually trigger a reload though.
