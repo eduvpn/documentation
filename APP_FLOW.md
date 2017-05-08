@@ -43,12 +43,15 @@ opening the browser.
 
 Adding a new instance/profile to the app consists of:
 
-1. obtain the list of available instances (instance discovery);
-2. perform discovery (fetch `info.json`);
-2. obtaining an OAuth access token for the chosen instance;
-3. obtaining a client certificate and key and store them in the persistent app 
+1. perform instance discovey (fetch `instances.json` and `instances.json.sig`; 
+2. Verify the signature;
+3. If verified document's `seq` > cached copy, update cached copy;
+4. Allow the user to choose an instance, or enter their own; 
+5. perform service discovery (fetch `info.json`);
+6. obtaining an OAuth access token for the chosen instance;
+7. obtaining a client certificate and key and store them in the persistent app 
    storage;
-4. showing a list of available profiles and allowing the user to choose one, 
+8. showing a list of available profiles and allowing the user to choose one, 
    e.g. `internet` or `office`.
 
 After the enrollment the Basic Flow is executed starting at step 4.
@@ -75,7 +78,8 @@ provided.
 
 # VPN Connections
 
-A connection to a VPN server can fail for a number of reasons:
+A connection to a VPN server can fail for a number of reasons, not a complete 
+list:
 
 1. The server is offline;
    * Show error to the user to try again later, or try other server from the
@@ -120,8 +124,6 @@ More details on the API can be found in the separate
 This section contains a list of changes in the future that should already be 
 contemplated, although not necessarily implemented, not all is implemented at
 this time in the API.
-
-The API will expose whether or not a user is blocked;
 
 It will be required for an app to store the client certificate and key in a 
 "protected" storage on the device, e.g. a secure element or otherwise tamper 
