@@ -60,9 +60,7 @@ requiring user involvement:
 
 # User Experience
 
-![App Flow](app_flow.png)
-
-[See Big Version](app_flow_big.png)
+![App Flow](https://github.com/eduvpn/documentation/blob/master/APP_FLOW.md)
 
 # Architecture 
 
