@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 88df0da751c62a2abf195d0b8199509f00eeffde
+%global commit0 3ad8b5d792f258cb66d81a89033e3ed85d88b45a
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.31%{?dist}
+Release:    0.32%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -32,7 +32,6 @@ BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
-BuildRequires:  php-composer(psr/log)
 BuildRequires:  %{_bindir}/phpunit
 
 Requires:   php(language) >= 5.4.0
@@ -46,7 +45,6 @@ Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(paragonie/random_compat)
 Requires:   php-composer(symfony/polyfill-php56)
-Requires:   php-composer(psr/log)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -67,7 +65,6 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
     '%{_datadir}/php/random_compat/autoload.php',
-    '%{_datadir}/php/Psr/Log/autoload.php',
     '%{_datadir}/php/Symfony/Polyfill/autoload.php',
 ));
 
@@ -98,6 +95,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.32
+- rebuilt
+
 * Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.31
 - rebuilt
 
