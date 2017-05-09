@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 e483a67a3e68a5a40ea51c243b08bc1718d3fc1a
+%global commit0 88df0da751c62a2abf195d0b8199509f00eeffde
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.29%{?dist}
+Release:    0.31%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -31,6 +31,7 @@ BuildRequires:  php-standard
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  %{_bindir}/phpunit
 
@@ -44,6 +45,7 @@ Requires:   php-standard
 Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(paragonie/random_compat)
+Requires:   php-composer(symfony/polyfill-php56)
 Requires:   php-composer(psr/log)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
@@ -66,6 +68,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
     '%{_datadir}/php/random_compat/autoload.php',
     '%{_datadir}/php/Psr/Log/autoload.php',
+    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
 ));
 
 AUTOLOAD
@@ -95,68 +98,8 @@ EOF
 %license LICENSE
 
 %changelog
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.29
+* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.31
 - rebuilt
 
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.28
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.27
-- rebuilt
-
-* Mon May 08 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.26
-- rebuilt
-
-* Sat May 06 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.25
-- rebuilt
-
-* Fri May 05 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.24
-- rebuilt
-
-* Fri May 05 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.23
-- rebuilt
-
-* Fri May 05 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.22
-- rebuilt
-
-* Fri Apr 28 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.21
-- rebuilt
-
-* Sun Apr 23 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.20
-- rebuilt
-
-* Sun Apr 23 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.19
-- rebuilt
-
-* Sun Apr 23 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.18
-- rebuilt
-
-* Sat Apr 22 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.17
-- rebuilt
-
-* Sat Apr 22 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.16
-- rebuilt
-
-* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.15
-- rebuilt
-
-* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.14
-- rebuilt
-
-* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.13
-- rebuilt
-
-* Fri Apr 21 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.12
-- rebuilt
-
-* Wed Mar 29 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.11
-- rebuilt
-
-* Mon Mar 20 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.10
-- rebuilt
-
-* Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.9
-- rebuilt
-
-* Mon Mar 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.8
+* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.30
 - rebuilt
