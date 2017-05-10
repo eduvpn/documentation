@@ -24,8 +24,8 @@ vpn-admin-portal-add-user --user foo --pass bar
 vpn-server-api-update-ip --profile internet --host "${EXTERNAL_IP}" --ext "${EXTERNAL_IF}" --reject6
 systemctl start httpd
 vpn-server-node-server-config --profile internet --generate
-systemctl enable openvpn@default-internet-0
-systemctl start openvpn@default-internet-0
+systemctl enable openvpn-server@default-internet-0
+systemctl start openvpn-server@default-internet-0
 vpn-server-node-generate-firewall --install
 systemctl enable iptables
 systemctl restart iptables

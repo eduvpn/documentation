@@ -122,8 +122,8 @@ Generate a configuration, including certificates:
 
 Enable OpenVPN on boot, and start it:
 
-    $ sudo systemctl enable openvpn@default-internet-0
-    $ sudo systemctl start openvpn@default-internet-0
+    $ sudo systemctl enable openvpn-server@default-internet-0
+    $ sudo systemctl start openvpn-server@default-internet-0
 
 ## Firewall
 
@@ -228,8 +228,8 @@ We need an additional management port that OpenVPN can use:
 Regenerate the server configuration, and enable it:
 
     $ sudo vpn-server-node-server-config --profile internet
-    $ sudo systemctl enable openvpn@default-internet-1
-    $ sudo systemctl start openvpn@default-internet-1
+    $ sudo systemctl enable openvpn-server@default-internet-1
+    $ sudo systemctl start openvpn-server@default-internet-1
 
 Install SNI Proxy:
 
@@ -279,11 +279,12 @@ To enable it for connecting to the VPN server, modify
 the `internet` profile.
 
 Regenerate the server configuration, and restart the OpenVPN process, if you 
-enabled "Port Share" you also need to restart `openvpn@default-internet-1`.
+enabled "Port Share" you also need to restart 
+`openvpn-server@default-internet-1`.
 
     $ sudo vpn-server-node-server-config --profile internet
-    $ sudo systemctl restart openvpn@default-internet-0
-    $ #sudo systemctl restart openvpn@default-internet-1
+    $ sudo systemctl restart openvpn-server@default-internet-0
+    $ #sudo systemctl restart openvpn-server@default-internet-1
 
 After this, if users want to download a new configuration, they will be forced 
 to enroll for two-factor authentication first before being allowed to download 

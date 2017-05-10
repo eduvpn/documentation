@@ -70,8 +70,8 @@ configuration options.
 If you had an old profile, e.g. the default `internet`, it needs to be stopped
 first, and can be removed:
 
-    $ sudo systemctl stop    openvpn@vpn.example-internet-{0,1,2,3}
-    $ sudo systemctl disable openvpn@vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl stop    openvpn-server@vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl disable openvpn-server@vpn.example-internet-{0,1,2,3}
     $ sudo rm /etc/openvpn/vpn.example-internet-{0,1,2,3}.conf
     $ sudo rm -rf /etc/openvpn/tls/vpn.example/internet
 
@@ -82,10 +82,10 @@ Now the new configurations can be generated:
 
 Enable and start them:
 
-    $ sudo systemctl enable openvpn@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl enable openvpn@vpn.example-admin-{0,1,2,3}
-    $ sudo systemctl start  openvpn@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl start  openvpn@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl enable openvpn-server@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl enable openvpn-server@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl start  openvpn-server@vpn.example-office-{0,1,2,3}
+    $ sudo systemctl start  openvpn-server@vpn.example-admin-{0,1,2,3}
 
 Regenerate and restart the firewall:
 
