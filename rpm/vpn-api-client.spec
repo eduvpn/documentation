@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-api-client
-%global github_commit           3771c2320deed711c78051a6720c7862b6723e15
+%global github_commit           26d3fd3a358477d95e51b13062d1ffcdd89ca1f8
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.9%{?dist}
+Release:    0.1%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -24,23 +24,17 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-curl
-BuildRequires:  php-date
-BuildRequires:  php-json
-BuildRequires:  php-session
 BuildRequires:  php-spl
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/oauth2-client)
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
-Requires:   php-curl
-Requires:   php-date
-Requires:   php-json
-Requires:   php-session
 Requires:   php-spl
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/oauth2-client)
+Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -53,7 +47,7 @@ Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
 
 %description
-VPN Admin Portal.
+VPN API Client.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
@@ -65,10 +59,11 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\ApiClient\\', __DIR__);
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Admin\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
     '%{_datadir}/php/Twig/autoload.php',
+    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
+    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
 ));
 AUTOLOAD
 
@@ -87,14 +82,12 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
-%check
-phpunit --bootstrap=%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php
-
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
 restorecon -R %{_localstatedir}/lib/%{name} || :
+
 # remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/%{name}/*/tpl/* >/dev/null 2>/dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
@@ -116,29 +109,5 @@ fi
 %license LICENSE
 
 %changelog
-* Thu Feb 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.9
-- rebuilt
-
-* Thu Feb 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.8
-- rebuilt
-
-* Thu Feb 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
-- rebuilt
-
-* Wed Feb 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.6
-- rebuilt
-
-* Tue Feb 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
-- rebuilt
-
-* Thu Feb 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
+* Wed May 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
 - initial package
