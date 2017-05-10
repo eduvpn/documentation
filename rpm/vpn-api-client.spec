@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-api-client
-%global github_commit           26d3fd3a358477d95e51b13062d1ffcdd89ca1f8
+%global github_commit           56876bbc2fee29247a598960cff61a543055cb45
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.2%{?dist}
+Release:    0.5%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -25,6 +25,7 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-spl
+BuildRequires:  php-libsodium
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
@@ -32,6 +33,7 @@ BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-spl
+Requires:   php-libsodium
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(paragonie/constant_time_encoding)
@@ -109,6 +111,15 @@ fi
 %license LICENSE
 
 %changelog
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
+- rebuilt
+
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
+- rebuilt
+
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
+- rebuilt
+
 * Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
 - rebuilt
 
