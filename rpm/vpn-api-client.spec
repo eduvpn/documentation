@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-api-client
-%global github_commit           8e5be016b4d9d2c27be4e541a908dbc46be47448
+%global github_commit           d37ff14ccc1ead59ebb1a17c289111ec6bfcb1ff
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.7%{?dist}
+Release:    0.9%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -89,7 +89,7 @@ semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.
 restorecon -R %{_localstatedir}/lib/%{name} || :
 
 # remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/*/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
@@ -111,6 +111,12 @@ fi
 %license LICENSE
 
 %changelog
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.9
+- rebuilt
+
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.8
+- rebuilt
+
 * Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
 - rebuilt
 
