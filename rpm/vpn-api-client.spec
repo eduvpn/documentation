@@ -9,7 +9,7 @@
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.1%{?dist}
+Release:    0.2%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -59,7 +59,7 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Admin\\', __DIR__);
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\ApiClient\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Twig/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
@@ -109,5 +109,8 @@ fi
 %license LICENSE
 
 %changelog
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
+- rebuilt
+
 * Wed May 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
 - initial package
