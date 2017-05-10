@@ -251,25 +251,25 @@ systemctl restart vmtoolsd
 # OPENVPN SERVER CONFIG
 ###############################################################################
 
+# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
+# by default! 
+
 # remove existing configurations
-rm -rf /etc/openvpn/*
+rm -rf /etc/openvpn/server/*
 
 # generate the server configuration files
 vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate
 
-# symlink to work with new systemd unit file
-ln -s /etc/openvpn /etc/openvpn/server
-
 # enable and start OpenVPN
-systemctl enable openvpn@${INSTANCE}-internet-0
-systemctl enable openvpn@${INSTANCE}-internet-1
-systemctl enable openvpn@${INSTANCE}-internet-2
-systemctl enable openvpn@${INSTANCE}-internet-3
+systemctl enable openvpn-server@${INSTANCE}-internet-0
+systemctl enable openvpn-server@${INSTANCE}-internet-1
+systemctl enable openvpn-server@${INSTANCE}-internet-2
+systemctl enable openvpn-server@${INSTANCE}-internet-3
 
-systemctl start openvpn@${INSTANCE}-internet-0
-systemctl start openvpn@${INSTANCE}-internet-1
-systemctl start openvpn@${INSTANCE}-internet-2
-systemctl start openvpn@${INSTANCE}-internet-3
+systemctl restart openvpn-server@${INSTANCE}-internet-0
+systemctl restart openvpn-server@${INSTANCE}-internet-1
+systemctl restart openvpn-server@${INSTANCE}-internet-2
+systemctl restart openvpn-server@${INSTANCE}-internet-3
 
 ###############################################################################
 # FIREWALL

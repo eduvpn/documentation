@@ -176,25 +176,25 @@ ping -c 4 10.42.101.100
 # OPENVPN SERVER CONFIG
 ###############################################################################
 
+# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
+# by default! 
+
 # remove existing config
-rm -rf /etc/openvpn/*
+rm -rf /etc/openvpn/server/*
 
 # generate the server configuration files
 vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --generate
 
-# symlink to work with new systemd unit file
-ln -s /etc/openvpn /etc/openvpn/server
-
 # enable and start OpenVPN
-systemctl enable openvpn@${INSTANCE}-${PROFILE}-0
-systemctl enable openvpn@${INSTANCE}-${PROFILE}-1
-systemctl enable openvpn@${INSTANCE}-${PROFILE}-2
-systemctl enable openvpn@${INSTANCE}-${PROFILE}-3
+systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-0
+systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-1
+systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-2
+systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-3
 
-systemctl restart openvpn@${INSTANCE}-${PROFILE}-0
-systemctl restart openvpn@${INSTANCE}-${PROFILE}-1
-systemctl restart openvpn@${INSTANCE}-${PROFILE}-2
-systemctl restart openvpn@${INSTANCE}-${PROFILE}-3
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-0
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-1
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-2
+systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-3
 
 ###############################################################################
 # FIREWALL

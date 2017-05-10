@@ -9,7 +9,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.0
-Release:    0.33%{?dist}
+Release:    0.34%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -104,7 +104,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
 
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
-ln -s ../../../etc/openvpn %{buildroot}%{_datadir}/%{name}/openvpn-config
+ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/%{name}/openvpn-config
 
 %check
 mkdir vendor
@@ -137,6 +137,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.34
+- rebuilt
+
 * Sat May 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.33
 - rebuilt
 
