@@ -12,8 +12,8 @@ Example: a Dutch student can choose an eduVPN endpoint in Australia just by clic
 
 ## Why VPN
 
-Having a VPN service available to use the Internet has a number of features 
-that make it interesting:
+Having a VPN service available to use the Internet can significantly improve 
+security and privacy of the user:
  
 1. protect against local eavesdropping and manipulation of your traffic, e.g. 
    insecure free WiFi in a coffee shop;
