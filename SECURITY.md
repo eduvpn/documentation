@@ -44,7 +44,7 @@ directory. If you want to generate your own DH parameters, you can do so
 using the above command and store the file in `/etc/vpn-server-node/dh.pem`.
 
 Make sure to regenerate (all) server configurations, or manually copy the 
-`dh.pem` to `/etc/openvpn/tls/<instance>/<profile>/dh.pem` for all your 
+`dh.pem` to `/etc/openvpn/server/tls/<instance>/<profile>/dh.pem` for all your 
 profiles and configurations.
 
 ## PHP

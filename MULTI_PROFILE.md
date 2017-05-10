@@ -72,8 +72,8 @@ first, and can be removed:
 
     $ sudo systemctl stop    openvpn-server@vpn.example-internet-{0,1,2,3}
     $ sudo systemctl disable openvpn-server@vpn.example-internet-{0,1,2,3}
-    $ sudo rm /etc/openvpn/vpn.example-internet-{0,1,2,3}.conf
-    $ sudo rm -rf /etc/openvpn/tls/vpn.example/internet
+    $ sudo rm /etc/openvpn/server/vpn.example-internet-{0,1,2,3}.conf
+    $ sudo rm -rf /etc/openvpn/server/tls/vpn.example/internet
 
 Now the new configurations can be generated:
 
