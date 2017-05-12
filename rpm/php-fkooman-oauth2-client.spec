@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 525d0975e0ab3fafb582d60c9339e891b6973372
+%global commit0 411235ac24eb828412c241ce8bc886e32d7e67ac
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.35%{?dist}
+Release:    0.37%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -21,30 +21,48 @@ Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
 BuildArch:  noarch
 
+#        "php": ">=5.4.0",
 BuildRequires:  php(language) >= 5.4.0
+#        "ext-curl": "*",
+#        "ext-date": "*",
+#        "ext-hash": "*",
+#        "ext-json": "*",
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-session": "*",
+#        "ext-spl": "*",
 BuildRequires:  php-curl
-BuildRequires:  php-session
 BuildRequires:  php-date
+BuildRequires:  php-hash
 BuildRequires:  php-json
+BuildRequires:  php-pcre
+BuildRequires:  php-pdo
+BuildRequires:  php-session
 BuildRequires:  php-spl
 BuildRequires:  php-standard
-BuildRequires:  php-composer(fedora/autoloader)
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "symfony/polyfill-php56": "^1.3"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  %{_bindir}/phpunit
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
-Requires:   php-session
 Requires:   php-date
+Requires:   php-hash
 Requires:   php-json
+Requires:   php-pcre
+Requires:   php-pdo
+Requires:   php-session
 Requires:   php-spl
 Requires:   php-standard
-Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(paragonie/random_compat)
 Requires:   php-composer(symfony/polyfill-php56)
+Requires:   php-composer(fedora/autoloader)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -95,6 +113,12 @@ EOF
 %license LICENSE
 
 %changelog
+* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.37
+- rebuilt
+
+* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.36
+- rebuilt
+
 * Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.35
 - rebuilt
 
