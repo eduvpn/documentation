@@ -4,6 +4,11 @@ This document describes the API provided by the VPN portal. The API can be used
 by applications wanting to integrate with the VPN software to make it easy for
 users to configure their VPN.
 
+The API is pragmatic "REST", keeping things as simple as possible without 
+obsessing about the proper HTTP verb. There are no `PUT` and `DELETE` requests,
+just simple `GET` and `POST` requests that use "form submit". The responses 
+are always `application/json` though.
+
 # Standards
 
 OAuth 2.0 is used to provide the API. The following documents are relevant for 
@@ -39,16 +44,18 @@ The document looks like this:
 
     {
         "instances": [
-            ...
-
             {
-                "base_uri": "https://demo.eduvpn.nl/",
-                "display_name": "eduVPN (demo.eduvpn.nl)",
-                "logo_uri": "https://static.eduvpn.nl/demo.png"
+                "base_uri": "https:\/\/surf.eduvpn.nl\/",
+                "display_name": "SURF",
+                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/surfnet.png"
             },
-
+         
             ...
-        ]
+
+        ],
+        "seq": 25,
+        "signed_at": "2017-05-11 14:55:03",
+        "version": 1
     }
 
 The `base_uri` can be used to perform the API Discovery, see below. The other
@@ -363,6 +370,66 @@ Here `nl.eduvpn.app` is the `client_id`.
 
 See [Application Flow](APP_FLOW.md).
 
+# Federation
+
+There is also a "federation" scenario where the application will connect to a 
+VPN service API at another location from where the OAuth token came from, so
+the API of the services accepts tokens from a number of other instances, 
+typically the ones listed in the "federation" discovery file.
+
+This flow was introduced to reduce the number of required authentications as 
+the various instances.
+
+At the moment, the "federation" instances are part of a separate discovery 
+file, i.e. `https://static.eduvpn.nl/federation.json` and has its own signature
+file as well, i.e. `.sig`.
+
+The application needs to support two flows, build-time configurable:
+
+1. Use the OAuth server of the instance the user chose to obtain a token that
+   will also be valid at the other instances;
+2. Use a central OAuth server for obtaining a token;
+
+The first flow is for a "distributed" deploy where the only central component
+is the signed discovery file, the second flow is for the situation where more 
+(central) control is required.
+
+For the first flow, to obtain an access token the user will first have to 
+select their "home" instance where they have an account. Typically that will be
+the instance in the country their organization belongs to.
+
+For the second flow, a central OAuth server is specified in the discovery file.
+If the OAuth server is specified there, the second flow MUST be used, if it
+is not there, the first scenario MUST be used.
+
+The federation discovery file:
+
+    {
+        "instances": [
+            {
+                "base_uri": "https:\/\/labrat.eduvpn.nl\/",
+                "display_name": "The Netherlands (Amsterdam)",
+                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/nl.png",
+                "public_key": "wGos0zPERxPYZHyJXQXz\/OOSCWWej27PEScjScJzXQ8="
+            },
+            {
+                "base_uri": "https:\/\/vpn.tuxed.net\/",
+                "display_name": "The Netherlands (Utrecht)",
+                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/nl.png",
+                "public_key": "U1HcFQHQKMrIai\/8Zb0+B1\/SpFI66ZdiJ04Iy7vN61Q="
+            }
+        ],
+        "seq": 5,
+        "signed_at": "2017-05-11 20:51:08",
+        "version": 1
+    }
+
+The `public_key` field is not used by the applications, but by the instances
+themselves to accept each other's public keys.
+
+If the keys `authorization_endpoint` and `token_endpoint` are also set, the
+central OAuth server MUST be used.
+
 # Changelog
 
 In API version 2, some calls were added:
@@ -373,7 +440,8 @@ In API version 2, some calls were added:
 * `GET` to `/profile_config` to obtain only the configuration file, without 
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
-* `GET` to `/user_info` to obtain user information.
+* `GET` to `/user_info` to obtain user information;
+* A federation model is described as well.
 
 For security reasons, API 2 switches to the _authorization code_ flow, together 
 with mitigations described in the following documents:

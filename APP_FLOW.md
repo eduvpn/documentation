@@ -43,7 +43,7 @@ opening the browser.
 
 Adding a new instance/profile to the app consists of:
 
-1. perform instance discovey (fetch `instances.json` and `instances.json.sig`; 
+1. perform instance discovery (fetch `instances.json` and `instances.json.sig`; 
 2. Verify the signature;
 3. If verified document's `seq` > cached copy, update cached copy;
 4. Allow the user to choose an instance, or enter their own; 

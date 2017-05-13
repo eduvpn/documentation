@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-api-client
-%global github_commit           8a7490e25bdb6bd04a84b32a2c5ef704dd049f09
+%global github_commit           a7047eb94489a0fdb7a3143fdc2c3449b96e7ef8
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.11%{?dist}
+Release:    0.12%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -111,6 +111,9 @@ fi
 %license LICENSE
 
 %changelog
+* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.12
+- rebuilt
+
 * Thu May 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.11
 - rebuilt
 
