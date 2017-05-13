@@ -41,7 +41,7 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install openssl NetworkManager mod_ssl php-opcache httpd iptables pwgen \
-    iptables-services sniproxy open-vm-tools php-fpm php-cli bridge-utils \
+    iptables-services open-vm-tools php-fpm php-cli bridge-utils \
     policycoreutils-python
 
 # install software (VPN packages)
@@ -102,9 +102,6 @@ cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
 sed -i "s/vpn.example/${INSTANCE}/" /etc/httpd/conf.d/${INSTANCE}.conf
 
-# Make Apache not listen on port 80 anymore, sniproxy will take care of that
-sed -i "s/^Listen 80$/#Listen 80/" /etc/httpd/conf/httpd.conf
-
 # empty the RPM httpd configs instead of deleting so we do not get them back
 # on package update
 echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-server-api.conf
@@ -142,7 +139,6 @@ cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${INSTANCE}/config
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host ${INSTANCE} --ext ${EXTERNAL_IF}
 
 sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
-sed -i "s|'processCount' => 1|//'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
 
 # init the CA
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}
@@ -214,14 +210,6 @@ EOF
 sysctl --system
 
 ###############################################################################
-# SNIPROXY
-###############################################################################
-
-# install the config file
-cp resources/sniproxy.conf /etc/sniproxy.conf
-sed -i "s/vpn.example/${INSTANCE}/" /etc/sniproxy.conf
-
-###############################################################################
 # UPDATE SECRETS
 ###############################################################################
 
@@ -234,17 +222,12 @@ vpn-server-api-update-api-secrets --instance ${INSTANCE}
 
 systemctl enable php-fpm
 systemctl enable httpd
-systemctl enable sniproxy
-# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
-# we need this for sniproxy and openvpn to start only when the network is up
-# because we bind to other addresses than 0.0.0.0 and ::
 systemctl enable NetworkManager-wait-online
 systemctl enable vmtoolsd
 
 # start services
 systemctl restart php-fpm
 systemctl restart httpd
-systemctl restart sniproxy
 systemctl restart vmtoolsd
 
 ###############################################################################

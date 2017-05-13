@@ -32,7 +32,6 @@ assuming you are using `vpn.example`. Here we define two profiles, `office` and
             ...
             'extIf' => 'eth0',
             'listen' => '192.0.2.1',
-            'portShare' => true,        // if everything on one host
             'hostName' => 'office.vpn.example',
             range: 10.0.5.0/24
             range6: 'fd10:0:5::/48'
@@ -47,7 +46,6 @@ assuming you are using `vpn.example`. Here we define two profiles, `office` and
             ...
             'extIf' => 'eth0',
             'listen' => '192.0.2.2',
-            'portShare' => true,        // if everything on one host
             'hostName' => 'admin.vpn.example',
             range: 10.0.10.0/24
             range6: 'fd10:0:10::/48'
@@ -92,52 +90,3 @@ Regenerate and restart the firewall:
     $ sudo vpn-server-node-generate-firewall --install
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
-
-# SNI Proxy
-
-**NOTE**: this is only needed when running everything on one host! If you set
-`portShare` to `false` in the configuration above, OpenVPN will directly claim
-`tcp/443`.
-
-SNI Proxy must be used to make `tcp/443` available for clients to connect to.
-
-The file `/etc/sniproxy.conf` should look like this:
-
-    user sniproxy
-    pidfile /var/run/sniproxy.pid
-
-    # office.vpn.example
-    listen 192.0.2.1:80 {
-        proto http
-        table http_hosts
-    }
-
-    listen 192.0.2.1:443 {
-        proto tls
-        fallback 127.42.101.100:1194
-        table https_hosts
-    }
-
-    # admin.vpn.example
-    listen 192.0.2.2:80 {
-        proto http
-        table http_hosts
-    }
-
-    listen 192.0.2.2:443 {
-        proto tls
-        fallback 127.42.101.101:1194
-        table https_hosts
-    }
-
-    table http_hosts {
-        vpn.example 127.42.101.100:8080
-    }
-
-    table https_hosts {
-        vpn.example 127.42.101.100:8443
-    }
-
-Then, to restart sniproxy:
-
-    $ sudo systemctl restart sniproxy

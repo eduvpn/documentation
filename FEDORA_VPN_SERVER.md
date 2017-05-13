@@ -53,9 +53,10 @@ here.
 
     $ sudo setsebool -P httpd_can_network_connect=1
 
-Allow the OpenVPN process to listen on its management port, `tcp/11940`:
+Allow the OpenVPN process to listen on its management port, `tcp/11940` and 
+`tcp/11941`:
 
-    $ sudo semanage port -a -t openvpn_port_t -p tcp 11940
+    $ sudo semanage port -a -t openvpn_port_t -p tcp 11940-11941
 
 ## Apache
 
@@ -122,8 +123,8 @@ Generate a configuration, including certificates:
 
 Enable OpenVPN on boot, and start it:
 
-    $ sudo systemctl enable openvpn-server@default-internet-0
-    $ sudo systemctl start openvpn-server@default-internet-0
+    $ sudo systemctl enable openvpn-server@default-internet-{0,1}
+    $ sudo systemctl start openvpn-server@default-internet-{0,1}
 
 ## Firewall
 
@@ -203,70 +204,6 @@ to `true`.
 
 # Advanced
 
-## Port Share
-
-By default, OpenVPN will only listen on `udp/1194`, the default port of 
-OpenVPN. In order to avoid most firewalls it makes sense to also listen on 
-`tcp/443`, the HTTPS port. Because Apache is already listening there, we need
-a way to share the port between Apache and OpenVPN.
-
-We will be using SNI Proxy. This means that all HTTP traffic appears to come 
-from `localhost`, so the filtering in Apache no longer works. This exposes the 
-API to the web. To make this less of a problem, the default API secrets MUST be 
-updated: 
-
-    $ sudo vpn-server-api-update-api-secrets
-
-Once that taken care of, we create an additional OpenVPN process. Modify 
-`/etc/vpn-server-api/default/config.php` and change `processCount` from `1` to 
-`2`.
-
-We need an additional management port that OpenVPN can use:
-
-    $ sudo semanage port -a -t openvpn_port_t -p tcp 11941
-
-Regenerate the server configuration, and enable it:
-
-    $ sudo vpn-server-node-server-config --profile internet
-    $ sudo systemctl enable openvpn-server@default-internet-1
-    $ sudo systemctl start openvpn-server@default-internet-1
-
-Install SNI Proxy:
-
-    $ sudo dnf -y install sniproxy
-
-Modify `/etc/httpd/conf.d/ssl.conf` and change the following:
-
-| Before | After |
-| ------ | ----- |
-| `Listen 443 https`                | `Listen 8443 https` |
-| `<VirtualHost _default_:443>`     | `<VirtualHost _default_:8443>` |
-| `#ServerName www.example.com:443` | `ServerName https://vpn.example.org:443` |
-
-Then, restart Apache:
-    
-    $ sudo systemctl restart httpd
-
-Add the following snippet to `/etc/sniproxy.conf`:
-
-    listen 443 {
-        proto tls
-        fallback 127.0.0.1:1194
-        table https_hosts
-    }
-
-    table https_hosts {
-        vpn.example.org 127.0.0.1:8443
-    }
-
-Start and enable SNI Proxy:
-
-    $ sudo systemctl enable sniproxy
-    $ sudo systemctl start sniproxy
-
-If you now download a new configuration in the user portal, you'll notice that
-there is an extra `remote` line specifying `tcp/443`.
-
 ## Two-Factor Authentication
 
 Users can enroll themselves for two-factor authentication for the user and 
@@ -338,15 +275,9 @@ placed in `/var/www/html/info.json`, change the host name accordingly:
                 "user_messages": "https://vpn.example.org/portal/api.php/user_messages"
             },
             "http://eduvpn.org/api#2": {
+                "api_base_uri": "https://vpn.example.org/portal/api.php",
                 "authorization_endpoint": "https://vpn.example.org/portal/_oauth/authorize",
-                "create_certificate": "https://vpn.example.org/portal/api.php/create_certificate",
-                "create_config": "https://vpn.example.org/portal/api.php/create_config",
-                "profile_config": "https://vpn.example.org/portal/api.php/profile_config",
-                "profile_list": "https://vpn.example.org/portal/api.php/profile_list",
-                "system_messages": "https://vpn.example.org/portal/api.php/system_messages",
-                "token_endpoint": "https://vpn.example.org/portal/oauth.php/token",
-                "user_info": "https://vpn.example.org/portal/api.php/user_info",
-                "user_messages": "https://vpn.example.org/portal/api.php/user_messages"
+                "token_endpoint": "https://vpn.example.org/portal/oauth.php/token"
             }
         }
     }

@@ -98,10 +98,10 @@ echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
-cp resources/controller/ssl.conf /etc/httpd/conf.d/ssl.conf
+cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
 # VirtualHost
-cp resources/controller/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
+cp resources/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
 sed -i "s/vpn.example/${INSTANCE}/" /etc/httpd/conf.d/${INSTANCE}.conf
 
 # empty the RPM httpd configs instead of deleting so we do not get them back
@@ -140,10 +140,7 @@ cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${INSTANCE}/config
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ${EXTERNAL_IF}
 
-# disable portShare, no need to share TCP/443 on dedicated nodes
-sed -i "s|'portShare' => true|'portShare' => false|" /etc/vpn-server-api/${INSTANCE}/config.php
 sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
-sed -i "s|'processCount' => 1|'processCount' => 4|" /etc/vpn-server-api/${INSTANCE}/config.php
 
 # init the CA
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}

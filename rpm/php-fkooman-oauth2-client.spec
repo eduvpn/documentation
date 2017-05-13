@@ -10,7 +10,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.37%{?dist}
+Release:    0.38%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -113,6 +113,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Sat May 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.38
+- rebuilt
+
 * Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.37
 - rebuilt
 

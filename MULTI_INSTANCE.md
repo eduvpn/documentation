@@ -34,12 +34,11 @@ instance will have a unique number configured in
 `/etc/vpn-server-api/<FQDN>/config.php` called `instanceNumber`, if you 
 have three instances, e.g. `1`, `2` and `3` you bind the IP addresses 
 `10.42.101.100`, `10.42.102.100` and `10.42.103.100` to the private network 
-interface. Make sure each instance has `managementIp` set to `auto` and 
-`portShare` to `false`.
+interface. Make sure each instance has `managementIp` set to `auto`.
 
 Every instance gets their own HTTP configuration file in 
 `/etc/httpd/conf.d/<FQDN>.conf` that reflects these IP addresses as well. See
-`resources/controller/vpn.example.conf` for a template.
+`resources/vpn.example.conf` for a template.
 
 The `deploy_controller.sh` script sets up one instance and sets up tinc to 
 communicate with the node(s). This script can be used to set up the first 
