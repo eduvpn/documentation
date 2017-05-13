@@ -372,37 +372,41 @@ See [Application Flow](APP_FLOW.md).
 
 # Federation
 
-There is also a "federation" scenario where the application will connect to a 
-VPN service API at another location from where the OAuth token came from, so
-the API of the services accepts tokens from a number of other instances, 
-typically the ones listed in the "federation" discovery file.
+In the scenario above, every instance in the discovery file runs their own 
+OAuth server, so for each instance a new token needs to be obtained. 
 
-This flow was introduced to reduce the number of required authentications as 
-the various instances.
+We came up with an optimization for this scenario "federation", where we 
+introduce "guest" usage. This means that a token from instance X can also be 
+used at instance Y. 
 
-At the moment, the "federation" instances are part of a separate discovery 
-file, i.e. `https://static.eduvpn.nl/federation.json` and has its own signature
-file as well, i.e. `.sig`.
+To keep this clear, we have two discovery files, one is `instances.json` and
+one is `federation.json`.
 
-The application needs to support two flows, build-time configurable:
+This federation scenario was introduced to reduce the number of required 
+authorizations (and thus authentications) at the various instances. This 
+scenario will be used to allow users to easily switch to a different VPN 
+instance (endpoint). User X from country Y can then use the instance in country
+Z.
 
-1. Use the OAuth server of the instance the user chose to obtain a token that
-   will also be valid at the other instances;
-2. Use a central OAuth server for obtaining a token;
+For this federation scenario, the application MUST support two scenarios:
+
+1. Use access token obtained from instance X at instance Y;
+2. Allow using of a central OAuth server, through `federation.json` _instead_ 
+   of the OAuth servers of the various instances;
 
 The first flow is for a "distributed" deploy where the only central component
-is the signed discovery file, the second flow is for the situation where more 
+is `federation.json`, the second flow is for the situation where more 
 (central) control is required.
 
-For the first flow, to obtain an access token the user will first have to 
-select their "home" instance where they have an account. Typically that will be
-the instance in the country their organization belongs to.
+For the first flow, to obtain an access token the user will first have to be 
+sent to their "home" instance where they actually have an account to obtain 
+the access token that can be used at other instances.
 
 For the second flow, a central OAuth server is specified in the discovery file.
 If the OAuth server is specified there, the second flow MUST be used, if it
 is not there, the first scenario MUST be used.
 
-The federation discovery file:
+Example federation discovery file:
 
     {
         "instances": [
