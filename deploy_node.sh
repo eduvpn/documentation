@@ -188,13 +188,9 @@ vpn-server-node-server-config --instance ${INSTANCE} --profile ${PROFILE} --gene
 # enable and start OpenVPN
 systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-0
 systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-1
-systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-2
-systemctl enable openvpn-server@${INSTANCE}-${PROFILE}-3
 
 systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-0
 systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-1
-systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-2
-systemctl restart openvpn-server@${INSTANCE}-${PROFILE}-3
 
 ###############################################################################
 # FIREWALL

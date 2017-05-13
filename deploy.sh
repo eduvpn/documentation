@@ -117,7 +117,7 @@ sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fp
 
 cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
 
-# work around to create the session directory, otherwise we have to intstall
+# work around to create the session directory, otherwise we have to install
 # the PHP package, this is only on CentOS
 mkdir -p /var/lib/php/session
 chown -R root.apache /var/lib/php/session
@@ -246,13 +246,9 @@ vpn-server-node-server-config --instance ${INSTANCE} --profile internet --genera
 # enable and start OpenVPN
 systemctl enable openvpn-server@${INSTANCE}-internet-0
 systemctl enable openvpn-server@${INSTANCE}-internet-1
-systemctl enable openvpn-server@${INSTANCE}-internet-2
-systemctl enable openvpn-server@${INSTANCE}-internet-3
 
 systemctl restart openvpn-server@${INSTANCE}-internet-0
 systemctl restart openvpn-server@${INSTANCE}-internet-1
-systemctl restart openvpn-server@${INSTANCE}-internet-2
-systemctl restart openvpn-server@${INSTANCE}-internet-3
 
 ###############################################################################
 # FIREWALL
