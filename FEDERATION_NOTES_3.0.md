@@ -157,6 +157,8 @@ There are a number of approaches how to implement federation within eduVPN:
   users;
 * Easier for users, they do not need to know which eduVPN their IdP is 
   connected to;
+* More control over the access tokens for logging and central usage 
+  information logging;
 
 ### Cons
 
@@ -208,4 +210,7 @@ that is open for discussion, and there may be other solutions!
 
 ## Conclusion
 
-TBD.
+Approach 5. With "upgrade" to approach 4. Initially option 5 is easier to 
+implement, but option 4 offers some benefits that may be well worth the 
+investment, due to the design of the API, switching between option 4 and 5 are
+easy.
