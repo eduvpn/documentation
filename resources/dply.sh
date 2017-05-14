@@ -11,7 +11,7 @@ dnf -y install vpn-server-api vpn-server-node vpn-user-portal vpn-admin-portal h
 echo 'net.ipv4.ip_forward = 1' | tee /etc/sysctl.conf > /dev/null
 sysctl --system
 setsebool -P httpd_can_network_connect=1
-semanage port -a -t openvpn_port_t -p tcp 11940
+semanage port -a -t openvpn_port_t -p tcp 11940-11941
 systemctl enable httpd
 sudo -u apache vpn-server-api-init
 sed -i 's/Require local/#Require local/' /etc/httpd/conf.d/vpn-user-portal.conf
@@ -25,7 +25,9 @@ vpn-server-api-update-ip --profile internet --host "${EXTERNAL_IP}" --ext "${EXT
 systemctl start httpd
 vpn-server-node-server-config --profile internet --generate
 systemctl enable openvpn-server@default-internet-0
+systemctl enable openvpn-server@default-internet-1
 systemctl start openvpn-server@default-internet-0
+systemctl start openvpn-server@default-internet-1
 vpn-server-node-generate-firewall --install
 systemctl enable iptables
 systemctl restart iptables
