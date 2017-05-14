@@ -69,7 +69,7 @@ most basic configuration for free for 2 hours! After the VM started you need
 to wait for a bit for the deploy scripts to finish running (> 10 minutes), 
 then you can browse to the IP address using a web browser and go from there.
 
-[![Dply](https://dply.co/b.svg)](https://dply.co/b/bQyRCv4h) 
+[![Dply](https://dply.co/b.svg)](https://dply.co/b/pTjVPzKL) 
 
 For more control see the [Fedora](FEDORA_VPN_SERVER.md) document, it contains 
 all steps to get the software running on a fresh Fedora VM, with more advanced
