@@ -218,7 +218,7 @@ The acceptable values for `profile_id` can be discovered using the
 
 The response will be an OpenVPN configuration file that can be used "as-is".
 
-### Create a Certificate 
+### Create a Key Pair 
 
 **API VERSION 2 ONLY**
 
@@ -227,8 +227,8 @@ The response will be an OpenVPN configuration file that can be used "as-is".
         https://demo.eduvpn.nl/portal/api.php/create_keypair
 
 This will send a HTTP POST to the API endpoint, `/create_keypair` with the 
-parameter `display_name`. It will only create a certificate and return the 
-public and private key.
+parameter `display_name`. It will only create a public and private key and
+return them.
 
     {
         "create_keypair": {
@@ -370,69 +370,44 @@ Here `nl.eduvpn.app` is the `client_id`.
 
 See [Application Flow](APP_FLOW.md).
 
-# Federation
+# Authorization
 
 In the scenario above, every instance in the discovery file runs their own 
 OAuth server, so for each instance a new token needs to be obtained. 
 
-We came up with an optimization for this scenario "federation", where we 
-introduce "guest" usage. This means that a token from instance X can also be 
-used at instance Y. 
+We also wanted to introduce "guest" usage, where it becomes easy to use another
+instance as a VPN provider without going through the authorization flow again.
 
-To keep this clear, we have two discovery files, one is `instances.json` and
-one is `federation.json`.
+Whether or not this is enabled is indicated through the field `guest` 
+which can be set to `true` or `false`.
 
-This federation scenario was introduced to reduce the number of required 
-authorizations (and thus authentications) at the various instances. This 
-scenario will be used to allow users to easily switch to a different VPN 
-instance (endpoint). User X from country Y can then use the instance in country
-Z.
+There are two types of guest usage:
 
-For this federation scenario, the application MUST support two scenarios:
+1. An access token from instance X can be used at instance Y;
+2. There is a central OAuth server that issues tokens that can be used at all
+   instances.
 
-1. Use access token obtained from instance X at instance Y;
-2. Allow using of a central OAuth server, through `federation.json` _instead_ 
-   of the OAuth servers of the various instances;
+**NOTE** this is bound to the discovery file, an application can have multiple
+discovery files, where e.g. only one enables this "guest" usage!
 
-The first flow is for a "distributed" deploy where the only central component
-is `federation.json`, the second flow is for the situation where more 
-(central) control is required.
+The `guest_type` is `central` the keys `authorization_endpoint` and 
+`token_endpoint` are set as well, and this means a central OAuth server is 
+used. The obtained access token is then valid for all instances from that 
+particular discovery file. If the type is `distributed`, the tokens obtained
+from one, can be used at the others.
 
-For the first flow, to obtain an access token the user will first have to be 
-sent to their "home" instance where they actually have an account to obtain 
-the access token that can be used at other instances.
+For the application, the `central` flow is the easiest as the OAuth server will
+take care of the authentication and selecting the appropriate IdP if needed, 
+in the case `distributed`, the application will first have to list all 
+instances from the discovered file and allow the user to select the one on 
+which they have an account. Typically, a user will only have one account.
 
-For the second flow, a central OAuth server is specified in the discovery file.
-If the OAuth server is specified there, the second flow MUST be used, if it
-is not there, the first scenario MUST be used.
-
-Example federation discovery file:
-
-    {
-        "instances": [
-            {
-                "base_uri": "https:\/\/labrat.eduvpn.nl\/",
-                "display_name": "The Netherlands (Amsterdam)",
-                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/nl.png",
-                "public_key": "wGos0zPERxPYZHyJXQXz\/OOSCWWej27PEScjScJzXQ8="
-            },
-            {
-                "base_uri": "https:\/\/vpn.tuxed.net\/",
-                "display_name": "The Netherlands (Utrecht)",
-                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/nl.png",
-                "public_key": "U1HcFQHQKMrIai\/8Zb0+B1\/SpFI66ZdiJ04Iy7vN61Q="
-            }
-        ],
-        "seq": 5,
-        "signed_at": "2017-05-11 20:51:08",
-        "version": 1
-    }
-
-The `public_key` field is not used by the applications, but by the instances
-themselves to accept each other's public keys.
-
-If the keys `authorization_endpoint` and `token_endpoint` are also set, the
-central OAuth server MUST be used.
+For eduVPN, this is where the user will need to select their "home" VPN 
+service. For example, a student from a Dutch university will have to select 
+"The Netherlands" as their "instance". This will be enough to allow them to 
+authenticate when starting the OAuth flow from the application. If they'd 
+choose any other country, they most likely won't have an account there and 
+can't continue...
 
 # Changelog
 
@@ -445,7 +420,7 @@ In API version 2, some calls were added:
   generating a key pair. This means the configuration can easily be refetched 
   in case an update is needed without creating a new key pair;
 * `GET` to `/user_info` to obtain user information;
-* A federation model is described as well.
+* Extended authorization model in "Authorization" section.
 
 For security reasons, API 2 switches to the _authorization code_ flow, together 
 with mitigations described in the following documents:
