@@ -1,13 +1,28 @@
 # Introduction
 
 This document will describe how an application should work with the VPN API,
-i.e. it will provide flow diagrams containing the steps that should be taken.
+i.e. it will provide flow descriptions containing the steps that should be 
+taken.
 
 # Definitions
 
 A VPN service running at a particular domain is called an _instance_, e.g. 
 `demo.eduvpn.nl`. An instance can have multiple _profiles_, e.g. 
-`internet` and `office`.
+`admin` and `office`.
+
+There are two types of instances that should be separated in the UI. Both these
+types of instances behave exactly the same regarding discovery, authorization
+and API.
+
+1. "Secure Access" instances containing various _profiles_ that are used to
+   get access to e.g. an organization's network, instance discovery is done at 
+   `https://static.eduvpn.nl/instances.json`;
+2. "Secure Internet" instances typically contain only one _profile_ called 
+   `internet` that is used to safely connect to the Internet, instance 
+   discovery is done at `https://static.eduvpn.nl/federation.json`;
+
+**NOTE**: these URLs will most likely change in the future, they should be 
+referred to as the "Secure Access" and "Secure Internet" discovery files.
 
 # Basic Flow
 
@@ -15,59 +30,66 @@ This assumes the user already configured the application with their favorite
 VPN instance and profile and that there are no errors.
 
 1.  User launches app;
-2.  User selects their VPN instance/profile of choice;
+2.  User selects their VPN instance/profile of choice, if there is only one
+    profile, only the _instance_ should be shown;
 3.  Application performs discovery (fetches `info.json` from instance);
-4.  Application fetches user info;
-5.  Application fetches system and user messages using endpoints from 
-    `info.json` together with the already stored OAuth access token and displays 
-    them to the user;
-6.  Application fetches VPN configuration for the chosen profile (using OAuth 
+4.  Application fetches user info, system and user messages using endpoint 
+    from `info.json` together with the already stored OAuth access token and 
+    displays them to the user (as needed, see below);
+5.  Application fetches VPN configuration for the chosen profile (using OAuth 
     access token);
-7.  Application combines VPN configuration with already stored client 
+6.  Application combines VPN configuration with already stored client 
     certificate and key;
-8.  Application (optionally) asks for second factor;
-9.  Application starts VPN with combined configuration;
-10. Application shows basic VPN connection details, e.g. IP address.
+7.  Application (optionally) asks for second factor;
+8.  Application starts VPN with combined configuration loaded in OpenVPN;
+9.  Application shows basic VPN connection details, e.g. IP address.
 
-Step 3 is needed as the API configuration, e.g. endpoints, can change over 
-time. Step 6 is needed as the server configuration can change over time, e.g. 
+Step 4 is needed as the API configuration, e.g. endpoint, can change over 
+time. Step 5 is needed as the server configuration can change over time, e.g. 
 new TLS cipher configuration or new VPN endpoints.
 
 Step 4 exposes whether or not the user is enrolled for 2FA, and whether or not
 the user is blocked. This information should be used by the application before
 attempting to connect. If a profile requires 2FA and the user is not enrolled,
 this should be indicated to the user and the enrollment process started by 
-opening the browser.
+opening the browser. Also if the user is blocked, it should be indicated 
+without attempting to connect. If there are user and system messages available
+they should be shown to the user as well.
 
 # Enrollment
 
 Adding a new instance/profile to the app consists of:
 
-1. perform instance discovery (fetch `instances.json` and `instances.json.sig`; 
-2. Verify the signature;
-3. If verified document's `seq` > cached copy, update cached copy;
-4. Allow the user to choose an instance, or enter their own; 
-5. perform service discovery (fetch `info.json`);
-6. obtaining an OAuth access token for the chosen instance;
-7. obtaining a client certificate and key and store them in the persistent app 
+1. Determine if the user wants to use "Secure Internet" or "Secure Access" by 
+   asking them;
+2. perform instance discovery (fetch the relevant JSON file (see above) and the 
+   same URL with the added `.sig` suffix;
+3. Verify the signature;
+4. If verified document's `seq` > cached copy or there is no cached copy, 
+   update cached copy;
+5. Allow the user to choose an instance from the list, or enter their own; 
+6. perform service discovery (fetch `info.json`);
+7. obtaining an OAuth access token for the chosen instance;
+8. obtaining a client certificate and key and store them in the persistent app 
    storage;
-8. showing a list of available profiles and allowing the user to choose one, 
-   e.g. `internet` or `office`.
+9. showing a list of available profiles and allowing the user to choose one, 
+   e.g. `internet` or `office`, if there is only one, continue without asking.
 
-After the enrollment the Basic Flow is executed starting at step 4.
+After the enrollment the Basic Flow is executed starting at step 5.
 
 # Configuration
 
-Steps 6 and 7 consist of obtaining the current VPN configuration, and combining
-this configuration with the client certificate and key.
+Steps 5 and 6 of the "Basic Flow" consist of obtaining the current VPN 
+configuration, and combining this configuration with the client certificate and 
+key.
 
-Obtained configurations have everything, except the client certificate and 
-private key.
+Obtained configurations have every information needed, except the client 
+certificate and private key.
 
 The profile configuration is currently an OpenVPN configuration file, without
 the `<cert>` and `<key>` fields. So to make a complete OpenVPN configuration 
-file these need to be merged by adding `<cert>` and `<key>` with the values
-from the client certificate and private key.
+file these need to be merged by adding `<cert>` and `<key>` blocks with the 
+values from the client certificate and private key.
 
 # OAuth
 
@@ -138,3 +160,4 @@ configuration file, but instead only contain the bare minimum in changes from
 what is the default as key/value pairs. For example, in OpenVPN >= 2.4 the 
 cipher configuration is done much more automatic and does not need to be 
 provided anymore.
+
