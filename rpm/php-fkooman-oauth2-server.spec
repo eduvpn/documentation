@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-server
 
-%global commit0 d1fa2ac4aebf840dd0d8d18fbc21aee36ecf5f94
+%global commit0 5d5cd075ae13f7da8b07b4821c52b553eea72474
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.34%{?dist}
+Release:    0.36%{?dist}
 Summary:    Very simple OAuth 2.0 server
 
 Group:      System Environment/Libraries
@@ -91,6 +91,12 @@ EOF
 %license LICENSE
 
 %changelog
+* Sun May 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.36
+- rebuilt
+
+* Fri May 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.35
+- rebuilt
+
 * Sat May 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.34
 - rebuilt
 
