@@ -277,6 +277,7 @@ systemctl restart sshd
 ###############################################################################
 
 sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-server-api
+sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-user-portal
 
 ###############################################################################
 # WEB
