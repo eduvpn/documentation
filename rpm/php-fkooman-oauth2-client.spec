@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 411235ac24eb828412c241ce8bc886e32d7e67ac
+%global commit0 d561063692b939bf64f5e3f469fbec5717075cb7
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.38%{?dist}
+Release:    0.39%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -113,6 +113,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.39
+- rebuilt
+
 * Sat May 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.38
 - rebuilt
 
