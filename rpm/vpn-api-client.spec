@@ -9,7 +9,7 @@
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.23%{?dist}
+Release:    0.25%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -39,6 +39,7 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
+Requires:   php-cli
 Requires:   php-filter
 Requires:   php-pecl-imagick
 Requires:   php-json
@@ -68,7 +69,9 @@ VPN API Client.
 %prep
 %setup -qn %{github_name}-%{github_commit} 
 
+sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/*
 sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" web/*.php
+sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -98,6 +101,17 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
+mkdir -p %{buildroot}%{_bindir}
+(
+cd bin
+for phpFileName in $(ls *)
+do
+    binFileName=$(basename ${phpFileName} .php)
+    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
+    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
+done
+)
+
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
 restorecon -R %{_localstatedir}/lib/%{name} || :
@@ -115,6 +129,7 @@ fi
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
+%{_bindir}/*
 %{_datadir}/%{name}/src
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/data
@@ -125,6 +140,12 @@ fi
 %license LICENSE
 
 %changelog
+* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
+- rebuilt
+
+* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.24
+- rebuilt
+
 * Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
 - rebuilt
 
