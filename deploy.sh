@@ -170,9 +170,6 @@ rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 mkdir -p /etc/vpn-admin-portal/${INSTANCE}
 cp /etc/vpn-admin-portal/default/config.php /etc/vpn-admin-portal/${INSTANCE}/config.php
 
-# enable secure cookies
-sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-admin-portal/${INSTANCE}/config.php 
-
 # point to our Server API
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.php
 
@@ -186,9 +183,6 @@ rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 
 mkdir -p /etc/vpn-user-portal/${INSTANCE}
 cp /etc/vpn-user-portal/default/config.php /etc/vpn-user-portal/${INSTANCE}/config.php
-
-# enable secure cookies
-sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-user-portal/${INSTANCE}/config.php 
 
 # point to our Server API
 sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.php

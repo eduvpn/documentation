@@ -9,7 +9,7 @@
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.20%{?dist}
+Release:    0.21%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -111,6 +111,9 @@ fi
 %license LICENSE
 
 %changelog
+* Fri May 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
+- rebuilt
+
 * Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
 - rebuilt
 
