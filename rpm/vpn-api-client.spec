@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-api-client
-%global github_commit           d075ab7e4688dfbc6abcc82025cd60b174b8b706
+%global github_commit           6e9d6ff1b025c3713e56be7889d0e0f759cc6334
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-api-client
 Version:    1.0.0
-Release:    0.21%{?dist}
+Release:    0.23%{?dist}
 Summary:    VPN API Client
 
 Group:      Applications/Internet
@@ -24,16 +24,30 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-spl
+BuildRequires:  php-filter
+BuildRequires:  php-pecl-imagick
+BuildRequires:  php-json
 BuildRequires:  php-libsodium
+BuildRequires:  php-mbstring
+BuildRequires:  php-pcre
+BuildRequires:  php-session
+BuildRequires:  php-spl
+BuildRequires:  php-standard
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
-Requires:   php-spl
+Requires:   php-filter
+Requires:   php-pecl-imagick
+Requires:   php-json
 Requires:   php-libsodium
+Requires:   php-mbstring
+Requires:   php-pcre
+Requires:   php-session
+Requires:   php-spl
+Requires:   php-standard
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(paragonie/constant_time_encoding)
@@ -111,6 +125,12 @@ fi
 %license LICENSE
 
 %changelog
+* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
+- rebuilt
+
+* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
+- rebuilt
+
 * Fri May 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
 - rebuilt
 
