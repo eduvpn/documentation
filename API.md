@@ -76,9 +76,6 @@ signature file contains the Base64-encoded signature. See
 [this](https://download.libsodium.org/doc/bindings_for_other_languages/) 
 document for various language bindings.
 
-You can cache this file and periodically request a new version. You MUST allow
-the user to manually trigger a reload though.
-
 The flow:
 
 1. Download `instances.json`;
@@ -86,7 +83,7 @@ The flow:
 3. Verify the signature using libsodium and the public key stored in your 
    application
 4. If you already have a cached version, verify the `seq` field of the new file
-   is higher than the `seq` in the cached copy;
+   is higher than the `seq` in the cached copy (see Caching section);
 5. Overwrite the cached version if appropriate.
  
 ## API Discovery
@@ -329,43 +326,6 @@ An example:
 
 Same considerations apply as for the `system_messages` call.
 
-# Registration
-
-The OAuth client application(s) can be registered in the user portal, in the 
-following file, where `demo.eduvpn.nl` is the instance you want to configure:
-
-    /etc/vpn-user-portal/demo.eduvpn.nl/config.php
-
-The following options are available:
-
-    'Api' => [
-        // access_tokens expire after 3 months
-        'tokenExpiry' => 3*31*24*3600,
-
-        // OAuth 2.0 consumers
-        'consumerList' => [
-            // API 1 Apps
-            'nl.eduvpn.app' => [
-                'redirect_uri' => 'nl.eduvpn.app://import/callback',
-                'response_type' => 'token',
-                'display_name' => 'eduVPN for Android',
-            ],
-            // API 2 Apps
-            //'nl.eduvpn.app.android' => [
-            //    'redirect_uri' => 'nl.eduvpn.app.android://api/callback',
-            //    'response_type' => 'code',
-            //    'display_name' => 'eduVPN for Android',
-            //],
-            //'nl.eduvpn.app.windows' => [
-            //    'redirect_uri' => 'nl.eduvpn.app.windows://api/callback',
-            //    'response_type' => 'code',
-            //    'display_name' => 'eduVPN for Windows',
-            //],
-        ],
-    ],
-
-Here `nl.eduvpn.app` is the `client_id`.
-
 ## Flow
 
 See [Application Flow](APP_FLOW.md).
@@ -373,41 +333,72 @@ See [Application Flow](APP_FLOW.md).
 # Authorization
 
 In the scenario above, every instance in the discovery file runs their own 
-OAuth server, so for each instance a new token needs to be obtained. 
+OAuth server, so for each instance a new token needs to be obtained.
 
-We also wanted to introduce "guest" usage, where it becomes easy to use another
-instance as a VPN provider without going through the authorization flow again.
+In order to support sharing access tokens between instances, i.e. guest usage,
+we introduce three client modes of operation:
 
-Whether or not this is enabled is indicated through the field `guest` 
-which can be set to `true` or `false`.
+1. **Local**: every instance has their own OAuth server;
+2. **Federated**: there is one central OAuth server, all instances accept 
+   tokens from this OAuth server;
+3. **Distributed**: there is no central OAuth server, tokens from all instances 
+   can be used at all (other) instances.
 
-There are two types of guest usage:
+The `client_mode` key indicates which mode the client should operate in. The 
+values are `local`, `federated` or `distributed` mapping to the three modes
+described above.
 
-1. An access token from instance X can be used at instance Y;
-2. There is a central OAuth server that issues tokens that can be used at all
-   instances.
+## Local
 
-**NOTE** this is bound to the discovery file, an application can have multiple
-discovery files, where e.g. only one enables this "guest" usage!
+See API Discovery section above for determining the OAuth endpoints. The 
+application MUST store the obtained access token and bind it to the instance
+the token was obtained from. If a user wants to use multiple VPN instances, a 
+token MUST be obtained from all of them individually.
 
-The `guest_type` is `central` the keys `authorization_endpoint` and 
-`token_endpoint` are set as well, and this means a central OAuth server is 
-used. The obtained access token is then valid for all instances from that 
-particular discovery file. If the type is `distributed`, the tokens obtained
-from one, can be used at the others.
+## Federated
 
-For the application, the `central` flow is the easiest as the OAuth server will
-take care of the authentication and selecting the appropriate IdP if needed, 
-in the case `distributed`, the application will first have to list all 
-instances from the discovered file and allow the user to select the one on 
-which they have an account. Typically, a user will only have one account.
+Here there is one central OAuth server that MUST be used. The OAuth server is 
+specified in the discovery file in the `authorization_endpoint` and 
+`token_endpoint` keys. When API discovery is performed, the keys for 
+`authorization_endpoint` and `token_endpoint` for the specific instance MUST
+be ignored. Refreshing access tokens MUST also be done at the central server.
 
-For eduVPN, this is where the user will need to select their "home" VPN 
-service. For example, a student from a Dutch university will have to select 
-"The Netherlands" as their "instance". This will be enough to allow them to 
-authenticate when starting the OAuth flow from the application. If they'd 
-choose any other country, they most likely won't have an account there and 
-can't continue...
+## Distributed
+
+Obtaining an access token from any of the instances listed in the discovery 
+file is enough and can then be used at all of the instances. Typically the user
+has the ability to obtain only an access token at one of the listed instances,
+so the user MUST choose first which of the instances they have an account at. 
+
+This is a bit messy from a UX perspective, as the user does not necessarily 
+know for which instance they have an account. In case of eduVPN this will most
+likely be the instance operated in their institute's home country. So students
+of the University of Amsterdam will have to choose "The Netherlands".
+
+The application will need to refresh the access token at the original OAuth 
+server it was obtained from. The API discovery still needs to take place, both
+for refreshing this token (when the time comes) as well as for finding the 
+API endpoint at the target instance.
+
+# Caching
+
+There are two types of discovery:
+
+1. Instance Discovery
+2. API Discovery
+
+Both are JSON files that can be cached. It MUST be possible for the user to 
+trigger a reload, i.e. get new copies of the cached files. This can be
+implemented for example using a button, or at the very least, an application 
+restart.
+
+The Instance Discovery files are also signed using public key cryptography, the
+signature MUST be verified and the value of the `seq` key of the verified file 
+MUST be `>=` the cached copy. It MUST NOT be possible to "rollback", so for the
+instances discovery the cached copy MUST be retained.
+
+The API discovery files do not currently have a signature and `seq` key, but 
+MAY in the future.
 
 # Changelog
 
