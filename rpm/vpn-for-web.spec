@@ -1,16 +1,16 @@
 %global composer_vendor         eduvpn
-%global composer_project        vpn-api-client
-%global composer_namespace      SURFnet/VPN/ApiClient
+%global composer_project        vpn-for-web
+%global composer_namespace      SURFnet/VPN/Web
 
 %global github_owner            eduvpn
-%global github_name             vpn-api-client
-%global github_commit           38ee594926e587a0428f133b92ae2d2f48066c24
+%global github_name             vpn-for-web
+%global github_commit           f2b952ab6995551b7e7fff2252c5ef4acfb9f45a
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
-Name:       vpn-api-client
+Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.26%{?dist}
-Summary:    VPN API Client
+Release:    0.27%{?dist}
+Summary:    VPN for Web
 
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -64,7 +64,7 @@ Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
 
 %description
-VPN API Client.
+VPN for Web.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
@@ -78,7 +78,7 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\ApiClient\\', __DIR__);
+\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Web\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Twig/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
@@ -140,80 +140,5 @@ fi
 %license LICENSE
 
 %changelog
-* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.26
+* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.27
 - rebuilt
-
-* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.25
-- rebuilt
-
-* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.24
-- rebuilt
-
-* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.23
-- rebuilt
-
-* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.22
-- rebuilt
-
-* Fri May 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.21
-- rebuilt
-
-* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
-- rebuilt
-
-* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.19
-- rebuilt
-
-* Tue May 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.18
-- rebuilt
-
-* Tue May 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.17
-- rebuilt
-
-* Tue May 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.16
-- rebuilt
-
-* Tue May 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.15
-- rebuilt
-
-* Tue May 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.14
-- rebuilt
-
-* Sun May 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.13
-- rebuilt
-
-* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.12
-- rebuilt
-
-* Thu May 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.11
-- rebuilt
-
-* Thu May 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.10
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.9
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.8
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.7
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.6
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.5
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.2
-- rebuilt
-
-* Wed May 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
-- initial package

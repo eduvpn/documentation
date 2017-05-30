@@ -335,16 +335,16 @@ See [Application Flow](APP_FLOW.md).
 In the scenario above, every instance in the discovery file runs their own 
 OAuth server, so for each instance a new token needs to be obtained.
 
-In order to support sharing access tokens between instances, i.e. guest usage,
-we introduce three client modes of operation:
+In order to support sharing access tokens between instances, e.g. for guest 
+usage, we introduce three "types" of authorization:
 
-1. **Local**: every instance has their own OAuth server;
-2. **Federated**: there is one central OAuth server, all instances accept 
+1. **local**: every instance has their own OAuth server;
+2. **federated**: there is one central OAuth server, all instances accept 
    tokens from this OAuth server;
-3. **Distributed**: there is no central OAuth server, tokens from all instances 
+3. **distributed**: there is no central OAuth server, tokens from all instances 
    can be used at all (other) instances.
 
-The `client_mode` key indicates which mode the client should operate in. The 
+The `authorization_type` key indicates which type is used. The supported 
 values are `local`, `federated` or `distributed` mapping to the three modes
 described above.
 
@@ -366,19 +366,20 @@ be ignored. Refreshing access tokens MUST also be done at the central server.
 ## Distributed
 
 Obtaining an access token from any of the instances listed in the discovery 
-file is enough and can then be used at all of the instances. Typically the user
-has the ability to obtain only an access token at one of the listed instances,
-so the user MUST choose first which of the instances they have an account at. 
+file is enough and can then be used at all the instances. Typically the user
+has the ability to obtain only an access token at one of the listed instances, 
+because only there they have an account, so the user MUST choose first which 
+of the instances they have an account at. 
 
 This is a bit messy from a UX perspective, as the user does not necessarily 
 know for which instance they have an account. In case of eduVPN this will most
 likely be the instance operated in their institute's home country. So students
-of the University of Amsterdam will have to choose "The Netherlands".
+of the University of Amsterdam will have to choose "The Netherlands" first.
 
-The application will need to refresh the access token at the original OAuth 
-server it was obtained from. The API discovery still needs to take place, both
-for refreshing this token (when the time comes) as well as for finding the 
-API endpoint at the target instance.
+When API discovery is performed, the keys for 
+`authorization_endpoint` and `token_endpoint` for the specific instance MUST
+be ignored. Refreshing access tokens MUST also be done at the original OAuth
+server that was used to obtain the access token.
 
 # Caching
 
