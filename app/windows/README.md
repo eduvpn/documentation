@@ -60,7 +60,7 @@ When clicked with a single or double left mouse button, the UI will show above t
 ![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/4-wallpaper-desktop.jpg "Screenshot eduVPN Windows application")
 
 ## User flow
-The primary user flow (of the most important parts of the UI) is listed in the picture below. Note that there are no mockups for the settings tab and the view log window, these should be created in line with this design and the operating system (just like we did on Android).
+The primary user flow (of the most important parts of the UI) is listed in the picture below. Note that there are no mockups for the settings tab and the view log window, these should be created in line with this design and the operating system (just like we did on Android). The settings tab should at least contain the option to force TCP.
 
 ![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/5-user-flow.png "User flow")
 
