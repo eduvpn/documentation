@@ -104,11 +104,17 @@ Add a user:
 
     $ sudo vpn-user-portal-add-user --user foo --pass bar
 
+Make sure you set `secureCookie` to `false` in the configuration file, if you 
+do not plan on deploying HTTPS, e.g. for testing purposes.
+
 ## Admin Portal
 
 Add a user:
 
     $ sudo vpn-admin-portal-add-user --user foo --pass bar
+
+Make sure you set `secureCookie` to `false` in the configuration file, if you 
+do not plan on deploying HTTPS, e.g. for testing purposes.
 
 ## OpenVPN Config
 
@@ -194,13 +200,6 @@ configuration in `ssl.conf` as required. A good resource is the
 to further tighten the security. Don't forget 
 [securityheaders.io](https://securityheaders.io/) to make sure you also follow
 their advice.
-
-## Secure Cookies
-
-In order to force cookies to be only sent over HTTPS, you SHOULD modify the 
-files `/etc/vpn-user-portal/default/config.php` and 
-`/etc/vpn-admin-portal/default/config.php` and set the `secureCookie` option
-to `true`.
 
 # Advanced
 
