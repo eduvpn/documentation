@@ -5,16 +5,16 @@
 %global github_owner            fkooman
 %global github_name             php-yubitwee
 
-%global commit0 5bff2f1a28742a6251157421fa0a97337474ea59
+%global commit0 bf8e5f1106b11a3f50b1113d3db6609294a488da
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
 Summary:    YubiKey Validator
 
 Group:      System Environment/Libraries
-License:    AGPLv3+
+License:    MIT
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
@@ -68,7 +68,18 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+mkdir vendor
+cat << 'EOF' | tee vendor/autoload.php
+<?php
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php',
+));
+\Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiTwee\\Tests\\', dirname(__DIR__) . '/tests');
+EOF
+
+%{_bindir}/phpunit --verbose
 
 %files
 %dir %{_datadir}/php/fkooman
@@ -78,5 +89,9 @@ phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{compo
 %license LICENSE
 
 %changelog
+* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
+- license changed to MIT
+
 * Tue Apr 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
