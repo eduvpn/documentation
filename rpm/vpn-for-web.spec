@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-for-web
-%global github_commit           84d50d9857b365cda6e3a756bbce285861297292
+%global github_commit           cd1c380df510c1e1418421cbc63e2d42b62d83c6
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.32%{?dist}
+Release:    0.33%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -140,6 +140,9 @@ fi
 %license LICENSE
 
 %changelog
+* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.33
+- rebuilt
+
 * Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.32
 - rebuilt
 
