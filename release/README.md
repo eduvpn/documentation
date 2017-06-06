@@ -67,6 +67,7 @@ there are any problems in the build, e.g. missing dependencies.
         php-fkooman-oauth2-client\
         php-fkooman-oauth2-server\
         php-fkooman-yubitwee\
+        php-fkooman-secookie\
         vpn-lib-common\
         vpn-admin-portal\
         vpn-server-api\
