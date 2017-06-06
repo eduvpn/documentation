@@ -9,7 +9,7 @@
 
 Name:       vpn-user-portal
 Version:    1.0.0
-Release:    0.146%{?dist}
+Release:    0.147%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -38,6 +38,7 @@ BuildRequires:  php-libsodium
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(bacon/bacon-qr-code)
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 
@@ -58,6 +59,7 @@ Requires:   php-spl
 Requires:   vpn-lib-common
 Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(bacon/bacon-qr-code)
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
 
@@ -90,6 +92,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
     '%{_datadir}/php/BaconQrCode/autoload.php',
+    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Server/autoload.php',
 ));
@@ -170,6 +173,9 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Jun 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.147
+- rebuilt
+
 * Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.146
 - rebuilt
 

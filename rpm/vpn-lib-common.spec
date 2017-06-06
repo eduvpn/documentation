@@ -7,7 +7,7 @@
 
 Name:       vpn-lib-common
 Version:    1.0.0
-Release:    0.58%{?dist}
+Release:    0.59%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -29,6 +29,7 @@ BuildRequires:  php-spl
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(ircmaxell/password-compat)
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(twig/extensions)
 BuildRequires:  %{_bindir}/phpunit
@@ -47,6 +48,7 @@ Requires:   php-spl
 Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(psr/log)
 Requires:   php-composer(ircmaxell/password-compat)
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(twig/extensions)
 
@@ -65,6 +67,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Psr/Log/autoload.php',
     '%{_datadir}/php/password_compat/password.php',
+    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
     '%{_datadir}/php/Twig/autoload.php',
     '%{_datadir}/php/Twig/Extensions/autoload.php',
 ));
@@ -96,6 +99,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue Jun 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.59
+- rebuilt
+
 * Fri May 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.58
 - rebuilt
 

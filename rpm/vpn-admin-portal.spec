@@ -9,7 +9,7 @@
 
 Name:       vpn-admin-portal
 Version:    1.0.0
-Release:    0.53%{?dist}
+Release:    0.54%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -29,6 +29,7 @@ BuildRequires:  php-spl
 BuildRequires:  php-gettext
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(twig/twig) < 2
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
@@ -39,6 +40,7 @@ Requires:   php-spl
 Requires:   php-gettext
 Requires:   vpn-lib-common
 Requires:   php-composer(twig/twig) < 2
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -68,6 +70,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Admin\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
+    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
     '%{_datadir}/php/Twig/autoload.php',
 ));
 AUTOLOAD
@@ -141,6 +144,9 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Jun 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.54
+- rebuilt
+
 * Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.53
 - rebuilt
 
