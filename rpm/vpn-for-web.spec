@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-for-web
-%global github_commit           f821ac1650127d226d4e4950bf64b8b44ab93ea6
+%global github_commit           e385fb13003df9eee3bc055e069b16c055f88579
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.37%{?dist}
+Release:    0.38%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -35,6 +35,7 @@ BuildRequires:  php-spl
 BuildRequires:  php-standard
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/oauth2-client)
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(fedora/autoloader)
 
@@ -51,6 +52,7 @@ Requires:   php-spl
 Requires:   php-standard
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/oauth2-client)
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
@@ -82,6 +84,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Twig/autoload.php',
     '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
+    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
 ));
 AUTOLOAD
@@ -140,6 +143,9 @@ fi
 %license LICENSE
 
 %changelog
+* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.38
+- rebuilt
+
 * Mon Jun 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
 - rebuilt
 
