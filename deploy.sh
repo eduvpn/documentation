@@ -115,7 +115,10 @@ echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
 # switch to unix socket, default in newer PHP versions, but not on CentOS 7
 sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fpm.d/www.conf
 
-cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
+# timezone
+cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
+# session hardening
+cp resources/75-session.ini /etc/php.d/75-session.ini
 
 # work around to create the session directory, otherwise we have to install
 # the PHP package, this is only on CentOS

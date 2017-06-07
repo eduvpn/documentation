@@ -78,7 +78,10 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11947   # allow up to 8 instance
 # PHP
 ###############################################################################
 
-cp resources/99-eduvpn.ini /etc/php.d/99-eduvpn.ini
+# timezone
+cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
+# session hardening
+cp resources/75-session.ini /etc/php.d/75-session.ini
 
 ###############################################################################
 # VPN-SERVER-NODE

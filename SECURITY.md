@@ -61,8 +61,7 @@ A number of issues have been identified and workarounds provided:
 - [session fixation](https://en.wikipedia.org/wiki/Session_fixation) for which 
   a workaround exists that is implemented;
 
-The configuration updates we made to PHP are all listed 
-[here](resources/99-eduvpn.ini).
+See the `resources/` directory for PHP setting changes.
 
 ### Sessions
 
