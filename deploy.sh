@@ -197,7 +197,7 @@ vpn-user-portal-init --instance ${INSTANCE}
 # NETWORK
 ###############################################################################
 
-cat << EOF > /etc/sysctl.d/42-eduvpn.conf
+cat << EOF > /etc/sysctl.d/50-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 # disable below for static IPv6 configurations
@@ -220,7 +220,7 @@ vpn-server-api-update-api-secrets --instance ${INSTANCE}
 systemctl enable php-fpm
 systemctl enable httpd
 systemctl enable NetworkManager-wait-online
-systemctl enable vmtoolsd
+systemctl enable vmtoolsd # for VMware
 
 # start services
 systemctl restart php-fpm
