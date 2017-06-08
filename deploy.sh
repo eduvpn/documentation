@@ -187,9 +187,6 @@ systemctl enable --now vmtoolsd
 # NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
 # by default! 
 
-# remove existing configurations
-rm -rf /etc/openvpn/server/*
-
 # generate the server configuration files
 vpn-server-node-server-config --profile internet --generate
 
@@ -206,10 +203,6 @@ vpn-server-node-generate-firewall --install
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables
-
-# flush existing firewall rules if they exist and activate the new ones
-#systemctl restart iptables
-#systemctl restart ip6tables
 
 ###############################################################################
 # USERS
