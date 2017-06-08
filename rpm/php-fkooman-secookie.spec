@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-secookie
 
-%global commit0 96924fab324c3fd9e89f4e03f68463f48d0269d3
+%global commit0 587c2dbb32d30954e8e076049dcca0be4694fd66
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.3%{?dist}
+Release:    0.4%{?dist}
 Summary:    Very simple Cookie and PHP Session library
 
 Group:      System Environment/Libraries
@@ -78,6 +78,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.4
+- rebuilt
+
 * Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.3
 - rebuilt
 

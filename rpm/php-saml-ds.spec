@@ -4,12 +4,12 @@
 
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           50bdbdb69bc5a4f3ae0d3ae79f74fa7265f2c51e
+%global github_commit           fe9ad31b459f6ee85dd9f2d2b7d1fa1fe80738ab
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.63%{?dist}
+Release:    0.65%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -33,6 +33,7 @@ BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-xml
 BuildRequires:  php-composer(twig/twig) < 2
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
@@ -45,6 +46,7 @@ Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-xml
 Requires:   php-composer(twig/twig) < 2
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -74,6 +76,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('fkooman\\SAML\\DS\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/Twig/autoload.php',
+    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
 ));
 AUTOLOAD
 
@@ -142,6 +145,12 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.65
+- rebuilt
+
+* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.64
+- rebuilt
+
 * Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
 - rebuilt
 
