@@ -65,15 +65,9 @@ additional user name/password authentication. It is possible to enable
 
 # Deployment
 
-See the [Fedora](FEDORA_VPN_SERVER.md) document, it contains 
-all steps to get the software running on a fresh Fedora VM, with more advanced
-features like port sharing, TLS using Let's Encrypt and two-factor 
-authentication.
+**At the moment only CentOS 7 is supported!**
 
-The deployment was succesfully tested on the official Fedora 25 cloud image, 
-as well as the Fedora 25 image @ [DigitalOcean](https://www.digitalocean.com/).
-
-# Advanced
+## CentOS
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh CentOS 7 installation. It will configure all components 
@@ -91,15 +85,25 @@ CentOS [Minimal ISO](https://centos.org/download/) and the official
     $ tar -xzf master.tar.gz
     $ cd documentation-master
 
-Modify `deploy.sh` to set `INSTANCE` to the FQDN DNS name of the host you want 
-to use for the server, e.g. `vpn.example` and modify the `EXTERNAL_IF` 
-parameter to point to the adapter connecting to the Internet, e.g. `eth0`.
-
-Make sure the host name configured in `INSTANCE` can be resolved through DNS.
+Modify `deploy.sh` and set the variables at the top of the file to something 
+that makes sense for your deployment. Read the comments at the top of the file.
 
 To run the script:
 
-    $ sudo ./deploy.sh
+    $ sudo -s
+    $ ./deploy.sh
+
+## Fedora 
+
+**NOT UP TO DATE**
+
+See the [Fedora](FEDORA_VPN_SERVER.md) document, it contains 
+all steps to get the software running on a fresh Fedora VM, with more advanced
+features like port sharing, TLS using Let's Encrypt and two-factor 
+authentication.
+
+The deployment was succesfully tested on the official Fedora 25 cloud image, 
+as well as the Fedora 25 image @ [DigitalOcean](https://www.digitalocean.com/).
 
 ## Users
 

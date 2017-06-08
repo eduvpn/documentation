@@ -14,7 +14,11 @@
 # VARIABLES
 WEB_FQDN=vpn.example
 VPN_FQDN=internet.${WEB_FQDN}
+
+# The interface that connects to "the Internet"
 EXTERNAL_IF=eth0
+
+# The email address you want to use for Let's Encrypt (you won't be spammed)
 LETSENCRYPT_MAIL=admin@example.org
 
 ###############################################################################
