@@ -143,7 +143,7 @@ vpn-server-api-update-api-secrets
 ###############################################################################
 
 certbot register --agree-tos -m ${LETSENCRYPT_MAIL}
-certbot certonly -d ${WEB_FQDN}
+certbot certonly -n --standalone -d ${WEB_FQDN}
 
 cat << EOF > /etc/sysconfig/certbot
 PRE_HOOK="--pre-hook 'systemctl stop httpd'"
@@ -154,6 +154,15 @@ EOF
 
 # enable automatic renewal
 systemctl enable --now certbot-renew.timer
+
+###############################################################################
+# WEB
+###############################################################################
+
+mkdir -p /var/www/${WEB_FQDN}
+# Copy server info JSON file
+cp resources/info.json /var/www/${WEB_FQDN}/info.json
+sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
 
 ###############################################################################
 # DAEMONS
@@ -201,15 +210,6 @@ systemctl enable ip6tables
 # flush existing firewall rules if they exist and activate the new ones
 systemctl restart iptables
 systemctl restart ip6tables
-
-###############################################################################
-# WEB
-###############################################################################
-
-mkdir -p /var/www/${WEB_FQDN}
-# Copy server info JSON file
-cp resources/info.json /var/www/${WEB_FQDN}/info.json
-sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
 
 ###############################################################################
 # USERS
