@@ -145,6 +145,13 @@ vpn-server-api-update-api-secrets
 certbot register --agree-tos -m ${LETSENCRYPT_MAIL}
 certbot certonly -d ${WEB_FQDN}
 
+cat << EOF > /etc/sysconfig/certbot
+PRE_HOOK="--pre-hook 'systemctl stop httpd'"
+POST_HOOK="--post-hook 'systemctl start httpd'"
+RENEW_HOOK=""
+CERTBOT_ARGS=""
+EOF
+
 # enable automatic renewal
 systemctl enable --now certbot-renew.timer
 
