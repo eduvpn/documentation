@@ -1,3 +1,0 @@
-#!/bin/sh
-/sbin/ifconfig ${INTERFACE} 0.0.0.0
-/sbin/brctl addif br0 ${INTERFACE}
