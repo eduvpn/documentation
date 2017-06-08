@@ -9,7 +9,7 @@
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.62%{?dist}
+Release:    0.63%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -142,6 +142,9 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
+- rebuilt
+
 * Mon Jun 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.62
 - rebuilt
 
