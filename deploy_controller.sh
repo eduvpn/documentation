@@ -8,9 +8,18 @@
 # VARIABLES
 ###############################################################################
 
+# **NOTE**: make sure WEB_FQDN and VPN_FQDN are valid DNS names with 
+# appropriate A (and AAAA) records!
+
 # VARIABLES
-INSTANCE=vpn.example
+WEB_FQDN=vpn.example
+VPN_FQDN=internet.${WEB_FQDN}
+
+# The interface that connects to "the Internet"
 EXTERNAL_IF=eth0
+
+# The email address you want to use for Let's Encrypt (you won't be spammed)
+LETSENCRYPT_MAIL=admin@example.org
 
 ###############################################################################
 # SYSTEM
@@ -37,34 +46,19 @@ curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
     https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install firewalld openssl NetworkManager mod_ssl \
-    php-opcache httpd php-fpm php-cli pwgen open-vm-tools tinc bridge-utils
+${PACKAGE_MANAGER} -y install firewalld mod_ssl php-opcache httpd pwgen \
+    certbot open-vm-tools php-fpm php-cli policycoreutils-python
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
-# NETWORK
-###############################################################################
-
-systemctl enable NetworkManager
-systemctl restart NetworkManager
-
-# create a bridge for the management service(s)
-nmcli connection del bridge-br0 2>/dev/null # delete if it is already there...
-nmcli connection add type bridge ifname br0 ip4 10.42.101.100/16
-# add it to the "trusted" zone
-nmcli connection modify bridge-br0 connection.zone trusted
-
-###############################################################################
 # FIREWALL
 ###############################################################################
 
-systemctl enable firewalld
-systemctl restart firewalld
-
-# ssh is already added by default
-firewall-cmd --permanent --zone=public --add-service=http --add-service=https --add-service=tinc
+systemctl enable --now firewalld
+firewall-cmd --permanent --zone=public --add-service=http --add-service=https
+firewall-cmd --zone=public --add-service=http --add-service=https
 
 ###############################################################################
 # SELINUX
@@ -74,41 +68,18 @@ firewall-cmd --permanent --zone=public --add-service=http --add-service=https --
 setsebool -P httpd_can_network_connect=1
 
 ###############################################################################
-# CERTIFICATE
-###############################################################################
-
-# Generate the private key
-openssl genrsa -out /etc/pki/tls/private/${INSTANCE}.key 4096
-chmod 600 /etc/pki/tls/private/${INSTANCE}.key
-
-# Create the CSR (can be used to obtain real certificate!)
-openssl req -subj "/CN=${INSTANCE}" -sha256 -new -key /etc/pki/tls/private/${INSTANCE}.key -out ${INSTANCE}.csr
-
-# Create the (self signed) certificate and install it
-openssl req -subj "/CN=${INSTANCE}" -sha256 -new -x509 -key /etc/pki/tls/private/${INSTANCE}.key -out /etc/pki/tls/certs/${INSTANCE}.crt
-
-###############################################################################
 # APACHE
 ###############################################################################
 
-# Don't have Apache advertise all version details
-# https://httpd.apache.org/docs/2.4/mod/core.html#ServerTokens
-echo "ServerTokens ProductOnly" > /etc/httpd/conf.d/servertokens.conf
-
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
-cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.BACKUP
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
 # VirtualHost
-cp resources/vpn.example.conf /etc/httpd/conf.d/${INSTANCE}.conf
-sed -i "s/vpn.example/${INSTANCE}/" /etc/httpd/conf.d/${INSTANCE}.conf
+cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
+sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
 
-# empty the RPM httpd configs instead of deleting so we do not get them back
-# on package update
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-server-api.conf
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-user-portal.conf
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
+# XXX update the httpd config thingies to not set the "default" instance_id
 
 ###############################################################################
 # PHP
@@ -122,7 +93,7 @@ cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
 # session hardening
 cp resources/75-session.ini /etc/php.d/75-session.ini
 
-# work around to create the session directory, otherwise we have to intstall
+# work around to create the session directory, otherwise we have to install
 # the PHP package, this is only on CentOS
 mkdir -p /var/lib/php/session
 chown -R root.apache /var/lib/php/session
@@ -133,132 +104,85 @@ restorecon -R /var/lib/php
 # VPN-SERVER-API
 ###############################################################################
 
-# delete existing data
-rm -rf /etc/vpn-server-api/${INSTANCE}
-rm -rf /var/lib/vpn-server-api/${INSTANCE}
-
-mkdir -p /etc/vpn-server-api/${INSTANCE}
-cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${INSTANCE}/config.php
+mkdir -p /etc/vpn-server-api/${WEB_FQDN}
+cp /etc/vpn-server-api/default/config.php /etc/vpn-server-api/${WEB_FQDN}/config.php
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --instance ${INSTANCE} --profile internet --host internet.${INSTANCE} --ext ${EXTERNAL_IF}
+vpn-server-api-update-ip --instance ${WEB_FQDN} --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_IF}
 
-sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${INSTANCE}/config.php
+sed -i "s|'managementIp' => '127.0.0.1'|//'managementIp' => '127.0.0.1'|" /etc/vpn-server-api/${WEB_FQDN}/config.php
 
 # init the CA
-sudo -u apache vpn-server-api-init --instance ${INSTANCE}
+sudo -u apache vpn-server-api-init --instance ${WEB_FQDN}
 
 ###############################################################################
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
-# deleting existing data
-rm -rf /etc/vpn-admin-portal/${INSTANCE}
-rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
+mkdir -p /etc/vpn-admin-portal/${WEB_FQDN}
+cp /etc/vpn-admin-portal/default/config.php /etc/vpn-admin-portal/${WEB_FQDN}/config.php
 
-mkdir -p /etc/vpn-admin-portal/${INSTANCE}
-cp /etc/vpn-admin-portal/default/config.php /etc/vpn-admin-portal/${INSTANCE}/config.php
-
-# enable secure cookies
-sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-admin-portal/${INSTANCE}/config.php 
-
-# point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-admin-portal/${INSTANCE}/config.php
+sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-admin-portal/default/config.php
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-# deleting existing data
-rm -rf /etc/vpn-user-portal/${INSTANCE}
-rm -rf /var/lib/vpn-user-portal/${INSTANCE}
+mkdir -p /etc/vpn-user-portal/${WEB_FQDN}
+cp /etc/vpn-user-portal/default/config.php /etc/vpn-user-portal/${WEB_FQDN}/config.php
 
-mkdir -p /etc/vpn-user-portal/${INSTANCE}
-cp /etc/vpn-user-portal/default/config.php /etc/vpn-user-portal/${INSTANCE}/config.php
+sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
 
-# enable secure cookies
-sed -i "s|'secureCookie' => false|'secureCookie' => true|" /etc/vpn-user-portal/${INSTANCE}/config.php 
-
-# point to our Server API
-sed -i "s|localhost/vpn-server-api|10.42.101.100:8008|" /etc/vpn-user-portal/${INSTANCE}/config.php
-
-# generate OAuth keyPair
-vpn-user-portal-init --instance ${INSTANCE}
+# generate OAuth keypair
+vpn-user-portal-init --instance ${WEB_FQDN}
 
 ###############################################################################
 # UPDATE SECRETS
 ###############################################################################
 
 # update API secret
-vpn-server-api-update-api-secrets --instance ${INSTANCE}
+vpn-server-api-update-api-secrets --instance ${WEB_FQDN}
 
 ###############################################################################
-# TINC
+# LET'S ENCRYPT / CERTBOT
 ###############################################################################
 
-TINC_INSTANCE_NAME=$(echo ${INSTANCE} | sed 's/\./_/g')
+certbot register --agree-tos --no-eff-email -m ${LETSENCRYPT_MAIL}
+certbot certonly -n --standalone -d ${WEB_FQDN}
 
-rm -rf /etc/tinc
-mkdir -p /etc/tinc/vpn
-
-cat << EOF > /etc/tinc/vpn/tinc.conf
-Name = ${TINC_INSTANCE_NAME}
-Mode = switch
+cat << EOF > /etc/sysconfig/certbot
+PRE_HOOK="--pre-hook 'systemctl stop httpd'"
+POST_HOOK="--post-hook 'systemctl start httpd'"
+RENEW_HOOK=""
+CERTBOT_ARGS=""
 EOF
 
-cp resources/tinc-up /etc/tinc/vpn/tinc-up
-cp resources/tinc-down /etc/tinc/vpn/tinc-down
-chmod +x /etc/tinc/vpn/tinc-up /etc/tinc/vpn/tinc-down
-
-mkdir -p /etc/tinc/vpn/hosts
-cat << EOF > "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}"
-Address ${INSTANCE}
-EOF
-
-printf "\n\n" | tincd -n vpn -K 4096
-
-cp resources/tinc\@.service /etc/systemd/system
-
-###############################################################################
-# DAEMONS
-###############################################################################
-
-systemctl enable NetworkManager-wait-online
-systemctl enable php-fpm
-systemctl enable httpd
-systemctl enable tinc@vpn
-systemctl enable vmtoolsd
-
-# start services
-systemctl restart firewalld
-systemctl restart php-fpm
-systemctl restart httpd
-systemctl restart tinc@vpn
-systemctl restart vmtoolsd
-
-###############################################################################
-# SSHD
-###############################################################################
-
-cp resources/sshd_config /etc/ssh/sshd_config
-chmod 0600 /etc/ssh/sshd_config
-systemctl restart sshd
-
-###############################################################################
-# POST INSTALL
-###############################################################################
-
-sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-server-api
-sed -i "s/--instance default/--instance ${INSTANCE}/" /etc/cron.d/vpn-user-portal
+# enable automatic renewal
+systemctl enable --now certbot-renew.timer
 
 ###############################################################################
 # WEB
 ###############################################################################
 
-mkdir -p /var/www/${INSTANCE}
+mkdir -p /var/www/${WEB_FQDN}
 # Copy server info JSON file
-cp resources/info.json /var/www/${INSTANCE}/info.json
-sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
+cp resources/info.json /var/www/${WEB_FQDN}/info.json
+sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
+
+###############################################################################
+# DAEMONS
+###############################################################################
+
+systemctl enable --now php-fpm
+systemctl enable --now httpd
+systemctl enable --now vmtoolsd
+
+###############################################################################
+# POST INSTALL
+###############################################################################
+
+sed -i "s/--instance default/--instance ${WEB_FQDN}/" /etc/cron.d/vpn-server-api
+sed -i "s/--instance default/--instance ${WEB_FQDN}/" /etc/cron.d/vpn-user-portal
 
 ###############################################################################
 # USERS
@@ -266,34 +190,22 @@ sed -i "s/vpn.example/${INSTANCE}/" /var/www/${INSTANCE}/info.json
 
 USER_PASS=$(pwgen 12 -n 1)
 ADMIN_PASS=$(pwgen 12 -n 1)
-vpn-user-portal-add-user  --instance ${INSTANCE} --user me    --pass "${USER_PASS}"
-vpn-admin-portal-add-user --instance ${INSTANCE} --user admin --pass "${ADMIN_PASS}"
+vpn-user-portal-add-user  --instance ${WEB_FQDN} --user me    --pass "${USER_PASS}"
+vpn-admin-portal-add-user --instance ${WEB_FQDN} --user admin --pass "${ADMIN_PASS}"
 
-TINC_CONFIG=$(base64 -w 0 < "/etc/tinc/vpn/hosts/${TINC_INSTANCE_NAME}")
-API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${INSTANCE}/config.php | cut -d "'" -f 4)
+API_SECRET=$(grep vpn-server-node /etc/vpn-server-api/${WEB_FQDN}/config.php | cut -d "'" -f 4)
 
 echo "########################################################################"
 echo "# Admin Portal"
-echo "#     https://${INSTANCE}/admin"
+echo "#     https://${WEB_FQDN}/vpn-admin-portal"
 echo "#         User: admin"
 echo "#         Pass: ${ADMIN_PASS}"
 echo "# User Portal"
-echo "#     https://${INSTANCE}/portal"
+echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
-echo "########################################################################"
-echo
-echo "########################################################################"
-echo "# Variables for the top of the deploy_node.sh script:"
-echo "# --- cut ---"
-echo "INSTANCE=${INSTANCE}"
-echo "EXTERNAL_IF=${EXTERNAL_IF}"
-echo "MANAGEMENT_IP=10.42.101.101"
-echo "PROFILE=internet"
-echo "API_SECRET=${API_SECRET}"
-echo "TINC_CONFIG=${TINC_CONFIG}"
-echo "# --- /cut ---"
-echo "#"
+echo "# API Secret"
+echo "#     ${API_SECRET}"
 echo "########################################################################"
 
 # ALL DONE!
