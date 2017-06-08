@@ -74,12 +74,6 @@ cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
 sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
 
-# empty the RPM httpd configs instead of deleting so we do not get them back
-# on package update
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-server-api.conf
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-user-portal.conf
-echo "# emptied by deploy.sh" > /etc/httpd/conf.d/vpn-admin-portal.conf
-
 ###############################################################################
 # PHP
 ###############################################################################
@@ -111,12 +105,22 @@ sudo -u apache vpn-server-api-init
 # VPN-ADMIN-PORTAL
 ###############################################################################
 
+sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-admin-portal/default/config.php
+
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
+sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
+
 # generate OAuth keypair
 vpn-user-portal-init
+
+###############################################################################
+# VPN-SERVER-NODE
+###############################################################################
+
+sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-server-node/default/config.php
 
 ###############################################################################
 # NETWORK
@@ -142,7 +146,7 @@ vpn-server-api-update-api-secrets
 # LET'S ENCRYPT / CERTBOT
 ###############################################################################
 
-certbot register --agree-tos -m ${LETSENCRYPT_MAIL}
+certbot register --agree-tos --no-eff-email -m ${LETSENCRYPT_MAIL}
 certbot certonly -n --standalone -d ${WEB_FQDN}
 
 cat << EOF > /etc/sysconfig/certbot
@@ -222,11 +226,11 @@ vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
 echo "# Admin Portal"
-echo "#     https://${WEB_FQDN}/admin"
+echo "#     https://${WEB_FQDN}/vpn-admin-portal"
 echo "#         User: admin"
 echo "#         Pass: ${ADMIN_PASS}"
 echo "# User Portal"
-echo "#     https://${WEB_FQDN}/portal"
+echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
 echo "########################################################################"
