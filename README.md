@@ -91,7 +91,7 @@ that makes sense for your deployment. Read the comments at the top of the file.
 To run the script:
 
     $ sudo -s
-    $ ./deploy.sh
+    # ./deploy.sh
 
 ## Fedora 
 
