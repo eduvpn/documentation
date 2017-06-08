@@ -36,7 +36,7 @@ the server configuration, see the [Apply Changes](#apply-changes) section below.
 | `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 124 and divible by 4 | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
-| `managementIp`     | Override the auto assigned `managementIp` based on `instanceNumber` and `profileNumber` with a chosen IP | no | `auto` |
+| `managementIp`     | The IP address to use for connecting to OpenVPN processes | no | `127.0.0.1` |
 | `useNat`           | Whether or not to NAT the `range` and `range6` network to the `extIf` | no | `false` |
 | `reject4`          | Do not forward IPv4 traffic, useful for creating an IPv6 only VPN | no | `false` |
 | `reject6`          | Do not forward IPv6 traffic, useful when the VPN server does not have IPv6 connectivity | no | `false` |
