@@ -172,14 +172,9 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
 # DAEMONS
 ###############################################################################
 
-systemctl enable php-fpm
-systemctl enable httpd
-systemctl enable vmtoolsd
-
-# start services
-systemctl restart php-fpm
-systemctl restart httpd
-systemctl restart vmtoolsd
+systemctl enable --now php-fpm
+systemctl enable --now httpd
+systemctl enable --now vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
@@ -195,11 +190,8 @@ rm -rf /etc/openvpn/server/*
 vpn-server-node-server-config --profile internet --generate
 
 # enable and start OpenVPN
-systemctl enable openvpn-server@default-internet-0
-systemctl enable openvpn-server@default-internet-1
-
-systemctl restart openvpn-server@default-internet-0
-systemctl restart openvpn-server@default-internet-1
+systemctl enable --now openvpn-server@default-internet-0
+systemctl enable --now openvpn-server@default-internet-1
 
 ###############################################################################
 # FIREWALL
@@ -208,12 +200,12 @@ systemctl restart openvpn-server@default-internet-1
 # generate and install the firewall
 vpn-server-node-generate-firewall --install
 
-systemctl enable iptables
-systemctl enable ip6tables
+systemctl enable --now iptables
+systemctl enable --now ip6tables
 
 # flush existing firewall rules if they exist and activate the new ones
-systemctl restart iptables
-systemctl restart ip6tables
+#systemctl restart iptables
+#systemctl restart ip6tables
 
 ###############################################################################
 # USERS
