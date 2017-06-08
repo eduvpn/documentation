@@ -12,9 +12,10 @@ scenarios.
 
 # Features
 
-- OpenVPN server accepting connections on various UDP ports and `tcp/443`;
-- Support (out of the box) multiple UDP instances for load sharing purposes;
-- Full IPv6 support inside the VPN tunnel and outer tunnel;
+- OpenVPN server accepting connections on both UDP and TCP ports;
+- Support (out of the box) multiple OpenVPN processes for load sharing 
+  purposes;
+- Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
 - Support both NAT and routable IP addresses;
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
@@ -22,14 +23,14 @@ scenarios.
 - Multi Language support in the User Portal;
 - OAuth 2.0 [API](API.md) for integration with applications;
 - Admin Portal manage users, configurations and connections;
-- [Two-factor authentication](2FA.md) (TOTP, YubiKey) support with user 
+- [Two-factor authentication](2FA.md) TOTP and YubiKey support with user 
   self-enrollment for both access to the portal(s) and the VPN;
 - [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
   - Route only some traffic over the VPN (for access to the organization 
     network);
-  - Client-to-client only networking;
+  - Client-to-client (only) networking;
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - Support [multiple instances](MULTI_INSTANCE.md);
 - Support for [multiple nodes](DISTRIBUTED_NODES.md) in different locations;
@@ -80,6 +81,7 @@ The deployment was succesfully tested on the official Fedora 25 cloud image,
 as well as the Fedora 25 image @ [DigitalOcean](https://www.digitalocean.com/).
 
 # Advanced
+
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh CentOS 7 installation. It will configure all components 
 and will be ready to use after running!
