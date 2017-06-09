@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Deploy
+# Deploy a single VPN machine
 #
 
 ###############################################################################
@@ -10,16 +10,29 @@
 
 # **NOTE**: make sure WEB_FQDN and VPN_FQDN are valid DNS names with 
 # appropriate A (and AAAA) records!
+#
 
 # VARIABLES
 WEB_FQDN=vpn.example
+
+# we use a separate hostname for the VPN connections to allow for moving the
+# VPN processes to another machine in the future when client configurations are
+# already distributed
 VPN_FQDN=internet.${WEB_FQDN}
+#VPN_FQDN=${WEB_FQDN}
 
-# The interface that connects to "the Internet"
-EXTERNAL_IF=eth0
+# Let's Encrypt
+# TOS: https://letsencrypt.org/repository/
+AGREE_TOS=""
+# to agree to the TOS, add "#" the line above and remove "#" below this line
+#AGREE_TOS="--agree-tos"
 
-# The email address you want to use for Let's Encrypt (you won't be spammed)
+# The email address you want to use for Let's Encrypt (for issues with 
+# renewing the certificate etc.)
 LETSENCRYPT_MAIL=admin@example.org
+
+# The interface that connects to "the Internet" (for firewall rules)
+EXTERNAL_IF=eth0
 
 ###############################################################################
 # SYSTEM
@@ -85,7 +98,7 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
 # switch to unix socket, default in newer PHP versions, but not on CentOS 7
 sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fpm.d/www.conf
 
-# timezone
+# set timezone to UTC
 cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
 # session hardening
 cp resources/75-session.ini /etc/php.d/75-session.ini
@@ -103,6 +116,8 @@ restorecon -R /var/lib/php/session
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
 vpn-server-api-update-ip --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_IF}
+
+# initialize the CA
 sudo -u apache vpn-server-api-init
 
 ###############################################################################
@@ -117,7 +132,7 @@ sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server
 
 sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
 
-# generate OAuth keypair
+# generate OAuth public/private keys
 vpn-user-portal-init
 
 ###############################################################################
@@ -150,7 +165,7 @@ vpn-server-api-update-api-secrets
 # LET'S ENCRYPT / CERTBOT
 ###############################################################################
 
-certbot register --agree-tos --no-eff-email -m ${LETSENCRYPT_MAIL}
+certbot register ${AGREE_TOS} --no-eff-email -m ${LETSENCRYPT_MAIL}
 certbot certonly -n --standalone -d ${WEB_FQDN}
 
 cat << EOF > /etc/sysconfig/certbot
