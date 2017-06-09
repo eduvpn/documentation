@@ -4,7 +4,11 @@ This document describes how to configure SAML authentication for deployed
 systems. We assume you used the `deploy.sh` script to deploy eduvpn. Below we
 assume you use `vpn.example`, but modify this domain to your own domain name!
 
-A convenient script is installed by `mod_auth_mellon` to generate all 
+First install `mod_auth_mellon`:
+
+    $ sudo yum -y install mod_auth_mellon
+
+A convenience script is installed by `mod_auth_mellon` to generate all 
 required files to configure the SAML SP:
 
     $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
@@ -46,7 +50,7 @@ at your IdP. You can use the following URL with metadata:
 You also need to modify the `vpn-user-portal` configuration to specify the 
 attribute that should be used to identify the users.
 
-Edit `/etc/vpn-user-portal/vpn.example/config.php` and set:
+Edit `/etc/vpn-user-portal/default/config.php` and set:
         
     'authMethod' => 'MellonAuthentication'
 
@@ -58,7 +62,7 @@ you uncomment the `<Location /admin>` section in
 `/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
 are associated with the administrator(s). 
 
-Also modify `/etc/vpn-admin-portal/vpn.example/config.php` in the same way as 
+Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
 the user portal.
 
 **NOTE** if you want to restrict access to the admin portal, you MUST also set 
