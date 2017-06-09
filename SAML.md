@@ -1,8 +1,9 @@
 # Introduction
 
 This document describes how to configure SAML authentication for deployed
-systems. We assume you used the `deploy.sh` script to deploy eduvpn. Below we
-assume you use `vpn.example`, but modify this domain to your own domain name!
+systems. We assume you used the `deploy.sh` script to deploy the software. 
+Below we assume you use `vpn.example`, but modify this domain to your own 
+domain name!
 
 First install `mod_auth_mellon`:
 
@@ -15,7 +16,8 @@ required files to configure the SAML SP:
 
 You can now modify the `https_vpn.example_saml.xml` file. Make sure the 
 `<NameIDFormat>` is set to 
-`urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
+`urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` if you want to use the 
+NameID as the user ID:
 
     $ sed -i 's/urn:oasis:names:tc:SAML:2.0:nameid-format:transient/urn:oasis:names:tc:SAML:2.0:nameid-format:persistent/' https_vpn.example_saml.xml
 
@@ -41,7 +43,7 @@ Restart the web server:
 
     $ sudo systemctl restart httpd
 
-Now when you visit `https://vpn.example/portal/` you should be 
+Now when you visit `https://vpn.example/vpn-user-portal/` you should be 
 redirected to the IdP. If this works, you probably need to register your SP
 at your IdP. You can use the following URL with metadata:
 
@@ -58,13 +60,14 @@ By default the NAME_ID will be used to identify the users, if you want to
 change that change the `attribute` value under `MellonAuthentication`.
 
 If you want to also have `vpn-admin-portal` be protected by SAML, make sure
-you uncomment the `<Location /admin>` section in 
+you uncomment the `<Location /vpn-admin-portal>` section in 
 `/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
 are associated with the administrator(s). 
 
 Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
 the user portal.
 
-**NOTE** if you want to restrict access to the admin portal, you MUST also set 
+**NOTE** if you want to allow access to the admin portal, you MUST also set 
 some mechanism, either through userId or entitlement authorization, see the 
-example configuration file in `/etc/vpn-admin-portal/default/config.php`!
+example configuration file in 
+`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`!
