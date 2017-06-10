@@ -48,21 +48,6 @@ clients:
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
 
-# Architecture
-
-The architecure is described in a [separate document](ARCHITECTURE.md). 
-**NOT UP TO DATE**
-
-# Authentication 
-
-By default a user name/password login on the User/Admin portal is used, but it 
-is easy to enable SAML authentication for identity federations, this is 
-documented separately. See [SAML](SAML.md).
-
-For connecting to the VPN service by default only certificates are used, no 
-additional user name/password authentication. It is possible to enable 
-[2FA](2FA.md) to require an additional TOTP or YubiKey.
-
 # Deployment
 
 **At the moment only CentOS 7 is supported!**
@@ -93,7 +78,9 @@ To run the script:
     $ sudo -s
     # ./deploy.sh
 
-## Users
+# Authentication 
+
+## Username & Password
 
 By default there is a user `me` with a generated password for the User Portal
 and a user `admin` with a generated password for the Admin Portal. Those are
@@ -107,3 +94,15 @@ If you want to update/add users you can use the `vpn-user-portal-add-user` and
 Or to update the existing `admin` password:
 
     $ sudo vpn-admin-portal-add-user --instance vpn.example --user admin --pass 3xtr4s3cr3t
+
+## SAML
+
+It is easy to enable SAML authentication for identity federations, this is 
+documented separately. See [SAML](SAML.md).
+
+## 2FA
+
+For connecting to the VPN service by default only certificates are used, no 
+additional user name/password authentication. It is possible to enable 
+[2FA](2FA.md) to require an additional TOTP or YubiKey.
+
