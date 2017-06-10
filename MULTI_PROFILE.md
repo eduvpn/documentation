@@ -4,26 +4,21 @@ It is possible to add additional "profiles" to a VPN service. This is useful
 when you for example have two categories of users using the same VPN server,
 e.g. "employees" and "administrators". 
 
-**NOTE**: it is *NOT* recommended to use a single machine/VM for this, as this
-will require using SNI Proxy, see below.
+Each profile needs to either use different ports, or different IP addresses 
+to listen on. Furthermore, each profile MUST have its own unique 
+`profileNumber` and `profileId`.
 
-**NOTE**: every profile needs their own dedicated IPv4 or IPv6 address. 
-OpenVPN can not listen on both an IPv4 address and and IPv6 address, unless it
-is the special address `::`, which is only possible if there is only one 
-profile. This becomes so complicated because we want to make `tcp/443` 
-available for _every_ profile for clients to connect to.
-
-See this [issue](https://github.com/eduvpn/vpn-server-node/issues/8) for a 
-possible solution for needing the complicated "listen" solution.
+A maximum of 16 profiles is supported.
 
 # Configuration
 
-The configuration takes place in `/etc/vpn-server-api/vpn.example/config.php`, 
-assuming you are using `vpn.example`. Here we define two profiles, `office` and
+The configuration file `/etc/vpn-server-api/default/config.php` needs to be 
+modified:
+
+In the example below we'll have two profiles, with `profileId` `office` and 
 `admin`:
 
     'vpnProfiles' => [
-
         // Office Employees
         'office' => [
             'profileNumber' => 1,
@@ -31,11 +26,11 @@ assuming you are using `vpn.example`. Here we define two profiles, `office` and
             ...
             ...
             'extIf' => 'eth0',
-            'listen' => '192.0.2.1',
             'hostName' => 'office.vpn.example',
             range: 10.0.5.0/24
             range6: 'fd10:0:5::/48'
             routes: ['192.168.0.0/24', '192.168.1.0/24']
+            vpnProtoPorts: ['udp/1194', 'tcp/1194']
         ],
 
         // Administrators
@@ -45,17 +40,18 @@ assuming you are using `vpn.example`. Here we define two profiles, `office` and
             ...
             ...
             'extIf' => 'eth0',
-            'listen' => '192.0.2.2',
             'hostName' => 'admin.vpn.example',
             range: 10.0.10.0/24
             range6: 'fd10:0:10::/48'
             routes: ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24']
+            vpnProtoPorts: ['udp/1195', 'tcp/1195']
         ],
     ],
 
 In this scenario, `extIf` is actually the interface where the traffic needs 
-to go, so the "LAN" interface of the VPN server. The IP address mentioned in
-`listen` MUST be bound to the DNS name specified in `hostName`.
+to go, so the "LAN" interface of the VPN server. It is best to use different
+`hostName` values for the profiles as this gives more flexibility to move to
+a setup with multiple machines in the future.
 
 # Additional Configuration
 
@@ -65,25 +61,22 @@ configuration options.
 
 # Activate
 
-If you had an old profile, e.g. the default `internet`, it needs to be stopped
-first, and can be removed:
+If you had an old profile, e.g. the default `internet`, as is the default when
+deploying using `deploy.sh` it needs to be stopped first, and can be removed:
 
-    $ sudo systemctl stop    openvpn-server@vpn.example-internet-{0,1,2,3}
-    $ sudo systemctl disable openvpn-server@vpn.example-internet-{0,1,2,3}
-    $ sudo rm /etc/openvpn/server/vpn.example-internet-{0,1,2,3}.conf
-    $ sudo rm -rf /etc/openvpn/server/tls/vpn.example/internet
+    $ sudo systemctl disable --now openvpn-server@default-internet-{0,1}
+    $ sudo rm /etc/openvpn/server/default-internet-{0,1}.conf
+    $ sudo rm -rf /etc/openvpn/server/tls/default/internet
 
 Now the new configurations can be generated:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile office --generate 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile admin --generate
+    $ sudo vpn-server-node-server-config --profile office --generate 
+    $ sudo vpn-server-node-server-config --profile admin  --generate
 
 Enable and start them:
 
-    $ sudo systemctl enable openvpn-server@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl enable openvpn-server@vpn.example-admin-{0,1,2,3}
-    $ sudo systemctl start  openvpn-server@vpn.example-office-{0,1,2,3}
-    $ sudo systemctl start  openvpn-server@vpn.example-admin-{0,1,2,3}
+    $ sudo systemctl enable --now openvpn-server@default-office-{0,1}
+    $ sudo systemctl enable --now openvpn-server@default-admin-{0,1}
 
 Regenerate and restart the firewall:
 
