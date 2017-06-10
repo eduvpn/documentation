@@ -34,6 +34,7 @@ scenarios.
 - Group [ACL](ACL.md) support, including [VOOT](http://openvoot.org/);
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
+- [SELinux](SELINUX.md) fully enabled;
 
 # Client Support
 

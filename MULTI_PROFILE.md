@@ -15,6 +15,8 @@ Below, we will end up with two profiles:
 | office    | 1             | Office         |
 | admin     | 2             | Administrators |
 
+You may also need to take a look at the [SELinux](SELINUX.md) instructions.
+
 # Configuration
 
 The configuration file `/etc/vpn-server-api/default/config.php` needs to be 

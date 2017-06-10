@@ -77,7 +77,7 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
 setsebool -P httpd_can_network_connect=1
 
 # allow OpenVPN to bind to the management ports
-semanage port -a -t openvpn_port_t -p tcp 11940-11941
+semanage port -a -t openvpn_port_t -p tcp 11940-11955
 
 ###############################################################################
 # APACHE
