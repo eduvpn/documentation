@@ -6,17 +6,19 @@ e.g. "employees" and "administrators".
 
 Each profile needs to either use different ports, or different IP addresses 
 to listen on. Furthermore, each profile MUST have its own unique 
-`profileNumber` and `profileId`.
+`profileNumber` and `profileId`. A maximum of 16 profiles is supported.
 
-A maximum of 16 profiles is supported.
+Below, we will end up with two profiles:
+
+| profileId | profileNumber | displayName    |
+| --------- | ------------- | -------------- |
+| office    | 1             | Office         |
+| admin     | 2             | Administrators |
 
 # Configuration
 
 The configuration file `/etc/vpn-server-api/default/config.php` needs to be 
-modified:
-
-In the example below we'll have two profiles, with `profileId` `office` and 
-`admin`:
+modified, you can remove the `internet` profile that was there by default:
 
     'vpnProfiles' => [
         // Office Employees
@@ -52,6 +54,11 @@ In this scenario, `extIf` is actually the interface where the traffic needs
 to go, so the "LAN" interface of the VPN server. It is best to use different
 `hostName` values for the profiles as this gives more flexibility to move to
 a setup with multiple machines in the future.
+
+If you have multiple IP addresses at your disposal for the VPN server, you 
+can use the `listen` key to specify them. This will make you loose the IPv4 and
+IPv6 support though, but you _can_ use the same port numbers for both 
+profiles.
 
 # Additional Configuration
 
