@@ -87,6 +87,9 @@ Enable and start them:
     $ sudo systemctl enable --now openvpn-server@default-office-{0,1}
     $ sudo systemctl enable --now openvpn-server@default-admin-{0,1}
 
+If you changed UDP/TCP ports, you also need to update the firewall 
+configuration in `/etc/vpn-server-node/firewall.php`.
+
 Regenerate and restart the firewall:
 
     $ sudo vpn-server-node-generate-firewall --install

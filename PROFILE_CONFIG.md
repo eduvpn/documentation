@@ -108,6 +108,10 @@ Enable the two extra processes on boot:
 
     $ sudo systemctl restart openvpn-server@default-internet-{0,1,2,3}
 
+If you changed any of the port configuration(s), you also need to update the
+firewall to allow the UDP/TCP ports through, in that case modify 
+`/etc/vpn-server-node/firewall.php`.
+
 To regenerate and install the new firewall rules, run this:
 
     $ sudo vpn-server-node-generate-firewall --install
