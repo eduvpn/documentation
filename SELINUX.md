@@ -39,9 +39,9 @@ Add the new one:
     semanage port -a -t openvpn_port_t -p tcp 11940-12195
 
 If you want to specify additional ports for OpenVPN to listen on for client 
-conntions, you can do something similar:
+connections, you can do something similar:
 
     semanage port -a -t openvpn_port_t -p tcp 1195-1201
     semanage port -a -t openvpn_port_t -p udp 1195-1201
 
-This will allow OpenVPN to listen on ports 1194-1201 for both TCP and UDP.
+This will allow OpenVPN to listen on ports `1194-1201` for both TCP and UDP.
