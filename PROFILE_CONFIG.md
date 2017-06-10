@@ -1,14 +1,13 @@
 # Profile Configuration
 
-For this document we assume your _instance_ is `vpn.example`, change the domain 
-name accordingly in the examples below.
+For this document we assume you used the included `deploy.sh` script.
 
-Profiles, are configured in `/etc/vpn-server-api/vpn.example/config.php` and
+Profiles, are configured in `/etc/vpn-server-api/default/config.php` and
 can contain many options to support various deployment scenarios. These are 
 described in the table below.
 
 To modify any of the options, modify the file mentioned above and look for the
-`vpnProfiles` section under the profile identifier, e.g.:
+`vpnProfiles` section, e.g:
 
     'vpnProfiles' => [
         'internet' => [
@@ -19,11 +18,13 @@ To modify any of the options, modify the file mentioned above and look for the
         ],
     ],
 
-Here `internet` is the profile identifier. The identifier is used internally to
-keep track of the various profiles you may have.
+Every profile has an identifier (`profileId`) in this case `internet` and a 
+number (`profileNumber`), in this case `1`. They must be unique. The counting 
+starts at `1`.
 
 If you modify any of these values as described below, you need to regenerate 
-the server configuration, see the [Apply Changes](#apply-changes) section below.
+the server configuration and possibly the firewall, see the 
+[Apply Changes](#apply-changes) section below.
 
 ## Options
 
@@ -60,7 +61,8 @@ configuration fields.
 
 By default, `listen` is `::` which is a special address that allows OpenVPN to
 receive connections both on IPv4 and IPv6. If you manually set `listen`, it 
-will only listen on the specified address and family, i.e. IPv4 or IPv6.
+will only listen on the specified address, which will be either IPv4 or IPv6,
+but not both.
 
 By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
 one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
@@ -82,15 +84,26 @@ proxy like [socat](http://www.dest-unreach.org/socat/).
 
 ## Apply Changes
 
-Assuming you made changes in the instance `vpn.example` in the profile 
-`internet`, you would regenerate the configuration like this:
+Assuming you made changes in the profile `internet`, you would regenerate the 
+configuration like this:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
+    $ sudo vpn-server-node-server-config --profile internet
 
-To restart all OpenVPN processes belonging to the profile `internet` for the 
-instance `vpn.example` do this:
+To restart all OpenVPN processes belonging to the profile `internet`, do this:
 
-    $ sudo systemctl restart openvpn-server@vpn.example-internet-{0,1}
+    $ sudo systemctl restart openvpn-server@default-internet-{0,1}
+
+If you changed the entry `vpnProtoPorts`, to say 
+`['udp/1194', 'udp/1195', 'tcp/1194', 'tcp/1195']` you now have two more 
+OpenVPN processes to deal with:
+
+Enable the two extra processes on boot:
+
+    $ sudo systemctl enable openvpn-server@default-internet-{2,3}
+
+(Re)start them all:
+
+    $ sudo systemctl restart openvpn-server@default-internet-{0,1,2,3}
 
 To regenerate and install the new firewall rules, run this:
 

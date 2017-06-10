@@ -31,11 +31,9 @@ scenarios.
   - Route only some traffic over the VPN (for access to the organization 
     network);
   - Client-to-client (only) networking;
-- Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
-- Support [multiple instances](MULTI_INSTANCE.md);
-- Support for [multiple nodes](DISTRIBUTED_NODES.md) in different locations;
 - Group [ACL](ACL.md) support, including [VOOT](http://openvoot.org/);
 - Ability to disable all OpenVPN logging (default);
+- Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 
 # Client Support
 
