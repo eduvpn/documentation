@@ -49,13 +49,14 @@ clients:
 
 # Deployment
 
-**At the moment only CentOS 7 is supported!**
+**At the moment only a fully updated official CentOS 7 is supported!**
 
 ## CentOS
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh CentOS 7 installation. It will configure all components 
-and will be ready to use after running!
+and will be ready for use after running, including a valid 
+[Let's Encrypt](https://letsencrypt.org/) TLS certificate!
 
 Not all "cloud" instances will work, because they modify CentOS, by e.g. 
 disabling SELinux or other (network) changes. We test only with the official 
@@ -70,7 +71,11 @@ CentOS [Minimal ISO](https://centos.org/download/) and the official
     $ cd documentation-master
 
 Modify `deploy.sh` and set the variables at the top of the file to something 
-that makes sense for your deployment. Read the comments at the top of the file.
+that makes sense for your deployment. Read the comments at the top of the file. 
+
+**NOTE**: if you do NOT want to use Let's Encrypt certificates it is easy to 
+run the setup with Let's Encrypt, and afterwards replace the certificate (and
+remove the Let's Encrypt auto renewal).
 
 To run the script:
 
