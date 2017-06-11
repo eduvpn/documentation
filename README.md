@@ -73,9 +73,10 @@ CentOS [Minimal ISO](https://centos.org/download/) and the official
 Modify `deploy.sh` and set the variables at the top of the file to something 
 that makes sense for your deployment. Read the comments at the top of the file. 
 
-**NOTE**: if you do NOT want to use Let's Encrypt certificates it is easy to 
-run the setup with Let's Encrypt, and afterwards replace the certificate (and
-remove the Let's Encrypt auto renewal).
+**NOTE**: if you do NOT want to use Let's Encrypt certificates it is best to 
+run the setup with Let's Encrypt, and afterwards replace the certificate, and
+remove the Let's Encrypt auto renewal. But this should only be done if
+you want to use an EV certificate.
 
 To run the script:
 
