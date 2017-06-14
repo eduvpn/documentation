@@ -12,7 +12,9 @@ specifically the specific configuration choices that were made.
     tls-version-min 1.2
     tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
     auth SHA256
+    # NCP may override this
     cipher AES-256-CBC
+    # use ECDHE only
     dh none
 
 ## PHP
