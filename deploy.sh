@@ -133,7 +133,7 @@ sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server
 sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
 
 # generate OAuth public/private keys
-vpn-user-portal-init
+sudo -u apache vpn-user-portal-init
 
 ###############################################################################
 # VPN-SERVER-NODE
