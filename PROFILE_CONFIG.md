@@ -70,7 +70,7 @@ By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
 one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
 the total number of them must be either 1, 2, 4 or 8. This is because the 
 total available IP range will be split among them. Depending on your address
-space the ideal number of simultanious clients per process is at most 64. So 
+space the ideal number of simultaneous clients per process is at most 64. So 
 if you have a `/24` network, you'd probably want to run 4 OpenVPN processes, 
 e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
 
@@ -79,10 +79,17 @@ need to be available to be claimed by OpenVPN and can't be shared by a DNS
 server or web server.
 
 If you run [Multi Instance](MULTI_INSTANCE.md) or 
-[Multi Profile](MULTI_PROFILE.md) you MUST choose a unique `listen` address per
-profile, which means you cannot use the special address `::` and thus lose the
-IPv4+IPv6 connectivity option. You can manually work around this by using a 
-proxy like [socat](http://www.dest-unreach.org/socat/).
+[Multi Profile](MULTI_PROFILE.md) you MUST either choose a unique `listen` 
+address per profile if you want to use the same ports, which means you cannot 
+use the special address `::` and thus lose the IPv4+IPv6 connectivity option, 
+or use different ports. 
+
+The first profile can use `udp/1194` and `tcp/1194`, the second one can use 
+`udp/1195` and `tcp/1195` for example.
+
+You can manually work around providing both IPv4+IPv6 for profiles where you 
+specify a `listen` address by using a proxy like 
+[socat](http://www.dest-unreach.org/socat/).
 
 ## Apply Changes
 
