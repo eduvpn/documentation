@@ -36,7 +36,7 @@ You may also need to take a look at the [SELinux](SELINUX.md) instructions.
 | `displayName`      | The name of the profile as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
-| `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 124 and divible by 4 | yes | _N/A_ | 
+| `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 124 and divisible by 4 | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
 | `managementIp`     | The IP address to use for connecting to OpenVPN processes | no | `127.0.0.1` |
@@ -54,7 +54,7 @@ You may also need to take a look at the [SELinux](SELINUX.md) instructions.
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenvPN >= 2.4). As of this moment (2017-06-14) this does NOT work on OpenVPN Connect (iOS, Android) | no | `false` |
+| `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenVPN >= 2.4). As of this moment (2017-06-14) this does NOT work on OpenVPN Connect (iOS, Android) | no | `false` |
 
 ### OpenVPN Processes
 
