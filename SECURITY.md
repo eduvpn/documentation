@@ -1,4 +1,4 @@
-**WIP**
+**Work in Progress**
 
 # Security
 
@@ -10,42 +10,10 @@ specifically the specific configuration choices that were made.
 ### Crypto
 
     tls-version-min 1.2
-    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384:TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384:TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256
+    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
     auth SHA256
     cipher AES-256-CBC
-
-### Diffie-Hellman
-
-We use a hard coded DH parameter file generated using OpenSSL running on 
-Fedora 24, specifically `openssl-1.0.2j-1.fc24.x86_64`.
-
-    $ openssl dhparam 4096 > dh.pem
-
-The output is this key:
-
-```
------BEGIN DH PARAMETERS-----
-MIICCAKCAgEAiH9x4TPTKSDDYqOouVruHvlCiIDrqr/AoJ0IpWvolCCCS7pojkpO
-8Shx+hCOcHOjsgJrHvPEg40qC6g2dCIdwcLwmmPjopszEzHgzwxIZMDm7wylkRAf
-uYHSfDtEWMDAX3f0q+TMJLQv8NRtu4fjEkXU3p5JVNGAQhEPWt1gYrlbJwkaf0Bo
-jutzb+IJJwSRpVwHrKE9M6dN5CE/fhwICSqRjFxjYQGKKnq1rJ6lYHnsnAmDR3J1
-FWwZtknYFK4MElFJIESoFHw5CVnb92vN8k5EpGc2WtBJewYr6EspvnDeCHaPVDat
-oOZSYjO/i1B2j2ALQTqyAQIgi7YOhhLfLIFVlzNLMRhLuJNcPJbo4gz8CrzkuCpq
-czuTz1U9bL+aY9e3wFT/M+4YlkjdkcYoaRMfGzfgfdojdVogy59/c5t/ciWIgumA
-78PzUyYNZ3im7F9On+C64SZDrEbmoZwfsqOfY1JFjIZXvhbw8FeyByk1bXwg9aA8
-USav1aeleUQtoyXXKYHBTclsJKYrSDqMe0qhmqdsiQ34PsEQi19Qk5zUHBN4Z8+x
-2MUE4oCpMALGhRbfz7gj3AF3EGKqgz7dBWRdpcZsM1Fd8Olj456egwxvFLxnlERo
-NdWOSJxYsvki1w9JePcg39nImSi9jLpSp/3c1XrWsby7RdN8zgbZOSsCAQI=
------END DH PARAMETERS-----
-```
-
-This file is part of the `vpn-server-node` project and stored in the `config` 
-directory. If you want to generate your own DH parameters, you can do so 
-using the above command and store the file in `/etc/vpn-server-node/dh.pem`.
-
-Make sure to regenerate (all) server configurations, or manually copy the 
-`dh.pem` to `/etc/openvpn/server/tls/<instance>/<profile>/dh.pem` for all your 
-profiles and configurations.
+    dh none
 
 ## PHP
 
@@ -56,19 +24,15 @@ issues appear.
 
 A number of issues have been identified and workarounds provided:
 
-- PHP 5.4 does not have a CSPRNG, so we use 
+- PHP 5.4 does not have a (secure) CSPRNG, so we use 
   [pecl-libsodium](https://paragonie.com/book/pecl-libsodium) instead;
-- [session fixation](https://en.wikipedia.org/wiki/Session_fixation) for which 
-  a workaround exists that is implemented;
 
 See the `resources/` directory for PHP setting changes.
 
 ### Sessions
 
-In PHP >= 5.5.2 there is a way to prevent session fixation. There is a PHP 
-[option](https://secure.php.net/manual/en/session.configuration.php#ini.session.use-strict-mode)
-for this. Unfortunately we need to support PHP 5.4, so we have to implement a
-[workaround](https://paragonie.com/blog/2015/04/fast-track-safe-and-secure-php-sessions).
+We use [fkooman/secookie](https://github.com/fkooman/php-secookie), a library
+to implement secure PHP sessions (and cookies).
 
 ## Threat Model
 
