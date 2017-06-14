@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           c528782978a26b3526d8538dbc7b2b7ada7c686f
+%global github_commit           0c8269b2ffcf0ee7b22ae00d1bdb1a497f8aae71
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
 Version:    1.0.0
-Release:    0.42%{?dist}
+Release:    0.43%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -98,7 +98,6 @@ done
 )
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
-cp -pr config/dh.pem %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/%{name}/firewall.php
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -123,7 +122,6 @@ EOF
 %files
 %defattr(-,root,root,-)
 %dir %attr(0750,root,openvpn) %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/dh.pem
 %config(noreplace) %{_sysconfdir}/%{name}/firewall.php
 %dir %attr(0750,root,openvpn) %{_sysconfdir}/%{name}/default
 %config(noreplace) %{_sysconfdir}/%{name}/default/config.php
@@ -133,10 +131,13 @@ EOF
 %{_datadir}/%{name}/src
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/openvpn-config
-%doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example config/dh.pem
+%doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
 %license LICENSE
 
 %changelog
+* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.43
+- rebuilt
+
 * Tue Jun 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
 - rebuilt
 
