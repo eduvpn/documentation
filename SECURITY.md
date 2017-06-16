@@ -20,7 +20,7 @@ specifically the specific configuration choices that were made.
 ## PHP
 
 The software, by default, when using the `deploy.sh` script uses PHP 5.4. This
-is not without risks. That version is no longer maintained by the PHP project
+is not without risks. This version is no longer maintained by the PHP project
 and depends fully on the Red Hat engineers that update it when (security) 
 issues appear.
 
@@ -40,7 +40,7 @@ to implement secure PHP sessions (and cookies).
 
 We will consider the following scenarios:
 
-1. A user uses the VPN to safely use the Internet;
+1. A user uses the VPN to safely surf the Internet;
 2. An organization uses the VPN to allow employees to access the internal 
    resources;
 
@@ -57,17 +57,9 @@ There are a number of attacks that could result in this MITM:
 3. The "upstream" ISP running the VPN service is compromised and under 
    surveillance;
 
-### Server Compromise
-
-TBD.
-
-#### Recovery
-
-TBD.
-
 ### CA 
 
-Because of the nature of the VPN service, the CA needs to be "online", i.e. it 
+Because of the nature of this VPN service, the CA needs to be "online", i.e. it 
 should be able to sign certificates on demand. There are a number of 
 countermeasures that could be taken to avoid compromising the CA by using e.g. 
 a hardware HSM that contains the CA. This is currently not done because that 
@@ -82,8 +74,8 @@ client connections by hijacking DNS.
 
 #### Recovery
 
-In order to recover, the entire CA needs to be regenerated including all 
-client and server certificates.
+In order to recover, the entire CA needs to be thrown away and recreated, 
+including all client and server certificates.
 
 ### Compromised ISP
 
