@@ -9,7 +9,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.0
-Release:    0.43%{?dist}
+Release:    0.58%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -135,6 +135,51 @@ EOF
 %license LICENSE
 
 %changelog
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.58
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.57
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.56
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.55
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.54
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.53
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.52
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.51
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.50
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.49
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.48
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.47
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.46
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.45
+- rebuilt
+
+* Fri Jun 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.44
+- rebuilt
+
 * Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.43
 - rebuilt
 
