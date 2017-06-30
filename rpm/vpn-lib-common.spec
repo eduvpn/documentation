@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           03203b5aa51316049a33667e7e00c8ee38b44930
+%global github_commit           1c4ee60d379a4491b80d2e5ebaba0c0156032b30
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
 Version:    1.0.0
-Release:    0.64%{?dist}
+Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -99,41 +99,5 @@ EOF
 %license LICENSE
 
 %changelog
-* Sat Jun 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.64
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.62
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.61
-- rebuilt
-
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.60
-- rebuilt
-
-* Tue Jun 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.59
-- rebuilt
-
-* Fri May 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.58
-- rebuilt
-
-* Sat May 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.57
-- rebuilt
-
-* Sat May 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.56
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.55
-- rebuilt
-
-* Mon May 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.54
-- rebuilt
-
-* Mon May 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.53
-- rebuilt
-
-* Sat Apr 29 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.52
-- rebuilt
+* Fri Jun 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
+- initial release

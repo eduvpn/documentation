@@ -4,12 +4,12 @@
 
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           615fcc740e1d47e19716bb37b1b7905eab5f4af9
+%global github_commit           27e8cb53e6e7429abf826a4b48bf27f798a1e940
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
 Version:    1.0.0
-Release:    0.66%{?dist}
+Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -145,89 +145,5 @@ fi
 %license LICENSE
 
 %changelog
-* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.66
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.65
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.64
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.63
-- rebuilt
-
-* Mon Jun 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.62
-- rebuilt
-
-* Mon Jun 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.61
-- rebuilt
-
-* Sun Jun 04 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.60
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.59
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.58
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.57
-- rebuilt
-
-* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.56
-- rebuilt
-
-* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.55
-- rebuilt
-
-* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.54
-- rebuilt
-
-* Fri May 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.53
-- rebuilt
-
-* Fri May 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.52
-- rebuilt
-
-* Fri May 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.51
-- rebuilt
-
-* Fri May 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.50
-- rebuilt
-
-* Sun May 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.49
-- rebuilt
-
-* Sun May 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.48
-- rebuilt
-
-* Sat Apr 29 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.47
-- rebuilt
-
-* Thu Apr 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.46
-- rebuilt
-
-* Wed Apr 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.45
-- rebuilt
-
-* Wed Apr 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.44
-- rebuilt
-
-* Wed Apr 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.43
-- rebuilt
-
-* Sun Apr 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
-- rebuilt
-
-* Sun Apr 16 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
-- rebuilt
-
-* Fri Apr 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.40
-- rebuilt
-
-* Fri Apr 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.39
-- rebuilt
-
-* Tue Mar 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
+* Fri Jun 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
