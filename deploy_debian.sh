@@ -13,7 +13,7 @@
 #
 
 # VARIABLES
-WEB_FQDN=vpn.example
+WEB_FQDN=eduvpn.nl
 
 # we use a separate hostname for the VPN connections to allow for moving the
 # VPN processes to another machine in the future when client configurations are
@@ -45,7 +45,7 @@ echo "deb https://static.eduvpn.nl/debian/ stretch main" > /etc/apt/sources.list
 apt update
 
 # install software (dependencies)
-apt install -y apache2 php-fpm certbot
+apt install -y apache2 php-fpm certbot pwgen
 
 # install software (VPN packages)
 apt install -y vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
@@ -142,18 +142,22 @@ vpn-server-api-update-api-secrets
 # LET'S ENCRYPT / CERTBOT
 ###############################################################################
 
-certbot register ${AGREE_TOS} -m ${LETSENCRYPT_MAIL}
-certbot certonly -n --standalone -d ${WEB_FQDN}
+systemctl stop apache2
+certbot register ${AGREE_TOS} -m ${LETSENCRYPT_MAIL} || true
 
-cat << EOF > /etc/sysconfig/certbot
-PRE_HOOK="--pre-hook 'systemctl stop httpd'"
-POST_HOOK="--post-hook 'systemctl start httpd'"
+# TODO: disable the || true, now for testing only
+certbot certonly -n --standalone -d ${WEB_FQDN} || true
+
+# not sure if these hooks are read by systemd on debian
+cat << EOF > /etc/init.d/certbot
+PRE_HOOK="--pre-hook 'systemctl stop apache2'"
+POST_HOOK="--post-hook 'systemctl start apache2'"
 RENEW_HOOK=""
 CERTBOT_ARGS=""
 EOF
 
 # enable automatic renewal
-systemctl enable --now certbot-renew.timer
+systemctl enable --now certbot.timer
 
 ###############################################################################
 # WEB
@@ -168,9 +172,11 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
 # DAEMONS
 ###############################################################################
 
-systemctl enable --now php-fpm
-systemctl enable --now httpd
-systemctl enable --now vmtoolsd
+systemctl enable --now php7.0-fpm
+systemctl enable --now apache2
+
+# TODO: ??
+#systemctl enable --now vmtoolsd
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
@@ -180,21 +186,26 @@ systemctl enable --now vmtoolsd
 # by default! 
 
 # generate the server configuration files
-vpn-server-node-server-config --profile internet --generate
+# TODO: remove || true
+vpn-server-node-server-config --profile internet --generate || true
 
 # enable and start OpenVPN
-systemctl enable --now openvpn-server@default-internet-0
-systemctl enable --now openvpn-server@default-internet-1
+# TODO: below the fedora commands, why not use EXTERNAL_IF ?
+#systemctl enable --now openvpn-server@default-internet-0
+#systemctl enable --now openvpn-server@default-internet-1
+systemctl enable --now openvpn-server@EXTERNAL_IF || true
 
 ###############################################################################
 # FIREWALL
 ###############################################################################
 
 # generate and install the firewall
-vpn-server-node-generate-firewall --install
+# TODO: remove || true
+vpn-server-node-generate-firewall --install || true
 
-systemctl enable --now iptables
-systemctl enable --now ip6tables
+# TODO: looks like debian doesn't have systemd scripts for iptables
+#systemctl enable --now iptables
+#systemctl enable --now ip6tables
 
 ###############################################################################
 # USERS
