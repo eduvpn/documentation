@@ -5,12 +5,12 @@
 %global github_owner            fkooman
 %global github_name             php-oauth2-client
 
-%global commit0 84bd95a0afe6e15eee37f698a5ac23425e188c18
+%global commit0 358666aaf3f774898c602b8e6c70dcdf7d420179
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    5.0.0
-Release:    0.43%{?dist}
+Release:    1%{?dist}
 Summary:    Very simple OAuth 2.0 client
 
 Group:      System Environment/Libraries
@@ -113,44 +113,5 @@ EOF
 %license LICENSE
 
 %changelog
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.43
-- rebuilt
-
-* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.42
-- rebuilt
-
-* Wed May 31 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.41
-- rebuilt
-
-* Wed May 31 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.40
-- rebuilt
-
-* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.39
-- rebuilt
-
-* Sat May 13 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.38
-- rebuilt
-
-* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.37
-- rebuilt
-
-* Fri May 12 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.36
-- rebuilt
-
-* Wed May 10 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.35
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.34
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.33
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.32
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.31
-- rebuilt
-
-* Tue May 09 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-0.30
-- rebuilt
+* Thu Jul 06 2017 François Kooman <fkooman@tuxed.net> - 5.0.0-1
+- update to 5.0.0
