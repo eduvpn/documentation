@@ -2,10 +2,9 @@
 
 ## Goal
 
-We want to allow the users of our (mobile) eduVPN application to seamlessly 
+We want to allow the users of our (mobile) eduVPN applications to seamlessly 
 switch between independent, NREN operated and controlled, eduVPN instances 
-around the globe. We want to be able to trace abuse back to the user 
-responsible, with help from the user's "home" institute, 
+around the globe. We want to be able to trace abuse back to the responsible user, with help from the user's "home" institution, 
 and to be able to effectively remediate abuse in progress.
 
 Example: a Dutch student can choose an eduVPN endpoint in Australia just by clicking in the eduVPN app on country Australia.
@@ -37,9 +36,9 @@ leveraged in the realm of research and education:
 4. high availability: with many available endpoints in many countries, there is 
    a bigger chance of getting a connection to the VPN;
 
-A National Research and Education Network (NREN) typically has high performance 
-networks and are by nature already spread around the globe and are used to 
-collaborate. the perfect place to install additional VPN nodes for a federated 
+National Research and Education Networks (NRENs) typically have high performance 
+networks; they are spread around the globe and are used to 
+collaborate. The perfect place to install additional VPN nodes for a federated 
 VPN model.
 
 ## Scope
@@ -47,15 +46,15 @@ VPN model.
 Currently, the eduVPN software broadly provides two "profiles":
 
 1. "Secure Access" is a profile to allow VPN users to connect to the 
-   institute's internal network from a remote location, for example to access 
-   a file share, or to perform system administration at the institute;
+   institution's internal network from a remote location, for example to access 
+   a file share, or to perform system administration at the institution;
 2. "Secure Internet" is a profile to route all the Internet traffic over the
    VPN, to be used e.g. on insecure networks like a coffee shop;
 
-Currently, every institute has their own instance of eduVPN for both 
+Currently, every institution has their own instance of eduVPN for both 
 "Secure Access" and "Secure Internet". With the coming update to the apps, only
-institutes that require "Secure Access" will get their own instance, there will
-only be one "Secure Internet" instance, shared between all institutes which 
+institutions that require "Secure Access" will get their own instance, there will
+only be one "Secure Internet" instance, shared between all institutions which 
 will also take care of guest usage, the goal of this proposal.
 
 For the federation purpose, other NRENs only need to provide one 
@@ -143,7 +142,7 @@ There are a number of approaches how to implement federation within eduVPN:
 
 ### Cons
 
-* Must have secure "backend" communication channel (2 ways) between all nodes;
+* Must have secure "back-end" communication channel (2 ways) between all nodes;
 * Does not allow independent operation by NRENs;
 * Requires management by one party;
 * No ability to leverage existing installations at NRENs;
