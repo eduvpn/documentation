@@ -72,4 +72,5 @@ machine. When run on multiple machines, the User Portal, Admin Portal and
 Server API are installed on 1 machine, and the Server Node on the other 
 machine(s).
 
+![Architecture](img/ARCH.jpg)
 
