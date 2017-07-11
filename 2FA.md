@@ -10,10 +10,6 @@ are supported.
 By default, 2FA will only be used for authenticating to the user and admin
 portals, and not for connecting to the VPN.
 
-**NOTE**: currently, the VPN connection will stop working after one hour as the
-key renegotiation is currently not implemented properly. See this 
-[issue](https://github.com/eduvpn/vpn-server-node/issues/6).
-
 ## Enrollment
 
 Users can enroll themselves in the portal on the "Account" page. If the user
