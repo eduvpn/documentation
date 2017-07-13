@@ -4,12 +4,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           56fb41a31952037afca194f03d02d8114791e37b
+%global github_commit           0a0b8d0f5abafb32f8858c67ea2597d72cb9f38e
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
 Version:    1.0.0
-Release:    0.171%{?dist}
+Release:    1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -173,104 +173,5 @@ fi
 %license LICENSE
 
 %changelog
-* Thu Jul 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.171
-- rebuilt
-
-* Wed Jul 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.170
-- rebuilt
-
-* Wed Jul 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.169
-- rebuilt
-
-* Sun Jul 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.168
-- rebuilt
-
-* Sun Jul 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.167
-- rebuilt
-
-* Sun Jul 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.166
-- rebuilt
-
-* Thu Jun 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.165
-- rebuilt
-
-* Thu Jun 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.164
-- rebuilt
-
-* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.163
-- rebuilt
-
-* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.162
-- rebuilt
-
-* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.161
-- rebuilt
-
-* Tue Jun 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.160
-- rebuilt
-
-* Sun Jun 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.159
-- rebuilt
-
-* Sat Jun 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.158
-- rebuilt
-
-* Sat Jun 10 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.157
-- rebuilt
-
-* Fri Jun 09 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.156
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.155
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.154
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.153
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.152
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.151
-- rebuilt
-
-* Thu Jun 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.150
-- rebuilt
-
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.149
-- rebuilt
-
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.148
-- rebuilt
-
-* Tue Jun 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.147
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.146
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.145
-- rebuilt
-
-* Wed May 31 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.144
-- rebuilt
-
-* Sat May 27 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.143
-- rebuilt
-
-* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.142
-- rebuilt
-
-* Wed May 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.141
-- rebuilt
-
-* Sun May 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.140
-- rebuilt
-
-* Sun May 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.139
-- rebuilt
-
-* Sun May 21 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.138
-- rebuilt
+* Thu Jul 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
+- initial package
