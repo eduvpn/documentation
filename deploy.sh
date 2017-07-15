@@ -58,8 +58,8 @@ ${PACKAGE_MANAGER} -y remove firewalld
 # enable EPEL
 ${PACKAGE_MANAGER} -y install epel-release
 
-curl -L -o /etc/yum.repos.d/fkooman-eduvpn-testing-epel-7.repo \
-    https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
+curl -L -o /etc/yum.repos.d/eduVPN.repo \
+    https://static.eduvpn.nl/rpm/eduVPN.repo
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \

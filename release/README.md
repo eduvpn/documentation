@@ -90,9 +90,9 @@ Create a GPG signing key:
 Export the key, assuming you used `eduvpn@surfnet.nl` as the email address for
 the GPG key.
 
-    $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduvpn
+    $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
 
-This `RPM-GPG-KEY-eduvpn` needs to be distributed to the nodes that want to 
+This `RPM-GPG-KEY-eduVPN` needs to be distributed to the nodes that want to 
 install the software and imported there:
 
     $ sudo rpm --import RPM-GPG-KEY-eduVPN
