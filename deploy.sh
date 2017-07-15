@@ -59,7 +59,7 @@ ${PACKAGE_MANAGER} -y remove firewalld
 ${PACKAGE_MANAGER} -y install epel-release
 
 curl -L -o /etc/yum.repos.d/eduVPN.repo \
-    https://static.eduvpn.nl/rpm/eduVPN.repo
+    https://repo.eduvpn.org/rpm/eduVPN.repo
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \
