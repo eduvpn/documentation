@@ -228,6 +228,12 @@ ADMIN_PASS=$(pwgen 12 -n 1)
 vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
 vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
 
+###############################################################################
+# SHOW INFO
+###############################################################################
+
+OAUTH_PUBLIC_KEY=$(vpn-user-portal-show-public-key)
+
 echo "########################################################################"
 echo "# Admin Portal"
 echo "#     https://${WEB_FQDN}/vpn-admin-portal"
@@ -237,5 +243,7 @@ echo "# User Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
+echo "# OAuth Public Key:"
+echo "#     ${OAUTH_PUBLIC_KEY}"
 echo "########################################################################"
 # ALL DONE!
