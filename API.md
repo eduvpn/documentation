@@ -86,6 +86,9 @@ The flow:
    is higher than the `seq` in the cached copy (see Caching section);
 5. Overwrite the cached version if appropriate.
  
+The public key that is currently used is 
+`E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is Base64-encoded.
+
 ## API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
