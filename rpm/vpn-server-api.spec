@@ -1,6 +1,4 @@
-%global composer_vendor         SURFnet
-%global composer_project        vpn-server-api
-%global composer_namespace      %{composer_vendor}/VPN/Server
+%global composer_namespace      SURFnet/VPN/Server
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
@@ -9,7 +7,7 @@
 
 Name:       vpn-server-api
 Version:    1.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -187,5 +185,8 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
+- remove obsolete composer variables
+
 * Thu Jul 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package

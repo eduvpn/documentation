@@ -1,6 +1,4 @@
-%global composer_vendor         SURFnet
-%global composer_project        vpn-server-node
-%global composer_namespace      %{composer_vendor}/VPN/Node
+%global composer_namespace      SURFnet/VPN/Node
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
@@ -9,7 +7,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -135,5 +133,8 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
+- remove obsolete composer variables
+
 * Thu Jul 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package

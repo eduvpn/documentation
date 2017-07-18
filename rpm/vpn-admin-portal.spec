@@ -1,5 +1,3 @@
-%global composer_vendor         eduvpn
-%global composer_project        vpn-admin-portal
 %global composer_namespace      SURFnet/VPN/Admin
 
 %global github_owner            eduvpn
@@ -9,7 +7,7 @@
 
 Name:       vpn-admin-portal
 Version:    1.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -144,5 +142,8 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
+- remove obsolete composer variables
+
 * Thu Jul 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package

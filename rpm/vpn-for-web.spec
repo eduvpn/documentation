@@ -1,5 +1,3 @@
-%global composer_vendor         eduvpn
-%global composer_project        vpn-for-web
 %global composer_namespace      SURFnet/VPN/Web
 
 %global github_owner            eduvpn
@@ -9,7 +7,7 @@
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.40%{?dist}
+Release:    0.41%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -143,6 +141,9 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
+- remove obsolete composer variables
+
 * Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.40
 - rebuilt
 
