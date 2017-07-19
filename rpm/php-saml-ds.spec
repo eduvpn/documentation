@@ -1,14 +1,10 @@
-%global composer_vendor         fkooman
-%global composer_project        php-saml-ds
-%global composer_namespace      fkooman/SAML/DS
-
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           27e8cb53e6e7429abf826a4b48bf27f798a1e940
+%global github_commit           792c45c9b804817bb84bd45d7b2cd4523d9b8790
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
@@ -25,7 +21,6 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
-BuildRequires:  php-date
 BuildRequires:  php-filter
 BuildRequires:  php-pecl-imagick
 BuildRequires:  php-json
@@ -38,7 +33,6 @@ BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
-Requires:   php-date
 Requires:   php-filter
 Requires:   php-pecl-imagick
 Requires:   php-json
@@ -55,18 +49,11 @@ Requires:   httpd-filesystem
 Requires:   httpd
 %endif
 
-Requires(post): /usr/sbin/semanage
-Requires(postun): /usr/sbin/semanage
-
 %description
 SAML Discovery Service written in PHP.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
-
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/*
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" web/*.php
-sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -83,51 +70,33 @@ AUTOLOAD
 %install
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
-mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr web views %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
 mkdir -p %{buildroot}%{_bindir}
-(
-cd bin
-for phpFileName in $(ls *)
-do
-    binFileName=$(basename ${phpFileName} .php)
-    install -Dpm755 ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-done
-)
-
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
-ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
-
+mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
+
+cp -pr bin src web views %{buildroot}%{_datadir}/%{name}
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
+
+chmod +x %{buildroot}%{_datadir}/%{name}/bin/generate.php
+
+ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
+ln -s %{_datadir}/%{name}/bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
 
 %check
-mkdir vendor
+mkdir -p vendor
 cat << 'EOF' | tee vendor/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+    '%{buildroot}%{_datadir}/%{name}/src/autoload.php',
 ));
 \Fedora\Autoloader\Autoload::addPsr4('fkooman\\SAML\\DS\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
 %{_bindir}/phpunit --verbose
-
-%post
-semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
-restorecon -R %{_localstatedir}/lib/%{name} || :
-# remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then  # final removal
-semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
-fi
 
 %files
 %defattr(-,root,root,-)
@@ -135,6 +104,7 @@ fi
 %dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %{_bindir}/*
+%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/src
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/data
@@ -145,5 +115,9 @@ fi
 %license LICENSE
 
 %changelog
+* Wed Jul 19 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
+- rework autoloader
+
 * Fri Jun 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
