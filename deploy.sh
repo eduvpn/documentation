@@ -39,8 +39,8 @@ EXTERNAL_IF=eth0
 ###############################################################################
 
 # SELinux enabled?
-/usr/sbin/selinuxenabled
-if [ "$?" -ne 0 ]
+
+if ! /usr/sbin/selinuxenabled
 then
     echo "Please enable SELinux before running this script!"
     exit 1
