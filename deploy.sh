@@ -52,7 +52,7 @@ PACKAGE_MANAGER=/usr/bin/yum
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld if it is installed, too complicated
+# remove firewalld if it is installed, not able to do NAT66
 ${PACKAGE_MANAGER} -y remove firewalld
 
 # enable EPEL
