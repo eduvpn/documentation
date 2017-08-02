@@ -38,17 +38,17 @@ EXTERNAL_IF=eth0
 # SOFTWARE
 ###############################################################################
 
-apt-get update
+apt update
 
-apt-get install -y apt-transport-https curl apache2 php-fpm certbot pwgen \
+apt install -y apt-transport-https curl apache2 php-fpm certbot pwgen \
     iptables-persistent
 
 curl -L https://repo.eduvpn.org/debian/eduvpn.key | apt-key add -
 echo "deb https://repo.eduvpn.org/debian/ stretch main" > /etc/apt/sources.list.d/eduvpn.list
-apt-get update
+apt update
 
 # install software (VPN packages)
-apt-get install -y vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
+apt install -y vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # APACHE
