@@ -331,7 +331,7 @@ Same considerations apply as for the `system_messages` call.
 
 ## Flow
 
-See [Application Flow](APP_FLOW.md).
+See [Application Flow](app/APP_FLOW.md).
 
 # Authorization
 
