@@ -404,6 +404,21 @@ instances discovery the cached copy MUST be retained.
 The API discovery files do not currently have a signature and `seq` key, but 
 MAY in the future.
 
+# Client Registration
+
+For the official eduVPN applications, you can use the following OAuth client
+configuration:
+
+* `client_id`: `org.eduvpn.app`;
+* `redirect_uri`: any of the following:
+  * `org.eduvpn.app:/api/callback`;
+  * `http://127.0.0.1:{PORT}/callback`;
+  * `http://[::1]:{PORT}/callback`;
+
+Here, `{PORT}` can be any port >= 1024 and <= 65535. You **MUST** use the 
+`org.eduvpn.app:/api/callback` redirect URI if at all possible on your 
+platform.
+
 # Changelog
 
 In API version 2, some calls were added:
