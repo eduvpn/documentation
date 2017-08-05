@@ -38,31 +38,45 @@ A VPN service running at a particular domain is called an _instance_, e.g.
 
 For an application to discover which instances are available to show to the 
 user a JSON document can be retrieved. For example eduVPN has a document 
-available at `https://static.eduvpn.nl/instances.json`.
+available at `https://static.eduvpn.nl/instances.json` and
+`https://static.eduvpn.nl/federation.json`. An application SHOULD support 
+multiple discovery URLs where the user can choose a particular discovery file 
+from the UI. The UI can be enhanced by the fields `display_name`, 
+`description` and `logo_uri`.
 
 The document looks like this:
 
     {
+        "authorization_type": "local",
+        "description": "Access your institute's network",
+        "display_name": "Institute Access",
         "instances": [
             {
-                "base_uri": "https:\/\/surf.eduvpn.nl\/",
+                "base_uri": "https://surf.eduvpn.nl/",
                 "display_name": "SURF",
-                "logo_uri": "https:\/\/static.eduvpn.nl\/img\/surfnet.png"
+                "logo_uri": "https://static.eduvpn.nl/img/surf.png"
             },
-         
+    
             ...
 
+            {
+                "base_uri": "https://demo.eduvpn.nl/",
+                "display_name": "eduVPN Demo",
+                "logo_uri": "https://static.eduvpn.nl/img/demo.png"
+            }
         ],
-        "seq": 25,
-        "signed_at": "2017-05-11 14:55:03",
+        "logo_uri": "https://static.eduvpn.nl/img/institute_access.png",
+        "seq": 31,
+        "signed_at": "2017-08-04 20:43:05",
         "version": 1
     }
 
-The `base_uri` can be used to perform the API Discovery, see below. The other
-fields can be used to enhance the UI for users using the application by 
-providing a logo and a human readable name for the instance. Users also SHOULD
-have the option to provide their own `base_uri` in the application UI if their
-favorite provider is not listed.
+The `base_uri` inside `instances` can be used to perform the API Discovery of 
+the instances themselves, see below. The other fields can be used to enhance 
+the UI for users using the application by providing a logo and a human readable 
+name for the instance. Users also SHOULD have the option to provide their own 
+`base_uri` in the application UI if their favorite provider is not listed or
+they do not want to use the instance discovery.
 
 ### Validation
 
@@ -87,7 +101,8 @@ The flow:
 5. Overwrite the cached version if appropriate.
  
 The public key that is currently used is 
-`E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is Base64-encoded.
+`E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is a Base64-encoded 
+[Ed25519](https://en.wikipedia.org/wiki/Curve25519) public key.
 
 ## API Discovery
 
