@@ -30,7 +30,6 @@ PACKAGE_LIST=(\
 )
 
 rpmdev-setuptree
-rpmdev-wipetree
 
 SRPM_LIST=""
 cd rpm || exit
@@ -44,5 +43,6 @@ done
 
 (
     cd "${HOME}/rpmbuild/SRPMS"
+    #mockchain --tmp_prefix xyz -r "${MOCK_CONFIG}" ${SRPM_LIST}
     mockchain -r "${MOCK_CONFIG}" ${SRPM_LIST}
 )
