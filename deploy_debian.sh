@@ -49,7 +49,7 @@ apt update
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
-    vpn-admin-portal vpn-user-portal
+    vpn-admin-portal vpn-user-portal sudo
 
 ###############################################################################
 # APACHE
