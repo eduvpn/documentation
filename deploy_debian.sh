@@ -40,15 +40,16 @@ EXTERNAL_IF=eth0
 
 apt update
 
-apt install -y apt-transport-https curl apache2 php-fpm certbot pwgen \
-    iptables-persistent
+DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl apache2 \
+    php-fpm certbot pwgen iptables-persistent
 
 curl -L https://repo.eduvpn.org/debian/eduvpn.key | apt-key add -
 echo "deb https://repo.eduvpn.org/debian/ stretch main" > /etc/apt/sources.list.d/eduvpn.list
 apt update
 
 # install software (VPN packages)
-apt install -y vpn-server-node vpn-server-api vpn-admin-portal vpn-user-portal
+DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
+    vpn-admin-portal vpn-user-portal
 
 ###############################################################################
 # APACHE
@@ -84,7 +85,10 @@ a2ensite ${WEB_FQDN}
 ###############################################################################
 
 # XXX set timezone to UTC
-# XXX debian PHP session configuration
+sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/fpm/php.ini
+sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/cli/php.ini
+
+# TODO debian PHP session configuration
 
 ###############################################################################
 # VPN-SERVER-API
@@ -118,8 +122,6 @@ sudo -u www-data vpn-user-portal-init
 sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-server-node/default/config.php
 
 # On Debian different user/group for running OpenVPN
-
-
 sed -i "s|'vpnUser' => 'openvpn'|'vpnUser' => 'nobody'|" /etc/vpn-server-node/default/config.php
 sed -i "s|'vpnGroup' => 'openvpn'|'vpnGroup' => 'nogroup'|" /etc/vpn-server-node/default/config.php
 
@@ -163,7 +165,7 @@ certbot certonly -n --standalone -d ${WEB_FQDN}
 #EOF
 
 # enable automatic renewal
-systemctl enable --now certbot.timer
+#systemctl enable --now certbot.timer
 
 # restart Apache
 systemctl restart apache2
