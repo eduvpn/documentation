@@ -6,7 +6,7 @@ of Fedora/EPEL, including dependencies and the VPN software itself.
 The repository contains two additional scripts:
 
 * `local_build.sh` to build the package locally;
-* `copr_build.sh` to build the package remotely;
+* `copr_build.sh` to build the package remotely (in COPR);
 
 The resulting packages are available in the COPR repository at 
 [https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/](https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/).
@@ -30,7 +30,3 @@ first.
 Same rules apply.
 
     $ ./copr_build.sh php-fkooman-oauth2-client
-
-# CentOS/Fedora Package Review
-
-* [php-paragonie-constant-time-encoding](https://bugzilla.redhat.com/show_bug.cgi?id=1431766)
