@@ -35,42 +35,11 @@ To export the public key:
     $ cd documentation
     $ sh release/build.sh
 
-# Signing Packages
+# Configuration
 
-Create a GPG signing key:
-
-    $ gpg --gen-key
-
-Export the key, assuming you used `eduvpn@surfnet.nl` as the email address for
-the GPG key.
-
-    $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
-
-This `RPM-GPG-KEY-eduVPN` needs to be distributed to the nodes that want to 
-install the software and imported there:
-
-    $ sudo rpm --import RPM-GPG-KEY-eduVPN
-
-Add the following to `$HOME/.rpmmacros`:
-
-    %_signature gpg
-    %_gpg_name eduvpn@surfnet.nl
-    %_gpg_digest_algo sha256
-
-Sign all (S)RPM packages:
-
-    $ rpm --addsign $HOME/rpmbuild/RPMS/noarch/* $HOME/rpmbuild/SRPMS/*
-
-(Re)create the repository data:
-
-    $ createrepo_c $HOME/rpmbuild
-
-Sign the metadata:
-
-    $ gpg --detach-sign --digest-algo sha256 --armor $HOME/rpmbuild/repodata/repomd.xml
-
-That's all! Now copy the `$HOME/rpmbuild` to a web server and create the 
-following snippet in `/etc/yum.repos.d/eduVPN.repo`:
+Create the following snippet in `/etc/yum.repos.d/eduVPN.repo` on the machine
+where you want to install eduVPN. Make sure the files can be found on the URLs
+mentioned below:
 
     [eduVPN]
     name=eduVPN
