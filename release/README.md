@@ -11,24 +11,30 @@ We assume you have a fresh CentOS 7 machine, add the following software to it.
     $ sudo yum -y install epel-release
     $ sudo yum -y install fedora-packager rpm-sign
 
-Clone the `eduVPN/documentation` repository:
+Make sure your current user account is a member of the `mock` group:
 
-    $ git clone https://github.com/eduVPN/documentation.git
+    $ sudo usermod -a -G mock myusername
+
+After this, make sure you logout and in again.
 
 Make sure you have a PGP key available. If not, create one:
 
     $ gpg --gen-key
 
-Add the following to `$HOME/.rpmmacros`, assuming the email address you used is
+Add the following to `${HOME}/.rpmmacros`, assuming the email address you used is
 `eduvpn@surfnet.nl`:
 
     %_signature gpg
     %_gpg_name eduvpn@surfnet.nl
     %_gpg_digest_algo sha256
 
-To export the public key:
+To export the public key, for use by clients using this repository:
 
     $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
+
+Clone the `eduVPN/documentation` repository:
+
+    $ git clone https://github.com/eduVPN/documentation.git
 
 # Building
 
