@@ -5,7 +5,7 @@
 
 Name:       php-saml-ds
 Version:    1.0.3
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -84,6 +84,10 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 ln -s %{_datadir}/%{name}/bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
 
+%post
+# remove template cache if it is there
+rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
+
 %check
 mkdir -p vendor
 cat << 'EOF' | tee vendor/autoload.php
@@ -115,6 +119,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Mon Aug 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-2
+- remove the tpl directory when upgrading
+
 * Mon Aug 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-1
 - update to 1.0.3
 
