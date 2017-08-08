@@ -92,6 +92,10 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11955
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
+# php-fpm configuration (taken from Fedora php-fpm package, only required on
+# CentOS)
+cp resources/php.conf /etc/httpd/conf.d/php.conf
+
 # VirtualHost
 cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
 sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf

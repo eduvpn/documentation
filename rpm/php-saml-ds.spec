@@ -5,7 +5,7 @@
 
 Name:       php-saml-ds
 Version:    1.0.3
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -119,6 +119,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-3
+- update httpd snippet
+
 * Mon Aug 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-2
 - remove the tpl directory when upgrading
 

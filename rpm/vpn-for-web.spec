@@ -7,7 +7,7 @@
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.41%{?dist}
+Release:    0.42%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -141,6 +141,9 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
+- update httpd snippet
+
 * Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
 - remove obsolete composer variables
 

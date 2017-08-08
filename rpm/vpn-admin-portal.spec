@@ -7,7 +7,7 @@
 
 Name:       vpn-admin-portal
 Version:    1.0.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -142,6 +142,9 @@ fi
 %license LICENSE
 
 %changelog
+* Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- update httpd snippet
+
 * Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - remove obsolete composer variables
 
