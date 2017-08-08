@@ -95,7 +95,7 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
 # session hardening
-cp resources/75-session.ini /etc/php.d/75-session.ini
+cp resources/75-session.fedora.ini /etc/php.d/75-session.ini
 
 ###############################################################################
 # VPN-SERVER-API
