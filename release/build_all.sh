@@ -54,18 +54,19 @@ done
     cp ${RESULT_DIR}/*/*.noarch.rpm ${REPO_DIR}/RPMS/noarch
 )
 
+(
+    cd ${REPO_DIR}
+    # Sign RPMs
+    rpm --addsign RPMS/noarch/* SRPMS/*
+)
+
 # Create Repository
 (
     cd ${REPO_DIR}
     createrepo_c .
 )
 
-(
-    cd ${REPO_DIR}
-    # Sign RPMs
-    rpm --addsign RPMS/noarch/* SRPMS/*
-    # Sign metadata
-    gpg --detach-sign --digest-algo sha256 --armor repodata/repomd.xml
-)
+# Sign metadata
+gpg --detach-sign --digest-algo sha256 --armor ${REPO_DIR}/repodata/repomd.xml
 
 # Done
