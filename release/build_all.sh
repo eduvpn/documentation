@@ -60,7 +60,12 @@ done
     createrepo_c .
 )
 
-# Sign RPMs & metadata
-gpg --detach-sign --digest-algo sha256 --armor ${REPO_DIR}/repodata/repomd.xml
+(
+    cd ${REPO_DIR}
+    # Sign RPMs
+    rpm --addsign RPMS/noarch/* SRPMS/*
+    # Sign metadata
+    gpg --detach-sign --digest-algo sha256 --armor repodata/repomd.xml
+)
 
 # Done

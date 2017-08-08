@@ -27,17 +27,12 @@ assuming the email address you used is `eduvpn@surfnet.nl`:
     %_signature gpg
     %_gpg_name eduvpn@surfnet.nl
     %_gpg_digest_algo sha256
+    %_gpg_check_password_cmd /bin/true
 
 Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
 
-    # Automatically Sign Packages
-    config_opts['plugin_conf']['sign_enable'] = True
-    config_opts['plugin_conf']['sign_opts'] = {}
-    config_opts['plugin_conf']['sign_opts']['cmd'] = 'rpmsign'
-    config_opts['plugin_conf']['sign_opts']['opts'] = '--addsign %(rpms)s'
-
-    # use YUM (for CentOS 7)
-    config_opts['package_manager'] = 'yum'
+    # use YUM (when using Fedora, force use of yum in Mock)
+    #config_opts['package_manager'] = 'yum'
     
     # Speed up package installation in Mock
     config_opts['nosync'] = True
