@@ -70,11 +70,6 @@ sed -i 's|TransferLog logs/vpn.example_ssl_access_log|TransferLog ${APACHE_LOG_D
 # update hostname
 sed -i "s/vpn.example/${WEB_FQDN}/" /etc/apache2/sites-available/${WEB_FQDN}.conf
 
-# XXX fix PHP-FPM socket in http config (https://github.com/eduvpn-debian/packaging/issues/7)
-sed -i 's|/run/php-fpm/www.sock|/run/php/php7.0-fpm.sock|' /etc/apache2/conf-available/vpn-server-api.conf
-sed -i 's|/run/php-fpm/www.sock|/run/php/php7.0-fpm.sock|' /etc/apache2/conf-available/vpn-user-portal.conf
-sed -i 's|/run/php-fpm/www.sock|/run/php/php7.0-fpm.sock|' /etc/apache2/conf-available/vpn-admin-portal.conf
-
 a2enconf vpn-server-api
 a2enconf vpn-user-portal
 a2enconf vpn-admin-portal
@@ -89,6 +84,7 @@ sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/fpm/php.ini
 sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/cli/php.ini
 
 # TODO debian PHP session configuration
+# XXX where to put this?!
 
 ###############################################################################
 # VPN-SERVER-API
