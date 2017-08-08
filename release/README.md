@@ -21,13 +21,12 @@ Make sure you have a PGP key available. If not, create one:
 
     $ gpg --gen-key
 
-Do **NOT** use a passphrase. Add the following to `${HOME}/.rpmmacros`, 
-assuming the email address you used is `eduvpn@surfnet.nl`:
+Add the following to `${HOME}/.rpmmacros`, assuming the email address you used 
+is `eduvpn@surfnet.nl`:
 
     %_signature gpg
     %_gpg_name eduvpn@surfnet.nl
     %_gpg_digest_algo sha256
-    %_gpg_check_password_cmd /bin/true
 
 Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
 
