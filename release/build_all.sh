@@ -61,10 +61,6 @@ done
 )
 
 # Sign RPMs & metadata
-(
-    cd ${REPO_DIR}
-    rpm --addsign RPMS/noarch/* SRPMS/*
-    gpg --detach-sign --digest-algo sha256 --armor repodata/repomd.xml
-)
+gpg --detach-sign --digest-algo sha256 --armor ${REPO_DIR}/repodata/repomd.xml
 
 # Done
