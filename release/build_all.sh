@@ -32,8 +32,8 @@ PACKAGE_LIST=(\
 
 rpmdev-setuptree
 
-mkdir -p ${REPO_DIR}/RPMS/noarch
-mkdir -p ${REPO_DIR}/SRPMS
+mkdir -p "${REPO_DIR}/RPMS/noarch"
+mkdir -p "${REPO_DIR}/SRPMS"
 
 # Create Source RPMs
 SRPM_LIST=""
@@ -48,25 +48,32 @@ done
 
 # Build RPMs
 (
-    cd "${HOME}/rpmbuild/SRPMS"
+    cd "${HOME}/rpmbuild/SRPMS" || exit
     RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
-    cp ${RESULT_DIR}/*/*.src.rpm ${REPO_DIR}/SRPMS
-    cp ${RESULT_DIR}/*/*.noarch.rpm ${REPO_DIR}/RPMS/noarch
+    cp ${RESULT_DIR}/*/*.src.rpm "${REPO_DIR}/SRPMS"
+    cp ${RESULT_DIR}/*/*.noarch.rpm "${REPO_DIR}/RPMS/noarch"
 )
 
 (
-    cd ${REPO_DIR}
+    cd "${REPO_DIR}" || exit
     # Sign RPMs
     rpm --addsign RPMS/noarch/* SRPMS/*
 )
 
 # Create Repository
 (
-    cd ${REPO_DIR}
+    cd "${REPO_DIR}" || exit
     createrepo_c .
 )
 
 # Sign metadata
-gpg --detach-sign --digest-algo sha256 --armor ${REPO_DIR}/repodata/repomd.xml
+gpg --detach-sign --digest-algo sha256 --armor "${REPO_DIR}/repodata/repomd.xml"
+
+# Create Archive
+DATETIME=$(date +%Y%m%d%H%M%S)
+(
+    cd "${REPO_DIR}" || exit
+    tar -czf "../rpmRepo-${DATETIME}.tar.gz" .
+)
 
 # Done
