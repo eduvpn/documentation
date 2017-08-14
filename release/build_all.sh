@@ -28,6 +28,7 @@ PACKAGE_LIST=(\
     vpn-server-node \
     vpn-user-portal \
     php-saml-ds \
+    php-json-signer \
 )
 
 rpmdev-setuptree
