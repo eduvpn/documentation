@@ -1,0 +1,26 @@
+{
+    "authorization_type": "local",
+    "description": "Access your institute's network",
+    "display_name": "Institute Access (DEV)",
+    "instances": [
+        {
+            "base_uri": "https://labrat.eduvpn.nl/",
+            "display_name": "eduVPN (labrat.eduvpn.nl)",
+            "logo_uri": "https://static.eduvpn.nl/img/surf.png"
+        },
+        {
+            "base_uri": "https://kluitje.eduvpn.nl/",
+            "display_name": "eduVPN (kluitje.eduvpn.nl)",
+            "logo_uri": "https://static.eduvpn.nl/img/surf.png"
+        },
+        {
+            "base_uri": "https://vpn.tuxed.net/",
+            "display_name": "eduVPN (vpn.tuxed.net)",
+            "logo_uri": "https://static.eduvpn.nl/img/surf.png"
+        }
+    ],
+    "logo_uri": "https://static.eduvpn.nl/disco/img/institute_access.png",
+    "seq": 7,
+    "signed_at": "2017-08-16 13:57:00",
+    "version": 1
+}

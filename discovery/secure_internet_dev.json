@@ -1,0 +1,23 @@
+{
+    "authorization_type": "distributed",
+    "description": "Connect to the Internet securely, for example when using insecure WiFi",
+    "display_name": "Secure Internet (DEV)",
+    "instances": [
+        {
+            "base_uri": "https://labrat.eduvpn.nl/",
+            "display_name": "The Netherlands (labrat)",
+            "logo_uri": "https://static.eduvpn.nl/img/nl.png",
+            "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
+        },
+        {
+            "base_uri": "https://vpn.tuxed.net/",
+            "display_name": "FrKo (tuxed.net)",
+            "logo_uri": "https://static.eduvpn.nl/img/nl.png",
+            "public_key": "NgH8d49TSkuTJltw7IVTwuI066T0KfwZB909xjwgVhA="
+        }
+    ],
+    "logo_uri": "https://static.eduvpn.nl/disco/img/secure_internet.png",
+    "seq": 25,
+    "signed_at": "2017-08-16 13:57:05",
+    "version": 1
+}

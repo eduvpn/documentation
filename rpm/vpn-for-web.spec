@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-for-web
-%global github_commit           4e72c3943d7d462d6b84255e108813120dc33c0b
+%global github_commit           39e1cc0da0f0b0c40b18955f7a024f0d49774178
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.42%{?dist}
+Release:    0.43%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -141,50 +141,5 @@ fi
 %license LICENSE
 
 %changelog
-* Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.42
-- update httpd snippet
-
-* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.41
-- remove obsolete composer variables
-
-* Wed Jun 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.40
-- rebuilt
-
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.39
-- rebuilt
-
-* Wed Jun 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.38
-- rebuilt
-
-* Mon Jun 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.37
-- rebuilt
-
-* Sun Jun 04 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.36
-- rebuilt
-
-* Sun Jun 04 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.35
-- rebuilt
-
-* Sat Jun 03 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.34
-- rebuilt
-
-* Fri Jun 02 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.33
-- rebuilt
-
-* Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.32
-- rebuilt
-
-* Wed May 31 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.31
-- rebuilt
-
-* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.30
-- rebuilt
-
-* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.29
-- rebuilt
-
-* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.28
-- rebuilt
-
-* Tue May 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.27
+* Tue Aug 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.43
 - rebuilt

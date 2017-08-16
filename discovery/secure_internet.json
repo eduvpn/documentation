@@ -1,0 +1,17 @@
+{
+    "authorization_type": "distributed",
+    "description": "Connect to the Internet securely, for example when using insecure WiFi",
+    "display_name": "Secure Internet",
+    "instances": [
+        {
+            "base_uri": "https://nl.eduvpn.org/",
+            "display_name": "The Netherlands",
+            "logo_uri": "https://static.eduvpn.nl/img/nl.png",
+            "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
+        }
+    ],
+    "logo_uri": "https://static.eduvpn.nl/disco/img/secure_internet.png",
+    "seq": 21,
+    "signed_at": "2017-08-16 13:57:03",
+    "version": 1
+}
