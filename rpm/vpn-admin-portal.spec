@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           db61f360d09c0b346e2664eb71df7c4652e40884
+%global github_commit           1e1e67e61f62abbf3ccbc2d850a1a4260fa5742e
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
-Version:    1.0.0
-Release:    3%{?dist}
+Version:    1.1.0
+Release:    1%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -24,17 +24,20 @@ BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-spl
+BuildRequires:  php-gd
 BuildRequires:  php-gettext
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fedora/autoloader)
 
+Requires:   roboto-fontface-fonts
 Requires:   php(language) >= 5.4.0
 # the scripts in bin/ require the PHP CLI
 Requires:   php-cli
 Requires:   php-date
 Requires:   php-spl
+Requires:   php-gd
 Requires:   php-gettext
 Requires:   vpn-lib-common
 Requires:   php-composer(twig/twig) < 2
@@ -142,6 +145,11 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Aug 17 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
+- update to 1.1.0
+- add php-gd dependency
+- add roboto-fontface-fonts dependency
+
 * Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
 - update httpd snippet
 
