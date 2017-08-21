@@ -8,10 +8,16 @@
             "display_name": "The Netherlands",
             "logo_uri": "https://static.eduvpn.nl/img/nl.png",
             "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
+        },
+        {
+            "base_uri": "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
+            "display_name": "Australia",
+            "logo_uri": "https://static.eduvpn.nl/img/au.png",
+            "public_key": "vyB0kwxsYK1xU14SepLj7WSzcUO5Y2g8ARtBKVRLLDU="
         }
     ],
     "logo_uri": "https://static.eduvpn.nl/disco/img/secure_internet.png",
-    "seq": 21,
-    "signed_at": "2017-08-16 13:57:03",
+    "seq": 22,
+    "signed_at": "2017-08-21 13:27:19",
     "version": 1
 }
