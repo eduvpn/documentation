@@ -41,7 +41,7 @@ EXTERNAL_IF=eth0
 apt update
 
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl apache2 \
-    php-fpm certbot pwgen iptables-persistent sudo
+    php-fpm certbot pwgen iptables-persistent sudo locales-all
 
 curl -L https://repo.eduvpn.org/debian/eduvpn.key | apt-key add -
 echo "deb https://repo.eduvpn.org/debian/ stretch main" > /etc/apt/sources.list.d/eduvpn.list
@@ -50,6 +50,16 @@ apt update
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
     vpn-admin-portal vpn-user-portal
+
+###############################################################################
+# LOCALES
+###############################################################################
+
+# enable the NL locales
+sed -i 's/^# nl_NL/nl_NL/' /etc/locale.gen
+
+# Generate the enabled locales
+locale-gen
 
 ###############################################################################
 # APACHE
