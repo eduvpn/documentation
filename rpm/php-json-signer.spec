@@ -1,10 +1,10 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           c500df46ca9d3421832e85b40dfc150286c256ad
+%global github_commit           70c2716b41d50bff9f7fcc53d686856c87371a9d
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
 Summary:    PHP JSON Signer
 
@@ -89,5 +89,8 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue Aug 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
+
 * Mon Aug 14 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
