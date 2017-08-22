@@ -67,9 +67,6 @@ done
     createrepo_c .
 )
 
-# Sign metadata
-gpg --detach-sign --digest-algo sha256 --armor "${REPO_DIR}/repodata/repomd.xml"
-
 # Create Archive
 DATETIME=$(date +%Y%m%d%H%M%S)
 (

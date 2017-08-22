@@ -59,7 +59,6 @@ mentioned below:
     name=eduVPN
     baseurl=https://static.eduvpn.nl/rpm/
     gpgcheck=1
-    repo_gpgcheck=1
     enabled=1
     gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduVPN
     skip_if_unavailable=False
