@@ -89,12 +89,19 @@ a2ensite ${WEB_FQDN}
 # PHP
 ###############################################################################
 
-# XXX set timezone to UTC
-sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/fpm/php.ini
-sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/cli/php.ini
+# set timezone to UTC
+cp resources/70-timezone.ini /etc/php/7.0/mods-available/eduvpn-timezone.ini
+ln -s /etc/php/7.0/mods-available/eduvpn-timezone.ini /etc/php/7.0/fpm/conf.d/70-timezone.ini
+ln -s /etc/php/7.0/mods-available/eduvpn-timezone.ini /etc/php/7.0/cli/conf.d/70-timezone.ini
 
-# TODO debian PHP session configuration
-# XXX where to put this?!
+
+# session hardening
+cp resources/75-session.debian.ini /etc/php/7.0/mods-available/eduvpn-session.ini
+ln -s /etc/php/7.0/mods-available/eduvpn-session.ini /etc/php/7.0/fpm/conf.d/75-session.ini
+ln -s /etc/php/7.0/mods-available/eduvpn-session.ini /etc/php/7.0/cli/conf.d/75-session.ini
+
+# reload php-fpm service to read the new configuration
+systemctl reload php7.0-fpm
 
 ###############################################################################
 # VPN-SERVER-API
