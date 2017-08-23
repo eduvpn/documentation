@@ -41,7 +41,7 @@ EXTERNAL_IF=eth0
 apt update
 
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl apache2 \
-    php-fpm certbot pwgen iptables-persistent sudo
+    php-fpm certbot pwgen iptables-persistent sudo locales-all
 
 curl -L https://repo.eduvpn.org/debian/eduvpn.key | apt-key add -
 echo "deb https://repo.eduvpn.org/debian/ stretch main" > /etc/apt/sources.list.d/eduvpn.list
@@ -50,6 +50,16 @@ apt update
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
     vpn-admin-portal vpn-user-portal
+
+###############################################################################
+# LOCALES
+###############################################################################
+
+# enable the NL locales
+sed -i 's/^# nl_NL/nl_NL/' /etc/locale.gen
+
+# Generate the enabled locales
+locale-gen
 
 ###############################################################################
 # APACHE
@@ -79,12 +89,16 @@ a2ensite ${WEB_FQDN}
 # PHP
 ###############################################################################
 
-# XXX set timezone to UTC
-sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/fpm/php.ini
-sed -i 's|;date.timezone =|date.timezone = UTC|' /etc/php/7.0/cli/php.ini
+# set timezone to UTC
+cp resources/70-timezone.ini /etc/php/7.0/mods-available/eduvpn-timezone.ini
+phpenmod -v 7.0 -s ALL eduvpn-timezone
 
-# TODO debian PHP session configuration
-# XXX where to put this?!
+# session hardening
+cp resources/75-session.debian.ini /etc/php/7.0/mods-available/eduvpn-session.ini
+phpenmod -v 7.0 -s ALL eduvpn-session
+
+# reload php-fpm service to read the new configuration
+systemctl reload php7.0-fpm
 
 ###############################################################################
 # VPN-SERVER-API
