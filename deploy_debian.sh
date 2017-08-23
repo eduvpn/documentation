@@ -159,26 +159,14 @@ vpn-server-api-update-api-secrets
 # LET'S ENCRYPT / CERTBOT
 ###############################################################################
 
-systemctl stop apache2
+# setup the hooks to stop and start Apache on renewal
+cat << EOF >> /etc/letsencrypt/cli.ini
+pre-hook systemctl stop apache2
+post-hook systemctl start apache2
+EOF
 
 certbot register ${AGREE_TOS} -m ${LETSENCRYPT_MAIL}
 certbot certonly -n --standalone -d ${WEB_FQDN}
-
-# XXX certbot hook configuration!
-
-## not sure if these hooks are read by systemd on debian
-#cat << EOF > /etc/init.d/certbot
-#PRE_HOOK="--pre-hook 'systemctl stop apache2'"
-#POST_HOOK="--post-hook 'systemctl start apache2'"
-#RENEW_HOOK=""
-#CERTBOT_ARGS=""
-#EOF
-
-# enable automatic renewal
-#systemctl enable --now certbot.timer
-
-# restart Apache
-systemctl restart apache2
 
 ###############################################################################
 # WEB
