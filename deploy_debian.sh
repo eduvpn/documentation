@@ -221,5 +221,7 @@ echo "# User Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
+echo "# OAuth Public Key:"
+echo "#     $(vpn-user-portal-show-public-key)"
 echo "########################################################################"
 # ALL DONE!
