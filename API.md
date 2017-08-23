@@ -34,55 +34,108 @@ A VPN service running at a particular domain is called an _instance_, e.g.
 `demo.eduvpn.nl`. An instance can have multiple _profiles_, e.g. 
 `internet` and `office`.
 
-## Instance Discovery
+# Instance Discovery
 
 For an application to discover which instances are available to show to the 
-user a JSON document can be retrieved. For example eduVPN has a document 
-available at `https://static.eduvpn.nl/instances.json` and
-`https://static.eduvpn.nl/federation.json`. An application SHOULD support 
-multiple discovery URLs where the user can choose a particular discovery file 
-from the UI. The UI can be enhanced by the fields `display_name`, 
-`description` and `logo_uri`.
+user a JSON document can be retrieved. For example eduVPN has those JSON 
+documents available at 
+[https://static.eduvpn.nl/disco/](https://static.eduvpn.nl/disco/).
 
-The document looks like this:
+Typically an application will implement only 1 source for retrieving instances,
+but it SHOULD be able to configure multiple sources.
+
+## Format
+
+The JSON document looks like this:
 
     {
-        "authorization_type": "local",
-        "description": "Access your institute's network",
-        "display_name": "Institute Access",
-        "instances": [
+        "sources": [
             {
-                "base_uri": "https://surf.eduvpn.nl/",
-                "display_name": "SURF",
-                "logo_uri": "https://static.eduvpn.nl/img/surf.png"
+                "id": "secure_internet",
+                "authorization_type": "distributed",
+                "instances": [
+                    ...
+                ]
             },
-    
-            ...
-
             {
-                "base_uri": "https://demo.eduvpn.nl/",
-                "display_name": "eduVPN Demo",
-                "logo_uri": "https://static.eduvpn.nl/img/demo.png"
+                "id": "institute_access",
+                "authorization_type": "local",
+                "instances": [
+                    ...
+                ]
             }
         ],
-        "logo_uri": "https://static.eduvpn.nl/img/institute_access.png",
-        "seq": 31,
-        "signed_at": "2017-08-04 20:43:05",
-        "version": 1
+        "seq": 123,   
+        "signed_at": "2017-08-21 16:37:48"
     }
 
-The `base_uri` inside `instances` can be used to perform the API Discovery of 
-the instances themselves, see below. The other fields can be used to enhance 
-the UI for users using the application by providing a logo and a human readable 
-name for the instance. Users also SHOULD have the option to provide their own 
-`base_uri` in the application UI if their favorite provider is not listed or
-they do not want to use the instance discovery.
+The JSON document has `sources` that contain one or more collections of 
+VPN instances. The `id` key can be used by the application to map it to 
+certain branding and UI text. The `authorization_type` is described in 
+the [Authorization](#authorization) section.
 
-### Validation
+The `instances` key has an array with objects, in the most simple form:
+
+    {
+        "base_uri": "https://surf.eduvpn.nl/",
+        "display_name": "SURF",
+        "logo": "https://static.eduvpn.nl/img/surf.png"
+    }
+
+For multi language support, the values of the keys `display_name` and `logo` 
+can contain multiple texts and logos depending on the language:
+
+    {
+        "base_uri": "https://demo.eduvpn.nl/",
+        "display_name": {
+            "en-US": "Radboud University",
+            "nl-NL": "Radboud Universiteit"
+        },
+        "logo": {
+            "en-US": {
+                "integrity": "sha256-gE9FDLCy3lea3SDBKCJKLwLsv7SGLmRVh4ikRuTalq8=",
+                "src": "https://static.eduvpn.nl/img/demo.en.png"
+            },
+            "nl-NL": {
+                "integrity": "sha256-xvr0mvKvOpKu0wS4rv0nP865CYcxt9MgjziI9AlfUPU=",
+                "src": "https://static.eduvpn.nl/img/demo.nl.png"
+            }
+        },
+        "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
+    }
+
+Or, forget about integrity (?):
+
+    {
+        "base_uri": "https://demo.eduvpn.nl/",
+        "display_name": {
+            "en-US": "Radboud University",
+            "nl-NL": "Radboud Universiteit"
+        },
+        "logo": {
+            "en-US": "https://static.eduvpn.nl/img/demo.en.png",
+            "nl-NL": "https://static.eduvpn.nl/img/demo.nl.png"
+        },
+        "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
+    }
+
+Applications MUST check if the value of `display_name` and `logo` is a 
+simple string, or an object. In case of an object, the language best matching
+the application language SHOULD be chosen. If that language is not available, 
+the application SHOULD fallback to `en-US`. If `en-US` is not available, it is
+up to the application to pick one it deems best.
+
+The `base_uri` field can be used to perform the API Discovery of the instances 
+themselves, see below.
+
+The `public_key` field is used by the VPN services for the `distributed` 
+Authorization, this can be ignored by API clients.
+
+## Validation
 
 When downloading the instance discovery file, you also MUST fetch the signature 
 file, which is located in the same folder, but has the `.sig` extension, e.g. 
-`https://static.eduvpn.nl/instances.json.sig`.
+`https://static.eduvpn.nl/disco/production.json.sig`.
 
 Using [libsodium](https://download.libsodium.org/doc/) you can verify the 
 signature using the public key(s) that you hard code in your application. The 
@@ -92,8 +145,8 @@ document for various language bindings.
 
 The flow:
 
-1. Download `instances.json`;
-2. Download `instances.json.sig`;
+1. Download `production.json`;
+2. Download `production.json.sig`;
 3. Verify the signature using libsodium and the public key stored in your 
    application
 4. If you already have a cached version, verify the `seq` field of the new file
@@ -104,7 +157,7 @@ The public key that is currently used is
 `E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is a Base64-encoded 
 [Ed25519](https://en.wikipedia.org/wiki/Curve25519) public key.
 
-## API Discovery
+# API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
 from the instance, based on the `base_uri` from the "Instance Discovery" 
@@ -130,7 +183,7 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
 
 **NOTE**: new implementations MUST use `http://eduvpn.org/api#2`!
 
-## Authorization Request 
+# Authorization Request 
 
 The `authorization_endpoint` is then used to obtain an access token by 
 providing it with the following query parameters, they are all required, 
@@ -152,7 +205,7 @@ MUST be the same as the `state` parameter value of the initial request. The
 response also includes `expires_in` that indicates when the access token 
 will expire.
 
-## Using the API
+# Using the API
 
 Using the `access_token` some additional server information can be obtained, 
 as well as configurations created. The examples below will use cURL to show 
@@ -163,7 +216,7 @@ application's permission. Permission to use the API needs to be requested again
 in that case. The URLs MUST be taken from the `info.json` document described
 above.
 
-### Profile List
+## Profile List
 
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available and some 
@@ -187,7 +240,7 @@ The response looks like this:
         }
     }
 
-### User Info
+## User Info
 
 **API VERSION 2 ONLY**
 
@@ -212,7 +265,7 @@ The response looks like this:
         }
     }
 
-### Create a Configuration
+## Create a Configuration
 
 A call that can be used to get a full working OpenVPN configuration file 
 including certificate and key. This MUST NOT be used by "Native Apps". Instead
@@ -233,7 +286,7 @@ The acceptable values for `profile_id` can be discovered using the
 
 The response will be an OpenVPN configuration file that can be used "as-is".
 
-### Create a Key Pair 
+## Create a Key Pair 
 
 **API VERSION 2 ONLY**
 
@@ -263,7 +316,7 @@ through the `/profile_config` call.
 so if an instance has e.g. the profiles `internet` and `office`, only one 
 certificate is required!
 
-### Profile Config
+## Profile Config
 
 **API VERSION 2 ONLY**
 
@@ -275,7 +328,7 @@ Only get the profile configuration without certificate and private key.
 The response will be an OpenVPN configuration file without the `<cert>` and 
 `<key>` fields.
 
-### System Messages
+## System Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://demo.eduvpn.nl/portal/api.php/system_messages
@@ -315,7 +368,7 @@ The messages of type `maintenance` will be available through the API until they
 are no longer relevant. Messages of type `notification` will be always 
 available through the API until an administrator (manually) removes it.
 
-### User Messages
+## User Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://demo.eduvpn.nl/portal/api.php/user_messages
@@ -344,7 +397,7 @@ An example:
 
 Same considerations apply as for the `system_messages` call.
 
-## Flow
+# Flow
 
 See [Application Flow](app/APP_FLOW.md).
 
@@ -456,5 +509,5 @@ with mitigations described in the following documents:
 In particular, the use of PKCE is enforced, and the `response_type` MUST be 
 `code` for the authorization request.
 
-In version 2, the `instances.json` is also signed, so the signature MUST be 
-validated by the consuming client.
+In version 2, we have a new discovery file format, and the file is also 
+signed. The signature MUST be validated by the consuming client.
