@@ -91,14 +91,11 @@ a2ensite ${WEB_FQDN}
 
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php/7.0/mods-available/eduvpn-timezone.ini
-ln -s /etc/php/7.0/mods-available/eduvpn-timezone.ini /etc/php/7.0/fpm/conf.d/70-timezone.ini
-ln -s /etc/php/7.0/mods-available/eduvpn-timezone.ini /etc/php/7.0/cli/conf.d/70-timezone.ini
-
+phpenmod -v 7.0 -s ALL eduvpn-timezone
 
 # session hardening
 cp resources/75-session.debian.ini /etc/php/7.0/mods-available/eduvpn-session.ini
-ln -s /etc/php/7.0/mods-available/eduvpn-session.ini /etc/php/7.0/fpm/conf.d/75-session.ini
-ln -s /etc/php/7.0/mods-available/eduvpn-session.ini /etc/php/7.0/cli/conf.d/75-session.ini
+phpenmod -v 7.0 -s ALL eduvpn-session
 
 # reload php-fpm service to read the new configuration
 systemctl reload php7.0-fpm
