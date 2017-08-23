@@ -88,8 +88,8 @@ can contain multiple texts and logos depending on the language:
     {
         "base_uri": "https://demo.eduvpn.nl/",
         "display_name": {
-            "en-US": "Radboud University",
-            "nl-NL": "Radboud Universiteit"
+            "en-US": "Demo VPN Provider",
+            "nl-NL": "Demo VPN-aanbieder"
         },
         "logo": {
             "en-US": {
@@ -109,8 +109,8 @@ Or, forget about integrity (?):
     {
         "base_uri": "https://demo.eduvpn.nl/",
         "display_name": {
-            "en-US": "Radboud University",
-            "nl-NL": "Radboud Universiteit"
+            "en-US": "Demo VPN Provider",
+            "nl-NL": "Demo VPN-aanbieder"
         },
         "logo": {
             "en-US": "https://static.eduvpn.nl/img/demo.en.png",
