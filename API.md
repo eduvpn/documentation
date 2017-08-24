@@ -208,6 +208,16 @@ The response looks like this:
         }
     }
 
+The `display_name` can be multi language as well, e.g.:
+
+    "display_name": {
+        "nl-NL": "Internettoegang",
+        "en-US": "Internet Access"
+    }
+
+The same rules for detecting multi language apply as in 
+[Instance Discovery](#instance-discovery) apply here.
+
 ## User Info
 
 **API VERSION 2 ONLY**
@@ -335,6 +345,9 @@ An example:
 The messages of type `maintenance` will be available through the API until they 
 are no longer relevant. Messages of type `notification` will be always 
 available through the API until an administrator (manually) removes it.
+
+The same rules for detecting multi language (for `message`) apply as in 
+[Instance Discovery](#instance-discovery) apply here.
 
 ## User Messages
 
