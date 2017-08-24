@@ -58,7 +58,7 @@ The base JSON document looks like this:
     }
 
 The `authorization_type` is described in the [Authorization](#authorization) 
-section.
+section. 
 
 The `instances` key has an array with objects, in the most simple form:
 
@@ -117,7 +117,10 @@ The flow:
 4. If you already have a cached version, verify the `seq` field of the new file
    is higher than the `seq` in the cached copy (see Caching section);
 5. Overwrite the cached version if appropriate.
- 
+
+The `signed_at` key is just informative and cannot be relied on to be 
+available.
+
 The public key that is currently used is 
 `E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is a Base64-encoded 
 [Ed25519](https://en.wikipedia.org/wiki/Curve25519) public key.

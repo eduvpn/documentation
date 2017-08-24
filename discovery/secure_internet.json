@@ -1,23 +1,25 @@
 {
     "authorization_type": "distributed",
-    "description": "Connect to the Internet securely, for example when using insecure WiFi",
-    "display_name": "Secure Internet",
     "instances": [
         {
             "base_uri": "https://nl.eduvpn.org/",
-            "display_name": "The Netherlands",
-            "logo_uri": "https://static.eduvpn.nl/img/nl.png",
+            "display_name": {
+                "en-US": "The Netherlands",
+                "nl-NL": "Nederland"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/nl.png",
             "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
         },
         {
             "base_uri": "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
-            "display_name": "Australia",
-            "logo_uri": "https://static.eduvpn.nl/img/au.png",
+            "display_name": {
+                "en-US": "Australia",
+                "nl-NL": "Australi\u00eb"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/au.png",
             "public_key": "vyB0kwxsYK1xU14SepLj7WSzcUO5Y2g8ARtBKVRLLDU="
         }
     ],
-    "logo_uri": "https://static.eduvpn.nl/disco/img/secure_internet.png",
-    "seq": 22,
-    "signed_at": "2017-08-21 13:27:19",
-    "version": 1
+    "seq": 23,
+    "signed_at": "2017-08-24 10:55:08"
 }
