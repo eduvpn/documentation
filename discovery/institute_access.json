@@ -22,8 +22,8 @@
         {
             "base_uri": "https://ut.eduvpn.nl/",
             "display_name": {
-                "nl-NL": "Universiteit Twente",
-                "en-US": "University of Twente"
+                "en-US": "University of Twente",
+                "nl-NL": "Universiteit Twente"
             },
             "logo_uri": "https://static.eduvpn.nl/disco/img/utwente.png"
         },
@@ -33,6 +33,6 @@
             "logo_uri": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 37,
-    "signed_at": "2017-08-24 10:55:08"
+    "seq": 38,
+    "signed_at": "2017-08-24 11:10:08"
 }
