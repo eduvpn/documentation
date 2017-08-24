@@ -63,9 +63,9 @@ section.
 The `instances` key has an array with objects, in the most simple form:
 
     {
-        "base_uri": "https://surf.eduvpn.nl/",
-        "display_name": "SURF",
-        "logo": "https://static.eduvpn.nl/img/surf.png"
+        "base_uri": "https://demo.eduvpn.nl/",
+        "display_name": "Demo VPN Provider",
+        "logo": "https://static.eduvpn.nl/disco/img/demo.png"
     }
 
 For multi language support, the values of the keys `display_name` and `logo` 
@@ -78,8 +78,8 @@ can contain multiple texts and logos depending on the language:
             "nl-NL": "Demo VPN-aanbieder"
         },
         "logo": {
-            "en-US": "https://static.eduvpn.nl/img/demo.en.png",
-            "nl-NL": "https://static.eduvpn.nl/img/demo.nl.png"
+            "en-US": "https://static.eduvpn.nl/disco/img/demo.en.png",
+            "nl-NL": "https://static.eduvpn.nl/disco/img/demo.nl.png"
         },
         "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
     }
