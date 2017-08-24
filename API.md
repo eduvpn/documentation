@@ -78,27 +78,6 @@ can contain multiple texts and logos depending on the language:
             "nl-NL": "Demo VPN-aanbieder"
         },
         "logo": {
-            "en-US": {
-                "integrity": "sha256-gE9FDLCy3lea3SDBKCJKLwLsv7SGLmRVh4ikRuTalq8=",
-                "src": "https://static.eduvpn.nl/img/demo.en.png"
-            },
-            "nl-NL": {
-                "integrity": "sha256-xvr0mvKvOpKu0wS4rv0nP865CYcxt9MgjziI9AlfUPU=",
-                "src": "https://static.eduvpn.nl/img/demo.nl.png"
-            }
-        },
-        "public_key": "Ch84TZEk4k4bvPexrasAvbXjI5YRPmBcK3sZGar71pg="
-    }
-
-Or, forget about integrity (?):
-
-    {
-        "base_uri": "https://demo.eduvpn.nl/",
-        "display_name": {
-            "en-US": "Demo VPN Provider",
-            "nl-NL": "Demo VPN-aanbieder"
-        },
-        "logo": {
             "en-US": "https://static.eduvpn.nl/img/demo.en.png",
             "nl-NL": "https://static.eduvpn.nl/img/demo.nl.png"
         },
