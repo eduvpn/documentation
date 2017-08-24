@@ -41,38 +41,24 @@ user a JSON document can be retrieved. For example eduVPN has those JSON
 documents available at 
 [https://static.eduvpn.nl/disco/](https://static.eduvpn.nl/disco/).
 
-Typically an application will implement only 1 source for retrieving instances,
-but it SHOULD be able to configure multiple sources.
+Typically an application will implement one or two sources for retrieving 
+instances. It SHOULD be possible to add additional sources.
 
 ## Format
 
-The JSON document looks like this:
+The base JSON document looks like this:
 
     {
-        "sources": [
-            {
-                "id": "secure_internet",
-                "authorization_type": "distributed",
-                "instances": [
-                    ...
-                ]
-            },
-            {
-                "id": "institute_access",
-                "authorization_type": "local",
-                "instances": [
-                    ...
-                ]
-            }
-        ],
-        "seq": 123,   
-        "signed_at": "2017-08-21 16:37:48"
+        "id": "secure_internet",
+        "authorization_type": "distributed",
+        "instances": [
+            ...
+        ]
     }
 
-The JSON document has `sources` that contain one or more collections of 
-VPN instances. The `id` key can be used by the application to map it to 
-certain branding and UI text. The `authorization_type` is described in 
-the [Authorization](#authorization) section.
+The `id` key can be used by the application to map it to certain branding and 
+UI texts. The `authorization_type` is described in the 
+[Authorization](#authorization) section.
 
 The `instances` key has an array with objects, in the most simple form:
 
@@ -135,7 +121,7 @@ Authorization, this can be ignored by API clients.
 
 When downloading the instance discovery file, you also MUST fetch the signature 
 file, which is located in the same folder, but has the `.sig` extension, e.g. 
-`https://static.eduvpn.nl/disco/production.json.sig`.
+`https://static.eduvpn.nl/disco/secure_internet.json.sig`.
 
 Using [libsodium](https://download.libsodium.org/doc/) you can verify the 
 signature using the public key(s) that you hard code in your application. The 
@@ -145,8 +131,8 @@ document for various language bindings.
 
 The flow:
 
-1. Download `production.json`;
-2. Download `production.json.sig`;
+1. Download `secure_internet.json`;
+2. Download `secure_internet.json.sig`;
 3. Verify the signature using libsodium and the public key stored in your 
    application
 4. If you already have a cached version, verify the `seq` field of the new file
