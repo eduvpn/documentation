@@ -41,24 +41,24 @@ user a JSON document can be retrieved. For example eduVPN has those JSON
 documents available at 
 [https://static.eduvpn.nl/disco/](https://static.eduvpn.nl/disco/).
 
-Typically an application will implement one or two sources for retrieving 
-instances. It SHOULD be possible to add additional sources.
+Typically an application will use one or two discovery files for retrieving the
+list of instances. It SHOULD be possible to configure additional sources. The 
+URL of the discovery file could be used to map it to certain branding and
+UI texts in the application.
 
 ## Format
 
 The base JSON document looks like this:
 
     {
-        "id": "secure_internet",
         "authorization_type": "distributed",
         "instances": [
             ...
         ]
     }
 
-The `id` key can be used by the application to map it to certain branding and 
-UI texts. The `authorization_type` is described in the 
-[Authorization](#authorization) section.
+The `authorization_type` is described in the [Authorization](#authorization) 
+section.
 
 The `instances` key has an array with objects, in the most simple form:
 
