@@ -424,10 +424,13 @@ There are two types of discovery:
 1. Instance Discovery
 2. API Discovery
 
-Both are JSON files that can be cached. It MUST be possible for the user to 
-trigger a reload, i.e. get new copies of the cached files. This can be
-implemented for example using a button, or at the very least, an application 
-restart.
+Both are JSON files that can be cached. In addition to this, also the instance 
+logos can be cached in the application to speed up displaying the UI. The 
+`If-None-Match` or `If-Modified-Since` HTTP header can be used to retrieve 
+updates.
+
+The user SHOULD be able to clear all cache in the application to force 
+reloading everything.
 
 The Instance Discovery files are also signed using public key cryptography, the
 signature MUST be verified and the value of the `seq` key of the verified file 
