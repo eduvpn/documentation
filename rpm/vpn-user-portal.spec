@@ -6,8 +6,8 @@
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.0.0
-Release:    4%{?dist}
+Version:    1.0.1
+Release:    1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -171,8 +171,8 @@ fi
 %license LICENSE
 
 %changelog
-* Thu Aug 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-4
-- rebuilt
+* Thu Aug 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
 
 * Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
 - update httpd snippet
