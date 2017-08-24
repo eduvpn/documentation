@@ -4,7 +4,7 @@
         {
             "base_uri": "https://esciencecenter.eduvpn.nl/",
             "display_name": "Netherlands eScienceCenter",
-            "logo_uri": "https://static.eduvpn.nl/disco/img/nlesc.png"
+            "logo": "https://static.eduvpn.nl/disco/img/nlesc.png"
         },
         {
             "base_uri": "https://ru.eduvpn.nl/",
@@ -12,12 +12,12 @@
                 "nl-NL": "Radboud Universiteit",
                 "us-US": "Radboud University"
             },
-            "logo_uri": "https://static.eduvpn.nl/disco/img/ru.png"
+            "logo": "https://static.eduvpn.nl/disco/img/ru.png"
         },
         {
             "base_uri": "https://surf.eduvpn.nl/",
             "display_name": "SURF",
-            "logo_uri": "https://static.eduvpn.nl/disco/img/surf.png"
+            "logo": "https://static.eduvpn.nl/disco/img/surf.png"
         },
         {
             "base_uri": "https://ut.eduvpn.nl/",
@@ -25,14 +25,14 @@
                 "en-US": "University of Twente",
                 "nl-NL": "Universiteit Twente"
             },
-            "logo_uri": "https://static.eduvpn.nl/disco/img/utwente.png"
+            "logo": "https://static.eduvpn.nl/disco/img/utwente.png"
         },
         {
             "base_uri": "https://demo.eduvpn.nl/",
             "display_name": "eduVPN Demo",
-            "logo_uri": "https://static.eduvpn.nl/disco/img/demo.png"
+            "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 38,
-    "signed_at": "2017-08-24 11:10:08"
+    "seq": 39,
+    "signed_at": "2017-08-24 11:27:38"
 }
