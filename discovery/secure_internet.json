@@ -18,8 +18,17 @@
             },
             "logo": "https://static.eduvpn.nl/disco/img/au.png",
             "public_key": "vyB0kwxsYK1xU14SepLj7WSzcUO5Y2g8ARtBKVRLLDU="
+        },
+        {
+            "base_uri": "https://uninett.eduvpn.no/",
+            "display_name": {
+                "en-US": "Norway",
+                "nl-NL": "Noorwegen"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/no.png",
+            "public_key": "JqBWmhaZDPuuIBo/1PT0s8EY0QpD0luV58i2jw3mx4E="
         }
     ],
-    "seq": 24,
-    "signed_at": "2017-08-24 11:10:08"
+    "seq": 25,
+    "signed_at": "2017-08-28 11:38:46"
 }
