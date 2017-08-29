@@ -42,7 +42,7 @@ EXTERNAL_IF=eth0
 
 if ! /usr/sbin/selinuxenabled
 then
-    echo "Please enable SELinux before running this script!"
+    echo "Please **ENABLE** SELinux before running this script!"
     exit 1
 fi
 

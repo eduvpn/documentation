@@ -42,7 +42,7 @@ EXTERNAL_IF=eth0
 
 if ! /usr/sbin/selinuxenabled
 then
-    echo "Please enable SELinux before running this script!"
+    echo "Please **ENABLE** SELinux before running this script!"
     exit 1
 fi
 
@@ -55,6 +55,12 @@ PACKAGE_MANAGER=/usr/bin/yum
 # disable firewalld, does not support NAT66 and too complicated
 systemctl disable --now firewalld
 
+# RHEL 7
+# subscription-manager repos --enable=rhel-7-server-optional-rpms
+# subscription-manager repos --enable=rhel-7-server-extras-rpms
+# ${PACKAGE_MANAGER} -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+# CentOS 7
 # enable EPEL
 ${PACKAGE_MANAGER} -y install epel-release
 
