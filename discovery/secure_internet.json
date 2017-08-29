@@ -5,6 +5,7 @@
             "base_uri": "https://nl.eduvpn.org/",
             "display_name": {
                 "en-US": "The Netherlands",
+                "nb-NO": "Nederland",
                 "nl-NL": "Nederland"
             },
             "logo": "https://static.eduvpn.nl/disco/img/nl.png",
@@ -14,6 +15,7 @@
             "base_uri": "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
             "display_name": {
                 "en-US": "Australia",
+                "nb-NO": "Australia",
                 "nl-NL": "Australi\u00eb"
             },
             "logo": "https://static.eduvpn.nl/disco/img/au.png",
@@ -23,12 +25,13 @@
             "base_uri": "https://uninett.eduvpn.no/",
             "display_name": {
                 "en-US": "Norway",
+                "nb-NO": "Norge",
                 "nl-NL": "Noorwegen"
             },
             "logo": "https://static.eduvpn.nl/disco/img/no.png",
             "public_key": "JqBWmhaZDPuuIBo/1PT0s8EY0QpD0luV58i2jw3mx4E="
         }
     ],
-    "seq": 25,
-    "signed_at": "2017-08-28 11:38:46"
+    "seq": 27,
+    "signed_at": "2017-08-29 13:24:04"
 }
