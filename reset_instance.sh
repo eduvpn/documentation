@@ -2,6 +2,10 @@
 
 # you can use this script to "reset" a VPN instance, i.e. remove all data and 
 # reinitialize it to the state after fresh install using deploy.sh
+#
+# NOTE: *ALL* VPN configuration will stop working, all users need to obtain
+# a new configuration! All OAuth access tokens will become invalid!
+#
 
 INSTANCE=default
 
