@@ -15,11 +15,11 @@
 # VARIABLES
 WEB_FQDN=vpn.example
 
-# we use a separate hostname for the VPN connections to allow for moving the
-# VPN processes to another machine in the future when client configurations are
-# already distributed
-VPN_FQDN=internet.${WEB_FQDN}
-#VPN_FQDN=${WEB_FQDN}
+# we can use a separate hostname for the VPN connections to allow for moving 
+# the VPN processes to another machine in the future when client configurations 
+# are already distributed
+VPN_FQDN=${WEB_FQDN}
+#VPN_FQDN=internet.${WEB_FQDN}
 
 # Let's Encrypt
 # TOS: https://letsencrypt.org/repository/
@@ -52,8 +52,8 @@ PACKAGE_MANAGER=/usr/bin/yum
 # SOFTWARE
 ###############################################################################
 
-# remove firewalld if it is installed, not able to do NAT66
-${PACKAGE_MANAGER} -y remove firewalld
+# disable firewalld, does not support NAT66 and too complicated
+systemctl disable --now firewalld
 
 # enable EPEL
 ${PACKAGE_MANAGER} -y install epel-release

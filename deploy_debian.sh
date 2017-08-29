@@ -15,11 +15,11 @@
 # VARIABLES
 WEB_FQDN=vpn.example
 
-# we use a separate hostname for the VPN connections to allow for moving the
-# VPN processes to another machine in the future when client configurations are
-# already distributed
-VPN_FQDN=internet.${WEB_FQDN}
-#VPN_FQDN=${WEB_FQDN}
+# we can use a separate hostname for the VPN connections to allow for moving 
+# the VPN processes to another machine in the future when client configurations 
+# are already distributed
+VPN_FQDN=${WEB_FQDN}
+#VPN_FQDN=internet.${WEB_FQDN}
 
 # Let's Encrypt
 # TOS: https://letsencrypt.org/repository/
