@@ -66,6 +66,11 @@ CentOS [Minimal ISO](https://centos.org/download/) and the official
 **NOTE**: make sure SELinux is **enabled** and the filesystem correctly 
 (re)labeled! Look [here](https://wiki.centos.org/HowTos/SELinux).
 
+Make sure the firewall running on your network equipment or VM platform allows 
+access to the very least `tcp/80`, `tcp/443`, `udp/1194` and `tcp/1194`.
+
+On the host where you want to deploy:
+
     $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
     $ tar -xzf master.tar.gz
     $ cd documentation-master
