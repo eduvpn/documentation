@@ -19,9 +19,10 @@ This document will describe the tools I use, why I use them, why I do not use
 some popular tools and how I achieve (hopefully) high quality code without 
 relying exclusively on proprietary tools and "cloud" services.
 
-We will walk through development by creating a library (yubitwee) and web 
-application (yubi-check) to demonstrate the development practices from 
-development to deployment.
+We will walk through development by creating a library, 
+[yubitwee](https://github.com/fkooman/php-yubitwee), and web application, 
+[yubi-check](https://github.com/fkooman/yubi-check), to demonstrate the 
+development practices from development to deployment.
 
 # Principles
 
@@ -182,6 +183,18 @@ Log out and in again to activate the new path. Now you should be able to use
 
 # Development
 
+As mentioned above, we'll create two projects: 
+
+* [yubitwee](https://github.com/fkooman/php-yubitwee) - YubiKey OTP Validator 
+  library
+* [yubi-check](https://github.com/fkooman/yubi-check) - YubiKey OTP Validator 
+  web application
+
+## Library
+
+
+## Web Application
+
     $ mkdir -p $HOME/Projects/yubi-check
     $ cd ${HOME}/Projects/yubi-check
     $ mkdir src web tests
@@ -276,17 +289,17 @@ Run the source formatting:
 
     $ php-cs-fixer fix . --rules=@Symfony
 
-There are many more style, but this is a safe start. I also use some additional
-rules, they are all described in the PHP-CS-Fixer README:
+There are many more rules to fix things, but this is a safe start. The extra 
+rules I use at the moment:
 
 * `ordered_imports`;
 * `array_syntax`;
 * `ordered_class_elements`.
 
-It's also possible to create a configuration file and add it to your 
-repository, see the documentation.
+They are all described in the PHP-CS-Fixer documentation, as is a way to create
+a configuration file that you can store in your repository.
 
-## Dependencies
+## Finding Dependencies
 
 In order to make sure you target the right version of PHP, and found all 
 dependencies on PHP extensions you use in your code, it is important
