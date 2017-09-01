@@ -1,49 +1,35 @@
-%global composer_vendor         fkooman
-%global composer_project        secookie
-%global composer_namespace      %{composer_vendor}/SeCookie
-
-%global github_owner            fkooman
-%global github_name             php-secookie
-
 %global commit0 9f63939f14ed1206a0b011d4735d4ed75163f660
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
-Name:       php-%{composer_vendor}-%{composer_project}
-Version:    1.0.2
-Release:    1%{?dist}
-Summary:    Very simple Cookie and PHP Session library
+Name:           php-fkooman-secookie
+Version:        1.0.2
+Release:        2%{?dist}
+Summary:        Secure Cookie and Session library for PHP
 
-Group:      System Environment/Libraries
-License:    MIT
+License:        MIT
+URL:            https://github.com/fkooman/php-secookie
+Source0:        https://github.com/fkooman/php-secookie/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+BuildArch:      noarch
 
-BuildArch:  noarch
-
-#        "php": ">=5.4.0",
 BuildRequires:  php(language) >= 5.4.0
-#        "ext-date": "*",
-#        "ext-session": "*",
 BuildRequires:  php-date
 BuildRequires:  php-session
-BuildRequires:  php-standard
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  %{_bindir}/phpunit
 
-Requires:   php(language) >= 5.4.0
-Requires:   php-date
-Requires:   php-session
-Requires:   php-standard
-Requires:   php-composer(fedora/autoloader)
+Requires:       php(language) >= 5.4.0
+Requires:       php-date
+Requires:       php-session
+Requires:       php-composer(fedora/autoloader)
 
-Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
+Provides:       php-composer(fkooman/secookie) = %{version}
 
 %description
-Very simple Cookie and PHP Session library.
+Secure Cookie and Session library for PHP.
 
 %prep
-%setup -n %{github_name}-%{commit0}
+%autosetup -n php-secookie-%{commit0}
 
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
@@ -54,30 +40,32 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
+mkdir -p %{buildroot}%{_datadir}/php/fkooman/SeCookie
+cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SeCookie
 
 %check
-mkdir vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat <<'AUTOLOAD' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
+\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SeCookie\\Tests\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php',
+    '%{buildroot}/%{_datadir}/php/fkooman/SeCookie/autoload.php',
 ));
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SeCookie\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
+AUTOLOAD
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+
 %files
-%dir %{_datadir}/php/fkooman
-%dir %{_datadir}/php/fkooman/SeCookie
-%{_datadir}/php/%{composer_namespace}
-%doc README.md CHANGES.md composer.json
 %license LICENSE
+%doc README.md composer.json CHANGES.md
+%dir %{_datadir}/php/fkooman
+%{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Fri Sep 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.2-2
+- rework spec, to align it with practices document
+
 * Tue Aug 08 2017 François Kooman <fkooman@tuxed.net> - 1.0.2-1
 - update to 1.0.2
 
