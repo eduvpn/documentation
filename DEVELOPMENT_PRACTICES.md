@@ -20,8 +20,8 @@ some popular tools and how I achieve (hopefully) high quality code without
 relying exclusively on proprietary tools and "cloud" services.
 
 We will walk through development by creating a library, 
-[yubitwee](https://github.com/fkooman/php-yubitwee), and web application, 
-[yubi-check](https://github.com/fkooman/yubi-check), to demonstrate the 
+[yubitwee](https://github.com/fkooman/php-yubitwee), and a web application, 
+[yubicheck](https://github.com/fkooman/yubicheck), to demonstrate the 
 development practices from development to deployment.
 
 # Principles
@@ -169,8 +169,8 @@ machine:
         php-phpmd-PHP-PMD php-bartlett-PHP-CompatInfo php-phpunit-PHPUnit \
         php-pecl-xdebug yum-utils nosync
 
-As PHPStan does not yet have a package for Fedora, we install it "globally" for
-the current user:
+As PHPStan does not (yet) have a package for Fedora, we install it "globally" 
+for the current user:
 
     $ composer global require phpstan/phpstan
 
@@ -187,16 +187,22 @@ As mentioned above, we'll create two projects:
 
 * [yubitwee](https://github.com/fkooman/php-yubitwee) - YubiKey OTP Validator 
   library
-* [yubi-check](https://github.com/fkooman/yubi-check) - YubiKey OTP Validator 
+* [yubicheck](https://github.com/fkooman/yubicheck) - YubiKey OTP Validator 
   web application
+
+We choose these two because they show the two different kinds of packages we 
+will create. They differ somewhat, so it makes sense to address both types.
 
 ## Library
 
+The library was already developed before writing this document, so we will not
+get into details here, but focus on the packaging here. You can see the link
+above to see the source code and the folder structure.
 
 ## Web Application
 
-    $ mkdir -p $HOME/Projects/yubi-check
-    $ cd ${HOME}/Projects/yubi-check
+    $ mkdir -p $HOME/Projects/yubicheck
+    $ cd ${HOME}/Projects/yubicheck
     $ mkdir src web tests
     $ composer init
 
@@ -204,7 +210,7 @@ Regarding dependencies, you need to use `fkooman/yubitwee` as a `require`
 dependency, and `phpunit/phpunit` as a `require-dev`:
 
     $ composer init
-    Package name (<vendor>/<name>) [fkooman/yubi-check]: 
+    Package name (<vendor>/<name>) [fkooman/yubicheck]: 
     Description []: A simple YubiKey OTP checker for the Web
     Author [François Kooman <fkooman@tuxed.net>, n to skip]: 
     Minimum Stability []: 
@@ -223,7 +229,7 @@ dependency, and `phpunit/phpunit` as a `require-dev`:
     Search for a package: 
 
     {
-        "name": "fkooman/yubi-check",
+        "name": "fkooman/yubicheck",
         "description": "A simple YubiKey OTP checker for the Web",
         "type": "project",
         "require": {
@@ -377,7 +383,7 @@ will also package to show the complete flow.
 
 We need to create two packages, one for 
 [fkooman/yubitwee](https://github.com/fkooman/php-yubitwee) and one for 
-[yubi-check](https://github.com/fkooman/yubi-check).
+[yubicheck](https://github.com/fkooman/yubicheck).
 
 To create a "template" `spec` file, the file that describes how to create the
 package do the following:
@@ -406,8 +412,8 @@ The `php-fkooman-yubitwee.spec` file you end up with:
 
     Name:           php-fkooman-yubitwee
     Version:        1.0.1
-    Release:        1%{?dist}
-    Summary:        YubiKey Validator
+    Release:        2%{?dist}
+    Summary:        YubiKey OTP Validator library
 
     License:        MIT
     URL:            https://github.com/fkooman/php-yubitwee
@@ -424,7 +430,7 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     BuildRequires:  php-spl
     BuildRequires:  php-composer(fedora/autoloader)
     BuildRequires:  php-composer(paragonie/constant_time_encoding)
-    BuildRequires:  /usr/bin/phpunit
+    BuildRequires:  %{_bindir}/phpunit
 
     Requires:       php(language) >= 5.4.0
     Requires:       php-curl
@@ -470,7 +476,7 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     ));
     AUTOLOAD
 
-    /usr/bin/phpunit tests --verbose --bootstrap=tests/autoload.php
+    %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
     %files
     %license LICENSE
@@ -479,31 +485,38 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     %{_datadir}/php/fkooman/YubiTwee
 
     %changelog
-    * Sat Aug 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
+    * Wed Aug 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-2
+    - rework spec, to align it with practices document
+
+    * Thu Jun 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+    - update to 1.0.1
+    - license changed to MIT
+
+    * Tue Apr 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
     - initial package
 
 ### Web Application
 
-The `yubi-check.spec` file you end up with:
+The `yubicheck.spec` file you end up with:
 
     %global commit0 4f4e20aef8b7adc3ef36d0518ff0e69a25246f7a
     %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
-    Name:           yubi-check
+    Name:           yubicheck
     Version:        1.0.0
     Release:        1%{?dist}
     Summary:        Simple YubiKey OTP checker for the Web
 
     License:        MIT
-    URL:            https://github.com/fkooman/yubi-check
-    Source0:        https://github.com/fkooman/yubi-check/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+    URL:            https://github.com/fkooman/yubicheck
+    Source0:        https://github.com/fkooman/yubicheck/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
     BuildArch:      noarch
 
     BuildRequires:  php(language) >= 5.4.0
     BuildRequires:  php-composer(fedora/autoloader)
     BuildRequires:  php-composer(fkooman/yubitwee)
-    BuildRequires:  /usr/bin/phpunit
+    BuildRequires:  %{_bindir}/phpunit
 
     Requires:       php(language) >= 5.4.0
     Requires:       php-composer(fedora/autoloader)
@@ -534,19 +547,19 @@ The `yubi-check.spec` file you end up with:
     AUTOLOAD
 
     %install
-    mkdir -p %{buildroot}%{_datadir}/yubi-check
+    mkdir -p %{buildroot}%{_datadir}/yubicheck
     mkdir -p %{buildroot}%{_sysconfdir}/httpd/conf.d
-    cp -pr src web %{buildroot}%{_datadir}/yubi-check
+    cp -pr src web %{buildroot}%{_datadir}/yubicheck
 
     cat <<'HTTPD' | tee %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-    Alias /yubi-check /usr/share/yubi-check/web
+    Alias /yubicheck /usr/share/yubicheck/web
 
-    <Directory /usr/share/yubi-check/web>
+    <Directory /usr/share/yubicheck/web>
         #Require all granted
         Require local
 
         RewriteEngine on
-        RewriteBase /yubi-check
+        RewriteBase /yubicheck
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteRule ^ index.php [L,QSA]
@@ -560,16 +573,16 @@ The `yubi-check.spec` file you end up with:
 
     \Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiCheck\\Tests\\', __DIR__);
     \Fedora\Autoloader\Dependencies::required(array(
-        '%{buildroot}/%{_datadir}/yubi-check/src/autoload.php',
+        '%{buildroot}/%{_datadir}/yubicheck/src/autoload.php',
     ));
     AUTOLOAD
 
-    /usr/bin/phpunit tests --verbose --bootstrap=tests/autoload.php
+    %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
     %files
     %license LICENSE
     %doc composer.json CHANGES.md README.md
-    %{_datadir}/yubi-check
+    %{_datadir}/yubicheck
     %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 
     %changelog
@@ -580,15 +593,15 @@ The `yubi-check.spec` file you end up with:
     
 The next command will fetch the source code:
 
-    $ spectool -g -R yubi-check.spec
+    $ spectool -g -R yubicheck.spec
 
 Building the source RPM:
 
-    $ rpmbuild -bs yubi-check.spec
+    $ rpmbuild -bs yubicheck.spec
 
 Building the binary RPM:
 
-    $ rpmbuild -bb yubi-check.spec
+    $ rpmbuild -bb yubicheck.spec
 
 ### Checking Packages
 
@@ -596,9 +609,9 @@ The `rpmlint` tool can be used to verify the spec-file, the source RPM and the
 package RPM:
 
     $ rpmlint \
-        ${HOME}/rpmbuild/SPECS/yubi-check.spec \
-        ${HOME}/rpmbuild/SRPMS/yubi-check-1.0.0-1.fc26.src.rpm \
-        ${HOME}/rpmbuild/RPMS/noarch/yubi-check-1.0.0-1.fc26.noarch.rpm
+        ${HOME}/rpmbuild/SPECS/yubicheck.spec \
+        ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm \
+        ${HOME}/rpmbuild/RPMS/noarch/yubicheck-1.0.0-1.fc26.noarch.rpm
 
 ### Mock
 
@@ -616,12 +629,12 @@ To enable "Nosync" to speed up builds a great deal:
 To use Mock, you first need to generate the source RPM, as shown above and 
 then call Mock:
 
-    $ mock ${HOME}/rpmbuild/SRPMS/yubi-check-1.0.0-1.fc26.src.rpm
+    $ mock ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
 To build for CentOS/Red Hat 7, we need to pass the `--yum` flag here 
 additionally, it also needs the `yum-utils` package installed:
 
-    $ mock -r epel-7-x86_64 --yum ${HOME}/rpmbuild/SRPMS/yubi-check-1.0.0-1.fc26.src.rpm
+    $ mock -r epel-7-x86_64 --yum ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
 This will build the RPMs from scratch, and will also run the unit tests. Now 
 you have a package for both CentOS and Fedora.
@@ -632,11 +645,11 @@ If you have multiple packages, and they depend on each other, you need to use
 `mockchain` to make this work. Specify the source RPMs in the build order, so 
 first the dependencies and then the packages depending on them!
 
-    $ mockchain -r fedora-26-x86_64 /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubi-check-1.0.0-1.fc26.src.rpm
+    $ mockchain -r fedora-26-x86_64 /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
 For CentOS, `-m --yum` is needed here:
 
-    $ mockchain -r epel-7-x86_64 -m --yum /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubi-check-1.0.0-1.fc26.src.rpm
+    $ mockchain -r epel-7-x86_64 -m --yum /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
 ## Deployment
 
