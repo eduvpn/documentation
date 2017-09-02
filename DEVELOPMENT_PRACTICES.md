@@ -141,6 +141,7 @@ use for development:
 - [PHPStan](https://github.com/phpstan/phpstan), for static code analysis;
 - [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer), for source code 
   formatting;
+- [Psalm](https://getpsalm.org/), static analysis tool for PHP;
 - [PHPMD](https://phpmd.org/) to view the mess I made;
 - [PHP_CompatInfo](http://php5.laurent-laville.org/compatinfo/), to determine 
   PHP version requirements and PHP extensions used by the code;
@@ -169,17 +170,18 @@ machine:
         php-phpmd-PHP-PMD php-bartlett-PHP-CompatInfo php-phpunit-PHPUnit \
         php-pecl-xdebug yum-utils nosync
 
-As PHPStan does not (yet) have a package for Fedora, we install it "globally" 
-for the current user:
+As PHPStan and Psalm do not (yet) have a package for Fedora, we install it 
+"globally" for the current user:
 
     $ composer global require phpstan/phpstan
+    $ composer global require vimeo/psalm
 
 Add the following to `$HOME/.bash_profile` just before the `export PATH`: 
 
     PATH=$PATH:$HOME/.config/composer/vendor/bin
 
 Log out and in again to activate the new path. Now you should be able to use
-`phpstan` directly from the terminal.
+`phpstan` and `psalm` directly from the terminal.
 
 # Development
 
@@ -282,6 +284,14 @@ PHPMD:
 PHPStan:
 
     $ phpstan analyse -l 7 src web tests
+
+Psalm:
+
+    $ psalm --init
+    $ psalm
+
+A useful option is `--update-docblocks` to automatically at return types to 
+"docblocks", especially useful for adding `@return void`.
 
 ## Source Formatting
 
