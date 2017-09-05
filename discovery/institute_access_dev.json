@@ -2,11 +2,6 @@
     "authorization_type": "local",
     "instances": [
         {
-            "base_uri": "https://labrat.eduvpn.nl/",
-            "display_name": "eduVPN (labrat.eduvpn.nl)",
-            "logo": "https://static.eduvpn.nl/disco/img/surf.png"
-        },
-        {
             "base_uri": "https://kluitje.eduvpn.nl/",
             "display_name": "eduVPN (kluitje.eduvpn.nl)",
             "logo": "https://static.eduvpn.nl/disco/img/surf.png"
@@ -17,6 +12,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/surf.png"
         }
     ],
-    "seq": 9,
-    "signed_at": "2017-08-24 11:10:08"
+    "seq": 10,
+    "signed_at": "2017-09-05 08:56:29"
 }
