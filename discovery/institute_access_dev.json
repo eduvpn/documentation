@@ -5,13 +5,8 @@
             "base_uri": "https://kluitje.eduvpn.nl/",
             "display_name": "eduVPN (kluitje.eduvpn.nl)",
             "logo": "https://static.eduvpn.nl/disco/img/surf.png"
-        },
-        {
-            "base_uri": "https://vpn.tuxed.net/",
-            "display_name": "eduVPN (vpn.tuxed.net)",
-            "logo": "https://static.eduvpn.nl/disco/img/surf.png"
         }
     ],
-    "seq": 10,
-    "signed_at": "2017-09-05 08:56:29"
+    "seq": 12,
+    "signed_at": "2017-09-05 09:13:37"
 }

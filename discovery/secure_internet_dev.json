@@ -15,8 +15,14 @@
             "display_name": "FrKo (f26.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/nl.png",
             "public_key": "GHYBKNLweQHI5gnePV/osdeji8mAmRXh7PfilldmRA0="
+        },
+        {
+            "base_uri": "https://vpn.tuxed.net/",
+            "display_name": "eduVPN (vpn.tuxed.net)",
+            "logo": "https://static.eduvpn.nl/disco/img/surf.png",
+            "public_key": "Oh7NJRCaK32gKHYE0Xc8jZk4I5z3Y1aMauNhkUZlQmo="
         }
     ],
-    "seq": 31,
-    "signed_at": "2017-09-05 08:56:34"
+    "seq": 33,
+    "signed_at": "2017-09-05 09:13:37"
 }
