@@ -509,11 +509,11 @@ The `php-fkooman-yubitwee.spec` file you end up with:
 
 The `yubicheck.spec` file you end up with:
 
-    %global commit0 4f4e20aef8b7adc3ef36d0518ff0e69a25246f7a
+    %global commit0 b5362b4fb627b274bc98a8140f99685a58a54c0f
     %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
     Name:           yubicheck
-    Version:        1.0.0
+    Version:        1.0.1
     Release:        1%{?dist}
     Summary:        Simple YubiKey OTP checker for the Web
 
@@ -565,8 +565,8 @@ The `yubicheck.spec` file you end up with:
     Alias /yubicheck /usr/share/yubicheck/web
 
     <Directory /usr/share/yubicheck/web>
-        #Require all granted
-        Require local
+        Require all granted
+        #Require local
 
         RewriteEngine on
         RewriteBase /yubicheck
@@ -596,8 +596,13 @@ The `yubicheck.spec` file you end up with:
     %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 
     %changelog
+    * Thu Sep 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+    - update to 1.0.1
+    - allow access to all by default instead of just local
+
     * Sat Aug 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
     - initial package
+
 
 ### Building
     
@@ -620,34 +625,35 @@ package RPM:
 
     $ rpmlint \
         ${HOME}/rpmbuild/SPECS/yubicheck.spec \
-        ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm \
-        ${HOME}/rpmbuild/RPMS/noarch/yubicheck-1.0.0-1.fc26.noarch.rpm
+        ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.1-1.fc26.src.rpm \
+        ${HOME}/rpmbuild/RPMS/noarch/yubicheck-1.0.1-1.fc26.noarch.rpm
 
 ### Mock
 
 XXX add user to group mock
+XXX cant build yubicheck without having yubitwee!
 
 In order to make sure the package also builds on a clean installation, e.g. 
 all required dependencies are installed it is important to build the package,
 *and* run the tests on a clean system. The tool to use for that is
 [Mock](https://github.com/rpm-software-management/mock/wiki).
 
-To enable "Nosync" to speed up builds a great deal:
+To enable "nosync" to speed up builds a great deal:
 
     $ echo "config_opts['nosync'] = True" >> ${HOME}/.config/mock.cfg
 
 To use Mock, you first need to generate the source RPM, as shown above and 
 then call Mock:
 
-    $ mock ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
+    $ mock ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.1-1.fc26.src.rpm
 
-To build for CentOS/Red Hat 7, we need to pass the `--yum` flag here 
-additionally, it also needs the `yum-utils` package installed:
+To build for CentOS/Red Hat 7, we need to pass the `--yum` flag here:
 
     $ mock -r epel-7-x86_64 --yum ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
 This will build the RPMs from scratch, and will also run the unit tests. Now 
-you have a package for both CentOS and Fedora.
+you have a package for both CentOS and Fedora where the unit tests were 
+actually ran on the platform you will deploy on!
 
 ### Mockchain
 
@@ -655,7 +661,7 @@ If you have multiple packages, and they depend on each other, you need to use
 `mockchain` to make this work. Specify the source RPMs in the build order, so 
 first the dependencies and then the packages depending on them!
 
-    $ mockchain -r fedora-26-x86_64 /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
+    $ mockchain -r fedora-26-x86_64 ${HOME}/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.1-1.fc26.src.rpm
 
 For CentOS, `-m --yum` is needed here:
 
@@ -689,8 +695,9 @@ Make everything start on boot:
 
 ### Installation
 
-You can copy the created RPM file now to the server and install it. Restart 
-Apache again and you should be good to go!
+You can copy the created RPM file now to the server and install it using 
+`dnf install` or on CentOS `yum install`. Restart Apache again and you should 
+be good to go!
 
 ## Resources
 
