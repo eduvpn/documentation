@@ -142,6 +142,8 @@ use for development:
 - [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer), for source code 
   formatting;
 - [Psalm](https://getpsalm.org/), static analysis tool for PHP;
+- [Phan](https://github.com/phan/phan), another static analysis tool for PHP, 
+  I initially used it, but switched to Psalm and PHPStan;
 - [PHPMD](https://phpmd.org/) to view the mess I made;
 - [PHP_CompatInfo](http://php5.laurent-laville.org/compatinfo/), to determine 
   PHP version requirements and PHP extensions used by the code;
