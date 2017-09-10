@@ -1,9 +1,9 @@
-%global commit0 9f63939f14ed1206a0b011d4735d4ed75163f660
+%global commit0 ece8801d9987f4b58889e001a63929b0c6546cf1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-secookie
-Version:        1.0.2
-Release:        2%{?dist}
+Version:        2.0.0
+Release:        1%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -63,6 +63,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Sun Sep 10 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-1
+- update to 2.0.0
+
 * Fri Sep 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.2-2
 - rework spec, to align it with practices document
 
