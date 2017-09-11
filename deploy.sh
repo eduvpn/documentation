@@ -74,7 +74,7 @@ curl -L -o /etc/yum.repos.d/eduVPN.repo \
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \
-    iptables-services php-fpm php-cli policycoreutils-python
+    iptables-services php-fpm php-cli policycoreutils-python chrony
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
