@@ -12,8 +12,15 @@
 #
 
 REPO_DIR=${HOME}/repo
+
+# CentOS
 MOCK_CONFIG=epel-7-x86_64
+MOCK_FLAGS=-m --yum
+
+# Fedora
+#MOCK_CONFIG=fedora-25-x86_64
 #MOCK_CONFIG=fedora-26-x86_64
+#MOCK_FLAGS=
 
 PACKAGE_LIST=(\
     php-bacon-bacon-qr-code \
@@ -47,10 +54,12 @@ do
     SRPM_LIST+=" $(basename ${SRPM_FILE})"
 done
 
+echo "Build in progress, this may take a long time..."
+
 # Build RPMs
 (
     cd "${HOME}/rpmbuild/SRPMS" || exit
-    RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
+    RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${MOCK_FLAGS} ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
     cp ${RESULT_DIR}/*/*.src.rpm "${REPO_DIR}/SRPMS"
     cp ${RESULT_DIR}/*/*.noarch.rpm "${REPO_DIR}/RPMS/noarch"
 )
