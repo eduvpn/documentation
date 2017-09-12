@@ -78,11 +78,10 @@ You can also specify ports like `udp/53` and `tcp/443`, but then those ports
 need to be available to be claimed by OpenVPN and can't be shared by a DNS 
 server or web server.
 
-If you run [Multi Instance](MULTI_INSTANCE.md) or 
-[Multi Profile](MULTI_PROFILE.md) you MUST either choose a unique `listen` 
-address per profile if you want to use the same ports, which means you cannot 
-use the special address `::` and thus lose the IPv4+IPv6 connectivity option, 
-or use different ports. 
+If you run [Multi Profile](MULTI_PROFILE.md) you MUST either choose a unique 
+`listen` address per profile if you want to use the same ports, which means you 
+cannot use the special address `::` and thus lose the IPv4+IPv6 connectivity 
+option, or use different ports. 
 
 The first profile can use `udp/1194` and `tcp/1194`, the second one can use 
 `udp/1195` and `tcp/1195` for example.
@@ -100,7 +99,7 @@ configuration like this:
 
 To restart all OpenVPN processes belonging to the profile `internet`, do this:
 
-    $ sudo systemctl restart openvpn-server@default-internet-{0,1}
+    $ sudo systemctl restart "openvpn-server@default-internet-*"
 
 If you changed the entry `vpnProtoPorts`, to say 
 `['udp/1194', 'udp/1195', 'tcp/1194', 'tcp/1195']` you now have two more 
@@ -108,11 +107,11 @@ OpenVPN processes to deal with:
 
 Enable the two extra processes on boot:
 
-    $ sudo systemctl enable openvpn-server@default-internet-{2,3}
+    $ sudo systemctl enable "openvpn-server@default-internet-*"
 
 (Re)start them all:
 
-    $ sudo systemctl restart openvpn-server@default-internet-{0,1,2,3}
+    $ sudo systemctl restart "openvpn-server@default-internet-*"
 
 If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 
