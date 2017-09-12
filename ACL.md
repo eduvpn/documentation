@@ -2,10 +2,10 @@
 
 The VPN service supports group ACLs, i.e. require users to be a member of a 
 certain group before allowing downloading configurations and to access to the 
-VPN service for profiles that have ACLs enabled. Below we assume you are 
-deploying for the instance with domain `vpn.example`.
+VPN service for profiles that have ACLs enabled.
 
-The ACLs need to be configured in `/etc/vpn-server-api/vpn.example/config.php`.
+The ACLs need to be configured in `/etc/vpn-server-api/default/config.php`, and
+possibly `/etc/vpn-user-portal/default/config.php`
 
 ## Enabling ACLs
 
@@ -14,7 +14,7 @@ Add
     enableAcl: true
     aclGroupList: [all]
 
-To `/etc/vpn-server-api/vpn.example/config.php` for the profile you want to 
+To `/etc/vpn-server-api/default/config.php` for the profile you want to 
 enable the ACL for. Here, the group with identifier `all` is given access.
 
 There are a number of backends available to fetch group membership 
@@ -68,7 +68,7 @@ in the `aclGroupList` in your profile configuration.
 
 This module works together with the portal to obtain an access token per user
 that will be used to retrieve the group membership. The portal also needs to
-be configured to enable Voot in `/etc/vpn-user-portal/vpn.example/config.php`: 
+be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`: 
 
     'enableVoot' => true,
     'Voot' => [
