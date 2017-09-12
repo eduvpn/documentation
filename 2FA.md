@@ -25,8 +25,8 @@ see this [issue](https://github.com/eduvpn/vpn-user-portal/issues/60).
 
 ## Enabling 2FA for VPN connections
 
-Assuming your instance is called `vpn.example` and the profile is `internet`, 
-you need to modify `/etc/vpn-server-api/vpn.example/config.php`:
+Assuming your profile is `internet`, you need to modify 
+`/etc/vpn-server-api/default/config.php`:
 
     'vpnProfiles' => [
         'internet' => [
@@ -40,11 +40,11 @@ you need to modify `/etc/vpn-server-api/vpn.example/config.php`:
 
 Now the server configuration needs to be regenerated:
 
-    $ sudo vpn-server-node-server-config --instance vpn.example --profile internet
+    $ sudo vpn-server-node-server-config --profile internet
 
 Also, the VPN processes need to be restarted:
 
-    $ sudo systemctl restart openvpn-server@vpn.example-internet-{0,1,2,3}
+    $ sudo systemctl restart "openvpn-server@default-internet-*"
 
 ## Connecting to the VPN
 
@@ -64,10 +64,9 @@ the "admin".
 
 If an administrator is enrolled for OTP, is the only administrator and loses 
 their secret, the enrollment can be cancelled removing the OTP enrollment in
-the DB. Assuming the user ID is `foo`, and the instance is `vpn.example`, do 
-the following:
+the DB. Assuming the user ID is `foo`, do the following:
 
-    $ sudo sqlite3 /var/lib/vpn-server-api/vpn.example/db.sqlite
+    $ sudo sqlite3 /var/lib/vpn-server-api/default/db.sqlite
 
 Perform the following query:
 
