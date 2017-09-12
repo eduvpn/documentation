@@ -73,7 +73,7 @@ configuration options.
 If you had an old profile, e.g. the default `internet`, as is the default when
 deploying using `deploy.sh` it needs to be stopped first, and can be removed:
 
-    $ sudo systemctl disable --now "openvpn-server@default-internet-*"
+    $ sudo systemctl disable --now openvpn-server@default-internet-{0,1}
     $ sudo rm "/etc/openvpn/server/default-internet-*.conf"
     $ sudo rm -rf /etc/openvpn/server/tls/default/internet
 
@@ -84,8 +84,8 @@ Now the new configurations can be generated:
 
 Enable and start them:
 
-    $ sudo systemctl enable --now "openvpn-server@default-office-*"
-    $ sudo systemctl enable --now "openvpn-server@default-admin-*"
+    $ sudo systemctl enable --now openvpn-server@default-office-{0,1}
+    $ sudo systemctl enable --now openvpn-server@default-admin-{0,1}
 
 If you changed UDP/TCP ports, you also need to update the firewall 
 configuration in `/etc/vpn-server-node/firewall.php`.

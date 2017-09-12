@@ -107,7 +107,7 @@ OpenVPN processes to deal with:
 
 Enable the two extra processes on boot:
 
-    $ sudo systemctl enable "openvpn-server@default-internet-*"
+    $ sudo systemctl enable openvpn-server@default-internet-{2,3}
 
 (Re)start them all:
 
