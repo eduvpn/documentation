@@ -80,10 +80,11 @@ example configuration file in
 
 If you use only one IdP or an identity federation that provides their own 
 WAYF service (the default), you don't need to do anything else. If you want to 
-provide your own WAYF, this is also possible with the 
-[php-saml-ds](https://github.com/fkooman/php-saml-ds/) software.
+provide your own WAYF, e.g. if you want to add eduGAIN IdPs, this is possible 
+with the [php-saml-ds](https://github.com/fkooman/php-saml-ds/) software.
 
-You can install the software:
+You can install the software, it is also packaged for CentOS in the eduVPN 
+repository:
 
     $ sudo yum -y install php-saml-ds
 
