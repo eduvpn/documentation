@@ -1,9 +1,9 @@
-%global commit0 bf8e5f1106b11a3f50b1113d3db6609294a488da
+%global commit0 ef37f95778b7ce31a9874f80b1f376b1f4e42749
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-yubitwee
-Version:        1.0.1
-Release:        2%{?dist}
+Version:        1.1.0
+Release:        1%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -16,22 +16,24 @@ BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-hash
-BuildRequires:  php-libsodium
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
+BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  %{_bindir}/phpunit
 
 Requires:       php(language) >= 5.4.0
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-hash
-Requires:       php-libsodium
 Requires:       php-pcre
 Requires:       php-spl
 Requires:       php-composer(fedora/autoloader)
 Requires:       php-composer(paragonie/constant_time_encoding)
+Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(symfony/polyfill-php56)
 
 Provides:       php-composer(fkooman/yubitwee) = %{version}
 
@@ -49,6 +51,8 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiTwee\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
+    '%{_datadir}/php/random_compat/autoload.php',
+    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
 ));
 AUTOLOAD
 
@@ -76,6 +80,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Tue Sep 12 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
+- update to 1.1.0
+
 * Wed Aug 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-2
 - rework spec, to align it with practices document
 
