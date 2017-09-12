@@ -60,7 +60,7 @@ ${PACKAGE_MANAGER} -y copr enable fkooman/eduvpn-testing
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \
-    iptables-services php-fpm php-cli policycoreutils-python
+    iptables-services php-fpm php-cli policycoreutils-python chrony
 
 # install language pack (nl_NL)
 # this is needed on Fedora, not on CentOS where nl_NL is part of glibc-common

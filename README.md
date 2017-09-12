@@ -66,8 +66,9 @@ CentOS [Minimal ISO](https://centos.org/download/) and the official
 **NOTE**: make sure SELinux is **enabled** and the filesystem correctly 
 (re)labeled! Look [here](https://wiki.centos.org/HowTos/SELinux).
 
-Make sure the firewall running on your network equipment or VM platform allows 
-access to the very least `tcp/80`, `tcp/443`, `udp/1194` and `tcp/1194`.
+Make sure the firewall running on your _network equipment_ or VM _platform_ 
+allows access to the very least `tcp/80`, `tcp/443`, `udp/1194` and `tcp/1194`.
+The deploy script will take care of the host firewall directly!
 
 On the host where you want to deploy:
 
