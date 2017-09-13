@@ -1,5 +1,9 @@
+# Introduction
+
 This document describes how to apply your own branding (style and e.g. logo) 
 for the VPN user and admin portal.
+
+# Template Overriding
 
 The portals use templates, located in the following folders:
 
@@ -10,15 +14,21 @@ You can copy the `head.twig` from these folders to
 `/etc/vpn-user-portal/default/views/head.twig` and 
 `/etc/vpn-admin-portal/default/views/head.twig` respectively and modify them to
 override the defaults. For instance by adding an extra line pointing to a 
-second CSS file:
+second CSS file.
+
+**NOTE**: It is NOT recommended to update other templates than `head.twig` as 
+they MAY break future software updates. We do NOT guarantee template 
+compatibility!
 
 For example, for eduVPN we use this addition to the `head.twig` file under the
 default CSS file:
 
     <link href="/css/eduvpn.css" media="screen" rel="stylesheet">
 
-Place, in this case `eduvpn.css`, and assuming your hostname is 
-`vpn.example`, the file in `/var/www/vpn.example/css/eduvpn.css`.
+# CSS
+
+Place, the CSS file, in this case `eduvpn.css`, and assuming your hostname is 
+`vpn.example`, in `/var/www/vpn.example/css/eduvpn.css`.
 
 For eduVPN we show a logo that is placed in 
 `/var/www/vpn.example/img/eduvpn.png` that is linked to from the CSS file, 
@@ -57,6 +67,8 @@ for example:
             background-position: 100% 0%;
         }
     }
+
+# Cache
 
 When you update the templates, i.e. override them like shown above, you need 
 to flush the template cache:
