@@ -15,12 +15,12 @@ REPO_DIR=${HOME}/repo
 
 # CentOS
 MOCK_CONFIG=epel-7-x86_64
-MOCK_FLAGS="-m --yum"
+#MOCK_FLAGS="-m --yum"
 
 # Fedora
 #MOCK_CONFIG=fedora-26-x86_64
 #MOCK_CONFIG=fedora-25-x86_64
-#MOCK_FLAGS=
+MOCK_FLAGS=
 
 PACKAGE_LIST=(\
     php-bacon-bacon-qr-code \
