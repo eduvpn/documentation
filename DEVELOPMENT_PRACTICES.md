@@ -8,7 +8,9 @@ This post will describe my development practices for
 [Red Hat Enterprise Linux](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux).
  
 It will be long, contain a lot of details and hopefully this will be useful for
-your own projects!
+your own projects! It assumes you already have a basic knowledge of PHP 
+programming and some experience deploying software. The document will show you 
+"DevOps" on steroids!
 
 These practices slowly "evolved" while developing [eduVPN](https://eduvpn.org/) 
 and [Let's Connect](https://letsconnect-vpn.org/). These are projects sharing
@@ -139,7 +141,8 @@ I use [gedit](https://wiki.gnome.org/Apps/Gedit) which is a simple editor for
 use for development:
 
 - [Git](https://git-scm.com/), for version control;
-- [composer](https://getcomposer.org/), for PHP dependency management;
+- [composer](https://getcomposer.org/), for PHP dependency management in the 
+  development stage;
 - [PHPStan](https://github.com/phpstan/phpstan), for static code analysis;
 - [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer), for source code 
   formatting;
@@ -275,6 +278,10 @@ own (private) repository. This is described in the Composer
 [documentation](https://getcomposer.org/doc/05-repositories.md#vcs) on the 
 subject.
 
+It should be noted explicitly that we only use Composer for _development_ 
+purposes. It will not be used or required for deploying the software to a 
+server later.
+
 ## Tests
 
 Running tests can be done with PHPUnit:
@@ -396,6 +403,25 @@ constant time string comparison.
 In addition, we also use constant time encoding functions for "Base64" and 
 "Hex" that are provided through `paragonie/constant_time_encoding`.
 
+To validate your `composer.json` you can use:
+
+    $ composer validate
+    ./composer.json is valid
+
+To update the dependencies, and to check if all PHP extensions are actually
+available on the system you are running `composer` on:
+
+    $ composer update
+    Loading composer repositories with package information
+    Updating dependencies (including require-dev)
+    Package operations: 0 installs, 2 updates, 0 removals
+      - Updating symfony/yaml (v3.3.8 => v3.3.9): Loading from cache
+      - Updating phpdocumentor/reflection-common (1.0 => 1.0.1): Loading from cache
+    Writing lock file
+    Generating autoload files
+
+In the example above some updates were available and they were installed.
+
 # Packaging
 
 Next up is packaging. Of course you could run `composer install` in your 
@@ -439,19 +465,32 @@ RPM package becomes `php-fkooman-yubitwee`.
     $ cd ${HOME}/rpmbuild/SPECS
     $ rpmdev-newspec php-fkooman-yubitwee
 
-* rpmdev-bumpspec
-* git commit from git log 
-* release   0.1%{?dist}  for prereleases
-* (build)requires from `composer.json`
+The `Requires` and `BuildRequires` are taken from the `composer.json` file, 
+make sure they match.
+
+**TODO**: specify version numbers of used PHP libraries!
+
+A useful tool is `rpmdev-bumpspec` where you can update the package version, 
+and add a new `%changelog` entry at the bottom.
+
+If you are packaging libraries or software that hasn't been released yet you 
+can use a special `Release` tag. Suppose you are working towards a 1.0 release, 
+you can make `Version` already `1.0.0`, but then make the `Release` field 
+contain `0.1%{?dist}`. Updating the package would then result in `0.2%{?dist}` 
+indicating it is not the final version yet. Once `1.0.0` is release, the 
+`Release` field would become `1%{?dist}`.
+
+In the example below the `%global commit0` comes from the hash of the tag 
+`1.1.0`.
 
 The `php-fkooman-yubitwee.spec` file you end up with:
 
-    %global commit0 bf8e5f1106b11a3f50b1113d3db6609294a488da
+    %global commit0 ef37f95778b7ce31a9874f80b1f376b1f4e42749
     %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
     Name:           php-fkooman-yubitwee
-    Version:        1.0.1
-    Release:        2%{?dist}
+    Version:        1.1.0
+    Release:        1%{?dist}
     Summary:        YubiKey OTP Validator library
 
     License:        MIT
@@ -464,22 +503,24 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     BuildRequires:  php-curl
     BuildRequires:  php-date
     BuildRequires:  php-hash
-    BuildRequires:  php-libsodium
     BuildRequires:  php-pcre
     BuildRequires:  php-spl
     BuildRequires:  php-composer(fedora/autoloader)
     BuildRequires:  php-composer(paragonie/constant_time_encoding)
+    BuildRequires:  php-composer(paragonie/random_compat)
+    BuildRequires:  php-composer(symfony/polyfill-php56)
     BuildRequires:  %{_bindir}/phpunit
 
     Requires:       php(language) >= 5.4.0
     Requires:       php-curl
     Requires:       php-date
     Requires:       php-hash
-    Requires:       php-libsodium
     Requires:       php-pcre
     Requires:       php-spl
     Requires:       php-composer(fedora/autoloader)
     Requires:       php-composer(paragonie/constant_time_encoding)
+    Requires:       php-composer(paragonie/random_compat)
+    Requires:       php-composer(symfony/polyfill-php56)
 
     Provides:       php-composer(fkooman/yubitwee) = %{version}
 
@@ -497,6 +538,8 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     \Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiTwee\\', __DIR__);
     \Fedora\Autoloader\Dependencies::required(array(
         '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
+        '%{_datadir}/php/random_compat/autoload.php',
+        '%{_datadir}/php/Symfony/Polyfill/autoload.php',
     ));
     AUTOLOAD
 
@@ -524,6 +567,9 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     %{_datadir}/php/fkooman/YubiTwee
 
     %changelog
+    * Tue Sep 12 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
+    - update to 1.1.0
+
     * Wed Aug 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-2
     - rework spec, to align it with practices document
 
