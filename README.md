@@ -47,10 +47,6 @@ clients:
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
 
-# Development
-
-See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
-
 # Deployment
 
 **At the moment only a fully updated official CentOS 7 is supported!**
@@ -126,3 +122,7 @@ additional user name/password authentication. It is possible to enable
 If you want to restrict the use of the VPN a bit more than on whether someone
 has an account or not, e.g. to limit certain profiles to certain (groups of)
 users, see [ACL](ACL.md).
+
+# Development
+
+See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
