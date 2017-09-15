@@ -138,3 +138,11 @@ requirements to a (temporary) branch, e.g `master`. Change this:
 Into this:
 
     "eduvpn/common": "dev-master",
+
+# Translations
+
+[Twig](https://twig.symfony.com/) together with 
+[gettext](https://secure.php.net/gettext) is used to take care of translations, 
+see the 
+[documentation](https://twig-extensions.readthedocs.io/en/latest/i18n.html) on
+how to update the translation files.
