@@ -1,7 +1,17 @@
 # Introduction
 
-We assume you will be using Fedora for development work, but other 
-distributions will of course also work.
+This document will describe how to set up a development environment for easy 
+development and running in on your development system. 
+
+This is **NOT** meant to be used as installation instructions! See the offical
+`deploy.sh` scripts instead.
+
+We assume you will be using Fedora >= 25 for development work, but other 
+distributions will of course also work, but some minor details regarding 
+installation of the required software will be different.
+
+See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
+about guidelines to follow.
 
 # Preparation
 
