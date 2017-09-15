@@ -2,7 +2,7 @@
 
 # Introduction
 
-This post will describe my personal development practices for 
+This post will describe my development practices for 
 [PHP](https://secure.php.net/) software development running in production on 
 [CentOS](https://centos.org/) and 
 [Red Hat Enterprise Linux](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux).
@@ -17,12 +17,11 @@ code can be found [here](https://github.com/eduVPN/).
 
 This document will describe the tools I use, why I use them, why I do not use
 some popular tools and how I achieve (hopefully) high quality code without 
-relying exclusively on proprietary tools and "cloud" services.
+relying (exclusively) on proprietary tools and cloud services.
 
-We will walk through development by creating a library, 
-[yubitwee](https://github.com/fkooman/php-yubitwee), and a web application, 
-[yubicheck](https://github.com/fkooman/yubicheck), to demonstrate the 
-development practices from development to deployment.
+This document will walk through development and deployment by creating a web 
+application, [yubicheck](https://github.com/fkooman/yubicheck), that uses an 
+existing library, [yubitwee](https://github.com/fkooman/php-yubitwee).
 
 # Principles
 
@@ -34,7 +33,7 @@ doing all development and testing initially on the latest release of
 of PHP, at this time of writing PHP 7.1. This means, my code will run on all 
 PHP versions >= 5.4.
 
-Unfortunatly targeting PHP 5.4 rules out a number of useful libraries, for 
+Unfortunately targeting PHP 5.4 rules out a number of useful libraries, for 
 example the OAuth 2.0 
 [client](https://github.com/thephpleague/oauth2-client) and 
 [server](http://oauth2.thephpleague.com/) libraries of 
@@ -44,8 +43,9 @@ nothing more.
 
 Talking about using dependencies, these are my general rules I try to follow as
 much as possible. I have these rules to make sure they actually work, reduce 
-the amount of code, guarantee high quality, all for the benefit of security 
-and easy maintainability of the code:
+the amount of code, guarantee high quality and do not require me to constantly
+chase after them. This all for the benefit of security and easy maintainability 
+of the code:
 
 - Supports PHP 5.4;
 - Do not use frameworks (see below);
@@ -75,7 +75,7 @@ above:
 
 - [Twig](https://twig.symfony.com/), a PHP template engine;
 - [Symfony PHP polyfills](https://github.com/symfony/polyfill), to make 
-  functionality from PHP versions > 5.4 available in 5.4;
+  some functionality from PHP versions > 5.4 available in 5.4;
 - [Constant-Time Character Encoding in PHP Projects](https://github.com/paragonie/constant_time_encoding); 
 - [QR codes](https://github.com/Bacon/BaconQrCode);
 - [OTP](https://github.com/ChristianRiesen/otp); 
@@ -90,7 +90,8 @@ versions:
 - [Very simple OAuth 2.0 server](https://github.com/fkooman/php-oauth2-server);
 
 The rationale for creating each of those libraries is described in the their 
-accompanying `README.md` file.
+accompanying `README.md` file. Those are also published on Packagist, more on 
+that later.
 
 ## Frameworks
 
@@ -119,7 +120,8 @@ development.
 As a general rule here, I only use free software tools. Furthermore, I try to 
 limit the dependency on external services as much as possible, and if they are
 used, have a migration path to move away from them if needed. This mostly 
-applies to [GitHub](https://github.com/).
+applies to [GitHub](https://github.com/) and 
+[Packagist](https://packagist.org/).
 
 This also applies to services like [Travis CI](https://travis-ci.com/) and 
 [Scrutinizer](https://scrutinizer-ci.com/). I started out using them when the 
@@ -131,7 +133,7 @@ I do not use an IDE, I really tried
 [PhpStorm](https://www.jetbrains.com/phpstorm/), but it is too heavy for my 
 taste and does a lot of stuff I do not want it to do. Recently I quickly 
 evaluated [Visual Studio Code](https://code.visualstudio.com/) which doesn't 
-seem that bad, but I quickly forgot it and turned back to my favorite editors. 
+seem that bad, but I quickly forgot it and turned back to my favorite editor. 
 I use [gedit](https://wiki.gnome.org/Apps/Gedit) which is a simple editor for 
 [GNOME](https://www.gnome.org/). The following is a list of tools I regularly 
 use for development:
@@ -266,6 +268,13 @@ for the autoloader to work:
 Now you can run `composer update` to fetch all dependencies and generate the 
 autoloader.
 
+If you want to use a library that is not available through Packagist, e.g. you
+wrote your own library that is not (yet) ready for public consumption or you 
+don't want to give any stability guarantees for, you can directly point to your 
+own (private) repository. This is described in the Composer 
+[documentation](https://getcomposer.org/doc/05-repositories.md#vcs) on the 
+subject.
+
 ## Tests
 
 Running tests can be done with PHPUnit:
@@ -293,7 +302,8 @@ Psalm:
     $ psalm
 
 A useful option is `--update-docblocks` to automatically at return types to 
-"docblocks", especially useful for adding `@return void`.
+"docblocks", especially useful for adding `@return void` if your IDE or editor
+does not take care of that.
 
 ## Source Formatting
 
@@ -321,7 +331,8 @@ a configuration file that you can store in your repository.
 
 In order to make sure you target the right version of PHP, and found all 
 dependencies on PHP extensions you use in your code, it is important
-to use PHP_CompatInfo.
+to use PHP_CompatInfo. In this example we run it on the
+[YubiTwee](https://github.com/fkooman/php-yubitwee/) code.
 
     $ phpcompatinfo analyser:run src
 
@@ -331,27 +342,23 @@ paths at the same time.
 
 At the bottom of the report you'll see something like this:
 
-    Requires PHP 5.4.0 (min), PHP 5.4.0 (all)
+    Requires PHP 7.0.2 (min), PHP 7.0.2 (all)
 
-This indicates PHP 5.4 is required, which is good! Near the top you'll find 
-`Extensions Analysis` which lists the extensions of PHP that we use in the 
+This indicates PHP 7.0.2 is required, which is NOT good! Near the top you'll 
+find `Extensions Analysis` which lists the extensions of PHP that we use in the 
 code, in the case of [YubiTwee](https://github.com/fkooman/php-yubitwee/) that
 is the following:
 
     Core              Core     5.1.0       5.1.0
     curl              curl     5.1.3       5.1.3
     date              date     5.2.0       5.2.0
-    hash              hash     1.1         4.0.0
+    hash              hash     5.6.0beta1  5.6.0beta1
     pcre              pcre     4.0.0       4.0.0
     spl               spl      5.1.0       5.1.0
-    standard          standard 4.0.7       4.0.7
+    standard          standard 7.0.2       7.0.2
 
 All of them, except `Core` and `standard` can be added to the `composer.json` 
-to tell Composer that those PHP extensions are required. The output can be a 
-bit tricky, in this instance the list of extensions misses the dependency on 
-`libsodium`. In some instances, when using 
-[PDO](https://secure.php.net/manual/en/book.pdo.php) for connecting to 
-databases that extension, `pdo` may also be missed! So it makes sense to look 
+to tell Composer that those PHP extensions are required. It makes sense to look 
 through the report carefully and make sure you didn't miss anything. If you
 find the dependencies in the `bin`, `src` or `web` folders you add them to the
 `require` section of `composer.json`, if you only find them in the `tests` 
@@ -362,12 +369,32 @@ folder you add them to the `require-dev` section. So, for YubiTwee the
         "ext-curl": "*",
         "ext-date": "*",
         "ext-hash": "*",
-        "ext-libsodium": "*",
         "ext-pcre": "*",
         "ext-spl": "*",
         "paragonie/constant_time_encoding": "^1|^2",
-        "php": ">=5.4"
+        "paragonie/random_compat": "^1|^2",
+        "php": ">=5.4",
+        "symfony/polyfill-php56": "^1"
     }
+
+To find out why we need PHP 7.0.2, we can use the report to search for the 
+functions that require PHP 7:
+
+    random_bytes             1       standard 7.0.2       7.0.2
+    random_int               1       standard 7.0.2       7.0.2
+
+It turns out these two functions are added in PHP 7. Fortunately we have a 
+"polyfill" for it in `paragonie/random_compat` that takes care of this. This
+makes those two functions available in PHP 5.4 as well!
+
+    hash_equals              1       hash     5.6.0beta1  5.6.0beta1   
+
+This function is only available in PHP >= 5.6, so we use the 
+`symfony/polyfill-php56` dependency to provide this function. It provides 
+constant time string comparison.
+
+In addition, we also use constant time encoding functions for "Base64" and 
+"Hex" that are provided through `paragonie/constant_time_encoding`.
 
 # Packaging
 
