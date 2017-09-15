@@ -1,12 +1,5 @@
 {
     "api": {
-        "http://eduvpn.org/api#1": {
-            "authorization_endpoint": "https://vpn.example/vpn-user-portal/_oauth/authorize",
-            "create_config": "https://vpn.example/vpn-user-portal/api.php/create_config",
-            "profile_list": "https://vpn.example/vpn-user-portal/api.php/profile_list",
-            "system_messages": "https://vpn.example/vpn-user-portal/api.php/system_messages",
-            "user_messages": "https://vpn.example/vpn-user-portal/api.php/user_messages"
-        },
         "http://eduvpn.org/api#2": {
             "api_base_uri": "https://vpn.example/vpn-user-portal/api.php",
             "authorization_endpoint": "https://vpn.example/vpn-user-portal/_oauth/authorize",
