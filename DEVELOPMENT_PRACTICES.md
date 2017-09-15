@@ -426,11 +426,11 @@ In the example above some updates were available and they were installed.
 
 Next up is packaging. Of course you could run `composer install` in your 
 application directory and package the whole thing up, call it "DevOps" and make
-deploying it someone else's problem. Or maybe even your own. Why not make it 
-easy by packaging the software? That way you get the same benefits as all other
-software packaged in the distribution you deploy on, mostly meaning easy of 
-installation and update of the software and its components, maybe even only 
-a small component.
+deploying it, and especially updating it, someone else's problem. Or maybe 
+even your own. Why not make it easy by packaging the software? That way you get 
+the same benefits as all other software packaged in the distribution you deploy 
+on, mostly meaning easy of installation and update of the software and its 
+components, maybe even only a small component.
 
 Packaging PHP libraries and applications is actually pretty straight forward, 
 as you only put the PHP files on this disk, no need to compile anything. The 
@@ -444,18 +444,17 @@ We'll create a YubiKey validator application that just accepts a YubiKey OTP
 and asks the YubiCo servers to validate it. It depends on a library that we 
 will also package to show the complete flow.
 
-### Creating a Package
+We need to create two packages:
 
-We need to create two packages, one for 
-[fkooman/yubitwee](https://github.com/fkooman/php-yubitwee) and one for 
-[yubicheck](https://github.com/fkooman/yubicheck).
+* [fkooman/yubitwee](https://github.com/fkooman/php-yubitwee); 
+* [yubicheck](https://github.com/fkooman/yubicheck);
 
 To create a "template" `spec` file, the file that describes how to create the
 package do the following:
 
     $ rpmdev-setuptree
 
-### Library
+## Library
 
 Libraries get named after their Composer name, typically they contains the 
 "vendor" and the name of the library". In case of YubiTwee, the vendor is 
@@ -580,7 +579,66 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     * Tue Apr 11 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
     - initial package
 
-### Web Application
+### Building
+    
+The next command will fetch the source code it place it in 
+`${HOME}/rpmbuild/SOURCES`:
+
+    $ spectool -g -R php-fkooman-yubitwee.spec
+
+Creating the source RPM:
+
+    $ rpmbuild -bs php-fkooman-yubitwee.spec
+
+Building the "binary" RPM, in this case actually `noarch` as it is PHP:
+
+    $ rpmbuild -bb php-fkooman-yubitwee.spec
+
+The output RPM, ready to be installed, will be placed in 
+`${HOME}/rpmbuild/RPMS/noarch`.
+
+### Checking Packages
+
+The `rpmlint` tool can be used to verify the spec-file, the source RPM and the 
+package RPM:
+
+    $ rpmlint php-fkooman-yubitwee.spec \
+        ${HOME}/rpmbuild/SRPMS/php-fkooman-yubitwee-1.1.0-1.fc26.src.rpm \
+        ${HOME}/rpmbuild/RPMS/noarch/php-fkooman-yubitwee-1.1.0-1.fc26.noarch.rpm 
+    php-fkooman-yubitwee.src: W: spelling-error %description -l en_US pluggable -> plug gable, plug-gable, plugged
+    php-fkooman-yubitwee.noarch: W: spelling-error %description -l en_US pluggable -> plug gable, plug-gable, plugged
+    2 packages and 1 specfiles checked; 0 errors, 2 warnings.
+
+There are no critical errors here, just something about a spelling 
+disagreement.
+
+### Mock
+
+In order to make sure the package also builds on a clean installation, e.g. 
+all required dependencies are installed it is important to build the package,
+*and* run the tests on a clean system. The tool to use for that is
+[Mock](https://github.com/rpm-software-management/mock/wiki). Make sure your 
+user account is part of the `mock` group as shown in the Mock documentation.
+
+To enable "nosync" to speed up builds a great deal:
+
+    $ echo "config_opts['nosync'] = True" >> ${HOME}/.config/mock.cfg
+
+To use Mock, you first need to generate the source RPM, as shown above and 
+then run Mock. This will build on the platform that has the `default.cfg` 
+pointed to in `/etc/mock`, probably the version of Fedora you are running:
+
+    $ mock ${HOME}/rpmbuild/SRPMS/php-fkooman-yubitwee-1.1.0-1.fc26.src.rpm
+
+To build for CentOS/Red Hat 7, we need to pass the `--yum` flag here:
+
+    $ mock -r epel-7-x86_64 --yum ${HOME}/rpmbuild/SRPMS/php-fkooman-yubitwee-1.1.0-1.fc26.src.rpm
+
+This will build the RPMs from scratch, and will also run the unit tests. Now 
+you have a package for both CentOS and Fedora where the unit tests were 
+actually ran on the platform you will deploy on!
+
+## Web Application
 
 The `yubicheck.spec` file you end up with:
 
@@ -678,59 +736,7 @@ The `yubicheck.spec` file you end up with:
     * Sat Aug 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
     - initial package
 
-
-### Building
-    
-The next command will fetch the source code:
-
-    $ spectool -g -R yubicheck.spec
-
-Building the source RPM:
-
-    $ rpmbuild -bs yubicheck.spec
-
-Building the binary RPM:
-
-    $ rpmbuild -bb yubicheck.spec
-
-### Checking Packages
-
-The `rpmlint` tool can be used to verify the spec-file, the source RPM and the 
-package RPM:
-
-    $ rpmlint \
-        ${HOME}/rpmbuild/SPECS/yubicheck.spec \
-        ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.1-1.fc26.src.rpm \
-        ${HOME}/rpmbuild/RPMS/noarch/yubicheck-1.0.1-1.fc26.noarch.rpm
-
-### Mock
-
-XXX add user to group mock
-XXX cant build yubicheck without having yubitwee!
-
-In order to make sure the package also builds on a clean installation, e.g. 
-all required dependencies are installed it is important to build the package,
-*and* run the tests on a clean system. The tool to use for that is
-[Mock](https://github.com/rpm-software-management/mock/wiki).
-
-To enable "nosync" to speed up builds a great deal:
-
-    $ echo "config_opts['nosync'] = True" >> ${HOME}/.config/mock.cfg
-
-To use Mock, you first need to generate the source RPM, as shown above and 
-then call Mock:
-
-    $ mock ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.1-1.fc26.src.rpm
-
-To build for CentOS/Red Hat 7, we need to pass the `--yum` flag here:
-
-    $ mock -r epel-7-x86_64 --yum ${HOME}/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
-
-This will build the RPMs from scratch, and will also run the unit tests. Now 
-you have a package for both CentOS and Fedora where the unit tests were 
-actually ran on the platform you will deploy on!
-
-### Mockchain
+## Mockchain
 
 If you have multiple packages, and they depend on each other, you need to use
 `mockchain` to make this work. Specify the source RPMs in the build order, so 
@@ -742,11 +748,11 @@ For CentOS, `-m --yum` is needed here:
 
     $ mockchain -r epel-7-x86_64 -m --yum /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
-## Deployment
+# Deployment
 
 These steps are performed on the server you want to deploy the code on!
 
-### PHP
+## PHP
 
     $ sudo yum -y install php-fpm httpd
 
@@ -768,13 +774,13 @@ Make everything start on boot:
     $ systemctl restart httpd
     $ systemctl restart php-fpm
 
-### Installation
+## Installation
 
 You can copy the created RPM file now to the server and install it using 
 `dnf install` or on CentOS `yum install`. Restart Apache again and you should 
 be good to go!
 
-## Resources
+# Resources
 
 * http://enricozini.org/blog/2014/debian/debops/
 * https://fedoraproject.org/wiki/Packaging:SourceURL
