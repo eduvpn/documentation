@@ -208,6 +208,12 @@ The `display_name` can be multi language as well, e.g.:
 The same rules for detecting multi language apply as in 
 [Instance Discovery](#instance-discovery) apply here.
 
+In case of 2FA, the `two_factor` field is set to `true`. In that case, there 
+MAY be a `two_factor_method` field that indicates which 2FA methods are 
+accepted by the server. This is an array. If the field is missing, all 2FA 
+methods are supported. Empty array means no 2FA method is supported, but 2FA 
+is still enabled, making it impossible to authenticate.
+
 ## User Info
 
 **API VERSION 2 ONLY**
@@ -226,12 +232,16 @@ The response looks like this:
             "data": [
                 {
                     "two_factor_enrolled": false,
+                    "two_factor_enrolled_with": [],
                     "is_disabled": false
                 }
             ],
             "ok": true
         }
     }
+
+The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or `totp` or
+both.
 
 ## Create a Configuration
 
