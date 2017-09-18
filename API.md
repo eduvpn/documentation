@@ -232,7 +232,6 @@ The response looks like this:
             "data": [
                 {
                     "two_factor_enrolled": false,
-                    "two_factor_enrolled_with": [],
                     "is_disabled": false
                 }
             ],
@@ -240,8 +239,10 @@ The response looks like this:
         }
     }
 
-The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or `totp` or
-both.
+If `two_factor_enrolled` is `true`, there MAY be a `two_factor_enrolled_with` 
+field. The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or 
+`totp` or both. This field indicates for which 2FA methods the user is 
+enrolled.
 
 ## Create a Configuration
 
