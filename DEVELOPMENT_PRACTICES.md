@@ -21,9 +21,10 @@ This document will describe the tools I use, why I use them, why I do not use
 some popular tools and how I achieve (hopefully) high quality code without 
 relying (exclusively) on proprietary tools and cloud services.
 
-This document will walk through development and deployment by creating a web 
-application, [yubicheck](https://github.com/fkooman/yubicheck), that uses an 
-existing library, [yubitwee](https://github.com/fkooman/php-yubitwee).
+This document will walk through development, packaging and finally deployment 
+by creating a web application, 
+[yubicheck](https://github.com/fkooman/yubicheck), that uses an existing 
+library, [yubitwee](https://github.com/fkooman/php-yubitwee).
 
 # Principles
 
@@ -94,6 +95,15 @@ versions:
 The rationale for creating each of those libraries is described in the their 
 accompanying `README.md` file. Those are also published on Packagist, more on 
 that later.
+
+## PHP 5.4
+
+The biggest problem with using PHP 5.4 as a minimum is the lack of support of 
+some of the libraries I wanted to use. It turns out it is not that hard to 
+develop PHP code that is compatible with all versions of PHP. The only really 
+annoying thing is the lack of static typing in PHP. However, this can be 
+mitigated somewhat by using Psalm and provide annotations as much as possible, 
+that will also ease later conversion to statically typed code.
 
 ## Frameworks
 
@@ -324,15 +334,34 @@ Run the source formatting:
 
     $ php-cs-fixer fix . --rules=@Symfony
 
-There are many more rules to fix things, but this is a safe start. The extra 
-rules I use at the moment:
+There are many more rules to fix things, the above is good start though. I 
+use a configuration file for the projects that fixes a bit more, this is 
+places as `.php_cs.dist` in the project root:
 
-* `ordered_imports`;
-* `array_syntax`;
-* `ordered_class_elements`.
+    <?php
 
-They are all described in the PHP-CS-Fixer documentation, as is a way to create
-a configuration file that you can store in your repository.
+    return PhpCsFixer\Config::create()
+        ->setRiskyAllowed(true)
+        ->setRules(
+            [
+                '@Symfony' => true,
+                '@Symfony:risky' => true,
+                'ordered_imports' => true,
+                'ordered_class_elements' => true,
+                'array_syntax' => ['syntax' => 'short'],
+                'phpdoc_order' => true,
+                'phpdoc_types_order' => true,
+                'phpdoc_no_empty_return' => false,
+                'phpdoc_add_missing_param_annotation' => true,
+                'strict_comparison' => true,
+                'strict_param' => true,
+                'php_unit_strict' => true,
+            ]
+        )
+        ->setFinder(PhpCsFixer\Finder::create()->in(__DIR__));
+
+Many more are described in the PHP-CS-Fixer documentation, as is a way to 
+create a configuration file that you can store in your repository.
 
 ## Finding Dependencies
 
