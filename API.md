@@ -484,6 +484,10 @@ In API version 2, some calls were added:
   in case an update is needed without creating a new key pair;
 * `GET` to `/user_info` to obtain user information;
 * Extended authorization model in "Authorization" section.
+* `GET` to `/profile_list` and `/user_info` also (optionally) exposes which 
+  2FA method is accepted by the user and for which 2FA methods the user is 
+  enrolled, this can be used to enhance the UX, i.e. only ask for the OTP 
+  code;
 
 For security reasons, API 2 switches to the _authorization code_ flow, together 
 with mitigations described in the following documents:
