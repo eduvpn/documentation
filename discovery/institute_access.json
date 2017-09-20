@@ -7,6 +7,11 @@
             "logo": "https://static.eduvpn.nl/disco/img/nlesc.png"
         },
         {
+            "base_uri": "https://geant.eduvpn.nl/",
+            "display_name": "G\u00c9ANT",
+            "logo": "https://static.eduvpn.nl/disco/img/geant.png"
+        },
+        {
             "base_uri": "https://ru.eduvpn.nl/",
             "display_name": {
                 "nl-NL": "Radboud Universiteit",
@@ -33,6 +38,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 39,
-    "signed_at": "2017-08-24 11:27:38"
+    "seq": 40,
+    "signed_at": "2017-09-20 08:11:36"
 }
