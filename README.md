@@ -49,7 +49,12 @@ clients:
 
 # Deployment
 
-**At the moment only a fully updated official CentOS 7 is supported!**
+**NOTE**: if you plan to run eduVPN please consider subscribing yourself to the 
+mailing list [here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It 
+will be used for announcements of updates and discussion about running eduVPN.
+
+**NOTE**: at the moment only a fully updated official CentOS 7 is supported, 
+there is experimental support for Debian >= 9 and Fedora.
 
 ## CentOS
 
