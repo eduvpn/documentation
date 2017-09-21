@@ -303,6 +303,10 @@ To also perform code coverage analysis, this will create a HTML report in the
 
     $ phpunit tests --verbose --color --whitelist src --coverage-html coverage
 
+You can also create a (default) configuration file:
+
+    $ phpunit --generate-configuration
+
 ## Code Analysis
 
 PHPMD:
