@@ -20,9 +20,9 @@
             "base_uri": "https://vpn.tuxed.net/",
             "display_name": "eduVPN (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/surf.png",
-            "public_key": "Oh7NJRCaK32gKHYE0Xc8jZk4I5z3Y1aMauNhkUZlQmo="
+            "public_key": "Fxix/cSAolbhnXOR/Ur33WEbhb3S4AHSnbiWY+BafJ0="
         }
     ],
-    "seq": 33,
-    "signed_at": "2017-09-05 09:13:37"
+    "seq": 34,
+    "signed_at": "2017-09-22 06:57:44"
 }

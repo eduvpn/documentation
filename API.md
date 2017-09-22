@@ -93,7 +93,7 @@ up to the application to pick one it deems best.
 The `base_uri` field can be used to perform the API Discovery of the instances 
 themselves, see below.
 
-The `public_key` field is used by the VPN services for the `distributed` 
+The `public_key` field is used by the VPN services for `distributed` 
 Authorization, this can be ignored by API clients.
 
 ## Validation
