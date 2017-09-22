@@ -114,3 +114,10 @@ Restart Apache:
 If you now browse to https://vpn.example/ you will get redirected to the WAYF 
 and shown it. If there is only one IdP configured the WAYF will be skipped and
 you'll directly end up at the IdP.
+
+**NOTE**: if you want to add multiple IdPs that use identifiers that are not 
+guaranteed globally unique, you MUST set `addEntityID` to `true` in 
+`/etc/vpn-user-portal/default/config.php` and 
+`/etc/vpn-admin-portal/default/config.php`. The is for example the case when 
+you use persistent NameIDs. This is not needed if you use an identity 
+federation that acts as a proxy and generates their own persistent NameIDs.
