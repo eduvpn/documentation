@@ -10,6 +10,16 @@ the code that is also used in eduVPN.
 You can find documentation, scripts and deploy instructions for various 
 scenarios.
 
+## Security Contact
+
+If you find a security problem in the code, the deployed service(s) and want to
+report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 
+You can use PGP. My key is `0x9C5EDD645A571EB2`. The full fingerprint is 
+`6237 BAF1 418A 907D AA98  EAA7 9C5E DD64 5A57 1EB2`.
+
+The security contact will change in the future, but for now you can use the 
+above information.
+
 # Features
 
 - OpenVPN server accepting connections on both UDP and TCP ports;
