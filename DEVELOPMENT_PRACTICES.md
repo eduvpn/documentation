@@ -101,9 +101,9 @@ that later.
 The biggest problem with using PHP 5.4 as a minimum is the lack of support of 
 some of the libraries I wanted to use. It turns out it is not that hard to 
 develop PHP code that is compatible with all versions of PHP. The only really 
-annoying thing is the lack of static typing in PHP. However, this can be 
-mitigated somewhat by using Psalm and provide annotations as much as possible, 
-that will also ease later conversion to statically typed code.
+annoying thing is the lack of static typing in older PHP versions. However, 
+this can be mitigated somewhat by using Psalm and provide annotations as much 
+as possible, that will also ease later conversion to statically typed code.
 
 ## Frameworks
 
@@ -781,9 +781,18 @@ For CentOS, `-m --yum` is needed here:
 
     $ mockchain -r epel-7-x86_64 -m --yum /home/fkooman/rpmbuild/SRPMS/php-fkooman-yubitwee-1.0.1-1.fc26.src.rpm /home/fkooman/rpmbuild/SRPMS/yubicheck-1.0.0-1.fc26.src.rpm
 
+## Repository
+
+It makes sense to create a repository with these RPM files to allow for easy
+installation and providing updates that will then be automatically installed
+when the server is updated using e.g. `yum update`. 
+
+I'm using a small script that takes care of this. 
 # Deployment
 
-These steps are performed on the server you want to deploy the code on!
+This section will describe deployment of the code on a server. This becomes 
+very easy now as we have packages available that will make everything work 
+right away. The deployment will be done on a CentOS server.
 
 ## PHP
 
@@ -806,6 +815,21 @@ Make everything start on boot:
     $ systemctl enable php-fpm
     $ systemctl restart httpd
     $ systemctl restart php-fpm
+
+## Apache & SSL
+
+The SSL configuration is done in `/etc/httpd/conf.d/ssl.conf`. The
+configuration is not quite up to date as can be seen when using tools like 
+[Qualys SSL Server Test](https://www.ssllabs.com/ssltest/) or 
+[SSL Decoder](https://ssldecoder.org/). To improve this, I used 
+[Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/?server=apache-2.4.6&openssl=1.0.2k&hsts=yes&profile=modern). The link points
+to the configuration for the version of Apache and OpenSSL in CentOS 7.4, the
+latest version at time of writing.
+
+The updated version I use, using the correct file system paths for CentOS, can
+be found 
+[here](https://github.com/eduvpn/documentation/blob/master/resources/ssl.conf). 
+It does not contain a `<VirtualHost>` as I create those in separate files.
 
 ## Installation
 

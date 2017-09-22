@@ -42,6 +42,10 @@ To export the public key, for use by clients using this repository:
 
     $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
 
+Or on Fedora:
+
+    $ gpg2 --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
+
 Clone the `eduVPN/documentation` repository:
 
     $ git clone https://github.com/eduVPN/documentation.git
