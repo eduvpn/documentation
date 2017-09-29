@@ -455,6 +455,26 @@ available on the system you are running `composer` on:
 
 In the example above some updates were available and they were installed.
 
+# Packagist
+
+Using Packagist is great for development. It becomes very easy to add new 
+dependencies to the software. But, it is for development only. 
+
+It is a very bad idea to depend on Packagist for production environments as 
+you'll create a "moving target". The `composer.lock` file takes care of some of
+that problem, but not if the software disappears from the Git repository. This
+happened a few times before with 
+[left-pad](http://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm) on
+[npmjs](https://www.npmjs.com/).
+
+This problem is solved by separately packaging all dependencies and putting 
+them in the (same) repository. Then, no matter what happens to the upstream 
+code, the software will remain available neatly packaged without any 
+dependencies on the network. This also makes it possible to use a mirror of 
+e.g. the OS package repositories and the software repository so the server 
+running the software does not access the (public) network at all anymore 
+increasing security and having better control of installing (OS) updates.
+
 # Packaging
 
 Next up is packaging. Of course you could run `composer install` in your 
