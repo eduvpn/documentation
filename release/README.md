@@ -7,10 +7,18 @@ build.
 # Preparation
 
 We assume you have a fresh Fedora or CentOS 7 machine, add the following 
-software to it. 
+software to it:
+
+## CentOS
 
     $ sudo yum -y install epel-release # only on CentOS
     $ sudo yum -y install fedora-packager rpm-sign nosync
+
+## Fedora
+
+    $ sudo dnf -y install fedora-packager rpm-sign nosync
+
+## Mock
 
 Make sure your current user account is a member of the `mock` group:
 
@@ -18,7 +26,14 @@ Make sure your current user account is a member of the `mock` group:
 
 After this, make sure you logout and in again.
 
-Make sure you have a PGP key available. If not, create one:
+Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
+
+    # Speed up package installation in Mock
+    config_opts['nosync'] = True
+
+## GPG
+
+Make sure you have a PGP key available. If not, create one. On CentOS:
 
     $ gpg --gen-key
 
@@ -33,11 +48,6 @@ is `eduvpn@surfnet.nl`:
     %_gpg_name eduvpn@surfnet.nl
     %_gpg_digest_algo sha256
 
-Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
-
-    # Speed up package installation in Mock
-    config_opts['nosync'] = True
-
 To export the public key, for use by clients using this repository:
 
     $ gpg --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
@@ -45,6 +55,8 @@ To export the public key, for use by clients using this repository:
 Or on Fedora:
 
     $ gpg2 --export -a 'eduvpn@surfnet.nl' > RPM-GPG-KEY-eduVPN
+
+## Repository
 
 Clone the `eduVPN/documentation` repository:
 
