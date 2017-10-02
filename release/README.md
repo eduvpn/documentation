@@ -67,6 +67,16 @@ Clone the `eduVPN/documentation` repository:
     $ cd documentation
     $ sh release/build.sh
 
+This will put all RPMs and source RPMs in the `${HOME}/repo` directory and 
+create a tarball in `${HOME}` as well with the name `rpmRepo-<DATE>.tar.gz`. 
+This file will contain all files from `${HOME}/repo`. If you run the release
+script multiple times, e.g. run it again after a package update, the new RPM 
+and source RPM will be added to the `${HOME}/repo` directory and the tarball
+as well. A history of old packages is retained. This way you can rollback to 
+an earlier version of a package, e.g.:
+
+    $ sudo yum rollback php-fkooman-oauth2-client
+
 # Configuration
 
 Create the following snippet in `/etc/yum.repos.d/eduVPN.repo` on the machine
