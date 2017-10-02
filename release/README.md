@@ -72,10 +72,11 @@ create a tarball in `${HOME}` as well with the name `rpmRepo-<DATE>.tar.gz`.
 This file will contain all files from `${HOME}/repo`. If you run the release
 script multiple times, e.g. run it again after a package update, the new RPM 
 and source RPM will be added to the `${HOME}/repo` directory and the tarball
-as well. A history of old packages is retained. This way you can rollback to 
-an earlier version of a package, e.g.:
+as well. A history of old packages is retained, so it is benficial to retain
+the `${HOME}/repo` folder between builds. This way you can downgrade to an 
+earlier version of a package if needed, e.g.:
 
-    $ sudo yum rollback php-fkooman-oauth2-client
+    $ sudo yum downgrade php-fkooman-oauth2-client
 
 # Configuration
 
