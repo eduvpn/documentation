@@ -72,11 +72,26 @@ create a tarball in `${HOME}` as well with the name `rpmRepo-<DATE>.tar.gz`.
 This file will contain all files from `${HOME}/repo`. If you run the release
 script multiple times, e.g. run it again after a package update, the new RPM 
 and source RPM will be added to the `${HOME}/repo` directory and the tarball
-as well. A history of old packages is retained, so it is benficial to retain
+as well. A history of old packages is retained, so it is beneficial to retain
 the `${HOME}/repo` folder between builds. This way you can downgrade to an 
 earlier version of a package if needed, e.g.:
 
     $ sudo yum downgrade php-fkooman-oauth2-client
+
+# Updating
+
+If you want to create packages of updated software, just pull the last version
+of the repository:
+
+    $ git pull
+
+And then, run the `build.sh` script again:
+
+    $ cd documentation
+    $ sh release/build.sh
+
+This should put any new packages in `${HOME}/repo` as well as put them in the 
+generated tarball.
 
 # Configuration
 
