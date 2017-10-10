@@ -26,7 +26,8 @@ If you modify any of these values as described below, you need to regenerate
 the server configuration and possibly the firewall, see the 
 [Apply Changes](#apply-changes) section below.
 
-You may also need to take a look at the [SELinux](SELINUX.md) instructions.
+You may also need to take a look at the [SELinux](SELINUX.md) instructions, 
+CentOS only.
 
 ## Options
 
@@ -117,13 +118,23 @@ If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 
 `/etc/vpn-server-node/firewall.php`.
 
+## CentOS 
+
 To regenerate and install the new firewall rules, run this:
 
     $ sudo vpn-server-node-generate-firewall --install
 
-On Debian you also need to add the `--debian` flag.
-
-To activate the firewall, do this:
+To activate the updated firewall, do this:
 
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
+
+## Debian
+
+To regenerate and install the new firewall rules, run this:
+
+    $ sudo vpn-server-node-generate-firewall --install --debian
+
+To activate the updated firewall, do this:
+
+    $ sudo systemctl restart netfilter-persistent
