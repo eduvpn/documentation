@@ -121,6 +121,8 @@ To regenerate and install the new firewall rules, run this:
 
     $ sudo vpn-server-node-generate-firewall --install
 
+On Debian you also need to add the `--debian` flag.
+
 To activate the firewall, do this:
 
     $ sudo systemctl restart iptables
