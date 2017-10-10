@@ -118,7 +118,7 @@ If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 
 `/etc/vpn-server-node/firewall.php`.
 
-## CentOS 
+### CentOS 
 
 To regenerate and install the new firewall rules, run this:
 
@@ -129,7 +129,7 @@ To activate the updated firewall, do this:
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
 
-## Debian
+### Debian
 
 To regenerate and install the new firewall rules, run this:
 
