@@ -11,10 +11,16 @@ INSTANCE=default
 
 systemctl stop php-fpm
 
+# remove data
 rm -rf /var/lib/vpn-server-api/${INSTANCE}
 rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
+# remove OpenVPN server configuration files for this instance
+rm -f /etc/openvpn/server/${INSTANCE}-*.conf
+rm -rf /etc/openvpn/server/tls/${INSTANCE}
+
+# recreate data directories and initialize
 mkdir /var/lib/vpn-user-portal/${INSTANCE}
 chown apache.apache /var/lib/vpn-user-portal/${INSTANCE}
 chmod 0700 /var/lib/vpn-user-portal/${INSTANCE}
@@ -23,5 +29,8 @@ sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
 systemctl start php-fpm
 
+# recreate configuration and certificates for "internet" profile, you MAY need
+# to recreate for your other profiles as well...
+
 vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate
-systemctl restart "openvpn-server@*"
+systemctl restart "openvpn-server@${INSTANCE}-*"
