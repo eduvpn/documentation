@@ -60,7 +60,7 @@ sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fp
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
 # session hardening
-cp resources/75-session.ini /etc/php.d/75-session.ini
+cp resources/75-session.centos.ini /etc/php.d/75-session.ini
 
 # work around to create the session directory, otherwise we have to install
 # the PHP package, this is only on CentOS
