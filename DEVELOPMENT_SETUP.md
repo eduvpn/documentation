@@ -1,14 +1,14 @@
 # Introduction
 
-This document will describe how to set up a development environment for easy 
-development and running in on your development system. 
+This document will describe how to set up an eduVPN development environment 
+for easy development and running it on your development system. 
 
-This is **NOT** meant to be used as installation instructions! See the offical
-`deploy.sh` scripts instead.
+This is **NOT** meant to be used as installation instructions! See the 
+[deploy](README.md#deployment) instructions instead!
 
-We assume you will be using Fedora >= 25 for development work, but other 
-distributions will of course also work, but some minor details regarding 
-installation of the required software will be different.
+We assume you will be using Fedora >= 26 for development work, but other 
+distributions will of course also work, but some minor details, regarding 
+installation of the required software, will be different.
 
 See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
 about guidelines to follow.
@@ -91,7 +91,7 @@ To generate the OpenVPN server configuration files:
 
     $ php bin/server-config.php --profile internet --generate
 
-The configuration is stored in the `openvpn-config` folder.
+The configuration will be stored in the `openvpn-config` folder.
 
 # Testing
 
@@ -138,6 +138,9 @@ requirements to a (temporary) branch, e.g `master`. Change this:
 Into this:
 
     "eduvpn/common": "dev-master",
+
+If you work in a fork of `eduvpn/common` you can update the URL referenced in
+the `composer.json` before running `composer update`.
 
 # Translations
 
