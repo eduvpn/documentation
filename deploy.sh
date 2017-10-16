@@ -110,8 +110,11 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
 # PHP
 ###############################################################################
 
-# switch to unix socket, default in newer PHP versions, but not on CentOS 7
+# switch to unix socket and secure it, the default in newer PHP versions, but 
+# not on CentOS 7
 sed -i "s|^listen = 127.0.0.1:9000$|listen = /run/php-fpm/www.sock|" /etc/php-fpm.d/www.conf
+sed -i "s|;listen.mode = 0666|listen.mode = 0660|" /etc/php-fpm.d/www.conf
+sed -i "s|;listen.group = nobody|listen.group = apache|" /etc/php-fpm.d/www.conf
 
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
