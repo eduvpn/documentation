@@ -17,9 +17,10 @@ about guidelines to follow.
 
 Install the required software:
 
-    $ sudo dnf -y install git composer php-phpunit-PHPUnit
+    $ sudo dnf -y install git composer php-phpunit-PHPUnit openvpn \
+        php-libsodium
 
-Some additional PHP extensions may be required, you will see `composer install` 
+Some additional PHP extensions may be required, you will see `composer update` 
 below complain about any missing PHP extensions. You can install them with 
 `sudo dnf -y install php-EXT`.
 
@@ -36,7 +37,7 @@ below complain about any missing PHP extensions. You can install them with
 ## vpn-server-api
 
     $ cd ${HOME}/Projects/eduVPN/vpn-server-api
-    $ composer install
+    $ composer update
     $ mkdir config/default
     $ cp config/config.php.example config/default/config.php
     $ mkdir -p data/default
@@ -45,7 +46,7 @@ below complain about any missing PHP extensions. You can install them with
 ## vpn-user-portal
 
     $ cd ${HOME}/Projects/eduVPN/vpn-user-portal
-    $ composer install
+    $ composer update
     $ mkdir config/default
     $ cp config/config.php.example config/default/config.php
     $ mkdir -p data/default
@@ -60,7 +61,7 @@ Modify `apiUri` and set it to `http://localhost:8008/api.php`.
 ## vpn-admin-portal
 
     $ cd ${HOME}/Projects/eduVPN/vpn-admin-portal
-    $ composer install
+    $ composer update
     $ mkdir config/default
     $ cp config/config.php.example config/default/config.php
     $ mkdir -p data/default
@@ -74,7 +75,7 @@ Modify `apiUri` and set it to `http://localhost:8008/api.php`.
 ## vpn-server-node
 
     $ cd ${HOME}/Projects/eduVPN/vpn-server-node
-    $ composer install
+    $ composer update
     $ mkdir config/default
     $ cp config/config.php.example config/default/config.php
     $ cp config/firewall.php.example config/firewall.php
@@ -82,16 +83,6 @@ Modify `apiUri` and set it to `http://localhost:8008/api.php`.
 
 Modify `config/default/config.php` and set `apiUri` to 
 `http://localhost:8008/api.php`.
-
-To generate the firewall and output the data to `stdout`:
-    
-    $ php bin/generate-firewall.php
-
-To generate the OpenVPN server configuration files:
-
-    $ php bin/server-config.php --profile internet --generate
-
-The configuration will be stored in the `openvpn-config` folder.
 
 # Testing
 
@@ -124,6 +115,20 @@ Script to launch all services:
 
 Now with your browser you can connect to the user portal on 
 `http://localhost:8082/` and to the admin portal on `http://localhost:8083/`.
+
+# VPN Configuration
+
+To generate the firewall and output the data to `stdout`:
+    
+    $ cd ${HOME}/Projects/eduVPN/vpn-server-node 
+    $ php bin/generate-firewall.php
+
+To generate the OpenVPN server configuration files:
+
+    $ cd ${HOME}/Projects/eduVPN/vpn-server-node
+    $ php bin/server-config.php --profile internet --generate
+
+The configuration will be stored in the `openvpn-config` folder.
 
 # Developing
 
