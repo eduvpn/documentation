@@ -4,12 +4,12 @@
 
 %global github_owner            Bacon
 %global github_name             BaconQrCode
-%global github_commit           031a2ce68c5794064b49d11775b2daf45c96e21c
+%global github_commit           5a91b62b9d37cee635bbf8d553f4546057250bee
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    1.0.1
-Release:    6%{?dist}
+Version:    1.0.3
+Release:    1%{?dist}
 Summary:    QR Code Generator for PHP 
 
 Group:      System Environment/Libraries
@@ -17,9 +17,6 @@ License:    BSD-2-Clause
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-
-# fix building with PHP 7.1, upstreamed
-Patch0:     %{name}-fix-71-build.patch
 
 BuildArch:  noarch
 
@@ -41,7 +38,6 @@ BaconQrCode is a QR code generator for PHP.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
-%patch0 -p1
 
 %build
 cat <<'AUTOLOAD' | tee src/%{composer_namespace}/autoload.php
@@ -64,6 +60,10 @@ phpunit --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.
 %license LICENSE
 
 %changelog
+* Tue Oct 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-1
+- update to 1.0.3
+- remove upstreamed patch
+
 * Fri Mar 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-6
 - rebuilt
 
