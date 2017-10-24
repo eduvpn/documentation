@@ -28,7 +28,6 @@ MOCK_FLAGS=
 #MOCK_FLAGS=
 
 PACKAGE_LIST=(\
-    php-bacon-bacon-qr-code \
     php-christian-riesen-otp \
     php-fkooman-oauth2-client \
     php-fkooman-oauth2-server \
