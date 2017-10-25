@@ -38,13 +38,13 @@ Assuming your profile is `internet`, you need to modify
         ],
     ],
 
-Now the server configuration needs to be regenerated:
+Now the OpenVPN server configuration files need to be regenerated:
 
-    $ sudo vpn-server-node-server-config --profile internet
+    $ sudo vpn-server-node-server-config
 
 Also, the VPN processes need to be restarted:
 
-    $ sudo systemctl restart "openvpn-server@default-internet-*"
+    $ sudo systemctl restart "openvpn-server@default-*"
 
 ## Connecting to the VPN
 

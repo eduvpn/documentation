@@ -93,14 +93,13 @@ specify a `listen` address by using a proxy like
 
 ## Apply Changes
 
-Assuming you made changes in the profile `internet`, you would regenerate the 
-configuration like this:
+The OpenVPN server configuration can be regenerated like this:
 
-    $ sudo vpn-server-node-server-config --profile internet
+    $ sudo vpn-server-node-server-config
 
-To restart all OpenVPN processes belonging to the profile `internet`, do this:
+To restart all OpenVPN processes, do this:
 
-    $ sudo systemctl restart "openvpn-server@default-internet-*"
+    $ sudo systemctl restart "openvpn-server@default-*"
 
 If you changed the entry `vpnProtoPorts`, to say 
 `['udp/1194', 'udp/1195', 'tcp/1194', 'tcp/1195']` you now have two more 
@@ -112,7 +111,7 @@ Enable the two extra processes on boot:
 
 (Re)start them all:
 
-    $ sudo systemctl restart "openvpn-server@default-internet-*"
+    $ sudo systemctl restart "openvpn-server@default-*"
 
 If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 

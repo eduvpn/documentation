@@ -29,8 +29,6 @@ sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
 systemctl start php-fpm
 
-# recreate configuration and certificates for "internet" profile, you MAY need
-# to recreate for your other profiles as well...
-
-vpn-server-node-server-config --instance ${INSTANCE} --profile internet --generate
+# recreate configuration and certificates...
+vpn-server-node-server-config --instance ${INSTANCE} --generate
 systemctl restart "openvpn-server@${INSTANCE}-*"

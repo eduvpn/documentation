@@ -193,8 +193,8 @@ systemctl enable --now httpd
 # NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
 # by default! 
 
-# generate the server configuration files
-vpn-server-node-server-config --profile internet --generate
+# generate the OpenVPN server configuration files and certificates
+vpn-server-node-server-config --generate
 
 # enable and start OpenVPN
 systemctl enable --now openvpn-server@default-internet-0

@@ -190,7 +190,8 @@ systemctl enable --now php7.0-fpm
 # NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
 # by default! 
 
-vpn-server-node-server-config --profile internet --generate
+# generate the OpenVPN server configuration files and certificates
+vpn-server-node-server-config --generate
 
 systemctl enable --now openvpn-server@default-internet-0
 systemctl enable --now openvpn-server@default-internet-1

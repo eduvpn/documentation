@@ -79,8 +79,7 @@ deploying using `deploy.sh` it needs to be stopped first, and can be removed:
 
 Now the new configurations can be generated:
 
-    $ sudo vpn-server-node-server-config --profile office --generate 
-    $ sudo vpn-server-node-server-config --profile admin  --generate
+    $ sudo vpn-server-node-server-config --generate
 
 Enable and start them:
 
