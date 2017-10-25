@@ -17,7 +17,7 @@ differently:
 
 * [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749);
 * [The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750);
-* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-11) (use latest version of specification);
+* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/rfc8252);
 * [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
 
 Implementing OAuth 2.0 correctly is not easy, there are a number of sample 
