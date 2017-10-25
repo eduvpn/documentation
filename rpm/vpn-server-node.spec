@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           0ed7648430ded677e159af1648046dc97b280349
+%global github_commit           7aaa36ce1be71d7da5af9c14169edb6a32c30713
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.3
+Version:    1.0.4
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
@@ -54,9 +54,6 @@ OpenVPN node controller.
 %prep
 %setup -qn %{github_name}-%{github_commit} 
 
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/* libexec/*
-sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/* libexec/*
-
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
@@ -70,52 +67,49 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
 
 mkdir -p %{buildroot}%{_bindir}
-(
-cd bin
-for phpFileName in $(ls *)
-do
-    binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
-done
-)
-
-mkdir -p %{buildroot}%{_libexecdir}
-(
-cd libexec
-for phpFileName in $(ls *)
-do
-    binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_libexecdir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_libexecdir}/%{name}-${binFileName}
-done
-)
-
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}
-cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/%{name}/firewall.php
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
+mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
+#mkdir -p %{buildroot}%{_datadir}/%{name}/openvpn-config
+
+cp -pr bin libexec src %{buildroot}%{_datadir}/%{name}
+chmod 0755 %{buildroot}%{_datadir}/%{name}/libexec/*
+chmod 0755 %{buildroot}%{_datadir}/%{name}/bin/*
+
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
+cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/%{name}/firewall.php
 
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/%{name}/openvpn-config
 
+ln -s %{_datadir}/%{name}/bin/generate-firewall.php %{buildroot}%{_bindir}/%{name}-generate-firewall
+ln -s %{_datadir}/%{name}/bin/server-config.php %{buildroot}%{_bindir}/%{name}-server-config
+
+# old libexec path (backwards compatible with old server configs)
+ln -s %{_datadir}/%{name}/libexec/client-connect.php %{buildroot}%{_libexecdir}/%{name}-client-connect
+ln -s %{_datadir}/%{name}/libexec/client-disconnect.php %{buildroot}%{_libexecdir}/%{name}-client-disconnect
+ln -s %{_datadir}/%{name}/libexec/verify-otp.php %{buildroot}%{_libexecdir}/%{name}-verify-otp
+
+# new path
+ln -s %{_datadir}/%{name}/libexec/client-connect.php %{buildroot}%{_libexecdir}/%{name}/client-connect
+ln -s %{_datadir}/%{name}/libexec/client-disconnect.php %{buildroot}%{_libexecdir}/%{name}/client-disconnect
+ln -s %{_datadir}/%{name}/libexec/verify-otp.php %{buildroot}%{_libexecdir}/%{name}/verify-otp
+
 %check
-mkdir vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat << 'EOF' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
 ));
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Node\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit --bootstrap tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -127,12 +121,19 @@ EOF
 %{_libexecdir}/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/src
+%{_datadir}/%{name}/bin
+%{_datadir}/%{name}/libexec
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/openvpn-config
 %doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
-%license LICENSE
+%license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Oct 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.4-1
+- update to 1.0.4
+- change handling of libexec and bin scripts by using changelogs
+- add LICENSE.spdx
+
 * Fri Oct 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-1
 - update to 1.0.3
 
