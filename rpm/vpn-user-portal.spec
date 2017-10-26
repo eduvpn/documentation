@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           f95b4eadd1a21c6d6cb4fd14d4b8554884f030c4
+%global github_commit           2f68f1e45ecf27287d197aa629b9199bf28e53fe
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.0.8
+Version:    1.0.9
 Release:    1%{?dist}
 Summary:    VPN User Portal
 
@@ -28,17 +28,26 @@ BuildRequires:  php-filter
 BuildRequires:  php-gettext
 BuildRequires:  php-hash
 BuildRequires:  php-json
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-libsodium
+%endif
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
-BuildRequires:  php-libsodium
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(bacon/bacon-qr-code)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
+BuildRequires:  php-composer(paragonie/random_compat)
 
 Requires:   crontabs
 Requires:   php(language) >= 5.4.0
@@ -49,10 +58,18 @@ Requires:   php-filter
 Requires:   php-gettext
 Requires:   php-hash
 Requires:   php-json
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28
+Requires:       php-sodium
+%else
+Requires:       php-libsodium
+%endif
 Requires:   php-mbstring
 Requires:   php-pcre
 Requires:   php-pdo
-Requires:   php-libsodium
 Requires:   php-spl
 Requires:   vpn-lib-common
 Requires:   php-composer(fedora/autoloader)
@@ -60,6 +77,7 @@ Requires:   php-composer(bacon/bacon-qr-code)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
+Requires:   php-composer(paragonie/random_compat)
 
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -77,10 +95,6 @@ VPN User Portal.
 %prep
 %setup -qn %{github_name}-%{github_commit} 
 
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/*
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" web/*.php
-sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
-
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
@@ -88,6 +102,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
+    '%{_datadir}/php/random_compat/autoload.php',
     '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
     '%{_datadir}/php/BaconQrCode/autoload.php',
     '%{_datadir}/php/fkooman/SeCookie/autoload.php',
@@ -99,20 +114,15 @@ AUTOLOAD
 %install
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
-mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr web views locale %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
 mkdir -p %{buildroot}%{_bindir}
-(
-cd bin
-for phpFileName in $(ls *)
-do
-    binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
-done
-)
+mkdir -p %{buildroot}%{_datadir}/%{name}
+cp -pr bin src web views locale %{buildroot}%{_datadir}/%{name}
+
+chmod +x %{buildroot}%{_datadir}/%{name}/bin/*
+ln -s %{_datadir}/%{name}/bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
+ln -s %{_datadir}/%{name}/bin/foreign-key-list-fetcher.php %{buildroot}%{_bindir}/%{name}-foreign-key-list-fetcher
+ln -s %{_datadir}/%{name}/bin/init.php %{buildroot}%{_bindir}/%{name}-init
+ln -s %{_datadir}/%{name}/bin/show-public-key.php %{buildroot}%{_bindir}/%{name}-show-public-key
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -126,18 +136,17 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
-mkdir vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat << 'EOF' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
 ));
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -161,6 +170,7 @@ fi
 %{_bindir}/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/src
+%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/data
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/views
@@ -168,9 +178,16 @@ fi
 %{_datadir}/%{name}/locale
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
 %doc README.md CHANGES.md composer.json config/config.php.example
-%license LICENSE
+%license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Oct 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.9-1
+- add paragonie/random_compat dependency
+- update to 1.0.9
+- pick the right sodium depending on OS
+- cleanup web and bin script installation (using symlinks)
+- add LICENSE.spdx
+
 * Tue Oct 24 2017 François Kooman <fkooman@tuxed.net> - 1.0.8-1
 - update to 1.0.8
 

@@ -34,10 +34,10 @@
         },
         {
             "base_uri": "https://demo.eduvpn.nl/",
-            "display_name": "eduVPN Demo",
+            "display_name": "Demo",
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 40,
-    "signed_at": "2017-09-20 08:11:36"
+    "seq": 41,
+    "signed_at": "2017-10-25 15:25:49"
 }

@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           6a7f6048cd871598845dbec5624f91302a83c3eb
+%global github_commit           ad800dfd71c10528225c1cae758835792306d96e
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
-Version:    1.0.5
+Version:    1.0.6
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -141,6 +141,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Oct 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.6-1
+- update to 1.0.6
+
 * Fri Oct 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-1
 - update to 1.0.5
 
