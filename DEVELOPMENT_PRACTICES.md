@@ -244,7 +244,7 @@ dependency, and `phpunit/phpunit` as a `require-dev`:
     Search for a package: 
     Would you like to define your dev dependencies (require-dev) interactively [yes]? 
     Search for a package: phpunit/phpunit
-    Enter the version constraint to require (or leave blank to use the latest version): ^5
+    Enter the version constraint to require (or leave blank to use the latest version): ^4|^5
     Search for a package: 
 
     {
@@ -255,7 +255,7 @@ dependency, and `phpunit/phpunit` as a `require-dev`:
             "fkooman/yubitwee": "^1"
         },
         "require-dev": {
-            "phpunit/phpunit": "^5"
+            "phpunit/phpunit": "^4|^5"
         },
         "license": "MIT",
         "authors": [
@@ -294,18 +294,24 @@ server later.
 
 ## Tests
 
-Running tests can be done with PHPUnit:
+Running tests can be done with PHPUnit, first create a simple configuration 
+file:
 
-    $ phpunit tests --verbose --color
+    $ phpunit --generate-configuration
+
+You can copy the generated `phpunit.xml` to `phpunit.xml.dist` and add it to
+the source repository. The `phpunit.xml` file could contain override
+specifically for your development machine, e.g. database configuration 
+information.
+
+To run the unit tests:
+
+    $ phpunit
 
 To also perform code coverage analysis, this will create a HTML report in the
 `coverage/` folder:
 
-    $ phpunit tests --verbose --color --whitelist src --coverage-html coverage
-
-You can also create a (default) configuration file:
-
-    $ phpunit --generate-configuration
+    $ phpunit --whitelist src --coverage-html coverage
 
 ## Code Analysis
 
@@ -322,9 +328,10 @@ Psalm:
     $ psalm --init
     $ psalm
 
-A useful option is `--update-docblocks` to automatically at return types to 
+A useful option is `--update-docblocks` to automatically add return types to 
 "docblocks", especially useful for adding `@return void` if your IDE or editor
-does not take care of that.
+does not take care of that. You can also modify the `psalm.xml` file to add the
+other folders, like `web` and `tests` to extend the covered code.
 
 ## Source Formatting
 
@@ -518,7 +525,7 @@ RPM package becomes `php-fkooman-yubitwee`.
     $ rpmdev-newspec php-fkooman-yubitwee
 
 The `Requires` and `BuildRequires` are taken from the `composer.json` file, 
-make sure they match.
+make sure they match!
 
 **TODO**: specify version numbers of used PHP libraries!
 
@@ -610,7 +617,7 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     ));
     AUTOLOAD
 
-    %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+    %{_bindir}/phpunit --bootstrap=tests/autoload.php
 
     %files
     %license LICENSE
@@ -773,7 +780,7 @@ The `yubicheck.spec` file you end up with:
     ));
     AUTOLOAD
 
-    %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+    %{_bindir}/phpunit --bootstrap=tests/autoload.php
 
     %files
     %license LICENSE
