@@ -84,7 +84,7 @@ echo "Build in progress, this may take a long time..."
 DATETIME=$(date +%Y%m%d%H%M%S)
 (
     cd "${REPO_DIR}" || exit
-    tar -czf "../rpmRepo-${DATETIME}.tar.gz" .
+    tar -cJf "../rpmRepo-${DATETIME}.tar.xz" .
 )
 
 # Done
