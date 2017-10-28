@@ -98,6 +98,10 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11955
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 
+# Switch to MPM event (https://httpd.apache.org/docs/2.4/mod/event.html)
+sed -i "s|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$|#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|" /etc/httpd/conf.modules.d/00-mpm.conf
+sed -i "s|^#LoadModule mpm_event_module modules/mod_mpm_event.so$|LoadModule mpm_event_module modules/mod_mpm_event.so|" /etc/httpd/conf.modules.d/00-mpm.conf
+
 # php-fpm configuration (taken from Fedora php-fpm package, only required on
 # CentOS)
 cp resources/php.conf /etc/httpd/conf.d/php.conf
