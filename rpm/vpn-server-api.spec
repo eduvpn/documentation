@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           a519f0c27a28f22b6495508d36b6f630aaa3058c
+%global github_commit           5995f738f231bcf9b04b545633a2db07a04fd53f
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
-Version:    1.0.5
+Version:    1.0.6
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 
@@ -83,10 +83,6 @@ VPN Server API.
 %prep
 %setup -qn %{github_name}-%{github_commit} 
 
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/*
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" web/*.php
-sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
-
 # remove bundled Easy RSA 3.x
 %if 0%{?fedora} >= 24
 rm -rf easy-rsa
@@ -111,19 +107,16 @@ AUTOLOAD
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr web %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
+cp -pr src web %{buildroot}%{_datadir}/%{name}
+
+mkdir -p %{buildroot}%{_datadir}/%{name}/bin
+install -D -p bin/* %{buildroot}%{_datadir}/%{name}/bin
 mkdir -p %{buildroot}%{_bindir}
-(
-cd bin
-for phpFileName in $(ls *)
+# create symlinks
+for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
 do
-    binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
+    ln -s %{_datadir}/%{name}/bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
 done
-)
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -144,18 +137,17 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
-mkdir vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat << 'EOF' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
 ));
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Server\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -176,15 +168,20 @@ fi
 %{_bindir}/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/src
+%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/easy-rsa
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/data
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
 %doc README.md composer.json config/config.php.example CHANGES.md
-%license LICENSE
+%license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.6-1
+- update to 1.0.6
+- add LICENSE.spdx
+
 * Mon Oct 23 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-1
 - update to 1.0.5
 

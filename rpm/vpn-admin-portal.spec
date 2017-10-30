@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           799d2e4581db285a95ef6e7af320aa9470a76460
+%global github_commit           bc2faefcdd995269f0edaa8c091c6becc29e2ae5
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
-Version:    1.1.6
+Version:    1.1.7
 Release:    1%{?dist}
 Summary:    VPN Admin Portal
 
@@ -59,10 +59,6 @@ VPN Admin Portal.
 %prep
 %setup -qn %{github_name}-%{github_commit} 
 
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" bin/*
-sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|require_once '%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php';|" web/*.php
-sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
-
 %build
 cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
@@ -80,19 +76,11 @@ AUTOLOAD
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr web views locale %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/%{name}/src/%{composer_namespace}
+cp -pr bin src web views locale %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_bindir}
-(
-cd bin
-for phpFileName in $(ls *)
-do
-    binFileName=$(basename ${phpFileName} .php)
-    cp -pr ${phpFileName} %{buildroot}%{_bindir}/%{name}-${binFileName}
-    chmod 0755 %{buildroot}%{_bindir}/%{name}-${binFileName}
-done
-)
+
+chmod +x %{buildroot}/%{_datadir}/%{name}/bin/add-user.php
+ln -s %{_datadir}/%{name}/bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -102,18 +90,17 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 %check
-mkdir vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat << 'EOF' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/%{composer_namespace}/autoload.php',
+    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
 ));
 \Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Admin\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -137,14 +124,19 @@ fi
 %{_datadir}/%{name}/src
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/data
+%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/views
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/locale
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
 %doc README.md CHANGES.md composer.json config/config.php.example
-%license LICENSE
+%license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 1.1.7-1
+- update to 1.1.7
+- add LICENSE.spdx
+
 * Mon Sep 11 2017 François Kooman <fkooman@tuxed.net> - 1.1.6-1
 - update to 1.1.6
 
