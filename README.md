@@ -73,10 +73,12 @@ you can run on a fresh CentOS 7 installation. It will configure all components
 and will be ready for use after running, including a valid 
 [Let's Encrypt](https://letsencrypt.org/) TLS certificate!
 
-Not all "cloud" instances will work, because they modify CentOS, by e.g. 
-disabling SELinux or other (network) changes. We test only with the official 
-CentOS [Minimal ISO](https://centos.org/download/) and the official 
-[Cloud](https://wiki.centos.org/Download) images.
+Not all "Cloud" instances will work, because they modify CentOS, by e.g. 
+disabling SELinux, change the network settings, or use "floating" IP address 
+assignment. We test only with the official CentOS 
+[Minimal ISO](https://centos.org/download/) and the official 
+[Cloud](https://wiki.centos.org/Download) images. If you have a slightly more
+complicated setup, we recommend to manually walk through the deploy script.
 
 **NOTE**: make sure SELinux is **enabled** and the filesystem correctly 
 (re)labeled! Look [here](https://wiki.centos.org/HowTos/SELinux).
