@@ -1,10 +1,10 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           70c2716b41d50bff9f7fcc53d686856c87371a9d
+%global github_commit           622eed9b70d2ebfc69a8dd9e2cde0f407ee29ea0
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    1.0.1
+Version:    2.0.0
 Release:    1%{?dist}
 Summary:    PHP JSON Signer
 
@@ -61,14 +61,12 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 cp -pr bin src %{buildroot}%{_datadir}/%{name}
 chmod +x %{buildroot}%{_datadir}/%{name}/bin/*.php
 
-ln -s %{_datadir}/%{name}/bin/init.php %{buildroot}%{_bindir}/%{name}-init
 ln -s %{_datadir}/%{name}/bin/show-public-key.php %{buildroot}%{_bindir}/%{name}-show-public-key
 ln -s %{_datadir}/%{name}/bin/sign.php %{buildroot}%{_bindir}/%{name}-sign
 ln -s %{_datadir}/%{name}/bin/verify.php %{buildroot}%{_bindir}/%{name}-verify
 
 %check
-mkdir -p vendor
-cat << 'EOF' | tee vendor/autoload.php
+cat << 'EOF' | tee tests/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 
@@ -78,17 +76,20 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('fkooman\\JsonSigner\\Tests\\', dirname(__DIR__) . '/tests');
 EOF
 
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/*
 %{_datadir}/%{name}/bin
 %{_datadir}/%{name}/src
-%doc README.md CHANGES.md composer.json
+%doc README.md CHANGES.md UPGRADING.md composer.json
 %license LICENSE
 
 %changelog
+* Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-1
+- update to 2.0.0
+
 * Tue Aug 22 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
 - update to 1.0.1
 
