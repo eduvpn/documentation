@@ -1,8 +1,8 @@
-%global commit0 ef37f95778b7ce31a9874f80b1f376b1f4e42749
+%global commit0 9f6587319ae11839619c3448e5e9775da5deceb8
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-yubitwee
-Version:        1.1.0
+Version:        1.1.1
 Release:        1%{?dist}
 Summary:        YubiKey OTP Validator library
 
@@ -12,25 +12,43 @@ Source0:        https://github.com/fkooman/php-yubitwee/archive/%{commit0}.tar.g
 
 BuildArch:      noarch
 
+#        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
+#        "ext-curl": "*",
+#        "ext-date": "*",
+#        "ext-hash": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-hash
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fedora/autoloader)
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  %{_bindir}/phpunit
 
+#        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
+#        "ext-curl": "*",
+#        "ext-date": "*",
+#        "ext-hash": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-hash
 Requires:       php-pcre
 Requires:       php-spl
 Requires:       php-composer(fedora/autoloader)
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
@@ -71,7 +89,7 @@ require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
 ));
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{_bindir}/phpunit --bootstrap=tests/autoload.php
 
 %files
 %license LICENSE
@@ -80,6 +98,13 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-1
+- update to 1.1.1
+- spec file cleanup
+
+* Sat Oct 28 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-2
+- update spec file according to practices
+
 * Tue Sep 12 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
 - update to 1.1.0
 
