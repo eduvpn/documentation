@@ -42,8 +42,9 @@ the firewall rules.
 ## IPC
 
 The User Portal, Admin Portal and Server Node components communicate with the 
-Server API over HTTPS. They use HTTP Basic credentials for authentication. This
-is the "Private API".
+Server API over HTTP. They use HTTP Basic credentials for authentication. 
+This is the "Private API". When the Server Node component is installed on 
+another machine, HTTPS is used to communicate with the Server API.
 
 In addition, the Server API needs to talk to the OpenVPN processes using a 
 private (V)LAN, this is to kill active connections and obtain a list of 
