@@ -54,6 +54,8 @@ PACKAGE_MANAGER=/usr/bin/yum
 
 # disable firewalld, does not support NAT66 and too complicated
 systemctl disable --now firewalld
+systemctl stop iptables
+systemctl stop ip6tables
 
 # RHEL 7
 # subscription-manager repos --enable=rhel-7-server-optional-rpms
