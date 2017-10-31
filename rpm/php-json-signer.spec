@@ -1,10 +1,10 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           622eed9b70d2ebfc69a8dd9e2cde0f407ee29ea0
+%global github_commit           f18db4308e9623cece8d49f905e57b26610402bc
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    2.0.0
+Version:    2.1.0
 Release:    1%{?dist}
 Summary:    PHP JSON Signer
 
@@ -19,18 +19,34 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  php(language) >= 5.4.0
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-libsodium
+%endif
 BuildRequires:  php-date
 BuildRequires:  php-json
-BuildRequires:  php-libsodium
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(dnoegel/php-xdg-base-dir)
 BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28
+Requires:       php-sodium
+%else
+Requires:       php-libsodium
+%endif
 Requires:   php-date
 Requires:   php-json
-Requires:   php-libsodium
 Requires:   php-spl
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(dnoegel/php-xdg-base-dir)
@@ -87,6 +103,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Tue Oct 31 2017 François Kooman <fkooman@tuxed.net> - 2.1.0-1
+- update to 2.1.0
+
 * Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
 
