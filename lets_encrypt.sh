@@ -55,9 +55,9 @@ systemctl enable --now certbot-renew.timer
 sed -i "s|SSLCertificateFile /etc/pki/tls/certs/${WEB_FQDN}|#SSLCertificateFile /etc/pki/tls/certs/${WEB_FQDN}|" /etc/httpd/conf.d/${WEB_FQDN}.conf
 sed -i "s|SSLCertificateKeyFile /etc/pki/tls/private/${WEB_FQDN}.key|#SSLCertificateKeyFile /etc/pki/tls/private/${WEB_FQDN}.key|" /etc/httpd/conf.d/${WEB_FQDN}.conf
 
-sed -i "s|#SSLCertificateFile /etc/letsencrypt/live/vpn.example/cert.pem|SSLCertificateFile /etc/letsencrypt/live/${WEB_FQDN}/cert.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
-sed -i "s|#SSLCertificateKeyFile /etc/letsencrypt/live/vpn.example/privkey.pem|SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
-sed -i "s|#SSLCertificateChainFile /etc/letsencrypt/live/vpn.example/chain.pem|SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
+sed -i "s|#SSLCertificateFile /etc/letsencrypt/live/${WEB_FQDN}/cert.pem|SSLCertificateFile /etc/letsencrypt/live/${WEB_FQDN}/cert.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
+sed -i "s|#SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
+sed -i "s|#SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|" /etc/httpd/conf.d/${WEB_FQDN}.conf
 
 ###############################################################################
 # CLEANUP
