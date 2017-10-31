@@ -133,6 +133,21 @@ sysctl --system
 vpn-server-api-update-api-secrets
 
 ###############################################################################
+# CERTIFICATE
+###############################################################################
+
+# generate self signed certificate and key
+openssl req \
+    -nodes \
+    -subj "/CN=${WEB_FQDN}" \
+    -x509 \
+    -sha256 \
+    -newkey rsa:2048 \
+    -keyout /etc/pki/tls/private/${WEB_FQDN}.key \
+    -out /etc/pki/tls/certs/${WEB_FQDN}.crt \
+    -days 90
+
+###############################################################################
 # WEB
 ###############################################################################
 
