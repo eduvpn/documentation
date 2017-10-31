@@ -90,7 +90,7 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
 setsebool -P httpd_can_network_connect=1
 
 # allow OpenVPN to bind to the management ports
-semanage port -a -t openvpn_port_t -p tcp 11940-11955
+semanage port -a -t openvpn_port_t -p tcp 11940-12195
 
 ###############################################################################
 # APACHE
@@ -99,6 +99,7 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11955
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
+cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
 
 # Switch to MPM event (https://httpd.apache.org/docs/2.4/mod/event.html)
 sed -i "s|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$|#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|" /etc/httpd/conf.modules.d/00-mpm.conf
@@ -145,25 +146,11 @@ vpn-server-api-update-ip --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_
 sudo -u apache vpn-server-api-init
 
 ###############################################################################
-# VPN-ADMIN-PORTAL
-###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-admin-portal/default/config.php
-
-###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
-
 # generate OAuth public/private keys
 sudo -u apache vpn-user-portal-init
-
-###############################################################################
-# VPN-SERVER-NODE
-###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-server-node/default/config.php
 
 ###############################################################################
 # NETWORK
