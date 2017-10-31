@@ -12,9 +12,9 @@
 WEB_FQDN=vpn.example
 
 # DNS name of the OpenVPN Server
+VPN_FQDN=${WEB_FQDN}
 # use different name if you want to allow moving the OpenVPN processes to 
 # another machine in the future without breaking client configuration files
-VPN_FQDN=${WEB_FQDN}
 #VPN_FQDN=internet.${WEB_FQDN}
 
 # The interface that connects to "the Internet" (for firewall rules)
