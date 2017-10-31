@@ -1,33 +1,32 @@
-**Work in Progress**
-
 # Security
 
-This document contains information about the security of the software, more 
-specifically the specific configuration choices that were made.
+This document contains some information about the security of the software, 
+more specifically: the configuration choices that were made.
 
 ## OpenVPN
 
 ### Crypto
 
+The basic OpenVPN server (and client) crypto configuration:
+
     tls-version-min 1.2
     tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
     auth SHA256
-    # NCP may override this
-    cipher AES-256-CBC
-    # use ECDHE only
-    dh none
+    ncp-ciphers AES-256-GCM
+    cipher AES-256-CBC           # NCP overrides this
+    dh none                      # use ECDHE only
+
+Furthermore, `tls-auth` is used. The secret is shared among all profiles.
+
+In the (near) future we plan to change the `cipher` option to be `AES-256-GCM` 
+as well. However, this will prevent OpenVPN 2.3 clients from connecting.
 
 ## PHP
 
-The software, by default, when using the `deploy.sh` script uses PHP 5.4. This
-is not without risks. This version is no longer maintained by the PHP project
-and depends fully on the Red Hat engineers that update it when (security) 
-issues appear.
-
-A number of issues have been identified and workarounds provided:
-
-- PHP 5.4 does not have a (secure) CSPRNG, so we use 
-  [pecl-libsodium](https://paragonie.com/book/pecl-libsodium) instead;
+CentOS 7 by default provides PHP 5.4. This is not without risks. This version 
+is no longer maintained by the PHP project and depends fully on the Red Hat 
+engineers that update it when (security) issues appear. An (experimental) 
+script is provided to upgrade to the latest stable PHP version.
 
 See the `resources/` directory for PHP setting changes.
 
@@ -36,48 +35,8 @@ See the `resources/` directory for PHP setting changes.
 We use [fkooman/secookie](https://github.com/fkooman/php-secookie), a library
 to implement secure PHP sessions (and cookies).
 
-## Threat Model
+## CA
 
-We will consider the following scenarios:
-
-1. A user uses the VPN to safely surf the Internet;
-2. An organization uses the VPN to allow employees to access the internal 
-   resources;
-
-The main purpose of scenario 1 is to avoid being MITMed, e.g. to prevent 
-JavaScript injection in an attempt to exploit the web browser, or avoid 
-surveillance. An attack that would make either possible basically makes the 
-VPN useless, or even more dangerous than not using the VPN in the first place.
-
-There are a number of attacks that could result in this MITM:
-
-1. The VPN server itself is compromised allowing the attacker to snoop all 
-   traffic and modify it;
-2. The CA is compromised, allowing creation of valid VPN server certificates;
-3. The "upstream" ISP running the VPN service is compromised and under 
-   surveillance;
-
-### CA 
-
-Because of the nature of this VPN service, the CA needs to be "online", i.e. it 
-should be able to sign certificates on demand. There are a number of 
-countermeasures that could be taken to avoid compromising the CA by using e.g. 
-a hardware HSM that contains the CA. This is currently not done because that 
-actually is quite complicated in a (managed) VM platform.
-
-It would be very interesting to investigate if it is possible to have a 
-separate CA for signing the client certificates and a different one for server 
-certificates so that generating server certificates requires an offline CA. 
-
-However, if a VPN server certificate is stolen it can be used to intercept 
-client connections by hijacking DNS.
-
-#### Recovery
-
-In order to recover, the entire CA needs to be thrown away and recreated, 
-including all client and server certificates.
-
-### Compromised ISP
-
-This is out of scope of this threat model, but is mentioned anyway for 
-completeness.
+The CA of the VPN service is "online" as it needs to generate valid 
+certificates on the fly. The [easy-rsa](https://github.com/OpenVPN/easy-rsa) 
+software is used as CA.
