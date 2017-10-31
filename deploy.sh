@@ -8,15 +8,12 @@
 # VARIABLES
 ###############################################################################
 
-# **NOTE**: make sure WEB_FQDN and VPN_FQDN are valid DNS names with 
-# appropriate A (and AAAA) records!
-#
-
+# DNS name of the Web Server
 WEB_FQDN=vpn.example
 
-# we can use a separate hostname for the VPN connections to allow for moving 
-# the VPN processes to another machine in the future when client configurations 
-# are already distributed
+# DNS name of the OpenVPN Server
+# use different name if you want to allow moving the OpenVPN processes to 
+# another machine in the future without breaking client configuration files
 VPN_FQDN=${WEB_FQDN}
 #VPN_FQDN=internet.${WEB_FQDN}
 
@@ -41,7 +38,7 @@ PACKAGE_MANAGER=/usr/bin/yum
 # SOFTWARE
 ###############################################################################
 
-# disable firewalld, does not support NAT66 and too complicated
+# disable and stop existing firewalling
 systemctl disable --now firewalld
 systemctl disable --now iptables
 systemctl disable --now ip6tables

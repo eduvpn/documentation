@@ -8,28 +8,14 @@
 # VARIABLES
 ###############################################################################
 
-# **NOTE**: make sure WEB_FQDN and VPN_FQDN are valid DNS names with 
-# appropriate A (and AAAA) records!
-#
-
-# VARIABLES
+# DNS name of the Web Server
 WEB_FQDN=vpn.example
 
-# we can use a separate hostname for the VPN connections to allow for moving 
-# the VPN processes to another machine in the future when client configurations 
-# are already distributed
+# DNS name of the OpenVPN Server
+# use different name if you want to allow moving the OpenVPN processes to 
+# another machine in the future without breaking client configuration files
 VPN_FQDN=${WEB_FQDN}
 #VPN_FQDN=internet.${WEB_FQDN}
-
-# Let's Encrypt
-# TOS: https://letsencrypt.org/repository/
-AGREE_TOS=""
-# to agree to the TOS, add "#" the line above and remove "#" below this line
-#AGREE_TOS="--agree-tos"
-
-# The email address you want to use for Let's Encrypt (for issues with 
-# renewing the certificate etc.)
-LETSENCRYPT_MAIL=admin@example.org
 
 # The interface that connects to "the Internet" (for firewall rules)
 EXTERNAL_IF=eth0
@@ -52,14 +38,16 @@ PACKAGE_MANAGER=/usr/bin/dnf
 # SOFTWARE
 ###############################################################################
 
-# disable firewalld, does not support NAT66 and too complicated
+# disable and stop existing firewalling
 systemctl disable --now firewalld
+systemctl disable --now iptables
+systemctl disable --now ip6tables
 
 # Production RPMs
 ${PACKAGE_MANAGER} -y copr enable fkooman/eduvpn-testing
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \
+${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python chrony
 
 # install additional language packs
@@ -79,7 +67,7 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
 setsebool -P httpd_can_network_connect=1
 
 # allow OpenVPN to bind to the management ports
-semanage port -a -t openvpn_port_t -p tcp 11940-11955
+semanage port -a -t openvpn_port_t -p tcp 11940-12195
 
 ###############################################################################
 # APACHE
@@ -88,6 +76,11 @@ semanage port -a -t openvpn_port_t -p tcp 11940-11955
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
+cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
+
+# Switch to MPM event (https://httpd.apache.org/docs/2.4/mod/event.html)
+sed -i "s|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$|#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|" /etc/httpd/conf.modules.d/00-mpm.conf
+sed -i "s|^#LoadModule mpm_event_module modules/mod_mpm_event.so$|LoadModule mpm_event_module modules/mod_mpm_event.so|" /etc/httpd/conf.modules.d/00-mpm.conf
 
 # VirtualHost
 cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
@@ -113,25 +106,11 @@ vpn-server-api-update-ip --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_
 sudo -u apache vpn-server-api-init
 
 ###############################################################################
-# VPN-ADMIN-PORTAL
-###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-admin-portal/default/config.php
-
-###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
-
 # generate OAuth public/private keys
 sudo -u apache vpn-user-portal-init
-
-###############################################################################
-# VPN-SERVER-NODE
-###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-server-node/default/config.php
 
 ###############################################################################
 # NETWORK
@@ -152,23 +131,6 @@ sysctl --system
 
 # update API secret
 vpn-server-api-update-api-secrets
-
-###############################################################################
-# LET'S ENCRYPT / CERTBOT
-###############################################################################
-
-certbot register ${AGREE_TOS} --no-eff-email -m ${LETSENCRYPT_MAIL}
-certbot certonly -n --standalone -d ${WEB_FQDN}
-
-cat << EOF > /etc/sysconfig/certbot
-PRE_HOOK="--pre-hook 'systemctl stop httpd'"
-POST_HOOK="--post-hook 'systemctl start httpd'"
-RENEW_HOOK=""
-CERTBOT_ARGS=""
-EOF
-
-# enable automatic renewal
-systemctl enable --now certbot-renew.timer
 
 ###############################################################################
 # WEB
