@@ -60,4 +60,4 @@ The system will automatically replace the certificate before it expires.
 You can switch to PHP 7.1 for performance (and security) reasons:
 
     $ sudo -s
-    # switch_to_php71.sh
+    # ./switch_to_php71.sh
