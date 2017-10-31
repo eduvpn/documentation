@@ -74,9 +74,8 @@ and will be ready for use after running, including a valid
 [Let's Encrypt](https://letsencrypt.org/) TLS certificate!
 
 Not all "Cloud" instances will work, because they modify CentOS, by e.g. 
-disabling SELinux, change the network settings, or use "floating" IP address 
-assignment. We test only with the official CentOS 
-[Minimal ISO](https://centos.org/download/) and the official 
+disabling SELinux or change the network settings. We test only with the 
+official CentOS [Minimal ISO](https://centos.org/download/) and the official 
 [Cloud](https://wiki.centos.org/Download) images. If you have a slightly more
 complicated setup, we recommend to manually walk through the deploy script.
 
