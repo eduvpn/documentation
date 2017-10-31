@@ -12,7 +12,6 @@
 # appropriate A (and AAAA) records!
 #
 
-# VARIABLES
 WEB_FQDN=vpn.example
 
 # we can use a separate hostname for the VPN connections to allow for moving 
