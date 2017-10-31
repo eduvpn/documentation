@@ -66,44 +66,7 @@ will be used for announcements of updates and discussion about running eduVPN.
 **NOTE**: at the moment only a fully updated official CentOS 7 is supported, 
 there is experimental support for Debian >= 9 and Fedora.
 
-## CentOS
-
-For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh CentOS 7 installation. It will configure all components 
-and will be ready for use after running, including a valid 
-[Let's Encrypt](https://letsencrypt.org/) TLS certificate!
-
-Not all "Cloud" instances will work, because they modify CentOS, by e.g. 
-disabling SELinux or change the network settings. We test only with the 
-official CentOS [Minimal ISO](https://centos.org/download/) and the official 
-[Cloud](https://wiki.centos.org/Download) images. If you have a slightly more
-complicated setup, we recommend to manually walk through the deploy script.
-
-**NOTE**: make sure SELinux is **enabled** and the filesystem correctly 
-(re)labeled! Look [here](https://wiki.centos.org/HowTos/SELinux).
-
-Make sure the firewall running on your _network equipment_ or VM _platform_ 
-allows access to the very least `tcp/80`, `tcp/443`, `udp/1194` and `tcp/1194`.
-The deploy script will take care of the host firewall directly!
-
-On the host where you want to deploy:
-
-    $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
-    $ tar -xzf master.tar.gz
-    $ cd documentation-master
-
-Modify `deploy.sh` and set the variables at the top of the file to something 
-that makes sense for your deployment. Read the comments at the top of the file. 
-
-**NOTE**: if you do NOT want to use Let's Encrypt certificates it is best to 
-run the setup with Let's Encrypt, and afterwards replace the certificate, and
-remove the Let's Encrypt auto renewal. But this should only be done if
-you want to use an EV certificate.
-
-To run the script:
-
-    $ sudo -s
-    # ./deploy.sh
+* [CentOS](DEPLOY_CENTOS.md)
 
 # Authentication 
 

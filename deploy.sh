@@ -21,16 +21,6 @@ WEB_FQDN=vpn.example
 VPN_FQDN=${WEB_FQDN}
 #VPN_FQDN=internet.${WEB_FQDN}
 
-# Let's Encrypt
-# TOS: https://letsencrypt.org/repository/
-AGREE_TOS=""
-# to agree to the TOS, add "#" the line above and remove "#" below this line
-#AGREE_TOS="--agree-tos"
-
-# The email address you want to use for Let's Encrypt (for issues with 
-# renewing the certificate etc.)
-LETSENCRYPT_MAIL=admin@example.org
-
 # The interface that connects to "the Internet" (for firewall rules)
 EXTERNAL_IF=eth0
 
@@ -54,8 +44,8 @@ PACKAGE_MANAGER=/usr/bin/yum
 
 # disable firewalld, does not support NAT66 and too complicated
 systemctl disable --now firewalld
-systemctl stop iptables
-systemctl stop ip6tables
+systemctl disable --now iptables
+systemctl disable --now ip6tables
 
 # RHEL 7
 # subscription-manager repos --enable=rhel-7-server-optional-rpms
@@ -75,7 +65,7 @@ curl -L -o /etc/yum.repos.d/eduVPN.repo \
 #   https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen certbot \
+${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python chrony
 
 # install software (VPN packages)
@@ -173,21 +163,19 @@ sysctl --system
 vpn-server-api-update-api-secrets
 
 ###############################################################################
-# LET'S ENCRYPT / CERTBOT
+# CERTIFICATE
 ###############################################################################
 
-certbot register ${AGREE_TOS} --no-eff-email -m ${LETSENCRYPT_MAIL}
-certbot certonly -n --standalone -d ${WEB_FQDN}
-
-cat << EOF > /etc/sysconfig/certbot
-PRE_HOOK="--pre-hook 'systemctl stop httpd'"
-POST_HOOK="--post-hook 'systemctl start httpd'"
-RENEW_HOOK=""
-CERTBOT_ARGS=""
-EOF
-
-# enable automatic renewal
-systemctl enable --now certbot-renew.timer
+# generate self signed certificate and key
+openssl req \
+    -nodes \
+    -subj "/CN=${WEB_FQDN}" \
+    -x509 \
+    -sha256 \
+    -newkey rsa:2048 \
+    -keyout /etc/pki/tls/private/${WEB_FQDN}.key \
+    -out /etc/pki/tls/certs/${WEB_FQDN}.crt \
+    -days 90
 
 ###############################################################################
 # WEB
