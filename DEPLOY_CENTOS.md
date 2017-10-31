@@ -57,6 +57,8 @@ The system will automatically replace the certificate before it expires.
 
 ## PHP 7.1
 
+**NOTE**: this configuration is NOT supported!
+
 You can switch to PHP 7.1 for performance (and security) reasons:
 
     $ sudo -s
