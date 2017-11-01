@@ -10,15 +10,6 @@
 
 WEB_FQDN=vpn.example
 
-# TOS: https://letsencrypt.org/repository/
-AGREE_TOS=""
-# to agree to the TOS, add "#" the line above and remove "#" below this line
-#AGREE_TOS="--agree-tos"
-
-# The email address you want to use for Let's Encrypt (for issues with 
-# renewing the certificate etc.)
-LETSENCRYPT_MAIL=admin@example.org
-
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -35,7 +26,7 @@ systemctl stop httpd
 # CERTBOT
 ###############################################################################
 
-certbot register ${AGREE_TOS} --no-eff-email -m ${LETSENCRYPT_MAIL}
+certbot register
 certbot certonly -n --standalone -d ${WEB_FQDN}
 
 cat << EOF > /etc/sysconfig/certbot
