@@ -60,8 +60,7 @@ The system will automatically replace the certificate before it expires.
 You can switch to PHP 7.1 for performance (and security) reasons:
 
 **NOTE**: this is experimental. This PHP version is not supported by CentOS and
-depends on the external [Remi's RPM repository](https://blog.remirepo.net/) 
-repository.
+depends on the [Remi's RPM repository](https://blog.remirepo.net/).
 
     $ sudo -s
     # ./switch_to_php71.sh
