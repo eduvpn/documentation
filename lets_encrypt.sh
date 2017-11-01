@@ -15,7 +15,12 @@ WEB_FQDN=vpn.example
 # SYSTEM
 ###############################################################################
 
-PACKAGE_MANAGER=/usr/bin/yum
+if $(which dnf)
+then
+    PACKAGE_MANAGER=/usr/bin/dnf
+else
+    PACKAGE_MANAGER=/usr/bin/yum
+fi
 
 # install and enable remi repository
 ${PACKAGE_MANAGER} install -y certbot
