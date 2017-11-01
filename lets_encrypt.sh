@@ -15,7 +15,7 @@ WEB_FQDN=vpn.example
 # SYSTEM
 ###############################################################################
 
-if $(which dnf)
+if (command -v dnf)
 then
     PACKAGE_MANAGER=/usr/bin/dnf
 else
