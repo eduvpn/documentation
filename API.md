@@ -2,17 +2,19 @@
 
 This document describes the API provided by the VPN portal. The API can be used
 by applications wanting to integrate with the VPN software to make it easy for
-users to configure their VPN.
+users to start using the VPN.
 
 The API is pragmatic "REST", keeping things as simple as possible without 
-obsessing about the proper HTTP verb. There are no `PUT` and `DELETE` requests,
-just simple `GET` and `POST` requests that use "form submit". The responses 
-are always `application/json` though.
+obsessing about the proper HTTP verbs. There are no `PUT` and `DELETE` 
+requests. Only `GET` and `POST`. 
+
+The requests always return `application/json`. The `POST` requests are sent as
+`application/x-www-form-urlencoded`.
 
 # Standards
 
 OAuth 2.0 is used to provide the API. The following documents are relevant for 
-implementations and should be followed to the letter except when stated 
+implementations and should be followed except when explicitly stated 
 differently:
 
 * [The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749);
@@ -37,7 +39,7 @@ A VPN service running at a particular domain is called an _instance_, e.g.
 # Instance Discovery
 
 For an application to discover which instances are available to show to the 
-user a JSON document can be retrieved. For example eduVPN has those JSON 
+user, a JSON document can be retrieved. For example eduVPN has those JSON 
 documents available at 
 [https://static.eduvpn.nl/disco/](https://static.eduvpn.nl/disco/).
 
@@ -64,7 +66,7 @@ The `instances` key has an array with objects, in the most simple form:
 
     {
         "base_uri": "https://demo.eduvpn.nl/",
-        "display_name": "Demo VPN Provider",
+        "display_name": "Demo",
         "logo": "https://static.eduvpn.nl/disco/img/demo.png"
     }
 
@@ -93,8 +95,8 @@ up to the application to pick one it deems best.
 The `base_uri` field can be used to perform the API Discovery of the instances 
 themselves, see below.
 
-The `public_key` field is used by the VPN services for `distributed` 
-Authorization, this can be ignored by API clients.
+The `public_key` field is used by the VPN instances themselves for 
+`distributed` Authorization, this can be ignored by API clients.
 
 ## Validation
 
@@ -156,12 +158,12 @@ despite some of them being OPTIONAL according to the OAuth specification:
 * `code_challenge`: the code challenge (see RFC 7636).
 
 The `authorization_endpoint` URL together with the query parameters is then 
-opened using a browser, and eventually redirected to the `redirect_uri` where
-the application can extract the `access_token` field from the URL fragment. 
-The `state` parameter is also added to the fragment of the `redirect_uri` and 
-MUST be the same as the `state` parameter value of the initial request. The 
-response also includes `expires_in` that indicates when the access token 
-will expire.
+opened using the platform's default browser, and eventually redirected to the 
+`redirect_uri` where the application can extract the `code` field from 
+the URL query parameters. The `state` parameter is also added to the query 
+parameters of the `redirect_uri` and MUST be the same as the `state` parameter 
+value of the initial request. After this, the "Authorization Code" flow MUST
+be followed. Handling refresh tokens MUST also be implemented.
 
 # Using the API
 
@@ -216,8 +218,6 @@ is still enabled, making it impossible to authenticate.
 
 ## User Info
 
-**API VERSION 2 ONLY**
-
 This call will show information about the user, whether or not the user is 
 enrolled for 2FA and whether or not the user is prevented from connecting to
 the VPN.
@@ -244,6 +244,8 @@ field. The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or
 `totp` or both. This field indicates for which 2FA methods the user is 
 enrolled.
 
+**XXX** when can the `two_factor_enrolled_with` be the empty array?
+
 ## Create a Configuration
 
 A call that can be used to get a full working OpenVPN configuration file 
@@ -266,8 +268,6 @@ The acceptable values for `profile_id` can be discovered using the
 The response will be an OpenVPN configuration file that can be used "as-is".
 
 ## Create a Key Pair 
-
-**API VERSION 2 ONLY**
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "display_name=eduVPN%20for%20Android" \
@@ -293,11 +293,9 @@ through the `/profile_config` call.
 
 **NOTE**: a certificate is valid for ALL _profiles_ of a particular _instance_, 
 so if an instance has e.g. the profiles `internet` and `office`, only one 
-certificate is required!
+keypair is required!
 
 ## Profile Config
-
-**API VERSION 2 ONLY**
 
 Only get the profile configuration without certificate and private key.
 
@@ -421,8 +419,8 @@ be ignored. Refreshing access tokens MUST also be done at the central server.
 Obtaining an access token from any of the instances listed in the discovery 
 file is enough and can then be used at all the instances. Typically the user
 has the ability to obtain only an access token at one of the listed instances, 
-because only there they have an account, so the user MUST choose first which 
-of the instances they have an account at. 
+because only there they have an account, so the user MUST obtain an access 
+token at that instance.
 
 This is a bit messy from a UX perspective, as the user does not necessarily 
 know for which instance they have an account. In case of eduVPN this will most
