@@ -1,13 +1,14 @@
 #!/bin/sh
 
 #
-# Use Let's Encrypt
+# Use Let's Encrypt to obtain certificates for the Web Server
 #
 
 ###############################################################################
 # VARIABLES
 ###############################################################################
 
+# DNS name of the Web Server
 WEB_FQDN=vpn.example
 
 ###############################################################################
@@ -26,8 +27,7 @@ systemctl stop httpd
 # CERTBOT
 ###############################################################################
 
-certbot register
-certbot certonly -n --standalone -d ${WEB_FQDN}
+certbot certonly --standalone -d ${WEB_FQDN}
 
 cat << EOF > /etc/sysconfig/certbot
 PRE_HOOK="--pre-hook 'systemctl stop httpd'"
