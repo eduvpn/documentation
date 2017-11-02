@@ -79,6 +79,7 @@ Modify `apiUri` and set it to `http://localhost:8008/api.php`.
     $ mkdir config/default
     $ cp config/config.php.example config/default/config.php
     $ cp config/firewall.php.example config/firewall.php
+    $ mkdir -p data/default
     $ mkdir openvpn-config
 
 Modify `config/default/config.php` and set `apiUri` to 
@@ -126,7 +127,7 @@ To generate the firewall and output the data to `stdout`:
 To generate the OpenVPN server configuration files:
 
     $ cd ${HOME}/Projects/eduVPN/vpn-server-node
-    $ php bin/server-config.php --profile internet --generate
+    $ php bin/server-config.php --generate
 
 The configuration will be stored in the `openvpn-config` folder.
 
