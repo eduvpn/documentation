@@ -68,40 +68,6 @@ there is experimental support for Debian >= 9 and Fedora.
 
 * [CentOS](DEPLOY_CENTOS.md)
 
-# Authentication 
-
-## Username & Password
-
-By default there is a user `me` with a generated password for the User Portal
-and a user `admin` with a generated password for the Admin Portal. Those are
-printed at the end of the deploy script.
-
-If you want to update/add users you can use the `vpn-user-portal-add-user` and
-`vpn-admin-portal-add-user` scripts:
-
-    $ sudo vpn-user-portal-add-user --user john --pass s3cr3t
-
-Or to update the existing `admin` password:
-
-    $ sudo vpn-admin-portal-add-user --user admin --pass 3xtr4s3cr3t
-
-## SAML
-
-It is easy to enable SAML authentication for identity federations, this is 
-documented separately. See [SAML](SAML.md).
-
-## 2FA
-
-For connecting to the VPN service by default only certificates are used, no 
-additional user name/password authentication. It is possible to enable 
-[2FA](2FA.md) to require an additional TOTP or YubiKey.
-
-## ACLs
-
-If you want to restrict the use of the VPN a bit more than on whether someone
-has an account or not, e.g. to limit certain profiles to certain (groups of)
-users, see [ACL](ACL.md).
-
 # Development
 
 See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
