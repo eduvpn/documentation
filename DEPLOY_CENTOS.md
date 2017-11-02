@@ -23,7 +23,7 @@ We test only with the official CentOS
 [Cloud](https://wiki.centos.org/Download) images.
 
 If you have a more complicated setup, we recommend to manually walk through 
-the deploy script and manually follow the steps.
+the deploy script and follow the steps.
 
 ## Base Deploy
 
