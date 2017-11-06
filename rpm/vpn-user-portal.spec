@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           2f68f1e45ecf27287d197aa629b9199bf28e53fe
+%global github_commit           536bfd2411702ea6c54077e250e12a8741ddf617
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.0.9
+Version:    1.0.10
 Release:    1%{?dist}
 Summary:    VPN User Portal
 
@@ -181,6 +181,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Nov 06 2017 François Kooman <fkooman@tuxed.net> - 1.0.10-1
+- update to 1.0.10
+
 * Thu Oct 26 2017 François Kooman <fkooman@tuxed.net> - 1.0.9-1
 - add paragonie/random_compat dependency
 - update to 1.0.9
