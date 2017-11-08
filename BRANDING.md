@@ -21,7 +21,7 @@ they MAY break future software updates. We do NOT guarantee template
 compatibility!
 
 For example, for eduVPN we use this addition to the `head.twig` file under the
-default CSS file:
+default CSS line:
 
     <link href="/css/eduvpn.css" media="screen" rel="stylesheet">
 
