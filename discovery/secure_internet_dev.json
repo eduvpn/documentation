@@ -4,25 +4,25 @@
         {
             "base_uri": "https://labrat.eduvpn.nl/",
             "display_name": {
-                "en-US": "The Netherlands (labrat)",
-                "nl-NL": "Nederland (labrat)"
+                "en-US": "Red (labrat.eduvpn.nl)",
+                "nl-NL": "Rood (labrat.eduvpn.nl)"
             },
             "logo": "https://static.eduvpn.nl/disco/img/red.png",
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
             "base_uri": "https://f26.tuxed.net/",
-            "display_name": "FrKo (f26.tuxed.net)",
+            "display_name": "Blue (f26.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/blue.png",
             "public_key": "rU+QDEIgbe2QU/TE7DLmwBvsqgd6KJtaoSD8uqXP3WM="
         },
         {
             "base_uri": "https://vpn.tuxed.net/",
-            "display_name": "eduVPN (vpn.tuxed.net)",
+            "display_name": "Yellow (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
             "public_key": "Ps7AZsKAa7J704GURbTIMLdHH3vc0YPLPOeimIzzrsQ="
         }
     ],
-    "seq": 40,
-    "signed_at": "2017-11-12 10:57:06"
+    "seq": 41,
+    "signed_at": "2017-11-12 11:03:18"
 }
