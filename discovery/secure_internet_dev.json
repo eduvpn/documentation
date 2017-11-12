@@ -7,22 +7,22 @@
                 "en-US": "The Netherlands (labrat)",
                 "nl-NL": "Nederland (labrat)"
             },
-            "logo": "https://static.eduvpn.nl/disco/img/nl.png",
+            "logo": "https://static.eduvpn.nl/disco/img/red.png",
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
             "base_uri": "https://f26.tuxed.net/",
             "display_name": "FrKo (f26.tuxed.net)",
-            "logo": "https://static.eduvpn.nl/disco/img/nl.png",
+            "logo": "https://static.eduvpn.nl/disco/img/blue.png",
             "public_key": "rU+QDEIgbe2QU/TE7DLmwBvsqgd6KJtaoSD8uqXP3WM="
         },
         {
             "base_uri": "https://vpn.tuxed.net/",
             "display_name": "eduVPN (vpn.tuxed.net)",
-            "logo": "https://static.eduvpn.nl/disco/img/surf.png",
+            "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
             "public_key": "Ps7AZsKAa7J704GURbTIMLdHH3vc0YPLPOeimIzzrsQ="
         }
     ],
-    "seq": 39,
-    "signed_at": "2017-11-05 21:59:19"
+    "seq": 40,
+    "signed_at": "2017-11-12 10:57:06"
 }
