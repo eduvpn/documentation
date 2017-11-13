@@ -59,7 +59,6 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/views/%{style_name}
 %{_datadir}/vpn-admin-portal/web/css/%{style_name}
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
-%doc portal/README.md portal/CHANGES.md
 
 %changelog
 * Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
