@@ -1,6 +1,6 @@
 %global github_owner            SURFnet
 %global github_name             eduvpn
-%global github_commit           336f77a7af73a706fa168b0c764663aad56446c7
+%global github_commit           79accd0fcbfe0bcbbd3a4fc41512bfbb44f30c51
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
