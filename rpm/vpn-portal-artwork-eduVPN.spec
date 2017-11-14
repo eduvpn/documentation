@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- bump release
+
 * Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - no longer include README/CHANGES
 
