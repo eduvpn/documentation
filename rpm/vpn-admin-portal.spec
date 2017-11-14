@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           bc2faefcdd995269f0edaa8c091c6becc29e2ae5
+%global github_commit           c9b9ae75925ffb941a00b903aef05c9881bfaaaf
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
-Version:    1.1.7
+Version:    1.1.8
 Release:    1%{?dist}
 Summary:    VPN Admin Portal
 
@@ -133,6 +133,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Nov 14 2017 François Kooman <fkooman@tuxed.net> - 1.1.8-1
+- update to 1.1.8
+
 * Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 1.1.7-1
 - update to 1.1.7
 - add LICENSE.spdx
