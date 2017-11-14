@@ -40,6 +40,8 @@ PACKAGE_LIST=(\
     vpn-user-portal \
     php-saml-ds \
     php-json-signer \
+    vpn-portal-artwork-eduVPN \
+    vpn-portal-artwork-LC \
 )
 
 rpmdev-setuptree
