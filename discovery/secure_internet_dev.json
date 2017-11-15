@@ -20,9 +20,9 @@
             "base_uri": "https://vpn.tuxed.net/",
             "display_name": "Yellow (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
-            "public_key": "Ps7AZsKAa7J704GURbTIMLdHH3vc0YPLPOeimIzzrsQ="
+            "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 41,
-    "signed_at": "2017-11-12 11:03:18"
+    "seq": 42,
+    "signed_at": "2017-11-15 09:22:23"
 }
