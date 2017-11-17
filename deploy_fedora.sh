@@ -2,6 +2,7 @@
 
 #
 # Deploy a single VPN machine
+# Fedora >= 27
 #
 
 ###############################################################################
@@ -77,10 +78,6 @@ semanage port -a -t openvpn_port_t -p tcp 11940-12195
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
-
-# Switch to MPM event (https://httpd.apache.org/docs/2.4/mod/event.html)
-sed -i "s|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$|#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|" /etc/httpd/conf.modules.d/00-mpm.conf
-sed -i "s|^#LoadModule mpm_event_module modules/mod_mpm_event.so$|LoadModule mpm_event_module modules/mod_mpm_event.so|" /etc/httpd/conf.modules.d/00-mpm.conf
 
 # VirtualHost
 cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
