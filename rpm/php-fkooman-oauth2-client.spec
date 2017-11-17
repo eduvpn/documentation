@@ -2,8 +2,8 @@
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
-Version:        5.0.2
-Release:        2%{?dist}
+Version:        5.0.3
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -113,8 +113,8 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
-* Thu Nov 16 2017 François Kooman <fkooman@tuxed.net> - 5.0.2-2
-- rebuilt
+* Fri Nov 17 2017 François Kooman <fkooman@tuxed.net> - 5.0.3-1
+- update to 5.0.3
 
 * Wed Nov 08 2017 François Kooman <fkooman@tuxed.net> - 5.0.2-1
 - update to 5.0.2
