@@ -22,7 +22,6 @@ else
     PACKAGE_MANAGER=/usr/bin/yum
 fi
 
-# install and enable remi repository
 ${PACKAGE_MANAGER} install -y certbot
 
 # stop Apache
