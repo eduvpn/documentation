@@ -1,3 +1,2 @@
 #!/bin/sh
-
-php-json-signer-sign *.json
+php-json-signer --sign --name app *.json
