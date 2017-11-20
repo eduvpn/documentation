@@ -56,6 +56,7 @@ CentOS only.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
 | `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenVPN >= 2.4). As of this moment (2017-06-14) this does NOT work on OpenVPN Connect (iOS, Android) | no | `false` |
+| `enableCompression` | Enable data stream compression using `--comp-lzo` | no | `true` |
 
 ### OpenVPN Processes
 

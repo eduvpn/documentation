@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           7aaa36ce1be71d7da5af9c14169edb6a32c30713
+%global github_commit           0a169d0ce772c9d28ea8294e751ae6bd04d3c21a
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.4
+Version:    1.0.5
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
@@ -87,6 +87,7 @@ ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/%{name}/openvpn-config
 
 ln -s %{_datadir}/%{name}/bin/generate-firewall.php %{buildroot}%{_bindir}/%{name}-generate-firewall
 ln -s %{_datadir}/%{name}/bin/server-config.php %{buildroot}%{_bindir}/%{name}-server-config
+ln -s %{_datadir}/%{name}/bin/certificate-info.php %{buildroot}%{_bindir}/%{name}-certificate-info
 
 # old libexec path (backwards compatible with old server configs)
 ln -s %{_datadir}/%{name}/libexec/client-connect.php %{buildroot}%{_libexecdir}/%{name}-client-connect
@@ -129,6 +130,9 @@ EOF
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-1
+- update to 1.0.5
+
 * Wed Oct 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.4-1
 - update to 1.0.4
 - change handling of libexec and bin scripts by using changelogs
