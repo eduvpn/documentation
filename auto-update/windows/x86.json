@@ -1,0 +1,20 @@
+{
+    "packages": {
+        "eduVPNCore": {
+            "hash-sha256": "5485b24bc2d9f6d76c79d6f61efd1846da0e2d4fcbe97a97376b72ae0413f5e0",
+            "uri": [
+                "https://github.com/Amebis/eduVPN/releases/download/1.0-alpha8/eduVPNCore_1.0-alpha8_x86.msi"
+            ],
+            "version": "1.0-alpha8"
+        },
+        "eduVPNOpenVPN": {
+            "hash-sha256": "b98f892c5c5cc391d18e4839632015d155cce4a6a19b3fc339043d9affafb584",
+            "uri": [
+                "https://github.com/Amebis/eduVPN/releases/download/1.0-alpha8/eduVPNOpenVPN_2.4.4.1_x86.msi"
+            ],
+            "version": "2.4.4.1"
+        }
+    },
+    "seq": 5,
+    "signed_at": "2017-11-20 10:08:39"
+}
