@@ -1,10 +1,10 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           f18db4308e9623cece8d49f905e57b26610402bc
+%global github_commit           d308accf63d31d60ab773852ceb4a6dd594378f7
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    2.1.0
+Version:    3.0.0
 Release:    1%{?dist}
 Summary:    PHP JSON Signer
 
@@ -75,11 +75,9 @@ mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
 cp -pr bin src %{buildroot}%{_datadir}/%{name}
-chmod +x %{buildroot}%{_datadir}/%{name}/bin/*.php
+chmod +x %{buildroot}%{_datadir}/%{name}/bin/app.php
 
-ln -s %{_datadir}/%{name}/bin/show-public-key.php %{buildroot}%{_bindir}/%{name}-show-public-key
-ln -s %{_datadir}/%{name}/bin/sign.php %{buildroot}%{_bindir}/%{name}-sign
-ln -s %{_datadir}/%{name}/bin/verify.php %{buildroot}%{_bindir}/%{name}-verify
+ln -s %{_datadir}/%{name}/bin/app.php %{buildroot}%{_bindir}/%{name}
 
 %check
 cat << 'EOF' | tee tests/autoload.php
@@ -103,6 +101,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 3.0.0-1
+- update to 3.0.0
+
 * Tue Oct 31 2017 François Kooman <fkooman@tuxed.net> - 2.1.0-1
 - update to 2.1.0
 

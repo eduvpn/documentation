@@ -1,8 +1,8 @@
 # Introduction
 
 The eduVPN (mobile) applications use a (central) discovery file that is 
-partly described in [API.md](../API.md), but how it was signed was not described
-before.
+partly described in [API.md](../API.md), but how it was signed was not 
+described before.
 
 These are the files located at 
 [https://static.eduvpn.nl/disco](https://static.eduvpn.nl/disco).
@@ -17,19 +17,15 @@ There is also an RPM package available from the eduVPN repository on
 
 # Usage
 
-Generate a new public/private key:
-
-    $ php-json-signer-init
-
 Sign a discovery file, this will create the file `secure_internet.json.sig` in
 the same directory:
 
-    $ php-json-signer-sign secure_internet.json
+    $ php-json-signer --sign secure_internet.json
 
 Verify the signature:
 
-    $ php-json-signer-verify secure_internet.json
+    $ php-json-signer --verify secure_internet.json
 
 To show the public key:
 
-    $ php-json-signer-show-public-key
+    $ php-json-signer --show
