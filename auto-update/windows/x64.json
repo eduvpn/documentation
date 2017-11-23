@@ -5,7 +5,7 @@
             "uri": [
                 "https://github.com/Amebis/eduVPN/releases/download/1.0-alpha8/eduVPNCore_1.0-alpha8_x64.msi"
             ],
-            "version": "1.0-alpha8"
+            "version": "1.0.10"
         },
         "eduVPNOpenVPN": {
             "hash-sha256": "23a7015c0740989130d8da732fce6dab50a79898c402fa625cb45305c81da41f",
@@ -15,6 +15,6 @@
             "version": "2.4.4.1"
         }
     },
-    "seq": 6,
-    "signed_at": "2017-11-20 21:42:54"
+    "seq": 7,
+    "signed_at": "2017-11-23 10:47:09"
 }
