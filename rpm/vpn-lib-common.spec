@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           f4ca927898e78ea5ba663041e898053c9f260cc4
+%global github_commit           d9ebc2b4a197ce491fea98b0a21c9bde4f6b1c5d
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
-Version:    1.0.8
+Version:    1.1.0
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -23,6 +23,7 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-gettext": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
+#        "ext-ldap": "*",
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
@@ -32,6 +33,7 @@ BuildRequires:  php-filter
 BuildRequires:  php-gettext
 BuildRequires:  php-hash
 BuildRequires:  php-json
+BuildRequires:  php-ldap
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
@@ -62,6 +64,7 @@ Requires:       php(language) >= 5.4.0
 #        "ext-gettext": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
+#        "ext-ldap": "*",
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
@@ -71,6 +74,7 @@ Requires:       php-filter
 Requires:       php-gettext
 Requires:       php-hash
 Requires:       php-json
+Requires:       php-ldap
 Requires:       php-mbstring
 Requires:       php-pcre
 Requires:       php-spl
@@ -141,6 +145,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Nov 23 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
+- update to 1.1.0
+
 * Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.8-1
 - update to 1.0.8
 
