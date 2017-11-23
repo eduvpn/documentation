@@ -65,6 +65,11 @@ Or to update the existing `admin` password:
 
     $ sudo vpn-admin-portal-add-user --user admin --pass 3xtr4s3cr3t
 
+#### LDAP
+
+It is easy to enable LDAP authentication. This is documented separately. See
+[LDAP](LDAP.md).
+
 #### SAML
 
 It is easy to enable SAML authentication for identity federations, this is 

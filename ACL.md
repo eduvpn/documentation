@@ -44,6 +44,23 @@ the profile. Make sure the group ID, here `all`, `students` and `employees`
 matches with the ID as specified in `aclGroupList` in your profile 
 configuration.
 
+### LdapProvider
+
+    'LdapProvider' => [
+        'ldapUri' => 'ldap://ldap.example.org',
+        'groupDn' => 'ou=Groups,dc=example,dc=org',
+        'filterTemplate' => 'uniqueMember=uid={{UID}},ou=People,dc=example,dc=org',
+    ],
+
+Set the `ldapUri` to the URI of your LDAP server. You can also use TLS by 
+using an URI like `ldaps://ldap.example.org`, and also provide the TCP port 
+explicitly, e.g. `ldaps://ldap.example.org:636`. 
+
+The `groupDn` is the DN where the groups you want to retrieve are located. The
+`filterTemplate` is used to only return the groups the user is a member of. 
+This example is for 
+[Red Hat Directory Server](https://www.redhat.com/en/technologies/cloud-computing/directory-server).
+
 ### VootProvider
 
 This method uses the [VOOT protocol](http://openvoot.org/) to retrieve group 

@@ -30,9 +30,11 @@ above information.
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
   devices;
-- Multi Language support in the User Portal;
-- OAuth 2.0 [API](API.md) for integration with applications;
 - Admin Portal manage users, configurations and connections;
+- Multi Language support in User Portal and Admin Portal;
+- Authentication to portals using "static" username and password, 
+  [LDAP](LDAP.md) and [SAML](SAML.md);
+- OAuth 2.0 [API](API.md) for integration with applications;
 - [Two-factor authentication](2FA.md) TOTP and YubiKey support with user 
   self-enrollment for both access to the portal(s) and the VPN;
 - [Deployment scenarios](PROFILE_CONFIG.md):
@@ -41,7 +43,7 @@ above information.
   - Route only some traffic over the VPN (for access to the organization 
     network);
   - Client-to-client (only) networking;
-- Group [ACL](ACL.md) support, including [VOOT](http://openvoot.org/);
+- Group [ACL](ACL.md) support, including LDAP and [VOOT](http://openvoot.org/);
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled;
