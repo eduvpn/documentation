@@ -50,7 +50,7 @@ configuration.
         'ldapUri' => 'ldaps://ipa.example.org',
         'groupDn' => 'cn=groups,cn=accounts,dc=example,dc=org',
         'filterTemplate' => 'member=uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        //'bindDn' => 'uid=system,cn=users,cn=accounts,dc=example,dc=org',
+        //'bindDn' => 'uid=vpn,cn=sysaccounts,cn=etc,dc=example,dc=org',
         //'bindPass' => 'foobarbaz',
     ],
 
@@ -63,6 +63,9 @@ The `groupDn` is the DN where the groups you want to retrieve are located. The
 `filterTemplate` is used to only return the groups the user is a member of. 
 This example is for [FreeIPA](https://www.freeipa.org/) and may be different
 for your LDAP server.
+
+On FreeIPA, creating a system account, as used in the `bindDn`, is described 
+[here](https://www.freeipa.org/page/HowTo/LDAP).
 
 #### CA
 
