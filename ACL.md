@@ -47,19 +47,36 @@ configuration.
 ### LdapProvider
 
     'LdapProvider' => [
-        'ldapUri' => 'ldap://ldap.example.org',
-        'groupDn' => 'ou=Groups,dc=example,dc=org',
-        'filterTemplate' => 'uniqueMember=uid={{UID}},ou=People,dc=example,dc=org',
+        'ldapUri' => 'ldaps://ipa.example.org',
+        'groupDn' => 'cn=groups,cn=accounts,dc=example,dc=org',
+        'filterTemplate' => 'member=uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
+        //'bindDn' => 'uid=system,cn=users,cn=accounts,dc=example,dc=org',
+        //'bindPass' => 'foobarbaz',
     ],
 
-Set the `ldapUri` to the URI of your LDAP server. You can also use TLS by 
-using an URI like `ldaps://ldap.example.org`, and also provide the TCP port 
-explicitly, e.g. `ldaps://ldap.example.org:636`. 
+Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
+may need to obtain the CA certificate of the LDAP server and store it 
+locally so it can be used to verify the LDAP server certificate. See the
+CA section below.
 
 The `groupDn` is the DN where the groups you want to retrieve are located. The
 `filterTemplate` is used to only return the groups the user is a member of. 
-This example is for 
-[Red Hat Directory Server](https://www.redhat.com/en/technologies/cloud-computing/directory-server).
+This example is for [FreeIPA](https://www.freeipa.org/) and may be different
+for your LDAP server.
+
+#### CA
+
+If you use LDAPS and your LDAP server has a self signed certificate you may
+need to make the CA certificate available on the VPN machine.
+
+On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to 
+`/etc/openldap/certs` on the VPN machine and run the `cacertdir_rehash` 
+command:
+
+    # cacertdir_rehash /etc/openldap/certs
+
+This should now allow the LDAP client to verify the LDAP server certificate 
+and connect without problems.
 
 ### VootProvider
 

@@ -26,18 +26,34 @@ You have to set `authMethod` first:
 Then you can configure the LDAP server:
 
     'FormLdapAuthentication' => [
-        'ldapUri' => 'ldap://ldap.example.org',
-        'userDnTemplate' => 'uid={{UID}},ou=People,dc=example,dc=org',
+        'ldapUri' => 'ldaps://ipa.example.org',
+        'userDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
     ],
 
-Set the `ldapUri` to the URI of your LDAP server. You can also use TLS by 
-using an URI like `ldaps://ldap.example.org`, and also provide the TCP port 
-explicitly, e.g. `ldaps://ldap.example.org:636`. 
+Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
+may need to obtain the CA certificate of the LDAP server and store it 
+locally so it can be used to verify the LDAP server certificate. See the
+CA section below.
 
 The `userDnTemplate` will be used to "generate" a DN to use to bind to the 
-LDAP server. This example is for 
-[Red Hat Directory Server](https://www.redhat.com/en/technologies/cloud-computing/directory-server). 
-For your LDAP server it may be different. The `{{UID}}` is replaced by what the user
-provides in the `Username` field when trying to authenticate to the portal(s).
+LDAP server. This example is for [FreeIPA](https://www.freeipa.org/).
+
+For your LDAP server it may be different. The `{{UID}}` is replaced by what the 
+user provides in the `Username` field when trying to authenticate to the 
+portal(s).
 
 Repeat this for `vpn-admin-portal` and you're all set.
+
+# CA
+
+If you use LDAPS and your LDAP server has a self signed certificate you may
+need to make the CA certificate available on the VPN machine.
+
+On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to 
+`/etc/openldap/certs` on the VPN machine and run the `cacertdir_rehash` 
+command:
+
+    # cacertdir_rehash /etc/openldap/certs
+
+This should now allow the LDAP client to verify the LDAP server certificate 
+and connect without problems.
