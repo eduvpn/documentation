@@ -71,3 +71,4 @@ cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
     VPN_INSTANCE_ID=default php -S localhost:8083 -t web &
 )
 EOF
+chmod +x "${BASE_DIR}/launch.sh"

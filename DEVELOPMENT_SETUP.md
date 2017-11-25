@@ -19,68 +19,14 @@ Install the required software:
 
     $ sudo dnf -y install git composer php-phpunit-PHPUnit openvpn \
         php-date php-filter php-gettext php-hash php-json php-mbstring \
-        php-pcre php-pdo php-spl php-libsodium php-ldap php-curl
+        php-pcre php-pdo php-spl php-libsodium php-ldap php-curl php-gd
 
-# Getting the Modules
+Download the `development_setup.sh` script from this repository and run it. It
+will by default create a directory `${HOME}/Project/eduVPN` under which 
+everything will be installed. No `root` is required!
 
-    $ mkdir -p ${HOME}/Projects/eduVPN
-    $ cd ${HOME}/Projects/eduVPN
-    $ git clone https://github.com/eduvpn/vpn-server-api.git
-    $ git clone https://github.com/eduvpn/vpn-user-portal.git
-    $ git clone https://github.com/eduvpn/vpn-admin-portal.git
-    $ git clone https://github.com/eduvpn/vpn-server-node.git
-    $ git clone https://github.com/eduvpn/vpn-lib-common.git
-
-## vpn-server-api
-
-    $ cd ${HOME}/Projects/eduVPN/vpn-server-api
-    $ composer update
-    $ mkdir config/default
-    $ cp config/config.php.example config/default/config.php
-    $ mkdir -p data/default
-    $ php bin/init.php
-
-## vpn-user-portal
-
-    $ cd ${HOME}/Projects/eduVPN/vpn-user-portal
-    $ composer update
-    $ mkdir config/default
-    $ cp config/config.php.example config/default/config.php
-    $ mkdir -p data/default
-    $ php bin/init.php
-    $ php bin/add-user.php --user foo --pass bar
-
-Modify `config/default/config.php` and disable `secureCookie` and 
-`enableTemplateCache`.
-
-Modify `apiUri` and set it to `http://localhost:8008/api.php`.
-
-## vpn-admin-portal
-
-    $ cd ${HOME}/Projects/eduVPN/vpn-admin-portal
-    $ composer update
-    $ mkdir config/default
-    $ cp config/config.php.example config/default/config.php
-    $ mkdir -p data/default
-    $ php bin/add-user.php --user foo --pass bar
-
-Modify `config/default/config.php` and disable `secureCookie` and 
-`enableTemplateCache`.
-
-Modify `apiUri` and set it to `http://localhost:8008/api.php`.
-
-## vpn-server-node
-
-    $ cd ${HOME}/Projects/eduVPN/vpn-server-node
-    $ composer update
-    $ mkdir config/default
-    $ cp config/config.php.example config/default/config.php
-    $ cp config/firewall.php.example config/firewall.php
-    $ mkdir -p data/default
-    $ mkdir openvpn-config
-
-Modify `config/default/config.php` and set `apiUri` to 
-`http://localhost:8008/api.php`.
+    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/master/development_setup.sh
+    $ sh ./development_setup.sh
 
 # Testing
 
@@ -92,24 +38,11 @@ e.g.:
 
 # Using
 
-Script to launch all services:
+A "launch" script is included to run the PHP built-in web server to be able
+to easily test the portals.
 
-    #!/bin/sh
-    cd ${HOME}/Projects/eduVPN
-    (
-	    cd vpn-server-api
-	    VPN_INSTANCE_ID=default php -S localhost:8008 -t web &
-    )
-
-    (
-	    cd vpn-user-portal
-	    VPN_INSTANCE_ID=default php -S localhost:8082 -t web &
-    )
-
-    (
-	    cd vpn-admin-portal
-	    VPN_INSTANCE_ID=default php -S localhost:8083 -t web &
-    )
+    $ cd ${HOME}/Projects/eduVPN
+    $ sh ./launch.sh
 
 Now with your browser you can connect to the user portal on 
 `http://localhost:8082/` and to the admin portal on `http://localhost:8083/`.
