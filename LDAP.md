@@ -42,6 +42,11 @@ For your LDAP server it may be different. The `{{UID}}` is replaced by what the
 user provides in the `Username` field when trying to authenticate to the 
 portal(s).
 
+For Active Directory you can use the following `userDnTemplate`, where `DOMAIN`
+is the name of your domain:
+
+    'userDnTemplate' => 'DOMAIN\{{UID}}'
+
 Repeat this for `vpn-admin-portal` and you're all set.
 
 # CA
