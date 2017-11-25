@@ -18,11 +18,8 @@ about guidelines to follow.
 Install the required software:
 
     $ sudo dnf -y install git composer php-phpunit-PHPUnit openvpn \
-        php-libsodium
-
-Some additional PHP extensions may be required, you will see `composer update` 
-below complain about any missing PHP extensions. You can install them with 
-`sudo dnf -y install php-EXT`.
+        php-date php-filter php-gettext php-hash php-json php-mbstring \
+        php-pcre php-pdo php-spl php-libsodium php-ldap php-curl
 
 # Getting the Modules
 
