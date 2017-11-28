@@ -1,9 +1,9 @@
 {
-    "hash-sha256": "1a4ecdd748a93789fe7ae780122eeabd5643cddbd41c9718c70aaf13b360e404",
-    "seq": 15,
-    "signed_at": "2017-11-24 16:04:02",
+    "hash-sha256": "f478b0af31ffb77865967126c6dccd07a1f4e544f1831b9a2746252a971226f9",
+    "seq": 16,
+    "signed_at": "2017-11-28 12:06:05",
     "uri": [
-        "https://github.com/Amebis/eduVPN/releases/download/1.0-alpha8/eduVPNClient_1.0-alpha8.exe"
+        "https://github.com/Amebis/eduVPN/releases/download/1.0.12/eduVPNClient_1.0.12.exe"
     ],
-    "version": "1.0.10"
+    "version": "1.0.12"
 }
