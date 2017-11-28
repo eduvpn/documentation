@@ -46,12 +46,16 @@ configuration.
 
 ### LdapProvider
 
+For [FreeIPA](https://www.freeipa.org/):
+
     'LdapProvider' => [
+        // FreeIPA
         'ldapUri' => 'ldaps://ipa.example.org',
-        'groupDn' => 'cn=groups,cn=accounts,dc=example,dc=org',
-        'filterTemplate' => 'member=uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        //'bindDn' => 'uid=vpn,cn=sysaccounts,cn=etc,dc=example,dc=org',
-        //'bindPass' => 'foobarbaz',
+        'groupBaseDn' => 'cn=groups,cn=accounts,dc=example,dc=org',
+        // {{UID}} will be replaced by the actual user ID
+        'memberFilterTemplate' => 'member=uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
+        'bindDn' => 'uid=vpn,cn=sysaccounts,cn=etc,dc=example,dc=org',
+        'bindPass' => 's3cr3t',
     ],
 
 Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
@@ -59,13 +63,42 @@ may need to obtain the CA certificate of the LDAP server and store it
 locally so it can be used to verify the LDAP server certificate. See the
 CA section below.
 
-The `groupDn` is the DN where the groups you want to retrieve are located. The
-`filterTemplate` is used to only return the groups the user is a member of. 
-This example is for [FreeIPA](https://www.freeipa.org/) and may be different
-for your LDAP server.
+The `groupBaseDn` is the DN where the groups you want to retrieve are located. 
+The `memberFilterTemplate` is used to only return the groups the user is a 
+member of.
 
 On FreeIPA, creating a system account, as used in the `bindDn`, is described 
 [here](https://www.freeipa.org/page/HowTo/LDAP).
+
+For Active Directory: 
+
+    'LdapProvider' => [
+        // Active Directory
+        'ldapUri' => 'ldap://ad.example.org',
+        'groupBaseDn' => 'cn=Users,dc=example,dc=org',
+        // {{DN}} will be replaced by the actual user DN obtained using
+        // the userIdFilter configured below
+        'memberFilterTemplate' => 'member={{DN}}',
+        'userBaseDn' => 'cn=Users,dc=example,dc=org',
+        // {{UID}} will be replaced by the actual user ID
+        'userIdFilterTemplate' => 'sAMAccountName={{UID}}',
+        'bindDn' => 'cn=Administrator,cn=Users,dc=example,dc=org',
+        'bindPass' => 's3cr3t',
+    ],
+
+The same as for FreeIPA regarding LDAP URI and certificates, but there are some 
+extra options here for AD as it is required to first figure out the DN of the 
+user based on their user ID (`sAMAccountName`) before we can retrieve the list 
+of groups the user is a member of.
+
+Do **NOT** use the Administrator account as mentioned in the example for 
+production deploys! Create a system or service account instead that can only 
+be used to "bind" to the LDAP server and query it, with no additional 
+permissions!
+
+`userBaseDn` contains the users, typically this is the same as `groupBaseDn` 
+on simple deployments. The `userIdFilterTemplate` is used to determine which 
+LDAP attribute is used to determine the DN of the user.
 
 #### CA
 
