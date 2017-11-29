@@ -1,8 +1,8 @@
-%global commit0 1e86c3443e23bc3ec6a612e76dd3ede50178cdb7
+%global commit0 c78f4c46bf0df824c697791ac86b6dc01a19fd38
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-server
-Version:        2.0.0
+Version:        2.0.1
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
@@ -89,7 +89,7 @@ The main purpose is to be compatible with PHP 5.4.
 cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
+require_once __DIR__.'/sodium_compat.php';
 \Fedora\Autoloader\Autoload::addPsr4('fkooman\\OAuth\\Server\\', __DIR__);
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
@@ -123,6 +123,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Wed Nov 29 2017 François Kooman <fkooman@tuxed.net> - 2.0.1-1
+- update to 2.0.1
+
 * Tue Nov 14 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
 
