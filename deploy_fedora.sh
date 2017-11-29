@@ -82,8 +82,8 @@ cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
 
 # VirtualHost
-cp resources/vpn.example.conf /etc/httpd/conf.d/${WEB_FQDN}.conf
-sed -i "s/vpn.example/${WEB_FQDN}/" /etc/httpd/conf.d/${WEB_FQDN}.conf
+cp resources/vpn.example.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
+sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################
 # PHP
@@ -99,7 +99,7 @@ cp resources/75-session.fedora.ini /etc/php.d/75-session.ini
 ###############################################################################
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_IF}
+vpn-server-api-update-ip --profile internet --host "${VPN_FQDN}" --ext "${EXTERNAL_IF}"
 
 # initialize the CA
 sudo -u apache vpn-server-api-init
@@ -142,18 +142,18 @@ openssl req \
     -x509 \
     -sha256 \
     -newkey rsa:2048 \
-    -keyout /etc/pki/tls/private/${WEB_FQDN}.key \
-    -out /etc/pki/tls/certs/${WEB_FQDN}.crt \
+    -keyout "/etc/pki/tls/private/${WEB_FQDN}.key" \
+    -out "/etc/pki/tls/certs/${WEB_FQDN}.crt" \
     -days 90
 
 ###############################################################################
 # WEB
 ###############################################################################
 
-mkdir -p /var/www/${WEB_FQDN}
+mkdir -p "/var/www/${WEB_FQDN}"
 # Copy server info JSON file
-cp resources/info.json /var/www/${WEB_FQDN}/info.json
-sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
+cp resources/info.json "/var/www/${WEB_FQDN}/info.json"
+sed -i "s/vpn.example/${WEB_FQDN}/" "/var/www/${WEB_FQDN}/info.json"
 
 ###############################################################################
 # DAEMONS
