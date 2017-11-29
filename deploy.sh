@@ -5,20 +5,22 @@
 #
 
 ###############################################################################
-# VARIABLES
+# CONFIGURATION
 ###############################################################################
 
 # DNS name of the Web Server
-WEB_FQDN=vpn.example
+printf "DNS name of the Web Server [vpn.example.org]: "; read -r WEB_FQDN
+WEB_FQDN=${WEB_FQDN:-vpn.example.org}
 
-# DNS name of the OpenVPN Server
-VPN_FQDN=${WEB_FQDN}
+# DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
 # use different name if you want to allow moving the OpenVPN processes to 
 # another machine in the future without breaking client configuration files
-#VPN_FQDN=internet.${WEB_FQDN}
+printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
+VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
 
 # The interface that connects to "the Internet" (for firewall rules)
-EXTERNAL_IF=eth0
+printf "External interface connecting to the Internet [eth0]: "; read -r EXTERNAL_IF
+EXTERNAL_IF=${EXTERNAL_IF:-eth0}
 
 ###############################################################################
 # SYSTEM

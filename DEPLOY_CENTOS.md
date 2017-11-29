@@ -33,13 +33,13 @@ Perform these steps on the host where you want to deploy:
     $ tar -xzf master.tar.gz
     $ cd documentation-master
 
-Modify `deploy.sh` and set the variables at the top of the file to something 
-that makes sense for your deployment. Read the comments at the top of the file. 
-
 Run the script (as root):
 
     $ sudo -s
     # ./deploy.sh
+
+Specify the hostname you want to use for your VPN server. Both the "Web" and 
+"OpenVPN" DNS names can be identical for simple 1 machine setups.
 
 ## Configuration
 
