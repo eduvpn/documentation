@@ -9,7 +9,8 @@
 ###############################################################################
 
 # DNS name of the Web Server
-WEB_FQDN=vpn.example
+printf "DNS name of the Web Server [vpn.example.org]: "; read -r WEB_FQDN
+WEB_FQDN=${WEB_FQDN:-vpn.example.org}
 
 ###############################################################################
 # SYSTEM

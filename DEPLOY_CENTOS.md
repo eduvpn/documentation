@@ -91,17 +91,15 @@ users, see [ACL](ACL.md).
 
 ### Let's Encrypt
 
-Modify `lets_encrypt.sh` and set the variables at the top of the file to 
-something that makes sense for you. Read the comments at the top of the file. 
-Make sure the `WEB_FQDN` variable is the same as the one you used in 
-`deploy.sh`.
-
 Run the script (as root):
 
     $ sudo -s
     # ./lets_encrypt.sh
 
-The system will automatically replace the certificate before it expires.
+Make sure you use the exact same DNS name you used when running `deploy.sh`! 
+
+After completing the script, the certificate will be installed and the system 
+will automatically replace the certificate before it expires.
 
 ### PHP 7.1
 
