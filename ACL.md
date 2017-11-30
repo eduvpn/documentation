@@ -12,7 +12,7 @@ possibly `/etc/vpn-user-portal/default/config.php`
 Add
 
     enableAcl: true
-    aclGroupList: [all]
+    aclGroupList: ['all']
 
 To `/etc/vpn-server-api/default/config.php` for the profile you want to 
 enable the ACL for. Here, the group with identifier `all` is given access.
