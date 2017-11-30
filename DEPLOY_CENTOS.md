@@ -8,7 +8,7 @@ Additional scripts are available after deployment:
 
 * Use [Let's Encrypt](https://letsencrypt.org/) for automatic web server 
   certificate management;
-* Switch to PHP 7.1 (experimental)
+* Switch to PHP 7.2 (experimental)
 
 ## Requirements
 
@@ -101,12 +101,12 @@ Make sure you use the exact same DNS name you used when running `deploy.sh`!
 After completing the script, the certificate will be installed and the system 
 will automatically replace the certificate before it expires.
 
-### PHP 7.1
+### PHP 7.2
 
-You can switch to PHP 7.1 for performance (and security) reasons:
+You can switch to PHP 7.2 for performance (and security) reasons:
 
 **NOTE**: this is experimental. This PHP version is not supported by CentOS and
 depends on [Remi's RPM repository](https://blog.remirepo.net/).
 
     $ sudo -s
-    # ./switch_to_php71.sh
+    # ./switch_to_php72.sh
