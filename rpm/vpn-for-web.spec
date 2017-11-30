@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-for-web
-%global github_commit           55be1551410f4988158469b246a09e229afbad0b
+%global github_commit           9dc9bd8bed41afbc761f69e7827427d08e038768
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.44%{?dist}
+Release:    0.45%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -28,7 +28,6 @@ BuildRequires:  php-json
 BuildRequires:  php-libsodium
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
-BuildRequires:  php-session
 BuildRequires:  php-spl
 BuildRequires:  php-standard
 BuildRequires:  php-composer(twig/twig) < 2
@@ -45,7 +44,6 @@ Requires:   php-json
 Requires:   php-libsodium
 Requires:   php-mbstring
 Requires:   php-pcre
-Requires:   php-session
 Requires:   php-spl
 Requires:   php-standard
 Requires:   php-composer(twig/twig) < 2
@@ -141,6 +139,9 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Nov 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.45
+- rebuilt
+
 * Mon Aug 28 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.44
 - rebuilt
 
