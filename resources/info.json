@@ -5,5 +5,8 @@
             "authorization_endpoint": "https://vpn.example/vpn-user-portal/_oauth/authorize",
             "token_endpoint": "https://vpn.example/vpn-user-portal/oauth.php/token"
         }
+    },
+    "two_factor_authentication": {
+        "enroll_uri": "https://vpn.example/vpn-user-portal/account"
     }
 }

@@ -140,8 +140,17 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
                 "authorization_endpoint": "https://demo.eduvpn.nl/portal/_oauth/authorize",
                 "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token"
             }
+        },
+        "two_factor_authentication": {
+            "enroll_uri": "https://vpn.example/vpn-user-portal/account"
         }
     }
+
+The `two_factor_authentication` key was added later, and thus MAY not be there.
+The `enroll_uri` can be used by the application to redirect the user to in 
+case the user is not enrolled for 2FA but that is required to connect to the
+VPN. If the application knows which kind of 2FA is required it MAY specify 
+the query parameter `two_factor_type` with value `totp` or `yubi`.
 
 # Authorization Request 
 
@@ -452,8 +461,11 @@ signature MUST be verified and the value of the `seq` key of the verified file
 MUST be `>=` the cached copy. It MUST NOT be possible to "rollback", so for the
 instances discovery the cached copy MUST be retained.
 
-The API discovery files do not currently have a signature and `seq` key, but 
-MAY in the future.
+The API discovery files, i.e. `info.json` does not currently have a signature 
+and `seq` key, but MAY in the future.
+
+The VPN configuration MUST NOT be cached and MUST be retrieved every time 
+before a new connection is set up with the client.
 
 # Client Registration
 
