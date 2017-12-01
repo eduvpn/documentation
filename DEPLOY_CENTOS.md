@@ -8,7 +8,7 @@ Additional scripts are available after deployment:
 
 * Use [Let's Encrypt](https://letsencrypt.org/) for automatic web server 
   certificate management;
-* Switch to PHP 7.2 (experimental)
+* Switch to modern PHP (experimental)
 
 ## Requirements
 
@@ -101,12 +101,12 @@ Make sure you use the exact same DNS name you used when running `deploy.sh`!
 After completing the script, the certificate will be installed and the system 
 will automatically replace the certificate before it expires.
 
-### PHP 7.2
+### Modern PHP
 
-You can switch to PHP 7.2 for performance (and security) reasons:
+You can switch to modern PHP for performance (and security) reasons:
 
 **NOTE**: this is experimental. This PHP version is not supported by CentOS and
 depends on [Remi's RPM repository](https://blog.remirepo.net/).
 
     $ sudo -s
-    # ./switch_to_php72.sh
+    # ./switch_to_remi_php.sh

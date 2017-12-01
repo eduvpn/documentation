@@ -33,7 +33,7 @@ EOLed version of PHP is maintained by Red Hat, which means I will rely on
 them to fix (critical) security problems in PHP and the rest of the OS. I'm 
 doing all development and testing initially on the latest release of 
 [Fedora](https://getfedora.org/), which typically includes the latest version 
-of PHP, at this time of writing PHP 7.2. This means, my code will run on all 
+of PHP, at this time of writing PHP 7.1. This means, my code will run on all 
 PHP versions >= 5.4.
 
 Unfortunately targeting PHP 5.4 rules out a number of useful libraries, for 
