@@ -6,8 +6,8 @@
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.0.0
-Release:    4%{?dist}
+Version:    1.1.0
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -61,10 +61,7 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
-* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-4
-- deal with separate vpn-admin-portal and vpn-user-portal views
-
-* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
 - update for template refactor
 
 * Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
