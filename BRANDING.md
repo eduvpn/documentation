@@ -10,13 +10,13 @@ The portals use templates, located in the following folders:
     /usr/share/vpn-user-portal/views
     /usr/share/vpn-admin-portal/views
 
-You can copy the `head.twig` from these folders to 
-`/etc/vpn-user-portal/default/views/head.twig` and 
-`/etc/vpn-admin-portal/default/views/head.twig` respectively and modify them to
-override the defaults. For instance by adding an extra line pointing to a 
-second CSS file.
+You can copy the `base.twig` from these folders to 
+`/etc/vpn-user-portal/default/views/base.twig` and 
+`/etc/vpn-admin-portal/default/views/base.twig` respectively and modify them to
+override the defaults. For instance by adding an extra line pointing to an 
+additional CSS file.
 
-**NOTE**: It is NOT recommended to update other templates than `head.twig` as 
+**NOTE**: It is NOT recommended to update other templates than `base.twig` as 
 they MAY break future software updates. We do NOT guarantee template 
 compatibility!
 
@@ -50,7 +50,7 @@ for example:
         height: 119px;
     }
 
-    ul.menu li.active a {
+    ul.menu li.active a, ul.menu li.active span {
         background-color: #df7f0c;
     }
 

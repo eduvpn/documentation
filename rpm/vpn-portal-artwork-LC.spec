@@ -1,13 +1,13 @@
 %global github_owner            letsconnectvpn
 %global github_name             artwork
-%global github_commit           9a17bae6f7455b09ed314cbf1de47634ada4eb14
+%global github_commit           ecc4cb932a9047fc05bdf119592a340418824ade
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.0.0
-Release:    2%{?dist}
+Release:    4%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -38,8 +38,8 @@ cp -p portal/css/%{style_name}.css %{buildroot}%{_datadir}/vpn-user-portal/web/c
 cp -p portal/css/%{style_name}.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/%{style_name}
 cp -p portal/img/%{style_name}.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/%{style_name}
 cp -p portal/img/%{style_name}.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/%{style_name}
-cp -p portal/views/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
-cp -p portal/views/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
+cp -p portal/views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
+cp -p portal/views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
 
 %post
 # clear template cache
@@ -61,6 +61,12 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-4
+- deal with separate vpn-admin-portal and vpn-user-portal views
+
+* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- update for template refactor
+
 * Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - no longer include README/CHANGES
 

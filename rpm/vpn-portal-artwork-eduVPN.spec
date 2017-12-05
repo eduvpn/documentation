@@ -1,13 +1,13 @@
 %global github_owner            eduVPN
 %global github_name             artwork
-%global github_commit           52b7af4ad21a09aa52f3d81942c28ebedbbcb19a
+%global github_commit           5f16b29a6871c1da135fdbc8932b8ed681aceb92
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.0.0
-Release:    3%{?dist}
+Release:    5%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -38,8 +38,8 @@ cp -p portal/css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/%{st
 cp -p portal/css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/%{style_name}
 cp -p portal/img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/%{style_name}
 cp -p portal/img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/%{style_name}
-cp -p portal/views/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
-cp -p portal/views/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
+cp -p portal/views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
+cp -p portal/views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
 
 %post
 # clear template cache
@@ -61,6 +61,12 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-5
+- rebuilt
+
+* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-4
+- rebuilt
+
 * Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-3
 - bump release
 
