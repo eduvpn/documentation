@@ -5,34 +5,22 @@
 #
 
 ###############################################################################
-# VARIABLES
+# CONFIGURATION
 ###############################################################################
 
-# **NOTE**: make sure WEB_FQDN and VPN_FQDN are valid DNS names with 
-# appropriate A (and AAAA) records!
-#
+# DNS name of the Web Server
+printf "DNS name of the Web Server [vpn.example.org]: "; read -r WEB_FQDN
+WEB_FQDN=${WEB_FQDN:-vpn.example.org}
 
-# VARIABLES
-WEB_FQDN=vpn.example
-
-# we can use a separate hostname for the VPN connections to allow for moving 
-# the VPN processes to another machine in the future when client configurations 
-# are already distributed
-VPN_FQDN=${WEB_FQDN}
-#VPN_FQDN=internet.${WEB_FQDN}
-
-# Let's Encrypt
-# TOS: https://letsencrypt.org/repository/
-AGREE_TOS=""
-# to agree to the TOS, add "#" the line above and remove "#" below this line
-#AGREE_TOS="--agree-tos"
-
-# The email address you want to use for Let's Encrypt (for issues with 
-# renewing the certificate etc.)
-LETSENCRYPT_MAIL=admin@example.org
+# DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
+# use different name if you want to allow moving the OpenVPN processes to 
+# another machine in the future without breaking client configuration files
+printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
+VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
 
 # The interface that connects to "the Internet" (for firewall rules)
-EXTERNAL_IF=eth0
+printf "External interface connecting to the Internet [eth0]: "; read -r EXTERNAL_IF
+EXTERNAL_IF=${EXTERNAL_IF:-eth0}    
 
 ###############################################################################
 # SOFTWARE
@@ -40,11 +28,11 @@ EXTERNAL_IF=eth0
 
 apt update
 
-DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl apache2 \
-    php-fpm certbot pwgen iptables-persistent sudo locales-all
+    DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
+        apache2 php-fpm pwgen iptables-persistent sudo locales-all
 
-curl -L https://repo.eduvpn.org/debian/eduvpn.key | apt-key add -
-echo "deb https://repo.eduvpn.org/debian/ stretch main" > /etc/apt/sources.list.d/eduvpn.list
+curl -L https://repo.eduvpn.org/debian-experimental/eduVPN.key | apt-key add -
+echo "deb https://repo.eduvpn.org/debian-experimental/ stretch main" > /etc/apt/sources.list.d/eduVPN.list
 apt update
 
 # install software (VPN packages)
@@ -62,6 +50,21 @@ sed -i 's/^# nl_NL/nl_NL/' /etc/locale.gen
 locale-gen
 
 ###############################################################################
+# CERTIFICATE
+###############################################################################
+
+# generate self signed certificate and key
+openssl req \
+    -nodes \
+    -subj "/CN=${WEB_FQDN}" \
+    -x509 \
+    -sha256 \
+    -newkey rsa:2048 \
+    -keyout "/etc/ssl/private/${WEB_FQDN}.key" \
+    -out "/etc/ssl/certs/${WEB_FQDN}.crt" \
+    -days 90
+
+###############################################################################
 # APACHE
 ###############################################################################
 
@@ -70,6 +73,7 @@ a2enconf php7.0-fpm
 
 # VirtualHost
 cp resources/vpn.example.conf /etc/apache2/sites-available/${WEB_FQDN}.conf
+cp resources/localhost.conf /etc/apache2/sites-available/localhost.conf
 
 # Update log paths
 sed -i 's|ErrorLog logs/vpn.example_error_log|ErrorLog ${APACHE_LOG_DIR}/vpn.example_error_log|' /etc/apache2/sites-available/${WEB_FQDN}.conf
@@ -84,6 +88,7 @@ a2enconf vpn-server-api
 a2enconf vpn-user-portal
 a2enconf vpn-admin-portal
 a2ensite ${WEB_FQDN}
+a2ensite localhost
 
 ###############################################################################
 # PHP
@@ -111,16 +116,8 @@ vpn-server-api-update-ip --profile internet --host ${VPN_FQDN} --ext ${EXTERNAL_
 sudo -u www-data vpn-server-api-init
 
 ###############################################################################
-# VPN-ADMIN-PORTAL
-###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-admin-portal/default/config.php
-
-###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-user-portal/default/config.php
 
 # generate OAuth public/private keys
 sudo -u www-data vpn-user-portal-init
@@ -128,8 +125,6 @@ sudo -u www-data vpn-user-portal-init
 ###############################################################################
 # VPN-SERVER-NODE
 ###############################################################################
-
-sed -i "s|http://localhost/vpn-server-api/api.php|https://${WEB_FQDN}/vpn-server-api/api.php|" /etc/vpn-server-node/default/config.php
 
 # On Debian different user/group for running OpenVPN
 sed -i "s|'vpnUser' => 'openvpn'|'vpnUser' => 'nobody'|" /etc/vpn-server-node/default/config.php
@@ -154,19 +149,6 @@ sysctl --system
 
 # update API secret
 vpn-server-api-update-api-secrets
-
-###############################################################################
-# LET'S ENCRYPT / CERTBOT
-###############################################################################
-
-# setup the hooks to stop and start Apache on renewal
-cat << EOF >> /etc/letsencrypt/cli.ini
-pre-hook systemctl stop apache2
-post-hook systemctl start apache2
-EOF
-
-certbot register ${AGREE_TOS} -m ${LETSENCRYPT_MAIL}
-certbot certonly -n --standalone -d ${WEB_FQDN}
 
 ###############################################################################
 # WEB
