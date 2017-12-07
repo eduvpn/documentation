@@ -3,6 +3,9 @@
 This repository contains all RPM spec files for software that is not part 
 of Fedora/EPEL, including dependencies and the VPN software itself.
 
+If you want to build eduVPN from source for deploying it and not for 
+development, you can check [this](../release/README.md) document.
+
 The repository contains two additional scripts:
 
 * `local_build.sh` to build the package locally;
