@@ -96,8 +96,8 @@ phpenmod -v 7.0 -s ALL eduvpn-timezone
 cp resources/75-session.debian.ini /etc/php/7.0/mods-available/eduvpn-session.ini
 phpenmod -v 7.0 -s ALL eduvpn-session
 
-# reload php-fpm service to read the new configuration
-systemctl reload php7.0-fpm
+# restart php-fpm to read the new configuration
+systemctl restart php7.0-fpm
 
 ###############################################################################
 # VPN-SERVER-API
@@ -158,6 +158,7 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
 ###############################################################################
 
 systemctl enable --now php7.0-fpm
+systemctl restart apache2
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
