@@ -28,8 +28,8 @@ EXTERNAL_IF=${EXTERNAL_IF:-eth0}
 
 apt update
 
-    DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-        apache2 php-fpm pwgen iptables-persistent sudo locales-all
+DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
+    apache2 php-fpm pwgen iptables-persistent sudo locales-all
 
 curl -L https://repo.eduvpn.org/debian-experimental/eduVPN.key | apt-key add -
 echo "deb https://repo.eduvpn.org/debian-experimental/ stretch main" > /etc/apt/sources.list.d/eduVPN.list
@@ -72,14 +72,8 @@ a2enmod ssl headers rewrite proxy_fcgi setenvif
 a2enconf php7.0-fpm
 
 # VirtualHost
-cp resources/vpn.example.conf /etc/apache2/sites-available/${WEB_FQDN}.conf
-cp resources/localhost.conf /etc/apache2/sites-available/localhost.conf
-
-# Update log paths
-sed -i 's|ErrorLog logs/vpn.example_error_log|ErrorLog ${APACHE_LOG_DIR}/vpn.example_error_log|' /etc/apache2/sites-available/${WEB_FQDN}.conf
-sed -i 's|TransferLog logs/vpn.example_access_log|TransferLog ${APACHE_LOG_DIR}/vpn.example_access_log|' /etc/apache2/sites-available/${WEB_FQDN}.conf
-sed -i 's|ErrorLog logs/vpn.example_ssl_error_log|ErrorLog ${APACHE_LOG_DIR}/vpn.example_ssl_error_log|' /etc/apache2/sites-available/${WEB_FQDN}.conf
-sed -i 's|TransferLog logs/vpn.example_ssl_access_log|TransferLog ${APACHE_LOG_DIR}/vpn.example_ssl_access_log|' /etc/apache2/sites-available/${WEB_FQDN}.conf
+cp resources/vpn.example.debian.conf /etc/apache2/sites-available/${WEB_FQDN}.conf
+cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 
 # update hostname
 sed -i "s/vpn.example/${WEB_FQDN}/" /etc/apache2/sites-available/${WEB_FQDN}.conf

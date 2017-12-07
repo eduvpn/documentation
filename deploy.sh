@@ -87,7 +87,7 @@ semanage port -a -t openvpn_port_t -p tcp 11940-12195
 # Use a hardended ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
-cp resources/localhost.conf /etc/httpd/conf.d/localhost.conf
+cp resources/localhost.centos.conf /etc/httpd/conf.d/localhost.conf
 
 # Switch to MPM event (https://httpd.apache.org/docs/2.4/mod/event.html)
 sed -i "s|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$|#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|" /etc/httpd/conf.modules.d/00-mpm.conf
@@ -98,7 +98,7 @@ sed -i "s|^#LoadModule mpm_event_module modules/mod_mpm_event.so$|LoadModule mpm
 cp resources/php.conf /etc/httpd/conf.d/php.conf
 
 # VirtualHost
-cp resources/vpn.example.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
+cp resources/vpn.example.centos.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################
