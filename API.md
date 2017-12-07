@@ -316,13 +316,31 @@ The response will be an OpenVPN configuration file without the `<cert>` and
 
 ## Two-Factor Enrollment
 
+Below you'll find how to enroll a user for 2FA. This only works if they are 
+not yet enrolled for either 2FA method.
+
 ### YubiKey
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         -d "yubi_key_otp=ccccccetgjtljvdgkflkgctibcrnjbithrubbkvdtcnt" \
         https://demo.eduvpn.nl/portal/api.php/two_factor_enroll_yubi
 
-The `yubi_key_otp` field contains one YubiKey OTP.
+The `yubi_key_otp` field contains one YubiKey OTP. The response:
+
+    {
+        "two_factor_enroll_yubi": {
+            "ok": true
+        }
+    }
+
+On error, for example:
+
+    {
+        "two_factor_enroll_yubi": {
+            "ok": false,
+            "error": "user already enrolled"
+        }
+    }
 
 ### TOTP
 
@@ -339,6 +357,8 @@ that can be scanned by compatible TOTP applications running on e.g. a phone
 with a camera. The QR code can be made from the following URL:
 
     otpauth://totp/vpn.example.org?secret=K4JMMGO7T4ZR7ROZ&issuer=vpn.example.org
+
+The response format is the same as for YubiKey enrollment.
 
 ## System Messages
 
