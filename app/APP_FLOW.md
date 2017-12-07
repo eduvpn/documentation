@@ -68,7 +68,7 @@ from the client certificate and private key.
 
 # OAuth
 
-Many of the OAuth considerations are part of [API](https://github.com/eduvpn/documentation/blob/master/API.md). An application
+Many of the OAuth considerations are part of [API](../API.md). An application
 will have to deal with expiring access tokens, revoked access tokens and 
 refreshing them when needed, possibly using refresh tokens if they were 
 provided.
@@ -112,16 +112,13 @@ has access. Appropriate errors need to be shown to the user.
 
 # API 
 
-More details on the API can be found in the separate 
-[API](https://github.com/eduvpn/documentation/blob/master/API.md).
+More details on the API can be found in the separate [API](../API.md).
 
 # Future
 
 This section contains a list of changes in the future that should already be 
 contemplated, although not necessarily implemented, not all is implemented at
 this time in the API.
-
-The API will expose whether or not a user is blocked;
 
 It will be required for an app to store the client certificate and key in a 
 "protected" storage on the device, e.g. a secure element or otherwise tamper 
@@ -130,9 +127,3 @@ proof storage.
 The application can (and must) generate their own key and have it signed by 
 the API, this way the private key never leaves the device the app is running 
 on.
-
-The profile configuration will no longer consist of a "full" OpenVPN 
-configuration file, but instead only contain the bare minimum in changes from 
-what is the default as key/value pairs. For example, in OpenVPN >= 2.4 the 
-cipher configuration is done much more automatic and does not need to be 
-provided anymore.

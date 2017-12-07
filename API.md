@@ -11,6 +11,9 @@ requests. Only `GET` and `POST`.
 The requests always return `application/json`. The `POST` requests are sent as
 `application/x-www-form-urlencoded`.
 
+See the [Changes](#Changes) at the bottom of this page for changes since the 
+initial release of `http://eduvpn.org/api#2`, the current version.
+
 # Standards
 
 OAuth 2.0 is used to provide the API. The following documents are relevant for 
@@ -120,7 +123,7 @@ The flow:
    is higher than the `seq` in the cached copy (see Caching section);
 5. Overwrite the cached version if appropriate.
 
-The `signed_at` key is just informative and cannot be relied on to be 
+The `signed_at` key is just informative and MUST NOT be relied on to be 
 available.
 
 The public key that is currently used is 
@@ -140,17 +143,8 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
                 "authorization_endpoint": "https://demo.eduvpn.nl/portal/_oauth/authorize",
                 "token_endpoint": "https://demo.eduvpn.nl/portal/oauth.php/token"
             }
-        },
-        "two_factor_authentication": {
-            "enroll_uri": "https://vpn.example/vpn-user-portal/account"
         }
     }
-
-The `two_factor_authentication` key was added later, and thus MAY not be there.
-The `enroll_uri` can be used by the application to redirect the user to in 
-case the user is not enrolled for 2FA but that is required to connect to the
-VPN. If the application knows which kind of 2FA is required it MAY specify 
-the query parameter `two_factor_type` with value `totp` or `yubi`.
 
 # Authorization Request 
 
@@ -229,7 +223,7 @@ is still enabled, making it impossible to authenticate.
 
 This call will show information about the user, whether or not the user is 
 enrolled for 2FA and whether or not the user is prevented from connecting to
-the VPN.
+the VPN through `is_disabled`.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://demo.eduvpn.nl/portal/api.php/user_info
@@ -241,6 +235,7 @@ The response looks like this:
             "data": [
                 {
                     "two_factor_enrolled": false,
+                    "two_factor_enrolled_with": [],
                     "is_disabled": false
                 }
             ],
@@ -248,14 +243,15 @@ The response looks like this:
         }
     }
 
-If `two_factor_enrolled` is `true`, there MAY be a `two_factor_enrolled_with` 
-field. The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or 
+The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or 
 `totp` or both. This field indicates for which 2FA methods the user is 
-enrolled.
-
-**XXX** when can the `two_factor_enrolled_with` be the empty array?
+enrolled. It will only contain entries when `two_factor_enrolled` is `true`.
 
 ## Create a Configuration
+
+**NOTE**: do NOT use this for native applications. You MUST use the 
+`/profile_config` and `/create_keypair` calls instead as a keypair can be 
+reused between profiles.
 
 A call that can be used to get a full working OpenVPN configuration file 
 including certificate and key. This MUST NOT be used by "Native Apps". Instead
@@ -300,9 +296,9 @@ The certificate and the private key need to be combined with a profile
 configuration as `<cert>...</cert>` and `<key>...</key>` that can be obtained 
 through the `/profile_config` call.
 
-**NOTE**: a certificate is valid for ALL _profiles_ of a particular _instance_, 
-so if an instance has e.g. the profiles `internet` and `office`, only one 
-keypair is required!
+**NOTE**: a keypair is valid for ALL _profiles_ of a particular _instance_, so 
+if an instance has e.g. the profiles `internet` and `office`, only one keypair 
+is required!
 
 ## Profile Config
 
@@ -444,10 +440,10 @@ OAuth server, so for each instance a new token needs to be obtained.
 In order to support sharing access tokens between instances, e.g. for guest 
 usage, we introduce three "types" of authorization:
 
-1. **local**: every instance has their own OAuth server;
-2. **federated**: there is one central OAuth server, all instances accept 
+1. `local`: every instance has their own OAuth server;
+2. `federated`: there is one central OAuth server, all instances accept 
    tokens from this OAuth server;
-3. **distributed**: there is no central OAuth server, tokens from all instances 
+3. `distributed`: there is no central OAuth server, tokens from all instances 
    can be used at all (other) instances.
 
 The `authorization_type` key indicates which type is used. The supported 
@@ -466,8 +462,9 @@ token MUST be obtained from all of them individually.
 Here there is one central OAuth server that MUST be used. The OAuth server is 
 specified in the discovery file in the `authorization_endpoint` and 
 `token_endpoint` keys. When API discovery is performed, the keys for 
-`authorization_endpoint` and `token_endpoint` for the specific instance MUST
-be ignored. Refreshing access tokens MUST also be done at the central server.
+`authorization_endpoint` and `token_endpoint` for the specific instance from
+`info.json` MUST be ignored. Refreshing access tokens MUST also be done at the
+central server.
 
 ## Distributed
 
@@ -500,7 +497,7 @@ logos can be cached in the application to speed up displaying the UI. The
 updates.
 
 The user SHOULD be able to clear all cache in the application to force 
-reloading everything.
+reloading everything, e.g. by restarting the application.
 
 The Instance Discovery files are also signed using public key cryptography, the
 signature MUST be verified and the value of the `seq` key of the verified file 
@@ -524,35 +521,14 @@ configuration:
   * `http://127.0.0.1:{PORT}/callback`;
   * `http://[::1]:{PORT}/callback`;
 
-Here, `{PORT}` can be any port >= 1024 and <= 65535. You **MUST** use the 
+Here, `{PORT}` can be any port >= 1024 and <= 65535. You SHOULD use the 
 `org.eduvpn.app:/api/callback` redirect URI if at all possible on your 
 platform.
 
-# Changelog
+# Changes
 
-In API version 2, some calls were added:
-
-* `POST` to `/create_keypair` to create a `private_key` and 
-  `certificate` for an instance to be used with all profiles. This makes it 
-  possible to use one key pair per instance;
-* `GET` to `/profile_config` to obtain only the configuration file, without 
-  generating a key pair. This means the configuration can easily be refetched 
-  in case an update is needed without creating a new key pair;
-* `GET` to `/user_info` to obtain user information;
-* Extended authorization model in "Authorization" section.
-* `GET` to `/profile_list` and `/user_info` also (optionally) exposes which 
-  2FA method is accepted by the user and for which 2FA methods the user is 
-  enrolled, this can be used to enhance the UX, i.e. only ask for the OTP 
-  code;
-
-For security reasons, API 2 switches to the _authorization code_ flow, together 
-with mitigations described in the following documents:
-
-* [OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-11) (use latest version of specification);
-* [Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
-
-In particular, the use of PKCE is enforced, and the `response_type` MUST be 
-`code` for the authorization request.
-
-In version 2, we have a new discovery file format, and the file is also 
-signed. The signature MUST be validated by the consuming client.
+- the field `two_factor_enrolled_with` was added in the response to the 
+  `/user_info` call to allow API consumers to detect which 2FA methods the 
+  user enrolled for;
+- the calls `/two_factor_enroll_totp` and `/two_factor_enroll_yubi` were 
+  added to the API to allow API consumers to enroll users for 2FA.
