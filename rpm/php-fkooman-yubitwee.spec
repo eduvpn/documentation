@@ -3,7 +3,7 @@
 
 Name:           php-fkooman-yubitwee
 Version:        1.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -24,7 +24,6 @@ BuildRequires:  php-date
 BuildRequires:  php-hash
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
-BuildRequires:  php-composer(fedora/autoloader)
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
@@ -32,6 +31,7 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -45,7 +45,6 @@ Requires:       php-date
 Requires:       php-hash
 Requires:       php-pcre
 Requires:       php-spl
-Requires:       php-composer(fedora/autoloader)
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
@@ -62,16 +61,11 @@ A very simple, secure YubiKey OTP Validator with pluggable HTTP client.
 %autosetup -n php-yubitwee-%{commit0}
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiTwee\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-    '%{_datadir}/php/random_compat/autoload.php',
-    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
+require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
 
 %install
@@ -79,17 +73,12 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/YubiTwee
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/YubiTwee
 
 %check
-cat <<'AUTOLOAD' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\YubiTwee\\Tests\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/php/fkooman/YubiTwee/autoload.php',
-));
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit --bootstrap=tests/autoload.php
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %license LICENSE
@@ -98,6 +87,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-2
+- use phpab to generate the classloader
+
 * Mon Oct 30 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-1
 - update to 1.1.1
 - spec file cleanup

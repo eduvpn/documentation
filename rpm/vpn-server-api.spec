@@ -7,7 +7,7 @@
 
 Name:       vpn-server-api
 Version:    1.2.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -31,8 +31,8 @@ BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-standard
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(christian-riesen/otp)
 BuildRequires:  php-composer(fkooman/yubitwee)
@@ -60,7 +60,6 @@ Requires:   php-pdo
 Requires:   php-spl
 Requires:   php-standard
 Requires:   vpn-lib-common
-Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(psr/log)
 Requires:   php-composer(christian-riesen/otp)
 Requires:   php-composer(fkooman/yubitwee)
@@ -89,18 +88,13 @@ rm -rf easy-rsa
 %endif
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Server\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/Otp/autoload.php',
-    '%{_datadir}/php/Psr/Log/autoload.php',
-    '%{_datadir}/php/fkooman/YubiTwee/autoload.php',
-    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',   
-    '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/Otp/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 AUTOLOAD
 
 %install
@@ -137,17 +131,12 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
-cat << 'EOF' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
+AUTOLOAD
 
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
-));
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Server\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
-
-%{_bindir}/phpunit --bootstrap=tests/autoload.php
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -178,6 +167,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.2.0-2
+- use phpab to generate the classloader
+
 * Tue Nov 28 2017 François Kooman <fkooman@tuxed.net> - 1.2.0-1
 - update to 1.2.0
 

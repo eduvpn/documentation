@@ -3,7 +3,7 @@
 
 Name:           php-fkooman-secookie
 Version:        2.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -15,13 +15,12 @@ BuildArch:      noarch
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-session
-BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 
 Requires:       php(language) >= 5.4.0
 Requires:       php-date
 Requires:       php-session
-Requires:       php-composer(fedora/autoloader)
 
 Provides:       php-composer(fkooman/secookie) = %{version}
 
@@ -32,26 +31,16 @@ Secure Cookie and Session library for PHP.
 %autosetup -n php-secookie-%{commit0}
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SeCookie\\', __DIR__);
-AUTOLOAD
+%{_bindir}/phpab -o src/autoload.php src
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SeCookie
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SeCookie
 
 %check
-cat <<'AUTOLOAD' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SeCookie\\Tests\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/php/fkooman/SeCookie/autoload.php',
-));
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
 AUTOLOAD
 
 %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
@@ -63,6 +52,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-2
+- use phpab to generate the classloader
+
 * Sun Sep 10 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
 

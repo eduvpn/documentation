@@ -10,7 +10,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    2.4.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    One Time Passwords
 
 Group:      System Environment/Libraries
@@ -27,8 +27,8 @@ BuildRequires:  php-hash
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-date
@@ -36,7 +36,6 @@ Requires:   php-hash
 Requires:   php-spl
 Requires:   php-composer(paragonie/random_compat)
 Requires:   php-composer(paragonie/constant_time_encoding)
-Requires:   php-composer(fedora/autoloader)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -48,15 +47,10 @@ algorithm).
 %setup -n %{github_name}-%{commit0}
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('Otp\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-    '%{_datadir}/php/random_compat/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
 AUTOLOAD
 
 %install
@@ -64,7 +58,7 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}/
 
 %check
-phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{composer_namespace}/autoload.php
+phpunit --no-coverage --verbose --bootstrap=src/autoload.php
 
 %files
 %{_datadir}/php/%{composer_namespace}
@@ -72,6 +66,9 @@ phpunit --no-coverage --verbose --bootstrap=%{buildroot}/%{_datadir}/php/%{compo
 %license LICENSE
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 2.4.0-2
+- use phpab to generate the classloader
+
 * Thu Mar 16 2017 François Kooman <fkooman@tuxed.net> - 2.4.0-1
 - update to 2.4.0
 

@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           d43caada55dff476d95b1557299755e4a89d68d3
+%global github_commit           acaba0fde3b5782f20899ab7fddfec118f1c2ad1
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.4.0
-Release:    1%{?dist}
+Version:    1.4.1
+Release:    0.1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -22,6 +22,7 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-filter
@@ -42,7 +43,6 @@ BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(bacon/bacon-qr-code)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/oauth2-client)
@@ -72,7 +72,6 @@ Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
 Requires:   vpn-lib-common
-Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(bacon/bacon-qr-code)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/oauth2-client)
@@ -96,20 +95,15 @@ VPN User Portal.
 %setup -qn %{github_name}-%{github_commit} 
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-require_once __DIR__.'/sodium_compat.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/random_compat/autoload.php',
-    '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
-    '%{_datadir}/php/BaconQrCode/autoload.php',
-    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
-    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
-    '%{_datadir}/php/fkooman/OAuth/Server/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once sprintf('%s/sodium_compat.php', __DIR__);
+require_once '%{_datadir}/php/random_compat/autoload.php';
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/BaconQrCode/autoload.php';
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 AUTOLOAD
 
 %install
@@ -137,17 +131,12 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
-cat << 'EOF' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
+AUTOLOAD
 
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
-));
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Portal\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
-
-%{_bindir}/phpunit --bootstrap=tests/autoload.php
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -182,6 +171,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.4.1-0.1
+- update to 1.4.1
+- use phpab to generate the classloader
+
 * Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.4.0-1
 - update to 1.4.0
 

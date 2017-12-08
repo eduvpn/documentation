@@ -7,7 +7,7 @@
 
 Name:       vpn-for-web
 Version:    1.0.0
-Release:    0.45%{?dist}
+Release:    0.46%{?dist}
 Summary:    VPN for Web
 
 Group:      Applications/Internet
@@ -21,6 +21,7 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-filter
 BuildRequires:  php-pecl-imagick
@@ -34,7 +35,6 @@ BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
@@ -50,7 +50,6 @@ Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(paragonie/constant_time_encoding)
-Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -72,17 +71,12 @@ sed -i "s|require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));|requ
 sed -i "s|dirname(__DIR__)|'%{_datadir}/%{name}'|" bin/*
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Web\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/Twig/autoload.php',
-    '%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
-    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/Twig/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 
 %install
@@ -139,6 +133,9 @@ fi
 %license LICENSE
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.46
+- use phpab to generate the classloader
+
 * Thu Nov 30 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-0.45
 - rebuilt
 

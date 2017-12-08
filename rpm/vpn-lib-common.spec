@@ -7,7 +7,7 @@
 
 Name:       vpn-lib-common
 Version:    1.1.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -37,7 +37,6 @@ BuildRequires:  php-ldap
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
-BuildRequires:  php-composer(fedora/autoloader)
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -55,6 +54,7 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(twig/extensions) < 2.0
 BuildRequires:  php-composer(twig/twig) < 2.0
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -78,7 +78,6 @@ Requires:       php-ldap
 Requires:       php-mbstring
 Requires:       php-pcre
 Requires:       php-spl
-Requires:       php-composer(fedora/autoloader)
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -103,21 +102,16 @@ Common VPN library.
 %setup -qn %{github_name}-%{github_commit}
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Common\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
-    '%{_datadir}/php/password_compat/password.php',
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-    '%{_datadir}/php/random_compat/autoload.php',
-    '%{_datadir}/php/Psr/Log/autoload.php',
-    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
-    '%{_datadir}/php/Twig/Extensions/autoload.php',
-    '%{_datadir}/php/Twig/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/password_compat/password.php';
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
+require_once '%{_datadir}/php/Twig/Extensions/autoload.php';
+require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 
 %install
@@ -125,14 +119,9 @@ mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
 cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
 
 %check
-cat <<'AUTOLOAD' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Common\\Tests\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
-));
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
 AUTOLOAD
 
 %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
@@ -145,6 +134,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-2
+- use phpab to generate the classloader
+
 * Mon Nov 27 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-1
 - update to 1.1.1
 

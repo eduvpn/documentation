@@ -5,7 +5,7 @@
 
 Name:       php-json-signer
 Version:    3.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -18,6 +18,7 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -33,7 +34,6 @@ BuildRequires:  php-json
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(dnoegel/php-xdg-base-dir)
-BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
 #    "suggest": {
@@ -50,7 +50,6 @@ Requires:   php-json
 Requires:   php-spl
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(dnoegel/php-xdg-base-dir)
-Requires:   php-composer(fedora/autoloader)
 
 %description
 JSON signer written in PHP.
@@ -59,15 +58,10 @@ JSON signer written in PHP.
 %setup -qn %{github_name}-%{github_commit} 
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\JsonSigner\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-    '%{_datadir}/php/XdgBaseDir/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/XdgBaseDir/autoload.php';
 AUTOLOAD
 
 %install
@@ -80,17 +74,12 @@ chmod +x %{buildroot}%{_datadir}/%{name}/bin/app.php
 ln -s %{_datadir}/%{name}/bin/app.php %{buildroot}%{_bindir}/%{name}
 
 %check
-cat << 'EOF' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
+AUTOLOAD
 
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}%{_datadir}/%{name}/src/autoload.php',
-));
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\JsonSigner\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
-
-%{_bindir}/phpunit --bootstrap=tests/autoload.php
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -101,6 +90,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 3.0.0-2
+- use phpab to generate the classloader
+
 * Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 3.0.0-1
 - update to 3.0.0
 

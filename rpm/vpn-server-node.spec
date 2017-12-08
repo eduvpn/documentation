@@ -7,7 +7,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.5
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -20,6 +20,7 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-filter
 BuildRequires:  php-json
@@ -27,7 +28,6 @@ BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(fedora/autoloader)
 BuildRequires:  php-composer(psr/log)
 
 Requires:   php(language) >= 5.4.0
@@ -40,7 +40,6 @@ Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-standard
 Requires:   vpn-lib-common
-Requires:   php-composer(fedora/autoloader)
 Requires:   php-composer(psr/log)
 
 Requires:   openvpn
@@ -55,15 +54,10 @@ OpenVPN node controller.
 %setup -qn %{github_name}-%{github_commit} 
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Node\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/Psr/Log/autoload.php',
-    '%{_datadir}/php/SURFnet/VPN/Common/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 AUTOLOAD
 
 %install
@@ -100,17 +94,12 @@ ln -s %{_datadir}/%{name}/libexec/client-disconnect.php %{buildroot}%{_libexecdi
 ln -s %{_datadir}/%{name}/libexec/verify-otp.php %{buildroot}%{_libexecdir}/%{name}/verify-otp
 
 %check
-cat << 'EOF' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
+AUTOLOAD
 
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/%{name}/src/autoload.php',
-));
-\Fedora\Autoloader\Autoload::addPsr4('SURFnet\\VPN\\Node\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
-
-%{_bindir}/phpunit --bootstrap tests/autoload.php
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -130,6 +119,9 @@ EOF
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-2
+- use phpab to generate the classloader
+
 * Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-1
 - update to 1.0.5
 

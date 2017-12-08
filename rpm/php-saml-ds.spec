@@ -5,7 +5,7 @@
 
 Name:       php-saml-ds
 Version:    1.0.8
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -19,6 +19,7 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  %{_bindir}/phpunit
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-filter
@@ -29,7 +30,6 @@ BuildRequires:  php-spl
 BuildRequires:  php-xml
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(fedora/autoloader)
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
@@ -41,7 +41,6 @@ Requires:   php-spl
 Requires:   php-xml
 Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/secookie)
-Requires:   php-composer(fedora/autoloader)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -56,15 +55,10 @@ SAML Discovery Service written in PHP.
 %setup -qn %{github_name}-%{github_commit} 
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SAML\\DS\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/Twig/autoload.php',
-    '%{_datadir}/php/fkooman/SeCookie/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/Twig/autoload.php';
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 AUTOLOAD
 
 %install
@@ -89,18 +83,12 @@ ln -s %{_datadir}/%{name}/bin/generate.php %{buildroot}%{_bindir}/%{name}-genera
 rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
 
 %check
-mkdir -p vendor
-cat << 'EOF' | tee vendor/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
+AUTOLOAD
 
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}%{_datadir}/%{name}/src/autoload.php',
-));
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\SAML\\DS\\Tests\\', dirname(__DIR__) . '/tests');
-EOF
-
-%{_bindir}/phpunit --verbose
+%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -119,6 +107,9 @@ EOF
 %license LICENSE
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.8-2
+- use phpab to generate the classloader
+
 * Sun Oct 01 2017 François Kooman <fkooman@tuxed.net> - 1.0.8-1
 - update to 1.0.8
 

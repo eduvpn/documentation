@@ -3,7 +3,7 @@
 
 Name:           php-fkooman-oauth2-client
 Version:        6.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -30,13 +30,13 @@ BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-session
 BuildRequires:  php-spl
-BuildRequires:  php-composer(fedora/autoloader)
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
 
 #        "php": ">=5.4",
@@ -57,7 +57,6 @@ Requires:       php-pcre
 Requires:       php-pdo
 Requires:       php-session
 Requires:       php-spl
-Requires:       php-composer(fedora/autoloader)
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
@@ -76,16 +75,11 @@ The main purpose is to be compatible with PHP 5.4.
 %autosetup -n php-oauth2-client-%{commit0}
 
 %build
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\OAuth\\Client\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
-    '%{_datadir}/php/random_compat/autoload.php',
-    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
-));
+%{_bindir}/phpab -o src/autoload.php src
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
+require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
 
 %install
@@ -93,14 +87,9 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/OAuth/Client
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/OAuth/Client
 
 %check
-cat <<'AUTOLOAD' | tee tests/autoload.php
-<?php
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-
-\Fedora\Autoloader\Autoload::addPsr4('fkooman\\OAuth\\Client\\Tests\\', __DIR__);
-\Fedora\Autoloader\Dependencies::required(array(
-    '%{buildroot}/%{_datadir}/php/fkooman/OAuth/Client/autoload.php',
-));
+%{_bindir}/phpab -o tests/autoload.php tests
+cat <<'AUTOLOAD' | tee -a tests/autoload.php
+require_once 'src/autoload.php';
 AUTOLOAD
 
 %{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
@@ -113,6 +102,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 6.0.1-2
+- use phpab to generate the classloader
+
 * Tue Nov 28 2017 François Kooman <fkooman@tuxed.net> - 6.0.1-1
 - update to 6.0.1
 
