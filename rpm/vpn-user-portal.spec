@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           acaba0fde3b5782f20899ab7fddfec118f1c2ad1
+%global github_commit           483ad8866d233368c0cafa4958d564369355bf52
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
 Version:    1.4.1
-Release:    0.1%{?dist}
+Release:    1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -171,7 +171,7 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.4.1-0.1
+* Fri Dec 08 2017 François Kooman <fkooman@tuxed.net> - 1.4.1-1
 - update to 1.4.1
 - use phpab to generate the classloader
 
