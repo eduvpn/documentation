@@ -7,14 +7,27 @@ domain name!
 
 ## Installation
 
+### CentOS 
+
 First install `mod_auth_mellon`:
 
     $ sudo yum -y install mod_auth_mellon
 
+### Debian
+
+    $ sudo apt -y install libapache2-mod-auth-mellon
+
+In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
+base path, and for `systemctl` you use `apache2` instead of `httpd`.
+
+On Debian you can download 
+[mellon_create_metadata.sh](https://github.com/UNINETT/mod_auth_mellon/blob/master/mellon_create_metadata.sh) 
+from the mod_auth_mellon repository and use that instead.
+
 ## Configuration
 
-A convenience script is installed by `mod_auth_mellon` to generate all 
-required files to configure the SAML SP:
+On CentOS a convenience script is installed by `mod_auth_mellon` to generate
+all required files to configure the SAML SP:
 
     $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
 
@@ -83,10 +96,14 @@ WAYF service (the default), you don't need to do anything else. If you want to
 provide your own WAYF, e.g. if you want to add eduGAIN IdPs, this is possible 
 with the [php-saml-ds](https://github.com/fkooman/php-saml-ds/) software.
 
-You can install the software, it is also packaged for CentOS in the eduVPN 
-repository:
+You can install the software, it is also packaged for CentOS and Debian in the 
+eduVPN repository:
 
     $ sudo yum -y install php-saml-ds
+
+Or on Debian:
+
+    $ sudo apt -y install php-saml-ds
 
 Modify the configuration in `/etc/php-saml-ds/config.php` and make sure the 
 IdP metadata file(s) are placed in `/etc/php-saml-ds/metadata/`. As entityID

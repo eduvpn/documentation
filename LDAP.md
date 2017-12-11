@@ -54,11 +54,30 @@ Repeat this for `vpn-admin-portal` and you're all set.
 If you use LDAPS and your LDAP server has a self signed certificate you may
 need to make the CA certificate available on the VPN machine.
 
-On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to 
-`/etc/openldap/certs` on the VPN machine and run the `cacertdir_rehash` 
-command:
+On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to the 
+machine running the VPN software.
+
+## CentOS
+
+Put the certificate in `/etc/openldap/certs` on the VPN machine and run the 
+`cacertdir_rehash` command:
 
     # cacertdir_rehash /etc/openldap/certs
 
 This should now allow the LDAP client to verify the LDAP server certificate 
 and connect without problems.
+
+## Debian
+
+If you use a self signed certificate for your LDAP server perform these steps. 
+If your certificate is signed by a trusted CA you do not need to do this, it
+will work out of the box.
+
+Put the self signed certificate in 
+`/usr/local/share/ca-certificates/ipa.example.org.crt`. After this:
+ 
+    $ sudo update-ca-certificates
+
+This will add the `ipa.example.org.crt` to `/etc/ssl/certs/ca-certificates.crt` 
+in such a way that it will remain there, even on `ca-certificate` package
+updates.

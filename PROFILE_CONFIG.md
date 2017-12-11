@@ -26,8 +26,8 @@ If you modify any of these values as described below, you need to regenerate
 the server configuration and possibly the firewall, see the 
 [Apply Changes](#apply-changes) section below.
 
-You may also need to take a look at the [SELinux](SELINUX.md) instructions, 
-CentOS only.
+On CentOS you may also need to take a look at the [SELinux](SELINUX.md) 
+instructions.
 
 ## Options
 

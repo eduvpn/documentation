@@ -69,6 +69,7 @@ will be used for announcements of updates and discussion about running eduVPN.
 there is experimental support for Debian >= 9 and Fedora.
 
 * [CentOS](DEPLOY_CENTOS.md)
+* [Debian](DEPLOY_DEBIAN.md) (experimental)
 
 # Development
 
