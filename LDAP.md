@@ -67,6 +67,11 @@ Put the certificate in `/etc/openldap/certs` on the VPN machine and run the
 This should now allow the LDAP client to verify the LDAP server certificate 
 and connect without problems.
 
+If you change the configuration you will have to restart `php-fpm` to pick up
+the changes:
+
+    $ sudo systemctl restart php-fpm
+
 ## Debian
 
 If you use a self signed certificate for your LDAP server perform these steps. 
@@ -81,3 +86,9 @@ Put the self signed certificate in
 This will add the `ipa.example.org.crt` to `/etc/ssl/certs/ca-certificates.crt` 
 in such a way that it will remain there, even on `ca-certificate` package
 updates.
+
+If you change the configuration you will have to restart `php-fpm` to pick up
+the changes:
+
+    $ sudo systemctl restart php7.0-fpm
+
