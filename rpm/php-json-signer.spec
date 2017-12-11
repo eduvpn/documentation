@@ -1,11 +1,11 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           d308accf63d31d60ab773852ceb4a6dd594378f7
+%global github_commit           18950bb23c9f96bfc4a9bdcad88348b4509e0d3a
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    3.0.0
-Release:    2%{?dist}
+Version:    3.0.1
+Release:    1%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -33,7 +33,6 @@ BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(dnoegel/php-xdg-base-dir)
 
 Requires:   php(language) >= 5.4.0
 #    "suggest": {
@@ -49,7 +48,6 @@ Requires:   php-date
 Requires:   php-json
 Requires:   php-spl
 Requires:   php-composer(paragonie/constant_time_encoding)
-Requires:   php-composer(dnoegel/php-xdg-base-dir)
 
 %description
 JSON signer written in PHP.
@@ -60,8 +58,8 @@ JSON signer written in PHP.
 %build
 %{_bindir}/phpab -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
-require_once '%{_datadir}/php/XdgBaseDir/autoload.php';
 AUTOLOAD
 
 %install
@@ -90,6 +88,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Dec 11 2017 François Kooman <fkooman@tuxed.net> - 3.0.1-1
+- update to 3.0.1
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 3.0.0-2
 - use phpab to generate the classloader
 

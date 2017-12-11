@@ -50,8 +50,8 @@ instructions.
 | `twoFactor`        | Whether or not to enable two-factor authentication for connecting to the VPN server, see [Two-factor](2FA.md) documentation | no | `false` |
 | `clientToClient`   | Whether or not to allow client-to-client traffic | no | `false` |
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |
-| `enableAcl`        | Whether or not to enable ACLs for controlling who can connect | no | `false` |
-| `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true` | no | `[]` |
+| `enableAcl`        | Whether or not to enable [ACL](ACL.md)s for controlling who can connect | no | `false` |
+| `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true`, see [ACL](ACL.md) | no | `[]` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
