@@ -34,7 +34,7 @@ We assume you have `sudo` installed and configured for your user first, after
 this:
 
     $ sudo -s
-    # ./deploy.sh
+    # ./deploy_debian.sh
 
 Specify the hostname you want to use for your VPN server. Both the "Web" and 
 "OpenVPN" DNS names can be identical for simple 1 machine setups.
