@@ -1,11 +1,11 @@
 %global github_owner            fkooman
 %global github_name             php-json-signer
-%global github_commit           18950bb23c9f96bfc4a9bdcad88348b4509e0d3a
+%global github_commit           242e5ef7cfed32950fdbce394425deff547ed3d5
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-json-signer
-Version:    3.0.1
-Release:    1%{?dist}
+Version:    3.0.2
+Release:    2%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -13,6 +13,7 @@ License:    MIT
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -50,10 +51,14 @@ Requires:   php-spl
 Requires:   php-composer(paragonie/constant_time_encoding)
 
 %description
-JSON signer written in PHP.
+This application can be used to sign JSON files, by adding some fields that 
+can be used to determine their time of signing and the sequence number. The 
+signature is "detached" so no complicated file syntax is needed to store the 
+signature in the file itself.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -63,13 +68,9 @@ require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}/%{name}
-
-cp -pr bin src %{buildroot}%{_datadir}/%{name}
-chmod +x %{buildroot}%{_datadir}/%{name}/bin/app.php
-
-ln -s %{_datadir}/%{name}/bin/app.php %{buildroot}%{_bindir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/php/fkooman/JsonSigner
+install -m 0644 src/* --target-directory %{buildroot}%{_datadir}/php/fkooman/JsonSigner
+install -D -m 0755 bin/app.php %{buildroot}%{_bindir}/php-json-signer
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -82,12 +83,18 @@ AUTOLOAD
 %files
 %defattr(-,root,root,-)
 %{_bindir}/*
-%{_datadir}/%{name}/bin
-%{_datadir}/%{name}/src
+%dir %{_datadir}/php/fkooman
+%{_datadir}/php/fkooman/JsonSigner
 %doc README.md CHANGES.md UPGRADING.md composer.json
 %license LICENSE
 
 %changelog
+* Tue Dec 12 2017 François Kooman <fkooman@tuxed.net> - 3.0.2-2
+- cleanup install
+
+* Mon Dec 11 2017 François Kooman <fkooman@tuxed.net> - 3.0.2-1
+- update to 3.0.2
+
 * Mon Dec 11 2017 François Kooman <fkooman@tuxed.net> - 3.0.1-1
 - update to 3.0.1
 
