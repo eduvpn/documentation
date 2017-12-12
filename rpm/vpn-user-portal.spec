@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           483ad8866d233368c0cafa4958d564369355bf52
+%global github_commit           ab3a333df30c3e251ffbd93e5ae88b24a1f5e263
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.4.1
+Version:    1.4.2
 Release:    1%{?dist}
 Summary:    VPN User Portal
 
@@ -17,6 +17,7 @@ URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
 Source1:    %{name}-httpd.conf
 Source2:    %{name}.cron
+Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -93,6 +94,7 @@ VPN User Portal.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -107,17 +109,16 @@ require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 AUTOLOAD
 
 %install
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
-mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr bin src web views locale %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
+cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 
-chmod +x %{buildroot}%{_datadir}/%{name}/bin/*
-ln -s %{_datadir}/%{name}/bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
-ln -s %{_datadir}/%{name}/bin/foreign-key-list-fetcher.php %{buildroot}%{_bindir}/%{name}-foreign-key-list-fetcher
-ln -s %{_datadir}/%{name}/bin/init.php %{buildroot}%{_bindir}/%{name}-init
-ln -s %{_datadir}/%{name}/bin/show-public-key.php %{buildroot}%{_bindir}/%{name}-show-public-key
+for i in add-user foreign-key-list-fetcher init show-public-key
+do
+    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
+done
+
+cp -pr web views locale %{buildroot}%{_datadir}/%{name}
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -129,6 +130,9 @@ ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+
+# httpd
+install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -158,9 +162,10 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/default/config.php
 %config(noreplace) %{_sysconfdir}/cron.d/%{name}
 %{_bindir}/*
+%dir %{_datadir}/php/SURFnet
+%dir %{_datadir}/php/SURFnet/VPN
+%{_datadir}/php/SURFnet/VPN/Portal
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/src
-%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/data
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/views
@@ -171,6 +176,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Dec 12 2017 François Kooman <fkooman@tuxed.net> - 1.4.2-1
+- cleanup autoloader
+- update to 1.4.2
+
 * Fri Dec 08 2017 François Kooman <fkooman@tuxed.net> - 1.4.1-1
 - update to 1.4.1
 - use phpab to generate the classloader

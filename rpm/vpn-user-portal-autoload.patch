@@ -1,0 +1,112 @@
+diff --git a/bin/add-user.php b/bin/add-user.php
+index 7987760..ea98142 100644
+--- a/bin/add-user.php
++++ b/bin/add-user.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
+diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
+index 1d11a06..dfddb8b 100644
+--- a/bin/foreign-key-list-fetcher.php
++++ b/bin/foreign-key-list-fetcher.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use fkooman\OAuth\Client\Http\CurlHttpClient;
+ use SURFnet\VPN\Common\CliParser;
+diff --git a/bin/init.php b/bin/init.php
+index 175c4be..fb53b7a 100644
+--- a/bin/init.php
++++ b/bin/init.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\FileIO;
+diff --git a/bin/show-public-key.php b/bin/show-public-key.php
+index c0f32a7..174b49e 100644
+--- a/bin/show-public-key.php
++++ b/bin/show-public-key.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\FileIO;
+diff --git a/web/api.php b/web/api.php
+index 60db8c0..16c5ef8 100644
+--- a/web/api.php
++++ b/web/api.php
+@@ -6,9 +6,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use fkooman\OAuth\Server\BearerValidator;
+ use fkooman\OAuth\Server\ClientInfo;
+diff --git a/web/index.php b/web/index.php
+index c44ddd3..57d6b73 100644
+--- a/web/index.php
++++ b/web/index.php
+@@ -6,9 +6,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use fkooman\OAuth\Client\Http\CurlHttpClient as OAuthCurlHttpClient;
+ use fkooman\OAuth\Client\OAuthClient;
+diff --git a/web/oauth.php b/web/oauth.php
+index 9388c6c..3e5c931 100644
+--- a/web/oauth.php
++++ b/web/oauth.php
+@@ -6,9 +6,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use fkooman\OAuth\Server\ClientInfo;
+ use fkooman\OAuth\Server\OAuthServer;
