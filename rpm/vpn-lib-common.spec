@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           0aa297d77d147ed7cd20197f8be69394317135a3
+%global github_commit           a6dfadb995dcd38ab20e3970c33fd4ea0a57ee41
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
-Version:    1.1.1
-Release:    2%{?dist}
+Version:    1.1.2
+Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -134,6 +134,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Tue Dec 12 2017 François Kooman <fkooman@tuxed.net> - 1.1.2-1
+- update to 1.1.2
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-2
 - use phpab to generate the classloader
 
