@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           0bfb114827bd0fab16a675a1b69ecd6213433fe1
+%global github_commit           23f09fcaa8b72eb9b4928b31b28b4834543f30c8
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
-Version:    1.2.0
-Release:    2%{?dist}
+Version:    1.2.1
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -17,6 +17,8 @@ URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
 Source1:    %{name}-httpd.conf
 Source2:    %{name}.cron
+Patch0:     %{name}-autoload.patch
+
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
@@ -81,6 +83,7 @@ VPN Server API.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 # remove bundled Easy RSA 3.x
 %if 0%{?fedora} >= 24
@@ -98,28 +101,28 @@ require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 AUTOLOAD
 
 %install
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr src web %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
+cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
-mkdir -p %{buildroot}%{_datadir}/%{name}/bin
-install -D -p bin/* %{buildroot}%{_datadir}/%{name}/bin
-mkdir -p %{buildroot}%{_bindir}
-# create symlinks
 for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
 do
-    ln -s %{_datadir}/%{name}/bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
+    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
+cp -pr web %{buildroot}%{_datadir}/%{name}
+install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+
+# config
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 
+# data
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
-# Easy RSA
+# easy-rsa
 %if 0%{?fedora} >= 24
 ln -s ../../../usr/share/easy-rsa/3 %{buildroot}%{_datadir}/%{name}/easy-rsa
 %else 
@@ -128,7 +131,7 @@ cp -pr easy-rsa %{buildroot}%{_datadir}/%{name}
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-%{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+%{__install} -m 0640 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -156,17 +159,21 @@ fi
 %config(noreplace) %{_sysconfdir}/cron.d/%{name}
 %{_bindir}/*
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/src
-%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/easy-rsa
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/data
+%dir %{_datadir}/php/SURFnet
+%dir %{_datadir}/php/SURFnet/VPN
+%{_datadir}/php/SURFnet/VPN/Server
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
 %doc README.md composer.json config/config.php.example CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Dec 13 2017 François Kooman <fkooman@tuxed.net> - 1.2.1-1
+- update to 1.2.1
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.2.0-2
 - use phpab to generate the classloader
 
