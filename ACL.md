@@ -102,17 +102,8 @@ LDAP attribute is used to determine the DN of the user.
 
 #### CA
 
-If you use LDAPS and your LDAP server has a self signed certificate you may
-need to make the CA certificate available on the VPN machine.
-
-On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to 
-`/etc/openldap/certs` on the VPN machine and run the `cacertdir_rehash` 
-command:
-
-    # cacertdir_rehash /etc/openldap/certs
-
-This should now allow the LDAP client to verify the LDAP server certificate 
-and connect without problems.
+See [LDAP.md](LDAP.md#ca) for information on how to configure your LDAP's CA 
+for use on CentOS and LDAP.
 
 ### VootProvider
 
