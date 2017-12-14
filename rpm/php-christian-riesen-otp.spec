@@ -5,11 +5,11 @@
 %global github_owner            ChristianRiesen
 %global github_name             otp
 
-%global commit0 f29c9eb9f9a7117a9e9912dac2f474120061260d
+%global commit0 a6c095fb36f6404aa1078d2dfd717aa95c1b5267
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    2.4.0
+Version:    2.5.0
 Release:    2%{?dist}
 Summary:    One Time Passwords
 
@@ -27,6 +27,8 @@ BuildRequires:  php-hash
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
+BuildRequires:  php-composer(symfony/polyfill-php56)
+
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 
@@ -36,6 +38,7 @@ Requires:   php-hash
 Requires:   php-spl
 Requires:   php-composer(paragonie/random_compat)
 Requires:   php-composer(paragonie/constant_time_encoding)
+Requires:   php-composer(symfony/polyfill-php56)
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -49,6 +52,7 @@ algorithm).
 %build
 %{_bindir}/phpab -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
 AUTOLOAD
@@ -66,6 +70,12 @@ phpunit --no-coverage --verbose --bootstrap=src/autoload.php
 %license LICENSE
 
 %changelog
+* Thu Dec 14 2017 François Kooman <fkooman@tuxed.net> - 2.5.0-2
+- add missing polyfill autoloader
+
+* Thu Dec 14 2017 François Kooman <fkooman@tuxed.net> - 2.5.0-1
+- update to 2.5.0
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 2.4.0-2
 - use phpab to generate the classloader
 
