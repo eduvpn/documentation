@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           0a169d0ce772c9d28ea8294e751ae6bd04d3c21a
+%global github_commit           fc1408bc93af7171815bf1de78e25c660925074d
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.5
-Release:    2%{?dist}
+Version:    1.0.6
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -119,6 +119,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Dec 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.6-1
+- update to 1.0.6
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-2
 - use phpab to generate the classloader
 
