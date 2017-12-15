@@ -1,10 +1,10 @@
 {
     "arguments": "/install /passive",
-    "hash-sha256": "6762e588f2738409af16b5aab2ecbc85d9a115a05a72e019411b2067abd16ad4",
-    "seq": 19,
-    "signed_at": "2017-12-13 23:13:30",
+    "hash-sha256": "f2e8abd07c52b53947edfa8404410882790b99367799c64bf4659e092f13d7d2",
+    "seq": 20,
+    "signed_at": "2017-12-15 15:43:24",
     "uri": [
-        "https://github.com/Amebis/eduVPN/releases/download/1.0.14/eduVPNClient_1.0.14.exe"
+        "https://github.com/Amebis/eduVPN/releases/download/1.0.15/eduVPNClient_1.0.15.exe"
     ],
-    "version": "1.0.14"
+    "version": "1.0.15"
 }
