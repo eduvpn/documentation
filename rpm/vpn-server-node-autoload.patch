@@ -1,0 +1,96 @@
+diff --git a/bin/certificate-info.php b/bin/certificate-info.php
+index 6cd603a..e0ac0af 100644
+--- a/bin/certificate-info.php
++++ b/bin/certificate-info.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\FileIO;
+diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
+index bad2cda..a293214 100644
+--- a/bin/generate-firewall.php
++++ b/bin/generate-firewall.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
+diff --git a/bin/server-config.php b/bin/server-config.php
+index 181053a..44cf8dd 100644
+--- a/bin/server-config.php
++++ b/bin/server-config.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
+diff --git a/libexec/client-connect.php b/libexec/client-connect.php
+index 4a00b2f..b89cdf4 100644
+--- a/libexec/client-connect.php
++++ b/libexec/client-connect.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\Http\InputValidation;
+diff --git a/libexec/client-disconnect.php b/libexec/client-disconnect.php
+index 2cd6be1..958b4e9 100644
+--- a/libexec/client-disconnect.php
++++ b/libexec/client-disconnect.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\Http\InputValidation;
+diff --git a/libexec/verify-otp.php b/libexec/verify-otp.php
+index f2c8981..3ede887 100644
+--- a/libexec/verify-otp.php
++++ b/libexec/verify-otp.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-server-node';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
+ 
+ use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\Http\InputValidation;

@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           fc1408bc93af7171815bf1de78e25c660925074d
+%global github_commit           2f599ae15f6579a78a19f58072283cfa7dd22134
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.6
+Version:    1.0.7
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
@@ -15,6 +15,7 @@ License:    AGPLv3+
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -52,6 +53,7 @@ OpenVPN node controller.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -61,37 +63,36 @@ require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 AUTOLOAD
 
 %install
-
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_libexecdir}/%{name}
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 mkdir -p %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
-#mkdir -p %{buildroot}%{_datadir}/%{name}/openvpn-config
+mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
+cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
 
-cp -pr bin libexec src %{buildroot}%{_datadir}/%{name}
-chmod 0755 %{buildroot}%{_datadir}/%{name}/libexec/*
-chmod 0755 %{buildroot}%{_datadir}/%{name}/bin/*
+# bin
+for i in certificate-info generate-firewall server-config
+do
+    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
+done
 
+# libexec
+for i in client-connect client-disconnect verify-otp
+do
+    install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/%{name}/${i}
+done
+
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
 cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/%{name}/firewall.php
-
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/%{name}/openvpn-config
 
-ln -s %{_datadir}/%{name}/bin/generate-firewall.php %{buildroot}%{_bindir}/%{name}-generate-firewall
-ln -s %{_datadir}/%{name}/bin/server-config.php %{buildroot}%{_bindir}/%{name}-server-config
-ln -s %{_datadir}/%{name}/bin/certificate-info.php %{buildroot}%{_bindir}/%{name}-certificate-info
-
-# old libexec path (backwards compatible with old server configs)
-ln -s %{_datadir}/%{name}/libexec/client-connect.php %{buildroot}%{_libexecdir}/%{name}-client-connect
-ln -s %{_datadir}/%{name}/libexec/client-disconnect.php %{buildroot}%{_libexecdir}/%{name}-client-disconnect
-ln -s %{_datadir}/%{name}/libexec/verify-otp.php %{buildroot}%{_libexecdir}/%{name}-verify-otp
-
-# new path
-ln -s %{_datadir}/%{name}/libexec/client-connect.php %{buildroot}%{_libexecdir}/%{name}/client-connect
-ln -s %{_datadir}/%{name}/libexec/client-disconnect.php %{buildroot}%{_libexecdir}/%{name}/client-disconnect
-ln -s %{_datadir}/%{name}/libexec/verify-otp.php %{buildroot}%{_libexecdir}/%{name}/verify-otp
+# legacy libexec symlinks
+mkdir -p %{buildroot}%{_datadir}/%{name}/libexec
+ln -s ../../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_datadir}/%{name}/libexec/client-connect.php
+ln -s ../../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_datadir}/%{name}/libexec/client-disconnect.php
+ln -s ../../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_datadir}/%{name}/libexec/verify-otp.php
+ln -s ../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_libexecdir}/%{name}-client-connect
+ln -s ../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_libexecdir}/%{name}-client-disconnect
+ln -s ../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_libexecdir}/%{name}-verify-otp
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -110,15 +111,21 @@ AUTOLOAD
 %{_bindir}/*
 %{_libexecdir}/*
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/src
-%{_datadir}/%{name}/bin
-%{_datadir}/%{name}/libexec
+%dir %{_datadir}/php/SURFnet
+%dir %{_datadir}/php/SURFnet/VPN
+%{_datadir}/php/SURFnet/VPN/Node
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/openvpn-config
+# legacy libexec
+%{_datadir}/%{name}/libexec
 %doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Dec 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.7-1
+- cleanup autoloading
+- update to 1.0.7
+
 * Fri Dec 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.6-1
 - update to 1.0.6
 
