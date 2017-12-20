@@ -1,11 +1,11 @@
 %global github_owner            fkooman
 %global github_name             php-saml-ds
-%global github_commit           37a80eccdd74eaac950e90f5ab25d83fafbcc95f
+%global github_commit           03eb224c260d5d08168a70e3f0ab3aedc095d565
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       php-saml-ds
-Version:    1.0.8
-Release:    2%{?dist}
+Version:    1.0.9
+Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -14,6 +14,7 @@ License:    ASL2.0
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
 Source1:    %{name}-httpd.conf
+Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -53,6 +54,7 @@ SAML Discovery Service written in PHP.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -62,21 +64,20 @@ require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 AUTOLOAD
 
 %install
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
+mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/DS
+cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/DS
+cp -pr web views %{buildroot}%{_datadir}/%{name}
+install -m 0755 -D -p bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
 
-cp -pr bin src web views %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
-
-chmod +x %{buildroot}%{_datadir}/%{name}/bin/generate.php
-
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
+
+mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
-ln -s %{_datadir}/%{name}/bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
+
+install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %post
 # remove template cache if it is there
@@ -96,8 +97,9 @@ AUTOLOAD
 %dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %{_bindir}/*
-%{_datadir}/%{name}/bin
-%{_datadir}/%{name}/src
+%dir %{_datadir}/php/fkooman
+%dir %{_datadir}/php/fkooman/SAML
+%{_datadir}/php/fkooman/SAML/DS
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/data
 %{_datadir}/%{name}/views
@@ -107,6 +109,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Wed Dec 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.9-1
+- update to 1.0.9
+- cleanup autoloader
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.8-2
 - use phpab to generate the classloader
 
