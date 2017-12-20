@@ -512,6 +512,9 @@ before a new connection is set up with the client.
 
 # Client Registration
 
+**FIXME**: every platform now has their own registration! Do not use the 
+information below!
+
 For the official eduVPN applications, you can use the following OAuth client
 configuration:
 

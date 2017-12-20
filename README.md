@@ -3,24 +3,15 @@
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
 contact [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
 
-This is the eduVPN deploy documentation repository. This documentation is meant
-for system administrators that want to deploy their own VPN service based on 
-the code that is also used in eduVPN.
-
-You can find documentation, scripts and deploy instructions for various 
-scenarios.
-
-## Security Contact
-
-If you find a security problem in the code, the deployed service(s) and want to
-report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 
-You can use PGP. My key is `0x9C5EDD645A571EB2`. The full fingerprint is 
-`6237 BAF1 418A 907D AA98  EAA7 9C5E DD64 5A57 1EB2`.
-
-The security contact will change in the future, but for now you can use the 
-above information.
+This is the eduVPN documentation repository. This repository targets
+administrators and dvelopers. It contains information on how to deploy the VPN
+software, but also (technical) details about the implementation needed to 
+(better) integrate it in existing infrastructure, and how to modify the 
+software for one's own needs.
 
 # Features
+
+This is an (incomplete) list of features of the VPN software:
 
 - OpenVPN server accepting connections on both UDP and TCP ports;
 - Support (out of the box) multiple OpenVPN processes for load sharing 
@@ -47,8 +38,9 @@ above information.
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled;
+- [Guest Usage](GUEST_USAGE.md)
 
-# Client Support
+## Client Support
 
 The VPN server is working with and tested on a variety of platforms and 
 clients:
@@ -58,6 +50,10 @@ clients:
   - Android (OpenVPN for Android, OpenVPN Connect)
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
+
+Furthermore, some "native" applications are being developed that you can use 
+for connecting to the VPN. These will work for both the "official" deployments, 
+as well as your own. You can find a list [here](https://app.eduvpn.nl/).
 
 # Deployment
 
@@ -75,3 +71,10 @@ there is experimental support for Debian >= 9 and Fedora.
 # Development
 
 See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
+
+# Security Contact
+
+If you find a security problem in the code, the deployed service(s) and want to
+report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 
+You can use PGP. My key is `0x9C5EDD645A571EB2`. The full fingerprint is 
+`6237 BAF1 418A 907D AA98  EAA7 9C5E DD64 5A57 1EB2`.

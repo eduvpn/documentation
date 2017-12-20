@@ -31,12 +31,9 @@ all required files to configure the SAML SP:
 
     $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
 
-You can now modify the `https_vpn.example_saml.xml` file. Make sure the 
-`<NameIDFormat>` is set to 
-`urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` if you want to use the 
-NameID as the user ID:
-
-    $ sed -i 's/urn:oasis:names:tc:SAML:2.0:nameid-format:transient/urn:oasis:names:tc:SAML:2.0:nameid-format:persistent/' https_vpn.example_saml.xml
+You can now modify the `https_vpn.example_saml.xml` file. Make sure you have
+`<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>` 
+inside the `<SPSSODescriptor>`.
 
 Copy the files:
 
@@ -96,6 +93,11 @@ WAYF service (the default), you don't need to do anything else. If you want to
 provide your own WAYF, e.g. if you want to add eduGAIN IdPs, this is possible 
 with the [php-saml-ds](https://github.com/fkooman/php-saml-ds/) software.
 
+You need to have the metadata for all IdPs. For SURFconext you can use 
+[this](https://engine.surfconext.nl/authentication/proxy/idps-metadata) URL. 
+The URL mentioned above only contains the SURFconext "proxy" IdP information,
+that does not contain enough information to create the WAYF.
+
 You can install the software, it is also packaged for CentOS and Debian in the 
 eduVPN repository:
 
@@ -104,6 +106,7 @@ eduVPN repository:
 Or on Debian:
 
     $ sudo apt -y install php-saml-ds
+    $ sudo a2enconf php-saml-ds 
 
 Modify the configuration in `/etc/php-saml-ds/config.php` and make sure the 
 IdP metadata file(s) are placed in `/etc/php-saml-ds/metadata/`. As entityID
@@ -137,4 +140,5 @@ guaranteed globally unique, you MUST set `addEntityID` to `true` in
 `/etc/vpn-user-portal/default/config.php` and 
 `/etc/vpn-admin-portal/default/config.php`. This is for example the case when 
 you use persistent NameIDs. This is not needed if you use an identity 
-federation that acts as a proxy and generates their own persistent NameIDs.
+federation that acts as a proxy and generates their own persistent NameIDs like
+for example SURFconext.
