@@ -1,0 +1,32 @@
+diff --git a/bin/add-user.php b/bin/add-user.php
+index b26d814..0f12ae3 100644
+--- a/bin/add-user.php
++++ b/bin/add-user.php
+@@ -7,9 +7,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-admin-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Admin/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
+diff --git a/web/index.php b/web/index.php
+index c1ca56e..b204248 100644
+--- a/web/index.php
++++ b/web/index.php
+@@ -6,9 +6,9 @@
+  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-admin-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Admin/autoload.php';
+ 
+ use fkooman\SeCookie\Cookie;
+ use fkooman\SeCookie\Session;

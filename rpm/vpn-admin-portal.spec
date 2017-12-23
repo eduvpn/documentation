@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-admin-portal
-%global github_commit           aefadc4e1d07875b3242b6bf2534f130fd97527d
+%global github_commit           4bb5129f6c14a008d196cfad3920aecc85da303f
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-admin-portal
-Version:    1.3.0
-Release:    2%{?dist}
+Version:    1.4.0
+Release:    1%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -16,6 +16,7 @@ License:    AGPLv3+
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
 Source1:    %{name}-httpd.conf
+Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -57,6 +58,7 @@ VPN Admin Portal.
 
 %prep
 %setup -qn %{github_name}-%{github_commit} 
+%patch0 -p1
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -67,14 +69,11 @@ require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 
 %install
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
 mkdir -p %{buildroot}%{_datadir}/%{name}
-cp -pr bin src web views locale %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}%{_bindir}
-
-chmod +x %{buildroot}/%{_datadir}/%{name}/bin/add-user.php
-ln -s %{_datadir}/%{name}/bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
+mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Admin
+cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Admin
+install -m 0755 -D -p bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
+cp -pr web views locale %{buildroot}%{_datadir}/%{name}
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
@@ -83,13 +82,16 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
+# httpd
+install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
 cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{_bindir}/phpunit tests --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -110,10 +112,11 @@ fi
 %dir %attr(0750,root,apache) %{_sysconfdir}/%{name}/default
 %config(noreplace) %{_sysconfdir}/%{name}/default/config.php
 %{_bindir}/*
-%{_datadir}/%{name}/src
+%dir %{_datadir}/php/SURFnet
+%dir %{_datadir}/php/SURFnet/VPN
+%{_datadir}/php/SURFnet/VPN/Admin
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/data
-%{_datadir}/%{name}/bin
 %{_datadir}/%{name}/views
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/locale
@@ -122,6 +125,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sat Dec 23 2017 François Kooman <fkooman@tuxed.net> - 1.4.0-1
+- update to 1.4.0
+- cleanup autoloading
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.3.0-2
 - use phpab to generate the classloader
 
