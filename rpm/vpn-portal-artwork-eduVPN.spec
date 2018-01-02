@@ -1,13 +1,13 @@
 %global github_owner            eduVPN
-%global github_name             artwork
-%global github_commit           5f16b29a6871c1da135fdbc8932b8ed681aceb92
+%global github_name             vpn-portal-artwork
+%global github_commit           6516dca80dfb91fd4e0c6ddd1156c661e86e4ec2
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.1.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -34,12 +34,12 @@ mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
 mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/css/%{style_name}
 mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
-cp -p portal/css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/%{style_name}
-cp -p portal/css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/%{style_name}
-cp -p portal/img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/%{style_name}
-cp -p portal/img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/%{style_name}
-cp -p portal/views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
-cp -p portal/views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
+cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/%{style_name}
+cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/%{style_name}
+cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/%{style_name}
+cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/%{style_name}
+cp -p views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
+cp -p views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/%{style_name}
 
 %post
 # clear template cache
@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Tue Jan 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-2
+- artwork moved to separate repository
+
 * Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
 - update for template refactor
 
