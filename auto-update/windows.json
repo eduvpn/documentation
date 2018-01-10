@@ -1,11 +1,11 @@
 {
     "arguments": "/install",
     "changelog_uri": "https://github.com/Amebis/eduVPN/releases",
-    "hash-sha256": "f2e8abd07c52b53947edfa8404410882790b99367799c64bf4659e092f13d7d2",
-    "seq": 22,
-    "signed_at": "2017-12-21 17:52:54",
+    "hash-sha256": "6e05dc79a918960fcc5c707b8ae7b5e8e450bab20cadf0e3b45889d0a4c0bc59",
+    "seq": 23,
+    "signed_at": "2018-01-10 14:35:45",
     "uri": [
-        "https://github.com/Amebis/eduVPN/releases/download/1.0.15/eduVPNClient_1.0.15.exe"
+        "https://app.eduvpn.nl/windows/eduVPNClient_1.0.16.exe"
     ],
-    "version": "1.0.15"
+    "version": "1.0.16"
 }
