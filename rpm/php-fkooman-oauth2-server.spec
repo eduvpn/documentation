@@ -1,9 +1,9 @@
-%global commit0 cd98ca6583db887cc7b4d70c68c10dd9ac9f92c4
+%global commit0 5c48b5b1d0eab5ff8cf4c68eafc7123585279373
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-server
-Version:        2.1.0
-Release:        2%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -34,7 +34,6 @@ BuildRequires:  php-hash
 BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
-BuildRequires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
@@ -66,7 +65,6 @@ Requires:       php-hash
 Requires:       php-json
 Requires:       php-pcre
 Requires:       php-pdo
-Requires:       php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "symfony/polyfill-php56": "^1"
@@ -113,6 +111,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Wed Jan 10 2018 François Kooman <fkooman@tuxed.net> - 2.2.0-1
+- update to 2.2.0
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 2.1.0-2
 - use phpab to generate the classloader
 
