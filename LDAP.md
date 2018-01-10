@@ -67,6 +67,9 @@ Put the certificate in `/etc/openldap/certs` on the VPN machine and run the
 This should now allow the LDAP client to verify the LDAP server certificate 
 and connect without problems.
 
+**NOTE**: make sure there are no other files in `/etc/openldap/certs` as they
+will interfere with the certificate you put there!
+
 If you change the configuration you will have to restart `php-fpm` to pick up
 the changes:
 
