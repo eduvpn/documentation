@@ -3,6 +3,9 @@
 #
 # Backup
 # 
+# NOTE: this script only backs-up the VPN configuration and data, NOT things
+# like SAML configuration or installed LDAP certificates!
+#
 
 TMP_DIR=$(mktemp -d)
 DATETIME=$(date +%Y%m%d%H%M%S)
