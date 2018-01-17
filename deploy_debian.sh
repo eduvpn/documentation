@@ -177,7 +177,7 @@ systemctl enable --now openvpn-server@default-internet-1
 # FIREWALL
 ###############################################################################
 
-vpn-server-node-generate-firewall --install --debian
+vpn-server-node-generate-firewall --install
 systemctl enable netfilter-persistent
 systemctl restart netfilter-persistent
 

@@ -133,7 +133,7 @@ To activate the updated firewall, do this:
 
 To regenerate and install the new firewall rules, run this:
 
-    $ sudo vpn-server-node-generate-firewall --install --debian
+    $ sudo vpn-server-node-generate-firewall --install
 
 To activate the updated firewall, do this:
 
