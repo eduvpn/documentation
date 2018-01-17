@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           2f599ae15f6579a78a19f58072283cfa7dd22134
+%global github_commit           625c39623ae3828e2e93b7272de2ab4051c0f576
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.7
+Version:    1.0.8
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
@@ -122,6 +122,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Jan 17 2018 François Kooman <fkooman@tuxed.net> - 1.0.8-1
+- update to 1.0.8
+
 * Sun Dec 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.7-1
 - cleanup autoloading
 - update to 1.0.7

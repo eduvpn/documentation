@@ -4,8 +4,11 @@
 # Backup
 # 
 # NOTE: this script only backs-up the VPN configuration and data, NOT things
-# like SAML configuration or installed LDAP certificates!
+# like SAML configuration, installed LDAP certificates and/or network 
+# configuration.
 #
+# This is only for the installations performed with the "deploy.sh" scripts for
+# the various platforms.
 
 TMP_DIR=$(mktemp -d)
 DATETIME=$(date +%Y%m%d%H%M%S)

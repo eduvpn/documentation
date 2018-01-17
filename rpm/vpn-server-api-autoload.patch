@@ -1,11 +1,11 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index fc7bf05..73a3553 100644
+index 794c207..af34ef2 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -15,13 +15,13 @@ index fc7bf05..73a3553 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Server\Storage;
 diff --git a/bin/init.php b/bin/init.php
-index 8e73d13..b1ac2b6 100644
+index 848bf58..5897dd1 100644
 --- a/bin/init.php
 +++ b/bin/init.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -31,13 +31,13 @@ index 8e73d13..b1ac2b6 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/show-instance-info.php b/bin/show-instance-info.php
-index 5999f01..1af1a39 100644
+index c984733..1c32915 100644
 --- a/bin/show-instance-info.php
 +++ b/bin/show-instance-info.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -47,13 +47,13 @@ index 5999f01..1af1a39 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/stats.php b/bin/stats.php
-index a0fb2f8..4580a88 100644
+index 1e8708d..53cf97b 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -61,15 +61,15 @@ index a0fb2f8..4580a88 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
  
  use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\FileIO;
+ use SURFnet\VPN\Common\Config;
 diff --git a/bin/status.php b/bin/status.php
-index 8266bcb..7ea13f4 100644
+index cd5262d..91d13e2 100644
 --- a/bin/status.php
 +++ b/bin/status.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -79,13 +79,13 @@ index 8266bcb..7ea13f4 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index c8aee96..207d207 100644
+index 8c44b69..9c400e5 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -95,13 +95,13 @@ index c8aee96..207d207 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 6330a94..9e2531f 100644
+index aea485d..aac743e 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
-@@ -7,9 +7,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -8,9 +8,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
@@ -111,13 +111,13 @@ index 6330a94..9e2531f 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index 41aa124..911107f 100644
+index 4dd977d..1bf8728 100644
 --- a/web/api.php
 +++ b/web/api.php
-@@ -6,9 +6,9 @@
-  * Copyright: 2016-2017, The Commons Conservancy eduVPN Programme
+@@ -7,9 +7,9 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
+ 
 -$baseDir = dirname(__DIR__);
 +$baseDir = '/usr/share/vpn-server-api';
  /** @psalm-suppress UnresolvableInclude */
