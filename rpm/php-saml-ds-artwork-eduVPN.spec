@@ -1,12 +1,12 @@
 %global github_owner            eduVPN
 %global github_name             disco-artwork
-%global github_commit           0c5e2e1b43c215a790205498be301dcb4c515754
+%global github_commit           c735ec8ce841cc0334d7c61c1b1f2685af1ed9a8
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
 
 Name:       php-saml-ds-artwork-%{style_name}
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
 Summary:    SAML Discovery Artwork for %{style_name}
 License:    AGPLv3+
@@ -50,5 +50,8 @@ rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
 %doc README.md CHANGES.md
 
 %changelog
+* Mon Jan 22 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
+
 * Mon Jan 22 2018 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
