@@ -1,12 +1,12 @@
 %global github_owner            eduVPN
 %global github_name             vpn-portal-artwork
-%global github_commit           e328e7bf0dfdbef15ffa00707b21a91e3663943d
+%global github_commit           5ca859579c5825e1a73c48ee3299fb69b9640b90
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.2.0
+Version:    1.2.1
 Release:    1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Tue Jan 23 2018 François Kooman <fkooman@tuxed.net> - 1.2.1-1
+- update to 1.2.1
+
 * Mon Jan 22 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-1
 - update to 1.2.0
 
