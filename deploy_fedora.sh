@@ -72,6 +72,10 @@ setsebool -P httpd_can_network_connect=1
 # allow OpenVPN to bind to the management ports
 semanage port -a -t openvpn_port_t -p tcp 11940-12195
 
+# allow OpenVPN to bind to additional ports for client connections
+semanage port -a -t openvpn_port_t -p tcp 1195-1263
+semanage port -a -t openvpn_port_t -p udp 1195-1263
+
 ###############################################################################
 # APACHE
 ###############################################################################
