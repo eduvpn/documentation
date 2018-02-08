@@ -22,16 +22,16 @@
             "public_key": "vyB0kwxsYK1xU14SepLj7WSzcUO5Y2g8ARtBKVRLLDU="
         },
         {
-            "base_uri": "https://uninett.eduvpn.no/",
+            "base_uri": "https://fed.eduvpn.no/",
             "display_name": {
                 "en-US": "Norway",
                 "nb-NO": "Norge",
                 "nl-NL": "Noorwegen"
             },
             "logo": "https://static.eduvpn.nl/disco/img/no.png",
-            "public_key": "JqBWmhaZDPuuIBo/1PT0s8EY0QpD0luV58i2jw3mx4E="
+            "public_key": "1V81FxZm7v/A19BJqwFKWy2XlNco13q97NCfkBQr+po="
         }
     ],
-    "seq": 29,
-    "signed_at": "2018-02-07 12:30:46"
+    "seq": 30,
+    "signed_at": "2018-02-08 17:27:50"
 }
