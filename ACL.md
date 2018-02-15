@@ -112,7 +112,8 @@ memberships. The example below is for the
 [SURFteams](https://teams.surfconext.nl) component of 
 [SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
 
-Add `VootProvider` to the `groupProviders` section:
+Add `VootProvider` to the `groupProviders` section in 
+`/etc/vpn-server-api/default/config.php`:
     
     'groupProviders' => [
         'VootProvider' => [
@@ -124,12 +125,17 @@ Add `VootProvider` to the `groupProviders` section:
         ],
     ],
 
-The group identifiers as returned by the VOOT API calls need to be specified
-in the `aclGroupList` in your profile configuration.
+The `clientId` and `clientSecret` need to be replaced with the actual 
+secrets obtained when registering the portal for SURFconext. The redirect URI 
+that needs to be registered is `https://vpn.example/portal/_voot/callback`.
 
-This module works together with the portal to obtain an access token per user
-that will be used to retrieve the group membership. The portal also needs to
-be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`: 
+The group identifiers as returned by the VOOT API calls need to be specified
+in the `aclGroupList` in your profile configuration. You also need set set
+`enableAcl` to `true`.
+
+This module works together with the user portal to obtain an access token per 
+user that will be used to retrieve the group membership. The portal also needs 
+to be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`: 
 
     'enableVoot' => true,
     'Voot' => [
@@ -139,9 +145,5 @@ be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`:
         'tokenEndpoint' => 'https://authz.surfconext.nl/oauth/token',
     ],
 
-Here the `clientId` and `clientSecret` need to be replaced with the actual 
-secrets obtained when registering the portal for SURFconext. The redirect URI 
-that needs to be registered is 
-`https://vpn.example/portal/_voot/callback`.
-
-The group membership will be automatically obtained when the user logs in.
+The group membership will be automatically obtained when the user logs in, and
+can be verified on the "Account" tab in the user portal.
