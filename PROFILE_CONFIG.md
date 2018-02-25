@@ -1,6 +1,6 @@
 # Profile Configuration
 
-For this document we assume you used the included `deploy.sh` script.
+For this document we assume you used the included `deploy_${DIST}.sh` script.
 
 Profiles, are configured in `/etc/vpn-server-api/default/config.php` and
 can contain many options to support various deployment scenarios. These are 

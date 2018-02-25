@@ -7,8 +7,8 @@
 # like SAML configuration, installed LDAP certificates and/or network 
 # configuration.
 #
-# This is only for the installations performed with the "deploy.sh" scripts for
-# the various platforms.
+# This is only for the installations performed with the "deploy_${DIST}.sh" 
+# scripts for the various platforms.
 
 TMP_DIR=$(mktemp -d)
 DATETIME=$(date +%Y%m%d%H%M%S)
@@ -27,7 +27,7 @@ echo "${TMP_DIR}/backup-${DATETIME}.tar.xz"
 #
 # Restore (as root)
 #
-# first run the "deploy.sh" script, same as for a new deploy
+# first run the "deploy_${DIST}.sh" script, same as for a new deploy
 #
 # cd / && tar --selinux -xJf <file.tar.xz>
 # vpn-server-node-server-config --generate

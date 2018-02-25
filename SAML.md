@@ -1,9 +1,9 @@
 # Introduction
 
 This document describes how to configure SAML authentication for deployed
-systems. We assume you used the `deploy.sh` script to deploy the software. 
-Below we assume you use `vpn.example`, but modify this domain to your own 
-domain name!
+systems. We assume you used the `deploy_${DIST}.sh` script to deploy the 
+software. Below we assume you use `vpn.example`, but modify this domain to your 
+own domain name!
 
 ## Installation
 

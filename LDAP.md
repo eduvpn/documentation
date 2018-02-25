@@ -1,8 +1,8 @@
 # Introduction
 
 This document describes how to configure LDAP for deployed systems. We assume 
-you used the `deploy.sh` script to deploy the software. Below we assume you 
-use `vpn.example`, but modify this domain to your own domain name!
+you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 
+you use `vpn.example`, but modify this domain to your own domain name!
 
 LDAP integration is used for two aspects:
 

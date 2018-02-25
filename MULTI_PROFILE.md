@@ -71,7 +71,8 @@ configuration options.
 # Activate
 
 If you had an old profile, e.g. the default `internet`, as is the default when
-deploying using `deploy.sh` it needs to be stopped first, and can be removed:
+deploying using `deploy_${DIST}.sh` it needs to be stopped first, and can be 
+removed:
 
     $ sudo systemctl disable --now openvpn-server@default-internet-{0,1}
     $ sudo rm "/etc/openvpn/server/default-internet-*.conf"

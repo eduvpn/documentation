@@ -1,14 +1,14 @@
 # SELinux
 
-If you used `deploy.sh` your VPN server has SELinux fully enabled and 
+If you used `deploy_${DIST}.sh` your VPN server has SELinux fully enabled and 
 configured. If you make changes to the configuration, you may need to update
 the SELinux configuration.
 
 # OpenVPN 
 
 By default, OpenVPN is not allowed to listen on any other ports than `udp/1194` 
-and `tcp/1194`. The `deploy.sh` script added some ports to be able to connect
-to the management ports of the OpenVPN processes and to allow client 
+and `tcp/1194`. The `deploy_${DIST}.sh` script added some ports to be able to 
+connect to the management ports of the OpenVPN processes and to allow client 
 connections on other ports as well.
 
 However, if you want to use more OpenVPN processes, e.g. by listening on 
@@ -21,9 +21,9 @@ CentOS system you'll see the following:
     openvpn_port_t                 tcp      1194
     openvpn_port_t                 udp      1194
 
-On a system that already ran `deploy.sh`, you'll see the following output, it
-has the management ports 11940-12195 and client connection ports 1195-1263 
-added:
+On a system that already ran `deploy_${DIST}.sh`, you'll see the following 
+output, it has the management ports 11940-12195 and client connection ports 
+1195-1263 added:
 
     openvpn_port_t                 tcp      1195-1263, 11940-12195, 1194
     openvpn_port_t                 udp      1195-1263, 1194
