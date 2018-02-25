@@ -33,7 +33,7 @@ Perform these steps on the host where you want to deploy:
 Run the script (as root):
 
     $ sudo -s
-    # ./deploy.sh
+    # ./deploy_fedora.sh
 
 Specify the hostname you want to use for your VPN server. Both the "Web" and 
 "OpenVPN" DNS names can be identical for simple 1 machine setups.
@@ -94,7 +94,8 @@ Run the script (as root):
     $ sudo -s
     # ./lets_encrypt.sh
 
-Make sure you use the exact same DNS name you used when running `deploy.sh`! 
+Make sure you use the exact same DNS name you used when running 
+`deploy_fedora.sh`! 
 
 After completing the script, the certificate will be installed and the system 
 will automatically replace the certificate before it expires.
