@@ -11,7 +11,7 @@
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
-            "base_uri": "https://f26.tuxed.net/",
+            "base_uri": "https://f26.tuxed.net:8443/",
             "display_name": "Blue (f26.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/blue.png",
             "public_key": "aH5p4pDM/d3CKnNJFSHjNicMKGWvXcxatS/yATg965o="

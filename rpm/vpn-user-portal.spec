@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           83b19c8e2c4ea955b8150f065d08987ca9fd0764
+%global github_commit           8a2c697dde79b548d04276be701df308204ac95a
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.4.9
+Version:    1.5.0
 Release:    1%{?dist}
 Summary:    VPN User Portal
 
@@ -176,6 +176,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Feb 25 2018 François Kooman <fkooman@tuxed.net> - 1.5.0-1
+- update to 1.5.0
+
 * Tue Feb 06 2018 François Kooman <fkooman@tuxed.net> - 1.4.9-1
 - update to 1.4.9
 
