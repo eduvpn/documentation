@@ -187,8 +187,8 @@ systemctl restart netfilter-persistent
 
 USER_PASS=$(pwgen 12 -n 1)
 ADMIN_PASS=$(pwgen 12 -n 1)
-vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
-vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
+sudo -u www-data vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
+sudo -u www-data vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
 echo "# Admin Portal"
