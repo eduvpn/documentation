@@ -11,7 +11,7 @@
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
-            "base_uri": "https://f26.tuxed.net:8443/",
+            "base_uri": "https://f26.tuxed.net/",
             "display_name": "Blue (f26.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/blue.png",
             "public_key": "aH5p4pDM/d3CKnNJFSHjNicMKGWvXcxatS/yATg965o="
@@ -23,6 +23,6 @@
             "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 48,
-    "signed_at": "2018-02-25 08:50:58"
+    "seq": 49,
+    "signed_at": "2018-02-26 20:56:04"
 }
