@@ -19,7 +19,7 @@ The basic OpenVPN server (and client) crypto configuration:
 On deployments after 2018-02-25, the only supported cipher is 
 `AES-256-GCM` and `--tls-crypt` is used instead of `--tls-auth`. This does 
 NOT allow OpenVPN 2.3 clients from connecting any longer. See 
-[Client Compatibility](PROFILE_CONFIG.md#clientcompatibility) for more 
+[Client Compatibility](PROFILE_CONFIG.md#client-compatibility) for more 
 information.
 
 ## PHP
