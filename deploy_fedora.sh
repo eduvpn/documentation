@@ -9,9 +9,11 @@
 # VARIABLES
 ###############################################################################
 
+MACHINE_HOSTNAME=$(hostname -f)
+
 # DNS name of the Web Server
-printf "DNS name of the Web Server [vpn.example]: "; read -r WEB_FQDN
-WEB_FQDN=${WEB_FQDN:-vpn.example}
+printf "DNS name of the Web Server [${MACHINE_HOSTNAME}]: "; read -r WEB_FQDN
+WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 # DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
 # use different name if you want to allow moving the OpenVPN processes to 
