@@ -1,5 +1,5 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index baa23c8..e48489f 100644
+index ef546a5..3d69c71 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
 @@ -8,9 +8,9 @@
@@ -30,6 +30,22 @@ index 30f210c..415a6d7 100644
  
  use fkooman\OAuth\Client\Http\CurlHttpClient;
  use SURFnet\VPN\Common\CliParser;
+diff --git a/bin/generate-voucher.php b/bin/generate-voucher.php
+index 55800cc..e1ac36d 100644
+--- a/bin/generate-voucher.php
++++ b/bin/generate-voucher.php
+@@ -8,9 +8,9 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-$baseDir = dirname(__DIR__);
++$baseDir = '/usr/share/vpn-user-portal';
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', $baseDir);
++require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Http\PdoAuth;
 diff --git a/bin/init.php b/bin/init.php
 index 43827fe..e6a00d4 100644
 --- a/bin/init.php
@@ -63,7 +79,7 @@ index 433fb68..73567dc 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index ffd32bd..79e2679 100644
+index c283cca..4d997f0 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,9 +7,9 @@
@@ -79,7 +95,7 @@ index ffd32bd..79e2679 100644
  use fkooman\OAuth\Server\BearerValidator;
  use fkooman\OAuth\Server\ClientInfo;
 diff --git a/web/index.php b/web/index.php
-index 85549ff..cf3eae0 100644
+index bcf75c6..77ac1bf 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,9 +7,9 @@

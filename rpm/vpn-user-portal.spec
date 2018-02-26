@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           8a2c697dde79b548d04276be701df308204ac95a
+%global github_commit           25a333b6f9146e6bb78647a7779d8907f1d3b329
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.5.0
+Version:    1.5.1
 Release:    1%{?dist}
 Summary:    VPN User Portal
 
@@ -113,7 +113,7 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 
-for i in add-user foreign-key-list-fetcher init show-public-key
+for i in add-user foreign-key-list-fetcher init show-public-key generate-voucher
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
 done
@@ -176,6 +176,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Feb 26 2018 François Kooman <fkooman@tuxed.net> - 1.5.1-1
+- update to 1.5.1
+- install generate-voucher script as well
+
 * Sun Feb 25 2018 François Kooman <fkooman@tuxed.net> - 1.5.0-1
 - update to 1.5.0
 
