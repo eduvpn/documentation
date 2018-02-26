@@ -51,9 +51,15 @@ clients:
   - iOS (OpenVPN Connect)
   - Linux (NetworkManager/CLI)
 
-Furthermore, some "native" applications are being developed that you can use 
-for connecting to the VPN. These will work for both the "official" deployments, 
-as well as your own. You can find a list [here](https://app.eduvpn.nl/).
+By default, only clients using OpenVPN >= 2.4 (or OpenVPN 3) are supported! See 
+[Client Compatibility](PROFILE_CONFIG.md#clientcompatibility) for more 
+information.
+
+### Native Applications
+
+Applications are being developed that you can use for connecting to the VPN. 
+These will work for both the "official" deployments, as well as your own. You 
+can find a list [here](https://app.eduvpn.nl/).
 
 # Deployment
 

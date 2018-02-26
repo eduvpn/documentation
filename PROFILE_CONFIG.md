@@ -55,7 +55,7 @@ instructions.
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenVPN >= 2.4, OpenVPN Connect for Android/iOS) | no | `false` |
+| `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenVPN >= 2.4, OpenVPN Connect for Android/iOS only) | no | `false` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
 
 ### OpenVPN Processes
@@ -91,6 +91,19 @@ The first profile can use `udp/1194` and `tcp/1194`, the second one can use
 You can manually work around providing both IPv4+IPv6 for profiles where you 
 specify a `listen` address by using a proxy like 
 [socat](http://www.dest-unreach.org/socat/).
+
+### Client Compatibility
+
+On new deployments only clients based on OpenVPN >= 2.4 (or OpenVPN 3) are 
+supported. This is due to the use of `--tls-crypt` by default. This is 
+controlled with the `tlsCrypt` option mentioned above. 
+
+In addition to using `--tls-crypt` this will also remove some "hacks" for 
+fixing IPv6 routing on OpenVPN 2.3 clients and bump the used cipher from 
+`AES-256-CBC` to `AES-256-GCM`. So this flag is used for more than just 
+enabling `--tls-crypt`. As `--tls-crypt` requires OpenVPN 2.4 (or 3) anyway, 
+it made sense to use this opportunity to tie this in with other configuration
+flags instead of introducing a "version" or "compat" configuration option.
 
 ## Apply Changes
 

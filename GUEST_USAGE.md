@@ -76,7 +76,7 @@ VPN, or an OAuth token is inadvertently leaked.
 
 In order to avoid abuse, the (local) identity of the user is part of the 
 OAuth token, so if abuse is detected, the identity of the user can be traced. 
-If the originating VPN service takes care of using pseudonyms instead of the 
-"real" identifier, the privacy of the user can be maintained, while allowing 
+If the originating VPN service uses pseudonyms instead of the "real" user 
+identifier, the privacy of the user can be maintained, while allowing 
 the originating VPN service to convert the pseudonym back into a "real" user
-identifier if needed. 
+identifier if needed.

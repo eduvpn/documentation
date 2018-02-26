@@ -16,10 +16,11 @@ The basic OpenVPN server (and client) crypto configuration:
     cipher AES-256-CBC           # NCP overrides this
     dh none                      # use ECDHE only
 
-Furthermore, `tls-auth` is used. The secret is shared among all profiles.
-
-In the (near) future we plan to change the `cipher` option to be `AES-256-GCM` 
-as well. However, this will prevent OpenVPN 2.3 clients from connecting.
+On deployments after 2018-02-25, the only supported cipher is 
+`AES-256-GCM` and `--tls-crypt` is used instead of `--tls-auth`. This does 
+NOT allow OpenVPN 2.3 clients from connecting any longer. See 
+[Client Compatibility](PROFILE_CONFIG.md#clientcompatibility) for more 
+information.
 
 ## PHP
 
