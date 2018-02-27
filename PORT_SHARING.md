@@ -11,7 +11,7 @@ In order to share `tcp/443` between the web server and OpenVPN we'll use
 
 ## SELinux
 
-First, we must allow OpenVPN to bind to ports `tcp/443` and `udp/443`. For this
+First, we must allow OpenVPN to bind to the port `udp/443`. For this
 to work we review the existing OpenVPN port configurations:
 
     $ sudo semanage port -l | grep openvpn_port_t
@@ -49,7 +49,7 @@ you can remove `1194` and under `udp` you can add `443` and remove
 
 ## Web Server
 
-Modify `/etc/httpd/conf.d/ssl.conf` and change `Listen 443 https` to 
+Modify `/etc/httpd/conf.d/ssl.conf` and modify `Listen 443 https` to 
 `Listen 8443 https`.
 
 In `/etc/httpd/conf.d/vpn.example.conf`, where `vpn.example` is your actual 
