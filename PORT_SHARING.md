@@ -9,6 +9,9 @@ This is done by modifying the ports the OpenVPN processes listen on to
 In order to share `tcp/443` between the web server and OpenVPN we'll use 
 [sslh](https://github.com/yrutschle/sslh).
 
+This document is written for deployments on CentOS. But should also work on 
+Fedora and Debian with minor modifications in the commands used.
+
 ## SELinux
 
 First, we must allow OpenVPN to bind to the port `udp/443`. For this
@@ -63,9 +66,6 @@ Install sslh:
 
 Configure sslh, we use the following configuration file in `/etc/sslh.cfg`:
 
-    # This is a basic configuration file that should provide
-    # sensible values for "standard" setup.
-
     verbose: false;
     foreground: true;
     inetd: false;
@@ -73,14 +73,10 @@ Configure sslh, we use the following configuration file in `/etc/sslh.cfg`:
     transparent: false;
     timeout: 5;
     user: "sslh";
-
-
-    # Change hostname with your external address name.
     listen:
     (
         { host: "::"; port: "443"; }
     );
-
     protocols:
     (
          { name: "openvpn"; host: "localhost"; port: "1194"; },
