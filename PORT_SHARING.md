@@ -1,3 +1,5 @@
+# Port Sharing
+
 This document describes how to configure your VPN server in such a way as to
 make it most likely people can connect to it. 
 
@@ -7,7 +9,7 @@ This is done by modifying the ports the OpenVPN processes listen on to
 In order to share `tcp/443` between the web server and OpenVPN we'll use 
 [sslh](https://github.com/yrutschle/sslh).
 
-# SELinux
+## SELinux
 
 First, we must allow OpenVPN to bind to ports `tcp/443` and `udp/443`. For this
 to work we review the existing OpenVPN port configurations:
@@ -23,7 +25,7 @@ We can add `udp/443` easily to `openvpn_port_t`:
 As we'll use sslh to listen on `tcp/443` and forward to `tcp/1194`, the default
 TCP port, we won't need to modify anything for `tcp/443`.
 
-# VPN
+## VPN
 
 We need to modify `/etc/vpn-server-api/default/config.php` and modify 
 `vpnProtoPorts` to the following:
@@ -45,7 +47,7 @@ Also modify the firewall in `/etc/vpn-server-node/firewall.php`. Under `tcp`
 you can remove `1194` and under `udp` you can add `443` and remove 
 `1194`.
 
-# Web Server
+## Web Server
 
 Modify `/etc/httpd/conf.d/ssl.conf` and change `Listen 443 https` to 
 `Listen 8443 https`.
@@ -53,7 +55,7 @@ Modify `/etc/httpd/conf.d/ssl.conf` and change `Listen 443 https` to
 In `/etc/httpd/conf.d/vpn.example.conf`, where `vpn.example` is your actual 
 VPN hostname, you modify `<VirtualHost *:443>` to `<VirtualHost *:8443>`.
 
-# Proxy
+## Proxy
 
 Install sslh:
 
@@ -85,19 +87,19 @@ Configure sslh, we use the following configuration file in `/etc/sslh.cfg`:
          { name: "ssl"; host: "localhost"; port: "8443"; log_level: 0; }
     );
 
-# Applying
+## Applying
 
-## Web and Proxy
+### Web and Proxy
 
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
 
-# OpenVPN 
+### OpenVPN 
 
     $ sudo vpn-server-node-server-config
     $ sudo systemctl restart "openvpn-server@*"
 
-## Firewall
+### Firewall
 
     $ sudo vpn-server-node-generate-firewall --install
     $ sudo systemctl restart iptables
