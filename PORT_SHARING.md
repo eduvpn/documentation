@@ -7,9 +7,6 @@ possible to connect to the VPN service using `tcp/443` in addition to
 share `tcp/443` between the web server and OpenVPN we'll use 
 [sslh](https://github.com/yrutschle/sslh).
 
-This document is written for deployments on CentOS. But should also work on 
-Fedora and Debian with minor modifications in the commands used.
-
 ## VPN
 
 We need to modify `/etc/vpn-server-api/default/config.php` and modify 
@@ -24,13 +21,26 @@ advertise `tcp/443` to clients:
 
 ## Web Server
 
+### CentOS / Fedora
+
 Modify `/etc/httpd/conf.d/ssl.conf` and modify `Listen 443 https` to 
 `Listen 8443 https`.
 
 In `/etc/httpd/conf.d/vpn.example.conf`, where `vpn.example` is your actual 
 VPN hostname, you modify `<VirtualHost *:443>` to `<VirtualHost *:8443>`.
 
+### Debian
+
+Modify `/etc/apache2/ports.conf` and change the `Listen` lines to `Listen 8443` 
+from `Listen 443`.
+
+In `/etc/apache2/sites-available/vpn.example.conf`, where `vpn.example` is your 
+actual VPN hostname, you modify `<VirtualHost *:443>` to 
+`<VirtualHost *:8443>`.
+
 ## Proxy
+
+### CentOS/Fedora
 
 Install sslh:
 
@@ -55,14 +65,20 @@ Configure sslh, we use the following configuration file in `/etc/sslh.cfg`:
          { name: "ssl"; host: "localhost"; port: "8443"; log_level: 0; }
     );
 
+### Debian
+
+Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
+
+    DAEMON_OPTS="--user sslh --listen [::]:443 --ssl 127.0.0.1:8443 --openvpn 127.0.0.1:1194 --pidfile /var/run/sslh/sslh.pid"
+
 ## Applying
 
-### Web and Proxy
+### CentOS/Fedora
 
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
 
-### OpenVPN 
+### Debian
 
-    $ sudo vpn-server-node-server-config
-    $ sudo systemctl restart "openvpn-server@*"
+    $ sudo systemctl restart apache2
+    $ sudo systemctl restart sslh
