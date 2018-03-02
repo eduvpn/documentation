@@ -1,13 +1,11 @@
 # Port Sharing
 
 This document describes how to configure your VPN server in such a way as to
-make it most likely people can connect to it. 
-
-This is done by making it possible to connect to the VPN service using 
-`tcp/443` in addition to `udp/1194` and `tcp/1194`. 
-
-Because the web server claims `tcp/443` we need to share `tcp/443` between the 
-web server and OpenVPN we'll use [sslh](https://github.com/yrutschle/sslh).
+make it most likely people can connect to it. This is done by making it 
+possible to connect to the VPN service using `tcp/443` in addition to 
+`udp/1194` and `tcp/1194`. Because the web server claims `tcp/443` we need to 
+share `tcp/443` between the web server and OpenVPN we'll use 
+[sslh](https://github.com/yrutschle/sslh).
 
 This document is written for deployments on CentOS. But should also work on 
 Fedora and Debian with minor modifications in the commands used.
