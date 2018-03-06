@@ -31,10 +31,10 @@ modified, you can remove the `internet` profile that was there by default:
             ...
             'extIf' => 'eth0',
             'hostName' => 'office.vpn.example',
-            range: 10.0.5.0/24
-            range6: 'fd10:0:5::/48'
-            routes: ['192.168.0.0/24', '192.168.1.0/24']
-            vpnProtoPorts: ['udp/1194', 'tcp/1194']
+            'range' => '10.0.5.0/24',
+            'range6' => 'fd10:0:5::/48',
+            'routes' => ['192.168.0.0/24', '192.168.1.0/24'],
+            'vpnProtoPorts' => ['udp/1194', 'tcp/1194'],
         ],
 
         // Administrators
@@ -45,10 +45,10 @@ modified, you can remove the `internet` profile that was there by default:
             ...
             'extIf' => 'eth0',
             'hostName' => 'admin.vpn.example',
-            range: 10.0.10.0/24
-            range6: 'fd10:0:10::/48'
-            routes: ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24']
-            vpnProtoPorts: ['udp/1195', 'tcp/1195']
+            'range' => '10.0.10.0/24',
+            'range6' => 'fd10:0:10::/48',
+            'routes' => ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24'],
+            'vpnProtoPorts' => ['udp/1195', 'tcp/1195'],
         ],
     ],
 
