@@ -7,6 +7,10 @@ possible to connect to the VPN service using `tcp/443` in addition to
 share `tcp/443` between the web server and OpenVPN we'll use 
 [sslh](https://github.com/yrutschle/sslh).
 
+In larger deployments you'll want to use multiple machines where the portal(s) 
+and API run on a different machine from the OpenVPN backend server(s) so port
+sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
+
 ## VPN
 
 We need to modify `/etc/vpn-server-api/default/config.php` and modify 
