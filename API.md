@@ -315,6 +315,9 @@ The response will be an OpenVPN configuration file without the `<cert>` and
 Below you'll find how to enroll a user for 2FA. This only works if they are 
 not yet enrolled for either 2FA method.
 
+The Profile List API call can be used to detect if a profile requires 2FA to
+be able to connect.
+
 ### YubiKey
 
     $ curl -H "Authorization: Bearer abcdefgh" \
