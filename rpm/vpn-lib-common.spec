@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-lib-common
-%global github_commit           63924a8432ba83bb12168f91b3c3fd06da064dee
+%global github_commit           edd87b746cb546e7f5091c50616a36f9be27eca5
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-lib-common
-Version:    1.1.8
+Version:    1.1.10
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -27,6 +27,7 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
+#        "ext-radius": "*",
 #        "ext-spl": "*",
 BuildRequires:  php-curl
 BuildRequires:  php-date
@@ -38,6 +39,7 @@ BuildRequires:  php-ldap
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
+BuildRequires:  php-radius
 BuildRequires:  php-spl
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
@@ -70,6 +72,7 @@ Requires:       php(language) >= 5.4.0
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
+#        "ext-radius": "*",
 #        "ext-spl": "*",
 Requires:       php-curl
 Requires:       php-date
@@ -81,6 +84,7 @@ Requires:       php-ldap
 Requires:       php-mbstring
 Requires:       php-pcre
 Requires:       php-pdo
+Requires:       php-radius
 Requires:       php-spl
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
@@ -138,6 +142,12 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Mar 16 2018 François Kooman <fkooman@tuxed.net> - 1.1.10-1
+- update to 1.1.10
+
+* Thu Mar 15 2018 François Kooman <fkooman@tuxed.net> - 1.1.9-1
+- update to 1.1.9
+
 * Tue Feb 27 2018 François Kooman <fkooman@tuxed.net> - 1.1.8-1
 - update to 1.1.8
 
