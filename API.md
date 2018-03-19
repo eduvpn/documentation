@@ -309,11 +309,9 @@ the case:
 1. the certificate was deleted by the user;
 2. the certificate was disabled by an administrator;
 3. the user is disabled
-4. the certificate expired
 
-**TBD**: do we really want to check for 3 and 4 here as well? They can be 
-determined by checking the `/user_info` call already and checking the 
-certificate directly...
+The certificate can still be expired, but this can be checked locally by 
+inspecting the certificate directly.
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         "https://demo.eduvpn.nl/portal/api.php/check_certificate?common_name=fd2c32de88c87d38df8547c54ac6c30e"
@@ -329,7 +327,8 @@ The response looks like this:
         }
     }
 
-Here, `is_valid` can als be `false`.
+Here, `is_valid` can also be `false` if the certificate won't be accepted any
+longer.
 
 ## Profile Config
 
