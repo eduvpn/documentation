@@ -300,6 +300,37 @@ through the `/profile_config` call.
 if an instance has e.g. the profiles `internet` and `office`, only one keypair 
 is required!
 
+## Check Certificate
+
+A call is available to check whether an already obtained certificate will be 
+accepted by the VPN server. There are a number of reasons why this may not be 
+the case:
+
+1. the certificate was deleted by the user;
+2. the certificate was disabled by an administrator;
+3. the user is disabled
+4. the certificate expired
+
+**TBD**: do we really want to check for 3 and 4 here as well? They can be 
+determined by checking the `/user_info` call already and checking the 
+certificate directly...
+
+    $ curl -H "Authorization: Bearer abcdefgh" \
+        "https://demo.eduvpn.nl/portal/api.php/check_certificate?common_name=fd2c32de88c87d38df8547c54ac6c30e"
+
+The response looks like this:
+
+    {
+        "check_certificate": {
+            "data": [
+                "is_valid": true
+            ],
+            "ok": true
+        }
+    }
+
+Here, `is_valid` can als be `false`.
+
 ## Profile Config
 
 Only get the profile configuration without certificate and private key.
