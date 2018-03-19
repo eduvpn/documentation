@@ -1,8 +1,8 @@
-%global commit0 5c48b5b1d0eab5ff8cf4c68eafc7123585279373
+%global commit0 5fb3059e55a615c7d7836904434277c83ef2faa4
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-server
-Version:        2.2.0
+Version:        3.0.0
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
@@ -111,6 +111,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Mon Mar 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-1
+- update to 3.0.0
+
 * Wed Jan 10 2018 François Kooman <fkooman@tuxed.net> - 2.2.0-1
 - update to 2.2.0
 
