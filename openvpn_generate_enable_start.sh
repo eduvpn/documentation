@@ -13,6 +13,6 @@ vpn-server-node-server-config --instance ${INSTANCE} --generate
 
 for i in $(ls /etc/openvpn/server/${INSTANCE}-*.conf)
 do
-    f=$(basename ${i} .conf)
-    systemctl enable --now openvpn-server@${f}
+    f=$(basename "${i}" .conf)
+    systemctl enable --now "openvpn-server@${f}"
 done

@@ -7,7 +7,7 @@ INSTANCE=default
 #
 for i in $(systemctl | grep openvpn-server@${INSTANCE} | awk {'print $1'})
 do
-    systemctl disable --now ${i}
+    systemctl disable --now "${i}"
 done
 
 #
