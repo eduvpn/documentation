@@ -1,9 +1,9 @@
-%global commit0 68aa51e8f3bacb073fc4397409bec227b31db24d
+%global commit0 bfb6b75c45812515e61ead526447197bdf08821f
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
-Version:        6.0.1
-Release:        2%{?dist}
+Version:        6.0.2
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -102,6 +102,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Wed Mar 21 2018 François Kooman <fkooman@tuxed.net> - 6.0.2-1
+- update to 6.0.2
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 6.0.1-2
 - use phpab to generate the classloader
 
