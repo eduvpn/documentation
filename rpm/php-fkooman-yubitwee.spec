@@ -1,9 +1,9 @@
-%global commit0 9f6587319ae11839619c3448e5e9775da5deceb8
+%global commit0 ae04cd0dd186a6aaa940284b2bd58a16002b6035
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-yubitwee
-Version:        1.1.1
-Release:        2%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -87,6 +87,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Thu Mar 22 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
+- update to 1.1.2
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.1.1-2
 - use phpab to generate the classloader
 
