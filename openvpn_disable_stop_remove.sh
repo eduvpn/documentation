@@ -11,6 +11,7 @@ do
 done
 
 #
-# Remove all existing OpenVPN server configurations
+# Remove all existing OpenVPN server configurations and server keys
 #
 rm -rf /etc/openvpn/server/${INSTANCE}-*
+rm -rf /etc/openvpn/server/tls/${INSTANCE}
