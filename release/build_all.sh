@@ -47,6 +47,8 @@ PACKAGE_LIST=(\
 
 rpmdev-setuptree
 
+mkdir -p "${REPO_DIR}/unsigned/RPMS/noarch"
+mkdir -p "${REPO_DIR}/unsigned/SRPMS"
 mkdir -p "${REPO_DIR}/RPMS/noarch"
 mkdir -p "${REPO_DIR}/SRPMS"
 
@@ -67,14 +69,17 @@ echo "Build in progress, this may take a long time..."
 (
     cd "${HOME}/rpmbuild/SRPMS" || exit
     RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${MOCK_FLAGS} ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
-    cp ${RESULT_DIR}/*/*.src.rpm "${REPO_DIR}/SRPMS"
-    cp ${RESULT_DIR}/*/*.noarch.rpm "${REPO_DIR}/RPMS/noarch"
+    cp ${RESULT_DIR}/*/*.src.rpm "${REPO_DIR}/unsigned/SRPMS"
+    cp ${RESULT_DIR}/*/*.noarch.rpm "${REPO_DIR}/unsigned/RPMS/noarch"
 )
 
 (
     cd "${REPO_DIR}" || exit
     # Sign RPMs
-    rpm --addsign RPMS/noarch/* SRPMS/*
+    rpm --addsign ${REPO_DIR}/unsigned/RPMS/noarch/* ${REPO_DIR}/unsigned/SRPMS/*
+    cp ${REPO_DIR}/unsigned/RPMS/noarch/* "${REPO_DIR}/RPMS/noarch/"
+    cp ${REPO_DIR}/unsigned/SRPMS/* "${REPO_DIR}/SRPMS/"
+    rm -rf "${REPO_DIR}/unsigned"
 )
 
 # Create Repository
