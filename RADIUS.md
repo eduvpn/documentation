@@ -22,18 +22,26 @@ Then you can configure the RADIUS server:
 
     // RADIUS
     'FormRadiusAuthentication' => [
-        'host' => 'radius.example.org',
-        //'port' => 1812,
+        'serverList' => [
+            [
+                'host' => 'radius.example.org',
+                'secret' => 'testing123',
+                //'port' => 1812,
+            ],
+        ],
         //'addRealm' => 'example.org',
-        'secret' => 'testing123',
         //'nasIdentifier' => 'vpn.example.org',
     ],
 
-Set the `host` to the host of your RADIUS server. You can optionally also 
-specify the `port` (defaults to `1812`), and whether or not to add a "realm" 
-to the identifier the user provides. If for example the user provides `foo` as 
-a user ID, the `addRealm` option when set to `example.org` modifies the user ID 
-to `foo@example.org` and uses that to authenticate to the RADIUS server.
+Here `serverList` is an array of server configurations where you can add 
+multiple RADIUS servers to be used for user authentication. Set the `host` to 
+the host of your RADIUS server. You can optionally also specify the `port` 
+(defaults to `1812`).
+
+You can also configure whether or not to add a "realm" to the identifier the 
+user provides. If for example the user provides `foo` as a user ID, the 
+`addRealm` option when set to `example.org` modifies the user ID to 
+`foo@example.org` and uses that to authenticate to the RADIUS server.
 
 The `host` and `secret` options are REQUIRED, the others are optional.
 
