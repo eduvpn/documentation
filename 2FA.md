@@ -74,3 +74,26 @@ the DB. Assuming the user ID is `foo`, do the following:
 Perform the following query:
 
     UPDATE users SET totp_secret=NULL, yubi_key_id=NULL WHERE user_id='foo'
+
+## Plugin
+
+An OpenVPN [plugin](https://github.com/fac/auth-script-openvpn) is available to 
+handle 2FA on the side of OpenVPN in a better way. By default verifying the 
+second factor will block the OpenVPN process, making it impossible for 
+connected clients to send/receive traffic in the meantime. This is obviously 
+bad for performance, especially if there are a lot of clients connecting to the 
+VPN profile with 2FA enabled.
+
+A [package](https://copr.fedorainfracloud.org/coprs/fkooman/openvpn/) is 
+available (for CentOS and Fedora) that will install the OpenVPN plugin. This is 
+currently not installed by default as there is no "official" release yet of 
+this plugin.
+
+After installing the plugin the OpenVPN server configuration files need to be 
+regenerated, the script will detect if the plugin is installed and then use it:
+
+    $ sudo vpn-server-node-server-config
+
+Also, the VPN processes need to be restarted:
+
+    $ sudo systemctl restart "openvpn-server@default-*"
