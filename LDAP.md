@@ -57,21 +57,21 @@ need to make the CA certificate available on the VPN machine.
 On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to the 
 machine running the VPN software.
 
-## CentOS
+## CentOS / Fedora
 
-Put the certificate in `/etc/openldap/certs` on the VPN machine and run the 
-`cacertdir_rehash` command:
+If you use a self signed certificate for your LDAP server perform these steps. 
+If your certificate is signed by a trusted CA you do not need to do this, it
+will work out of the box.
 
-    # cacertdir_rehash /etc/openldap/certs
+Put the self signed certificate file in `/etc/pki/ca-trust/source/anchors`. 
+After this:
 
-This should now allow the LDAP client to verify the LDAP server certificate 
-and connect without problems.
+    $ sudo update-ca-trust
 
-**NOTE**: make sure there are no other files in `/etc/openldap/certs` as they
-will interfere with the certificate you put there!
+This will add the CA certificate  to the system wide database in such a way
+that it will remain there, even when the `ca-certificates` package updates.
 
-If you change the configuration you will have to restart `php-fpm` to pick up
-the changes:
+You will have to restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php-fpm
 
@@ -81,17 +81,15 @@ If you use a self signed certificate for your LDAP server perform these steps.
 If your certificate is signed by a trusted CA you do not need to do this, it
 will work out of the box.
 
-Put the self signed certificate in 
+Put the self signed certificate file in 
 `/usr/local/share/ca-certificates/ipa.example.org.crt`. After this:
  
     $ sudo update-ca-certificates
 
-This will add the `ipa.example.org.crt` to `/etc/ssl/certs/ca-certificates.crt` 
-in such a way that it will remain there, even on `ca-certificate` package
-updates.
+This will add the CA certificate  to the system wide database in such a way
+that it will remain there, even when the `ca-certificate` package updates.
 
-If you change the configuration you will have to restart `php-fpm` to pick up
-the changes:
+You will have to restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php7.0-fpm
 
