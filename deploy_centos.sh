@@ -47,16 +47,18 @@ systemctl disable --now firewalld
 systemctl disable --now iptables
 systemctl disable --now ip6tables
 
-# RHEL 7
-# subscription-manager repos --enable=rhel-7-server-optional-rpms
-# subscription-manager repos --enable=rhel-7-server-extras-rpms
-# ${PACKAGE_MANAGER} -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+if grep -q "Red Hat" /etc/redhat-release
+then
+    # RHEL
+    subscription-manager repos --enable=rhel-7-server-optional-rpms
+    subscription-manager repos --enable=rhel-7-server-extras-rpms
+    ${PACKAGE_MANAGER} -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+else
+    # CentOS
+    ${PACKAGE_MANAGER} -y install epel-release
+fi
 
-# CentOS 7
-# enable EPEL
-${PACKAGE_MANAGER} -y install epel-release
-
-# Production RPMs
+# Add production RPM repository
 curl -L -o /etc/yum.repos.d/eduVPN.repo \
     https://repo.eduvpn.org/rpm/eduVPN.repo
 
