@@ -70,7 +70,7 @@ will be used for announcements of updates and discussion about running eduVPN.
 **NOTE**: at the moment only a fully updated official CentOS 7 is supported, 
 there is experimental support for Debian >= 9 and Fedora.
 
-* [CentOS](DEPLOY_CENTOS.md)
+* [CentOS / Red Hat Enterprise Linux](DEPLOY_CENTOS.md)
 * [Fedora](DEPLOY_FEDORA.md) (experimental)
 * [Debian](DEPLOY_DEBIAN.md) (experimental)
 

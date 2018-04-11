@@ -1,8 +1,8 @@
-# Deploying on CentOS
+# Deploying on CentOS / Red Hat Enterprise Linux
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh CentOS 7 installation. It will configure all components 
-and will be ready for use after running!
+you can run on a fresh CentOS (or Red Hat Enterprise Linux) 7 installation. It 
+will configure all components and will be ready for use after running!
 
 Additional scripts are available after deployment:
 
@@ -12,7 +12,10 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean CentOS 7 installation with all updates installed;
+* Clean CentOS (or Red Hat Enterprise Linux) 7 installation with all updates 
+  installed;
+* For Red Hat Enterprise Linux the system should be registered at Red Hat 
+  with the subscription manager (not required for CentOS);
 * SELinux MUST be enabled 
   ([CentOS SELinux](https://wiki.centos.org/HowTos/SELinux));
 * Network equipment allows access to the very least `tcp/80`, `tcp/443`, 
@@ -20,7 +23,9 @@ Additional scripts are available after deployment:
 
 We test only with the official CentOS 
 [Minimal ISO](https://centos.org/download/) and the official 
-[Cloud](https://wiki.centos.org/Download) images.
+[Cloud](https://wiki.centos.org/Download) images. For Red Hat Enterprise Linux
+we test with the official Red Hat Enterprise Linux ISO, e.g. 
+`rhel-server-7.5-x86_64-dvd.iso`.
 
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
@@ -40,6 +45,8 @@ Run the script (as root):
 
 Specify the hostname you want to use for your VPN server. Both the "Web" and 
 "OpenVPN" DNS names can be identical for simple 1 machine setups.
+
+**NOTE**: you can NOT use `localhost` as a hostname.
 
 ## Configuration
 
