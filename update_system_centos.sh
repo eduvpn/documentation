@@ -23,5 +23,5 @@ systemctl restart iptables
 systemctl restart ip6tables
 
 (
-    ./openvpn_generate_enable_start
+    ./openvpn_generate_enable_start.sh
 )
