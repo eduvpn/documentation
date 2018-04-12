@@ -5,7 +5,7 @@ INSTANCE=default
 #
 # Stop and disable all currently active OpenVPN processes
 #
-for i in $(systemctl -a | grep openvpn-server@${INSTANCE} | awk {'print $1'})
+for i in $(systemctl -a --no-legend | grep openvpn-server@${INSTANCE} | awk {'print $1'})
 do
     systemctl disable --now "${i}"
 done
