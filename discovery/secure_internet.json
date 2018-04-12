@@ -30,8 +30,18 @@
             },
             "logo": "https://static.eduvpn.nl/disco/img/no.png",
             "public_key": "1V81FxZm7v/A19BJqwFKWy2XlNco13q97NCfkBQr+po="
+        },
+        {
+            "base_uri": "https://eduvpn.deic.dk/",
+            "display_name": {
+                "da-DK": "Danmark",
+                "en-US": "Denmark",
+                "nl-NL": "Denemarken"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/dk.png",
+            "public_key": "pB2opEKG0YArbZlb8rK0dysgV8hk8QygYlB6xlNFqqs="
         }
     ],
-    "seq": 33,
-    "signed_at": "2018-02-26 20:56:04"
+    "seq": 34,
+    "signed_at": "2018-04-12 09:05:00"
 }
