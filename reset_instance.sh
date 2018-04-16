@@ -9,6 +9,11 @@
 
 INSTANCE=default
 
+(
+    ./openvpn_disable_stop_remove.sh
+)
+
+systemctl stop httpd
 systemctl stop php-fpm
 
 # remove data
@@ -16,19 +21,22 @@ rm -rf /var/lib/vpn-server-api/${INSTANCE}
 rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
-# remove OpenVPN server configuration files for this instance
-rm -f /etc/openvpn/server/${INSTANCE}-*.conf
-rm -rf /etc/openvpn/server/tls/${INSTANCE}
-
-# recreate data directories and initialize
-mkdir /var/lib/vpn-user-portal/${INSTANCE}
-chown apache.apache /var/lib/vpn-user-portal/${INSTANCE}
-chmod 0700 /var/lib/vpn-user-portal/${INSTANCE}
+# initialize
 sudo -u apache vpn-user-portal-init --instance ${INSTANCE}
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
-systemctl start php-fpm
+# regenerate internal API secrets
+vpn-server-api-update-api-secrets
 
-# recreate configuration and certificates...
-vpn-server-node-server-config --instance ${INSTANCE} --generate
-systemctl restart "openvpn-server@${INSTANCE}-*"
+systemctl start php-fpm
+systemctl start httpd
+
+# regenerate/restart firewall
+vpn-server-node-generate-firewall --install     
+systemctl restart iptables              # CentOS/Fedora
+systemctl restart ip6tables             # CentOS/Fedora
+systemctl restart netfilter-persistent  # Debian
+
+(
+    ./openvpn_generate_enable_start.sh
+)
