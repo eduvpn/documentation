@@ -72,8 +72,8 @@ eduVPN/Let's Connect!.
 
 **NOTE**: at the moment only a fully updated official CentOS/Red Hat Enterprise 
 Linux 7 is supported, there is experimental (see open 
-[issues](https://github.com/eduvpn/eduvpn-debian/issues)) support for Debian 
->= 9 and Fedora.
+[issues](https://github.com/eduvpn/eduvpn-debian/issues)) support for Debian >= 
+9 and generally the latest stable release of Fedora.
 
 * [CentOS / Red Hat Enterprise Linux](DEPLOY_CENTOS.md)
 * [Fedora](DEPLOY_FEDORA.md) (experimental)
