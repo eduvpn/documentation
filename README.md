@@ -64,12 +64,16 @@ can find a list [here](https://app.eduvpn.nl/).
 
 # Deployment
 
-**NOTE**: if you plan to run eduVPN please consider subscribing to the 
-mailing list [here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It 
-will be used for announcements of updates and discussion about running eduVPN.
+**NOTE**: if you plan to run eduVPN/Let's Connect! please consider subscribing 
+to the mailing list 
+[here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It will be used 
+for announcements of updates and discussion about running 
+eduVPN/Let's Connect!.
 
-**NOTE**: at the moment only a fully updated official CentOS 7 is supported, 
-there is experimental support for Debian >= 9 and Fedora.
+**NOTE**: at the moment only a fully updated official CentOS/Red Hat Enterprise 
+Linux 7 is supported, there is experimental (see open 
+[issues](https://github.com/eduvpn/eduvpn-debian/issues)) support for Debian 
+>= 9 and Fedora.
 
 * [CentOS / Red Hat Enterprise Linux](DEPLOY_CENTOS.md)
 * [Fedora](DEPLOY_FEDORA.md) (experimental)
