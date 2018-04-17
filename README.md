@@ -19,6 +19,7 @@ This is an (incomplete) list of features of the VPN software:
 - Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
 - Support both NAT and routable IP addresses;
 - CA for managing client certificates;
+- [Secure](SECURITY.md) server and client configuration out of the box;
 - User Portal to allow users to manage their configurations for their 
   devices;
 - Admin Portal to manage users, configurations and connections;
