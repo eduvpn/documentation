@@ -4,7 +4,7 @@
 contact [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
 
 This is the eduVPN documentation repository. This repository targets
-administrators and dvelopers. It contains information on how to deploy the VPN
+administrators and developers. It contains information on how to deploy the VPN
 software, but also (technical) details about the implementation needed to 
 (better) integrate it in existing infrastructure, and how to modify the 
 software for one's own needs.
@@ -21,7 +21,7 @@ This is an (incomplete) list of features of the VPN software:
 - CA for managing client certificates;
 - User Portal to allow users to manage their configurations for their 
   devices;
-- Admin Portal manage users, configurations and connections;
+- Admin Portal to manage users, configurations and connections;
 - Multi Language support in User Portal and Admin Portal;
 - Authentication to portals using "static" username and password, 
   [LDAP](LDAP.md), [RADIUS](RADIUS.md) and [SAML](SAML.md);
@@ -63,7 +63,7 @@ can find a list [here](https://app.eduvpn.nl/).
 
 # Deployment
 
-**NOTE**: if you plan to run eduVPN please consider subscribing yourself to the 
+**NOTE**: if you plan to run eduVPN please consider subscribing to the 
 mailing list [here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It 
 will be used for announcements of updates and discussion about running eduVPN.
 
