@@ -309,6 +309,7 @@ the case:
 1. the certificate was deleted by the user;
 2. the certificate was disabled by an administrator;
 3. the user is disabled
+4. the VPN server got reinstalled and a new CA was created;
 
 The certificate can still be expired, but this can be checked locally by 
 inspecting the certificate directly.
