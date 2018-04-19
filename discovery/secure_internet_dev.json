@@ -11,18 +11,12 @@
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
-            "base_uri": "https://f26.tuxed.net/",
-            "display_name": "Blue (f26.tuxed.net)",
-            "logo": "https://static.eduvpn.nl/disco/img/blue.png",
-            "public_key": "aH5p4pDM/d3CKnNJFSHjNicMKGWvXcxatS/yATg965o="
-        },
-        {
             "base_uri": "https://vpn.tuxed.net/",
             "display_name": "Yellow (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
             "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 51,
-    "signed_at": "2018-04-17 12:42:47"
+    "seq": 52,
+    "signed_at": "2018-04-19 11:07:25"
 }
