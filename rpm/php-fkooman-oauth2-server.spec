@@ -3,7 +3,7 @@
 
 Name:           php-fkooman-oauth2-server
 Version:        3.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -18,11 +18,7 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-BuildRequires:  php-sodium
-%else
-BuildRequires:  php-libsodium
-%endif
+BuildRequires:  php-pecl(libsodium)
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
@@ -49,11 +45,7 @@ Requires:       php(language) >= 5.4.0
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-Requires:       php-sodium
-%else
-Requires:       php-libsodium
-%endif
+Requires:       php-pecl(libsodium)
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
@@ -111,6 +103,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-2
+- depend on php-pecl(libsodium)
+
 * Mon Mar 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-1
 - update to 3.0.0
 

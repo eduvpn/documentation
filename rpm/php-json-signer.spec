@@ -5,7 +5,7 @@
 
 Name:       php-json-signer
 Version:    3.0.2
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -25,11 +25,7 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-BuildRequires:  php-sodium
-%else
-BuildRequires:  php-libsodium
-%endif
+BuildRequires:  php-pecl(libsodium)
 BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-spl
@@ -40,11 +36,7 @@ Requires:   php(language) >= 5.4.0
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-Requires:       php-sodium
-%else
-Requires:       php-libsodium
-%endif
+Requires:   php-pecl(libsodium)
 Requires:   php-date
 Requires:   php-json
 Requires:   php-spl
@@ -89,6 +81,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-3
+- depend on php-pecl(libsodium)
+
 * Tue Dec 12 2017 François Kooman <fkooman@tuxed.net> - 3.0.2-2
 - cleanup install
 

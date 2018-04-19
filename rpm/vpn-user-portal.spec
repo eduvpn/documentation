@@ -7,7 +7,7 @@
 
 Name:       vpn-user-portal
 Version:    1.6.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -34,11 +34,7 @@ BuildRequires:  php-json
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-BuildRequires:  php-sodium
-%else
-BuildRequires:  php-libsodium
-%endif
+BuildRequires:  php-pecl(libsodium)
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
@@ -63,11 +59,7 @@ Requires:   php-json
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-%if 0%{?fedora} >= 28
-Requires:       php-sodium
-%else
-Requires:       php-libsodium
-%endif
+Requires:   php-pecl(libsodium)
 Requires:   php-mbstring
 Requires:   php-pcre
 Requires:   php-pdo
@@ -176,6 +168,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 1.6.2-2
+- depend on php-pecl(libsodium)
+
 * Thu Apr 12 2018 François Kooman <fkooman@tuxed.net> - 1.6.2-1
 - update to 1.6.2
 
