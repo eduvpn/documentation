@@ -74,6 +74,7 @@ a2enmod ssl headers rewrite proxy_fcgi setenvif
 a2enconf php7.0-fpm
 
 # VirtualHost
+cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf 
 cp resources/vpn.example.debian.conf /etc/apache2/sites-available/${WEB_FQDN}.conf
 cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 
