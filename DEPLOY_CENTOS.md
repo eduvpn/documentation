@@ -107,7 +107,7 @@ users, see [ACL](ACL.md).
 Run the script (as root):
 
     $ sudo -s
-    # ./lets_encrypt.sh
+    # ./lets_encrypt_centos.sh
 
 Make sure you use the exact same DNS name you used when running 
 `deploy_centos.sh`! 
