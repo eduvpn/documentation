@@ -22,8 +22,8 @@ rm -rf /var/lib/vpn-user-portal/${INSTANCE}
 rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
 
 # initialize
-sudo -u apache vpn-user-portal-init --instance ${INSTANCE}
-sudo -u apache vpn-server-api-init --instance ${INSTANCE}
+sudo -u www-data vpn-user-portal-init --instance ${INSTANCE}
+sudo -u www-data vpn-server-api-init --instance ${INSTANCE}
 
 # regenerate internal API secrets
 vpn-server-api-update-api-secrets
