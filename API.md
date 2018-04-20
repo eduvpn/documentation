@@ -232,13 +232,12 @@ The response looks like this:
 
     {
         "user_info": {
-            "data": [
-                {
-                    "two_factor_enrolled": false,
-                    "two_factor_enrolled_with": [],
-                    "is_disabled": false
-                }
-            ],
+            "data": {
+                "is_disabled": false,
+                "two_factor_enrolled": false,
+                "two_factor_enrolled_with": [],
+                "user_id": "foo"                
+            },
             "ok": true
         }
     }

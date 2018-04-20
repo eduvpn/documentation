@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           11990d27cf6bc4c1e64b60d248d1ada91102eb9d
+%global github_commit           55c670f1b6492c58b29832ef41b333954ed80b60
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.6.2
-Release:    2%{?dist}
+Version:    1.6.3
+Release:    1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -168,6 +168,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Apr 20 2018 François Kooman <fkooman@tuxed.net> - 1.6.3-1
+- update to 1.6.3
+
 * Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 1.6.2-2
 - depend on php-pecl(libsodium)
 
