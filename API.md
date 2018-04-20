@@ -192,13 +192,11 @@ The response looks like this:
 
     {
         "profile_list": {
-            "data": [
-                {
-                    "display_name": "Internet Access",
-                    "profile_id": "internet",
-                    "two_factor": false
-                }
-            ],
+            "data": {
+                "display_name": "Internet Access",
+                "profile_id": "internet",
+                "two_factor": false
+            },
             "ok": true
         }
     }
