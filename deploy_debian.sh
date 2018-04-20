@@ -84,6 +84,7 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /etc/apache2/sites-available/${WEB_FQDN}.con
 a2enconf vpn-server-api
 a2enconf vpn-user-portal
 a2enconf vpn-admin-portal
+a2dissite 000-default
 a2ensite ${WEB_FQDN}
 a2ensite localhost
 
