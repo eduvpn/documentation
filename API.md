@@ -321,9 +321,9 @@ The response looks like this:
 
     {
         "check_certificate": {
-            "data": [
+            "data": {
                 "is_valid": true
-            ],
+            },
             "ok": true
         }
     }
