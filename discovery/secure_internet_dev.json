@@ -11,12 +11,21 @@
             "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
+            "base_uri": "https://fedora-vpn.tuxed.net/",
+            "display_name": {
+                "en-US": "Green (fedora-vpn.tuxed.net)",
+                "nl-NL": "Groen (fedora-vpn.tuxed.net)"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/green.png",
+            "public_key": "I0RxRIhbgP4HQpzMoItBJjfAdT/6tjXL+6Fn3GTMkB0="
+        },
+        {
             "base_uri": "https://vpn.tuxed.net/",
             "display_name": "Yellow (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
             "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 52,
-    "signed_at": "2018-04-19 11:07:25"
+    "seq": 53,
+    "signed_at": "2018-04-20 10:45:15"
 }
