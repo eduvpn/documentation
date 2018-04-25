@@ -1,12 +1,8 @@
 #!/bin/sh
 
 #
-# *ONLY* run this during maintenance window!
+# *ONLY* run this during a maintenance window!
 #
-
-(
-    ./openvpn_disable_stop_remove.sh
-)
 
 systemctl stop httpd
 systemctl stop php-fpm
@@ -22,6 +18,5 @@ vpn-server-node-generate-firewall --install
 systemctl restart iptables
 systemctl restart ip6tables
 
-(
-    ./openvpn_generate_enable_start.sh
-)
+# restart OpenVPN
+systemctl restart "openvpn-server@*"
