@@ -11,7 +11,7 @@ software to it:
 
 ## CentOS
 
-    $ sudo yum -y install epel-release # only on CentOS
+    $ sudo yum -y install epel-release
     $ sudo yum -y install fedora-packager rpm-sign nosync
 
 ## Fedora
@@ -22,7 +22,7 @@ software to it:
 
 Make sure your current user account is a member of the `mock` group:
 
-    $ sudo usermod -a -G mock myusername
+    $ sudo usermod -a -G mock $(id -un)
 
 After this, make sure you logout and in again.
 
@@ -101,10 +101,10 @@ mentioned below:
 
     [eduVPN]
     name=eduVPN
-    baseurl=https://static.eduvpn.nl/rpm/
+    baseurl=https://repo.eduvpn.org/rpm/
     gpgcheck=1
     enabled=1
-    gpgkey=https://static.eduvpn.nl/rpm/RPM-GPG-KEY-eduVPN
+    gpgkey=https://repo.eduvpn.org/rpm/RPM-GPG-KEY-eduVPN
     skip_if_unavailable=False
 	
 # Sources
