@@ -107,6 +107,21 @@ enabling `--tls-crypt`. As `--tls-crypt` requires OpenVPN 2.4 (or 3) anyway,
 it made sense to use this opportunity to tie this in with other configuration
 flags instead of introducing a "version" or "compat" configuration option.
 
+All eduVPN and Let's Connect! clients for Windows, macOS, Android and iOS will 
+work fine with or without `tlsCrypt`.
+
+However, some Linux distributions, Ubuntu 16.04 LTS in particular, the 
+`tlsCrypt` option won't work, i.e. Ubuntu 16.04 LTS will be unable to connect 
+to the VPN server as it uses OpenVPN 2.3 by default. If connecting from Ubuntu 
+16.04 LTS is important, this can be fixed by disabling `tlsCrypt` on the VPN
+server.
+
+You can edit `/etc/vpn-server-api/default/config.php` and look for the 
+`tlsCrypt` option and set it to `false`. Then "Apply Changes" as shown below. 
+
+**NOTE**: existing client configurations WILL stop working when you change 
+`tlsCrypt` if you are not using the eduVPN or Let's Connect! applications!
+
 ## Apply Changes
 
 The OpenVPN server configuration can be regenerated like this:
