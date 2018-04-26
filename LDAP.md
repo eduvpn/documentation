@@ -54,8 +54,16 @@ Repeat this for `vpn-admin-portal` and you're all set.
 If you use LDAPS and your LDAP server has a self signed certificate you may
 need to make the CA certificate available on the VPN machine.
 
-On the IPA server the CA is stored in `/etc/ipa/ca.crt`. Copy this to the 
-machine running the VPN software.
+On the IPA server the CA certificate is stored in `/etc/ipa/ca.crt`. Copy this 
+to the machine running the VPN software. If you don't have direct access to the
+IPA server you can also use OpenSSL to obtain the CA certificate:
+
+    $ openssl s_client -showcerts -connect ipa.example.org:ldaps
+
+You can copy/paste the CA certificate from the certificates shown. 
+
+**NOTE**: make sure you validate this CA out of band! You MUST be sure this 
+is the actual CA!
 
 ## CentOS / Fedora
 
