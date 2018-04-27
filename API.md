@@ -310,7 +310,9 @@ the case:
 3. the user is disabled
 4. the VPN server got reinstalled and a new CA was created;
 5. the certificate is not (yet) valid;
-6. the certificate expired;
+6. the certificate expired.
+
+API call:
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         "https://demo.eduvpn.nl/portal/api.php/check_certificate?common_name=fd2c32de88c87d38df8547c54ac6c30e"
@@ -331,15 +333,15 @@ longer. There is also a `reason` field that indicates the reason for the
 certificate to not be valid. The `reason` field is only there when `is_valid` 
 is `false`:
 
-{
-    "check_certificate": {
-        "data": {
-            "is_valid": false,
-            "reason": "user_disabled"
-        },
-        "ok": true
+    {
+        "check_certificate": {
+            "data": {
+                "is_valid": false,
+                "reason": "user_disabled"
+            },
+            "ok": true
+        }
     }
-}
 
 ### Table with Reasons
 
