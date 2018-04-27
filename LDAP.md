@@ -128,4 +128,4 @@ something like this, not an error:
 
     # numResponses: 1
 
-Then you are all set!
+Now you should be able to login to the VPN portal(s).
