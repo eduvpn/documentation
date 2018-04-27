@@ -101,3 +101,31 @@ You will have to restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php7.0-fpm
 
+# Testing
+
+To make sure everything works as expected, install `ldapsearch`:
+
+    $ sudo yum -y install openldap-clients
+
+Try with your configured DN:
+
+    $ ldapsearch -H ldaps://ipa.example.org -D 'uid=johndoe,cn=users,cn=accounts,dc=example,dc=org' -W
+
+Replace `johndoe` with an user ID at your LDAP server. This should return 
+something like this, not an error:
+
+    # extended LDIF
+    #
+    # LDAPv3
+    # base <> (default) with scope subtree
+    # filter: (objectclass=*)
+    # requesting: ALL
+    #
+
+    # search result
+    search: 2
+    result: 32 No such object
+
+    # numResponses: 1
+
+Then you are all set!
