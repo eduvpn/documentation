@@ -111,8 +111,9 @@ Try with your configured DN:
 
     $ ldapsearch -H ldaps://ipa.example.org -D 'uid=johndoe,cn=users,cn=accounts,dc=example,dc=org' -W
 
-Replace `johndoe` with an user ID at your LDAP server. This should return 
-something like this, not an error:
+Replace `johndoe` with an user ID at your LDAP server and provide the password
+for that account when it asks. This should return something like this, not an 
+error:
 
     # extended LDIF
     #
