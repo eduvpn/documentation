@@ -1,31 +1,31 @@
 diff --git a/bin/generate.php b/bin/generate.php
-index 0aa689d..0ee3505 100644
+index b1f708d..d1fc915 100644
 --- a/bin/generate.php
 +++ b/bin/generate.php
 @@ -17,9 +17,9 @@
   * limitations under the License.
   */
  
--$baseDir = dirname(__DIR__);
+-$baseDir = \dirname(__DIR__);
 +$baseDir = '/usr/share/php-saml-ds';
  /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
+-require_once \sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/fkooman/SAML/DS/autoload.php';
  
  use fkooman\SAML\DS\Config;
  use fkooman\SAML\DS\HttpClient\CurlHttpClient;
 diff --git a/web/index.php b/web/index.php
-index b809032..18e5141 100644
+index 0568339..4d377c1 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -16,9 +16,9 @@
   * limitations under the License.
   */
  
--$baseDir = dirname(__DIR__);
+-$baseDir = \dirname(__DIR__);
 +$baseDir = '/usr/share/php-saml-ds';
  /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
+-require_once \sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/fkooman/SAML/DS/autoload.php';
  
  use fkooman\SAML\DS\Config;
