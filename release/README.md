@@ -4,17 +4,27 @@ This document describes how to create an RPM repository containing all the
 software built from scratch and signed with PGP. This will perform a FULL 
 build of all packages.
 
-Currently it will build for the following platforms:
+Currently it will build packages for the following platforms:
 
 * CentOS / Red Hat Enterprise Linux 7
 * Fedora 28
 
 # Preparation
 
-We assume you have a fresh install of Fedora >= 27 with the following software 
+## OS
+
+### CentOS
+
+We assume you have a fresh install of CentOS 7 with the following software 
 installed:
 
-## Fedora
+    $ sudo yum -y install epel-release
+    $ sudo yum -y install fedora-packager rpm-sign nosync yum-utils
+
+### Fedora
+
+We assume you have a fresh install of Fedora 28 with the following software 
+installed:
 
     $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils
 
@@ -24,16 +34,33 @@ Make sure your current user account is a member of the `mock` group:
 
     $ sudo usermod -a -G mock $(id -un)
 
-After this, make sure you logout and in again.
+**NOTE**: after adding yourself to the group make sure you logout and in 
+again!
 
 Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
 
     # Speed up package installation in Mock
     config_opts['nosync'] = True
+    config_opts['plugin_conf']['tmpfs_enable'] = True
+    config_opts['plugin_conf']['tmpfs_opts'] = {}
+    config_opts['plugin_conf']['tmpfs_opts']['required_ram_mb'] = 4096
+    config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '3072m'
+    config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
+    config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = False
+
+I set the `require_ram_mb` to 4GB and `max_fs_size` to 3G, assuming your 
+machine has 8GB this is reasonable. If you have less memory you may need to 
+tweak these settings a bit or disable the `tmpfs` plugin.
 
 ## GPG
 
 Make sure you have a PGP key available. If not, create one:
+
+### CentOS
+
+    $ gpg --gen-key
+
+### Fedora
 
     $ gpg2 --gen-key
 
@@ -46,6 +73,12 @@ is `eduvpn@surfnet.nl`:
 
 To export the public key, for use by clients using this repository:
 
+### CentOS
+
+    $ gpg --export -a 'software@letsconnect-vpn.org' > RPM-GPG-KEY-LC
+
+### Fedora
+
     $ gpg2 --export -a 'software@letsconnect-vpn.org' > RPM-GPG-KEY-LC
 
 ## Repository
@@ -57,7 +90,14 @@ Clone the `eduVPN/documentation` repository:
 # Building
 
     $ cd documentation
-    $ sh release/build_all.sh
+
+## CentOS
+
+    $ ./centos_7.sh
+
+## Fedora
+
+    $ ./fedora_28.sh
 
 This will put all RPMs and source RPMs in the `${HOME}/repo` directory and 
 create a tarball in `${HOME}` as well with the name `rpmRepo-<DATE>.tar.gz`. 
