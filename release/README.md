@@ -4,29 +4,33 @@ This document describes how to create an RPM repository containing all the
 software built from scratch and signed with PGP. This will perform a FULL 
 build of all packages.
 
-Currently it will build packages for the following platforms:
+Currently it will build packages for the following platforms on those same
+platforms:
 
 * CentOS / Red Hat Enterprise Linux 7
 * Fedora 28
 
+This means, if you want to build CentOS 7 packages, you MUST run on CentOS 7. 
+If you want to build Fedora 28 packages, you MUST run on Fedora 28.
+
+Typically you'd want to use VMs for this.
+
 # Preparation
 
-## OS
-
-### CentOS
+## CentOS
 
 We assume you have a fresh install of CentOS 7 with the following software 
 installed:
 
     $ sudo yum -y install epel-release
-    $ sudo yum -y install fedora-packager rpm-sign nosync yum-utils
+    $ sudo yum -y install fedora-packager rpm-sign nosync yum-utils gnupg2
 
-### Fedora
+## Fedora
 
 We assume you have a fresh install of Fedora 28 with the following software 
 installed:
 
-    $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils
+    $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils gnupg2
 
 ## Mock
 
@@ -56,12 +60,6 @@ tweak these settings a bit or disable the `tmpfs` plugin.
 
 Make sure you have a PGP key available. If not, create one:
 
-### CentOS
-
-    $ gpg --gen-key
-
-### Fedora
-
     $ gpg2 --gen-key
 
 Add the following to `${HOME}/.rpmmacros`, assuming the email address you used 
@@ -72,12 +70,6 @@ is `eduvpn@surfnet.nl`:
     %_gpg_digest_algo sha256
 
 To export the public key, for use by clients using this repository:
-
-### CentOS
-
-    $ gpg --export -a 'software@letsconnect-vpn.org' > RPM-GPG-KEY-LC
-
-### Fedora
 
     $ gpg2 --export -a 'software@letsconnect-vpn.org' > RPM-GPG-KEY-LC
 
@@ -90,23 +82,18 @@ Clone the `eduVPN/documentation` repository:
 # Building
 
     $ cd documentation
-
-## CentOS
-
-    $ ./centos_7.sh
-
-## Fedora
-
-    $ ./fedora_28.sh
+    $ ./centos_7.sh         # run this on CentOS 7
+    $ ./fedora_28.sh        # run this on Fedora 28
 
 This will put all RPMs and source RPMs in the `${HOME}/repo` directory and 
-create a tarball in `${HOME}` as well with the name `rpmRepo-<DATE>.tar.gz`. 
-This file will contain all files from `${HOME}/repo`. If you run the release
-script multiple times, e.g. run it again after a package update, the new RPM 
-and source RPM will be added to the `${HOME}/repo` directory and the tarball
-as well. A history of old packages is retained, so it is beneficial to retain
-the `${HOME}/repo` folder between builds. This way you can downgrade to an 
-earlier version of a package if needed, e.g.:
+create a tarball in `${HOME}` as well with the name 
+`rpmRepo-<PLATFORM>-<DATE>.tar.gz`. This file will contain all files from 
+`${HOME}/repo`. If you run the release script multiple times, e.g. run it 
+again after a package update, the new RPM and source RPM will be added to the 
+`${HOME}/repo` directory and the tarball as well. A history of old packages is 
+retained, so it is beneficial to retain the `${HOME}/repo` folder between 
+builds. This way you can downgrade to an earlier version of a package if 
+needed, e.g.:
 
     $ sudo yum downgrade php-fkooman-oauth2-client
 
@@ -117,13 +104,8 @@ of the repository:
 
     $ git pull
 
-And then, run the `build_all.sh` script again:
-
-    $ cd documentation
-    $ sh release/build_all.sh
-
-This should put any new packages in `${HOME}/repo` as well as put them in the 
-generated tarball.
+And then, run the build scripts again, see above. This should add any new 
+packages in `${HOME}/repo` as well as put them in the generated tarball.
 
 # Configuration
 
