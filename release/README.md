@@ -95,7 +95,7 @@ mentioned below:
 
     [LC]
     name=Let's Connect Packages (EL $releasever)
-    baseurl=https://repo.letsconnect-vpn.org/rpm/release/enterprise/$releasever/$basearch/Packages
+    baseurl=https://repo.letsconnect-vpn.org/rpm/release/enterprise/$releasever/$basearch
     gpgcheck=1
     enabled=1
     gpgkey=https://repo.letsconnect-vpn.org/rpm/release/RPM-GPG-KEY-LC
@@ -105,7 +105,7 @@ mentioned below:
 
     [LC]
     name=Let's Connect Packages (Fedora $releasever) 
-    baseurl=https://repo.letsconnect-vpn.org/rpm/release/fedora/$releasever/$basearch/Packages
+    baseurl=https://repo.letsconnect-vpn.org/rpm/release/fedora/$releasever/$basearch
     gpgcheck=1
     enabled=1
     gpgkey=https://repo.letsconnect-vpn.org/rpm/release/RPM-GPG-KEY-LC
