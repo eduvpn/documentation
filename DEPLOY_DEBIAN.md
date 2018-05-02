@@ -12,8 +12,8 @@ Additional scripts are available after deployment:
 ## Requirements
 
 * Clean Debian 9 installation with all updates installed;
-* Network equipment allows access to the very least `tcp/80`, `tcp/443`, 
-  `udp/1194` and `tcp/1194` for basic functionality;
+* Network equipment/VM platform allows access to the very least `tcp/80`, 
+  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality;
 
 We test only with the official Debian 
 [netinst](https://www.debian.org/distrib/netinst) and the official 

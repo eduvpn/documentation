@@ -70,14 +70,19 @@ to the mailing list
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
-**NOTE**: at the moment only a fully updated official CentOS/Red Hat Enterprise 
-Linux 7 is supported, there is experimental (see open 
-[issues](https://github.com/eduvpn/eduvpn-debian/issues)) support for Debian >= 
-9 and generally the latest stable release of Fedora.
+## Supported Operating Systems
 
-* [CentOS / Red Hat Enterprise Linux](DEPLOY_CENTOS.md)
-* [Fedora](DEPLOY_FEDORA.md) (experimental)
-* [Debian](DEPLOY_DEBIAN.md) (experimental)
+* [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md)
+* [Fedora 28](DEPLOY_FEDORA.md)
+
+**NOTE**: we expect ALL software updates to be installed!
+
+## Experimental
+
+* [Debian](DEPLOY_DEBIAN.md)
+
+Open [issues](https://github.com/eduvpn/eduvpn-debian/issues) for the Debian
+packaging.
 
 # Development
 

@@ -18,8 +18,8 @@ Additional scripts are available after deployment:
   with the subscription manager (not required for CentOS);
 * SELinux MUST be enabled 
   ([CentOS SELinux](https://wiki.centos.org/HowTos/SELinux));
-* Network equipment allows access to the very least `tcp/80`, `tcp/443`, 
-  `udp/1194` and `tcp/1194` for basic functionality;
+* Network equipment/VM platform allows access to the very least `tcp/80`, 
+  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality;
 
 We test only with the official CentOS 
 [Minimal ISO](https://centos.org/download/) and the official 

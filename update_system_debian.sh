@@ -13,6 +13,9 @@ apt-get update && apt-get -y dist-upgrade
 systemctl start php7.0-fpm
 systemctl start apache2
 
+# regenerate OpenVPN config
+vpn-server-node-server-config --generate
+
 # regenerate/restart firewall
 vpn-server-node-generate-firewall --install
 systemctl restart netfilter-persistent

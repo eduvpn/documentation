@@ -59,8 +59,8 @@ else
 fi
 
 # Add production RPM repository
-curl -L -o /etc/yum.repos.d/eduVPN.repo \
-    https://repo.eduvpn.org/rpm/eduVPN.repo
+curl -L -o /etc/yum.repos.d/LC.repo \
+    https://repo.letsconnect-vpn.org/rpm/release/enterprise/LC.repo
 
 # Development RPMs (COPR)
 #curl -L -o /etc/yum.repos.d/eduVPN.repo \

@@ -2,7 +2,7 @@
 
 #
 # Deploy a single VPN machine
-# Fedora >= 27
+# Fedora 28
 #
 
 ###############################################################################
@@ -48,8 +48,9 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# Production RPMs
-${PACKAGE_MANAGER} -y copr enable fkooman/eduvpn-testing
+# Add production RPM repository
+curl -L -o /etc/yum.repos.d/LC.repo \
+    https://repo.letsconnect-vpn.org/rpm/release/fedora/LC.repo
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \

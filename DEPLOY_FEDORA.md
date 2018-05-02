@@ -1,7 +1,7 @@
-# Deploying on CentOS
+# Deploying on Fedora
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Fedora >= 26 installation. It will configure all 
+you can run on a fresh Fedora 28 installation. It will configure all 
 components and will be ready for use after running!
 
 Additional scripts are available after deployment:
@@ -11,10 +11,10 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Fedora >= 26 installation with all updates installed;
+* Clean Fedora 28 installation with all updates installed;
 * SELinux MUST be enabled;
-* Network equipment allows access to the very least `tcp/80`, `tcp/443`, 
-  `udp/1194` and `tcp/1194` for basic functionality;
+* Network equipment/VM platform allows access to the very least `tcp/80`, 
+  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality;
 
 We test only with the official Fedora 
 [Cloud Base Images](https://alt.fedoraproject.org/cloud/).
