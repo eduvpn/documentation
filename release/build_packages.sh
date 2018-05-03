@@ -18,6 +18,7 @@ PACKAGE_LIST=(\
     php-saml-ds-artwork-eduVPN \
 )
 
+rpmdev-setuptree
 mkdir -p "${RPM_DIR}/unsigned"
 mkdir -p "${SRPM_DIR}/unsigned"
 
