@@ -1,11 +1,11 @@
 {
     "arguments": "/install",
-    "changelog_uri": "https://github.com/Amebis/eduVPN/blob/master/CHANGES.md#1021",
-    "hash-sha256": "3496d17cf355748fde18b98a4def2f34dd414556ee9e8d27aad2854445c705a1",
-    "seq": 4,
-    "signed_at": "2018-03-07 12:04:12",
+    "changelog_uri": "https://github.com/Amebis/eduVPN/blob/master/CHANGES.md#1022",
+    "hash-sha256": "f86ff510c1aec76027068b0291fd8b81baec5b1f6fdc58ec1a5002f52515487a",
+    "seq": 6,
+    "signed_at": "2018-05-03 17:08:04",
     "uri": [
-        "https://app.eduvpn.nl/windows/LetsConnectClient_1.0.21.exe"
+        "https://app.eduvpn.nl/windows/LetsConnectClient_1.0.22.exe"
     ],
-    "version": "1.0.21"
+    "version": "1.0.22"
 }
