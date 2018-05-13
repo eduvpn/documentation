@@ -63,7 +63,7 @@ Make sure you have a PGP key available. If not, create one:
     $ gpg2 --gen-key
 
 Add the following to `${HOME}/.rpmmacros`, assuming the email address you used 
-is `eduvpn@surfnet.nl`:
+is `software@letsconnect-vpn.org`:
 
     %_signature gpg
     %_gpg_name software@letsconnect-vpn.org
