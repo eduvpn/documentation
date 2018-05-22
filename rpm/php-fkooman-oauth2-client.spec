@@ -1,8 +1,8 @@
-%global commit0 901880724a1566c72caa8f5c13c064e949294bf7
+%global commit0 6e0e062a3a3459b84151c021843960cdad0d980b
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
-Version:        7.1.0
+Version:        7.1.1
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
@@ -106,6 +106,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Tue May 22 2018 François Kooman <fkooman@tuxed.net> - 7.1.1-1
+- update to 7.1.1
+
 * Fri May 18 2018 François Kooman <fkooman@tuxed.net> - 7.1.0-1
 - update to 7.1.0
 
