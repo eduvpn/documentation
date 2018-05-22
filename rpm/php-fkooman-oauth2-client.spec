@@ -1,8 +1,8 @@
-%global commit0 93d6b0ab533e109bb16e19d499ac7d800915e506
+%global commit0 901880724a1566c72caa8f5c13c064e949294bf7
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
-Version:        7.0.0
+Version:        7.1.0
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
@@ -32,9 +32,11 @@ BuildRequires:  php-session
 BuildRequires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
@@ -59,9 +61,11 @@ Requires:       php-session
 Requires:       php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(psr/log)
 Requires:       php-composer(symfony/polyfill-php56)
 
 Provides:       php-composer(fkooman/oauth2-client) = %{version}
@@ -102,6 +106,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Fri May 18 2018 François Kooman <fkooman@tuxed.net> - 7.1.0-1
+- update to 7.1.0
+
 * Thu Apr 12 2018 François Kooman <fkooman@tuxed.net> - 7.0.0-1
 - update to 7.0.0
 
