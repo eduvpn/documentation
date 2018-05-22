@@ -44,8 +44,17 @@
             },
             "logo": "https://static.eduvpn.nl/disco/img/dk.png",
             "public_key": "pB2opEKG0YArbZlb8rK0dysgV8hk8QygYlB6xlNFqqs="
+        },
+        {
+            "base_uri": "https://eduvpn.renu.ac.ug/",
+            "display_name": {
+                "en-US": "Uganda",
+                "nl-NL": "Oeganda"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/ug.png",
+            "public_key": "kx5WJZbam9kqqbewA3d0VaLsDlmt/UW0PJ4P0Z/Axo8="
         }
     ],
-    "seq": 42,
-    "signed_at": "2018-05-22 14:51:47"
+    "seq": 41,
+    "signed_at": "2018-05-22 08:20:31"
 }
