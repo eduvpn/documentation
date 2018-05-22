@@ -1,4 +1,4 @@
-%global commit0 e18e4a656d0397eeecb0f862e0cfef33bc88d706
+%global commit0 7d6fcef0351d2d0ca18a24289eec1028f591fee9
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
