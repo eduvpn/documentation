@@ -1,13 +1,13 @@
 %global github_owner            letsconnectvpn
 %global github_name             vpn-portal-artwork
-%global github_commit           496d5b3023fad977a37ba33d1309f1e0b880d6f6
+%global github_commit           475df22de025dcf2d1c84776269897c6980b3ec1
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.1.0
-Release:    2%{?dist}
+Version:    1.1.1
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -62,6 +62,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Thu May 24 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-1
+- update to 1.1.1
+
 * Tue Jan 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-2
 - artwork moved to own repository
 
