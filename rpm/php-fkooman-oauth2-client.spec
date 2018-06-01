@@ -1,14 +1,13 @@
 %global commit0 7d6fcef0351d2d0ca18a24289eec1028f591fee9
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-client
 Version:        7.1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
-URL:            https://github.com/fkooman/php-oauth2-client
-Source0:        https://github.com/fkooman/php-oauth2-client/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+URL:            https://git.tuxed.net/fkooman/php-oauth2-client
+Source0:        https://git.tuxed.net/fkooman/php-oauth2-client/snapshot/php-oauth2-client-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -106,6 +105,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 7.1.2-2
+- update upstream URL to git.tuxed.net
+
 * Tue May 22 2018 François Kooman <fkooman@tuxed.net> - 7.1.2-1
 - update to 7.1.2
 

@@ -1,14 +1,13 @@
 %global commit0 ece8801d9987f4b58889e001a63929b0c6546cf1
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-secookie
 Version:        2.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
-URL:            https://github.com/fkooman/php-secookie
-Source0:        https://github.com/fkooman/php-secookie/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+URL:            https://git.tuxed.net/fkooman/php-secookie
+Source0:        https://git.tuxed.net/fkooman/php-secookie/snapshot/php-secookie-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -52,6 +51,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 2.0.0-3
+- update upstream URL to git.tuxed.net
+
 * Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 2.0.0-2
 - use phpab to generate the classloader
 

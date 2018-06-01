@@ -1,14 +1,13 @@
 %global commit0 ae04cd0dd186a6aaa940284b2bd58a16002b6035
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-yubitwee
 Version:        1.1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
-URL:            https://github.com/fkooman/php-yubitwee
-Source0:        https://github.com/fkooman/php-yubitwee/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+URL:            https://git.tuxed.net/fkooman/php-yubitwee
+Source0:        https://git.tuxed.net/fkooman/php-yubitwee/snapshot/php-yubitwee-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -87,6 +86,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-2
+- update upstream URL to git.tuxed.net
+
 * Thu Mar 22 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
 - update to 1.1.2
 
