@@ -1,14 +1,13 @@
 %global commit0 5fb3059e55a615c7d7836904434277c83ef2faa4
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           php-fkooman-oauth2-server
 Version:        3.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
-URL:            https://github.com/fkooman/php-oauth2-server
-Source0:        https://github.com/fkooman/php-oauth2-server/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+URL:            https://git.tuxed.net/fkooman/php-oauth2-server
+Source0:        https://git.tuxed.net/fkooman/php-oauth2-server/snapshot/php-oauth2-server-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -103,6 +102,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-3
+- update upstream URL to git.tuxed.net
+
 * Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-2
 - depend on php-pecl(libsodium)
 
