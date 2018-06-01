@@ -1,18 +1,15 @@
-%global github_owner            fkooman
-%global github_name             php-saml-ds
-%global github_commit           f9d36375978027dd58637e1b989e65aabf43c89e
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global commit0 f9d36375978027dd58637e1b989e65aabf43c89e
 
 Name:       php-saml-ds
 Version:    1.0.11
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
 License:    ASL2.0
 
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+URL:        https://git.tuxed.net/fkooman/php-saml-ds
+Source0:    https://git.tuxed.net/fkooman/php-saml-ds/snapshot/php-saml-ds-%{commit0}.tar.xz
 Source1:    %{name}-httpd.conf
 Patch0:     %{name}-autoload.patch
 
@@ -53,7 +50,7 @@ Requires:   httpd
 SAML Discovery Service written in PHP.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%setup -qn php-saml-ds-%{commit0}
 %patch0 -p1
 
 %build
@@ -109,6 +106,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-2
+- update upstream URL to git.tuxed.net
+
 * Sun Apr 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-1
 - update to 1.0.11
 

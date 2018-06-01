@@ -1,18 +1,15 @@
-%global github_owner            fkooman
-%global github_name             php-json-signer
-%global github_commit           242e5ef7cfed32950fdbce394425deff547ed3d5
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global commit0 242e5ef7cfed32950fdbce394425deff547ed3d5
 
 Name:       php-json-signer
 Version:    3.0.2
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
 License:    MIT
 
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+URL:        https://git.tuxed.net/fkooman/php-json-signer
+Source0:    https://git.tuxed.net/fkooman/php-json-signer/snapshot/php-json-signer-%{commit0}.tar.xz
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
@@ -49,7 +46,7 @@ signature is "detached" so no complicated file syntax is needed to store the
 signature in the file itself.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%setup -qn php-json-signer-%{commit0}
 %patch0 -p1
 
 %build
@@ -81,6 +78,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-4
+- update upstream URL to git.tuxed.net
+
 * Thu Apr 19 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-3
 - depend on php-pecl(libsodium)
 
