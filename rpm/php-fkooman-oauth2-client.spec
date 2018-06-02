@@ -1,8 +1,8 @@
-%global commit0 7d6fcef0351d2d0ca18a24289eec1028f591fee9
+%global commit0 3d96587ed78b1ecd72085847cae779b6edeb4526
 
 Name:           php-fkooman-oauth2-client
-Version:        7.1.2
-Release:        2%{?dist}
+Version:        7.1.3
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -105,6 +105,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-1
+- update to 7.1.3
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 7.1.2-2
 - update upstream URL to git.tuxed.net
 

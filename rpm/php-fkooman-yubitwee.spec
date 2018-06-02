@@ -1,8 +1,8 @@
-%global commit0 ae04cd0dd186a6aaa940284b2bd58a16002b6035
+%global commit0 6bb7d57f5729db3df960f3ba2f312cf6bfa1143f
 
 Name:           php-fkooman-yubitwee
-Version:        1.1.2
-Release:        2%{?dist}
+Version:        1.1.3
+Release:        1%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -86,6 +86,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.3-1
+- update to 1.1.3
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-2
 - update upstream URL to git.tuxed.net
 

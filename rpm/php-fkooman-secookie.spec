@@ -1,8 +1,8 @@
-%global commit0 ece8801d9987f4b58889e001a63929b0c6546cf1
+%global commit0 4cabcd6e49633b4ffcffb6f5978b90b7996de866
 
 Name:           php-fkooman-secookie
-Version:        2.0.0
-Release:        3%{?dist}
+Version:        2.0.1
+Release:        1%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -51,6 +51,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-1
+- update to 2.0.1
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 2.0.0-3
 - update upstream URL to git.tuxed.net
 
