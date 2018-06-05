@@ -57,12 +57,12 @@ The application resides in the icon tray on the user's taskbar. When not connect
 
 When clicked with a single or double left mouse button, the UI will show above the icon (as shown in the screenshot). When the cross in the right top of the UI is clicked, the eduVPN will return to the icon tray closing the UI but not the VPN-connection or application itself. To really exit eduVPN, one must right click the icon and click "Exit".
 
-![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/4-wallpaper-desktop.jpg "Screenshot eduVPN Windows application")
+![alt text](4-wallpaper-desktop.jpg "Screenshot eduVPN Windows application")
 
 ## User flow
 The primary user flow (of the most important parts of the UI) is listed in the picture below. Note that there are no mockups for the settings tab and the view log window, these should be created in line with this design and the operating system (just like we did on Android). The settings tab should at least contain the option to force TCP.
 
-![alt text](https://raw.githubusercontent.com/eduvpn/documentation/master/app/windows/5-user-flow.jpg "User flow")
+![alt text](windows/5-user-flow.jpg "User flow")
 
 # 5. Things to think about
 * On Android, users download the app through the Play Store of F-Droid. Both will alert the user when updates are available, but this will not be the case on Windows since a lot of users don't user the Windows Store (and with good reason). How can we alert users that their app needs an update? Are there UWP native methods for this?

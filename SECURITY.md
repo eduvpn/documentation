@@ -42,12 +42,12 @@ See the `resources/` directory for PHP setting changes.
 
 ### Sessions
 
-We use [fkooman/secookie](https://github.com/fkooman/php-secookie), a library
+We use [fkooman/secookie](https://git.tuxed.net/fkooman/php-secookie), a library
 to implement secure PHP sessions (and cookies).
 
 ## OAuth
 
-The built-in [OAuth server](https://github.com/fkooman/php-oauth2-server) uses 
+The built-in [OAuth server](https://git.tuxed.net/fkooman/php-oauth2-server) uses 
 public key cryptography signed Bearer tokens constructed and verified by 
 [libsodium](https://libsodium.org/). The reason we are using public key 
 cryptography for the Bearer tokens is that no "back channel" is needed between 

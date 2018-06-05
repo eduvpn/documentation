@@ -24,7 +24,7 @@ relying (exclusively) on proprietary tools and cloud services.
 This document will walk through development, packaging and finally deployment 
 by creating a web application, 
 [yubicheck](https://github.com/fkooman/yubicheck), that uses an existing 
-library, [yubitwee](https://github.com/fkooman/php-yubitwee).
+library, [yubitwee](https://git.tuxed.net/fkooman/php-yubitwee).
 
 # Principles
 
@@ -87,10 +87,10 @@ Some already widely used and available dependencies that I found through e.g.
 Packagist, that did not follow my principles, for which I wrote my own 
 versions:
 
-- [Secure Cookie and Session library for PHP](https://github.com/fkooman/php-secookie);
-- [YubiKey Validator](https://github.com/fkooman/php-yubitwee);
-- [Very simple OAuth 2.0 client](https://github.com/fkooman/php-oauth2-client);
-- [Very simple OAuth 2.0 server](https://github.com/fkooman/php-oauth2-server);
+- [Secure Cookie and Session library for PHP](https://git.tuxed.net/fkooman/php-secookie);
+- [YubiKey Validator](https://git.tuxed.net/fkooman/php-yubitwee);
+- [Very simple OAuth 2.0 client](https://git.tuxed.net/fkooman/php-oauth2-client);
+- [Very simple OAuth 2.0 server](https://git.tuxed.net/fkooman/php-oauth2-server);
 
 The rationale for creating each of those libraries is described in the their 
 accompanying `README.md` file. Those are also published on Packagist, more on 
@@ -204,7 +204,7 @@ Log out and in again to activate the new path. Now you should be able to use
 
 As mentioned above, we'll create two projects: 
 
-* [yubitwee](https://github.com/fkooman/php-yubitwee) - YubiKey OTP Validator 
+* [yubitwee](https://git.tuxed.net/fkooman/php-yubitwee) - YubiKey OTP Validator 
   library
 * [yubicheck](https://github.com/fkooman/yubicheck) - YubiKey OTP Validator 
   web application
@@ -379,7 +379,7 @@ create a configuration file that you can store in your repository.
 In order to make sure you target the right version of PHP, and found all 
 dependencies on PHP extensions you use in your code, it is important
 to use PHP_CompatInfo. In this example we run it on the
-[YubiTwee](https://github.com/fkooman/php-yubitwee/) code.
+[YubiTwee](https://git.tuxed.net/fkooman/php-yubitwee/) code.
 
     $ phpcompatinfo analyser:run src
 
@@ -393,7 +393,7 @@ At the bottom of the report you'll see something like this:
 
 This indicates PHP 7.0.2 is required, which is NOT good! Near the top you'll 
 find `Extensions Analysis` which lists the extensions of PHP that we use in the 
-code, in the case of [YubiTwee](https://github.com/fkooman/php-yubitwee/) that
+code, in the case of [YubiTwee](https://git.tuxed.net/fkooman/php-yubitwee/) that
 is the following:
 
     Core              Core     5.1.0       5.1.0
@@ -506,7 +506,7 @@ will also package to show the complete flow.
 
 We need to create two packages:
 
-* [fkooman/yubitwee](https://github.com/fkooman/php-yubitwee); 
+* [fkooman/yubitwee](https://git.tuxed.net/fkooman/php-yubitwee); 
 * [yubicheck](https://github.com/fkooman/yubicheck);
 
 To create a "template" `spec` file, the file that describes how to create the
@@ -553,8 +553,8 @@ The `php-fkooman-yubitwee.spec` file you end up with:
     Summary:        YubiKey OTP Validator library
 
     License:        MIT
-    URL:            https://github.com/fkooman/php-yubitwee
-    Source0:        https://github.com/fkooman/php-yubitwee/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+    URL:            https://git.tuxed.net/fkooman/php-yubitwee
+    Source0:        https://git.tuxed.net/fkooman/php-yubitwee/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
     BuildArch:      noarch
 

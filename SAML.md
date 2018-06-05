@@ -91,7 +91,7 @@ example configuration file in
 If you use only one IdP or an identity federation that provides their own 
 WAYF service (the default), you don't need to do anything else. If you want to 
 provide your own WAYF, e.g. if you want to add eduGAIN IdPs, this is possible 
-with the [php-saml-ds](https://github.com/fkooman/php-saml-ds/) software.
+with the [php-saml-ds](https://git.tuxed.net/fkooman/php-saml-ds/) software.
 
 You need to have the metadata for all IdPs. For SURFconext you can use 
 [this](https://engine.surfconext.nl/authentication/proxy/idps-metadata) URL. 

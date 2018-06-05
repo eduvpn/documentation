@@ -9,7 +9,7 @@ These are the files located at
 
 # Signatures
 
-We use [php-json-signer](https://github.com/fkooman/php-json-signer) to sign
+We use [php-json-signer](https://git.tuxed.net/fkooman/php-json-signer) to sign
 the JSON discovery file. This **SHOULD** be done **OFFLINE**! 
 
 There is also an RPM package available from the eduVPN repository on 
