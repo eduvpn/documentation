@@ -146,7 +146,7 @@ above. This is the content of `https://demo.eduvpn.nl/info.json`:
         }
     }
 
-# Authorization Request 
+# Authorization 
 
 The `authorization_endpoint` is then used to obtain an access token by 
 providing it with the following query parameters, they are all required, 
@@ -167,6 +167,29 @@ the URL query parameters. The `state` parameter is also added to the query
 parameters of the `redirect_uri` and MUST be the same as the `state` parameter 
 value of the initial request. After this, the "Authorization Code" flow MUST
 be followed. Handling refresh tokens MUST also be implemented.
+
+# Token
+
+Access tokens can expire, this can be verified by the client directly as the
+`access_token` is issued with an `expires_in` field as well. When the access
+token expires, a new one can be obtained using the `refresh_token`.
+
+The client should "reauthorize" if the following conditions are met:
+
+1. When the access token is rejected, but not expired yet
+   * no need to try the `refresh_token`;
+2. When the access token expired and the refresh token was not accepted.
+
+You MUST check the appropriate HTTP response codes and error messages returned
+from the API endpoint and token endpoint.
+
+For example, an expired, or revoked refresh token will respond with a HTTP 400
+(Bad Request) and error `invalid_grant`. See RFC 6749 
+[section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).
+
+A revoked access token will result in a HTTP 401 Unauthorized response, with 
+the error `invalid_token` as part of the `WWW-Authenticate` response header. 
+See RFC 6750 [section 3](https://tools.ietf.org/html/rfc6750#section-3).
 
 # Using the API
 
