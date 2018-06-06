@@ -6,6 +6,7 @@ PACKAGE_LIST=(\
     php-fkooman-oauth2-server \
     php-fkooman-yubitwee \
     php-fkooman-secookie \
+    php-LC-openvpn-connection-manager \
     vpn-lib-common \
     vpn-admin-portal \
     vpn-server-api \

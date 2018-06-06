@@ -2,11 +2,11 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           6c99defe46bd79b895dcec93da0a4673ba3ab9da
+%global github_commit           fc8a2b118226ebd6d658dd1f60d80fac182707df
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
-Version:    1.2.11
+Version:    1.2.12
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 
@@ -39,6 +39,7 @@ BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(christian-riesen/otp)
 BuildRequires:  php-composer(fkooman/yubitwee)
 BuildRequires:  php-composer(fkooman/oauth2-client)
+BuildRequires:  php-composer(LC/openvpn-connection-manager)
 
 Requires:   crontabs
 Requires:   openvpn
@@ -66,7 +67,7 @@ Requires:   php-composer(psr/log)
 Requires:   php-composer(christian-riesen/otp)
 Requires:   php-composer(fkooman/yubitwee)
 Requires:   php-composer(fkooman/oauth2-client)
-
+Requires:   php-composer(LC/openvpn-connection-manager)
 Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
 
@@ -98,6 +99,7 @@ require_once '%{_datadir}/php/Psr/Log/autoload.php';
 require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
 AUTOLOAD
 
 %install
@@ -171,6 +173,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.2.12-1
+- update to 1.2.12
+
 * Tue May 22 2018 François Kooman <fkooman@tuxed.net> - 1.2.11-1
 - update to 1.2.11
 

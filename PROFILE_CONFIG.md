@@ -57,7 +57,7 @@ instructions.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN port sharing with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsCrypt`         | Use `--tls-crypt` instead of `--tls-auth` for better security (OpenVPN >= 2.4, OpenVPN Connect for Android/iOS only) | no | `false` |
+| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
 
 ### OpenVPN Processes
@@ -96,31 +96,30 @@ specify a `listen` address by using a proxy like
 
 ### Client Compatibility
 
-On new deployments only clients based on OpenVPN >= 2.4 (or OpenVPN 3) are 
-supported. This is due to the use of `--tls-crypt` by default. This is 
-controlled with the `tlsCrypt` option mentioned above. 
+Indirectly, the client compatibility is controlled through the `tlsProtection` 
+option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
+supporting only the latest version(s) of OpenVPN.
 
-In addition to using `--tls-crypt` this will also remove some "hacks" for 
-fixing IPv6 routing on OpenVPN 2.3 clients and bump the used cipher from 
-`AES-256-CBC` to `AES-256-GCM`. So this flag is used for more than just 
-enabling `--tls-crypt`. As `--tls-crypt` requires OpenVPN 2.4 (or 3) anyway, 
-it made sense to use this opportunity to tie this in with other configuration
-flags instead of introducing a "version" or "compat" configuration option.
+| `tlsProtection`   | Compatiblity | Allowed Cipher(s)            | Routing Fix |
+| ----------------- | ------------ | ---------------------------- | ----------- |
+| `tls-crypt`       | >= 2.4, 3    | `AES-256-GCM`                | no          |
+| `tls-auth`        | >= 2.3, 3    | `AES-256-CBC`, `AES-256-GCM` | yes         |
+| `false` (disable) | >= 2.3, 3    | `AES-256-CBC`, `AES-256-GCM` | yes         |
 
-All eduVPN and Let's Connect! clients for Windows, macOS, Android and iOS will 
-work fine with or without `tlsCrypt`.
+All official eduVPN / Let's Connect! applications are based on either 
+OpenVPN >= 2.4 or OpenVPN 3. Ubuntu 16.04 LTS and Debian 8 still use OpenVPN 
+2.3.
 
-However, some Linux distributions, Ubuntu 16.04 LTS in particular, the 
-`tlsCrypt` option won't work, i.e. Ubuntu 16.04 LTS will be unable to connect 
-to the VPN server as it uses OpenVPN 2.3 by default. If connecting from Ubuntu 
-16.04 LTS is important, this can be fixed by disabling `tlsCrypt` on the VPN
-server.
+When `tlsProtection` is set to `tls-auth` or `false`, additional routes are 
+pushed to the client to fix IPv6 (default gateway) routing over the VPN tunnel.
 
 You can edit `/etc/vpn-server-api/default/config.php` and look for the 
-`tlsCrypt` option and set it to `false`. Then "Apply Changes" as shown below. 
+`tlsProtection` option and set it to `tls-auth` (or `false`). Then 
+"Apply Changes" as shown below. 
 
-**NOTE**: existing client configurations WILL stop working when you change 
-`tlsCrypt` if you are not using the eduVPN or Let's Connect! applications!
+**WARNING**: existing client configurations WILL stop working when you change 
+the value of `tlsProtection` and you are not only using the official eduVPN or 
+Let's Connect! applications!
 
 ## Apply Changes
 
