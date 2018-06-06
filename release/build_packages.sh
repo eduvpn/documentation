@@ -29,7 +29,7 @@ cd rpm || exit
 cp ./*.conf ./*.cron ./*.patch "${HOME}/rpmbuild/SOURCES"
 for f in "${PACKAGE_LIST[@]}"
 do
-    spectool -g -R "${f}".spec
+    spectool -g -R "${f}".spec || exit 1
     SRPM_FILE=$(rpmbuild -bs "${f}".spec | cut -d ':' -f 2)
     SRPM_LIST+=" $(basename ${SRPM_FILE})"
 done
