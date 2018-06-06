@@ -11,7 +11,7 @@ requests. Only `GET` and `POST`.
 The requests always return `application/json`. The `POST` requests are sent as
 `application/x-www-form-urlencoded`.
 
-See the [Changes](#Changes) at the bottom of this page for changes since the 
+See the [Changes](#changes) at the bottom of this page for changes since the 
 initial release of `http://eduvpn.org/api#2`, the current version.
 
 # Standards
