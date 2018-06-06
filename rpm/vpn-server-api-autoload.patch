@@ -15,7 +15,7 @@ index 794c207..af34ef2 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Server\Storage;
 diff --git a/bin/init.php b/bin/init.php
-index 848bf58..5897dd1 100644
+index 131e8a9..88a23a8 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -8,9 +8,9 @@
@@ -63,7 +63,7 @@ index 1e8708d..53cf97b 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/status.php b/bin/status.php
-index cd5262d..91d13e2 100644
+index 52d2bb3..99047f7 100644
 --- a/bin/status.php
 +++ b/bin/status.php
 @@ -8,9 +8,9 @@
@@ -76,8 +76,8 @@ index cd5262d..91d13e2 100644
 -require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
  
+ use LC\OpenVpn\ManagementSocket;
  use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
 index 8c44b69..9c400e5 100644
 --- a/bin/update-api-secrets.php
@@ -111,7 +111,7 @@ index aea485d..aac743e 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index 4dd977d..1bf8728 100644
+index 925cb6c..e7214e7 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,9 +7,9 @@
