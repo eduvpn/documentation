@@ -2,12 +2,12 @@
 
 Name:           php-LC-openvpn-connection-manager
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        OpenVPN Connection Manager library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-openvpn-connection-manager
-Source0:        https://git.tuxed.net/fkooman/php-openvpn-connection-manager/snapshot/php-openvpn-connection-manager-%{commit0}.tar.xz
+URL:            https://git.tuxed.net/LC/php-openvpn-connection-manager
+Source0:        https://git.tuxed.net/LC/php-openvpn-connection-manager/snapshot/php-openvpn-connection-manager-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -57,5 +57,8 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.0.0-2
+- update upstream source URL
+
 * Tue Jun 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - initial package
