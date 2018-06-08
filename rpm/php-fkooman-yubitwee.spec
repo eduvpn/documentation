@@ -1,7 +1,7 @@
-%global commit0 6bb7d57f5729db3df960f3ba2f312cf6bfa1143f
+%global commit0 af5b10dd4834993bc92b296da348e6c763f9df6e
 
 Name:           php-fkooman-yubitwee
-Version:        1.1.3
+Version:        1.1.4
 Release:        1%{?dist}
 Summary:        YubiKey OTP Validator library
 
@@ -24,10 +24,10 @@ BuildRequires:  php-hash
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(paragonie/random_compat) >= 1
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
@@ -45,10 +45,10 @@ Requires:       php-hash
 Requires:       php-pcre
 Requires:       php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
-Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(paragonie/random_compat) >= 1
 Requires:       php-composer(symfony/polyfill-php56)
 
 Provides:       php-composer(fkooman/yubitwee) = %{version}
@@ -86,6 +86,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-1
+- update to 1.1.4
+
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.3-1
 - update to 1.1.3
 
