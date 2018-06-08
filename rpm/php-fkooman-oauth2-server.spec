@@ -1,8 +1,8 @@
-%global commit0 5fb3059e55a615c7d7836904434277c83ef2faa4
+%global commit0 f53c76db1b4e522d96c20f44e9e3d7db02035b03
 
 Name:           php-fkooman-oauth2-server
-Version:        3.0.0
-Release:        3%{?dist}
+Version:        3.0.1
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -102,6 +102,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-1
+- update to 3.0.1
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 3.0.0-3
 - update upstream URL to git.tuxed.net
 
