@@ -5,12 +5,12 @@
 %global github_owner            ChristianRiesen
 %global github_name             otp
 
-%global commit0 a6c095fb36f6404aa1078d2dfd717aa95c1b5267
+%global commit0 9b31f024114b3b5bc393a1fb4b0ad19cb7931e81
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    2.5.0
-Release:    2%{?dist}
+Version:    2.6.0
+Release:    1%{?dist}
 Summary:    One Time Passwords
 
 Group:      System Environment/Libraries
@@ -70,6 +70,9 @@ phpunit --no-coverage --verbose --bootstrap=src/autoload.php
 %license LICENSE
 
 %changelog
+* Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 2.6.0-1
+- update to 2.6.0
+
 * Thu Dec 14 2017 François Kooman <fkooman@tuxed.net> - 2.5.0-2
 - add missing polyfill autoloader
 
