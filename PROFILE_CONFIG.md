@@ -80,7 +80,8 @@ e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
 
 You can also specify ports like `udp/53` and `tcp/443`, but then those ports
 need to be available to be claimed by OpenVPN and can't be shared by a DNS 
-server or web server.
+server or web server. If you want to use `tcp/443` also to receive OpenVPN 
+connections, see [Port Sharing](PORT_SHARING.md).
 
 If you run [Multi Profile](MULTI_PROFILE.md) you MUST either choose a unique 
 `listen` address per profile if you want to use the same ports, which means you 
