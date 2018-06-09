@@ -55,7 +55,7 @@ instructions.
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true`, see [ACL](ACL.md) | no | `[]` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
-| `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN port sharing with e.g. `tcp/443` | no | `[]` |
+| `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
 | `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
