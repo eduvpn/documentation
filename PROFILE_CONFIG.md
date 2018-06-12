@@ -105,7 +105,7 @@ supporting only the latest version(s) of OpenVPN.
 | ----------------- | ------------ | ---------------------------- | ----------- |
 | `tls-crypt`       | >= 2.4, 3    | `AES-256-GCM`                | no          |
 | `tls-auth`        | >= 2.3, 3    | `AES-256-CBC`, `AES-256-GCM` | yes         |
-| `false` (disable) | >= 2.3, 3    | `AES-256-CBC`, `AES-256-GCM` | yes         |
+| `false` (disable) | >= 2.3, 3, [PIA](https://github.com/pia-foss/tunnel-apple) | `AES-256-CBC`, `AES-256-GCM` | yes         |
 
 All official eduVPN / Let's Connect! applications are based on either 
 OpenVPN >= 2.4 or OpenVPN 3. Ubuntu 16.04 LTS and Debian 8 still use OpenVPN 
