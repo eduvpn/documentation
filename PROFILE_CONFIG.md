@@ -37,7 +37,7 @@ instructions.
 | `displayName`      | The name of the profile as shown in the user and admin portals | yes | _N/A_ |
 | `extIf`            | The external interface which connects to the Internet or to the network you want to reach through the VPN | yes | _N/A_ |
 | `range`            | The IPv4 range of the network that will be assigned to clients | yes | _N/A_ |
-| `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 124 and divisible by 4 | yes | _N/A_ | 
+| `range6`           | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 112 and divisible by 4 (the "smallest" range an OpenVPN process supports is `::/112`) | yes | _N/A_ | 
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
 | `managementIp`     | The IP address to use for connecting to OpenVPN processes | no | `127.0.0.1` |
