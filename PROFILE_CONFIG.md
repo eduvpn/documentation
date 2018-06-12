@@ -41,8 +41,8 @@ instructions.
 | `hostName`         | The hostname the VPN client(s) will connect to | yes | _N/A_ |
 | `listen`           | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes) | no | `::` |
 | `managementIp`     | The IP address to use for connecting to OpenVPN processes | no | `127.0.0.1` |
-| `enableNat4`       | Whether or not to NAT the `range` network to `extIf` (replaces `useNat`) | no | `false` |
-| `enableNat6`       | Whether or not to NAT the `range6` network to `extIf` (replaces `useNat`) | no | `false` |
+| `enableNat4`       | Whether or not to NAT the `range` network to `extIf` (replaced `useNat`) | no | `false` |
+| `enableNat6`       | Whether or not to NAT the `range6` network to `extIf` (replaced `useNat`) | no | `false` |
 | `reject4`          | Do not forward IPv4 traffic, useful for creating an IPv6 only VPN | no | `false` |
 | `reject6`          | Do not forward IPv6 traffic, useful when the VPN server does not have IPv6 connectivity | no | `false` |
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
@@ -57,7 +57,7 @@ instructions.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) | no | `tls-auth` |
+| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) (replaced `tlsCrypt`) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
 
 ### OpenVPN Processes
