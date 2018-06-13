@@ -60,7 +60,7 @@ information.
 
 Applications are being developed that you can use for connecting to the VPN. 
 These will work for both the "official" deployments, as well as your own. You 
-can find a list [here](https://app.eduvpn.nl/).
+can find a list [here](https://app.eduvpn.org/).
 
 # Deployment
 
@@ -70,12 +70,16 @@ to the mailing list
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
+You can also use IRC for support & feedback: [freenode](https://freenode.net/), 
+channel `#eduvpn`.
+
 ## Supported Operating Systems
 
 * [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md)
 * [Fedora 28](DEPLOY_FEDORA.md)
 
-**NOTE**: we expect ALL software updates to be installed!
+**NOTE**: we expect ALL software updates to be installed before you install the
+software!
 
 ## Experimental
 
