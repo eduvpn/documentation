@@ -17,6 +17,13 @@ We need to modify `/etc/vpn-server-api/default/config.php` and modify
 `exposedVpnProtoPorts` to announce to VPN clients that we also want to 
 advertise `tcp/443` to clients:
 
+    'vpnProtoPorts' => [
+        'udp/1194',
+        'tcp/1194',
+    ],
+
+    ...
+
     'exposedVpnProtoPorts' => [
         'udp/1194',
         'tcp/1194',
