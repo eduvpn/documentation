@@ -1,7 +1,7 @@
-%global commit0 8171917609dfd0a331a8460d16ded7bba6334e15
+%global commit0 03af3fbe32c0e9255c1d5bc6cee3ee79f4a57abd
 
 Name:           php-LC-openvpn-connection-manager
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
@@ -57,6 +57,9 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Wed Jun 13 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-1
+- update to 1.0.2
+
 * Thu Jun 07 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-1
 - update to 1.0.1
 
