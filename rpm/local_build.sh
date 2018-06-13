@@ -7,7 +7,7 @@ rpmdev-setuptree
 spectool -g -R $1.spec
 
 # copy the additional sources
-cp $1*.conf $1*.cron $1*.patch $HOME/rpmbuild/SOURCES
+cp $1*.conf $1*.cron $1*.patch gpgkey-* $HOME/rpmbuild/SOURCES
 
 # create the RPM
 rpmbuild -bb $1.spec
