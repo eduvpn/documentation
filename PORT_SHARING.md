@@ -68,6 +68,7 @@ Configure sslh, we use the following configuration file in `/etc/sslh.cfg`:
     user: "sslh";
     listen:
     (
+        { host: "0.0.0.0"; port: "443"; },
         { host: "::"; port: "443"; }
     );
     protocols:
