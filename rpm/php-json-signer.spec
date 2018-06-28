@@ -1,20 +1,20 @@
-%global commit0 242e5ef7cfed32950fdbce394425deff547ed3d5
-
 Name:       php-json-signer
 Version:    3.0.2
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
 License:    MIT
 
-URL:        https://git.tuxed.net/fkooman/php-json-signer
-Source0:    https://git.tuxed.net/fkooman/php-json-signer/snapshot/php-json-signer-%{commit0}.tar.xz
+URL:        https://software.tuxed.net/php-json-signer
+Source0:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz
+Source1:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -46,9 +46,10 @@ signature is "detached" so no complicated file syntax is needed to store the
 signature in the file itself.
 
 %prep
-%setup -qn php-json-signer-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn php-json-signer-%{version}
 %patch0 -p1
-
+ 
 %build
 %{_bindir}/phpab -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
@@ -78,6 +79,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-5
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-4
 - update upstream URL to git.tuxed.net
 
