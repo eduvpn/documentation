@@ -1,0 +1,11 @@
+--- php-json-signer.orig/bin/app.php	2017-12-12 00:45:33.656230984 +0100
++++ php-json-signer/bin/app.php	2017-12-12 00:46:01.924287334 +0100
+@@ -24,7 +24,7 @@
+  */
+ 
+ /** @psalm-suppress UnresolvableInclude */
+-require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
++require_once '/usr/share/php/fkooman/JsonSigner/autoload.php';
+ 
+ use fkooman\JsonSigner\Signer;
+ use fkooman\JsonSigner\Xdg;
