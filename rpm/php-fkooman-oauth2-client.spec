@@ -1,16 +1,17 @@
-%global commit0 3d96587ed78b1ecd72085847cae779b6edeb4526
-
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-oauth2-client
-Source0:        https://git.tuxed.net/fkooman/php-oauth2-client/snapshot/php-oauth2-client-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-oauth2-client
+Source0:        https://software.tuxed.net/php-oauth2-client/files/php-oauth2-client-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-oauth2-client/files/php-oauth2-client-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-curl": "*",
@@ -75,7 +76,8 @@ application. It has minimal dependencies, but still tries to be secure.
 The main purpose is to be compatible with PHP 5.4.
 
 %prep
-%autosetup -n php-oauth2-client-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-oauth2-client-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -105,6 +107,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-1
 - update to 7.1.3
 

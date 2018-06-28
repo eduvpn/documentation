@@ -1,16 +1,17 @@
-%global commit0 f53c76db1b4e522d96c20f44e9e3d7db02035b03
-
 Name:           php-fkooman-oauth2-server
 Version:        3.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-oauth2-server
-Source0:        https://git.tuxed.net/fkooman/php-oauth2-server/snapshot/php-oauth2-server-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-oauth2-server
+Source0:        https://software.tuxed.net/php-oauth2-server/files/php-oauth2-server-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-oauth2-server/files/php-oauth2-server-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #    "suggest": {
@@ -71,7 +72,8 @@ application. It has minimal dependencies, but still tries to be secure.
 The main purpose is to be compatible with PHP 5.4.
 
 %prep
-%autosetup -n php-oauth2-server-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-oauth2-server-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -102,6 +104,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-1
 - update to 3.0.1
 

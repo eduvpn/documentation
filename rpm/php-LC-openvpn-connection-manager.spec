@@ -1,16 +1,17 @@
-%global commit0 03af3fbe32c0e9255c1d5bc6cee3ee79f4a57abd
-
 Name:           php-LC-openvpn-connection-manager
 Version:        1.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
 License:        MIT
-URL:            https://git.tuxed.net/LC/php-openvpn-connection-manager
-Source0:        https://git.tuxed.net/LC/php-openvpn-connection-manager/snapshot/php-openvpn-connection-manager-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-openvpn-connection-manager
+Source0:        https://software.tuxed.net/php-openvpn-connection-manager/files/php-openvpn-connection-manager-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-openvpn-connection-manager/files/php-openvpn-connection-manager-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "psr/log": "^1.0",
@@ -30,7 +31,8 @@ Simple library written in PHP to manage client connections to OpenVPN processes
 through the OpenVPN management socket.
 
 %prep
-%autosetup -n php-openvpn-connection-manager-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-openvpn-connection-manager-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -57,6 +59,10 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Wed Jun 13 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-1
 - update to 1.0.2
 

@@ -1,16 +1,17 @@
-%global commit0 4cabcd6e49633b4ffcffb6f5978b90b7996de866
-
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-secookie
-Source0:        https://git.tuxed.net/fkooman/php-secookie/snapshot/php-secookie-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-secookie
+Source0:        https://software.tuxed.net/php-secookie/files/php-secookie-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-secookie/files/php-secookie-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-session
@@ -27,7 +28,8 @@ Provides:       php-composer(fkooman/secookie) = %{version}
 Secure Cookie and Session library for PHP.
 
 %prep
-%autosetup -n php-secookie-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-secookie-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -51,6 +53,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 
