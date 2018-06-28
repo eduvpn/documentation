@@ -1,16 +1,16 @@
-%global commit0 af5b10dd4834993bc92b296da348e6c763f9df6e
-
 Name:           php-fkooman-yubitwee
 Version:        1.1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-yubitwee
-Source0:        https://git.tuxed.net/fkooman/php-yubitwee/snapshot/php-yubitwee-%{commit0}.tar.xz
-
+URL:            https://software.tuxed.net/php-yubitwee
+Source0:        https://software.tuxed.net/php-yubitwee/files/php-yubitwee-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-yubitwee/files/php-yubitwee-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-curl": "*",
@@ -57,7 +57,8 @@ Provides:       php-composer(fkooman/yubitwee) = %{version}
 A very simple, secure YubiKey OTP Validator with pluggable HTTP client.
 
 %prep
-%autosetup -n php-yubitwee-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-yubitwee-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -86,6 +87,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-1
 - update to 1.1.4
 
