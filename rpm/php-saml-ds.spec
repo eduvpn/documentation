@@ -1,21 +1,21 @@
-%global commit0 f9d36375978027dd58637e1b989e65aabf43c89e
-
 Name:       php-saml-ds
 Version:    1.0.11
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
 License:    ASL2.0
 
-URL:        https://git.tuxed.net/fkooman/php-saml-ds
-Source0:    https://git.tuxed.net/fkooman/php-saml-ds/snapshot/php-saml-ds-%{commit0}.tar.xz
-Source1:    %{name}-httpd.conf
+URL:        https://software.tuxed.net/php-saml-ds
+Source0:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz
+Source1:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source3:    %{name}-httpd.conf
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -50,7 +50,8 @@ Requires:   httpd
 SAML Discovery Service written in PHP.
 
 %prep
-%setup -qn php-saml-ds-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn php-saml-ds-%{version}
 %patch0 -p1
 
 %build
@@ -74,7 +75,7 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %post
 # remove template cache if it is there
@@ -106,6 +107,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-3
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-2
 - update upstream URL to git.tuxed.net
 
