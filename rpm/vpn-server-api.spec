@@ -1,27 +1,20 @@
-%global composer_namespace      SURFnet/VPN/Server
-
-%global github_owner            eduvpn
-%global github_name             vpn-server-api
-%global github_commit           afcbc97aa3fe5da7dc125c509f84be807f543ece
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 Name:       vpn-server-api
 Version:    1.2.14
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
-Source2:    %{name}.cron
+URL:        https://github.com/eduvpn/%{name}
+Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source3:    %{name}-httpd.conf
+Source4:    %{name}.cron
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
@@ -83,7 +76,8 @@ Provides:   bundled(easy-rsa) = 3.0.1
 VPN Server API.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn %{name}-%{version}
 %patch0 -p1
 
 # remove bundled Easy RSA 3.x
@@ -113,7 +107,7 @@ do
 done
 
 cp -pr web %{buildroot}%{_datadir}/%{name}
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 # config
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
@@ -133,7 +127,7 @@ cp -pr easy-rsa %{buildroot}%{_datadir}/%{name}
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-%{__install} -m 0640 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+%{__install} -m 0640 -D -p %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -173,6 +167,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Wed Jun 13 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-1
 - update to 1.2.14
 

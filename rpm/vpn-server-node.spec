@@ -1,25 +1,18 @@
-%global composer_namespace      SURFnet/VPN/Node
-
-%global github_owner            eduvpn
-%global github_name             vpn-server-node
-%global github_commit           bb214ec1ac487b39dabb94f6166ccfa7add3f8cd
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 Name:       vpn-server-node
 Version:    1.0.16
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    OpenVPN node controller
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+URL:        https://github.com/eduvpn/%{name}
+Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -52,7 +45,8 @@ Requires(postun): policycoreutils-python
 OpenVPN node controller.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn %{name}-%{version}
 %patch0 -p1
 
 %build
@@ -122,6 +116,10 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Tue Jun 12 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-1
 - update to 1.0.16
 

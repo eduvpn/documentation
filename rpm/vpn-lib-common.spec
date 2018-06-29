@@ -1,20 +1,17 @@
-%global composer_namespace      SURFnet/VPN/Common
-
-%global github_owner            eduvpn
-%global github_name             vpn-lib-common
-%global github_commit           21bf30aa87b535cb1f79d2927a928e8c699beef5
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 Name:       vpn-lib-common
 Version:    1.1.16
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+URL:        https://github.com/eduvpn/%{name}
+Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+
 BuildArch:  noarch
 
+BuildRequires:  gnupg2
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-curl": "*",
@@ -107,7 +104,8 @@ Requires:       php-composer(twig/twig) < 2.0
 Common VPN library.
 
 %prep
-%setup -qn %{github_name}-%{github_commit}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn %{name}-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -123,8 +121,8 @@ require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
-cp -pr src/* %{buildroot}%{_datadir}/php/%{composer_namespace}
+mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Common
+cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Common
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -137,11 +135,15 @@ AUTOLOAD
 %files
 %dir %{_datadir}/php/SURFnet
 %dir %{_datadir}/php/SURFnet/VPN
-%{_datadir}/php/%{composer_namespace}
+%{_datadir}/php/SURFnet/VPN/Common
 %doc README.md composer.json CHANGES.md
 %license LICENSE
 
 %changelog
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-1
 - update to 1.1.16
 

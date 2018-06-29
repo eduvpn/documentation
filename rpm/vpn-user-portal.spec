@@ -1,27 +1,20 @@
-%global composer_namespace      SURFnet/VPN/Portal
-
-%global github_owner            eduvpn
-%global github_name             vpn-user-portal
-%global github_commit           1fe5a0ceda8db15b5b5cfb752f4581d7dde1c471
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 Name:       vpn-user-portal
 Version:    1.6.10
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN User Portal
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
-Source2:    %{name}.cron
+URL:        https://github.com/eduvpn/%{name}
+Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source3:    %{name}-httpd.conf
+Source4:    %{name}.cron
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -85,7 +78,8 @@ Requires(postun): /usr/sbin/semanage
 VPN User Portal.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn %{name}-%{version}
 %patch0 -p1
 
 %build
@@ -121,10 +115,10 @@ ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-%{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+%{__install} -p -D -m 0640 %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 
 # httpd
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -168,6 +162,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.6.10-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.6.10-1
 - update to 1.6.10
 

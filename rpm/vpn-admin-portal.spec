@@ -1,26 +1,19 @@
-%global composer_namespace      SURFnet/VPN/Admin
-
-%global github_owner            eduvpn
-%global github_name             vpn-admin-portal
-%global github_commit           55766b146e6851ede0604b88a928ca2c0591b883
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 Name:       vpn-admin-portal
 Version:    1.5.5
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Admin Portal
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
+URL:        https://github.com/eduvpn/%{name}
+Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source3:    %{name}-httpd.conf
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -57,7 +50,8 @@ Requires(postun): /usr/sbin/semanage
 VPN Admin Portal.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn %{name}-%{version}
 %patch0 -p1
 
 %build
@@ -83,7 +77,7 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 # httpd
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -125,6 +119,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.5.5-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Thu May 17 2018 François Kooman <fkooman@tuxed.net> - 1.5.5-1
 - update to 1.5.5
 
