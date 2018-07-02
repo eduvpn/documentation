@@ -85,3 +85,58 @@ the `composer.json` before running `composer update`.
 see the 
 [documentation](https://twig-extensions.readthedocs.io/en/latest/i18n.html) on
 how to update the translation files.
+
+# Making a Release
+
+## Setup
+
+We want to use `tar.xz` archives, and not `zip` or `tar.gz`, for this to work
+we need to add a little snippet to `${HOME}/.gitconfig`:
+
+    [tar "tar.xz"]
+            command = xz -c
+
+Now, with that out of the way, you can put the following POSIX shell script in
+`${HOME}/.local/bin/make_release`. Make sure you make it "executable" with 
+`chmod 0755 ${HOME}/.local/bin/make_release`:
+
+    #!/bin/sh
+    PROJECT_NAME=$(basename "${PWD}")
+    PROJECT_VERSION=${1}
+
+    if [ -z "${1}" ]
+    then
+        # we take the last "tag" of the Git repository as version
+        PROJECT_VERSION=$(git describe --abbrev=0 --tags)
+        echo Version: "${PROJECT_VERSION}"
+    fi
+
+    git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+    gpg2 --armor --detach-sign --yes "${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+
+## Creating a Release
+
+Now, from your checked out repository you can run `make_release` and it will 
+create (by default) a signed archive of the last (annotated) tag of the 
+project. If you want to create a release of a specific tag, provide it as the 
+first argument to `make_release`:
+
+    $ mkdir tmp && cd tmp
+    $ git clone https://git.tuxed.net/fkooman/php-yubitwee
+    $ cd php-yubitwee
+    $ make_release
+    Version: 1.1.4
+
+The following files are created:
+
+    $ ls -l php-yubitwee-*
+    -rw-rw-r--. 1 fkooman fkooman 8240 Jun  8 17:18 php-yubitwee-1.1.4.tar.xz
+    -rw-rw-r--. 1 fkooman fkooman  833 Jun  8 17:18 php-yubitwee-1.1.4.tar.xz.asc
+
+You can verify the signature:
+
+    $ gpg2 --verify php-yubitwee-1.1.4.tar.xz.asc
+    gpg: assuming signed data in 'php-yubitwee-1.1.4.tar.xz'
+    gpg: Signature made Fri 08 Jun 2018 05:18:37 PM CEST
+    gpg:                using RSA key 6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+    gpg: Good signature from "François Kooman <fkooman@tuxed.net>" [ultimate]
