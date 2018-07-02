@@ -17,7 +17,7 @@
                 "nl-NL": "Groen (fedora-vpn.tuxed.net)"
             },
             "logo": "https://static.eduvpn.nl/disco/img/green.png",
-            "public_key": "3zmW1YASm5m6x7lm9FiSIDDCoOlwf/1nR6Vq9xrri4w="
+            "public_key": "T/rPsYLomyPeKDoQBGtEVU6/nClOJhooKmEzamikEs0="
         },
         {
             "base_uri": "https://vpn.tuxed.net/",
@@ -26,6 +26,6 @@
             "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 59,
-    "signed_at": "2018-05-24 13:26:15"
+    "seq": 60,
+    "signed_at": "2018-06-29 13:14:45"
 }
