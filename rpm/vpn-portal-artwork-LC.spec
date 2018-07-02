@@ -1,21 +1,19 @@
-%global github_owner            letsconnectvpn
-%global github_name             vpn-portal-artwork
-%global github_commit           475df22de025dcf2d1c84776269897c6980b3ec1
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
-
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.1.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
+URL:        https://github.com/letsconnectvpn/vpn-portal-artwork
+Source0:    https://github.com/letsconnectvpn/vpn-portal-artwork/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:    https://github.com/letsconnectvpn/vpn-portal-artwork/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
+
+BuildRequires:  gnupg2
 
 Requires:   vpn-user-portal
 Requires:   vpn-admin-portal
@@ -24,7 +22,8 @@ Requires:   vpn-admin-portal
 VPN Portal Artwork for %{style_name}.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn vpn-portal-artwork-%{style_name}-%{version}
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/%{style_name}
@@ -62,6 +61,10 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-2
+- use release tarball instead of Git tarball
+- verify GPG signature
+
 * Thu May 24 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-1
 - update to 1.1.1
 
