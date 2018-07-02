@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-api
-%global github_commit           10e179fa9660cbca72bd87d17df7f4f5e31c5b2f
+%global github_commit           a7774cd37776d4caddbb03c55bb1f695aed7a247
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-api
 Version:    1.3.0
-Release:    0.10%{?dist}
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 
 Group:      Applications/Internet
@@ -174,34 +174,7 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Tue Jun 26 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.10
-- rebuilt
-
-* Tue Jun 26 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.9
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.8
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.7
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.6
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.5
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.4
-- rebuilt
-
-* Mon Jun 25 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.3
-- rebuilt
-
-* Tue Jun 19 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.2
-- rebuilt
-
-* Mon Jun 18 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-0.1
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
 
 * Wed Jun 13 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-1
