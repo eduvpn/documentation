@@ -329,11 +329,10 @@ accepted by the VPN server. There are a number of reasons why this may not be
 the case:
 
 1. the certificate was deleted by the user;
-2. the certificate was disabled by an administrator;
-3. the user is disabled
-4. the VPN server got reinstalled and a new CA was created;
-5. the certificate is not (yet) valid;
-6. the certificate expired.
+2. the user is disabled
+3. the VPN server got reinstalled and a new CA was created;
+4. the certificate is not (yet) valid;
+5. the certificate expired.
 
 API call:
 
@@ -372,7 +371,6 @@ is `false`:
 |-----------------------------|-------------------|---------|
 | `certificate_missing`       | No, fetch new one | CN never exist, was deleted by the user, or the server was reinstalled and the certificate is no longer there |
 | `user_disabled`             | Yes         | The user account was disabled by an administrator |
-| `certificate_disabled`      | Yes         | The certificate was disabled by an administrator |
 | `certificate_not_yet_valid` | No, fetch new one | The certificate is not yet valid |
 | `certificate_expired`       | No, fetch new one | The certificate is no longer valid (expired) |
 
