@@ -1,6 +1,6 @@
 Name:       vpn-server-node
-Version:    1.0.16
-Release:    2%{?dist}
+Version:    1.0.17
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -116,6 +116,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-1
+- update to 1.0.17
+
 * Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-2
 - use release tarball instead of Git tarball
 - verify GPG signature

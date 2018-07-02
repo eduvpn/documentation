@@ -1,6 +1,6 @@
 Name:       vpn-server-api
-Version:    1.2.14
-Release:    2%{?dist}
+Version:    1.3.0
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -101,12 +101,12 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
-for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
+for i in housekeeping init show-instance-info stats status update-api-secrets update-ip update
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
-cp -pr web %{buildroot}%{_datadir}/%{name}
+cp -pr schema web %{buildroot}%{_datadir}/%{name}
 install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 # config
@@ -156,6 +156,7 @@ fi
 %{_bindir}/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/web
+%{_datadir}/%{name}/schema
 %{_datadir}/%{name}/easy-rsa
 %{_datadir}/%{name}/config
 %{_datadir}/%{name}/data
@@ -167,6 +168,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
+- update to 1.3.0
+
 * Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-2
 - use release tarball instead of Git tarball
 - verify GPG signature

@@ -1,6 +1,6 @@
 Name:       vpn-user-portal
-Version:    1.6.10
-Release:    2%{?dist}
+Version:    1.7.0
+Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -162,6 +162,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-1
+- update to 1.7.0
+
 * Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.6.10-2
 - use release tarball instead of Git tarball
 - verify GPG signature

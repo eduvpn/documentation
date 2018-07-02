@@ -1,5 +1,5 @@
 diff --git a/bin/certificate-info.php b/bin/certificate-info.php
-index fc0eae6..9149a2a 100644
+index ea27af3..3e873c5 100644
 --- a/bin/certificate-info.php
 +++ b/bin/certificate-info.php
 @@ -8,9 +8,9 @@
@@ -12,8 +12,8 @@ index fc0eae6..9149a2a 100644
 -require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
  
- use SURFnet\VPN\Common\Config;
  use SURFnet\VPN\Common\FileIO;
+ 
 diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
 index e688d3e..31aa6f4 100644
 --- a/bin/generate-firewall.php

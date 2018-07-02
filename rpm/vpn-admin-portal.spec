@@ -1,6 +1,6 @@
 Name:       vpn-admin-portal
-Version:    1.5.5
-Release:    2%{?dist}
+Version:    1.6.0
+Release:    1%{?dist}
 Summary:    VPN Admin Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -119,6 +119,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-1
+- update to 1.6.0
+
 * Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.5.5-2
 - use release tarball instead of Git tarball
 - verify GPG signature
