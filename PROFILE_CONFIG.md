@@ -31,6 +31,13 @@ instructions.
 
 ## Options
 
+This table descibes all available configuration options for a profile. The 
+"Default Value" column indicates what the value is if the option is _missing_ 
+from the configuration, not necessarily the value it has in installations! This 
+is done to allow upgrading old installations without requiring the 
+administrator to modify the configuration file and to keep existing clients 
+working. New installations override these "defaults", e.g. to improve security.
+
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
 | `profileNumber`    | The number of this profile, every profile per instance has a unique number | yes | _N/A_ |
