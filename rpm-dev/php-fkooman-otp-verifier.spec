@@ -1,13 +1,13 @@
-%global commit0 f6fa1f86a2fb5c6101fed2b60e4fd274c7f9bf2e
+%global commit0 aaf3803502868cb15eb266300c8f40b4425e429e
 
-Name:           php-fkooman-totp-verifier
+Name:           php-fkooman-otp-verifier
 Version:        0.1.0
-Release:        0.1%{?dist}
-Summary:        TOTP Verification Library
+Release:        0.3%{?dist}
+Summary:        OTP Verification Library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-totp-verifier
-Source0:        https://git.tuxed.net/fkooman/php-totp-verifier/snapshot/php-totp-verifier-%{commit0}.tar.xz
+URL:            https://git.tuxed.net/fkooman/php-otp-verifier
+Source0:        https://git.tuxed.net/fkooman/php-otp-verifier/snapshot/php-otp-verifier-%{commit0}.tar.xz
 
 BuildArch:      noarch
 
@@ -47,13 +47,13 @@ Requires:  php-composer(paragonie/constant_time_encoding)
 Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
 
-Provides:       php-composer(fkooman/totp-verifier) = %{version}
+Provides:       php-composer(fkooman/otp-verifier) = %{version}
 
 %description
-TOTP Verification Library
+OTP Verification Library
 
 %prep
-%autosetup -n php-totp-verifier-%{commit0}
+%autosetup -n php-otp-verifier-%{commit0}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -64,8 +64,8 @@ require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/php/fkooman/Totp
-cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/Totp
+mkdir -p %{buildroot}%{_datadir}/php/fkooman/Otp
+cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/Otp
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -79,8 +79,14 @@ AUTOLOAD
 %license LICENSE
 %doc composer.json CHANGES.md README.md
 %dir %{_datadir}/php/fkooman
-%{_datadir}/php/fkooman/Totp
+%{_datadir}/php/fkooman/Otp
 
 %changelog
+* Wed Jul 11 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.3
+- rebuilt
+
+* Wed Jul 11 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.2
+- rebuilt
+
 * Tue Jul 10 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.1
 - initial package

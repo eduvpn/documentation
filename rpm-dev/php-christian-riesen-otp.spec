@@ -5,11 +5,11 @@
 %global github_owner            ChristianRiesen
 %global github_name             otp
 
-%global commit0 9b31f024114b3b5bc393a1fb4b0ad19cb7931e81
+%global commit0 f38926c9c48d0d51953aca1a49d740775d755d5c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    2.6.0
+Version:    2.6.1
 Release:    1%{?dist}
 Summary:    One Time Passwords
 
@@ -70,6 +70,9 @@ phpunit --no-coverage --verbose --bootstrap=src/autoload.php
 %license LICENSE
 
 %changelog
+* Tue Jul 10 2018 François Kooman <fkooman@tuxed.net> - 2.6.1-1
+- update to 2.6.1
+
 * Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 2.6.0-1
 - update to 2.6.0
 
