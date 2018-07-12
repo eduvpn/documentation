@@ -87,6 +87,17 @@ Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
 
     DAEMON_OPTS="--user sslh --listen [::]:443 --listen 0.0.0.0:443 --ssl 127.0.0.1:8443 --openvpn 127.0.0.1:1194 --pidfile /var/run/sslh/sslh.pid"
 
+## Let's Encrypt
+
+If you are using Let's Encrypt with automatic certificate renewal you should 
+modify your `/etc/sysconfig/certbot` and set the `PRE_HOOK` and `POST_HOOK` to 
+stop/start `sslh` instead of `httpd`:
+
+```
+PRE_HOOK="--pre-hook 'systemctl stop sslh'"
+POST_HOOK="--post-hook 'systemctl start sslh'"
+```
+
 ## Applying
 
 ### CentOS/Fedora
