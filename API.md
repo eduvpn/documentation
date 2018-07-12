@@ -436,6 +436,9 @@ with a camera. The QR code can be made from the following URL:
 
     otpauth://totp/demo.eduvpn.nl?secret=E5BIDDZR6TSDSKA3HW3L54S4UM5YGYUH&issuer=demo.eduvpn.nl
 
+See [Key-Uri-Format](https://github.com/google/google-authenticator/wiki/Key-Uri-Format) 
+for a complete description of the URI.
+
 The response format is the same as for YubiKey enrollment.
 
 ## System Messages
