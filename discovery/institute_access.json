@@ -33,16 +33,11 @@
             "logo": "https://static.eduvpn.nl/disco/img/utwente.png"
         },
         {
-            "base_uri": "https://eva.eduvpn.nl/",
-            "display_name": "eduroam Visitor Access",
-            "logo": "https://static.eduvpn.nl/disco/img/eva.png"
-        },
-        {
             "base_uri": "https://demo.eduvpn.nl/",
             "display_name": "Demo",
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 58,
-    "signed_at": "2018-06-29 13:14:45"
+    "seq": 59,
+    "signed_at": "2018-07-17 15:35:02"
 }
