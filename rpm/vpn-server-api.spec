@@ -1,5 +1,5 @@
 Name:       vpn-server-api
-Version:    1.3.0
+Version:    1.4.0
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
@@ -29,7 +29,7 @@ BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(psr/log)
-BuildRequires:  php-composer(christian-riesen/otp)
+BuildRequires:  php-composer(fkooman/otp-verifier)
 BuildRequires:  php-composer(fkooman/yubitwee)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(LC/openvpn-connection-manager)
@@ -57,7 +57,7 @@ Requires:   php-spl
 Requires:   php-standard
 Requires:   vpn-lib-common
 Requires:   php-composer(psr/log)
-Requires:   php-composer(christian-riesen/otp)
+Requires:   php-composer(fkooman/otp-verifier)
 Requires:   php-composer(fkooman/yubitwee)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(LC/openvpn-connection-manager)
@@ -88,7 +88,7 @@ rm -rf easy-rsa
 %build
 %{_bindir}/phpab -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/Otp/autoload.php';
+require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
 require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
@@ -168,6 +168,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-1
+- update to 1.4.0
+
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
 

@@ -1,16 +1,17 @@
-%global commit0 2f5c4770a76cf1f4c913a35977108314b3af9ade
-
 Name:           php-fkooman-otp-verifier
 Version:        0.2.0
 Release:        1%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-otp-verifier
-Source0:        https://git.tuxed.net/fkooman/php-otp-verifier/snapshot/php-otp-verifier-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-otp-verifier
+Source0:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
+BuildRequires:  gnupg2
 #        "php": ">= 5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-date": "*",
@@ -31,29 +32,30 @@ BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
 
 #        "php": ">= 5.4",
-Requires:  php(language) >= 5.4.0
+Requires:       php(language) >= 5.4.0
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-Requires:  php-date
-Requires:  php-hash
-Requires:  php-pdo
-Requires:  php-spl
+Requires:       php-date
+Requires:       php-hash
+Requires:       php-pdo
+Requires:       php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
-Requires:  php-composer(paragonie/constant_time_encoding)
-Requires:  php-composer(paragonie/random_compat)
-Requires:  php-composer(symfony/polyfill-php56)
+Requires:       php-composer(paragonie/constant_time_encoding)
+Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(symfony/polyfill-php56)
 
 Provides:       php-composer(fkooman/otp-verifier) = %{version}
 
 %description
-OTP Verification Library
+OTP Verification Library.
 
 %prep
-%autosetup -n php-otp-verifier-%{commit0}
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-otp-verifier-%{version}
 
 %build
 %{_bindir}/phpab -o src/autoload.php src
@@ -83,10 +85,4 @@ AUTOLOAD
 
 %changelog
 * Fri Jul 20 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-1
-- update to 0.2.0
-
-* Mon Jul 16 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-1
-- update to 0.1.1
-
-* Tue Jul 10 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.1
 - initial package

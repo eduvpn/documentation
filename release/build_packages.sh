@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PACKAGE_LIST=(\
-    php-christian-riesen-otp \
+    php-fkooman-otp-verifier \
     php-fkooman-oauth2-client \
     php-fkooman-oauth2-server \
     php-fkooman-yubitwee \
