@@ -1,6 +1,6 @@
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -32,7 +32,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-secookie-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SeCookie
@@ -53,6 +53,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-3
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-2
 - use release tarball instead of Git tarball
 - verify GPG signature

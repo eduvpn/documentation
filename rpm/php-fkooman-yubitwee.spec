@@ -1,6 +1,6 @@
 Name:           php-fkooman-yubitwee
 Version:        1.1.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -61,7 +61,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-yubitwee-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
@@ -87,6 +87,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-3
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-2
 - use release tarball instead of Git tarball
 - verify GPG signature

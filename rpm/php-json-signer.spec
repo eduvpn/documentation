@@ -1,6 +1,6 @@
 Name:       php-json-signer
 Version:    3.0.2
-Release:    5%{?dist}
+Release:    6%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -51,7 +51,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %patch0 -p1
  
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -79,6 +79,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-6
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-5
 - use release tarball instead of Git tarball
 - verify GPG signature

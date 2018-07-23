@@ -1,6 +1,6 @@
 Name:       php-saml-ds
 Version:    1.0.11
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -55,7 +55,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Twig/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
@@ -107,6 +107,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-4
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-3
 - use release tarball instead of Git tarball
 - verify GPG signature

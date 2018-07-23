@@ -1,6 +1,6 @@
 Name:           php-fkooman-oauth2-server
 Version:        3.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -76,7 +76,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-oauth2-server-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -104,6 +104,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-3
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-2
 - use release tarball instead of Git tarball
 - verify GPG signature

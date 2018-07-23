@@ -1,6 +1,6 @@
 Name:       vpn-admin-portal
 Version:    1.6.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Admin Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -55,7 +55,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
@@ -119,6 +119,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-2
+- use fedora phpab template for generating autoloader
+
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-1
 - update to 1.6.0
 

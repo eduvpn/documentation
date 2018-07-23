@@ -1,6 +1,6 @@
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -80,7 +80,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-oauth2-client-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
@@ -107,6 +107,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-3
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-2
 - use release tarball instead of Git tarball
 - verify GPG signature

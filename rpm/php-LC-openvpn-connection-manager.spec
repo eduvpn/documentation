@@ -1,6 +1,6 @@
 Name:           php-LC-openvpn-connection-manager
 Version:        1.0.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
 License:        MIT
@@ -35,7 +35,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-openvpn-connection-manager-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
 AUTOLOAD
@@ -59,6 +59,9 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-3
+- use fedora phpab template for generating autoloader
+
 * Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-2
 - use release tarball instead of Git tarball
 - verify GPG signature

@@ -1,6 +1,6 @@
 Name:       vpn-lib-common
 Version:    1.1.16
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -108,7 +108,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %setup -qn %{name}-%{version}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/password_compat/password.php';
@@ -140,6 +140,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-3
+- use fedora phpab template for generating autoloader
+
 * Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-2
 - use release tarball instead of Git tarball
 - verify GPG signature

@@ -1,6 +1,6 @@
 Name:       vpn-user-portal
 Version:    1.7.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -83,7 +83,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/random_compat/autoload.php';
@@ -162,6 +162,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-2
+- use fedora phpab template for generating autoloader
+
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-1
 - update to 1.7.0
 

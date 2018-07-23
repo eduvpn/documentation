@@ -1,6 +1,6 @@
 Name:       vpn-server-api
 Version:    1.4.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -86,7 +86,7 @@ rm -rf easy-rsa
 %endif
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
@@ -168,6 +168,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-2
+- use fedora phpab template for generating autoloader
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-1
 - update to 1.4.0
 
