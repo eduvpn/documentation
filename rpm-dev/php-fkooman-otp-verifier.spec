@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-otp-verifier
 Version:        0.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
@@ -27,6 +27,7 @@ BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
 
@@ -82,6 +83,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Otp
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-2
 - use fedora phpab template
 

@@ -2,7 +2,7 @@
 
 Name:       php-voot2-provider
 Version:    0.2.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    VOOT 2.0 Provider
 
 Group:      Applications/Internet
@@ -16,6 +16,7 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 #        "ext-hash": "*",
@@ -100,6 +101,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-2
 - use fedora phpab template
 

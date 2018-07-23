@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-simple-paseto
 Version:        0.1.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Simple PASETO v2.public for PHP >= 5.4
 
 License:        ISC
@@ -24,6 +24,7 @@ BuildRequires:  php-hash
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 
@@ -77,6 +78,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Paseto
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.6-4
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.6-3
 - use fedora phpab template
 

@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-yubitwee
 Version:        1.1.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
@@ -29,6 +29,7 @@ BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat) >= 1
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 
@@ -86,6 +87,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-2
 - use fedora phpab template
 

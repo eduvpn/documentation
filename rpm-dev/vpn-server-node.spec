@@ -7,7 +7,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.17
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -20,6 +20,7 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -122,6 +123,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-2
 - use fedora phpab template
 
