@@ -1,6 +1,6 @@
 Name:       vpn-server-api
-Version:    1.4.0
-Release:    3%{?dist}
+Version:    1.4.1
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -169,6 +169,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.1-1
+- update to 1.4.1
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-3
 - add missing BR
 
