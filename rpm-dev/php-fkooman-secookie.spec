@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -30,7 +30,7 @@ Secure Cookie and Session library for PHP.
 %autosetup -n php-secookie-%{commit0}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SeCookie
@@ -51,6 +51,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use fedora phpab template
+
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 

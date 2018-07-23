@@ -7,7 +7,7 @@
 
 Name:       vpn-lib-common
 Version:    1.1.16
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -110,7 +110,7 @@ Common VPN library.
 %setup -qn %{github_name}-%{github_commit}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/password_compat/password.php';
@@ -142,6 +142,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-2
+- use fedora phpab template
+
 * Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-1
 - update to 1.1.16
 

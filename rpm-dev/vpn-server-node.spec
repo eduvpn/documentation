@@ -7,7 +7,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.17
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -56,7 +56,7 @@ OpenVPN node controller.
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
@@ -122,6 +122,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-2
+- use fedora phpab template
+
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-1
 - update to 1.0.17
 

@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-simple-paseto
 Version:        0.1.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Simple PASETO v2.public for PHP >= 5.4
 
 License:        ISC
@@ -51,7 +51,7 @@ supports `v2.public` and nothing else.
 %autosetup -n php-simple-paseto-%{commit0}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -77,6 +77,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Paseto
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.6-3
+- use fedora phpab template
+
 * Thu May 24 2018 François Kooman <fkooman@tuxed.net> - 0.1.6-2
 - point to new repository
 

@@ -7,7 +7,7 @@
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.2.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.2.2-2
+- use fedora phpab template
+
 * Thu May 24 2018 François Kooman <fkooman@tuxed.net> - 1.2.2-1
 - update to 1.2.2
 

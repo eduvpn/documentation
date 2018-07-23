@@ -2,7 +2,7 @@
 
 Name:       php-saml-ds
 Version:    1.0.11
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -54,7 +54,7 @@ SAML Discovery Service written in PHP.
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Twig/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
@@ -106,6 +106,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-3
+- use fedora phpab template
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-2
 - update upstream URL to git.tuxed.net
 

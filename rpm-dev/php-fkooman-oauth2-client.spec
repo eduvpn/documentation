@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -78,7 +78,7 @@ The main purpose is to be compatible with PHP 5.4.
 %autosetup -n php-oauth2-client-%{commit0}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
@@ -105,6 +105,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-2
+- use fedora phpab template
+
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-1
 - update to 7.1.3
 

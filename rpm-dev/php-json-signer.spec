@@ -2,7 +2,7 @@
 
 Name:       php-json-signer
 Version:    3.0.2
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -50,7 +50,7 @@ signature in the file itself.
 %patch0 -p1
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -78,6 +78,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-5
+- use fedora phpab template
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-4
 - update upstream URL to git.tuxed.net
 

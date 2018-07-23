@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-sqlite-migrate
 Version:        0.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Simple SQLite migrations
 
 License:        MIT
@@ -41,7 +41,7 @@ using PHP.
 %autosetup -n php-sqlite-migrate-%{commit0}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SqliteMigrate
@@ -62,6 +62,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SqliteMigrate
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-2
+- use fedora phpab template
+
 * Tue Jun 26 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-1
 - update to 0.1.1
 

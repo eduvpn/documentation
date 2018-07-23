@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-oauth2-server
 Version:        3.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -74,7 +74,7 @@ The main purpose is to be compatible with PHP 5.4.
 %autosetup -n php-oauth2-server-%{commit0}
 
 %build
-%{_bindir}/phpab -o src/autoload.php src
+%{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -102,6 +102,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-2
+- use fedora phpab template
+
 * Fri Jun 08 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-1
 - update to 3.0.1
 

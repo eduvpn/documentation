@@ -7,7 +7,7 @@
 
 Name:       php-saml-ds-artwork-%{style_name}
 Version:    1.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -50,6 +50,9 @@ rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
 %doc README.md CHANGES.md
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-2
+- use fedora phpab template
+
 * Mon Jan 22 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-1
 - update to 1.0.1
 

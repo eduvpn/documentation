@@ -2,7 +2,7 @@
 
 Name:       php-voot2-provider
 Version:    0.2.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VOOT 2.0 Provider
 
 Group:      Applications/Internet
@@ -100,6 +100,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-2
+- use fedora phpab template
+
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-1
 - update to 0.2.1
 
