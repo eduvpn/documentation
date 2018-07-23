@@ -1,6 +1,6 @@
 Name:       vpn-lib-common
 Version:    1.1.16
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -54,6 +54,7 @@ BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(twig/extensions) < 2.0
 BuildRequires:  php-composer(twig/twig) < 2.0
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 
@@ -140,6 +141,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-4
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-3
 - use fedora phpab template for generating autoloader
 

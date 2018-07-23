@@ -1,6 +1,6 @@
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -15,6 +15,7 @@ BuildRequires:  gnupg2
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-session
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 
@@ -53,6 +54,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-4
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-3
 - use fedora phpab template for generating autoloader
 

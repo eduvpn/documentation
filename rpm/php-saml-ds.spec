@@ -1,6 +1,6 @@
 Name:       php-saml-ds
 Version:    1.0.11
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -16,6 +16,7 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -107,6 +108,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-5
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-4
 - use fedora phpab template for generating autoloader
 

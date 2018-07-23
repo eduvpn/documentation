@@ -1,6 +1,6 @@
 Name:       vpn-user-portal
 Version:    1.7.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -15,6 +15,7 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -162,6 +163,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-2
 - use fedora phpab template for generating autoloader
 

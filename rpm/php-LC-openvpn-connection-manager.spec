@@ -1,6 +1,6 @@
 Name:           php-LC-openvpn-connection-manager
 Version:        1.0.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
 License:        MIT
@@ -16,6 +16,7 @@ BuildRequires:  gnupg2
 BuildRequires:  php(language) >= 5.4.0
 #        "psr/log": "^1.0",
 BuildRequires:  php-composer(psr/log)
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
 
@@ -59,6 +60,9 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-4
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-3
 - use fedora phpab template for generating autoloader
 

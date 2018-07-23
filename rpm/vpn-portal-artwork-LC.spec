@@ -2,7 +2,7 @@
 
 Name:       vpn-portal-artwork-%{style_name}
 Version:    1.1.1
-Release:    3%{?dist}
+Release:    2%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -61,9 +61,6 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-3
-- use fedora phpab template for generating autoloader
-
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-2
 - use release tarball instead of Git tarball
 - verify GPG signature

@@ -1,6 +1,6 @@
 Name:       vpn-server-api
 Version:    1.4.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -25,6 +25,7 @@ BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-standard
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  vpn-lib-common
@@ -168,6 +169,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-3
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-2
 - use fedora phpab template for generating autoloader
 

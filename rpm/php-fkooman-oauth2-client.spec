@@ -1,6 +1,6 @@
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -38,6 +38,7 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  %{_bindir}/phpunit
 
@@ -107,6 +108,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-4
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-3
 - use fedora phpab template for generating autoloader
 

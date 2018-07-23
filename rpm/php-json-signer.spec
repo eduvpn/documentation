@@ -1,6 +1,6 @@
 Name:       php-json-signer
 Version:    3.0.2
-Release:    6%{?dist}
+Release:    7%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -15,6 +15,7 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
@@ -79,6 +80,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-7
+- add missing BR
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-6
 - use fedora phpab template for generating autoloader
 
