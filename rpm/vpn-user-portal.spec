@@ -1,6 +1,6 @@
 Name:       vpn-user-portal
-Version:    1.7.0
-Release:    3%{?dist}
+Version:    1.7.1
+Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -163,6 +163,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Jul 24 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-1
+- update to 1.7.1
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-3
 - add missing BR
 
