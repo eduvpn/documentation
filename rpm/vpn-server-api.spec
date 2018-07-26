@@ -1,5 +1,5 @@
 Name:       vpn-server-api
-Version:    1.4.1
+Version:    1.4.2
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
@@ -26,14 +26,21 @@ BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-standard
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(fkooman/otp-verifier)
+BuildRequires:  php-composer(fkooman/sqlite-migrate)
 BuildRequires:  php-composer(fkooman/yubitwee)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(LC/openvpn-connection-manager)
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   crontabs
 Requires:   openvpn
@@ -59,6 +66,7 @@ Requires:   php-standard
 Requires:   vpn-lib-common
 Requires:   php-composer(psr/log)
 Requires:   php-composer(fkooman/otp-verifier)
+Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(fkooman/yubitwee)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(LC/openvpn-connection-manager)
@@ -90,6 +98,7 @@ rm -rf easy-rsa
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
+require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
 require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
@@ -136,7 +145,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -169,6 +178,11 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 1.4.2-1
+- update to 1.4.2
+- use phpunit7 on supported platforms
+- add fkooman/sqlite-migrate dependency
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.1-1
 - update to 1.4.1
 
