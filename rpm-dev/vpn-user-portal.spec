@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-user-portal
-%global github_commit           588bbea1c89a7802d483852848f30801de74aefe
+%global github_commit           09685448813f5e717ffa8374675b60d0ce9122d2
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-user-portal
-Version:    1.7.1
-Release:    1%{?dist}
+Version:    1.7.2
+Release:    0.1%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -169,6 +169,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 02 2018 François Kooman <fkooman@tuxed.net> - 1.7.2-0.1
+- update to 1.7.2
+
 * Tue Jul 24 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-1
 - add missing BR
 - use fedora phpab template

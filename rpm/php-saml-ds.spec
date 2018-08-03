@@ -1,6 +1,6 @@
 Name:       php-saml-ds
-Version:    1.0.11
-Release:    5%{?dist}
+Version:    1.0.12
+Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -108,6 +108,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Aug 03 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-1
+- update to 1.0.12
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-5
 - add missing BR
 
