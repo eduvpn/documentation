@@ -1,5 +1,5 @@
 Name:       vpn-server-api
-Version:    1.4.2
+Version:    1.4.3
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
@@ -178,6 +178,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.4.3-1
+- update to 1.4.3
+- add psr/log dependency
+
 * Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 1.4.2-1
 - update to 1.4.2
 - use phpunit7 on supported platforms

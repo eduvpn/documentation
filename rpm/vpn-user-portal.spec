@@ -1,5 +1,5 @@
 Name:       vpn-user-portal
-Version:    1.7.1
+Version:    1.7.2
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -15,9 +15,6 @@ Patch0:     %{name}-autoload.patch
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
-BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
-BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-filter
@@ -39,6 +36,15 @@ BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-fedora-autoloader-devel
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   crontabs
 Requires:   php(language) >= 5.4.0
@@ -127,7 +133,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -163,6 +169,10 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.7.2-1
+- update to 1.7.2
+- use PHPUnit 7 on supported platforms
+
 * Tue Jul 24 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-1
 - update to 1.7.1
 

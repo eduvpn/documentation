@@ -1,6 +1,6 @@
 Name:       vpn-lib-common
-Version:    1.1.16
-Release:    4%{?dist}
+Version:    1.1.17
+Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -55,8 +55,14 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(twig/extensions) < 2.0
 BuildRequires:  php-composer(twig/twig) < 2.0
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -131,7 +137,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %dir %{_datadir}/php/SURFnet
@@ -141,6 +147,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.1.17-1
+- update to 1.1.17
+- use PHPUnit 7 on supported platforms
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.16-4
 - add missing BR
 

@@ -1,5 +1,5 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index ef546a5..3d69c71 100644
+index 5147ba6..b8bded9 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
 @@ -8,9 +8,9 @@
@@ -31,7 +31,7 @@ index 30f210c..415a6d7 100644
  use fkooman\OAuth\Client\Http\CurlHttpClient;
  use SURFnet\VPN\Common\CliParser;
 diff --git a/bin/generate-voucher.php b/bin/generate-voucher.php
-index 55800cc..e1ac36d 100644
+index 20ba562..f076fed 100644
 --- a/bin/generate-voucher.php
 +++ b/bin/generate-voucher.php
 @@ -8,9 +8,9 @@
@@ -79,7 +79,7 @@ index 433fb68..73567dc 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index c283cca..4d997f0 100644
+index 68d99da..17b5f6c 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,9 +7,9 @@
@@ -93,9 +93,9 @@ index c283cca..4d997f0 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
  
  use fkooman\OAuth\Server\BearerValidator;
- use fkooman\OAuth\Server\ClientInfo;
+ use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/index.php b/web/index.php
-index bcf75c6..77ac1bf 100644
+index 8248e23..0c238e0 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,9 +7,9 @@
@@ -111,7 +111,7 @@ index bcf75c6..77ac1bf 100644
  use fkooman\OAuth\Client\Http\CurlHttpClient as OAuthCurlHttpClient;
  use fkooman\OAuth\Client\OAuthClient;
 diff --git a/web/oauth.php b/web/oauth.php
-index 7625396..a50ca8d 100644
+index d5e99d7..35c356c 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,9 +7,9 @@
@@ -124,5 +124,5 @@ index 7625396..a50ca8d 100644
 -require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
  
- use fkooman\OAuth\Server\ClientInfo;
  use fkooman\OAuth\Server\OAuthServer;
+ use fkooman\OAuth\Server\SodiumSigner;
