@@ -2,12 +2,12 @@
 
 %global github_owner            eduvpn
 %global github_name             vpn-server-node
-%global github_commit           3f597ed02339b711f4f935629c2e306e63efb5c3
+%global github_commit           6aa7105426ae02eaab25efc0a468c5f5698de928
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 Name:       vpn-server-node
-Version:    1.0.17
-Release:    3%{?dist}
+Version:    1.0.18
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -123,6 +123,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.18-1
+- update to 1.0.18
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-3
 - add missing BR
 
