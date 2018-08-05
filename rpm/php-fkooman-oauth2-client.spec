@@ -1,6 +1,6 @@
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -40,7 +40,13 @@ BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
-BuildRequires:  %{_bindir}/phpunit
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -98,7 +104,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %license LICENSE
@@ -108,6 +114,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-5
+- use phpunit7 on supported platforms
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-4
 - add missing BR
 

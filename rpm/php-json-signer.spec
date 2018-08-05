@@ -1,6 +1,6 @@
 Name:       php-json-signer
 Version:    3.0.2
-Release:    7%{?dist}
+Release:    8%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -16,8 +16,6 @@ BuildArch:  noarch
 
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
-BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -28,6 +26,14 @@ BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   php(language) >= 5.4.0
 #    "suggest": {
@@ -69,7 +75,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -80,6 +86,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-8
+- use phpunit7 on supported platforms
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-7
 - add missing BR
 

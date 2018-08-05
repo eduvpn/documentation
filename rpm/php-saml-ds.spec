@@ -1,6 +1,6 @@
 Name:       php-saml-ds
 Version:    1.0.12
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -17,7 +17,6 @@ BuildArch:  noarch
 
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
@@ -29,6 +28,13 @@ BuildRequires:  php-spl
 BuildRequires:  php-xml
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/secookie)
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   php(language) >= 5.4.0
 Requires:   php-curl
@@ -88,7 +94,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -108,6 +114,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-2
+- use phpunit7 on supported platforms
+
 * Fri Aug 03 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-1
 - update to 1.0.12
 
