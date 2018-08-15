@@ -1,5 +1,5 @@
 Name:       vpn-admin-portal
-Version:    1.6.1
+Version:    1.7.0
 Release:    1%{?dist}
 Summary:    VPN Admin Portal
 Group:      Applications/Internet
@@ -126,6 +126,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-1
+- update to 1.7.0
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.6.1-1
 - update to 1.6.1
 - use PHPUnit 7 on supported platforms

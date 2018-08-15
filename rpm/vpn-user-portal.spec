@@ -1,5 +1,5 @@
 Name:       vpn-user-portal
-Version:    1.7.2
+Version:    1.8.0
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -169,6 +169,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.8.0-1
+- update to 1.8.0
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.7.2-1
 - update to 1.7.2
 - use PHPUnit 7 on supported platforms

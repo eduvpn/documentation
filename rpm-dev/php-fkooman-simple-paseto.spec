@@ -1,8 +1,8 @@
-%global commit0 4fc7a6a0f64327b87ad86759d770a505d75b0b10
+%global commit0 62d3d77218a26d043267b34a4bfc92c8a66898b2
 
 Name:           php-fkooman-simple-paseto
-Version:        0.1.6
-Release:        4%{?dist}
+Version:        0.1.7
+Release:        1%{?dist}
 Summary:        Simple PASETO v2.public for PHP >= 5.4
 
 License:        ISC
@@ -78,6 +78,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Paseto
 
 %changelog
+* Thu Aug 09 2018 François Kooman <fkooman@tuxed.net> - 0.1.7-1
+- update to 0.1.7
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.6-4
 - add missing BR
 

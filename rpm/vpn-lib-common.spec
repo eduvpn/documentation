@@ -1,5 +1,5 @@
 Name:       vpn-lib-common
-Version:    1.1.17
+Version:    1.2.0
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -147,6 +147,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-1
+- update to 1.2.0
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.1.17-1
 - update to 1.1.17
 - use PHPUnit 7 on supported platforms
