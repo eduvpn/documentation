@@ -5,7 +5,7 @@
 # PHP 5.4
 #
 
-PHP_VERSION=71                  # 7.1
+PHP_VERSION=72                  # 7.2
 PACKAGE_MANAGER=/usr/bin/yum
 
 # install and enable remi repository
@@ -17,6 +17,10 @@ rm -f /etc/php-fpm.d/www.conf
 
 # install updated packages
 ${PACKAGE_MANAGER} -y update
+
+# remove PECL sodium module, and use native sodium
+${PACKAGE_MANAGER} -y install php-sodium
+${PACKAGE_MANAGER} -y remove php-pecl-libsodium
 
 # switch to unix socket and secure it, the default in newer PHP versions, but 
 # not on CentOS 7, also not in remi repository
