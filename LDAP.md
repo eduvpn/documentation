@@ -16,8 +16,7 @@ The first one is what we focus on here, the second one is documented in the
 
 You can configure both `vpn-user-portal` and `vpn-admin-portal` to use LDAP. 
 This is configured in the files `/etc/vpn-user-portal/default/config.php` and
-`/etc/vpn-admin-portal/default/config.php`. We will only show how to configure
-`vpn-user-portal` as `vpn-admin-portal` is exactly the same.
+`/etc/vpn-admin-portal/default/config.php`.
 
 You have to set `authMethod` first:
 
@@ -47,7 +46,26 @@ is the name of your domain:
 
     'userDnTemplate' => 'DOMAIN\{{UID}}'
 
-Repeat this for `vpn-admin-portal` and you're all set.
+Repeat this for `vpn-admin-portal`. For `vpn-admin-portal` you also need to 
+configure the authorization, e.g. who is allowed to access the admin portal in
+addition to user authentication. First the basic configuration:
+
+    'baseDn' => 'cn=users,cn=accounts,dc=example,dc=org',
+    'searchFilterTemplate' => 'uid={{UID}}',
+
+After this, you have to decide which _attribute_ will be used, and which 
+values this attribute must have for a user to be allow to access 
+`vpn-admin-portal`. Two examples:
+
+    // use eduPersonEntitlement attribute
+    'entitlementAttribute' => 'eduPersonEntitlement',
+    'adminEntitlementValue' => ['urn:example:LC-admin'],
+
+    // use LDAP "memberOf"
+    'entitlementAttribute' => 'memberOf',
+    'adminEntitlementValue' => ['cn=ipausers,cn=groups,cn=accounts,dc=example,dc=org'],
+
+Choose one and you should be all set!
 
 # CA
 
