@@ -88,10 +88,18 @@ example configuration file in
 
 ## Discovery
 
-If you use only one IdP or an identity federation that provides their own 
-WAYF service (the default), you don't need to do anything else. If you want to 
-provide your own WAYF, e.g. if you want to add eduGAIN IdPs, this is possible 
-with the [php-saml-ds](https://git.tuxed.net/fkooman/php-saml-ds/) software.
+If you use only one IdP or a "hub & spoke" identity federation that provides 
+their own WAYF service (the default), you don't need to do anything else. 
+
+If you want to use your existing WAYF, you can integrate this directly if it 
+supports the 
+[Identity Provider Discovery Service Protocol and Profile](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-idp-discovery.pdf).
+
+If you don't yet have a WAYF and want to create one for the VPN service, you 
+can use [php-saml-ds](https://git.tuxed.net/fkooman/php-saml-ds/) software, it
+implements "Identity Provider Discovery Service Protocol and Profile", see 
+below on how to configure this with `MellonIdPMetadataFile` and 
+`MellonDiscoveryUrl`.
 
 You need to have the metadata for all IdPs. For SURFconext you can use 
 [this](https://engine.surfconext.nl/authentication/proxy/idps-metadata) URL. 
