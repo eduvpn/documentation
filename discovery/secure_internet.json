@@ -58,12 +58,13 @@
             "base_uri": "https://eduvpn.uran.ua/",
             "display_name": {
                 "en-US": "Ukraine",
+                "nl-NL": "Oekra\u00efne",
                 "uk_UA": "\u0423\u043a\u0440\u0430\u0457\u043d\u0430"
             },
             "logo": "https://static.eduvpn.nl/disco/img/ua.png",
             "public_key": "EIk48gTa1AtHl6WiLd6UQYpg6eZGxcjYDU1htfM3TSs="
         }
     ],
-    "seq": 47,
-    "signed_at": "2018-08-13 21:59:41"
+    "seq": 48,
+    "signed_at": "2018-08-17 13:13:08"
 }
