@@ -1,128 +1,120 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index 5147ba6..b8bded9 100644
+index 215d35d..0a58cb5 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 30f210c..415a6d7 100644
+index 73e2815..b3fd92e 100644
 --- a/bin/foreign-key-list-fetcher.php
 +++ b/bin/foreign-key-list-fetcher.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Client\Http\CurlHttpClient;
  use SURFnet\VPN\Common\CliParser;
 diff --git a/bin/generate-voucher.php b/bin/generate-voucher.php
-index 20ba562..f076fed 100644
+index a2fe968..dba230a 100644
 --- a/bin/generate-voucher.php
 +++ b/bin/generate-voucher.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Http\PdoAuth;
 diff --git a/bin/init.php b/bin/init.php
-index 43827fe..e6a00d4 100644
+index aeb1bd1..670c12e 100644
 --- a/bin/init.php
 +++ b/bin/init.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/bin/show-public-key.php b/bin/show-public-key.php
-index 433fb68..73567dc 100644
+index fea3f4a..335a396 100644
 --- a/bin/show-public-key.php
 +++ b/bin/show-public-key.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index 68d99da..17b5f6c 100644
+index face6f0..f7edc24 100644
 --- a/web/api.php
 +++ b/web/api.php
-@@ -7,9 +7,9 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\BearerValidator;
  use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/index.php b/web/index.php
-index 8248e23..0c238e0 100644
+index c7caab4..0836e71 100644
 --- a/web/index.php
 +++ b/web/index.php
-@@ -7,9 +7,9 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Client\Http\CurlHttpClient as OAuthCurlHttpClient;
  use fkooman\OAuth\Client\OAuthClient;
 diff --git a/web/oauth.php b/web/oauth.php
-index d5e99d7..35c356c 100644
+index 37a370b..2042a54 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
-@@ -7,9 +7,9 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-user-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\OAuthServer;
  use fkooman\OAuth\Server\SodiumSigner;
