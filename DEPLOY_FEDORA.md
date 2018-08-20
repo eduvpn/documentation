@@ -107,6 +107,10 @@ Make sure you use the exact same DNS name you used when running
 After completing the script, the certificate will be installed and the system 
 will automatically replace the certificate before it expires.
 
+### Let's Connect! Branding
+
+See [BRANDING](BRANDING.md).
+
 ### Port Sharing
 
 If you also want to allow clients to connect with the VPN over `tcp/443`, see 

@@ -120,6 +120,10 @@ will automatically replace the certificate before it expires.
 If you also want to allow clients to connect with the VPN over `tcp/443`, see 
 [Port Sharing](PORT_SHARING.md).
 
+### Let's Connect! Branding
+
+See [BRANDING](BRANDING.md).
+
 ### Modern PHP
 
 You can switch to modern PHP for performance (and security) reasons:
