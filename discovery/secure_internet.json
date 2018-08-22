@@ -24,6 +24,16 @@
             "public_key": "pB2opEKG0YArbZlb8rK0dysgV8hk8QygYlB6xlNFqqs="
         },
         {
+            "base_uri": "https://eduvpn1.eduvpn.de/",
+            "display_name": {
+                "de-DE": "Deutschland",
+                "en-US": "Germany",
+                "nl-NL": "Duitsland"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/de.png",
+            "public_key": "LA0p/KItVcFDweXAVj+CNU6cWp6SainP+pGtb1wtXgY="
+        },
+        {
             "base_uri": "https://nl.eduvpn.org/",
             "display_name": {
                 "da-DK": "Holland",
@@ -65,6 +75,6 @@
             "public_key": "EIk48gTa1AtHl6WiLd6UQYpg6eZGxcjYDU1htfM3TSs="
         }
     ],
-    "seq": 48,
-    "signed_at": "2018-08-17 13:13:08"
+    "seq": 49,
+    "signed_at": "2018-08-21 14:43:10"
 }
