@@ -1,8 +1,8 @@
-%global commit0 ac65d23a67655825940296b069ea85ec83a27f68
+%global commit0 e840fc8fd22b05a76f015f745eebaa161bd7beec
 
 Name:           php-fkooman-jwt
 Version:        0.1.0
-Release:        0.3%{?dist}
+Release:        0.4%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -85,6 +85,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.4
+- rebuilt
+
 * Tue Aug 21 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.3
 - rebuilt
 
