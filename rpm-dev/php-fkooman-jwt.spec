@@ -1,8 +1,8 @@
-%global commit0 e840fc8fd22b05a76f015f745eebaa161bd7beec
+%global commit0 8df17d3c4533e727be90736f2f72f2ce24d0e9db
 
 Name:           php-fkooman-jwt
 Version:        0.1.0
-Release:        0.4%{?dist}
+Release:        0.7%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -22,9 +22,14 @@ BuildRequires:  php-json
 BuildRequires:  php-openssl
 BuildRequires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+%if 0%{?rhel} < 8
+BuildRequires:  php-composer(paragonie/random_compat)
+%endif
+
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 
@@ -47,11 +52,15 @@ Requires:  php-json
 Requires:  php-openssl
 Requires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 Requires:  php-composer(paragonie/constant_time_encoding)
 Requires:  php-composer(symfony/polyfill-php56)
+%if 0%{?rhel} < 8
+Requires:  php-composer(paragonie/random_compat)
+%endif
 
-Provides:       php-composer(fkooman/jwt) = %{version}
+Provides:  php-composer(fkooman/jwt) = %{version}
 
 %description
 JWT Library.
@@ -62,8 +71,13 @@ JWT Library.
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
-require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
+    '%{_datadir}/php/Symfony/Polyfill/autoload.php',
+));
+\Fedora\Autoloader\Dependencies::optional(array(
+    '%{_datadir}/php/random_compat/autoload.php'
+));
 AUTOLOAD
 
 %install
@@ -85,6 +99,15 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.7
+- rebuilt
+
+* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.6
+- rebuilt
+
+* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.5
+- rebuilt
+
 * Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.4
 - rebuilt
 

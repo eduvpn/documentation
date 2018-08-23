@@ -2,6 +2,11 @@
     "authorization_type": "local",
     "instances": [
         {
+            "base_uri": "https://egi.eduvpn.nl/",
+            "display_name": "EGI Foundation",
+            "logo": "https://static.eduvpn.nl/disco/img/egi.png"
+        },
+        {
             "base_uri": "https://esciencecenter.eduvpn.nl/",
             "display_name": "Netherlands eScienceCenter",
             "logo": "https://static.eduvpn.nl/disco/img/nlesc.png"
@@ -38,6 +43,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 64,
-    "signed_at": "2018-08-22 14:04:12"
+    "seq": 65,
+    "signed_at": "2018-08-23 10:10:49"
 }
