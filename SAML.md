@@ -81,9 +81,8 @@ are associated with the administrator(s).
 Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
 the user portal.
 
-**NOTE** if you want to allow access to the admin portal, you MUST also set 
-some mechanism, either through userId or entitlement authorization, see the 
-example configuration file in 
+**NOTE** if you want to allow access to the admin portal, you MUST also 
+configure the entitlement authorization. See the example configuration file in 
 `/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`!
 
 ## Discovery
