@@ -82,8 +82,21 @@ Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as
 the user portal.
 
 **NOTE** if you want to allow access to the admin portal, you MUST also 
-configure the entitlement authorization. See the example configuration file in 
-`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`!
+configure the entitlement authorization. 
+
+For example:
+
+    'MellonAuthentication' => [
+        'attribute' => 'MELLON_NAME_ID',
+        'addEntityID' => false,
+        'entitlementAttribute' => 'MELLON_eduPersonEntitlement',
+        'entitlementAuthorization' => [
+            'https://idp.example.com/saml|urn:example:LC-admin',
+        ],
+    ],
+
+Also see the example configuration file in 
+`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`.
 
 ## Discovery
 
