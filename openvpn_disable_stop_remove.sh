@@ -1,6 +1,8 @@
 #!/bin/sh
 
-INSTANCE=default
+if [ -z "${INSTANCE}" ]; then
+    INSTANCE=default
+fi
 
 #
 # Stop and disable all currently active OpenVPN processes

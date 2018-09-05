@@ -7,10 +7,12 @@
 # a new configuration! All OAuth access tokens will become invalid!
 #
 
-INSTANCE=default
+if [ -z "${INSTANCE}" ]; then
+    INSTANCE=default
+fi
 
 (
-    $(dirname "$0")/openvpn_disable_stop_remove.sh
+    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_disable_stop_remove.sh"
 )
 
 systemctl stop apache2
@@ -36,5 +38,5 @@ vpn-server-node-generate-firewall --install
 systemctl restart netfilter-persistent
 
 (
-    $(dirname "$0")/openvpn_generate_enable_start.sh
+    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_generate_enable_start.sh"
 )

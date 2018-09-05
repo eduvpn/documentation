@@ -7,10 +7,12 @@
 # a new configuration! All OAuth access tokens will become invalid!
 #
 
-INSTANCE=default
+if [ -z "${INSTANCE}" ]; then
+    INSTANCE=default
+fi
 
 (
-    $(dirname "$0")/openvpn_disable_stop_remove.sh
+    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_disable_stop_remove.sh"
 )
 
 systemctl stop httpd
@@ -37,5 +39,5 @@ systemctl restart iptables
 systemctl restart ip6tables
 
 (
-    $(dirname "$0")/openvpn_generate_enable_start.sh
+    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_generate_enable_start.sh"
 )

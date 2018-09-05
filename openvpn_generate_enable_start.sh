@@ -1,6 +1,8 @@
 #!/bin/sh
 
-INSTANCE=default
+if [ -z "${INSTANCE}" ]; then
+    INSTANCE=default
+fi
 
 #
 # Generate new OpenVPN configurations
