@@ -26,7 +26,7 @@ sudo -u apache vpn-user-portal-init --instance ${INSTANCE}
 sudo -u apache vpn-server-api-init --instance ${INSTANCE}
 
 # regenerate internal API secrets
-vpn-server-api-update-api-secrets
+vpn-server-api-update-api-secrets --instance ${INSTANCE}
 
 systemctl start php-fpm
 systemctl start httpd
