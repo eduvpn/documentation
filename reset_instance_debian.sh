@@ -10,7 +10,7 @@
 INSTANCE=default
 
 (
-    ./openvpn_disable_stop_remove.sh
+    $(dirname "$0")/openvpn_disable_stop_remove.sh
 )
 
 systemctl stop apache2
@@ -36,5 +36,5 @@ vpn-server-node-generate-firewall --install
 systemctl restart netfilter-persistent
 
 (
-    ./openvpn_generate_enable_start.sh
+    $(dirname "$0")/openvpn_generate_enable_start.sh
 )
