@@ -1,13 +1,13 @@
 %global github_owner            eduVPN
 %global github_name             vpn-portal-artwork
-%global github_commit           f1c18c02b0ee447d6a04b21014a037bd25b5818a
+%global github_commit           3a7705ccfcbae3c0cc84fdf538418acae8a888e8
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              eduVPN
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.2.2
-Release:    2%{?dist}
+Version:    1.2.3
+Release:    0.1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %{_datadir}/vpn-admin-portal/web/img/%{style_name}
 
 %changelog
+* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.2.3-0.1
+- update to 1.2.3
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.2.2-2
 - use fedora phpab template
 
