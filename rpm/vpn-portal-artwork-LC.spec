@@ -1,8 +1,8 @@
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.1.1
-Release:    2%{?dist}
+Version:    1.1.2
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -61,6 +61,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
+- update to 1.1.2
+
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-2
 - use release tarball instead of Git tarball
 - verify GPG signature
