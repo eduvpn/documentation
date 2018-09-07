@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-jwt
 Version:        0.1.0
-Release:        0.8%{?dist}
+Release:        0.10%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -25,9 +25,9 @@ BuildRequires:  php-spl
 #        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(symfony/polyfill-php56)
-%if 0%{?rhel} < 8
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
 
 BuildRequires:  php-fedora-autoloader-devel
@@ -55,9 +55,9 @@ Requires:  php-spl
 #        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 Requires:  php-composer(paragonie/constant_time_encoding)
-Requires:  php-composer(symfony/polyfill-php56)
-%if 0%{?rhel} < 8
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:  php-composer(paragonie/random_compat)
+Requires:  php-composer(symfony/polyfill-php56)
 %endif
 
 Provides:  php-composer(fkooman/jwt) = %{version}
@@ -70,15 +70,21 @@ JWT Library.
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+\Fedora\Autoloader\Dependencies::required(array(
+    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
+));
+AUTOLOAD
+%else
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
     '%{_datadir}/php/Symfony/Polyfill/autoload.php',
-));
-\Fedora\Autoloader\Dependencies::optional(array(
     '%{_datadir}/php/random_compat/autoload.php'
 ));
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/Jwt
@@ -99,6 +105,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.10
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.9
+- rebuilt
+
 * Fri Aug 24 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.8
 - rebuilt
 

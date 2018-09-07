@@ -1,13 +1,13 @@
 %global github_owner            letsconnectvpn
 %global github_name             vpn-portal-artwork
-%global github_commit           475df22de025dcf2d1c84776269897c6980b3ec1
+%global github_commit           6ac538130f6d8aab8b0103c5a11df6bca49c2710
 %global github_short            %(c=%{github_commit}; echo ${c:0:7})
 
 %global style_name              LC
 
 Name:       vpn-portal-artwork-%{style_name}
-Version:    1.1.1
-Release:    2%{?dist}
+Version:    1.1.2
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for %{style_name}
 License:    AGPLv3+
 
@@ -62,6 +62,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
+- update to 1.1.2
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-2
 - use fedora phpab template
 

@@ -2,7 +2,7 @@
 
 Name:           php-LC-openvpn-connection-manager
 Version:        1.0.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
 License:        MIT
@@ -17,7 +17,13 @@ BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-composer(psr/log)
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
-BuildRequires:  %{_bindir}/phpunit
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -49,7 +55,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %license LICENSE
@@ -58,6 +64,9 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-4
+- rebuilt
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-3
 - add missing BR
 

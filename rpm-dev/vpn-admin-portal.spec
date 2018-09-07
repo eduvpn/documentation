@@ -7,7 +7,7 @@
 
 Name:       vpn-admin-portal
 Version:    1.7.1
-Release:    0.3%{?dist}
+Release:    0.4%{?dist}
 Summary:    VPN Admin Portal
 
 Group:      Applications/Internet
@@ -22,8 +22,6 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
-BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-spl
@@ -32,6 +30,14 @@ BuildRequires:  php-gettext
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   roboto-fontface-fonts
 Requires:   php(language) >= 5.4.0
@@ -92,7 +98,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -126,6 +132,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.4
+- rebuilt
+
 * Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.3
 - rebuilt
 

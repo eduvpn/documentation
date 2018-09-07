@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-otp-verifier
 Version:        0.2.0
-Release:        4%{?dist}
+Release:        6%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
@@ -25,8 +25,10 @@ BuildRequires:  php-spl
 #        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+%endif
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 
@@ -52,8 +54,10 @@ Requires:  php-spl
 #        "paragonie/random_compat": ">=1",
 #        "symfony/polyfill-php56": "^1"
 Requires:  php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
+%endif
 
 Provides:       php-composer(fkooman/otp-verifier) = %{version}
 
@@ -65,11 +69,17 @@ OTP Verification Library
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+AUTOLOAD
+%else
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/Otp
@@ -90,6 +100,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Otp
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-6
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-5
+- rebuilt
+
 * Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-4
 - use PHPUnit 7 on Fedora >= 27, EL >= 8
 

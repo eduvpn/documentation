@@ -7,7 +7,7 @@
 
 Name:       vpn-server-node
 Version:    1.0.19
-Release:    0.3%{?dist}
+Release:    0.4%{?dist}
 Summary:    OpenVPN node controller
 
 Group:      Applications/Internet
@@ -21,8 +21,6 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
-BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-filter
 BuildRequires:  php-json
@@ -31,6 +29,14 @@ BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  vpn-lib-common
 BuildRequires:  php-composer(psr/log)
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   php(language) >= 5.4.0
 # the scripts in libexec/ and bin/ require the PHP CLI
@@ -101,7 +107,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -123,6 +129,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.4
+- rebuilt
+
 * Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.3
 - rebuilt
 

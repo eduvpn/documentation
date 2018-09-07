@@ -7,7 +7,7 @@
 
 Name:       vpn-user-portal
 Version:    1.8.1
-Release:    0.9%{?dist}
+Release:    0.10%{?dist}
 Summary:    VPN User Portal
 
 Group:      Applications/Internet
@@ -23,8 +23,6 @@ BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
-BuildRequires:  %{_bindir}/phpab
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-date
 BuildRequires:  php-filter
@@ -45,7 +43,17 @@ BuildRequires:  php-composer(bacon/bacon-qr-code)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
+%endif
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 Requires:   crontabs
 Requires:   php(language) >= 5.4.0
@@ -70,7 +78,9 @@ Requires:   php-composer(bacon/bacon-qr-code)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
+%endif
 
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -91,6 +101,15 @@ VPN User Portal.
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/BaconQrCode/autoload.php';
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
+AUTOLOAD
+%else
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/random_compat/autoload.php';
@@ -100,6 +119,7 @@ require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/%{name}
@@ -133,7 +153,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
@@ -169,6 +189,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.10
+- rebuilt
+
 * Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.9
 - rebuilt
 

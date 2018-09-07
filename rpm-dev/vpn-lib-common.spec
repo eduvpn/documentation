@@ -7,7 +7,7 @@
 
 Name:       vpn-lib-common
 Version:    1.2.1
-Release:    0.2%{?dist}
+Release:    0.5%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -50,16 +50,24 @@ BuildRequires:  php-spl
 #        "twig/extensions": "^1",
 #        "twig/twig": "^1"
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(ircmaxell/password-compat)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(psr/log)
-BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(twig/extensions) < 2.0
 BuildRequires:  php-composer(twig/twig) < 2.0
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(ircmaxell/password-compat)
+%endif
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -96,13 +104,15 @@ Requires:       php-spl
 #        "twig/extensions": "^1",
 #        "twig/twig": "^1"
 Requires:       php-composer(fkooman/secookie)
-Requires:       php-composer(ircmaxell/password-compat)
 Requires:       php-composer(paragonie/constant_time_encoding)
-Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(psr/log)
-Requires:       php-composer(symfony/polyfill-php56)
 Requires:       php-composer(twig/extensions) < 2.0
 Requires:       php-composer(twig/twig) < 2.0
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:       php-composer(symfony/polyfill-php56)
+Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(ircmaxell/password-compat)
+%endif
 
 %description
 Common VPN library.
@@ -112,6 +122,15 @@ Common VPN library.
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+require_once '%{_datadir}/php/Twig/Extensions/autoload.php';
+require_once '%{_datadir}/php/Twig/autoload.php';
+AUTOLOAD
+%else
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/password_compat/password.php';
@@ -122,6 +141,7 @@ require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 require_once '%{_datadir}/php/Twig/Extensions/autoload.php';
 require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/%{composer_namespace}
@@ -133,7 +153,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %dir %{_datadir}/php/SURFnet
@@ -143,6 +163,15 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.2.1-0.5
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.2.1-0.4
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.2.1-0.3
+- rebuilt
+
 * Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.2.1-0.2
 - rebuilt
 

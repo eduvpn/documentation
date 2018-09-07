@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        3%{?dist}
+Release:        7%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -34,12 +34,20 @@ BuildRequires:  php-spl
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(psr/log)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+%endif
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
-BuildRequires:  %{_bindir}/phpunit
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 
 #        "php": ">=5.4",
 Requires:       php(language) >= 5.4.0
@@ -64,9 +72,11 @@ Requires:       php-spl
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
-Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(psr/log)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
+%endif
 
 Provides:       php-composer(fkooman/oauth2-client) = %{version}
 
@@ -82,9 +92,14 @@ The main purpose is to be compatible with PHP 5.4.
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+AUTOLOAD
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/OAuth/Client
@@ -96,7 +111,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %license LICENSE
@@ -106,6 +121,18 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-7
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-6
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-5
+- rebuilt
+
+* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-4
+- rebuilt
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-3
 - add missing BR
 
