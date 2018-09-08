@@ -1,6 +1,6 @@
 Name:           php-fkooman-sqlite-migrate
 Version:        0.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Simple SQLite Migrations
 
 License:        MIT
@@ -12,14 +12,6 @@ Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 BuildArch:      noarch
 
 BuildRequires:  gnupg2
-#        "php": ">= 5.4",
-BuildRequires:  php(language) >= 5.4.0
-#        "ext-pcre": "*",
-#        "ext-pdo": "*",
-#        "ext-spl": "*",
-BuildRequires:  php-pcre
-BuildRequires:  php-pdo
-BuildRequires:  php-spl
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
@@ -29,6 +21,14 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#        "php": ">= 5.4",
+BuildRequires:  php(language) >= 5.4.0
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+BuildRequires:  php-pcre
+BuildRequires:  php-pdo
+BuildRequires:  php-spl
 
 #        "php": ">= 5.4",
 Requires:       php(language) >= 5.4.0
@@ -70,5 +70,8 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SqliteMigrate
 
 %changelog
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-2
+- move some stuff around to make it consistent with other spec files
+
 * Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-1
 - initial package

@@ -1,6 +1,6 @@
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
@@ -12,6 +12,15 @@ Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 BuildArch:      noarch
 
 BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-curl": "*",
@@ -35,17 +44,10 @@ BuildRequires:  php-spl
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(psr/log)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
-BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpab
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-BuildRequires:  phpunit7
-%global phpunit %{_bindir}/phpunit7
-%else
-BuildRequires:  phpunit
-%global phpunit %{_bindir}/phpunit
 %endif
 
 #        "php": ">=5.4",
@@ -71,9 +73,11 @@ Requires:       php-spl
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
-Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(psr/log)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
+%endif
 
 Provides:       php-composer(fkooman/oauth2-client) = %{version}
 
@@ -90,9 +94,14 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
+AUTOLOAD
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/OAuth/Client
@@ -114,6 +123,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-6
+- add psr/log to autoloader
+- only autoload compat libraries on older versions of Fedora/EL
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-5
 - use phpunit7 on supported platforms
 

@@ -1,6 +1,6 @@
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -11,10 +11,6 @@ Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
-BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-date
-BuildRequires:  php-session
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
@@ -24,8 +20,18 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+BuildRequires:  gnupg2
+#        "php": ">=5.4"
+BuildRequires:  php(language) >= 5.4.0
+#        "ext-date": "*",
+#        "ext-session": "*",
+BuildRequires:  php-date
+BuildRequires:  php-session
 
+#        "php": ">=5.4"
 Requires:       php(language) >= 5.4.0
+#        "ext-date": "*",
+#        "ext-session": "*",
 Requires:       php-date
 Requires:       php-session
 
@@ -60,6 +66,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-6
+- add composer.json comments to (Build)Requires
+- move some stuff around to make it consistent with other spec files
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-5
 - use phpunit7 on supported platforms
 
