@@ -1,6 +1,6 @@
 Name:       vpn-lib-common
 Version:    1.2.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -12,6 +12,15 @@ Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
+BuildRequires:  %{_bindir}/phpab
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
 #        "php": ">=5.4",
 BuildRequires:  php(language) >= 5.4.0
 #        "ext-curl": "*",
@@ -47,21 +56,14 @@ BuildRequires:  php-spl
 #        "twig/extensions": "^1",
 #        "twig/twig": "^1"
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(ircmaxell/password-compat)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(psr/log)
-BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(twig/extensions) < 2.0
 BuildRequires:  php-composer(twig/twig) < 2.0
-BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpab
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-BuildRequires:  phpunit7
-%global phpunit %{_bindir}/phpunit7
-%else
-BuildRequires:  phpunit
-%global phpunit %{_bindir}/phpunit
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(ircmaxell/password-compat)
+BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
 
 #        "php": ">=5.4",
@@ -99,13 +101,15 @@ Requires:       php-spl
 #        "twig/extensions": "^1",
 #        "twig/twig": "^1"
 Requires:       php-composer(fkooman/secookie)
-Requires:       php-composer(ircmaxell/password-compat)
 Requires:       php-composer(paragonie/constant_time_encoding)
-Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(psr/log)
-Requires:       php-composer(symfony/polyfill-php56)
 Requires:       php-composer(twig/extensions) < 2.0
 Requires:       php-composer(twig/twig) < 2.0
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:       php-composer(ircmaxell/password-compat)
+Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(symfony/polyfill-php56)
+%endif
 
 %description
 Common VPN library.
@@ -118,14 +122,18 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
-require_once '%{_datadir}/php/password_compat/password.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
-require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
-require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 require_once '%{_datadir}/php/Twig/Extensions/autoload.php';
 require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/password_compat/password.php';
+require_once '%{_datadir}/php/random_compat/autoload.php';
+require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
+AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Common
@@ -147,6 +155,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-2
+- only autoload compat libraries on older versions of Fedora/EL
+
 * Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-1
 - update to 1.2.0
 

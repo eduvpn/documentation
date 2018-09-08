@@ -1,6 +1,6 @@
 Name:       php-json-signer
 Version:    3.0.2
-Release:    8%{?dist}
+Release:    9%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -16,16 +16,6 @@ BuildArch:  noarch
 
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  php(language) >= 5.4.0
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
-BuildRequires:  php-pecl(libsodium)
-BuildRequires:  php-date
-BuildRequires:  php-json
-BuildRequires:  php-spl
-BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  %{_bindir}/phpab
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
@@ -34,16 +24,44 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#        "php": ">=5.4.0"
+BuildRequires:  php(language) >= 5.4.0
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-pecl(libsodium)
+%endif
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-spl": "*",
+BuildRequires:  php-date
+BuildRequires:  php-json
+BuildRequires:  php-spl
+#        "paragonie/constant_time_encoding": "^1|^2",
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
 
+#        "php": ">=5.4.0"
 Requires:   php(language) >= 5.4.0
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-Requires:   php-pecl(libsodium)
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+Requires:       php-sodium
+%else
+Requires:       php-pecl(libsodium)
+%endif
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-spl": "*",
 Requires:   php-date
 Requires:   php-json
 Requires:   php-spl
+#        "paragonie/constant_time_encoding": "^1|^2",
 Requires:   php-composer(paragonie/constant_time_encoding)
 
 %description
@@ -60,9 +78,13 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once sprintf('%s/sodium_compat.php', __DIR__);
+AUTOLOAD
+%endif
 
 %install
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/JsonSigner
@@ -86,6 +108,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-9
+- requires php-sodium on modern OSes to make sure we do not need sodium compat
+- add composer.json comments to (Build)Requires
+
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-8
 - use phpunit7 on supported platforms
 
