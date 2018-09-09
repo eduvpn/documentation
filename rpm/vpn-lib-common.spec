@@ -1,19 +1,28 @@
+#global git 49aee36116d65e53a4f475243fe4baeb191371d2
+
 Name:       vpn-lib-common
 Version:    1.2.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
-URL:        https://github.com/eduvpn/%{name}
-Source0:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz.asc
+URL:        https://github.com/eduvpn/vpn-lib-common
+%if %{defined git}
+Source0:    https://github.com/eduvpn/vpn-lib-common/archive/%{git}/vpn-lib-common-%{version}-%{git}.tar.gz
+%else
+Source0:    https://github.com/eduvpn/vpn-lib-common/releases/download/%{version}/vpn-lib-common-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/vpn-lib-common/releases/download/%{version}/vpn-lib-common-%{version}.tar.xz.asc
 Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
 
 BuildArch:  noarch
 
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -21,8 +30,7 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
-#        "php": ">=5.4",
-BuildRequires:  php(language) >= 5.4.0
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-filter": "*",
@@ -35,6 +43,17 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-pdo": "*",
 #        "ext-radius": "*",
 #        "ext-spl": "*",
+#        "fkooman/secookie": "^2",
+#        "ircmaxell/password-compat": "^1",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "php": ">= 5.4",
+#        "psr/log": "^1.0",
+#        "symfony/polyfill-php56": "^1",
+#        "twig/extensions": "^1",
+#        "twig/twig": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-filter
@@ -47,14 +66,6 @@ BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-radius
 BuildRequires:  php-spl
-#        "fkooman/secookie": "^2",
-#        "ircmaxell/password-compat": "^1",
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
-#        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1",
-#        "twig/extensions": "^1",
-#        "twig/twig": "^1"
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(psr/log)
@@ -66,8 +77,7 @@ BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
 
-#        "php": ">=5.4",
-Requires:       php(language) >= 5.4.0
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-filter": "*",
@@ -80,6 +90,17 @@ Requires:       php(language) >= 5.4.0
 #        "ext-pdo": "*",
 #        "ext-radius": "*",
 #        "ext-spl": "*",
+#        "fkooman/secookie": "^2",
+#        "ircmaxell/password-compat": "^1",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "php": ">= 5.4",
+#        "psr/log": "^1.0",
+#        "symfony/polyfill-php56": "^1",
+#        "twig/extensions": "^1",
+#        "twig/twig": "^1"
+#    },
+Requires:       php(language) >= 5.4.0
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-filter
@@ -92,14 +113,6 @@ Requires:       php-pcre
 Requires:       php-pdo
 Requires:       php-radius
 Requires:       php-spl
-#        "fkooman/secookie": "^2",
-#        "ircmaxell/password-compat": "^1",
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
-#        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1",
-#        "twig/extensions": "^1",
-#        "twig/twig": "^1"
 Requires:       php-composer(fkooman/secookie)
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(psr/log)
@@ -115,8 +128,12 @@ Requires:       php-composer(symfony/polyfill-php56)
 Common VPN library.
 
 %prep
+%if %{defined git}
+%setup -qn vpn-lib-common-%{git}
+%else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
-%setup -qn %{name}-%{version}
+%setup -qn vpn-lib-common-%{version}
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
@@ -155,6 +172,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-3
+- merge dev and prod spec files in one
+- cleanup requirements
+
 * Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-2
 - only autoload compat libraries on older versions of Fedora/EL
 
