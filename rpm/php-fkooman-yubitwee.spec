@@ -1,18 +1,28 @@
+#global git af5b10dd4834993bc92b296da348e6c763f9df6e
+
 Name:           php-fkooman-yubitwee
 Version:        1.1.4
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        YubiKey OTP Validator library
 
 License:        MIT
 URL:            https://software.tuxed.net/php-yubitwee
+%if %{defined git}
+Source0:        https://git.tuxed.net/fkooman/php-yubitwee/snapshot/php-yubitwee-%{git}.tar.xz
+%else
 Source0:        https://software.tuxed.net/php-yubitwee/files/php-yubitwee-%{version}.tar.xz
 Source1:        https://software.tuxed.net/php-yubitwee/files/php-yubitwee-%{version}.tar.xz.asc
 Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+
 BuildArch:      noarch
 
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -20,42 +30,46 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
-#        "php": ">=5.4",
-BuildRequires:  php(language) >= 5.4.0
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">=5.4",
+#        "symfony/polyfill-php56": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-hash
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": ">=1",
-#        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat) >= 1
 BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
 
-#        "php": ">=5.4",
-Requires:       php(language) >= 5.4.0
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">=5.4",
+#        "symfony/polyfill-php56": "^1"
+#    },
+Requires:       php(language) >= 5.4.0
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-hash
 Requires:       php-pcre
 Requires:       php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": ">=1",
-#        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:       php-composer(paragonie/random_compat) >= 1
@@ -68,8 +82,12 @@ Provides:       php-composer(fkooman/yubitwee) = %{version}
 A very simple, secure YubiKey OTP Validator with pluggable HTTP client.
 
 %prep
+%if %{defined git}
+%autosetup -n php-yubitwee-%{git}
+%else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -n php-yubitwee-%{version}
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
@@ -102,6 +120,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/YubiTwee
 
 %changelog
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-7
+- merge dev and prod spec files in one
+- cleanup requirements
+
 * Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 1.1.4-6
 - only autoload compat libraries on older versions of Fedora/EL
 
