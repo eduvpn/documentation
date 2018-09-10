@@ -2,7 +2,7 @@
 
 Name:       php-saml-ds-artwork-eduVPN
 Version:    1.0.1
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    SAML Discovery Artwork for eduVPN
 License:    AGPLv3+
 
@@ -16,6 +16,8 @@ Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 %endif
 
 BuildArch:  noarch
+
+BuildRequires:  gnupg2
 
 Requires:   php-saml-ds
 
@@ -55,6 +57,9 @@ rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
 %doc README.md CHANGES.md
 
 %changelog
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-4
+- add missing BR gnupg2
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-3
 - merge dev and prod spec files in one
 
