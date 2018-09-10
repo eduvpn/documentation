@@ -1,35 +1,31 @@
-%global composer_namespace      SURFnet/VPN/Node
-
-%global github_owner            eduvpn
-%global github_name             vpn-server-node
-%global github_commit           861dbd680ed0385fc961635e2d5011a0e3360774
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global git 861dbd680ed0385fc961635e2d5011a0e3360774
 
 Name:       vpn-server-node
 Version:    1.0.19
-Release:    0.4%{?dist}
+Release:    0.5%{?dist}
 Summary:    OpenVPN node controller
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Patch0:     %{name}-autoload.patch
+URL:        https://github.com/eduvpn/vpn-server-node
+%if %{defined git}
+Source0:    https://github.com/eduvpn/vpn-server-node/archive/%{git}/vpn-server-node-%{version}-%{git}.tar.gz
+%else
+Source0:    https://github.com/eduvpn/vpn-server-node/releases/download/%{version}/vpn-server-node-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/vpn-server-node/releases/download/%{version}/vpn-server-node-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+Patch0:     vpn-server-node-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-filter
-BuildRequires:  php-json
-BuildRequires:  php-mbstring
-BuildRequires:  php-pcre
-BuildRequires:  php-spl
-BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(psr/log)
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "ext-json": "*",
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
+BuildRequires:  php-json
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -37,20 +33,50 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#    "require": {
+#        "eduvpn/common": "^1",
+#        "ext-date": "*",
+#        "ext-filter": "*",
+#        "ext-mbstring": "*",
+#        "ext-openssl": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
+#        "php": ">=5.4",
+#        "psr/log": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  vpn-lib-common
+BuildRequires:  php-date
+BuildRequires:  php-filter
+BuildRequires:  php-mbstring
+BuildRequires:  php-openssl
+BuildRequires:  php-pcre
+BuildRequires:  php-spl
+BuildRequires:  php-composer(psr/log)
 
+Requires:   openvpn
+#    "require": {
+#        "eduvpn/common": "dev-master",
+#        "ext-date": "*",
+#        "ext-filter": "*",
+#        "ext-mbstring": "*",
+#        "ext-openssl": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
+#        "php": ">=5.4",
+#        "psr/log": "^1"
+#    },
 Requires:   php(language) >= 5.4.0
-# the scripts in libexec/ and bin/ require the PHP CLI
 Requires:   php-cli
+Requires:   php-date
 Requires:   php-filter
-Requires:   php-json
 Requires:   php-mbstring
+Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-standard
 Requires:   vpn-lib-common
 Requires:   php-composer(psr/log)
-
-Requires:   openvpn
 
 Requires(post): policycoreutils-python
 Requires(postun): policycoreutils-python
@@ -59,7 +85,12 @@ Requires(postun): policycoreutils-python
 OpenVPN node controller.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%if %{defined git}
+%setup -qn vpn-server-node-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn vpn-server-node-%{version}
+%endif
 %patch0 -p1
 
 %build
@@ -70,36 +101,36 @@ require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/vpn-server-node
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
 
 # bin
 for i in certificate-info generate-firewall server-config
 do
-    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
+    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-node-${i}
 done
 
 # libexec
 for i in client-connect client-disconnect verify-otp
 do
-    install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/%{name}/${i}
+    install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
 
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
-cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/%{name}/firewall.php
-ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
-ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/%{name}/openvpn-config
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node/default
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/default/config.php
+cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/firewall.php
+ln -s ../../../etc/vpn-server-node %{buildroot}%{_datadir}/vpn-server-node/config
+ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/vpn-server-node/openvpn-config
 
 # legacy libexec symlinks
-mkdir -p %{buildroot}%{_datadir}/%{name}/libexec
-ln -s ../../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_datadir}/%{name}/libexec/client-connect.php
-ln -s ../../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_datadir}/%{name}/libexec/client-disconnect.php
-ln -s ../../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_datadir}/%{name}/libexec/verify-otp.php
-ln -s ../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_libexecdir}/%{name}-client-connect
-ln -s ../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_libexecdir}/%{name}-client-disconnect
-ln -s ../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_libexecdir}/%{name}-verify-otp
+mkdir -p %{buildroot}%{_datadir}/vpn-server-node/libexec
+ln -s ../../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-connect.php
+ln -s ../../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-disconnect.php
+ln -s ../../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_datadir}/vpn-server-node/libexec/verify-otp.php
+ln -s ../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_libexecdir}/vpn-server-node-client-connect
+ln -s ../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_libexecdir}/vpn-server-node-client-disconnect
+ln -s ../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_libexecdir}/vpn-server-node-verify-otp
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -111,47 +142,47 @@ AUTOLOAD
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(0750,root,openvpn) %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/firewall.php
-%dir %attr(0750,root,openvpn) %{_sysconfdir}/%{name}/default
-%config(noreplace) %{_sysconfdir}/%{name}/default/config.php
+%dir %attr(0750,root,openvpn) %{_sysconfdir}/vpn-server-node
+%config(noreplace) %{_sysconfdir}/vpn-server-node/firewall.php
+%dir %attr(0750,root,openvpn) %{_sysconfdir}/vpn-server-node/default
+%config(noreplace) %{_sysconfdir}/vpn-server-node/default/config.php
 %{_bindir}/*
 %{_libexecdir}/*
-%dir %{_datadir}/%{name}
+%dir %{_datadir}/vpn-server-node
 %dir %{_datadir}/php/SURFnet
 %dir %{_datadir}/php/SURFnet/VPN
 %{_datadir}/php/SURFnet/VPN/Node
-%{_datadir}/%{name}/config
-%{_datadir}/%{name}/openvpn-config
+%{_datadir}/vpn-server-node/config
+%{_datadir}/vpn-server-node/openvpn-config
 # legacy libexec
-%{_datadir}/%{name}/libexec
+%{_datadir}/vpn-server-node/libexec
 %doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.4
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.5
 - rebuilt
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.3
-- rebuilt
-
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.2
-- rebuilt
-
-* Fri Aug 17 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-0.1
-- update to 1.0.19
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.18-2
+- merge dev and prod spec files in one
+- cleanup requirements
 
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.18-1
 - update to 1.0.18
+- use PHPUnit 7 on supported platforms
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-3
 - add missing BR
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-2
-- use fedora phpab template
+- use fedora phpab template for generating autoloader
 
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-1
 - update to 1.0.17
+
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-2
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Tue Jun 12 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-1
 - update to 1.0.16

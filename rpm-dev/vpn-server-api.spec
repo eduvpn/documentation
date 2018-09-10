@@ -1,46 +1,33 @@
-%global composer_namespace      SURFnet/VPN/Server
-
-%global github_owner            eduvpn
-%global github_name             vpn-server-api
-%global github_commit           0c2e5b10f1ee8860a6803844a8976c817742a36a
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global git 0c2e5b10f1ee8860a6803844a8976c817742a36a
 
 Name:       vpn-server-api
 Version:    1.4.4
-Release:    0.5%{?dist}
+Release:    0.6%{?dist}
 Summary:    Web service to control OpenVPN processes
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
-Source2:    %{name}.cron
-Patch0:     %{name}-autoload.patch
+URL:        https://github.com/eduvpn/vpn-server-api
+%if %{defined git}
+Source0:    https://github.com/eduvpn/vpn-server-api/archive/%{git}/vpn-server-api-%{version}-%{git}.tar.gz
+%else
+Source0:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+Source3:    vpn-server-api-httpd.conf
+Source4:    vpn-server-api.cron
+Patch0:     vpn-server-api-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
-BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-curl
-BuildRequires:  php-date
-BuildRequires:  php-json
-BuildRequires:  php-mbstring
-BuildRequires:  php-openssl
-BuildRequires:  php-pcre
-BuildRequires:  php-pdo
-BuildRequires:  php-spl
-BuildRequires:  php-standard
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(psr/log)
-BuildRequires:  php-composer(fkooman/otp-verifier)
-BuildRequires:  php-composer(fkooman/yubitwee)
-BuildRequires:  php-composer(fkooman/sqlite-migrate)
-BuildRequires:  php-composer(fkooman/oauth2-client)
-BuildRequires:  php-composer(LC/openvpn-connection-manager)
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -48,6 +35,36 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#    "require": {
+#        "LC/openvpn-connection-manager": "^1",
+#        "eduvpn/common": "^1",
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-openssl": "*",
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
+#        "fkooman/otp-verifier": "^0",
+#        "fkooman/sqlite-migrate": "^0",
+#        "fkooman/yubitwee": "^1",
+#        "php": ">=5.4",
+#        "psr/log": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  php-composer(LC/openvpn-connection-manager)
+BuildRequires:  vpn-lib-common
+BuildRequires:  php-date
+BuildRequires:  php-json
+BuildRequires:  php-openssl
+BuildRequires:  php-pcre
+BuildRequires:  php-pdo
+BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/oauth2-client)
+BuildRequires:  php-composer(fkooman/otp-verifier)
+BuildRequires:  php-composer(fkooman/sqlite-migrate)
+BuildRequires:  php-composer(fkooman/yubitwee)
+BuildRequires:  php-composer(psr/log)
 
 Requires:   crontabs
 Requires:   openvpn
@@ -57,29 +74,6 @@ Requires:   httpd-filesystem
 # EL7 does not have httpd-filesystem
 Requires:   httpd
 %endif
-
-Requires:   php(language) >= 5.4.0
-# the scripts in bin/ require the PHP CLI
-Requires:   php-cli
-Requires:   php-curl
-Requires:   php-date
-Requires:   php-json
-Requires:   php-mbstring
-Requires:   php-openssl
-Requires:   php-pcre
-Requires:   php-pdo
-Requires:   php-spl
-Requires:   php-standard
-Requires:   vpn-lib-common
-Requires:   php-composer(psr/log)
-Requires:   php-composer(fkooman/otp-verifier)
-Requires:   php-composer(fkooman/yubitwee)
-Requires:   php-composer(fkooman/sqlite-migrate)
-Requires:   php-composer(fkooman/oauth2-client)
-Requires:   php-composer(LC/openvpn-connection-manager)
-Requires(post): /usr/sbin/semanage
-Requires(postun): /usr/sbin/semanage
-
 %if 0%{?fedora} >= 24
 Requires:   easy-rsa
 %else
@@ -87,12 +81,51 @@ Requires:   easy-rsa
 Requires:   openssl
 Provides:   bundled(easy-rsa) = 3.0.1
 %endif
+#    "require": {
+#        "LC/openvpn-connection-manager": "^1",
+#        "eduvpn/common": "^1",
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-openssl": "*",
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
+#        "fkooman/otp-verifier": "^0",
+#        "fkooman/sqlite-migrate": "^0",
+#        "fkooman/yubitwee": "^1",
+#        "php": ">=5.4",
+#        "psr/log": "^1"
+#    },
+Requires:   php(language) >= 5.4.0
+Requires:   php-cli
+Requires:   php-composer(LC/openvpn-connection-manager)
+Requires:   vpn-lib-common
+Requires:   php-date
+Requires:   php-json
+Requires:   php-openssl
+Requires:   php-pcre
+Requires:   php-pdo
+Requires:   php-spl
+Requires:   php-composer(fkooman/oauth2-client)
+Requires:   php-composer(fkooman/otp-verifier)
+Requires:   php-composer(fkooman/sqlite-migrate)
+Requires:   php-composer(fkooman/yubitwee)
+Requires:   php-composer(psr/log)
+
+Requires(post): /usr/sbin/semanage
+Requires(postun): /usr/sbin/semanage
 
 %description
 VPN Server API.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%if %{defined git}
+%setup -qn vpn-server-api-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn vpn-server-api-%{version}
+%endif
 %patch0 -p1
 
 # remove bundled Easy RSA 3.x
@@ -103,17 +136,17 @@ rm -rf easy-rsa
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
-require_once '%{_datadir}/php/Psr/Log/autoload.php';
-require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
-require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
-require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
+require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
+require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
+require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
+require_once '%{_datadir}/php/Psr/Log/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/vpn-server-api
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
@@ -122,89 +155,89 @@ do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
-cp -pr schema web %{buildroot}%{_datadir}/%{name}
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+cp -pr schema web %{buildroot}%{_datadir}/vpn-server-api
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/vpn-server-api.conf
 
 # config
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
-ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-api/default
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-api/default/config.php
+ln -s ../../../etc/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/config
 
 # data
-mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
-ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
+mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-server-api
+ln -s ../../../var/lib/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/data
 
 # easy-rsa
 %if 0%{?fedora} >= 24
-ln -s ../../../usr/share/easy-rsa/3 %{buildroot}%{_datadir}/%{name}/easy-rsa
+ln -s ../../../usr/share/easy-rsa/3 %{buildroot}%{_datadir}/vpn-server-api/easy-rsa
 %else 
-cp -pr easy-rsa %{buildroot}%{_datadir}/%{name}
+cp -pr easy-rsa %{buildroot}%{_datadir}/vpn-server-api
 %endif 
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-%{__install} -m 0640 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+%{__install} -m 0640 -D -p %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/vpn-server-api
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
 cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 
 %{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
-semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
-restorecon -R %{_localstatedir}/lib/%{name} || :
+semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-server-api(/.*)?' 2>/dev/null || :
+restorecon -R %{_localstatedir}/lib/vpn-server-api || :
 
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
-semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
+semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-server-api(/.*)?' 2>/dev/null || :
 fi
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}/default
-%config(noreplace) %{_sysconfdir}/%{name}/default/config.php
-%config(noreplace) %{_sysconfdir}/cron.d/%{name}
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-server-api.conf
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-server-api
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-server-api/default
+%config(noreplace) %{_sysconfdir}/vpn-server-api/default/config.php
+%config(noreplace) %{_sysconfdir}/cron.d/vpn-server-api
 %{_bindir}/*
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/web
-%{_datadir}/%{name}/schema
-%{_datadir}/%{name}/easy-rsa
-%{_datadir}/%{name}/config
-%{_datadir}/%{name}/data
+%dir %{_datadir}/vpn-server-api
+%{_datadir}/vpn-server-api/web
+%{_datadir}/vpn-server-api/schema
+%{_datadir}/vpn-server-api/easy-rsa
+%{_datadir}/vpn-server-api/config
+%{_datadir}/vpn-server-api/data
 %dir %{_datadir}/php/SURFnet
 %dir %{_datadir}/php/SURFnet/VPN
 %{_datadir}/php/SURFnet/VPN/Server
-%dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
+%dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-server-api
 %doc README.md composer.json config/config.php.example CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.5
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.6
 - rebuilt
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.4
-- rebuilt
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.4.3-3
+- merge dev and prod spec files in one
+- cleanup requirements
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.3
-- rebuilt
-
-* Wed Sep 05 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.2
-- rebuilt
-
-* Fri Aug 17 2018 François Kooman <fkooman@tuxed.net> - 1.4.4-0.1
-- updaet to 1.4.4
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.4.3-2
+- add composer.json comments to (Build)Requires
+- update composer dependencies
+- move some stuff around to make it consistent with other spec files
 
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.4.3-1
 - update to 1.4.3
+- add psr/log dependency
 
 * Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 1.4.2-1
 - update to 1.4.2
-- add fkooman/sqlite-migrate as dependency
+- use phpunit7 on supported platforms
+- add fkooman/sqlite-migrate dependency
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.1-1
 - update to 1.4.1
@@ -213,13 +246,17 @@ fi
 - add missing BR
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-2
-- use fedora phpab template
+- use fedora phpab template for generating autoloader
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-1
 - update to 1.4.0
 
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
+
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-2
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Wed Jun 13 2018 François Kooman <fkooman@tuxed.net> - 1.2.14-1
 - update to 1.2.14

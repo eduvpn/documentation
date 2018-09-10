@@ -1,52 +1,31 @@
-%global composer_namespace      SURFnet/VPN/Portal
-
-%global github_owner            eduvpn
-%global github_name             vpn-user-portal
-%global github_commit           e77ceb4730131e433ccc5e45b997ddc63a5fcfd7
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global git e77ceb4730131e433ccc5e45b997ddc63a5fcfd7
 
 Name:       vpn-user-portal
 Version:    1.8.1
-Release:    0.10%{?dist}
+Release:    0.11%{?dist}
 Summary:    VPN User Portal
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
-Source2:    %{name}.cron
-Patch0:     %{name}-autoload.patch
+URL:        https://github.com/eduvpn/vpn-user-portal
+%if %{defined git}
+Source0:    https://github.com/eduvpn/vpn-user-portal/archive/%{git}/vpn-user-portal-%{version}-%{git}.tar.gz
+%else
+Source0:    https://github.com/eduvpn/vpn-user-portal/releases/download/%{version}/vpn-user-portal-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/vpn-user-portal/releases/download/%{version}/vpn-user-portal-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+Source3:    vpn-user-portal-httpd.conf
+Source4:    vpn-user-portal.cron
+Patch0:     vpn-user-portal-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-date
-BuildRequires:  php-filter
-BuildRequires:  php-gettext
-BuildRequires:  php-hash
-BuildRequires:  php-json
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
-BuildRequires:  php-pecl(libsodium)
-BuildRequires:  php-mbstring
-BuildRequires:  php-pcre
-BuildRequires:  php-pdo
-BuildRequires:  php-spl
-BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(bacon/bacon-qr-code)
-BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(fkooman/oauth2-client)
-BuildRequires:  php-composer(fkooman/oauth2-server)
-%if 0%{?fedora} < 28 && 0%{?rhel} < 8
-BuildRequires:  php-composer(paragonie/random_compat)
-%endif
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -54,32 +33,44 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
-
-Requires:   crontabs
-Requires:   php(language) >= 5.4.0
-# the scripts in bin/ require the PHP CLI
-Requires:   php-cli
-Requires:   php-date
-Requires:   php-filter
-Requires:   php-gettext
-Requires:   php-hash
-Requires:   php-json
+#    "require": {
+#        "bacon/bacon-qr-code": "^1.0",
+#        "eduvpn/common": "^1",
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
+#        "fkooman/oauth2-server": "^3",
+#        "fkooman/secookie": "^2",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "php": ">=5.4.0"
+#    },
+BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  php-composer(bacon/bacon-qr-code)
+BuildRequires:  vpn-lib-common
+BuildRequires:  php-date
+BuildRequires:  php-json
+BuildRequires:  php-pcre
+BuildRequires:  php-pdo
+BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/oauth2-client)
+BuildRequires:  php-composer(fkooman/oauth2-server)
+BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(paragonie/random_compat)
+%endif
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
 #    },
-Requires:   php-pecl(libsodium)
-Requires:   php-mbstring
-Requires:   php-pcre
-Requires:   php-pdo
-Requires:   php-spl
-Requires:   vpn-lib-common
-Requires:   php-composer(bacon/bacon-qr-code)
-Requires:   php-composer(fkooman/secookie)
-Requires:   php-composer(fkooman/oauth2-client)
-Requires:   php-composer(fkooman/oauth2-server)
-%if 0%{?fedora} < 28 && 0%{?rhel} < 8
-Requires:   php-composer(paragonie/random_compat)
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-pecl(libsodium)
 %endif
 
 %if 0%{?fedora} >= 24
@@ -87,6 +78,47 @@ Requires:   httpd-filesystem
 %else
 # EL7 does not have httpd-filesystem
 Requires:   httpd
+%endif
+Requires:   crontabs
+#    "require": {
+#        "bacon/bacon-qr-code": "^1.0",
+#        "eduvpn/common": "^1",
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-pcre": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
+#        "fkooman/oauth2-server": "^3",
+#        "fkooman/secookie": "^2",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": "^1|^2",
+#        "php": ">=5.4.0"
+#    },
+Requires:   php(language) >= 5.4.0
+Requires:   php-cli
+Requires:   php-composer(bacon/bacon-qr-code)
+Requires:   vpn-lib-common
+Requires:   php-date
+Requires:   php-json
+Requires:   php-pcre
+Requires:   php-pdo
+Requires:   php-spl
+Requires:   php-composer(fkooman/oauth2-client)
+Requires:   php-composer(fkooman/oauth2-server)
+Requires:   php-composer(fkooman/secookie)
+Requires:   php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:   php-composer(paragonie/random_compat)
+%endif
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+Requires:   php-sodium
+%else
+Requires:   php-pecl(libsodium)
 %endif
 
 Requires(post): /usr/sbin/semanage
@@ -96,56 +128,56 @@ Requires(postun): /usr/sbin/semanage
 VPN User Portal.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%if %{defined git}
+%setup -qn vpn-user-portal-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn vpn-user-portal-%{version}
+%endif
 %patch0 -p1
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
-require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
-%else
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/random_compat/autoload.php';
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
-require_once '%{_datadir}/php/BaconQrCode/autoload.php';
-require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
-require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
-require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 AUTOLOAD
 %endif
 
 %install
-mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 
 for i in add-user foreign-key-list-fetcher init show-public-key generate-voucher
 do
-    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/%{name}-${i}
+    install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
 done
 
-cp -pr web views locale %{buildroot}%{_datadir}/%{name}
+cp -pr web views locale %{buildroot}%{_datadir}/vpn-user-portal
 
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
-ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal/default
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/default/config.php
+ln -s ../../../etc/vpn-user-portal %{buildroot}%{_datadir}/vpn-user-portal/config
 
-mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
-ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
+mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-user-portal
+ln -s ../../../var/lib/vpn-user-portal %{buildroot}%{_datadir}/vpn-user-portal/data
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-%{__install} -p -D -m 0640 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.d/%{name}
+%{__install} -p -D -m 0640 %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/vpn-user-portal
 
 # httpd
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/vpn-user-portal.conf
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -156,82 +188,68 @@ AUTOLOAD
 %{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %post
-semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
-restorecon -R %{_localstatedir}/lib/%{name} || :
+semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
+restorecon -R %{_localstatedir}/lib/vpn-user-portal || :
 
 # remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/*/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
-semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
+semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
 fi
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}/default
-%config(noreplace) %{_sysconfdir}/%{name}/default/config.php
-%config(noreplace) %{_sysconfdir}/cron.d/%{name}
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-user-portal.conf
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-user-portal
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-user-portal/default
+%config(noreplace) %{_sysconfdir}/vpn-user-portal/default/config.php
+%config(noreplace) %{_sysconfdir}/cron.d/vpn-user-portal
 %{_bindir}/*
 %dir %{_datadir}/php/SURFnet
 %dir %{_datadir}/php/SURFnet/VPN
 %{_datadir}/php/SURFnet/VPN/Portal
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/data
-%{_datadir}/%{name}/web
-%{_datadir}/%{name}/views
-%{_datadir}/%{name}/config
-%{_datadir}/%{name}/locale
-%dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
+%dir %{_datadir}/vpn-user-portal
+%{_datadir}/vpn-user-portal/data
+%{_datadir}/vpn-user-portal/web
+%{_datadir}/vpn-user-portal/views
+%{_datadir}/vpn-user-portal/config
+%{_datadir}/vpn-user-portal/locale
+%dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-user-portal
 %doc README.md CHANGES.md composer.json config/config.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.10
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.11
 - rebuilt
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.9
-- rebuilt
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.0-2
+- merge dev and prod spec files in one
+- cleanup requirements
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.8
-- rebuilt
-
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.7
-- rebuilt
-
-* Wed Sep 05 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.6
-- rebuilt
-
-* Wed Sep 05 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.5
-- rebuilt
-
-* Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.4
-- rebuilt
-
-* Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.3
-- rebuilt
-
-* Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.2
-- rebuilt
-
-* Fri Aug 17 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-0.1
-- update to 1.8.1
-
-* Tue Aug 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.0-0.1
+* Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.8.0-1
 - update to 1.8.0
 
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.7.2-1
 - update to 1.7.2
+- use PHPUnit 7 on supported platforms
 
 * Tue Jul 24 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-1
-- add missing BR
-- use fedora phpab template
 - update to 1.7.1
+
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-3
+- add missing BR
+
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-2
+- use fedora phpab template for generating autoloader
 
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-1
 - update to 1.7.0
+
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.6.10-2
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.6.10-1
 - update to 1.6.10

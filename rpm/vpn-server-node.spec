@@ -1,4 +1,4 @@
-%global git 6aa7105426ae02eaab25efc0a468c5f5698de928
+#global git 6aa7105426ae02eaab25efc0a468c5f5698de928
 
 Name:       vpn-server-node
 Version:    1.0.18

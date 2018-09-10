@@ -1,36 +1,32 @@
-%global composer_namespace      SURFnet/VPN/Admin
-
-%global github_owner            eduvpn
-%global github_name             vpn-admin-portal
-%global github_commit           b203777f2bdf6120c2b82e726f8346a26867b37c
-%global github_short            %(c=%{github_commit}; echo ${c:0:7})
+%global git 3e297b39320aedcfd69c82ec9153b9b8a5304556
 
 Name:       vpn-admin-portal
 Version:    1.7.1
-Release:    0.4%{?dist}
+Release:    0.5%{?dist}
 Summary:    VPN Admin Portal
-
 Group:      Applications/Internet
 License:    AGPLv3+
-
-URL:        https://github.com/%{github_owner}/%{github_name}
-Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-httpd.conf
-Patch0:     %{name}-autoload.patch
+URL:        https://github.com/eduvpn/vpn-admin-portal
+%if %{defined git}
+Source0:    https://github.com/eduvpn/vpn-admin-portal/archive/%{git}/vpn-admin-portal-%{version}-%{git}.tar.gz
+%else
+Source0:    https://github.com/eduvpn/vpn-admin-portal/releases/download/%{version}/vpn-admin-portal-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/vpn-admin-portal/releases/download/%{version}/vpn-admin-portal-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+Source3:    vpn-admin-portal-httpd.conf
+Patch0:     vpn-admin-portal-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-date
-BuildRequires:  php-spl
-BuildRequires:  php-gd
-BuildRequires:  php-gettext
-BuildRequires:  vpn-lib-common
-BuildRequires:  php-composer(twig/twig) < 2
-BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "ext-json": "*",
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
+BuildRequires:  php-json
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -38,24 +34,51 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#    "require": {
+#        "eduvpn/common": "dev-master",
+#        "ext-date": "*",
+#        "ext-gd": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/secookie": "^2",
+#        "php": ">5.4",
+#        "twig/twig": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  vpn-lib-common
+BuildRequires:  php-date
+BuildRequires:  php-gd
+BuildRequires:  php-pdo
+BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  php-composer(twig/twig) < 2
 
 Requires:   roboto-fontface-fonts
-Requires:   php(language) >= 5.4.0
-# the scripts in bin/ require the PHP CLI
-Requires:   php-cli
-Requires:   php-date
-Requires:   php-spl
-Requires:   php-gd
-Requires:   php-gettext
-Requires:   vpn-lib-common
-Requires:   php-composer(twig/twig) < 2
-Requires:   php-composer(fkooman/secookie)
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
 # EL7 does not have httpd-filesystem
 Requires:   httpd
 %endif
+#    "require": {
+#        "eduvpn/common": "dev-master",
+#        "ext-date": "*",
+#        "ext-gd": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "fkooman/secookie": "^2",
+#        "php": ">5.4",
+#        "twig/twig": "^1"
+#    },
+Requires:   php(language) >= 5.4.0
+Requires:   php-cli
+Requires:   vpn-lib-common
+Requires:   php-date
+Requires:   php-gd
+Requires:   php-pdo
+Requires:   php-spl
+Requires:   php-composer(fkooman/secookie)
+Requires:   php-composer(twig/twig) < 2
 
 Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
@@ -64,7 +87,12 @@ Requires(postun): /usr/sbin/semanage
 VPN Admin Portal.
 
 %prep
-%setup -qn %{github_name}-%{github_commit} 
+%if %{defined git}
+%setup -qn vpn-admin-portal-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn vpn-admin-portal-%{version}
+%endif
 %patch0 -p1
 
 %build
@@ -76,21 +104,21 @@ require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 
 %install
-mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Admin
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Admin
-install -m 0755 -D -p bin/add-user.php %{buildroot}%{_bindir}/%{name}-add-user
-cp -pr web views locale %{buildroot}%{_datadir}/%{name}
+install -m 0755 -D -p bin/add-user.php %{buildroot}%{_bindir}/vpn-admin-portal-add-user
+cp -pr web views locale %{buildroot}%{_datadir}/vpn-admin-portal
 
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/default/config.php
-ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-admin-portal/default
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-admin-portal/default/config.php
+ln -s ../../../etc/vpn-admin-portal %{buildroot}%{_datadir}/vpn-admin-portal/config
 
-mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
-ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
+mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-admin-portal
+ln -s ../../../var/lib/vpn-admin-portal %{buildroot}%{_datadir}/vpn-admin-portal/data
 
 # httpd
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/vpn-admin-portal.conf
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -98,66 +126,71 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{phpunit} tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --bootstrap=tests/autoload.php
 
 %post
-semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
-restorecon -R %{_localstatedir}/lib/%{name} || :
+semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-admin-portal(/.*)?' 2>/dev/null || :
+restorecon -R %{_localstatedir}/lib/vpn-admin-portal || :
 
 # remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/*/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
-semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/%{name}(/.*)?' 2>/dev/null || :
+semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-admin-portal(/.*)?' 2>/dev/null || :
 fi
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
-%dir %attr(0750,root,apache) %{_sysconfdir}/%{name}/default
-%config(noreplace) %{_sysconfdir}/%{name}/default/config.php
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-admin-portal.conf
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-admin-portal
+%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-admin-portal/default
+%config(noreplace) %{_sysconfdir}/vpn-admin-portal/default/config.php
 %{_bindir}/*
 %dir %{_datadir}/php/SURFnet
 %dir %{_datadir}/php/SURFnet/VPN
 %{_datadir}/php/SURFnet/VPN/Admin
-%{_datadir}/%{name}/web
-%{_datadir}/%{name}/data
-%{_datadir}/%{name}/views
-%{_datadir}/%{name}/config
-%{_datadir}/%{name}/locale
-%dir %attr(0700,apache,apache) %{_localstatedir}/lib/%{name}
+%{_datadir}/vpn-admin-portal/web
+%{_datadir}/vpn-admin-portal/data
+%{_datadir}/vpn-admin-portal/views
+%{_datadir}/vpn-admin-portal/config
+%{_datadir}/vpn-admin-portal/locale
+%dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-admin-portal
 %doc README.md CHANGES.md composer.json config/config.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.4
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.5
 - rebuilt
 
-* Thu Sep 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.3
-- rebuilt
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-3
+- merge dev and prod spec files in one
+- cleanup requirements
 
-* Fri Aug 17 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.2
-- rebuilt
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-2
+- add composer.json comments to (Build)Requires
+- update composer dependencies
+- move some stuff around to make it consistent with other spec files
 
-* Fri Aug 17 2018 François Kooman <fkooman@tuxed.net> - 1.7.1-0.1
-- update to 1.7.1
-
-* Tue Aug 07 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-0.1
+* Wed Aug 15 2018 François Kooman <fkooman@tuxed.net> - 1.7.0-1
 - update to 1.7.0
 
 * Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.6.1-1
 - update to 1.6.1
+- use PHPUnit 7 on supported platforms
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-3
 - add missing BR
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-2
-- use fedora phpab template
+- use fedora phpab template for generating autoloader
 
 * Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.6.0-1
 - update to 1.6.0
+
+* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.5.5-2
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Thu May 17 2018 François Kooman <fkooman@tuxed.net> - 1.5.5-1
 - update to 1.5.5
