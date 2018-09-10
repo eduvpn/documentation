@@ -207,7 +207,7 @@ systemctl enable --now httpd
 # by default! 
 
 # generate the OpenVPN server configuration files and certificates
-vpn-server-node-server-config --generate
+vpn-server-node-server-config
 
 # enable and start OpenVPN
 systemctl enable --now openvpn-server@default-internet-0

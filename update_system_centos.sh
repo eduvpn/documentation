@@ -14,7 +14,7 @@ systemctl start php-fpm
 systemctl start httpd
 
 # regenerate OpenVPN config
-vpn-server-node-server-config --generate
+vpn-server-node-server-config
 
 # regenerate/restart firewall
 vpn-server-node-generate-firewall --install

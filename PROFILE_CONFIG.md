@@ -54,7 +54,7 @@ working. New installations override these "defaults", e.g. to improve security.
 | `reject6`          | Do not forward IPv6 traffic, useful when the VPN server does not have IPv6 connectivity | no | `false` |
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
 | `routes`           | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false` | no | `[]` |
-| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client, only used when `defaultGateway` is `true` | no | `[]` |
+| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client. If left empty, the IPv4 and IPv6 gateway address will be pushed to the clients. Only used when `defaultGateway` is `true`. | no | `[]` |
 | `twoFactor`        | Whether or not to enable two-factor authentication for connecting to the VPN server, see [Two-factor](2FA.md) documentation | no | `false` |
 | `clientToClient`   | Whether or not to allow client-to-client traffic | no | `false` |
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |

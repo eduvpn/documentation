@@ -7,7 +7,7 @@ fi
 #
 # Generate new OpenVPN configurations
 #
-vpn-server-node-server-config --instance ${INSTANCE} --generate
+vpn-server-node-server-config --instance ${INSTANCE}
 
 #
 # Enable and start all available OpenVPN processes

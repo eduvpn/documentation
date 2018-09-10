@@ -57,12 +57,3 @@ information as shown above. The certificates use a randomly generated CN.
 
 The logging is NOT deleted using this query. The log will be deleted after 30
 days through the "housekeeping" cronjob.
-
-**NOTE**: due to a [bug](https://github.com/eduvpn/vpn-server-api/issues/71) 
-the 2FA information (TOTP) is *NOT* deleted when you delete the user as the 
-table is not linked to the "users" table in the latest version. The current 
-Debian packages do not yet have this problem, so no need to perform the queries 
-there.
-
-    DELETE FROM otp WHERE user_id = 'ABCD';
-    DELETE FROM otp_log WHERE user_id = 'ABCD';

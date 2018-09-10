@@ -57,7 +57,7 @@ To generate the firewall and output the data to `stdout`:
 To generate the OpenVPN server configuration files:
 
     $ cd ${HOME}/Projects/eduVPN/vpn-server-node
-    $ php bin/server-config.php --generate
+    $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
 

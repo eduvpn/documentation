@@ -80,7 +80,7 @@ removed:
 
 Now the new configurations can be generated:
 
-    $ sudo vpn-server-node-server-config --generate
+    $ sudo vpn-server-node-server-config
 
 Enable and start them:
 

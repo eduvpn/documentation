@@ -30,7 +30,7 @@ echo "${TMP_DIR}/backup-${DATETIME}.tar.xz"
 # first run the "deploy_${DIST}.sh" script, same as for a new deploy
 #
 # cd / && tar --selinux -xJf <file.tar.xz>
-# vpn-server-node-server-config --generate
+# vpn-server-node-server-config
 # vpn-server-node-generate-firewall --install
 # 
 # enable all the OpenVPN processes (systemctl) if necessary and start them!
