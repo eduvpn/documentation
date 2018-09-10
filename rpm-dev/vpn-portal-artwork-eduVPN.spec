@@ -27,7 +27,7 @@ VPN Portal Artwork for eduVPN.
 
 %prep
 %if %{defined git}
-%setup -qn vpn-portal-artwork-eduVPN-%{git}
+%setup -qn vpn-portal-artwork-%{git}
 %else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %setup -qn vpn-portal-artwork-eduVPN-%{version}

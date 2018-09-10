@@ -27,7 +27,7 @@ VPN Portal Artwork for LC.
 
 %prep
 %if %{defined git}
-%setup -qn vpn-portal-artwork-LC-%{git}
+%setup -qn vpn-portal-artwork-%{git}
 %else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %setup -qn vpn-portal-artwork-LC-%{version}
