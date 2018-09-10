@@ -1,24 +1,51 @@
-%global commit0 e7c014f9b1f03923c56d37e1347eb350077fb16b
+#global git e7c014f9b1f03923c56d37e1347eb350077fb16b
 
 Name:       php-saml-ds
 Version:    1.0.12
-Release:    1%{?dist}
+Release:    4%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
 License:    ASL2.0
 
-URL:        https://git.tuxed.net/fkooman/php-saml-ds
-Source0:    https://git.tuxed.net/fkooman/php-saml-ds/snapshot/php-saml-ds-%{commit0}.tar.xz
-Source1:    %{name}-httpd.conf
+URL:        https://software.tuxed.net/php-saml-ds
+%if %{defined git}
+Source0:    https://git.tuxed.net/fkooman/php-saml-ds/snapshot/php-saml-ds-%{git}.tar.xz
+%else
+Source0:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz
+Source1:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz.asc
+Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
+Source3:    %{name}-httpd.conf
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4|^5|^6|^7"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
+#    "require": {
+#        "ext-curl": "*",
+#        "ext-filter": "*",
+#        "ext-imagick": "*",
+#        "ext-json": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
+#        "ext-xml": "*",
+#        "fkooman/secookie": "^2",
+#        "php": ">=5.4.0",
+#        "twig/twig": "^1"
+#    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-filter
@@ -27,10 +54,29 @@ BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-xml
-BuildRequires:  php-composer(twig/twig) < 2
 BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  php-composer(twig/twig) < 2
 
+%if 0%{?fedora} >= 24
+Requires:   httpd-filesystem
+%else
+# EL7 does not have httpd-filesystem
+Requires:   httpd
+%endif
+#    "require": {
+#        "ext-curl": "*",
+#        "ext-filter": "*",
+#        "ext-imagick": "*",
+#        "ext-json": "*",
+#        "ext-pcre": "*",
+#        "ext-spl": "*",
+#        "ext-xml": "*",
+#        "fkooman/secookie": "^2",
+#        "php": ">=5.4.0",
+#        "twig/twig": "^1"
+#    },
 Requires:   php(language) >= 5.4.0
+Requires:   php-cli
 Requires:   php-curl
 Requires:   php-filter
 Requires:   php-pecl-imagick
@@ -38,20 +84,19 @@ Requires:   php-json
 Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-xml
-Requires:   php-composer(twig/twig) < 2
 Requires:   php-composer(fkooman/secookie)
-%if 0%{?fedora} >= 24
-Requires:   httpd-filesystem
-%else
-# EL7 does not have httpd-filesystem
-Requires:   httpd
-%endif
+Requires:   php-composer(twig/twig) < 2
 
 %description
 SAML Discovery Service written in PHP.
 
 %prep
-%setup -qn php-saml-ds-%{commit0}
+%if %{defined git}
+%setup -qn php-saml-ds-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%setup -qn php-saml-ds-%{version}
+%endif
 %patch0 -p1
 
 %build
@@ -75,7 +120,7 @@ ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %post
 # remove template cache if it is there
@@ -87,7 +132,7 @@ cat <<'AUTOLOAD' | tee -a tests/autoload.php
 require_once 'src/autoload.php';
 AUTOLOAD
 
-%{_bindir}/phpunit tests --verbose --bootstrap=tests/autoload.php
+%{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
 %defattr(-,root,root,-)
@@ -107,14 +152,29 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-4
+- merge dev and prod spec files in one
+- cleanup requirements
+
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-3
+- move some stuff around to make it consistent with other spec files
+- add composer.json comments to (Build)Requires
+
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-2
+- use phpunit7 on supported platforms
+
 * Fri Aug 03 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-1
 - update to 1.0.12
 
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-4
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-5
 - add missing BR
 
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-3
-- use fedora phpab template
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-4
+- use fedora phpab template for generating autoloader
+
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-3
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Fri Jun 01 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-2
 - update upstream URL to git.tuxed.net

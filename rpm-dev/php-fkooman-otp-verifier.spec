@@ -1,4 +1,4 @@
-%global commit0 2f5c4770a76cf1f4c913a35977108314b3af9ade
+#global git 2f5c4770a76cf1f4c913a35977108314b3af9ade
 
 Name:           php-fkooman-otp-verifier
 Version:        0.2.0
@@ -6,32 +6,23 @@ Release:        6%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-otp-verifier
-Source0:        https://git.tuxed.net/fkooman/php-otp-verifier/snapshot/php-otp-verifier-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-otp-verifier
+%if %{defined git}
+Source0:        https://git.tuxed.net/fkooman/php-otp-verifier/snapshot/php-otp-verifier-%{git}.tar.xz
+%else
+Source0:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
 
 BuildArch:      noarch
 
-#        "php": ">= 5.4",
-BuildRequires:  php(language) >= 5.4.0
-#        "ext-date": "*",
-#        "ext-hash": "*",
-#        "ext-pdo": "*",
-#        "ext-spl": "*",
-BuildRequires:  php-date
-BuildRequires:  php-hash
-BuildRequires:  php-pdo
-BuildRequires:  php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": ">=1",
-#        "symfony/polyfill-php56": "^1"
-BuildRequires:  php-composer(paragonie/constant_time_encoding)
-%if 0%{?fedora} < 28 && 0%{?rhel} < 8
-BuildRequires:  php-composer(paragonie/random_compat)
-BuildRequires:  php-composer(symfony/polyfill-php56)
-%endif
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
-
+#    "require-dev": {
+#        "phpunit/phpunit": "^4|^5|^6|^7",
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -39,43 +30,68 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
-
-#        "php": ">= 5.4",
-Requires:  php(language) >= 5.4.0
+#    "require": {
 #        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-Requires:  php-date
-Requires:  php-hash
-Requires:  php-pdo
-Requires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": ">=1",
+#        "php": ">= 5.4",
 #        "symfony/polyfill-php56": "^1"
-Requires:  php-composer(paragonie/constant_time_encoding)
+#    },
+BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  php-date
+BuildRequires:  php-hash
+BuildRequires:  php-pdo
+BuildRequires:  php-spl
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
-Requires:  php-composer(paragonie/random_compat)
-Requires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
+%endif
+
+#    "require": {
+#        "ext-date": "*",
+#        "ext-hash": "*",
+#        "ext-pdo": "*",
+#        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">= 5.4",
+#        "symfony/polyfill-php56": "^1"
+#    },
+Requires:       php(language) >= 5.4.0
+Requires:       php-date
+Requires:       php-hash
+Requires:       php-pdo
+Requires:       php-spl
+Requires:       php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+Requires:       php-composer(paragonie/random_compat)
+Requires:       php-composer(symfony/polyfill-php56)
 %endif
 
 Provides:       php-composer(fkooman/otp-verifier) = %{version}
 
 %description
-OTP Verification Library
+OTP Verification Library.
 
 %prep
-%autosetup -n php-otp-verifier-%{commit0}
+%if %{defined git}
+%autosetup -n php-otp-verifier-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-otp-verifier-%{version}
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
-%else
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
@@ -100,26 +116,21 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Otp
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-6
-- rebuilt
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-6
+- merge dev and prod spec files in one
+- cleanup requirements
 
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-5
-- rebuilt
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-5
+- only autoload compat libraries on older versions of Fedora/EL
 
-* Thu Jul 26 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-4
-- use PHPUnit 7 on Fedora >= 27, EL >= 8
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-4
+- use phpunit7 on supported platforms
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-3
 - add missing BR
 
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-2
-- use fedora phpab template
+- use fedora phpab template for generating autoloader
 
 * Fri Jul 20 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-1
-- update to 0.2.0
-
-* Mon Jul 16 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-1
-- update to 0.1.1
-
-* Tue Jul 10 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.1
 - initial package

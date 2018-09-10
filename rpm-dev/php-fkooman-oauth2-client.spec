@@ -1,4 +1,4 @@
-%global commit0 3d96587ed78b1ecd72085847cae779b6edeb4526
+#global git 3d96587ed78b1ecd72085847cae779b6edeb4526
 
 Name:           php-fkooman-oauth2-client
 Version:        7.1.3
@@ -6,13 +6,31 @@ Release:        7%{?dist}
 Summary:        Very simple OAuth 2.0 client
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-oauth2-client
-Source0:        https://git.tuxed.net/fkooman/php-oauth2-client/snapshot/php-oauth2-client-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-oauth2-client
+%if %{defined git}
+Source0:        https://git.tuxed.net/fkooman/php-oauth2-client/snapshot/php-oauth2-client-%{git}.tar.xz
+%else
+Source0:        https://software.tuxed.net/php-oauth2-client/files/php-oauth2-client-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-oauth2-client/files/php-oauth2-client-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
 
 BuildArch:      noarch
 
-#        "php": ">=5.4",
-BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  gnupg2
+BuildRequires:  php-fedora-autoloader-devel
+BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  phpunit7
+%global phpunit %{_bindir}/phpunit7
+%else
+BuildRequires:  phpunit
+%global phpunit %{_bindir}/phpunit
+%endif
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-hash": "*",
@@ -21,6 +39,13 @@ BuildRequires:  php(language) >= 5.4.0
 #        "ext-pdo": "*",
 #        "ext-session": "*",
 #        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">=5.4",
+#        "psr/log": "^1.0",
+#        "symfony/polyfill-php56": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-hash
@@ -29,28 +54,14 @@ BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-session
 BuildRequires:  php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
-#        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1"
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(psr/log)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
-BuildRequires:  php-fedora-autoloader-devel
-BuildRequires:  %{_bindir}/phpab
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-BuildRequires:  phpunit7
-%global phpunit %{_bindir}/phpunit7
-%else
-BuildRequires:  phpunit
-%global phpunit %{_bindir}/phpunit
-%endif
 
-#        "php": ">=5.4",
-Requires:       php(language) >= 5.4.0
+#    "require": {
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-hash": "*",
@@ -59,6 +70,13 @@ Requires:       php(language) >= 5.4.0
 #        "ext-pdo": "*",
 #        "ext-session": "*",
 #        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">=5.4",
+#        "psr/log": "^1.0",
+#        "symfony/polyfill-php56": "^1"
+#    },
+Requires:       php(language) >= 5.4.0
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-hash
@@ -67,10 +85,6 @@ Requires:       php-pcre
 Requires:       php-pdo
 Requires:       php-session
 Requires:       php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
-#        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1"
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(psr/log)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
@@ -86,7 +100,12 @@ application. It has minimal dependencies, but still tries to be secure.
 The main purpose is to be compatible with PHP 5.4.
 
 %prep
-%autosetup -n php-oauth2-client-%{commit0}
+%if %{defined git}
+%autosetup -n php-oauth2-client-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-oauth2-client-%{version}
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
@@ -121,23 +140,26 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Client
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-7
-- rebuilt
+* Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-7
+- merge dev and prod spec files in one
+- cleanup requirements
 
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-6
-- rebuilt
+* Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-6
+- add psr/log to autoloader
+- only autoload compat libraries on older versions of Fedora/EL
 
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-5
-- rebuilt
+* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-5
+- use phpunit7 on supported platforms
 
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-4
-- rebuilt
-
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-3
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-4
 - add missing BR
 
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-2
-- use fedora phpab template
+* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-3
+- use fedora phpab template for generating autoloader
+
+* Thu Jun 28 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-2
+- use release tarball instead of Git tarball
+- verify GPG signature
 
 * Sat Jun 02 2018 François Kooman <fkooman@tuxed.net> - 7.1.3-1
 - update to 7.1.3
