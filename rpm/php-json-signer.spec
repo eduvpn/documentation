@@ -1,15 +1,21 @@
+#global git 242e5ef7cfed32950fdbce394425deff547ed3d5
+
 Name:       php-json-signer
 Version:    3.0.2
-Release:    9%{?dist}
+Release:    10%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
 License:    MIT
 
 URL:        https://software.tuxed.net/php-json-signer
+%if %{defined git}
+Source0:    https://git.tuxed.net/fkooman/php-json-signer/snapshot/php-json-signer-%{git}.tar.xz
+%else
 Source0:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz
 Source1:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz.asc
 Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
@@ -17,6 +23,9 @@ BuildArch:  noarch
 BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
+#    "require-dev": {
+#        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -24,8 +33,18 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+#    "require": {
+#        "ext-date": "*",
+#        "ext-json": "*",
+#        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1|^2",
 #        "php": ">=5.4.0"
+#    },
 BuildRequires:  php(language) >= 5.4.0
+BuildRequires:  php-date
+BuildRequires:  php-json
+BuildRequires:  php-spl
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
@@ -35,17 +54,19 @@ BuildRequires:  php-sodium
 %else
 BuildRequires:  php-pecl(libsodium)
 %endif
+
+#    "require": {
 #        "ext-date": "*",
 #        "ext-json": "*",
 #        "ext-spl": "*",
-BuildRequires:  php-date
-BuildRequires:  php-json
-BuildRequires:  php-spl
 #        "paragonie/constant_time_encoding": "^1|^2",
-BuildRequires:  php-composer(paragonie/constant_time_encoding)
-
 #        "php": ">=5.4.0"
+#    },
 Requires:   php(language) >= 5.4.0
+Requires:   php-date
+Requires:   php-json
+Requires:   php-spl
+Requires:   php-composer(paragonie/constant_time_encoding)
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
 #        "ext-sodium": "PHP >= 7.2 sodium implementation"
@@ -55,14 +76,6 @@ Requires:       php-sodium
 %else
 Requires:       php-pecl(libsodium)
 %endif
-#        "ext-date": "*",
-#        "ext-json": "*",
-#        "ext-spl": "*",
-Requires:   php-date
-Requires:   php-json
-Requires:   php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-Requires:   php-composer(paragonie/constant_time_encoding)
 
 %description
 This application can be used to sign JSON files, by adding some fields that 
@@ -71,8 +84,12 @@ signature is "detached" so no complicated file syntax is needed to store the
 signature in the file itself.
 
 %prep
+%if %{defined git}
+%setup -qn php-json-signer-%{git}
+%else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %setup -qn php-json-signer-%{version}
+%endif
 %patch0 -p1
  
 %build
@@ -108,6 +125,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-10
+- merge dev and prod spec files in one
+- cleanup requirements
+
 * Sat Sep 08 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-9
 - requires php-sodium on modern OSes to make sure we do not need sodium compat
 - add composer.json comments to (Build)Requires
