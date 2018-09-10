@@ -123,13 +123,3 @@ If you also want to allow clients to connect with the VPN over `tcp/443`, see
 ### Let's Connect! Branding
 
 See [BRANDING](BRANDING.md).
-
-### Modern PHP
-
-You can switch to modern PHP for performance (and security) reasons:
-
-**NOTE**: this is experimental. This PHP version is not supported by CentOS and
-depends on [Remi's RPM repository](https://blog.remirepo.net/).
-
-    $ sudo -s
-    # ./switch_to_remi_php.sh
