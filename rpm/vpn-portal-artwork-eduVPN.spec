@@ -1,8 +1,8 @@
-#global git f1c18c02b0ee447d6a04b21014a037bd25b5818a
+#global git e4a0cd5060dc80fe3e2ef1b571ecae66d6cd7220
 
 Name:       vpn-portal-artwork-eduVPN
-Version:    1.2.2
-Release:    3%{?dist}
+Version:    1.2.3
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -69,6 +69,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.2.3-1
+- update to 1.2.3
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.2.2-3
 - merge dev and prod spec files in one
 

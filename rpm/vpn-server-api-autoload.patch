@@ -1,128 +1,135 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index 794c207..af34ef2 100644
+index 0a90fcf..aeeb957 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Server\Storage;
 diff --git a/bin/init.php b/bin/init.php
-index 131e8a9..88a23a8 100644
+index 409d436..af99191 100644
 --- a/bin/init.php
 +++ b/bin/init.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/show-instance-info.php b/bin/show-instance-info.php
-index c984733..1c32915 100644
+index 014bd18..d1f90b7 100644
 --- a/bin/show-instance-info.php
 +++ b/bin/show-instance-info.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/stats.php b/bin/stats.php
-index 1e8708d..53cf97b 100644
+index 50b7c95..0f73017 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/status.php b/bin/status.php
-index 52d2bb3..99047f7 100644
+index d925aa9..fccf3b6 100644
 --- a/bin/status.php
 +++ b/bin/status.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;
  use SURFnet\VPN\Common\CliParser;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index 8c44b69..9c400e5 100644
+index 3aac23c..813422e 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index aea485d..aac743e 100644
+index 6441509..fc3c668 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
+ 
+ use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
+diff --git a/bin/update.php b/bin/update.php
+index 8da8b74..5ca96af 100644
+--- a/bin/update.php
++++ b/bin/update.php
+@@ -8,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index 925cb6c..e7214e7 100644
+index db6f4e5..f77d39b 100644
 --- a/web/api.php
 +++ b/web/api.php
-@@ -7,9 +7,9 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-server-api';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++$baseDir = '/usr/share/vpn-server-api';
  
  use fkooman\OAuth\Client\Http\CurlHttpClient;
  use fkooman\OAuth\Client\OAuthClient;

@@ -1,32 +1,30 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index baa23c8..0084da0 100644
+index 215d35d..afe4cc6 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
-@@ -8,9 +8,9 @@
+@@ -8,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-admin-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Admin/autoload.php';
++$baseDir = '/usr/share/vpn-admin-portal';
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/index.php b/web/index.php
-index 1ba95ae..ee2f3ab 100644
+index 30f1a16..a57c713 100644
 --- a/web/index.php
 +++ b/web/index.php
-@@ -7,9 +7,9 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
+-require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+$baseDir = '/usr/share/vpn-admin-portal';
- /** @psalm-suppress UnresolvableInclude */
--require_once sprintf('%s/vendor/autoload.php', $baseDir);
 +require_once '/usr/share/php/SURFnet/VPN/Admin/autoload.php';
++$baseDir = '/usr/share/vpn-admin-portal';
  
  use fkooman\SeCookie\Cookie;
  use fkooman\SeCookie\Session;
