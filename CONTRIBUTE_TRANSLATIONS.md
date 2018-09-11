@@ -15,7 +15,7 @@ export "po" files.
 You can check which translations are already available, and possibly update 
 them if they are out of date:
 
-* [vpn-user-porta](https://github.com/eduvpn/vpn-user-portal/tree/master/locale)
+* [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/master/locale)
 * [vpn-admin-portal](https://github.com/eduvpn/vpn-admin-portal/tree/master/locale)
 
 ## User Portal
@@ -27,7 +27,7 @@ Open it is Poedit, set the language and start translating! :)
 ## Admin Portal
 
 You can download the "po" file 
-[here](https://github.com/eduvpn/vpn-admin-portal/raw/master/locale/VpnUserPortal.po). 
+[here](https://github.com/eduvpn/vpn-admin-portal/raw/master/locale/VpnAdminPortal.po). 
 Open it is Poedit, set the language and start translating! :)
 
 # Apps
