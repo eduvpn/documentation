@@ -16,8 +16,10 @@ systemctl start apache2
 # regenerate OpenVPN config
 vpn-server-node-server-config
 
-# regenerate/restart firewall
+# regenerate firewall
 vpn-server-node-generate-firewall --install
+
+# restart firewall
 systemctl restart netfilter-persistent
 
 # restart OpenVPN

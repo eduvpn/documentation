@@ -16,8 +16,10 @@ systemctl start httpd
 # regenerate OpenVPN config
 vpn-server-node-server-config
 
-# regenerate/restart firewall
+# regenerate firewall
 vpn-server-node-generate-firewall --install
+
+# restart firewall
 systemctl restart iptables
 systemctl restart ip6tables
 

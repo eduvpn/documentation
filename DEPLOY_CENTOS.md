@@ -48,6 +48,10 @@ Specify the hostname you want to use for your VPN server. Both the "Web" and
 
 **NOTE**: you can NOT use `localhost` as a hostname.
 
+## Update
+
+Periodically install [updates](update_system_centos.sh]!
+
 ## Configuration
 
 ### VPN
