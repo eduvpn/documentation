@@ -42,7 +42,7 @@ Specify the hostname you want to use for your VPN server. Both the "Web" and
 
 ## Update
 
-Periodically install [updates](update_system_fedora.sh]!
+Periodically install [updates](update_system_fedora.sh)!
 
 ## Configuration
 
