@@ -57,10 +57,11 @@ to go, so the "LAN" interface of the VPN server. It is best to use different
 `hostName` values for the profiles as this gives more flexibility to move to
 a setup with multiple machines in the future.
 
-If you have multiple IP addresses at your disposal for the VPN server, you 
-can use the `listen` key to specify them. This will make you loose the IPv4 and
-IPv6 support though, but you _can_ use the same port numbers for both 
-profiles.
+If you have multiple (public) IP addresses at your disposal for the VPN server, 
+you can use the `listen` key to specify them. This will make you loose the IPv4 
+and IPv6 support though, but you _can_ use the same port numbers for both 
+profiles. In most cases you will want to keep `::` as the value of `listen` and
+just use different ports.
 
 # Additional Configuration
 
