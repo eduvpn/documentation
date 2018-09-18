@@ -2,7 +2,7 @@
 
 Name:           openvpn-plugin-auth-script
 Version:        0.1.0 
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        OpenVPN plugin to auth connections using non-blocking external script
 
 License:        ASL 2.0
@@ -17,6 +17,7 @@ Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 BuildRequires:  gnupg2
 BuildRequires:  meson
+BuildRequires:  gcc
 BuildRequires:  openvpn-devel
 Requires:       openvpn
 
@@ -50,6 +51,9 @@ cp -p %{_vpath_builddir}/openvpn-plugin-auth-script.so %{buildroot}%{_libdir}/op
 %{_libdir}/openvpn/plugins
 
 %changelog
+* Tue Sep 18 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-3
+- add gcc as BR
+
 * Fri Sep 14 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-2
 - add missing gnupg2 BR
 
