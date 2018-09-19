@@ -54,7 +54,7 @@ working. New installations override these "defaults", e.g. to improve security.
 | `reject6`          | Do not forward IPv6 traffic, useful when the VPN server does not have IPv6 connectivity | no | `false` |
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
 | `routes`           | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false` | no | `[]` |
-| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client. If left empty, the IPv4 and IPv6 gateway address will be pushed to the clients. Only used when `defaultGateway` is `true`. | no | `[]` |
+| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client. If left empty, the IPv4 and IPv6 gateway address will be pushed to the clients. DNS address are only pushed when `defaultGateway` is `true`. | no | `[]` |
 | `twoFactor`        | Whether or not to enable two-factor authentication for connecting to the VPN server, see [Two-factor](2FA.md) documentation | no | `false` |
 | `clientToClient`   | Whether or not to allow client-to-client traffic | no | `false` |
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |
@@ -108,18 +108,14 @@ Indirectly, the client compatibility is controlled through the `tlsProtection`
 option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
 supporting only the latest version(s) of OpenVPN.
 
-| `tlsProtection`   | Compatiblity | Allowed Cipher(s)            | Routing Fix |
-| ----------------- | ------------ | ---------------------------- | ----------- |
-| `tls-crypt`       | >= 2.4, 3    | `AES-256-GCM`                | no          |
-| `tls-auth`        | >= 2.3, 3    | `AES-256-CBC`, `AES-256-GCM` | yes         |
-| `false` (disable) | >= 2.3, 3, [PIA](https://github.com/pia-foss/tunnel-apple) | `AES-256-CBC`, `AES-256-GCM` | yes         |
+| `tlsProtection` | Compatiblity   | Allowed Cipher(s)            | Routing "Fix" |
+| --------------- | -------------- | ---------------------------- | ------------- |
+| `tls-crypt`     | >= 2.4, 3      | `AES-256-GCM`                | no            |
+| `tls-auth`      | >= 2.3, 3      | `AES-256-CBC`, `AES-256-GCM` | yes           |
+| `false`         | >= 2.3, 3, PIA | `AES-256-GCM`                | no            |
 
-All official eduVPN / Let's Connect! applications are based on either 
-OpenVPN >= 2.4 or OpenVPN 3. Ubuntu 16.04 LTS and Debian 8 still use OpenVPN 
-2.3.
-
-When `tlsProtection` is set to `tls-auth` or `false`, additional routes are 
-pushed to the client to fix IPv6 (default gateway) routing over the VPN tunnel.
+When `tlsProtection` is set to `tls-auth` additional routes are pushed to the 
+client to fix IPv6 (default gateway) routing over the VPN tunnel.
 
 You can edit `/etc/vpn-server-api/default/config.php` and look for the 
 `tlsProtection` option and set it to `tls-auth` (or `false`). Then 
@@ -128,6 +124,22 @@ You can edit `/etc/vpn-server-api/default/config.php` and look for the
 **WARNING**: existing client configurations WILL stop working when you change 
 the value of `tlsProtection` and you are not only using the official eduVPN or 
 Let's Connect! applications!
+
+#### Linux
+
+The following is a list of Linux distribution support when using 
+NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
+
+| Distribution     | Works | Remarks                                                              |
+| ---------------- | ----- | -------------------------------------------------------------------- |
+| CentOS 7         | no    | `NetworkManager-openvpn` >= 1.2.10 required for `tls-crypt` support  |
+| Fedora 28        | yes   | -                                                                    |
+| Ubuntu 16.04 LTS | no    | Uses OpenVPN 2.3
+| Ubuntu 18.04 LTS | yes   | -                                                                    |
+| Debian 8         | no    | Uses OpenVPN 2.3                                                     |
+| Debian 9         | no    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
+
+To make all Linux clients work, you can set `tlsProtection` to `tls-auth`.
 
 ## Apply Changes
 
