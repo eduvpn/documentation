@@ -22,6 +22,9 @@ We test only with the official Debian
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
 
+**NOTE** if you expect to do a production deploy, please read the section below 
+about modifying the PHP configuration.
+
 ## Base Deploy
 
 Perform these steps on the host where you want to deploy:
@@ -97,6 +100,26 @@ If you want to restrict the use of the VPN a bit more than on whether someone
 has an account or not, e.g. to limit certain profiles to certain (groups of)
 users, see [ACL](ACL.md).
 
+## PHP 
+
+Debian's `php7.0-fpm` package has some unfortunate defaults that only work for 
+very light usage and in no way for deploys where you expect more than a few 
+users to use the service.
+
+Modify `/etc/php/7.0/fpm/pool.d/www.conf` and change the following settings. 
+We'll use the CentOS/Fedora defaults here as well:
+
+    pm = dynamic
+    pm.max_children = 50
+    pm.start_servers = 5
+    pm.min_spare_servers = 5
+    pm.max_spare_servers = 35
+ 
+You can tweak those further if needed, but they'll do for some time! Restart 
+the `php7.0-fpm` service to activate the changes:
+
+    $ sudo systemctl restart php7.0-fpm
+
 ## Optional
 
 ### Let's Encrypt
@@ -116,3 +139,5 @@ will automatically replace the certificate before it expires.
 
 If you also want to allow clients to connect with the VPN over `tcp/443`, see 
 [Port Sharing](PORT_SHARING.md).
+
+
