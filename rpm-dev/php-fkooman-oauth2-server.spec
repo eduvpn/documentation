@@ -1,8 +1,8 @@
-#global git f53c76db1b4e522d96c20f44e9e3d7db02035b03
+%global git daeee9d226c8329be2f708ce9746b7f738d30e49
 
 Name:           php-fkooman-oauth2-server
-Version:        3.0.1
-Release:        7%{?dist}
+Version:        3.0.2
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -142,6 +142,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Fri Sep 21 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-1
+- update to 3.0.2
+
 * Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 3.0.1-7
 - merge dev and prod spec files in one
 - cleanup requirements
