@@ -139,7 +139,9 @@ NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
 | Debian 8         | no    | Uses OpenVPN 2.3                                                     |
 | Debian 9         | no    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
 
-To make all Linux clients work, you can set `tlsProtection` to `tls-auth`.
+To make all Linux clients work, you can set `tlsProtection` to `tls-auth`, but
+this will break existing configurations, unless you use the eduVPN/Let's 
+Connect! client.
 
 ## Apply Changes
 
