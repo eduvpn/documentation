@@ -24,6 +24,17 @@
             "public_key": "pB2opEKG0YArbZlb8rK0dysgV8hk8QygYlB6xlNFqqs="
         },
         {
+            "base_uri": "https://eduvpn-pilot.funet.fi/",
+            "display_name": {
+                "da-DK": "Finland",
+                "en-US": "Finland",
+                "nb-NO": "Finland",
+                "nl-NL": "Finland"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/fi.png",
+            "public_key": "BNmxCa8lDxSbz74mKBaQTUboT7EduUESexCDZFCIpM0="
+        },
+        {
             "base_uri": "https://eduvpn1.eduvpn.de/",
             "display_name": {
                 "de-DE": "Deutschland",
@@ -78,6 +89,6 @@
             "public_key": "EIk48gTa1AtHl6WiLd6UQYpg6eZGxcjYDU1htfM3TSs="
         }
     ],
-    "seq": 51,
-    "signed_at": "2018-08-23 10:10:49"
+    "seq": 52,
+    "signed_at": "2018-09-26 13:19:04"
 }
