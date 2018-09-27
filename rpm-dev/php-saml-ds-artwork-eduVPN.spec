@@ -2,7 +2,7 @@
 
 Name:       php-saml-ds-artwork-eduVPN
 Version:    1.0.1
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    SAML Discovery Artwork for eduVPN
 License:    AGPLv3+
 
@@ -10,8 +10,8 @@ URL:        https://github.com/eduvpn/disco-artwork
 %if %{defined git}
 Source0:    https://github.com/eduvpn/disco-artwork/archive/%{git}/disco-artwork-%{version}-%{git}.tar.gz
 %else
-Source0:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/disco-artwork-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/disco-artwork-%{version}.tar.xz.asc
+Source0:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/php-saml-ds-artwork-eduVPN-%{version}.tar.xz
+Source1:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/php-saml-ds-artwork-eduVPN-%{version}.tar.xz.asc
 Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 %endif
 
@@ -29,7 +29,7 @@ SAML Discovery Artwork for eduVPN.
 %setup -qn disco-artwork-%{git}
 %else
 gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
-%setup -qn disco-artwork-%{version}
+%setup -qn php-saml-ds-artwork-eduVPN-%{version}
 %endif
 
 %install
@@ -57,6 +57,9 @@ rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
 %doc README.md CHANGES.md
 
 %changelog
+* Thu Sep 27 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-5
+- point to properly named release tarballs
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-4
 - add missing BR gnupg2
 
