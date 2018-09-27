@@ -19,7 +19,8 @@ Additional scripts are available after deployment:
 * SELinux MUST be enabled 
   ([CentOS SELinux](https://wiki.centos.org/HowTos/SELinux));
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
-  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality;
+  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
+  script will take care of the host firewall;
 
 We test only with the official CentOS 
 [Minimal ISO](https://centos.org/download/) and the official 

@@ -14,7 +14,8 @@ Additional scripts are available after deployment:
 * Clean Fedora 28 installation with all updates installed;
 * SELinux MUST be enabled;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
-  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality;
+  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
+  script will take care of the host firewall;
 
 We test only with the official Fedora 
 [Cloud Base Images](https://alt.fedoraproject.org/cloud/).
