@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-jwt
 Version:        0.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -52,6 +52,7 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
+BuildRequires:  php-composer(symfony/polyfill-php70)
 %endif
 
 #    "require": {
@@ -76,6 +77,7 @@ Requires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
+Requires:  php-composer(symfony/polyfill-php70)
 %endif
 
 Provides:  php-composer(fkooman/jwt) = %{version}
@@ -103,6 +105,7 @@ cat <<'AUTOLOAD' | tee -a src/autoload.php
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/random_compat/autoload.php',
     '%{_datadir}/php/Symfony/Polyfill/autoload.php',
+));
 AUTOLOAD
 %endif
 
@@ -125,5 +128,8 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-2
+- fix EL7 builds (autoloader syntax, missing R/BR)
+
 * Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-1
 - initial package
