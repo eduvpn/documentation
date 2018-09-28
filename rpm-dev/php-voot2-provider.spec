@@ -1,8 +1,8 @@
-%global commit0 762fedc0783ff58b6cef5557ed420ff1e8a73422
+%global commit0 360d222ce97b8ddc41d6f9e3faf674ecceb03790
 
 Name:       php-voot2-provider
-Version:    0.2.1
-Release:    3%{?dist}
+Version:    0.3.0
+Release:    0.1%{?dist}
 Summary:    VOOT 2.0 Provider
 
 Group:      Applications/Internet
@@ -101,6 +101,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Tue Sep 25 2018 François Kooman <fkooman@tuxed.net> - 0.3.0-0.1
+- update to 0.3.0
+
 * Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-3
 - add missing BR
 
