@@ -1,38 +1,28 @@
-%global commit0 60a393dbd7af4505cf3a90e2391aa9a2febebdbb
+#global git ddcdf1d557ab0389b88920b0d5b5bc8a8f19e9da
 
 Name:           php-fkooman-jwt
 Version:        0.1.0
-Release:        0.10%{?dist}
+Release:        1%{?dist}
 Summary:        JWT Library
 
 License:        MIT
-URL:            https://git.tuxed.net/fkooman/php-jwt
-Source0:        https://git.tuxed.net/fkooman/php-jwt/snapshot/php-jwt-%{commit0}.tar.xz
+URL:            https://software.tuxed.net/php-jwt
+%if %{defined git}
+Source0:        https://git.tuxed.net/fkooman/php-jwt/snapshot/php-jwt-%{git}.tar.xz
+%else
+Source0:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz
+Source1:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz.asc
+Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+%endif
 
 BuildArch:      noarch
 
-#        "php": ">= 5.4",
-BuildRequires:  php(language) >= 5.4.0
-#        "ext-hash": "*",
-#        "ext-json": "*",
-#        "ext-openssl": "*",
-#        "ext-spl": "*",
-BuildRequires:  php-hash
-BuildRequires:  php-json
-BuildRequires:  php-openssl
-BuildRequires:  php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": ">=1",
-#        "symfony/polyfill-php56": "^1"
-BuildRequires:  php-composer(paragonie/constant_time_encoding)
-%if 0%{?fedora} < 28 && 0%{?rhel} < 8
-BuildRequires:  php-composer(paragonie/random_compat)
-BuildRequires:  php-composer(symfony/polyfill-php56)
-%endif
-
+BuildRequires:  gnupg2
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
-
+#    "require-dev": {
+#        "phpunit/phpunit": "^4|^5|^6|^7"
+#    },
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -40,20 +30,48 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
-
-#        "php": ">= 5.4",
-Requires:  php(language) >= 5.4.0
+#    "require": {
+#        "ext-date": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
 #        "ext-openssl": "*",
 #        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">= 5.4.8",
+#        "symfony/polyfill-php56": "^1",
+#        "symfony/polyfill-php70": "^1"
+#    },
+BuildRequires:  php(language) >= 5.4.8
+BuildRequires:  php-date
+BuildRequires:  php-hash
+BuildRequires:  php-json
+BuildRequires:  php-openssl
+BuildRequires:  php-spl
+BuildRequires:  php-composer(paragonie/constant_time_encoding)
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+BuildRequires:  php-composer(paragonie/random_compat)
+BuildRequires:  php-composer(symfony/polyfill-php56)
+%endif
+
+#    "require": {
+#        "ext-date": "*",
+#        "ext-hash": "*",
+#        "ext-json": "*",
+#        "ext-openssl": "*",
+#        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
+#        "paragonie/random_compat": ">=1",
+#        "php": ">= 5.4.8",
+#        "symfony/polyfill-php56": "^1",
+#        "symfony/polyfill-php70": "^1"
+#    },
+Requires:  php(language) >= 5.4.8
+Requires:  php-date
 Requires:  php-hash
 Requires:  php-json
 Requires:  php-openssl
 Requires:  php-spl
-#        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": ">=1",
-#        "symfony/polyfill-php56": "^1"
 Requires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:  php-composer(paragonie/random_compat)
@@ -66,23 +84,25 @@ Provides:  php-composer(fkooman/jwt) = %{version}
 JWT Library.
 
 %prep
-%autosetup -n php-jwt-%{commit0}
+%if %{defined git}
+%autosetup -n php-jwt-%{git}
+%else
+gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+%autosetup -n php-jwt-%{version}
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 \Fedora\Autoloader\Dependencies::required(array(
     '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
 ));
 AUTOLOAD
-%else
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 \Fedora\Autoloader\Dependencies::required(array(
-    '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php',
+    '%{_datadir}/php/random_compat/autoload.php',
     '%{_datadir}/php/Symfony/Polyfill/autoload.php',
-    '%{_datadir}/php/random_compat/autoload.php'
-));
 AUTOLOAD
 %endif
 
@@ -105,32 +125,5 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.10
-- rebuilt
-
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.9
-- rebuilt
-
-* Fri Aug 24 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.8
-- rebuilt
-
-* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.7
-- rebuilt
-
-* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.6
-- rebuilt
-
-* Thu Aug 23 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.5
-- rebuilt
-
-* Wed Aug 22 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.4
-- rebuilt
-
-* Tue Aug 21 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.3
-- rebuilt
-
-* Mon Aug 20 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.2
-- remove paragonie/random_compat
-
-* Mon Aug 20 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-0.1
+* Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-1
 - initial package
