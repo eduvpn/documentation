@@ -66,6 +66,21 @@ will be discussed below.
 As mentioned above, if you have the choice, we recommend you to use the 
 official applications if possible.
 
+Indirectly, the client compatibility is controlled through the `tlsProtection` 
+option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
+supporting only the latest version(s) of OpenVPN.
+
+| `tlsProtection` | Compatiblity   | Allowed Cipher(s)            | Routing "Fix" |
+| --------------- | -------------- | ---------------------------- | ------------- |
+| `tls-crypt`     | >= 2.4, 3      | `AES-256-GCM`                | no            |
+| `tls-auth`      | >= 2.3, 3      | `AES-256-CBC`, `AES-256-GCM` | yes           |
+| `false`         | >= 2.3, 3, PIA | `AES-256-GCM`                | no            |
+
+In addition, when `tlsProtection` is set to `tls-auth`, routes are pushed to 
+the client to fix IPv6 (default gateway) routing over the VPN tunnel, this is 
+needed, because OpenVPN 2.3 does not support the IPv6 default gateway flag. On
+OpenVPN 2.4 those extra routes are ignored.
+
 ### Windows 
 
 * [OpenVPN Community client](https://openvpn.net/index.php/open-source/downloads.html)

@@ -53,7 +53,7 @@ clients:
   - Linux (NetworkManager/CLI)
 
 By default, only clients using OpenVPN >= 2.4 (or OpenVPN 3) are supported! See 
-[Client Compatibility](PROFILE_CONFIG.md#client-compatibility) for more 
+[Client Compatibility](CLIENT_COMPAT.md) for more 
 information.
 
 ### Native Applications

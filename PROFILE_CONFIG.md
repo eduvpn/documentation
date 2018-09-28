@@ -64,7 +64,7 @@ working. New installations override these "defaults", e.g. to improve security.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) (replaced `tlsCrypt`) | no | `tls-auth` |
+| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](CLIENT_COMPAT.md) (replaced `tlsCrypt`) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
 
 Changing any of the following options _WILL_ prevent OpenVPN clients from 
@@ -123,22 +123,6 @@ The first profile can use `udp/1194` and `tcp/1194`, the second one can use
 You can manually work around providing both IPv4+IPv6 for profiles where you 
 specify a `listen` address by using a proxy like 
 [socat](http://www.dest-unreach.org/socat/).
-
-### TLS Protection
-
-Indirectly, the client compatibility is controlled through the `tlsProtection` 
-option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
-supporting only the latest version(s) of OpenVPN.
-
-| `tlsProtection` | Compatiblity   | Allowed Cipher(s)            | Routing "Fix" |
-| --------------- | -------------- | ---------------------------- | ------------- |
-| `tls-crypt`     | >= 2.4, 3      | `AES-256-GCM`                | no            |
-| `tls-auth`      | >= 2.3, 3      | `AES-256-CBC`, `AES-256-GCM` | yes           |
-| `false`         | >= 2.3, 3, PIA | `AES-256-GCM`                | no            |
-
-When `tlsProtection` is set to `tls-auth` additional routes are pushed to the 
-client to fix IPv6 (default gateway) routing over the VPN tunnel, this is 
-needed, because OpenVPN 2.3 does not support the IPv6 default gateway flag.
 
 ## Apply Changes
 
