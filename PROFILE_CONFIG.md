@@ -67,6 +67,28 @@ working. New installations override these "defaults", e.g. to improve security.
 | `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](#client-compatibility) (replaced `tlsCrypt`) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
 
+Changing any of the following options _WILL_ prevent OpenVPN clients from 
+connecting without updating the configuration, unless the eduVPN/Let's Connect! 
+applications are used:
+
+* `twoFactor`: only _enabling_ `twoFactor` will result in the client being 
+  unable to connect as the client needs a special configuration flag asking for 
+  username and password, when `twoFactor` is disabled, providing them anyway 
+  will be ignored by the server;
+* `tlsProtection`: client cannot handle a change here;
+* `enableCompression`: client cannot handle a change here;
+
+The following options _MAY_ break the client when insuffient care is taken, 
+unless the eduVPN/Let's Connect! applications are used:
+
+* `hostName`: unless you point the currently used hostName to the new host 
+  (using DNS);
+* `listen`: if the IP address changes without updating the DNS
+* `vpnProtoPorts`: if you change to ports not currently used by the 
+  client(s);
+* `exposedVpnProtoPorts`: if you change to ports not currently used by the 
+  client(s);
+
 ### OpenVPN Processes
 
 You can configure OpenVPN processes using the `listen` and `vpnProtoPorts` 
@@ -102,7 +124,7 @@ You can manually work around providing both IPv4+IPv6 for profiles where you
 specify a `listen` address by using a proxy like 
 [socat](http://www.dest-unreach.org/socat/).
 
-### Client Compatibility
+### TLS Protection
 
 Indirectly, the client compatibility is controlled through the `tlsProtection` 
 option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
@@ -115,33 +137,8 @@ supporting only the latest version(s) of OpenVPN.
 | `false`         | >= 2.3, 3, PIA | `AES-256-GCM`                | no            |
 
 When `tlsProtection` is set to `tls-auth` additional routes are pushed to the 
-client to fix IPv6 (default gateway) routing over the VPN tunnel.
-
-You can edit `/etc/vpn-server-api/default/config.php` and look for the 
-`tlsProtection` option and set it to `tls-auth` (or `false`). Then 
-"Apply Changes" as shown below. 
-
-**WARNING**: existing client configurations WILL stop working when you change 
-the value of `tlsProtection` and you are not only using the official eduVPN or 
-Let's Connect! applications!
-
-#### Linux
-
-The following is a list of Linux distribution support when using 
-NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
-
-| Distribution     | Works | Remarks                                                              |
-| ---------------- | ----- | -------------------------------------------------------------------- |
-| CentOS 7         | no    | `NetworkManager-openvpn` >= 1.2.10 required for `tls-crypt` support  |
-| Fedora 28        | yes   | -                                                                    |
-| Ubuntu 16.04 LTS | no    | Uses OpenVPN 2.3
-| Ubuntu 18.04 LTS | yes   | [DNS leak](https://github.com/systemd/systemd/issues/7182#issuecomment-350335001) |
-| Debian 8         | no    | Uses OpenVPN 2.3                                                     |
-| Debian 9         | no    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
-
-To make all Linux clients work, you can set `tlsProtection` to `tls-auth`, but
-this will break existing configurations, unless you use the eduVPN/Let's 
-Connect! client.
+client to fix IPv6 (default gateway) routing over the VPN tunnel, this is 
+needed, because OpenVPN 2.3 does not support the IPv6 default gateway flag.
 
 ## Apply Changes
 
