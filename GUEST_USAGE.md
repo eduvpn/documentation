@@ -58,4 +58,8 @@ Inside the `Api` section in `/etc/vpn-user-portal/default/config.php`,
 ```
 
 The example above is for [eduVPN](https://eduvpn.org). After configuring this, 
-the public keys found at that URL will be allowed to access your VPN server.
+the public keys found at that URL will be allowed to access your VPN server. If
+you belong to the NREN community and want to be listed in this file as well 
+with your VPN server, and thus allowing users of other NRENs to use your VPN 
+server (and vice versa) please contact 
+[eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
