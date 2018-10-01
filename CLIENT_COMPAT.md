@@ -189,6 +189,6 @@ Add the following lines to your OpenVPN configuration file:
     up /etc/openvpn/client.up
     down /etc/openvpn/client.down
 
-Now you can start/enable OpenVPN, but immediately and at boot:
+Now you can start/enable OpenVPN, immediately and at boot:
 
     $ sudo systemctl enable --now openvpn-client@vpn.example.org_internet_20180101
