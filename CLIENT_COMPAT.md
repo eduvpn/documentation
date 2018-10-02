@@ -1,7 +1,7 @@
 # Introduction
 
-This document describes a number of VPN clients to that can be used to connect
-to the VPN service.
+This document describes a number of VPN clients that can be used to connect to 
+the VPN service.
 
 # Offical Applications
 
@@ -22,8 +22,8 @@ the VPN server to connect to.
 The benefit of the official applications is that they will make it much easier 
 for the end user to configure the VPN, and will make sure the VPN keeps 
 working in case configuration updates are required for connecting to the VPN. 
-The other applications may require manual configuration downloads to be able
-to keep using the VPN.
+The other applications may require manual configuration downloads through the 
+user portal to be able to keep using the VPN.
 
 ## Windows
 
@@ -66,11 +66,11 @@ will be discussed below.
 As mentioned above, if you have the choice, we recommend you to use the 
 official applications if possible.
 
-Indirectly, the client compatibility is controlled through the `tlsProtection` 
-option. On new deployments, the `tlsProtection` option is set to `tls-crypt`, 
-supporting only the latest version(s) of OpenVPN.
+Indirectly, on the server, the client compatibility is controlled through the 
+`tlsProtection` option. On new deployments, the `tlsProtection` option is set 
+to `tls-crypt`, supporting only the latest version(s) of OpenVPN.
 
-| `tlsProtection` | Compatiblity                                                          | Allowed Cipher(s)            | Routing "Fix" |
+| `tlsProtection` | Compatibility                                                         | Allowed Cipher(s)            | Routing "Fix" |
 | --------------- | --------------------------------------------------------------------- | ---------------------------- | ------------- |
 | `tls-crypt`     | >= 2.4, 3, [TunnelKit](https://github.com/keeshux/TunnelKit)          | `AES-256-GCM`                | no            |
 | `tls-auth`      | >= 2.3, 3  TunnelKit                                                  | `AES-256-CBC`, `AES-256-GCM` | yes           |
