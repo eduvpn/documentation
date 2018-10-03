@@ -138,7 +138,7 @@ NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
 | CentOS 7         | no    | `NetworkManager-openvpn` >= 1.2.10 required for `tls-crypt` support ([RHBZ](https://bugzilla.redhat.com/show_bug.cgi?id=1520214)) |
 | Fedora 28        | yes   | -                                                                    |
 | Ubuntu 16.04 LTS | no    | Uses OpenVPN 2.3
-| Ubuntu 18.04 LTS | yes   | [DNS leak](https://github.com/systemd/systemd/issues/7182#issuecomment-350335001) |
+| Ubuntu 18.04 LTS | yes   | [DNS leak](https://gitlab.gnome.org/GNOME/NetworkManager-openvpn/issues/10) |
 | Debian 8         | no    | Uses OpenVPN 2.3                                                     |
 | Debian 9         | no    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
 
