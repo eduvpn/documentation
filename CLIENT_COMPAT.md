@@ -128,7 +128,7 @@ Linux and the package `network-manager-openvpn-gnome` on Debian/Ubuntu.
 See the instructions below on how to get the VPN working manually.
 
 | Distribution     | NetworkManager | Manual | Remarks                                                              |
-| ---------------- | -------------- | ----------------------------------------------------------------------------- |
+| ---------------- | -------------- | -------| -------------------------------------------------------------------- |
 | Debian 8         | no             | no     | Uses OpenVPN 2.3                                                     |
 | Debian 9         | no             | yes    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
 | Ubuntu 16.04 LTS | no             | no     | Uses OpenVPN 2.3                                                     |
