@@ -137,6 +137,12 @@ See the instructions below on how to get the VPN working manually.
 | CentOS 7         | no             | yes    | `NetworkManager-openvpn` >= 1.2.10 required for `tls-crypt` support ([RHBZ](https://bugzilla.redhat.com/show_bug.cgi?id=1520214)) |
 | Fedora 28        | yes            | yes    | -                                                                    |
 
+For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
+[repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)
+is available with a more up to date version of OpenVPN. This may be sufficient
+to make the VPN work manually as described below, however, this was NOT yet 
+tested.
+
 ### Manual
 
 To start OpenVPN manually, we assume below that you downloaded an OpenVPN 
