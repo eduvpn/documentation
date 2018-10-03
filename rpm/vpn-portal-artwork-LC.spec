@@ -1,8 +1,8 @@
 #global git 6ac538130f6d8aab8b0103c5a11df6bca49c2710
 
 Name:       vpn-portal-artwork-LC
-Version:    1.1.2
-Release:    2%{?dist}
+Version:    1.2.0
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for LC
 License:    AGPLv3+
 
@@ -69,6 +69,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Wed Oct 03 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-1
+- update to 1.2.0
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-2
 - merge dev and prod spec files in one
 
