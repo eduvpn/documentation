@@ -57,29 +57,18 @@ situation!
 * [eduVPN](https://python-eduvpn-client.readthedocs.io/en/master/)
 * Let's Connect! (_not yet available_)
 
+**NOTE**: see below for Linux support. The eduVPN/Let's Connect! application 
+will only work properly if NetworkManager works properly with `tls-crypt` on 
+your system! If not, you can use the manual instructions further down.
+
 # Other Applications
 
 In addition to the official applications, you can also use any OpenVPN 
 compatible client on the platform of your choice. Some of the more popular ones
 will be discussed below.
 
-As mentioned above, if you have the choice, we recommend you to use the 
-official applications if possible.
-
-Indirectly, on the server, the client compatibility is controlled through the 
-`tlsProtection` option. On new deployments, the `tlsProtection` option is set 
-to `tls-crypt`, supporting only the latest version(s) of OpenVPN.
-
-| `tlsProtection` | Compatibility                                                         | Allowed Cipher(s)            | Routing "Fix" |
-| --------------- | --------------------------------------------------------------------- | ---------------------------- | ------------- |
-| `tls-crypt`     | >= 2.4, 3, [TunnelKit](https://github.com/keeshux/TunnelKit)          | `AES-256-GCM`                | no            |
-| `tls-auth`      | >= 2.3, 3  TunnelKit                                                  | `AES-256-CBC`, `AES-256-GCM` | yes           |
-| `false`         | >= 2.3, 3, TunnelKit, [PIA](https://github.com/pia-foss/tunnel-apple) | `AES-256-GCM`                | no            |
-
-In addition, when `tlsProtection` is set to `tls-auth`, routes are pushed to 
-the client to fix IPv6 (default gateway) routing over the VPN tunnel, this is 
-needed, because OpenVPN 2.3 does not support the IPv6 default gateway flag. On
-OpenVPN 2.4 those extra routes are ignored.
+As long as as the VPN client is based on OpenVPN >= 2.4 or OpenVPN 3 it should
+be possible to make it work.
 
 ## Windows 
 
@@ -131,7 +120,12 @@ more details.
 ## Linux
 
 The following is a list of Linux distribution support when using 
-NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
+NetworkManager's OpenVPN plugin with a default deployment of the VPN server. In 
+order to install the NetworkManager OpenVPN plugin, you can install the 
+package `NetworkManager-openvpn-gnome` on Fedora/CentOS/Red Hat Enterprise 
+Linux and the package `network-manager-openvpn-gnome` on Debian/Ubuntu.
+
+See the instructions below on how to get the VPN working manually.
 
 | Distribution     | Works | Remarks                                                              |
 | ---------------- | ----- | -------------------------------------------------------------------- |
@@ -142,28 +136,22 @@ NetworkManager's OpenVPN plugin with a default deployment of the VPN server.
 | Debian 8         | no    | Uses OpenVPN 2.3                                                     |
 | Debian 9         | no    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
 
-To make all Linux clients work, you can set `tlsProtection` to `tls-auth`, but
-this will break existing configurations, unless you use the eduVPN/Let's 
-Connect! client.
+### Manual
 
-In order to install the NetworkManager OpenVPN plugin, you can install the 
-package `NetworkManager-openvpn-gnome` on Fedora/CentOS/Red Hat Enterprise 
-Linux and the package `network-manager-openvpn-gnome` on Debian/Ubuntu.
-
-### Command Line
-
-You can either start OpenVPN manually, or enable it using `systemctl`. We 
-assume below that you downloaded an OpenVPN configuration file through the 
-user portal, e.g. `https://vpn.example.org/vpn-user-portal/`.
-
-#### Manually
+To start OpenVPN manually, we assume below that you downloaded an OpenVPN 
+configuration file through the user portal, e.g. 
+`https://vpn.example.org/vpn-user-portal/`.
 
     $ sudo openvpn --config vpn.example.org_internet_20180101.ovpn
 
-Please note that your DNS servers will NOT be updated by running OpenVPN like
-this! 
+**NOTE**: The DNS servers will NOT be updated by running OpenVPN like this! See
+instructions below for dealing with this automatically.
 
-#### systemd
+### Debian 9
+
+Install the OpenVPN package:
+
+    $ sudo apt-get install openvpn resolvconf
 
 Copy your configuration file to `/etc/openvpn/client`. Make sure you give it 
 the extension `.conf`! 
@@ -171,24 +159,40 @@ the extension `.conf`!
     $ sudo cp vpn.example.org_internet_20180101.ovpn \
         /etc/openvpn/client/vpn.example.org_internet_20180101.conf
 
-On Debian, modify the configuration file, and add the following lines to it:
+Modify the configuration file, and add the following lines to it:
 
     script-security 2
     up /etc/openvpn/update-resolv-conf
     down /etc/openvpn/update-resolv-conf
 
-On Fedora / CentOS you need to copy some scripts to `/etc/openvpn` and modify 
-the permissions:
+Now start the OpenVPN service:
 
-    $ sudo cp /usr/share/doc/openvpn/contrib/pull-resolv-conf/client.* /etc/openvpn/
+    $ sudo systemctl start openvpn-client@vpn.example.org_internet_20180101
+
+### CentOS 7 / Red Hat Enterprise Linux 7
+
+Install the OpenVPN package, make sure 
+[EPEL](https://fedoraproject.org/wiki/EPEL) is enabled:
+
+    $ sudo yum -y install openvpn
+
+Copy your configuration file to `/etc/openvpn/client`. Make sure you give it 
+the extension `.conf`! 
+
+    $ sudo cp vpn.example.org_internet_20180101.ovpn \
+        /etc/openvpn/client/vpn.example.org_internet_20180101.conf
+
+Copy DNS update scripts to `/etc/openvpn` and modify the permissions:
+
+    $ sudo cp /usr/share/doc/openvpn-*/contrib/pull-resolv-conf/client.* /etc/openvpn/
     $ sudo chmod 0755 /etc/openvpn/client.*
 
-Add the following lines to your OpenVPN configuration file:
+Modify the configuration file, and add the following lines to it:
 
     script-security 2
     up /etc/openvpn/client.up
     down /etc/openvpn/client.down
 
-Now you can start/enable OpenVPN, immediately and at boot:
+Now start the OpenVPN service:
 
-    $ sudo systemctl enable --now openvpn-client@vpn.example.org_internet_20180101
+    $ sudo systemctl start openvpn-client@vpn.example.org_internet_20180101
