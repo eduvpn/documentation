@@ -18,6 +18,7 @@ PACKAGE_LIST=(\
     vpn-portal-artwork-eduVPN \
     vpn-portal-artwork-LC \
     php-saml-ds-artwork-eduVPN \
+    openvpn-plugin-auth-script \
 )
 
 rpmdev-setuptree

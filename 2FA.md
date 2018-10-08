@@ -77,17 +77,26 @@ Perform the following query:
 
 ## Plugin
 
-An OpenVPN [plugin](https://github.com/fac/auth-script-openvpn) is available to 
-handle 2FA on the side of OpenVPN in a better way. By default verifying the 
-second factor will block the OpenVPN process, making it impossible for 
-connected clients to send/receive traffic in the meantime. This is obviously 
-bad for performance, especially if there are a lot of clients connecting to the 
-VPN profile with 2FA enabled.
+An OpenVPN [plugin](https://github.com/fkooman/auth-script-openvpn) is 
+available to handle 2FA on the side of OpenVPN in a better way. By default,
+verifying the second factor will block the OpenVPN process, making it 
+impossible for other connected clients to send/receive traffic in the meantime. 
+This is obviously bad for performance, especially if there are a lot of clients 
+connecting to the VPN profile with 2FA enabled.
 
-A [package](https://copr.fedorainfracloud.org/coprs/fkooman/openvpn/) is 
-available (for CentOS and Fedora) that will install the OpenVPN plugin. This is 
-currently not installed by default as there is no "official" release yet of 
-this plugin.
+Packages are available for Debian and CentOS/Red Hat Enterprise Linux/Fedora.
+
+### Debian
+
+    $ sudo apt-get install openvpn-plugin-auth-script
+
+### CentOS/Red Hat Enterprise Linux
+
+    $ sudo yum -y install openvpn-plugin-auth-script
+
+### Fedora
+
+    $ sudo dnf -y install openvpn-plugin-auth-script
 
 After installing the plugin the OpenVPN server configuration files need to be 
 regenerated, the script will detect if the plugin is installed and then use it:
