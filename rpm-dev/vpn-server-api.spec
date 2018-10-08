@@ -1,8 +1,8 @@
-%global git d599c0399f361fea76ef2f35c9affc93fae67e0b
+%global git 4f35f0f720bada9a0e3d34be429ae55c1dae9e3e
 
 Name:       vpn-server-api
 Version:    1.4.5
-Release:    0.4%{?dist}
+Release:    0.5%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -218,6 +218,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Oct 05 2018 François Kooman <fkooman@tuxed.net> - 1.4.5-0.5
+- rebuilt
+
 * Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 1.4.5-0.4
 - rebuilt
 

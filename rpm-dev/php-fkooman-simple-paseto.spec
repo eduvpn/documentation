@@ -1,7 +1,7 @@
-#global git 05dad054537906ec9cb1916c782c50f0a58a5b9b
+%global git 6580ef0af64d4bcf01667752c1ba4b143eaa74ca
 
 Name:           php-fkooman-simple-paseto
-Version:        0.2.1
+Version:        0.3.1
 Release:        1%{?dist}
 Summary:        Simple PASETO v2.public for PHP >= 5.4
 
@@ -32,6 +32,7 @@ BuildRequires:  phpunit
 %endif
 #    "require": {
 #        "ext-hash": "*",
+#        "ext-spl": "*",
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "php": ">=5.4",
 #        "symfony/polyfill-php56": "^1",
@@ -39,6 +40,7 @@ BuildRequires:  phpunit
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-hash
+BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -56,6 +58,7 @@ BuildRequires:  php-composer(symfony/polyfill-php70)
 
 #    "require": {
 #        "ext-hash": "*",
+#        "ext-spl": "*",
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "php": ">=5.4",
 #        "symfony/polyfill-php56": "^1",
@@ -63,6 +66,7 @@ BuildRequires:  php-composer(symfony/polyfill-php70)
 #    },
 Requires:       php(language) >= 5.4.0
 Requires:       php-hash
+Requires:       php-spl
 Requires:       php-composer(paragonie/constant_time_encoding)
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -123,6 +127,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Paseto
 
 %changelog
+* Mon Oct 08 2018 François Kooman <fkooman@tuxed.net> - 0.3.1-1
+- update to 0.3.1
+
+* Sun Oct 07 2018 François Kooman <fkooman@tuxed.net> - 0.3.0-1
+- update to 0.3.0
+
 * Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-1
 - update to 0.2.1
 
