@@ -78,6 +78,8 @@ Perform the following queries to remove the YubiKey ID and the OTP secret:
 
 ## Plugin
 
+**NOTE**: this plugin is EXPERIMENTAL! It did not receive extensive testing!
+
 An OpenVPN [plugin](https://github.com/fkooman/auth-script-openvpn) is 
 available to handle 2FA on the side of OpenVPN in a better way. By default,
 verifying the second factor will block the OpenVPN process, making it 
