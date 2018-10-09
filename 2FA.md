@@ -71,9 +71,10 @@ the DB. Assuming the user ID is `foo`, do the following:
 
     $ sudo sqlite3 /var/lib/vpn-server-api/default/db.sqlite
 
-Perform the following query:
+Perform the following queries to remove the YubiKey ID and the OTP secret:
 
-    UPDATE users SET totp_secret=NULL, yubi_key_id=NULL WHERE user_id='foo'
+    UPDATE users SET yubi_key_id=NULL WHERE user_id='foo';
+    DELETE FROM otp WHERE user_id='foo';
 
 ## Plugin
 
