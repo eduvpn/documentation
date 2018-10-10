@@ -1,7 +1,7 @@
-#global git 93b33b4ad50f461ea8a127e25e29bc51a2902bc2
+#global git b5d20b74f10000c28ba482c1392dd4f23ac470a4
 
 Name:       vpn-user-portal
-Version:    1.8.1
+Version:    1.8.2
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -221,6 +221,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Wed Oct 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.2-1
+- update to 1.8.2
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.1-1
 - update to 1.8.1
 

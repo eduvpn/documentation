@@ -74,7 +74,7 @@ index fea3f4a..335a396 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index c943fc7..550bed0 100644
+index face6f0..f7edc24 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -87,9 +87,9 @@ index c943fc7..550bed0 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\BearerValidator;
- use fkooman\OAuth\Server\Storage;
+ use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/index.php b/web/index.php
-index 684f826..533849d 100644
+index c7caab4..0836e71 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -104,7 +104,7 @@ index 684f826..533849d 100644
  use fkooman\OAuth\Client\Http\CurlHttpClient as OAuthCurlHttpClient;
  use fkooman\OAuth\Client\OAuthClient;
 diff --git a/web/oauth.php b/web/oauth.php
-index 939c332..c6608f3 100644
+index 37a370b..2042a54 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@
@@ -117,4 +117,4 @@ index 939c332..c6608f3 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\OAuthServer;
- use fkooman\OAuth\Server\Storage;
+ use fkooman\OAuth\Server\SodiumSigner;
