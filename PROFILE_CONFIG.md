@@ -65,7 +65,7 @@ improve security.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` (**LEGACY**) and `false`. See also [Client Compatibility](CLIENT_COMPAT.md) (replaced `tlsCrypt`) | no | `tls-auth` |
+| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` (**LEGACY**) and `false`. See also [Client Compatibility](CLIENT_COMPAT.md) | no | `tls-auth` |
 | `enableCompression` | Enable compression _framing_, but explicitly disable compression (**LEGACY**) | no | `true` |
 
 Changing any of the following options _WILL_ prevent OpenVPN clients from 
@@ -89,26 +89,6 @@ unless the eduVPN/Let's Connect! applications are used:
   client(s);
 * `exposedVpnProtoPorts`: if you change to ports not currently used by the 
   client(s);
-
-### TLS Protection
-
-Indirectly, on the server, the client compatibility is controlled through the 
-`tlsProtection` option. On new deployments, the `tlsProtection` option is set 
-to `tls-crypt`, supporting only the latest version(s) of OpenVPN.
-
-| `tlsProtection` | Compatibility | Allowed Cipher(s)            | Routing "Fix" |
-| --------------- | ------------- | ---------------------------- | ------------- |
-| `tls-crypt`     | >= 2.4, 3     | `AES-256-GCM`                | no            |
-| `false`         | >= 2.4, 3     | `AES-256-GCM`                | no            |
-| `tls-auth`      | >= 2.3, 3     | `AES-256-CBC`, `AES-256-GCM` | yes           |
-
-In addition, when `tlsProtection` is set to `tls-auth`, routes are pushed to 
-the client to fix IPv6 (default gateway) routing over the VPN tunnel, this is 
-needed, because OpenVPN 2.3 does not support the IPv6 default gateway flag. On
-OpenVPN 2.4 those extra routes are ignored.
-
-In the near future (20181231) the `tls-auth` option will no longer allow 
-`AES-256-CBC` or have the routing fix, dropping support for OpenVPN 2.3.
 
 ### DNS
 
