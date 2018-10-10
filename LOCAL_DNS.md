@@ -1,15 +1,23 @@
-It is possible, and most likely a good idea to run a local recursive DNS server 
-on your VPN server. Especially for simple deploys where you have only one VPN 
-server.
+# Local DNS
 
-**NOTE**: in the future this _may_ become the default on new deployments!
+New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
+DNS servers used by the server itself (as configured in `/etc/resolv.conf`) for
+the VPN clients as well. If no usable address is available, the DNS service
+offered by [Quad9](https://quad9.net/) is used.
 
-The benefit is that you don't have to use any of the public DNS servers like 
-for example the ones offered by Google, Quad9 or Cloudflare.
+It is possible to run your own local DNS resolver for the VPN clients. This has 
+a number of benefits:
 
-**NOTE**: if your organization already has (trusted) DNS servers, there is no 
-need to use a local DNS server, you can configure the existing DNS servers 
-using the `dns` setting in `/etc/vpn-server-api/default/config.php`.
+- Ability to apply filters to e.g. block known malware domains;
+- No upstream DNS available from your ISP;
+- The upstream DNS is unreliable, sells your query data or is slow;
+- You do not want to use the "public DNS" services as offered by Quad9, 
+  Cloudflare or Google.
+
+**NOTE**: if your organization has a (trusted) DNS service you SHOULD probably
+use those! See [PROFILE_CONFIG](PROFILE_CONFIG.md), look for the `dns` option.
+
+# Configuration
 
 Setting a local recursive DNS server takes a few steps:
 
@@ -18,25 +26,24 @@ Setting a local recursive DNS server takes a few steps:
 2. Configure the DNS server to allow the VPN clients to use it for recursive
    queries;
 3. Configure the VPN firewall to allow VPN clients to access the local DNS 
-   server.
+   server;
+4. Make the VPN profiles use the "local DNS".
 
-# Install Unbound
+## Install Unbound
 
-## CentOS 
+### CentOS 
 
     $ sudo yum -y install unbound
 
-## Fedora
+### Fedora
 
     $ sudo dnf -y install unbound
 
-## Debian 
+### Debian 
 
     $ sudo apt-get -y install unbound
 
-# Configuration
-
-## Unbound
+## Configure Unbound
 
 You need to change the Unbound configuration. You can add the following file
 to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in 
@@ -57,15 +64,15 @@ Enable Unbound during boot, and (re)start it:
     $ sudo systemctl enable unbound
     $ sudo systemctl restart unbound
 
-## VPN
+## Profile Configuration
 
-Modify `/etc/vpn-server-api/default/config.php` and make sure the `dns` entry
-is an empty array:
+Modify `/etc/vpn-server-api/default/config.php` for each of the VPN profiles 
+where you want to use "local DNS", set the `dns` entry to:
 
-    'dns' => [],
+    'dns' => ['@GW4@', '@GW6@'],
 
-By not specifying the DNS servers here the IPv4 and IPv6 gateway addresses of 
-the VPN server are pushed to the clients.
+The `@GW4@` and `@GW6@` strings will be replaced by the IPv4 and IPv6 address 
+of the gateway.
 
 ## Firewall
 

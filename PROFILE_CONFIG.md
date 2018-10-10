@@ -33,10 +33,11 @@ instructions.
 
 This table descibes all available configuration options for a profile. The 
 "Default Value" column indicates what the value is if the option is _missing_ 
-from the configuration, not necessarily the value it has in installations! This 
-is done to allow upgrading old installations without requiring the 
-administrator to modify the configuration file and to keep existing clients 
-working. New installations override these "defaults", e.g. to improve security.
+from the configuration, not necessarily the value it has after a fresh 
+installations This is done to allow upgrading old installations without 
+requiring the administrator to modify the configuration file and to keep
+existing clients working. New installations override these "defaults", e.g. to 
+improve security.
 
 | Option | Description | Required | Default Value |
 | ------ |------------ | -------- | ------------- |
@@ -54,7 +55,7 @@ working. New installations override these "defaults", e.g. to improve security.
 | `reject6`          | Do not forward IPv6 traffic, useful when the VPN server does not have IPv6 connectivity | no | `false` |
 | `defaultGateway`   | Whether or not to route all traffic from the client over the VPN | no | `false` | 
 | `routes`           | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false` | no | `[]` |
-| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the client. If left empty, the IPv4 and IPv6 gateway address will be pushed to the clients. DNS address are only pushed when `defaultGateway` is `true`. | no | `[]` |
+| `dns`              | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns) | no | `[]` |
 | `twoFactor`        | Whether or not to enable two-factor authentication for connecting to the VPN server, see [Two-factor](2FA.md) documentation | no | `false` |
 | `clientToClient`   | Whether or not to allow client-to-client traffic | no | `false` |
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |
@@ -64,8 +65,8 @@ working. New installations override these "defaults", e.g. to improve security.
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
-| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`. See also [Client Compatibility](CLIENT_COMPAT.md) (replaced `tlsCrypt`) | no | `tls-auth` |
-| `enableCompression` | Enable compression _framing_, but explicitly disable compression (LEGACY) | no | `true` |
+| `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` (**LEGACY**) and `false`. See also [Client Compatibility](CLIENT_COMPAT.md) (replaced `tlsCrypt`) | no | `tls-auth` |
+| `enableCompression` | Enable compression _framing_, but explicitly disable compression (**LEGACY**) | no | `true` |
 
 Changing any of the following options _WILL_ prevent OpenVPN clients from 
 connecting without updating the configuration, unless the eduVPN/Let's Connect! 
@@ -108,6 +109,24 @@ OpenVPN 2.4 those extra routes are ignored.
 
 In the near future (20181231) the `tls-auth` option will no longer allow 
 `AES-256-CBC` or have the routing fix, dropping support for OpenVPN 2.3.
+
+### DNS
+
+To configure the DNS addresses that are pushed to the VPN clients you can use
+the `dns` configuration field. It takes an array of IPv4 and/or IPv6 addresses. 
+If the field is left empty, e.g. `[]` or missing, no DNS servers are pushed to 
+the VPN clients.
+
+Two "special" addresses, `@GW4@` and `@GW6@`, can be used as well that will be 
+replaced by the IPv4 and IPv6 gateway addresses for use with 
+[LOCAL_DNS](LOCAL_DNS.md).
+
+When `defaultGateway` is set to `true`, an additional option is pushed to the
+VPN clients: `block-outside-dns`. This option has, as of this moment, only 
+effect on Windows. On Windows, DNS queries go out over all (configured) 
+interfaces and the first response is used. This can create a 
+[DNS leak](https://en.wikipedia.org/wiki/DNS_leak). By providing the 
+`block-outside-dns` option, this is prevented.
 
 ### OpenVPN Processes
 
