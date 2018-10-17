@@ -21,6 +21,7 @@ Additional scripts are available after deployment:
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
   `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
   script will take care of the host firewall;
+* Working DNS entry for your VPN server, e.g. `vpn.example.org`.
 
 We test only with the official CentOS 
 [Minimal ISO](https://centos.org/download/) and the official 
@@ -47,7 +48,7 @@ Run the script (as root):
 Specify the hostname you want to use for your VPN server. Both the "Web" and 
 "OpenVPN" DNS names can be identical for simple 1 machine setups.
 
-**NOTE**: you can NOT use `localhost` as a hostname.
+**NOTE**: you can NOT use `localhost` as a hostname, nor an IP address!
 
 ## Update
 
