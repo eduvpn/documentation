@@ -43,24 +43,8 @@ This is an (incomplete) list of features of the VPN software:
 
 ## Client Support
 
-The VPN server is working with and tested on a variety of platforms and 
-clients:
-
-  - Windows (OpenVPN Community Client, Viscosity)
-  - OS X (Tunnelblick, Viscosity)
-  - Android (OpenVPN for Android, OpenVPN Connect)
-  - iOS (OpenVPN Connect)
-  - Linux (NetworkManager/CLI)
-
-By default, only clients using OpenVPN >= 2.4 (or OpenVPN 3) are supported! See 
-[Client Compatibility](CLIENT_COMPAT.md) for more 
-information.
-
-### Native Applications
-
-Applications are being developed that you can use for connecting to the VPN. 
-These will work for both the "official" deployments, as well as your own. You 
-can find a list [here](https://app.eduvpn.org/).
+See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
+supported OpenVPN clients.
 
 # Deployment
 
@@ -75,15 +59,15 @@ channel `#eduvpn`.
 
 ## Supported Operating Systems
 
-* [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md)
-* [Fedora 28](DEPLOY_FEDORA.md)
+* [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md) (x86_64)
+* [Fedora 28](DEPLOY_FEDORA.md) (x86_64)
 
-**NOTE**: we expect ALL software updates to be installed before you install the
-software!
+**NOTE**: we expect ALL software updates to be installed and the server 
+rebooted before you install the software!
 
 ## Experimental
 
-* [Debian](DEPLOY_DEBIAN.md)
+* [Debian](DEPLOY_DEBIAN.md) (x86_64)
 
 Open [issues](https://github.com/eduvpn/eduvpn-debian/issues) for the Debian
 packaging.
