@@ -35,6 +35,11 @@ user portal to be able to keep using the VPN.
 * [eduVPN](https://play.google.com/store/apps/details?id=nl.eduvpn.app) [APK](https://app.eduvpn.org/android/eduvpn-latest.apk)
 * [Let's Connect!](https://play.google.com/store/apps/details?id=org.letsconnect_vpn.app) [APK](https://app.letsconnect-vpn.org/android/LetsConnect-latest.apk)
 
+## macOS 
+
+* [eduVPN](https://app.eduvpn.org/mac/eduVPN_latest.dmg)
+* [Let's Connect!](https://app.letsconnect-vpn.org/mac/Lets_Connect_latest.dmg)
+
 ## iOS
 
 * [eduVPN](https://itunes.apple.com/nl/app/eduvpn-client/id1292557340?mt=8)
@@ -46,11 +51,6 @@ to be able to connect to the VPN. The eduVPN/Let's Connect! application will
 handle configuration downloads and then offer to import the configuration in 
 the OpenVPN Connect application. We are currently working on improving the 
 situation!
-
-## macOS 
-
-* [eduVPN](https://app.eduvpn.org/mac/eduVPN_latest.dmg)
-* Let's Connect! (_not yet available_)
 
 ## Linux
 
