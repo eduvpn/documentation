@@ -119,12 +119,16 @@ more details.
      
 ## Linux
 
-The following is a list of Linux distribution support when using 
-NetworkManager's OpenVPN plugin with a default deployment of the VPN server. In 
-order to install the NetworkManager OpenVPN plugin, you can install the 
-package `NetworkManager-openvpn-gnome` on Fedora, as well as CentOS/Red Hat 
-Enterprise Linux (from [EPEL](https://fedoraproject.org/wiki/EPEL)) and the 
-package `network-manager-openvpn-gnome` on Debian/Ubuntu.
+The following table lists Linux distribution support when using 
+NetworkManager's OpenVPN plugin and manual configuration. In order to install 
+the NetworkManager OpenVPN plugin. 
+
+On Fedora/Red Hat Enterprise Linux/CentOS you need to install the package
+`NetworkManager-openvpn-gnome`. On Red Hat Enterprise Linux/CentOS you MUST 
+first enable the [EPEL](https://fedoraproject.org/wiki/EPEL) repository!
+
+On Debian/Ubuntu you need to install the `network-manager-openvpn-gnome` 
+package.
 
 See the instructions below on how to get the VPN working manually.
 
@@ -142,7 +146,7 @@ See the instructions below on how to get the VPN working manually.
 For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)
 is available with a more up to date version of OpenVPN. This may be sufficient
-to make the VPN work manually as described below, however, this is NOT tested.
+to make the VPN work manually as described below, however, this was NOT tested.
 
 ### Manual
 
