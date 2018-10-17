@@ -32,6 +32,9 @@ installed:
 
     $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils gnupg2
 
+If you want to perform cross compiles, e.g. for `aarch64`, also install 
+`qemu-user-static`
+
 ## Mock
 
 Make sure your current user account is a member of the `mock` group:

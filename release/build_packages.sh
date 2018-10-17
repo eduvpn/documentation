@@ -41,7 +41,7 @@ echo "Build in progress, this may take a long time..."
 (
     # Build RPMs
     cd "${HOME}/rpmbuild/SRPMS" || exit
-    RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
+    RESULT_DIR=$(mockchain -r "${MOCK_CONFIG}" ${MOCK_OPTS} ${SRPM_LIST} | grep "results dir" | cut -d ':' -f 2 | xargs)
     cp ${RESULT_DIR}/*/*.src.rpm "${SRPM_DIR}/unsigned"
     cp ${RESULT_DIR}/*/*.noarch.rpm ${RESULT_DIR}/*/*.x86_64.rpm "${RPM_DIR}/unsigned"
 )
