@@ -2,17 +2,20 @@
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
 DNS servers used by the server itself (as configured in `/etc/resolv.conf`) for
-the VPN clients as well. If no usable address is available, the DNS service
-offered by [Quad9](https://quad9.net/) is used.
+the VPN clients as well. If no usable address is available, e.g. only 
+"localhost" addresses are configured there, the public DNS service offered by 
+[Quad9](https://quad9.net/) is used. 
 
 It is possible to run your own local DNS resolver for the VPN clients. This has 
 a number of benefits:
 
 - Ability to apply filters to e.g. block known malware domains;
-- No upstream DNS available from your ISP;
 - The upstream DNS is unreliable, sells your query data or is slow;
 - You do not want to use the "public DNS" services as offered by Quad9, 
   Cloudflare or Google.
+
+Running your own DNS resolver can also be a good idea if no upstream DNS server 
+is provided by your ISP.
 
 **NOTE**: if your organization has a (trusted) DNS service you SHOULD probably
 use those! See [PROFILE_CONFIG](PROFILE_CONFIG.md), look for the `dns` option.
