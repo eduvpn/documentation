@@ -92,7 +92,7 @@ semanage port -a -t openvpn_port_t -p udp 1195-1263
 # APACHE
 ###############################################################################
 
-# Use a hardended ssl.conf instead of the default, gives A+ on
+# Use a hardened ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
 cp resources/ssl.conf /etc/httpd/conf.d/ssl.conf
 cp resources/localhost.centos.conf /etc/httpd/conf.d/localhost.conf
