@@ -67,10 +67,8 @@ rebooted before you install the software!
 
 ## Experimental
 
-* [Debian](DEPLOY_DEBIAN.md) (x86_64)
-
-Open [issues](https://github.com/eduvpn/eduvpn-debian/issues) for the Debian
-packaging.
+* [Debian](DEPLOY_DEBIAN.md) (x86_64) ([issues](https://github.com/eduvpn/eduvpn-debian/issues))
+* [Fedora 28](DEPLOY_FEDORA.md) (aarch64, armhf)
 
 # Development
 
