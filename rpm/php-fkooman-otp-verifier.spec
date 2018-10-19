@@ -1,8 +1,8 @@
-#global git 2f5c4770a76cf1f4c913a35977108314b3af9ade
+#global git af508ac3b6c1949c52a0cc8b09c6e11d182a6618
 
 Name:           php-fkooman-otp-verifier
-Version:        0.2.0
-Release:        6%{?dist}
+Version:        0.2.1
+Release:        1%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
@@ -116,6 +116,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Otp
 
 %changelog
+* Fri Oct 19 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-1
+- update to 0.2.1
+
 * Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 0.2.0-6
 - merge dev and prod spec files in one
 - cleanup requirements
