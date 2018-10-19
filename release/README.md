@@ -85,8 +85,8 @@ Clone the `eduVPN/documentation` repository:
 # Building
 
     $ cd documentation
-    $ ./centos_7.sh         # run this on CentOS 7
-    $ ./fedora_28.sh        # run this on Fedora 28
+    $ release/centos_7_x86_64.sh         # run this on CentOS 7
+    $ release/fedora_28_x86_64.sh        # run this on Fedora 28
 
 This will put all RPMs and source RPMs in the `${HOME}/repo` directory and 
 create a tarball in `${HOME}` as well with the name 
