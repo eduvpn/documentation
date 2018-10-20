@@ -32,8 +32,8 @@ user portal to be able to keep using the VPN.
 
 ## Android
 
-* [eduVPN](https://play.google.com/store/apps/details?id=nl.eduvpn.app) [APK](https://app.eduvpn.org/android/eduvpn-latest.apk)
-* [Let's Connect!](https://play.google.com/store/apps/details?id=org.letsconnect_vpn.app) [APK](https://app.letsconnect-vpn.org/android/LetsConnect-latest.apk)
+* [eduVPN](https://play.google.com/store/apps/details?id=nl.eduvpn.app) ([APK](https://app.eduvpn.org/android/eduvpn-latest.apk))
+* [Let's Connect!](https://play.google.com/store/apps/details?id=org.letsconnect_vpn.app) ([APK](https://app.letsconnect-vpn.org/android/LetsConnect-latest.apk))
 
 ## macOS 
 
@@ -89,7 +89,7 @@ automatically connect!
 
 ## macOS
 
-Download [tunnenblick](https://tunnelblick.net/). Make sure you use OpenVPN 
+Download [tunnelblick](https://tunnelblick.net/). Make sure you use OpenVPN 
 2.4 in tunnelblick! You can modify this in the settings if required. Read the 
 [Quick Start Guide](https://tunnelblick.net/czQuick.html).
 
