@@ -169,7 +169,7 @@ If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 
 `/etc/vpn-server-node/firewall.php`.
 
-### CentOS 
+### Red Hat Enterprise Linux / CentOS / Fedora
 
 To regenerate and install the new firewall rules, run this:
 
