@@ -1,23 +1,23 @@
 # Introduction
 
+This is the eduVPN/Let's Connect! documentation repository. This repository 
+targets administrators and developers. It contains information on how to deploy 
+the VPN software, but also (technical) details about the implementation needed 
+to (better) integrate it in existing infrastructure, and how to modify the 
+software for one's own needs.
+
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
 contact [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
-
-This is the eduVPN documentation repository. This repository targets
-administrators and developers. It contains information on how to deploy the VPN
-software, but also (technical) details about the implementation needed to 
-(better) integrate it in existing infrastructure, and how to modify the 
-software for one's own needs.
 
 # Features
 
 This is an (incomplete) list of features of the VPN software:
 
 - OpenVPN server accepting connections on both UDP and TCP ports;
-- Support (out of the box) multiple OpenVPN processes for load sharing 
-  purposes;
+- Uses multiple OpenVPN processes for load sharing purposes;
+- Scales from a Raspberry Pi to many core systems with 10GBit networking;
 - Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
-- Support both NAT and routable IP addresses;
+- Support both NAT and publically routable IP addresses;
 - CA for managing client certificates;
 - [Secure](SECURITY.md) server and client configuration out of the box;
 - User Portal to allow users to manage their configurations for their 
@@ -39,9 +39,10 @@ This is an (incomplete) list of features of the VPN software:
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled;
-- [Guest Usage](GUEST_USAGE.md)
+- [Guest Usage](GUEST_USAGE.md) scenario;
+- Native [applications](CLIENT_COMPAT.md) available for most common platforms.
 
-## Client Support
+# Client Support
 
 See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
 supported OpenVPN clients.
