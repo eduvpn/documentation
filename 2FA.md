@@ -91,7 +91,7 @@ Packages are available for Debian and CentOS/Red Hat Enterprise Linux/Fedora.
 
 ### Debian
 
-    $ sudo apt-get install openvpn-plugin-auth-script
+    $ sudo apt-get install openvpn-auth-script
 
 ### CentOS/Red Hat Enterprise Linux
 
