@@ -135,10 +135,10 @@ See the instructions below on how to get the VPN working manually.
 | Distribution            | NetworkManager | Manual | Remarks                                                              |
 | ----------------------- | -------------- | -------| -------------------------------------------------------------------- |
 | Debian 8                | no             | no     | Uses OpenVPN 2.3                                                     |
-| Debian 9                | no             | yes    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support |
+| Debian 9                | yes*           | yes    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support. A backport MUST be installed, see below |
 | Debian Testing (buster) | yes            | yes    | -                                                                    |
 | Ubuntu 16.04 LTS        | no             | no     | Uses OpenVPN 2.3                                                     |
-| Ubuntu 18.04 LTS        | partially      | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648) |
+| Ubuntu 18.04 LTS        | yes*           | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648) |
 | Ubuntu 18.10            | yes            | yes    | -                                                                    | 
 | CentOS 7                | no             | yes    | `NetworkManager-openvpn` >= 1.2.10 required for `tls-crypt` support ([RHBZ](https://bugzilla.redhat.com/show_bug.cgi?id=1520214)) |
 | Fedora 28               | yes            | yes    | -                                                                    |
@@ -147,6 +147,20 @@ For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)
 is available with a more up to date version of OpenVPN. This may be sufficient
 to make the VPN work manually as described below, however, this was NOT tested.
+
+On Debian 9, a _backport_ of `network-manager-openvpn` exists to make 
+`tls-crypt` work. In order to install this, add the following line to 
+`/etc/apt/sources.list`:
+
+    deb http://deb.debian.org/debian stretch-backports main contrib non-free
+
+Then install/update the relevant package:
+
+    $ sudo apt-get update
+    $ sudo apt-get -t stretch-backports install network-manager-openvpn-gnome
+
+This will upgrade all required packages as well. You may need to reboot or 
+restart NetworkManager.
 
 ### Manual
 
