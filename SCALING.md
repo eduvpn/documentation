@@ -1,6 +1,13 @@
 # Introduction
 
-There are many aspects of "scaling", and not all will be answered, but it 
+This document gives some ideas on how to scale to 100s of simultaneously 
+connected VPN clients.
+
+Most organizations start by deploying a single server, which can scale quite 
+well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
+AES-NI and adequate network performance, e.g. 10+ Gbit interface(s).
+
+There are many aspects of "scaling", and not all will be answered here, but it 
 should give the reader a general idea about how well the server works with many 
 clients.
 
@@ -11,14 +18,23 @@ current software? The important metric here is "concurrent connected clients".
 
 ## Hardware
 
-It is recommend to run "bare metal" and not on a virtual machine. One can start
-with a virtual machine, but for (very) serious use it makes sense to run on a 
-physical machine.
+It is recommend to run "bare metal" and not on a virtual platform. One can 
+start with a virtual machine, and move to bare metal later to increase the 
+performance of the VPN server. It is hard to quantify the benefits of moving to
+bare metal as it depends on the VM platform that is being used and how it is 
+configured. Dedicated network interfaces, for example using IOMMU may also 
+increase the performance.
 
-A machine up to 16 cores is supported. Having a CPU with AES-NI is highly 
-recommended as that will improve the performance substantially.
+The current architecture limits the number of OpenVPN processes to 16 per 
+profile. It makes sense to match the number of CPU cores with the number of 
+OpenVPN processes. So up to 16 cores per server (profile) makes sense. It is in 
+no way required to start with 16 cores for a VM server, but it is possible to 
+slowly grow to 16 cores when the VPN server use increases.
 
-For networking, it is recommended to use 10Gbit+ networking equipment. It is 
+A CPU with AES-NI (hardware accelerated AES) is highly recommended. It will
+substantially improve the performance.
+
+For networking, it is recommended to use 10+ Gbit networking equipment. It is 
 possible to use 2 NICs, one to handle the VPN traffic, and one to handle the 
 "plain" traffic. This could potentially increase the performance by a factor of
 two.
@@ -27,22 +43,22 @@ two.
 
 Gathering information from other VPN operators resulted in estimating that one 
 needs one CPU core for ~64 concurrent client connections. As the OpenVPN 
-server is not multi threaded, client connections will not automatically be 
+server is not multi-threaded, client connections will not automatically be 
 "distributed" over CPU cores. So in order to use multiple cores, we need 
 multiple OpenVPN server processes on one server. The approach we took is to 
-indeed start multiple OpenVPN server processes and distribute clients over 
-them.
+start multiple OpenVPN server processes and distribute clients over them.
 
 The server software is currently limited to 16 OpenVPN processes per VPN 
 profile. This means that for simple single server deploys, the software scales 
 to ~16 CPU cores, allowing for 16 * 64 = 1024 clients to connect. This will be 
-rounded down due to loss of VPN server IPs and IPv4 network/broadcast 
+rounded down due to "loss" of VPN server IPs and IPv4 network/broadcast 
 addresses.
 
 To issue an IP address to all connected clients in this scenario, one would 
 need a `/22` IPv4 network configured in the `range` setting of the VPN profile.
-As for IPv6, there is a lot of space available, so pretty much any range will 
-do in the `range6` configuration option.
+As for IPv6, at least an `/108` is required in the `range6` option. Each 
+OpenVPN process will get a `/112`, the smallest block currently supported by 
+OpenVPN.
 
 In addition, the UDP/TCP ports can be listed in the `vpnProtoPorts` list. For 
 example:
