@@ -62,7 +62,7 @@ improve security.
 | `enableAcl`        | Whether or not to enable [ACL](ACL.md)s for controlling who can connect | no | `false` |
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true`, see [ACL](ACL.md) | no | `[]` |
 | `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
-| `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4 or 8 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
+| `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4, 8 or 16 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
 | `tlsProtection`    | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` (**LEGACY**) and `false` | no | `tls-auth` |
@@ -120,7 +120,7 @@ but not both.
 
 By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
 one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
-the total number of them must be either 1, 2, 4 or 8. This is because the 
+the total number of them must be either 1, 2, 4, 8 or 16. This is because the 
 total available IP range will be split among them. Depending on your address
 space the ideal number of simultaneous clients per process is at most 64. So 
 if you have a `/24` network, you'd probably want to run 4 OpenVPN processes, 

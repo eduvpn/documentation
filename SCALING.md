@@ -60,7 +60,7 @@ As for IPv6, at least an `/108` is required in the `range6` option. Each
 OpenVPN process will get a `/112`, the smallest block currently supported by 
 OpenVPN.
 
-In addition, the UDP/TCP ports can be listed in the `vpnProtoPorts` list. For 
+Additional UDP/TCP ports (up to 16) can be configured with `vpnProtoPorts`. For 
 example:
 
     'vpnProtoPorts' => [
@@ -82,8 +82,8 @@ example:
         'tcp/1201',
     ],
 
-This list contains 16 entries. Please note that the number of listed ports 
-should be either 1, 2, 4, 8 or 16.
+See [OpenVPN Processes](PROFILE_CONFIG.md#openvpn-processes) for more 
+information.
 
 ## Client
 
