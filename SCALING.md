@@ -4,13 +4,15 @@ Most organizations start by deploying a single server, which can scale quite
 well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
 AES-NI and adequate network performance, e.g. 10+ Gbit interface(s).
 
-There are many aspects of "scaling", and not all will be answered here, but this document 
-will provide input about how to design and configure your VPN server(s) in order to handle a large amount of VPN clients.
+There are many aspects of "scaling", and not all will be answered here, but 
+this document will provide input about how to design and configure your VPN 
+server(s) in order to handle a large amount of VPN clients.
 
 # One Server
 
-Most simple deploys have a single server setup. So how well does that scale with the 
-current software? The important metric here is "concurrent connected clients".
+Most simple deploys have a single server setup. So how well does that scale 
+with the current software? The important metric here is "concurrent connected 
+clients".
 
 ## Hardware
 
