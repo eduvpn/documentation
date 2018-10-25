@@ -120,8 +120,7 @@ more details.
 ## Linux
 
 The following table lists Linux distribution support when using 
-NetworkManager's OpenVPN plugin and manual configuration. In order to install 
-the NetworkManager OpenVPN plugin. 
+NetworkManager's OpenVPN plugin and manual configuration.
 
 On Fedora/Red Hat Enterprise Linux/CentOS you need to install the package
 `NetworkManager-openvpn-gnome`. On Red Hat Enterprise Linux/CentOS you MUST 
