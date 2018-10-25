@@ -1,19 +1,15 @@
 # Introduction
 
-This document gives some ideas on how to scale to 100s of simultaneously 
-connected VPN clients.
-
 Most organizations start by deploying a single server, which can scale quite 
 well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
 AES-NI and adequate network performance, e.g. 10+ Gbit interface(s).
 
-There are many aspects of "scaling", and not all will be answered here, but it 
-should give the reader a general idea about how well the server works with many 
-clients.
+There are many aspects of "scaling", and not all will be answered here, but this document 
+will provide input about how to design and configure your VPN server(s) in order to handle a large amount of VPN clients.
 
 # One Server
 
-Most simple deploys have one server. So how well does that scale with the 
+Most simple deploys have a single server setup. So how well does that scale with the 
 current software? The important metric here is "concurrent connected clients".
 
 ## Hardware
@@ -43,7 +39,7 @@ two.
 
 Gathering information from other VPN operators resulted in estimating that one 
 needs one CPU core for ~64 concurrent client connections. As the OpenVPN 
-server is not multi-threaded, client connections will not automatically be 
+software is not multi-threaded, client connections will not automatically be 
 "distributed" over CPU cores. So in order to use multiple cores, we need 
 multiple OpenVPN server processes on one server. The approach we took is to 
 start multiple OpenVPN server processes and distribute clients over them.
