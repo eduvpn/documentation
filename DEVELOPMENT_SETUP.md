@@ -6,7 +6,7 @@ for easy development and running it on your development system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using Fedora >= 26 for development work, but other 
+We assume you will be using Fedora >= 28 for development work, but other 
 distributions will of course also work, but some minor details, regarding 
 installation of the required software, will be different.
 
@@ -17,9 +17,10 @@ about guidelines to follow.
 
 Install the required software:
 
-    $ sudo dnf -y install git composer php-phpunit-PHPUnit openvpn \
+    $ sudo dnf -y install git composer phpunit7 openvpn \
         php-date php-filter php-gettext php-hash php-json php-mbstring \
-        php-pcre php-pdo php-spl php-libsodium php-ldap php-curl php-gd
+        php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
+        php-gd
 
 Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/eduVPN` under which 
