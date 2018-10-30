@@ -117,18 +117,20 @@ Now, with that out of the way, you can put the following POSIX shell script in
 
 ## Creating a Release
 
+To create a (annotated) tag of your tree:
+
+    $ git tag 1.1.4 -a -m '1.1.4'
+    $ git push origin 1.1.4
+
 Now, from your checked out repository you can run `make_release` and it will 
 create (by default) a signed archive of the last (annotated) tag of the 
 project. If you want to create a release of a specific tag, provide it as the 
 first argument to `make_release`:
 
-    $ mkdir tmp && cd tmp
-    $ git clone https://git.tuxed.net/fkooman/php-yubitwee
-    $ cd php-yubitwee
     $ make_release
     Version: 1.1.4
 
-The following files are created:
+The following files are created, e.g:
 
     $ ls -l php-yubitwee-*
     -rw-rw-r--. 1 fkooman fkooman 8240 Jun  8 17:18 php-yubitwee-1.1.4.tar.xz
