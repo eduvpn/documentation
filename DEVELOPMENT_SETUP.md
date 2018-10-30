@@ -20,7 +20,7 @@ Install the required software:
     $ sudo dnf -y install git composer phpunit7 openvpn \
         php-date php-filter php-gettext php-hash php-json php-mbstring \
         php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
-        php-gd
+        php-gd google-roboto-fonts
 
 Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/eduVPN` under which 
