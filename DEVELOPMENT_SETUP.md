@@ -35,7 +35,7 @@ All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
     $ cd ${HOME}/Projects/eduVPN/vpn-user-portal
-    $ phpunit
+    $ phpunit7
 
 # Using
 
