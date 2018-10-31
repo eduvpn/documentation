@@ -61,7 +61,6 @@ improve security.
 | `enableLog`        | Whether or not to enable OpenVPN logging | no | `false` |
 | `enableAcl`        | Whether or not to enable [ACL](ACL.md)s for controlling who can connect | no | `false` |
 | `aclGroupList`     | The list of groups to allow access, requires `enableAcl` to be `true`, see [ACL](ACL.md) | no | `[]` |
-| `blockSmb`         | Whether or not to block Samba/CIFS traffic to the Internet | no | `false` |
 | `vpnProtoPorts`    | The protocol and port to listen on. Must contain 1, 2, 4, 8 or 16 entries. See [OpenVPN Processes](#openvpn-processes) | no | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443` | no | `[]` |
 | `hideProfile`      | Hide the profile from the user portal, i.e. do not allow the user to choose it | no | `false` |
