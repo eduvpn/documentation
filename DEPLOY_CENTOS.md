@@ -4,11 +4,10 @@ For simple one server deployments and tests, we have a deploy script available
 you can run on a fresh CentOS (or Red Hat Enterprise Linux) 7 installation. It 
 will configure all components and will be ready for use after running!
 
-Additional scripts are available after deployment:
+An additional script is available after deployment:
 
 * Use [Let's Encrypt](https://letsencrypt.org/) for automatic web server 
   certificate management;
-* Switch to modern PHP (experimental)
 
 ## Requirements
 
