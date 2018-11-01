@@ -1,8 +1,9 @@
 # SELinux
 
-If you used `deploy_${DIST}.sh` your VPN server has SELinux fully enabled and 
-configured. If you make changes to the configuration, you may need to update
-the SELinux configuration.
+If you used the `deploy_${DIST}.sh` script on CentOS, Red Hat Enterprise Linux 
+or Fedora, your VPN server has SELinux fully enabled and configured. If you 
+make changes to the configuration, you MAY need to update the SELinux 
+configuration.
 
 # OpenVPN 
 
