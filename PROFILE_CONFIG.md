@@ -39,7 +39,7 @@ requiring the administrator to modify the configuration file and to keep
 existing clients working. 
 
 New installations using `deploy_${DIST}.sh` override these "defaults", e.g. to 
-improve security, see the "Deploy Value" table for the value for new 
+improve security, see the "Deploy Value" column for the value for new 
 deployments.
 
 | Option                 | Description                                                                                                                                                                 | Required | Default Value              | Deploy Value               |
