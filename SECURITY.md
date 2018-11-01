@@ -20,7 +20,7 @@ configuration is regenerated, as recommended on every update:
     tls-auth /path/to/tls-auth.key 0
 
 The basic OpenVPN server (and client) crypto configuration for installations
-after XXXX-YY-ZZ:
+after 2018-02-25:
 
     tls-version-min 1.2
     tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
