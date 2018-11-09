@@ -161,6 +161,17 @@ Then install/update the relevant package:
 This will upgrade all required packages as well. You may need to reboot or 
 restart NetworkManager.
 
+### Split Tunnel
+
+If you do _not_ want to route all traffic over the VPN, you need to manually
+specify this in NetworkManager. By default, NetworkManager will try to send
+all traffic over the VPN, whether or not the servers indicates the VPN should
+not be used as a default gateway.
+
+When editing the VPN configuration, under the IPv4 and IPv6 tabs you can 
+select "Use this connection only for resources on its network", this way it
+will honor the pushed routes.
+
 ### Manual
 
 To start OpenVPN manually, we assume below that you downloaded an OpenVPN 
