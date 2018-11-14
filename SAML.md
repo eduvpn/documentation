@@ -43,11 +43,12 @@ Copy the files:
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
 
-    $ curl -o SURFconext.xml https://engine.surfconext.nl/authentication/idp/metadata
+    $ curl -o engine.test.surfconext.nl.xml https://engine.test.surfconext.nl/authentication/idp/metadata
+    $ curl -o engine.surfconext.nl.xml https://engine.surfconext.nl/authentication/idp/metadata
 
 Now copy the metadata as well:
 
-    $ sudo cp SURFconext.xml /etc/httpd/saml
+    $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
 Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
 there. Make sure you modify the lines that refer to certificates and keys and
