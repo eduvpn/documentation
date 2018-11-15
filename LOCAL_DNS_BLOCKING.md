@@ -10,24 +10,29 @@ Adding this feature involves a few steps. In the end, your DNS server has a spec
 
 
 # For consideration
+
 This DNS-blocking approach has some limitations which need to be taken into consideration first:
 * Depending on your DNS server, updating the blacklist might clear the resolver's cache;
 * This is a simple blacklisting approach. Ads on well-engineered websites might still show up;
 * Some legitimate websites may break. Fixing these websites require a manual whitelisting action. You could also generate a blacklist composed of less restrictive sources.
 
-# Steps to enable DNS-blocking:
-1. [Run your a local DNS server on your VPN server](https://github.com/eduvpn/documentation/blob/master/LOCAL_DNS.md);
-2. [Add an additional profile](https://github.com/eduvpn/documentation/blob/master/MULTI_PROFILE.md) which will offer the blocking feature;
+# Steps to enable DNS-blocking
+
+1. [Run your a local DNS server on your VPN server](LOCAL_DNS.md);
+2. [Add an additional profile](MULTI_PROFILE.md) which will offer the blocking feature;
 3. Configure the DNS server to use a special view for the new VPN profile;
 4. Add and automatically renew the view.
 
 ## Run your a local DNS server on your VPN server
-Follow the [instructions for setting up local DNS](https://github.com/eduvpn/documentation/blob/master/LOCAL_DNS.md). The instructions in this document assume you installed Unbound. If you run another DNS resolver, then you will have to generate the blacklist view yourself ([see step 4](#other-local-dns-server)).
+
+Follow the [instructions for setting up local DNS](LOCAL_DNS.md). The instructions in this document assume you installed Unbound. If you run another DNS resolver, then you will have to generate the blacklist view yourself ([see step 4](#other-local-dns-server)).
 
 ## Add an additional profile
-Follow the [instructions](https://github.com/eduvpn/documentation/blob/master/MULTI_PROFILE.md) to add the new DNS-blocking VPN profile with its own IP ranges, for example `10.158.228.0/24` and `fd05:e46c:cbb3:22f0::/60`.
+
+Follow the [instructions](MULTI_PROFILE.md) to add the new DNS-blocking VPN profile with its own IP ranges, for example `10.158.228.0/24` and `fd05:e46c:cbb3:22f0::/60`.
 
 ## Configure the DNS server use a special view for the new VPN profile
+
 You need to change the Unbound configuration. In the Unbound configuration file, include `.blacklist` files, and define an `access-control-view` for every IP range of the VPN profile in the `server:` clause:
 
     include: "/etc/unbound/unbound.conf.d/*.blacklist"
@@ -40,7 +45,6 @@ You need to change the Unbound configuration. In the Unbound configuration file,
         access-control-view: fd05:e46c:cbb3:22f0::/60 blacklistview
  
 In this example we refer to the view "blacklistview". In the next step we will define that view.  
-
 
 ## Add and automatically renew the view
 
@@ -108,4 +112,5 @@ The script downloads a remote blacklistview which is updated daily. Rerun the sc
 Currently, eduVPN only hosts a generated blacklist view for Unbound. If you need a blacklist in the format of another DNS server, then you can [generate your own blacklist](#generating-your-own-blacklist) instead of using the blacklist hosted by eduVPN.
 
 ### Generating your own blacklist
+
 If you prefer to generate your own blacklist, then you can run the [blacklist generator](https://github.com/shaanen/dns-blackhole) yourself. This way you can add the online sources of your liking, and add your own custom black/whitelist.
