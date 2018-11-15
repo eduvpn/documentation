@@ -20,7 +20,7 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [CUSTOM_BRANDING](CUSTOM_BRANDING.md)                 | Apply your own Branding/Themes |
 | [GUEST_USAGE](GUEST_USAGE.md)                         | Setup and Enable Guest Usage (VPN Federation) |
 | [LOCAL_DNS](LOCAL_DNS.md)                             | Run Local DNS Resolver on VPN server |
-| [LOCAL_DNS_BLOCKING](LOCAL_DNS_BLOCKING.md)           | Block malware/tracking/advertisement domains with Local DNS Resolver |
+| [DNS_FILTERING](DNS_FILTERING.md)                     | Block malware/tracking/advertisement domains with Local DNS Resolver |
 | [MULTI_PROFILE](MULTI_PROFILE.md)                     | Configure VPN Profiles on VPN Server|
 | [PORT_SHARING](PORT_SHARING.md)                       | Enable Port Sharing for the Web Server for TCP/443 |
 | [USER_DELETE](USER_DELETE.md)                         | Manually fully Delete a User | 
