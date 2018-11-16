@@ -111,8 +111,8 @@ if unbound-control -q reload
 then
         echo "Blacklist updated and Unbound reloaded."
         echo "$BLACKLIST_CHECKSUM" > $PATH_LOCAL_BLACKLIST_CHECKSUM
-        # New blacklist works, remove backup
-        rm $BLACKLIST.bak
+        # New blacklist works, remove old backup if exists
+        rm -f $BLACKLIST.bak
 else
         echo "Unbound could not reload with new blacklist."
         # Remove faulty new blacklist
