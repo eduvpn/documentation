@@ -2,8 +2,8 @@
     "arguments": "/install",
     "changelog_uri": "https://github.com/Amebis/eduVPN/blob/master/CHANGES.md#1024-2018-11-08",
     "hash-sha256": "9a92440f481624fdea944ead4f73ffbbf2ae41d07c4b73300996933e4a60e699",
-    "seq": 38,
-    "signed_at": "2018-11-12 10:58:24",
+    "seq": 39,
+    "signed_at": "2018-11-19 13:10:48",
     "uri": [
         "https://app.eduvpn.org/windows/eduVPNClient_1.0.24.exe"
     ],
