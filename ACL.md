@@ -4,8 +4,9 @@ The VPN service supports group ACLs, i.e. require users to be a member of a
 certain group before allowing downloading configurations and to access to the 
 VPN service for profiles that have ACLs enabled.
 
-The ACLs need to be configured in `/etc/vpn-server-api/default/config.php`, and
-possibly `/etc/vpn-user-portal/default/config.php`
+The ACLs need to be configured in `/etc/vpn-server-api/default/config.php` and 
+the ACL methods, i.e. the way how to obtain the membership information, in 
+`/etc/vpn-user-portal/default/config.php`.
 
 ## Enabling ACLs
 
@@ -20,122 +21,84 @@ enable the ACL for. Here, the group with identifier `all` is given access.
 There are a number of backends available to fetch group membership 
 information and they are also configured here.
 
-### StaticProvider
+### SAML 
 
-    'groupProviders' => [
-        'StaticProvider' => [
-            'all' => [
-                'displayName' => 'All',
-                'members' => ['foo', 'bar'],
-            ],
-            'students' => [
-                'displayName' => 'Students',
-                'members' => ['foo'],
-            ],
-            'employees' => [
-                'displayName' => 'Employees',
-                'members' => ['bar'],
-            ],
-        ],
+We assume [SAML](SAML.md) is already configured and working.
+
+You have to choose an SAML attribute you want to use that contains the values
+you configured in `aclGroupList` mentioned above. Typically, that would be 
+`eduPersonEntitlement` or `eduPersonAffiliation`, but any SAML attribute will 
+work. You MAY need to specify the OID variant as shown in the example below.
+
+In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
+and set the `entitlementAttribute` to the name of the attribute:
+
+    // SAML
+    'MellonAuthentication' => [
+        'attribute' => 'MELLON_NAME_ID',
+        // 'OID for eduPersonTargetedID
+        //'attribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
+        // OID for eduPersonPrincipalName
+        //'attribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6',
+
+        // add the entityID of the IdP to the user ID. This MUST be enabled
+        // if multiple IdPs are used *and* the attribute used for the user ID
+        // is not enforced to be unique among the different IdPs
+        'addEntityID' => false,
+
+        // ** AUTHORIZATION | ENTITLEMENT **
+        // OID for eduPersonEntitlement
+        //'entitlementAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
     ],
 
-Here you can add the various user IDs to the group ID to give them access to
-the profile. Make sure the group ID, here `all`, `students` and `employees` 
-matches with the ID as specified in `aclGroupList` in your profile 
-configuration.
+### LDAP
 
-### LdapProvider
+We assume [LDAP](LDAP.md) is already configured and working. 
 
-For [FreeIPA](https://www.freeipa.org/):
+You have to choose an LDAP attribute you want to use that contains the values
+you configured in `aclGroupList` mentioned above. Typically, that would be 
+`memberOf`, `eduPersonEntitlement` or `eduPersonAffiliation`, but any LDAP 
+attribute will work.
 
-    'LdapProvider' => [
-        // FreeIPA
+In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
+and set the `entitlementAttribute` to the name of the attribute:
+
+    // LDAP
+    'FormLdapAuthentication' => [
         'ldapUri' => 'ldaps://ipa.example.org',
-        'groupBaseDn' => 'cn=groups,cn=accounts,dc=example,dc=org',
-        // {{UID}} will be replaced by the actual user ID
-        'memberFilterTemplate' => 'member=uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        'bindDn' => 'uid=vpn,cn=sysaccounts,cn=etc,dc=example,dc=org',
-        'bindPass' => 's3cr3t',
-    ],
-
-Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
-may need to obtain the CA certificate of the LDAP server and store it 
-locally so it can be used to verify the LDAP server certificate. See the
-CA section below.
-
-The `groupBaseDn` is the DN where the groups you want to retrieve are located. 
-The `memberFilterTemplate` is used to only return the groups the user is a 
-member of.
-
-On FreeIPA, creating a system account, as used in the `bindDn`, is described 
-[here](https://www.freeipa.org/page/HowTo/LDAP).
-
-For Active Directory: 
-
-    'LdapProvider' => [
+        // "{{UID}}" will be replaced with the username the user provides
+        // on the login page
+        'userDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
         // Active Directory
-        'ldapUri' => 'ldap://ad.example.org',
-        'groupBaseDn' => 'cn=Users,dc=example,dc=org',
-        // {{DN}} will be replaced by the actual user DN obtained using
-        // the userIdFilter configured below
-        'memberFilterTemplate' => 'member={{DN}}',
-        'userBaseDn' => 'cn=Users,dc=example,dc=org',
-        // {{UID}} will be replaced by the actual user ID
-        'userIdFilterTemplate' => 'sAMAccountName={{UID}}',
-        'bindDn' => 'cn=Administrator,cn=Users,dc=example,dc=org',
-        'bindPass' => 's3cr3t',
+        //'userDnTemplate' => 'DOMAIN\{{UID}}',
+
+        // ** AUTHORIZATION | ENTITLEMENT **
+        // use eduPerson "eduPersonEntitlement"
+        //'entitlementAttribute' => 'eduPersonEntitlement',
+
+        // use LDAP "memberOf"
+        //'entitlementAttribute' => 'memberOf',
     ],
 
-The same as for FreeIPA regarding LDAP URI and certificates, but there are some 
-extra options here for AD as it is required to first figure out the DN of the 
-user based on their user ID (`sAMAccountName`) before we can retrieve the list 
-of groups the user is a member of.
+### VOOT
 
-Do **NOT** use the Administrator account as mentioned in the example for 
-production deploys! Create a system or service account instead that can only 
-be used to "bind" to the LDAP server and query it, with no additional 
-permissions!
+**NOTE**: this method is DEPRECATED. Either use SAML, with e.g. 
+`eduPersonEntitlement`.
 
-`userBaseDn` contains the users, typically this is the same as `groupBaseDn` 
-on simple deployments. The `userIdFilterTemplate` is used to determine which 
-LDAP attribute is used to determine the DN of the user.
+We assume [SAML](SAML.md) is already configured and working.
 
-#### CA
-
-See [LDAP.md](LDAP.md#ca) for information on how to configure your LDAP's CA 
-for use on CentOS and LDAP.
-
-### VootProvider
-
-This method uses the [VOOT protocol](http://openvoot.org/) to retrieve group 
+The [VOOT protocol](http://openvoot.org/) is used to retrieve group 
 memberships. The example below is for the 
 [SURFteams](https://teams.surfconext.nl) component of 
 [SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
 
-Add `VootProvider` to the `groupProviders` section in 
-`/etc/vpn-server-api/default/config.php`:
-    
-    'groupProviders' => [
-        'VootProvider' => [
-            'clientId' => 'my_client_id',
-            'clientSecret' => 'my_client_secret',
-            'authorizationEndpoint' => 'https://authz.surfconext.nl/oauth/authorize',
-            'tokenEndpoint' => 'https://authz.surfconext.nl/oauth/token',
-            'apiUrl' => 'https://voot.surfconext.nl/me/groups',
-        ],
-    ],
+The `clientId` and `clientSecret` mentioned below need to be replaced with the 
+actual secrets obtained when registering at SURFconext. The redirect URI 
+that needs to be registered is `https://vpn.example/portal/_voot/callback` 
+where `vpn.example` is replaced with your actual domain.
 
-The `clientId` and `clientSecret` need to be replaced with the actual 
-secrets obtained when registering the portal for SURFconext. The redirect URI 
-that needs to be registered is `https://vpn.example/portal/_voot/callback`.
-
-The group identifiers as returned by the VOOT API calls need to be specified
-in the `aclGroupList` in your profile configuration. You also need set set
-`enableAcl` to `true`.
-
-This module works together with the user portal to obtain an access token per 
-user that will be used to retrieve the group membership. The portal also needs 
-to be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`: 
+In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
+and set the following:
 
     'enableVoot' => true,
     'Voot' => [
@@ -143,6 +106,7 @@ to be configured to enable Voot in `/etc/vpn-user-portal/default/config.php`:
         'clientSecret' => 'my_client_secret',
         'authorizationEndpoint' => 'https://authz.surfconext.nl/oauth/authorize',
         'tokenEndpoint' => 'https://authz.surfconext.nl/oauth/token',
+        'apiUrl' => 'https://voot.surfconext.nl/me/groups',
     ],
 
 The group membership will be automatically obtained when the user logs in, and
