@@ -1,8 +1,8 @@
-#global git ddcdf1d557ab0389b88920b0d5b5bc8a8f19e9da
+%global git 0b0a64ec0974f5acd8318ebe284f0a10b5cc228f
 
 Name:           php-fkooman-jwt
-Version:        0.1.0
-Release:        2%{?dist}
+Version:        0.2.2
+Release:        1%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -54,6 +54,15 @@ BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 BuildRequires:  php-composer(symfony/polyfill-php70)
 %endif
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-pecl(libsodium)
+%endif
 
 #    "require": {
 #        "ext-date": "*",
@@ -79,6 +88,15 @@ Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
 Requires:  php-composer(symfony/polyfill-php70)
 %endif
+#    "suggest": {
+#        "ext-libsodium": "PHP < 7.2 sodium implementation",
+#        "ext-sodium": "PHP >= 7.2 sodium implementation"
+#    },
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+Requires:   php-sodium
+%else
+Requires:   php-pecl(libsodium)
+%endif
 
 Provides:  php-composer(fkooman/jwt) = %{version}
 
@@ -103,6 +121,7 @@ AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 \Fedora\Autoloader\Dependencies::required(array(
+    __DIR__.'/sodium_compat.php',
     '%{_datadir}/php/random_compat/autoload.php',
     '%{_datadir}/php/Symfony/Polyfill/autoload.php',
 ));
@@ -128,6 +147,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Tue Oct 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.2-1
+- update to 0.2.2
+
+* Tue Oct 23 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-1
+- update to 0.2.1
+
 * Fri Sep 28 2018 François Kooman <fkooman@tuxed.net> - 0.1.0-2
 - fix EL7 builds (autoloader syntax, missing R/BR)
 
