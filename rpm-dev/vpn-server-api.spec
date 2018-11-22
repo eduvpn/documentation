@@ -1,7 +1,7 @@
-%global git fa8265edb9642f596b54d726bc85f15617cfd519
+%global git 29e2cb7556ecadafd0e1b549b7d2328c20c3577b
 
 Name:       vpn-server-api
-Version:    1.4.6
+Version:    1.4.7
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
@@ -74,13 +74,9 @@ Requires:   httpd-filesystem
 # EL7 does not have httpd-filesystem
 Requires:   httpd
 %endif
-%if 0%{?fedora} >= 24
-Requires:   easy-rsa
-%else
-# EL7 has Easy RSA 2.x
+# We have an embedded modified copy of https://github.com/OpenVPN/easy-rsa
 Requires:   openssl
 Provides:   bundled(easy-rsa) = 3.0.1
-%endif
 #    "require": {
 #        "LC/openvpn-connection-manager": "^1",
 #        "eduvpn/common": "^1",
@@ -128,11 +124,6 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %endif
 %patch0 -p1
 
-# remove bundled Easy RSA 3.x
-%if 0%{?fedora} >= 24
-rm -rf easy-rsa
-%endif
-
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
@@ -168,11 +159,7 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-server-api
 ln -s ../../../var/lib/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/data
 
 # easy-rsa
-%if 0%{?fedora} >= 24
-ln -s ../../../usr/share/easy-rsa/3 %{buildroot}%{_datadir}/vpn-server-api/easy-rsa
-%else 
 cp -pr easy-rsa %{buildroot}%{_datadir}/vpn-server-api
-%endif 
 
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
@@ -218,6 +205,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Nov 22 2018 François Kooman <fkooman@tuxed.net> - 1.4.7-1
+- update to 1.4.7
+
 * Fri Nov 09 2018 François Kooman <fkooman@tuxed.net> - 1.4.6-1
 - update to 1.4.6
 
