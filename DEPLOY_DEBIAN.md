@@ -134,8 +134,10 @@ Run the script (as root):
 Make sure you use the exact same DNS name you used when running 
 `deploy_debian.sh`! 
 
-After completing the script, the certificate will be installed and the system 
-will automatically replace the certificate before it expires.
+After completing the script, the certificate will be installed. After that, it
+is advised to set up automatic
+[certificate renewal](https://certbot.eff.org/docs/using.html#renewing-certificates).
+
 
 ### Port Sharing
 
