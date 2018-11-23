@@ -27,7 +27,7 @@ fi
 
 ${PACKAGE_MANAGER} install -y certbot
 
-# stop Apache
+# stop httpd
 systemctl stop httpd
 
 ###############################################################################
@@ -47,7 +47,7 @@ EOF
 systemctl enable --now certbot-renew.timer
 
 ###############################################################################
-# APACHE
+# HTTPD
 ###############################################################################
 
 sed -i "s|SSLCertificateFile /etc/pki/tls/certs/${WEB_FQDN}|#SSLCertificateFile /etc/pki/tls/certs/${WEB_FQDN}|" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
@@ -61,7 +61,7 @@ sed -i "s|#SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|S
 # CLEANUP
 ###############################################################################
 
-# start Apache
+# start httpd
 systemctl start httpd
 
 # ALL DONE!
