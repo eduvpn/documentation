@@ -35,7 +35,7 @@ This is an (incomplete) list of features of the VPN software:
   - Route only some traffic over the VPN (for access to the organization 
     network);
   - Client-to-client (only) networking;
-- Group [ACL](ACL.md) support, including LDAP and [VOOT](http://openvoot.org/);
+- Group [ACL](ACL.md) support with SAML and LDAP;
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled;
@@ -61,7 +61,7 @@ channel `#eduvpn`.
 ## Supported Operating Systems
 
 * [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md) (x86_64)
-* [Fedora 28](DEPLOY_FEDORA.md) (x86_64)
+* [Fedora 28,29](DEPLOY_FEDORA.md) (x86_64)
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
