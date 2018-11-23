@@ -2,7 +2,7 @@
 
 Name:       vpn-server-api
 Version:    1.4.7
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -76,7 +76,6 @@ Requires:   httpd
 %endif
 # We have an embedded modified copy of https://github.com/OpenVPN/easy-rsa
 Requires:   openssl
-Provides:   bundled(easy-rsa) = 3.0.1
 #    "require": {
 #        "LC/openvpn-connection-manager": "^1",
 #        "eduvpn/common": "^1",
@@ -205,6 +204,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Nov 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.7-2
+- no longer "provide" easy-rsa
+
 * Thu Nov 22 2018 François Kooman <fkooman@tuxed.net> - 1.4.7-1
 - update to 1.4.7
 
