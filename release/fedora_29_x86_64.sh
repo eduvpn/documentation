@@ -1,9 +1,10 @@
 #!/bin/sh
 
-REPO_ROOT=${HOME}/repo
-RPM_DIR=${REPO_ROOT}/release/fedora/29/x86_64
-SRPM_DIR=${REPO_ROOT}/release/fedora/29/Source
-MOCK_CONFIG=fedora-29-x86_64
+OS_VERSION=29
+MOCK_CONFIG=fedora-${OS_VERSION}-x86_64
+REPO_ROOT=${HOME}/repo/${MOCK_CONFIG}
+RPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/x86_64
+SRPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/Source
 
 export REPO_ROOT RPM_DIR SRPM_DIR MOCK_CONFIG
 
