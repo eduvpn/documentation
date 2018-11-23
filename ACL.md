@@ -82,7 +82,7 @@ and set the `entitlementAttribute` to the name of the attribute:
 
 ### VOOT
 
-**NOTE**: this method is DEPRECATED. Either use SAML, with e.g. 
+**NOTE**: this method is DEPRECATED. Use SAML instead with e.g. 
 `eduPersonEntitlement`.
 
 We assume [SAML](SAML.md) is already configured and working.
