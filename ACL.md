@@ -1,34 +1,43 @@
 # ACL
 
-The VPN service supports group ACLs, i.e. require users to be a member of a 
-certain group before allowing downloading configurations and to access to the 
-VPN service for profiles that have ACLs enabled.
+The VPN service supports ACLs, i.e. determine if a particular user is 
+authorized / entitled / member before allowing access a certain VPN profile. 
+This is useful if you have different "user groups" where not everyone should 
+have access to all VPN profiles. E.g.: only employees get access to the 
+"Employees" profile, but students do not.
 
-The ACLs need to be configured in `/etc/vpn-server-api/default/config.php` and 
-the ACL methods, i.e. the way how to obtain the membership information, in 
-`/etc/vpn-user-portal/default/config.php`.
+The following ACL mechanisms are supported:
 
-## Enabling ACLs
+- SAML (via SAML attribute)
+- LDAP (via LDAP attribute)
+- VOOT (via [OpenVOOT](https://openvoot.org/) REST API in combination with
+  SAML authentication) **DEPRECATED**
 
-Add
+## Configuration
 
-    enableAcl: true
-    aclGroupList: ['all']
+The ACL mechanisms, from the list above, are configured in 
+`/etc/vpn-user-portal/default/config.php`. Mapping the ACL values, e.g. which 
+"entitlement" or "group" is required to access a certain profile, is configured 
+in `/etc/vpn-server-api/default/config.php`.
 
-To `/etc/vpn-server-api/default/config.php` for the profile you want to 
-enable the ACL for. Here, the group with identifier `all` is given access.
+The authorization / entitlement / membership is valid for the duration of the
+session, as configured with the `sessionExpiry` configuration option in 
+`/etc/vpn-user-portal/default/config.php`. The default is 90 days (`P90D`). For 
+some organizations this SHOULD be reduced, to e.g. 12 hours (`PT12H`). Changes
+in the authorization / entitlement / membership are only picked up *after* 
+the session expiry.
 
-There are a number of backends available to fetch group membership 
-information and they are also configured here.
+### Mechanisms 
 
-### SAML 
+#### SAML 
 
 We assume [SAML](SAML.md) is already configured and working.
 
-You have to choose an SAML attribute you want to use that contains the values
-you configured in `aclGroupList` mentioned above. Typically, that would be 
-`eduPersonEntitlement` or `eduPersonAffiliation`, but any SAML attribute will 
-work. You MAY need to specify the OID variant as shown in the example below.
+You have to choose a SAML attribute you want to use for determining the 
+membership. Typically, that would be `eduPersonEntitlement` or 
+`eduPersonAffiliation`, but any SAML attribute will do. You MAY need to specify 
+the OID variant as shown in the example below depending on your IdP / identity
+federation.
 
 In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
 and set the `entitlementAttribute` to the name of the attribute:
@@ -48,17 +57,20 @@ and set the `entitlementAttribute` to the name of the attribute:
 
         // ** AUTHORIZATION | ENTITLEMENT **
         // OID for eduPersonEntitlement
-        //'entitlementAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
+        'entitlementAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
     ],
 
-### LDAP
+Once you authenticate to the portal, on the "Account" page, i.e. 
+`https://vpn.example/vpn-user-portal/account`, you should see the 
+"Group Membership(s)" listed there.
+
+#### LDAP
 
 We assume [LDAP](LDAP.md) is already configured and working. 
 
-You have to choose an LDAP attribute you want to use that contains the values
-you configured in `aclGroupList` mentioned above. Typically, that would be 
-`memberOf`, `eduPersonEntitlement` or `eduPersonAffiliation`, but any LDAP 
-attribute will work.
+You have to choose an LDAP attribute you want to use for determining the 
+membership. ypically, that would be `memberOf`, `eduPersonEntitlement` or 
+`eduPersonAffiliation`, but any LDAP attribute will work.
 
 In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
 and set the `entitlementAttribute` to the name of the attribute:
@@ -77,28 +89,22 @@ and set the `entitlementAttribute` to the name of the attribute:
         //'entitlementAttribute' => 'eduPersonEntitlement',
 
         // use LDAP "memberOf"
-        //'entitlementAttribute' => 'memberOf',
+        'entitlementAttribute' => 'memberOf',
     ],
 
-### VOOT
+Once you authenticate to the portal, on the "Account" page, i.e. 
+`https://vpn.example/vpn-user-portal/account`, you should see the 
+"Group Membership(s)" listed there.
 
-**NOTE**: this method is DEPRECATED. Use SAML instead with e.g. 
-`eduPersonEntitlement`.
+#### VOOT
 
-We assume [SAML](SAML.md) is already configured and working.
+**NOTE**: this method is DEPRECATED and **NOT** supported! Use SAML with 
+attributes instead with e.g. `eduPersonEntitlement`.
 
-The [VOOT protocol](http://openvoot.org/) is used to retrieve group 
-memberships. The example below is for the 
-[SURFteams](https://teams.surfconext.nl) component of 
-[SURFconext](https://www.surf.nl/en/services-and-products/surfconext/index.html).
+You need to register the "redirect URI" at the VOOT provider, the URL has the
+format `https://vpn.example/portal/_voot/callback`.
 
-The `clientId` and `clientSecret` mentioned below need to be replaced with the 
-actual secrets obtained when registering at SURFconext. The redirect URI 
-that needs to be registered is `https://vpn.example/portal/_voot/callback` 
-where `vpn.example` is replaced with your actual domain.
-
-In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
-and set the following:
+Modify `/etc/vpn-user-portal/default/config.php`:
 
     'enableVoot' => true,
     'Voot' => [
@@ -109,5 +115,23 @@ and set the following:
         'apiUrl' => 'https://voot.surfconext.nl/me/groups',
     ],
 
-The group membership will be automatically obtained when the user logs in, and
-can be verified on the "Account" tab in the user portal.
+Once you authenticate to the portal, on the "Account" page, i.e. 
+`https://vpn.example/vpn-user-portal/account`, you should see the 
+"Group Membership(s)" listed there.
+
+### Mapping
+
+Modify `/etc/vpn-server-api/default/config.php`, and set the `enableAcl` to 
+`true` and add the authorized attribute values to `aclGroupList` for each of 
+the profiles where you want to restrict access, for example:
+
+    // Whether or not to enable ACLs for controlling who can connect
+    // DEFAULT = false
+    'enableAcl' => true,
+
+    // The list of groups to allow access, requires enableAcl to be 
+    // true
+    // DEFAULT  = []
+    'aclGroupList' => [
+        'urn:example:LC-admin',
+    ],
