@@ -274,7 +274,8 @@ enrolled. It will only contain entries when `two_factor_enrolled` is `true`.
 
 The `two_factor_supported_methods` MAY be set, containing a list of enabled 
 2FA methods on the server. Failure to take the value of this key in account 
-MAY result in errors when trying to enroll for a 2FA method not supported.
+MAY result in errors when trying to enroll for a 2FA method not supported. An 
+empty array, `[]`, means 2FA support is completely disabled.
 
 ## Create a Configuration
 
