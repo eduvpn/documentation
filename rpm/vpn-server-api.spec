@@ -1,8 +1,8 @@
-#global git 29e2cb7556ecadafd0e1b549b7d2328c20c3577b
+#global git a2ed3855ddaab2cb8563d62690d8db9e638d021b
 
 Name:       vpn-server-api
-Version:    1.4.7
-Release:    2%{?dist}
+Version:    1.4.8
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -204,6 +204,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Nov 26 2018 François Kooman <fkooman@tuxed.net> - 1.4.8-1
+- update to 1.4.8
+
 * Fri Nov 23 2018 François Kooman <fkooman@tuxed.net> - 1.4.7-2
 - no longer "provide" easy-rsa
 
