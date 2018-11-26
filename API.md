@@ -259,6 +259,9 @@ The response looks like this:
                 "is_disabled": false,
                 "two_factor_enrolled": false,
                 "two_factor_enrolled_with": [],
+                "two_factor_supported_methods": [
+                    "totp"
+                ],
                 "user_id": "foo"                
             },
             "ok": true
@@ -268,6 +271,10 @@ The response looks like this:
 The `two_factor_enrolled_with` values can be `[]`, one of `yubi` or 
 `totp` or both. This field indicates for which 2FA methods the user is 
 enrolled. It will only contain entries when `two_factor_enrolled` is `true`.
+
+The `two_factor_supported_methods` MAY be set, containing a list of enabled 
+2FA methods on the server. Failure to take the value of this key in account 
+MAY result in errors when trying to enroll for a 2FA method not supported.
 
 ## Create a Configuration
 
