@@ -23,9 +23,9 @@ in `/etc/vpn-server-api/default/config.php`.
 The authorization / entitlement / membership is valid for the duration of the
 session, as configured with the `sessionExpiry` configuration option in 
 `/etc/vpn-user-portal/default/config.php`. The default is 90 days (`P90D`). For 
-some organizations this SHOULD be reduced, to e.g. 12 hours (`PT12H`). Changes
-in the authorization / entitlement / membership are only picked up *after* 
-the session expiry.
+some organizations this SHOULD be reduced, to e.g. 12 hours (`PT12H`) or 1 day 
+(`P1D`). Changes in the authorization / entitlement / membership are only 
+picked up *after* the session expiry.
 
 ### Mechanisms 
 
