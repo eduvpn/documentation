@@ -1,7 +1,7 @@
-#global git daeee9d226c8329be2f708ce9746b7f738d30e49
+#global git 17a81e64d78811864b57a104cc435f42d37557e0
 
 Name:           php-fkooman-oauth2-server
-Version:        3.0.2
+Version:        3.0.3
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
@@ -142,6 +142,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Mon Nov 26 2018 François Kooman <fkooman@tuxed.net> - 3.0.3-1
+- update to 3.0.3
+
 * Fri Sep 21 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-1
 - update to 3.0.2
 
