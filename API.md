@@ -535,7 +535,7 @@ usage, we introduce three "types" of authorization:
 
 1. `local`: every instance has their own OAuth server;
 2. `federated`: there is one central OAuth server, all instances accept 
-   tokens from this OAuth server;
+   tokens from this OAuth server **NOT YET IMPLEMENTED**;
 3. `distributed`: there is no central OAuth server, tokens from all instances 
    can be used at all (other) instances.
 
@@ -551,6 +551,8 @@ the token was obtained from. If a user wants to use multiple VPN instances, a
 token MUST be obtained from all of them individually.
 
 ## Federated
+
+**NOT YET IMPLEMENTED**
 
 Here there is one central OAuth server that MUST be used. The OAuth server is 
 specified in the discovery file in the `authorization_endpoint` and 
