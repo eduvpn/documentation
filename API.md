@@ -527,21 +527,24 @@ See [Application Flow](app/APP_FLOW.md).
 
 # Authorization
 
-In the scenario above, every instance in the discovery file runs their own 
-OAuth server, so for each instance a new token needs to be obtained.
+Every instance in the discovery file runs their own OAuth server, so that would
+mean that for each instance a new token needs to be obtained.
 
-In order to support sharing access tokens between instances, e.g. for guest 
-usage, we introduce three "types" of authorization:
+However, in order to support sharing access tokens between instances for 
+[Guest Usage](GUEST_USAGE.md). We introduce three "types" of authorization:
 
 1. `local`: every instance has their own OAuth server;
-2. `federated`: there is one central OAuth server, all instances accept 
-   tokens from this OAuth server **NOT YET IMPLEMENTED**;
-3. `distributed`: there is no central OAuth server, tokens from all instances 
+2. `distributed`: there is no central OAuth server, tokens from all instances 
    can be used at all (other) instances.
+3. `federated`: there is one central OAuth server, all instances accept 
+   tokens from this OAuth server **NOT YET USED**;
 
 The `authorization_type` key indicates which type is used. The supported 
 values are `local`, `federated` or `distributed` mapping to the three modes
 described above.
+
+The entries in the discovery file are bound to the `authorization_type` 
+specified in the discovery file.
 
 ## Local
 
@@ -549,17 +552,6 @@ See API Discovery section above for determining the OAuth endpoints. The
 application MUST store the obtained access token and bind it to the instance
 the token was obtained from. If a user wants to use multiple VPN instances, a 
 token MUST be obtained from all of them individually.
-
-## Federated
-
-**NOT YET IMPLEMENTED**
-
-Here there is one central OAuth server that MUST be used. The OAuth server is 
-specified in the discovery file in the `authorization_endpoint` and 
-`token_endpoint` keys. When API discovery is performed, the keys for 
-`authorization_endpoint` and `token_endpoint` for the specific instance from
-`info.json` MUST be ignored. Refreshing access tokens MUST also be done at the
-central server.
 
 ## Distributed
 
@@ -578,6 +570,17 @@ When API discovery is performed, the keys for
 `authorization_endpoint` and `token_endpoint` for the specific instance MUST
 be ignored. Refreshing access tokens MUST also be done at the original OAuth
 server that was used to obtain the access token.
+
+## Federated
+
+**NOT YET USED**
+
+Here there is one central OAuth server that MUST be used. The OAuth server is 
+specified in the discovery file in the `authorization_endpoint` and 
+`token_endpoint` keys. When API discovery is performed, the keys for 
+`authorization_endpoint` and `token_endpoint` for the specific instance from
+`info.json` MUST be ignored. Refreshing access tokens MUST also be done at the
+central server.
 
 # Caching
 
