@@ -11,18 +11,18 @@ DEPRECATED and no longer enabled by default on new server installations.
 By default, 2FA will only be used for authenticating to the user and admin
 portals, and not for connecting to the VPN.
 
-## Enrollment
+## Configuration
 
-Users can enroll themselves in the portal on the "Account" page. If the user
-is enrolled for 2FA, and has access to the admin portal, it will also be used
-there.
+You can configured the allowed 2FA methods in 
+`/etc/vpn-user-portal/default/config.php`. The option to set is
+`twoFactorMethods` and can be set to:
 
-The documentation page in the user portal gives more information about 2FA and
-how to use it.
+* `[]` - disable 2FA
+* `['totp']` - only TOTP (default on new installations)
+* `['totp', 'yubi']` - both TOTP and YubiKey OTP
 
-**NOTE**: currently a user can enroll for all enabled 2FA methods. The 2FA 
-method can be "upgraded" to YubiKey at any time when YubiKey is enabled, which 
-may be a security risk.
+If the `twoFactorMethods` option is missing (LEGACY), both TOTP and YubiKey are 
+enabled.
 
 ## Enabling 2FA for VPN connections
 
@@ -46,6 +46,19 @@ Now the OpenVPN server configuration files need to be regenerated:
 Also, the VPN processes need to be restarted:
 
     $ sudo systemctl restart "openvpn-server@default-*"
+
+## Enrollment
+
+Users can enroll themselves in the portal on the "Account" page. If the user
+is enrolled for 2FA, and has access to the admin portal, it will also be used
+there.
+
+The documentation page in the user portal gives more information about 2FA and
+how to use it.
+
+**NOTE**: currently a user can enroll for all enabled 2FA methods. The 2FA 
+method can be "upgraded" to YubiKey at any time when YubiKey is enabled, which 
+may be a security risk.
 
 ## Connecting to the VPN
 
