@@ -25,9 +25,9 @@
             "logo": "https://static.eduvpn.nl/disco/img/ru.png"
         },
         {
-            "base_uri": "https://surf.eduvpn.nl/",
-            "display_name": "SURF",
-            "logo": "https://static.eduvpn.nl/disco/img/surf.png"
+            "base_uri": "https://surfnet.eduvpn.nl/",
+            "display_name": "SURFnet",
+            "logo": "https://static.eduvpn.nl/disco/img/surfnet.png"
         },
         {
             "base_uri": "https://ut.eduvpn.nl/",
@@ -43,6 +43,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 67,
-    "signed_at": "2018-11-12 12:52:11"
+    "seq": 69,
+    "signed_at": "2018-11-28 09:59:04"
 }
