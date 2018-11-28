@@ -3,9 +3,10 @@
 The software supports two-factor authentication (2FA) for both authenticating
 at the user/admin portal and for connecting to the VPN.
 
-Currently both [YubiKey](https://yubico.com/) and 
+Currently both 
 [TOTP](https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm) 
-are supported.
+and [YubiKey](https://yubico.com/) are supported. However, YubiKey is 
+DEPRECATED and no longer enabled by default on new server installations.
 
 By default, 2FA will only be used for authenticating to the user and admin
 portals, and not for connecting to the VPN.
@@ -19,9 +20,9 @@ there.
 The documentation page in the user portal gives more information about 2FA and
 how to use it.
 
-**NOTE**: currently a user can enroll for both YubiKey and TOTP 2FA. The 2FA 
-method can be "upgraded" to YubiKey at any time, which may be a security risk,
-see this [issue](https://github.com/eduvpn/vpn-user-portal/issues/60).
+**NOTE**: currently a user can enroll for all enabled 2FA methods. The 2FA 
+method can be "upgraded" to YubiKey at any time when YubiKey is enabled, which 
+may be a security risk.
 
 ## Enabling 2FA for VPN connections
 
@@ -62,8 +63,8 @@ For example on Windows:
 
 ## Recovery
 
-If a user lost their second factor credentials, they can be removed through 
-the "admin".
+If a user lost their second factor credentials, 2FA can be removed through 
+the "admin" for that user.
 
 If an administrator is enrolled for OTP, is the only administrator and loses 
 their secret, the enrollment can be cancelled removing the OTP enrollment in
