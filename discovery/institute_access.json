@@ -32,8 +32,8 @@
         {
             "base_uri": "https://ru.eduvpn.nl/",
             "display_name": {
-                "nl-NL": "Radboud Universiteit",
-                "us-US": "Radboud University"
+                "en-US": "Radboud University",
+                "nl-NL": "Radboud Universiteit"
             },
             "logo": "https://static.eduvpn.nl/disco/img/ru.png"
         },
@@ -56,6 +56,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 72,
-    "signed_at": "2018-12-04 13:13:58"
+    "seq": 73,
+    "signed_at": "2018-12-04 13:22:52"
 }
