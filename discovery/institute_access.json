@@ -17,6 +17,14 @@
             "logo": "https://static.eduvpn.nl/disco/img/geant.png"
         },
         {
+            "base_uri": "https://hku.eduvpn.nl/",
+            "display_name": {
+                "en-US": "Utrecht School of the Arts",
+                "nl-NL": "Hogeschool voor de Kunsten Utrecht"
+            },
+            "logo": "https://static.eduvpn.nl/disco/img/hku.png"
+        },
+        {
             "base_uri": "https://nikhef.eduvpn.nl/",
             "display_name": "Nikhef",
             "logo": "https://static.eduvpn.nl/disco/img/nikhef.png"
@@ -48,6 +56,6 @@
             "logo": "https://static.eduvpn.nl/disco/img/demo.png"
         }
     ],
-    "seq": 71,
-    "signed_at": "2018-12-04 08:02:04"
+    "seq": 72,
+    "signed_at": "2018-12-04 13:13:58"
 }
