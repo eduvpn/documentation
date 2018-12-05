@@ -1,7 +1,7 @@
-%global git ae0ede75a68d57d7d3df32002d6fab1def194f80
+%global git 0fe45ab84918a8cd07d075c7e72f052ae45d394c
 
 Name:       vpn-lib-common
-Version:    1.3.1
+Version:    1.3.2
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -172,6 +172,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Wed Dec 05 2018 François Kooman <fkooman@tuxed.net> - 1.3.2-1
+- update to 1.3.2
+
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.3.1-1
 - update to 1.3.1
 
