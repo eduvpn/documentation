@@ -1,8 +1,8 @@
-%global git b855bd54c90a668eb795db2e97e513c841e17935
+%global git c901fe98d83aeeeb22bd6a90afe3f75bcbc73a6d
 
 Name:       vpn-admin-portal
 Version:    1.7.4
-Release:    0.1%{?dist}
+Release:    0.3%{?dist}
 Summary:    VPN Admin Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -160,6 +160,12 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.3
+- rebuilt
+
+* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.2
+- rebuilt
+
 * Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.1
 - update to 1.7.4
 

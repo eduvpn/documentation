@@ -74,7 +74,7 @@ index fea3f4a..335a396 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index face6f0..f7edc24 100644
+index b75a4b2..a154e8b 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -89,7 +89,7 @@ index face6f0..f7edc24 100644
  use fkooman\OAuth\Server\BearerValidator;
  use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/index.php b/web/index.php
-index c7caab4..0836e71 100644
+index 0645841..e980f79 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -101,10 +101,10 @@ index c7caab4..0836e71 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use fkooman\OAuth\Client\Http\CurlHttpClient as OAuthCurlHttpClient;
- use fkooman\OAuth\Client\OAuthClient;
+ use fkooman\OAuth\Server\OAuthServer;
+ use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/oauth.php b/web/oauth.php
-index 37a370b..2042a54 100644
+index 478cc35..2927442 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@

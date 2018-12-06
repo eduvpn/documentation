@@ -1,8 +1,8 @@
-%global git 8fc47b3cf818215477fc02c3dcfe20855790df5a
+%global git f10936fd091d9bb10b259c9dd6fd4b74468a5b20
 
 Name:       vpn-server-api
 Version:    1.4.10
-Release:    0.2%{?dist}
+Release:    0.3%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -44,7 +44,6 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/oauth2-client": "^7",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
 #        "php": ">=5.4",
@@ -59,7 +58,6 @@ BuildRequires:  php-openssl
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
-BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/otp-verifier)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
 BuildRequires:  php-composer(psr/log)
@@ -83,7 +81,6 @@ Requires:   openssl
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/oauth2-client": "^7",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
 #        "php": ">=5.4",
@@ -99,7 +96,6 @@ Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
-Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/otp-verifier)
 Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(psr/log)
@@ -124,7 +120,6 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
-require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
@@ -199,6 +194,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.4.10-0.3
+- rebuilt
+
 * Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.4.10-0.2
 - rebuilt
 

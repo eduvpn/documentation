@@ -74,7 +74,7 @@ index d925aa9..fccf3b6 100644
  use LC\OpenVpn\ManagementSocket;
  use SURFnet\VPN\Common\CliParser;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index 3aac23c..813422e 100644
+index f7f5889..6f1d597 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
 @@ -8,8 +8,8 @@
@@ -89,7 +89,7 @@ index 3aac23c..813422e 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 6441509..fc3c668 100644
+index 8f30d6a..2b67223 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
 @@ -8,8 +8,8 @@
@@ -119,7 +119,7 @@ index 8da8b74..5ca96af 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index db6f4e5..f77d39b 100644
+index 7a69f45..a44d785 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -131,5 +131,5 @@ index db6f4e5..f77d39b 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use fkooman\OAuth\Client\Http\CurlHttpClient;
- use fkooman\OAuth\Client\OAuthClient;
+ use LC\OpenVpn\ManagementSocket;
+ use SURFnet\VPN\Common\Config;
