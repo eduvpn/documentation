@@ -1,0 +1,30 @@
+diff --git a/bin/fetch-provider-info.php b/bin/fetch-provider-info.php
+index f3882b9..b0579a9 100644
+--- a/bin/fetch-provider-info.php
++++ b/bin/fetch-provider-info.php
+@@ -16,8 +16,8 @@
+  *  You should have received a copy of the GNU Affero General Public License
+  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/SURFnet/VPN/Web/autoload.php';
++$baseDir = '/usr/share/vpn-for-web';
+ 
+ use fkooman\OAuth\Client\Http\CurlHttpClient;
+ use SURFnet\VPN\Web\Config;
+diff --git a/web/index.php b/web/index.php
+index 8584557..f051e16 100644
+--- a/web/index.php
++++ b/web/index.php
+@@ -15,8 +15,8 @@
+  *  You should have received a copy of the GNU Affero General Public License
+  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/SURFnet/VPN/Web/autoload.php';
++$baseDir = '/usr/share/vpn-for-web';
+ 
+ use fkooman\OAuth\Client\Http\CurlHttpClient;
+ use fkooman\OAuth\Client\OAuthClient;
