@@ -1,8 +1,8 @@
-%global git f1219f63c2434cf4affaa2680da0d8aa55635d95
+%global git 2ad4315ad4f5186931a10bc689a8d69cbe3484fe
 
 Name:       vpn-server-node
 Version:    1.1.3
-Release:    0.1%{?dist}
+Release:    0.2%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -112,7 +112,7 @@ do
 done
 
 # libexec
-for i in client-connect client-disconnect verify-otp
+for i in client-connect client-disconnect
 do
     install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
@@ -127,10 +127,8 @@ ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/vpn-server-node/openvp
 mkdir -p %{buildroot}%{_datadir}/vpn-server-node/libexec
 ln -s ../../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-connect.php
 ln -s ../../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-disconnect.php
-ln -s ../../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_datadir}/vpn-server-node/libexec/verify-otp.php
 ln -s ../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_libexecdir}/vpn-server-node-client-connect
 ln -s ../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_libexecdir}/vpn-server-node-client-disconnect
-ln -s ../../../usr/libexec/vpn-server-node/verify-otp %{buildroot}%{_libexecdir}/vpn-server-node-verify-otp
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -160,6 +158,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.1.3-0.2
+- rebuilt
+
 * Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.1.3-0.1
 - update to 1.1.3
 

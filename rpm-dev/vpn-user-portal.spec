@@ -1,8 +1,8 @@
-%global git dad9f519851e4310a1ebdb01d42a482d3d1ed266
+%global git 2fc294afbdeecbb48c29c7195cd4d1d47abac1c2
 
 Name:       vpn-user-portal
 Version:    1.8.6
-Release:    0.10%{?dist}
+Release:    0.15%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -41,7 +41,6 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/oauth2-client": "^7",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -56,7 +55,6 @@ BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
-BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
@@ -88,7 +86,6 @@ Requires:   crontabs
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/oauth2-client": "^7",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -104,7 +101,6 @@ Requires:   php-json
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
-Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(paragonie/constant_time_encoding)
@@ -141,7 +137,6 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
-require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
@@ -221,6 +216,21 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.15
+- rebuilt
+
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.14
+- rebuilt
+
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.13
+- rebuilt
+
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.12
+- rebuilt
+
+* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.11
+- rebuilt
+
 * Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.10
 - rebuilt
 

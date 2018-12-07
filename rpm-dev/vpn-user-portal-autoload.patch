@@ -14,7 +14,7 @@ index 215d35d..0a58cb5 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 73e2815..b3fd92e 100644
+index 9bc7ee9..b4cb59c 100644
 --- a/bin/foreign-key-list-fetcher.php
 +++ b/bin/foreign-key-list-fetcher.php
 @@ -8,8 +8,8 @@
@@ -26,8 +26,8 @@ index 73e2815..b3fd92e 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use fkooman\OAuth\Client\Http\CurlHttpClient;
  use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
 diff --git a/bin/generate-voucher.php b/bin/generate-voucher.php
 index a2fe968..dba230a 100644
 --- a/bin/generate-voucher.php
