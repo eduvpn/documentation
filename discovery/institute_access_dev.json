@@ -12,11 +12,11 @@
             "logo": "https://static.eduvpn.nl/disco/img/black.png"
         },
         {
-            "base_uri": "https://debian-vpn.tuxed.net/",
-            "display_name": "eduVPN (debian-vpn.tuxed.net)",
+            "base_uri": "https://vpn.tuxed.net/",
+            "display_name": "eduVPN (vpn.tuxed.net)",
             "logo": "https://static.eduvpn.nl/disco/img/pink.png"
         }
     ],
-    "seq": 45,
-    "signed_at": "2018-12-04 13:22:52"
+    "seq": 46,
+    "signed_at": "2018-12-07 17:00:22"
 }

@@ -18,14 +18,8 @@
             },
             "logo": "https://static.eduvpn.nl/disco/img/green.png",
             "public_key": "AV5A8J9miDPamzVKBr8rsuMPApt/5r9cHY+36dQJYAs="
-        },
-        {
-            "base_uri": "https://vpn.tuxed.net/",
-            "display_name": "Yellow (vpn.tuxed.net)",
-            "logo": "https://static.eduvpn.nl/disco/img/yellow.png",
-            "public_key": "ZpdJhuiTiV54K2OIR1ad8KB9selSUfDG4ASrqI5cQoY="
         }
     ],
-    "seq": 75,
-    "signed_at": "2018-12-04 13:22:52"
+    "seq": 76,
+    "signed_at": "2018-12-07 17:00:22"
 }
