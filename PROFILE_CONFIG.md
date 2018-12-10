@@ -60,7 +60,6 @@ deployments.
 | `blockLan`             | Block traffic to local LAN when VPN is active                                                                                                                               | no       | `false`                    | `true`                     |
 | `routes`               | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false`. Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                     | no       | `[]`                       | `[]`                       |
 | `dns`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | from `/etc/resolv.conf`    |
-| `twoFactor`            | Whether or not to enable two-factor authentication for connecting to the VPN server, see [Two-factor](2FA.md) documentation                                                 | no       | `false`                    | `false`                    |
 | `clientToClient`       | Whether or not to allow client-to-client traffic                                                                                                                            | no       | `false`                    | `false`                    |
 | `enableLog`            | Whether or not to enable OpenVPN logging                                                                                                                                    | no       | `false`                    | `false`                    |
 | `enableAcl`            | Whether or not to enable [ACL](ACL.md)s for controlling who can connect                                                                                                     | no       | `false`                    | `false`                    |
@@ -75,10 +74,6 @@ Changing any of the following options _WILL_ prevent OpenVPN clients from
 connecting without updating the configuration, unless the eduVPN/Let's Connect! 
 applications are used:
 
-* `twoFactor`: only _enabling_ `twoFactor` will result in the client being 
-  unable to connect as the client needs a special configuration flag asking for 
-  username and password, when `twoFactor` is disabled, providing them anyway 
-  will be ignored by the server;
 * `tlsProtection`: client cannot handle a change here;
 * `enableCompression`: client cannot handle a change here;
 

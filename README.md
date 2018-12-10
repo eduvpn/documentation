@@ -27,8 +27,7 @@ This is an (incomplete) list of features of the VPN software:
 - Authentication to portals using "static" username and password, 
   [LDAP](LDAP.md), [RADIUS](RADIUS.md) and [SAML](SAML.md);
 - OAuth 2.0 [API](API.md) for integration with applications;
-- [Two-factor authentication](2FA.md) TOTP and YubiKey support with user 
-  self-enrollment for both access to the portal(s) and the VPN;
+- [Two-factor authentication](2FA.md) TOTP support with user self-enrollment;
 - [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
