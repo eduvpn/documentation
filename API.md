@@ -166,8 +166,11 @@ The response looks like this:
 _instance_, so if an instance has multiple profiles, only one keypair is 
 needed.
 
+**NOTE**: on old(er) servers the `display_name` POST parameter is required, on 
+up-to-date servers the parameter is ignored.
+
     $ curl -H "Authorization: Bearer abcdefgh" \
-        -d '' https://demo.eduvpn.nl/portal/api.php/create_keypair
+        -d 'display_name=OAuth' https://demo.eduvpn.nl/portal/api.php/create_keypair
 
 The call will create a certificate and private key and return them:
 
@@ -278,4 +281,4 @@ A list of OAuth client registrations that are available for all installations
 can be found [here](https://github.com/eduvpn/vpn-user-portal/blob/master/src/OAuthClientInfo.php).
 
 Administrators MAY define additional OAuth clients in the 
-`/etc/vpn-user-portal/default/config` configuration file.
+`/etc/vpn-user-portal/default/config.php` configuration file.
