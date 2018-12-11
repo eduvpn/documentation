@@ -1,8 +1,8 @@
-%global git c0d0aeb277f2a784c0ad7f9dfe3bbd0c3f0ae60e
+%global git f631be088ff7a58e5f4cc787d51dd87b98bff34b
 
 Name:       vpn-user-portal
 Version:    1.8.6
-Release:    0.16%{?dist}
+Release:    0.18%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -43,6 +43,7 @@ BuildRequires:  phpunit
 #        "ext-spl": "*",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
+#        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "php": ">=5.4.0"
@@ -57,6 +58,7 @@ BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  php-composer(fkooman/sqlite-migrate)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
@@ -88,6 +90,7 @@ Requires:   crontabs
 #        "ext-spl": "*",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
+#        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "php": ">=5.4.0"
@@ -103,6 +106,7 @@ Requires:   php-pdo
 Requires:   php-spl
 Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
+Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
@@ -139,6 +143,7 @@ require_once '%{_datadir}/php/BaconQrCode/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
@@ -153,12 +158,12 @@ mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 
-for i in add-user foreign-key-list-fetcher init show-public-key generate-voucher
+for i in add-user foreign-key-list-fetcher init show-public-key
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
 done
 
-cp -pr web views locale %{buildroot}%{_datadir}/vpn-user-portal
+cp -pr schema web views locale %{buildroot}%{_datadir}/vpn-user-portal
 
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/default/config.php
@@ -208,6 +213,7 @@ fi
 %dir %{_datadir}/vpn-user-portal
 %{_datadir}/vpn-user-portal/data
 %{_datadir}/vpn-user-portal/web
+%{_datadir}/vpn-user-portal/schema
 %{_datadir}/vpn-user-portal/views
 %{_datadir}/vpn-user-portal/config
 %{_datadir}/vpn-user-portal/locale
@@ -216,6 +222,12 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.18
+- rebuilt
+
+* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.17
+- rebuilt
+
 * Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.16
 - rebuilt
 
