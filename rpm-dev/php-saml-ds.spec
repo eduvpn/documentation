@@ -1,8 +1,8 @@
-#global git e7c014f9b1f03923c56d37e1347eb350077fb16b
+%global git 7b7b39a419ae05f4dda8f90363e6c0b407d74de5
 
 Name:       php-saml-ds
-Version:    1.0.12
-Release:    4%{?dist}
+Version:    1.1.0
+Release:    0.1%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -43,8 +43,7 @@ BuildRequires:  phpunit
 #        "ext-spl": "*",
 #        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">=5.4.0",
-#        "twig/twig": "^1"
+#        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
@@ -55,7 +54,6 @@ BuildRequires:  php-pcre
 BuildRequires:  php-spl
 BuildRequires:  php-xml
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(twig/twig) < 2
 
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -72,8 +70,7 @@ Requires:   httpd
 #        "ext-spl": "*",
 #        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">=5.4.0",
-#        "twig/twig": "^1"
+#        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
@@ -85,7 +82,6 @@ Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-xml
 Requires:   php-composer(fkooman/secookie)
-Requires:   php-composer(twig/twig) < 2
 
 %description
 SAML Discovery Service written in PHP.
@@ -102,7 +98,6 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/Twig/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 AUTOLOAD
 
@@ -121,10 +116,6 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
-%post
-# remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -152,6 +143,10 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Dec 13 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.1
+- update to 1.1.0
+- remove Twig dependency
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-4
 - merge dev and prod spec files in one
 - cleanup requirements
