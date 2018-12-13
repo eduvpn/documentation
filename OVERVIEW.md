@@ -47,5 +47,6 @@ Documentation specific for developers.
 | Document                                              | Description                      |
 | ----------------------------------------------------- | -------------------------------- |
 | [API](API.md)                                         | API Documentation for (Native) Application Developers |
+| [INSTANCE_DISCOVERY](INSTANCE_DISCOVERY.md)           | Obtain a list of VPN server Instances |
 | [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md)             | Setup a Developer Environment |
 | [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md)     | Developer Guidelines |
