@@ -1,8 +1,8 @@
-%global git 93e68dfdc13a4adf2d5b57cc66b4dcc942150d98
+%global git 9dc5605d5311147d35ce7efa79998e4b2c838259
 
 Name:       vpn-portal-artwork-LC
-Version:    1.3.0
-Release:    1%{?dist}
+Version:    1.4.0
+Release:    0.1%{?dist}
 Summary:    VPN Portal Artwork for LC
 License:    AGPLv3+
 
@@ -45,18 +45,8 @@ cp -p css/LC.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/LC
 cp -p css/LC.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/LC
 cp -p img/LC.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/LC
 cp -p img/LC.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/LC
-cp -p views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/LC
-cp -p views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
-
-%post
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
-
-%postun
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
+cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/LC
+cp -p views/vpn-admin-portal/*.php %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
 
 %files
 %defattr(-,root,root,-)
@@ -69,6 +59,9 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.1
+- update to 1.4.0
+
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
 

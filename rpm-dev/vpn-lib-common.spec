@@ -1,8 +1,8 @@
-%global git 928192d3560c0f37bf27686d5246dd0e04b29e00
+%global git c09cdb1a944b55564b04e2a1cebdb66c9bbf4432
 
 Name:       vpn-lib-common
 Version:    1.3.3
-Release:    0.7%{?dist}
+Release:    0.9%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -34,7 +34,6 @@ BuildRequires:  phpunit
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-filter": "*",
-#        "ext-gettext": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
 #        "ext-ldap": "*",
@@ -50,14 +49,11 @@ BuildRequires:  phpunit
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1",
-#        "twig/extensions": "^1",
-#        "twig/twig": "^1"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-filter
-BuildRequires:  php-gettext
 BuildRequires:  php-hash
 BuildRequires:  php-json
 BuildRequires:  php-ldap
@@ -69,8 +65,6 @@ BuildRequires:  php-spl
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(psr/log)
-BuildRequires:  php-composer(twig/extensions) < 2.0
-BuildRequires:  php-composer(twig/twig) < 2.0
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(ircmaxell/password-compat)
 BuildRequires:  php-composer(paragonie/random_compat)
@@ -81,7 +75,6 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "ext-curl": "*",
 #        "ext-date": "*",
 #        "ext-filter": "*",
-#        "ext-gettext": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
 #        "ext-ldap": "*",
@@ -97,14 +90,11 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1",
-#        "twig/extensions": "^1",
-#        "twig/twig": "^1"
 #    },
 Requires:       php(language) >= 5.4.0
 Requires:       php-curl
 Requires:       php-date
 Requires:       php-filter
-Requires:       php-gettext
 Requires:       php-hash
 Requires:       php-json
 Requires:       php-ldap
@@ -116,8 +106,6 @@ Requires:       php-spl
 Requires:       php-composer(fkooman/secookie)
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(psr/log)
-Requires:       php-composer(twig/extensions) < 2.0
-Requires:       php-composer(twig/twig) < 2.0
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:       php-composer(ircmaxell/password-compat)
 Requires:       php-composer(paragonie/random_compat)
@@ -141,8 +129,6 @@ cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
-require_once '%{_datadir}/php/Twig/Extensions/autoload.php';
-require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
@@ -172,6 +158,12 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.9
+- rebuilt
+
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.8
+- remove Twig and gettext 
+
 * Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.7
 - rebuilt
 

@@ -1,8 +1,8 @@
-%global git f631be088ff7a58e5f4cc787d51dd87b98bff34b
+%global git b4ca5a08d331be95fce9f96ac9c3e73d247631b8
 
 Name:       vpn-user-portal
 Version:    1.8.6
-Release:    0.18%{?dist}
+Release:    0.21%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -191,9 +191,6 @@ AUTOLOAD
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
 restorecon -R %{_localstatedir}/lib/vpn-user-portal || :
 
-# remove template cache if it is there
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
 semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
@@ -222,6 +219,15 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.21
+- rebuilt
+
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.20
+- rebuilt
+
+* Thu Dec 13 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.19
+- rebuilt
+
 * Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.18
 - rebuilt
 
