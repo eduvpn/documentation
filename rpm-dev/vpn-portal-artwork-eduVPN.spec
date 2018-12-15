@@ -1,8 +1,8 @@
-%global git bdd25c8bf2bab34d42048c38732be95478a5c564
+%global git d821c0fdf1f61ec9b78236cdbff52ab6ca88fcf0
 
 Name:       vpn-portal-artwork-eduVPN
-Version:    1.3.0
-Release:    1%{?dist}
+Version:    1.4.0
+Release:    0.2%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -45,18 +45,8 @@ cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
 cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/eduVPN
 cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
 cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/eduVPN
-cp -p views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
-cp -p views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
-
-%post
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
-
-%postun
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
+cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
+cp -p views/vpn-admin-portal/*.php %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
 
 %files
 %defattr(-,root,root,-)
@@ -69,6 +59,12 @@ rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || 
 %doc CHANGES.md README.md
 
 %changelog
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.2
+- rebuilt
+
+* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.1
+- update to 1.4.0
+
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
 
