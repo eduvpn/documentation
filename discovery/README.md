@@ -12,8 +12,8 @@ These are the files located at
 We use [php-json-signer](https://git.tuxed.net/fkooman/php-json-signer) to sign
 the JSON discovery file. This **SHOULD** be done **OFFLINE**! 
 
-There is also an RPM package available from the Let's Connect! repository on 
-[https://repo.letsconnect-vpn.org](https://repo.letsconnect-vpn.org) called 
+There is also an RPM/DEB package available from the Let's Connect! repository 
+on [https://repo.letsconnect-vpn.org](https://repo.letsconnect-vpn.org) called 
 `php-json-signer`.
 
 # Usage
