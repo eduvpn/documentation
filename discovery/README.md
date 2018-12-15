@@ -1,8 +1,8 @@
 # Introduction
 
 The eduVPN (mobile) applications use a (central) discovery file that is 
-partly described in [API.md](../API.md), but how it was signed was not 
-described before.
+partly described in [INSTANCE_DISCOVERY](../INSTANCE_DISCOVERY.md), but how it 
+was signed was not described before.
 
 These are the files located at 
 [https://static.eduvpn.nl/disco](https://static.eduvpn.nl/disco).
@@ -13,7 +13,8 @@ We use [php-json-signer](https://git.tuxed.net/fkooman/php-json-signer) to sign
 the JSON discovery file. This **SHOULD** be done **OFFLINE**! 
 
 There is also an RPM package available from the eduVPN repository on 
-[https://repo.eduvpn.org](https://repo.eduvpn.org) called `php-json-signer`.
+[https://repo.letsconnect-vpn.org](https://repo.letsconnect-vpn.org) called 
+`php-json-signer`.
 
 # Usage
 
