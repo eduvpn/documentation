@@ -1,8 +1,8 @@
-%global git a525c3949130edfea1c59df064c50a469a220172
+%global git 4265f3b587091cb47dbb9ac06e0aae2e7afb2ca0
 
 Name:       php-saml-idp
 Version:    0.0.0
-Release:    0.12%{?dist}
+Release:    0.16%{?dist}
 Summary:    SAML IdP
 
 Group:      Applications/Internet
@@ -32,6 +32,7 @@ BuildRequires:  %{_bindir}/phpab
 #        "ext-openssl": "*",
 #        "ext-spl": "*",
 #        "ext-zlib": "*",
+#        "fkooman/secookie": "^2",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">=5.4"
@@ -44,6 +45,7 @@ BuildRequires:  php-libxml
 BuildRequires:  php-openssl
 BuildRequires:  php-spl
 BuildRequires:  php-zlib
+BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
@@ -65,6 +67,7 @@ Requires:   httpd
 #        "ext-openssl": "*",
 #        "ext-spl": "*",
 #        "ext-zlib": "*",
+#        "fkooman/secookie": "^2",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">=5.4"
@@ -78,6 +81,7 @@ Requires:   php-libxml
 Requires:   php-openssl
 Requires:   php-spl
 Requires:   php-zlib
+Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
@@ -100,6 +104,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
@@ -114,7 +119,7 @@ AUTOLOAD
 mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
-cp -pr web %{buildroot}%{_datadir}/%{name}
+cp -pr views locale web %{buildroot}%{_datadir}/%{name}
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
@@ -131,11 +136,25 @@ install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}
 %dir %{_datadir}/php/fkooman/SAML
 %{_datadir}/php/fkooman/SAML/IdP
 %{_datadir}/%{name}/web
+%{_datadir}/%{name}/views
+%{_datadir}/%{name}/locale
 %{_datadir}/%{name}/config
 %doc README.md CHANGES.md composer.json config/config.php.example
 %license LICENSE
 
 %changelog
+* Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.16
+- rebuilt
+
+* Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.15
+- rebuilt
+
+* Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.14
+- rebuilt
+
+* Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.13
+- rebuilt
+
 * Thu Sep 27 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.12
 - rebuilt
 
