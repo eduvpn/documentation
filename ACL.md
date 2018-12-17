@@ -1,35 +1,46 @@
-# ACL
+# Introduction
 
-The VPN service supports ACLs, i.e. determine if a particular user is 
-authorized / entitled / member before allowing access a certain VPN profile. 
-This is useful if you have different "user groups" where not everyone should 
-have access to all VPN profiles. E.g.: only employees get access to the 
-"Employees" profile, but students do not.
+The VPN service supports access control. This allows configuring that users 
+require certain "permissions" to access a particular VPN profile. This is 
+useful if you have multiple types of users. For example, only employees get 
+access to the "Employees" profile, but students do not.
 
-The following ACL mechanisms are supported:
+Currently, the following access control mechanisms are supported:
 
-- SAML (via SAML attribute)
-- LDAP (via LDAP attribute)
-- VOOT (via [OpenVOOT](https://openvoot.org/) REST API in combination with
-  SAML authentication) **DEPRECATED**
+- SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
+  `eduPersonEntitlement`)
+- LDAP (via LDAP attribute, e.g. `memberOf`)
 
-## Configuration
+The permissions are _cached_ for up to a configurable period. By default this 
+is 3 months, but can easily be modified. This cache is required, because not
+all authentication backends have a way to validate the permissions 
+"out of band", i.e. when the user is not actively authenticating.
 
-The ACL mechanisms, from the list above, are configured in 
-`/etc/vpn-user-portal/default/config.php`. Mapping the ACL values, e.g. which 
-"entitlement" or "group" is required to access a certain profile, is configured 
-in `/etc/vpn-server-api/default/config.php`.
+# Configuration
 
-The authorization / entitlement / membership is valid for the duration of the
-session, as configured with the `sessionExpiry` configuration option in 
-`/etc/vpn-user-portal/default/config.php`. The default is 90 days (`P90D`). For 
-some organizations this SHOULD be reduced, to e.g. 12 hours (`PT12H`) or 1 day 
-(`P1D`). Changes in the authorization / entitlement / membership are only 
-picked up *after* the session expiry.
+The configuration is done in two locations:
 
-### Mechanisms 
+- `/etc/vpn-user-portal/default/config.php`: configure which access control
+  mechanism is used and the period for which to _cache_ the permissions;
+- `/etc/vpn-server-api/default/config.php`: configure which profiles are 
+  restricted by access control.
 
-#### SAML 
+## Cache
+
+The permission cache is configured in `/etc/vpn-user-portal/default/config.php`
+using the `sessionExpiry` option. The default is 90 days, `P90D`. The following
+is a list of common values you can use:
+
+- `PT8H` (8 hours)
+- `PT12H` (12 hours)
+- `P1D` (1 day)
+- `P7D` (7 days)
+- `P1Y` (1 year)
+
+If you modify this value, it will only take effect the next time the user is 
+forced to authenticate/authorize.
+
+## SAML
 
 We assume [SAML](SAML.md) is already configured and working.
 
@@ -64,13 +75,12 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 `https://vpn.example/vpn-user-portal/account`, you should see the 
 "Group Membership(s)" listed there.
 
-#### LDAP
+## LDAP
 
 We assume [LDAP](LDAP.md) is already configured and working. 
 
 You have to choose an LDAP attribute you want to use for determining the 
-membership. ypically, that would be `memberOf`, `eduPersonEntitlement` or 
-`eduPersonAffiliation`, but any LDAP attribute will work.
+membership. Typically, that would be `memberOf`, but any LDAP attribute will work.
 
 In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
 and set the `entitlementAttribute` to the name of the attribute:
@@ -96,30 +106,7 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 `https://vpn.example/vpn-user-portal/account`, you should see the 
 "Group Membership(s)" listed there.
 
-#### VOOT
-
-**NOTE**: this method is DEPRECATED and **NOT** supported! Use SAML with 
-attributes instead with e.g. `eduPersonEntitlement`.
-
-You need to register the "redirect URI" at the VOOT provider, the URL has the
-format `https://vpn.example/portal/_voot/callback`.
-
-Modify `/etc/vpn-user-portal/default/config.php`:
-
-    'enableVoot' => true,
-    'Voot' => [
-        'clientId' => 'my_client_id',
-        'clientSecret' => 'my_client_secret',
-        'authorizationEndpoint' => 'https://authz.surfconext.nl/oauth/authorize',
-        'tokenEndpoint' => 'https://authz.surfconext.nl/oauth/token',
-        'apiUrl' => 'https://voot.surfconext.nl/me/groups',
-    ],
-
-Once you authenticate to the portal, on the "Account" page, i.e. 
-`https://vpn.example/vpn-user-portal/account`, you should see the 
-"Group Membership(s)" listed there.
-
-### Mapping
+## Profile Mapping
 
 Modify `/etc/vpn-server-api/default/config.php`, and set the `enableAcl` to 
 `true` and add the authorized attribute values to `aclGroupList` for each of 

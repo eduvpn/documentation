@@ -5,17 +5,15 @@ either voluntary, or enforced by the administrator.
 
 ## Threat Model
 
-The way 2FA is implements, together with the native apps, protects explicitly 
-against these threats:
-
-1. The user's credentials become available to an attacker;
-2. An attacker obtains the user's client certificate from the user's device.
+The way 2FA is implemented, together with the native apps, protects explicitly 
+against this threat: the user's credentials become available to an attacker.
 
 When 2FA is enabled, the user's credentials are useless to an attacker, 
-assuming the user already enrolled for 2FA (on first login).
+assuming the user already enrolled for 2FA, possibly by being forced to enroll
+for 2FA on first login.
 
 When using the Let's Connect!/eduVPN applications, the user's certificates is
-protected from exporting by the user (and thus the attacker) making it 
+protected from exporting by the user, and thus the attacker, making it 
 impossible to "steal" the certificate. This is implemented by importing the 
 user's certificate in the "key store" on Windows and macOS.
 
@@ -42,7 +40,8 @@ so.
 ### Disable 2FA
 
 This will fully disable 2FA. The user won't be asked for 2FA, nor are they 
-able to enroll themselves.
+able to enroll themselves. Users that enrolled themselves before are no longer
+asked for 2FA.
 
     'requireTwoFactor' => false,
     'twoFactorMethods' => [],

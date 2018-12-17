@@ -12,6 +12,7 @@ them if they are out of date:
 The files use the PHP 
 [Array](https://secure.php.net/manual/en/language.types.array.php) syntax.
 
+The "key" is the English string, the value should be the translation. 
 # Apps
 
 TBD.
