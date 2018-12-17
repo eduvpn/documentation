@@ -18,7 +18,7 @@ about guidelines to follow.
 Install the required software:
 
     $ sudo dnf -y install git composer phpunit7 openvpn \
-        php-date php-filter php-gettext php-hash php-json php-mbstring \
+        php-date php-filter php-hash php-json php-mbstring \
         php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
         php-gd google-roboto-fonts
 
@@ -78,14 +78,6 @@ Into this:
 
 If you work in a fork of `eduvpn/common` you can update the URL referenced in
 the `composer.json` before running `composer update`.
-
-# Translations
-
-[Twig](https://twig.symfony.com/) together with 
-[gettext](https://secure.php.net/gettext) is used to take care of translations, 
-see the 
-[documentation](https://twig-extensions.readthedocs.io/en/latest/i18n.html) on
-how to update the translation files.
 
 # Making a Release
 

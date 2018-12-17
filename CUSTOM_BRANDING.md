@@ -10,17 +10,17 @@ The portals use templates, located in the following folders:
     /usr/share/vpn-user-portal/views
     /usr/share/vpn-admin-portal/views
 
-You can copy the `base.twig` from these folders to 
-`/etc/vpn-user-portal/default/views/base.twig` and 
-`/etc/vpn-admin-portal/default/views/base.twig` respectively and modify them to
+You can copy the `base.php` from these folders to 
+`/etc/vpn-user-portal/default/views/base.php` and 
+`/etc/vpn-admin-portal/default/views/base.php` respectively and modify them to
 override the defaults. For instance by adding an extra line pointing to an 
 additional CSS file.
 
-**NOTE**: It is NOT recommended to update other templates than `base.twig` as 
+**NOTE**: It is NOT recommended to update other templates than `base.php` as 
 they MAY break future software updates. We do NOT guarantee template 
 compatibility!
 
-For example, for eduVPN we use this addition to the `head.twig` file under the
+For example, for eduVPN we use this addition to the `base.php` file under the
 default CSS line:
 
     <link href="/css/eduvpn.css" media="screen" rel="stylesheet">
@@ -67,11 +67,3 @@ for example:
             background-position: 100% 0%;
         }
     }
-
-# Cache
-
-When you update the templates, i.e. override them like shown above, you need 
-to flush the template cache:
-
-    $ sudo rm -rf /var/lib/vpn-user-portal/default/tpl
-    $ sudo rm -rf /var/lib/vpn-admin-portal/default/tpl
