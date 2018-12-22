@@ -1,8 +1,43 @@
+diff --git a/bin/generate-salt.php b/bin/generate-salt.php
+index e4ebcb1..0d212a6 100644
+--- a/bin/generate-salt.php
++++ b/bin/generate-salt.php
+@@ -23,7 +23,7 @@
+  * SOFTWARE.
+  */
+ 
+-require_once \dirname(__DIR__).'/vendor/autoload.php';
++require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
+ 
+ use ParagonIE\ConstantTime\Base64UrlSafe;
+ 
+diff --git a/web/logout.php b/web/logout.php
+index 9289715..0bfe24f 100644
+--- a/web/logout.php
++++ b/web/logout.php
+@@ -22,7 +22,7 @@
+  * SOFTWARE.
+  */
+ 
+-require_once \dirname(__DIR__).'/vendor/autoload.php';
++require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
+ 
+ use fkooman\SAML\IdP\ErrorHandler;
+ use fkooman\SAML\IdP\Template;
+@@ -31,7 +31,7 @@ use fkooman\SeCookie\Session;
+ 
+ ErrorHandler::register();
+ 
+-$baseDir = \dirname(__DIR__);
++$baseDir = '/usr/share/php-saml-idp';
+ 
+ $tpl = new Template([\sprintf('%s/views', $baseDir)]);
+ 
 diff --git a/web/metadata.php b/web/metadata.php
-index f3b422b..b0b5c24 100644
+index 6991bc5..1642549 100644
 --- a/web/metadata.php
 +++ b/web/metadata.php
-@@ -22,13 +22,13 @@
+@@ -22,7 +22,7 @@
   * SOFTWARE.
   */
  
@@ -10,16 +45,18 @@ index f3b422b..b0b5c24 100644
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
  
  use fkooman\SAML\IdP\Certificate;
- use fkooman\SAML\IdP\Http\Request;
+ use fkooman\SAML\IdP\Config;
+@@ -30,7 +30,7 @@ use fkooman\SAML\IdP\Http\Request;
  use fkooman\SAML\IdP\Http\Response;
+ use fkooman\SAML\IdP\Template;
  
 -$baseDir = \dirname(__DIR__);
 +$baseDir = '/usr/share/php-saml-idp';
- $rsaCert = Certificate::fromFile($baseDir.'/config/server.crt');
- $keyInfo = $rsaCert->toKeyInfo();
  
+ $config = Config::fromFile($baseDir.'/config/config.php');
+ $request = new Request($_SERVER, $_GET, $_POST);
 diff --git a/web/sso.php b/web/sso.php
-index 56372ef..00f6cb7 100644
+index b2237aa..c0f23ac 100644
 --- a/web/sso.php
 +++ b/web/sso.php
 @@ -22,7 +22,7 @@
@@ -31,12 +68,12 @@ index 56372ef..00f6cb7 100644
  
  use fkooman\SAML\IdP\Certificate;
  use fkooman\SAML\IdP\Config;
-@@ -33,7 +33,7 @@ use ParagonIE\ConstantTime\Base64;
+@@ -38,7 +38,7 @@ use ParagonIE\ConstantTime\Base64UrlSafe;
  
- \libxml_disable_entity_loader(true);
+ ErrorHandler::register();
  
 -$baseDir = \dirname(__DIR__);
 +$baseDir = '/usr/share/php-saml-idp';
  
- try {
-     $config = Config::fromFile($baseDir.'/config/config.php');
+ $tpl = new Template([\sprintf('%s/views', $baseDir)]);
+ 

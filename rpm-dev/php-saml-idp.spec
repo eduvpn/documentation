@@ -1,8 +1,8 @@
-%global git 4265f3b587091cb47dbb9ac06e0aae2e7afb2ca0
+%global git 25c2743d8a04048c26a752b5f90ebba31755c179
 
 Name:       php-saml-idp
 Version:    0.0.0
-Release:    0.16%{?dist}
+Release:    0.38%{?dist}
 Summary:    SAML IdP
 
 Group:      Applications/Internet
@@ -118,11 +118,13 @@ AUTOLOAD
 %install
 mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
+install -m 0755 -D -p bin/generate-salt.php %{buildroot}%{_bindir}/php-saml-idp-generate-salt
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
-cp -pr views locale web %{buildroot}%{_datadir}/%{name}
+cp -pr schema views locale web %{buildroot}%{_datadir}/%{name}
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
+cp -pr config/metadata.php.example %{buildroot}%{_sysconfdir}/%{name}/metadata.php
 ln -s ../../../etc/%{name} %{buildroot}%{_datadir}/%{name}/config
 
 install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
@@ -132,17 +134,86 @@ install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %dir %attr(0750,root,apache) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
+%config(noreplace) %{_sysconfdir}/%{name}/metadata.php
+%{_bindir}/*
 %dir %{_datadir}/php/fkooman
 %dir %{_datadir}/php/fkooman/SAML
 %{_datadir}/php/fkooman/SAML/IdP
 %{_datadir}/%{name}/web
 %{_datadir}/%{name}/views
 %{_datadir}/%{name}/locale
+%{_datadir}/%{name}/schema
 %{_datadir}/%{name}/config
-%doc README.md CHANGES.md composer.json config/config.php.example
+%doc README.md CHANGES.md composer.json config/config.php.example config/metadata.php.example
 %license LICENSE
 
 %changelog
+* Sat Dec 22 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.38
+- rebuilt
+
+* Sat Dec 22 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.37
+- rebuilt
+
+* Sat Dec 22 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.36
+- rebuilt
+
+* Fri Dec 21 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.35
+- rebuilt
+
+* Fri Dec 21 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.34
+- rebuilt
+
+* Thu Dec 20 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.33
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.32
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.31
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.30
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.29
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.28
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.27
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.26
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.25
+- rebuilt
+
+* Wed Dec 19 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.24
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.23
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.22
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.21
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.20
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.19
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.18
+- rebuilt
+
+* Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.17
+- rebuilt
+
 * Mon Dec 17 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.16
 - rebuilt
 
