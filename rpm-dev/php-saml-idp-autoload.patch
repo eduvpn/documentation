@@ -34,7 +34,7 @@ index 9289715..0bfe24f 100644
  $tpl = new Template([\sprintf('%s/views', $baseDir)]);
  
 diff --git a/web/metadata.php b/web/metadata.php
-index 6991bc5..1642549 100644
+index 2458b42..3931959 100644
 --- a/web/metadata.php
 +++ b/web/metadata.php
 @@ -22,7 +22,7 @@
@@ -55,8 +55,30 @@ index 6991bc5..1642549 100644
  
  $config = Config::fromFile($baseDir.'/config/config.php');
  $request = new Request($_SERVER, $_GET, $_POST);
+diff --git a/web/slo.php b/web/slo.php
+index 8dad5e1..49c7a75 100644
+--- a/web/slo.php
++++ b/web/slo.php
+@@ -22,7 +22,7 @@
+  * SOFTWARE.
+  */
+ 
+-require_once \dirname(__DIR__).'/vendor/autoload.php';
++require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
+ 
+ use fkooman\SAML\IdP\Config;
+ use fkooman\SAML\IdP\ErrorHandler;
+@@ -35,7 +35,7 @@ use ParagonIE\ConstantTime\Base64;
+ 
+ ErrorHandler::register();
+ 
+-$baseDir = \dirname(__DIR__);
++$baseDir = '/usr/share/php-saml-idp';
+ 
+ $tpl = new Template([\sprintf('%s/views', $baseDir)]);
+ 
 diff --git a/web/sso.php b/web/sso.php
-index b2237aa..c0f23ac 100644
+index df789b5..44593fa 100644
 --- a/web/sso.php
 +++ b/web/sso.php
 @@ -22,7 +22,7 @@
