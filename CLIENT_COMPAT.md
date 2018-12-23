@@ -140,7 +140,7 @@ See the instructions below on how to get the VPN working manually.
 | Ubuntu 18.04 LTS        | yes*           | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648)                            |
 | Ubuntu 18.10            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
-| Fedora 28               | yes            | yes    | -                                                                                                             |
+| Fedora 28, 29           | yes            | yes    | -                                                                                                             |
 
 For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)

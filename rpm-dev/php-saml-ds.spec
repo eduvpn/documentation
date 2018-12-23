@@ -1,8 +1,8 @@
-%global git 7b60cc2be26841189987c5c08247ed37b863939b
+%global git de6003ebef732e03fc1310b6803e7b6f7d336581
 
 Name:       php-saml-ds
 Version:    1.1.0
-Release:    0.2%{?dist}
+Release:    0.4%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -143,6 +143,12 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sat Dec 22 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.4
+- rebuilt
+
+* Tue Dec 18 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.3
+- rebuilt
+
 * Sun Dec 16 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.2
 - rebuilt
 
