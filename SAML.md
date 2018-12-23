@@ -20,25 +20,24 @@ First install `mod_auth_mellon`:
 In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
 base path, and for `systemctl` you use `apache2` instead of `httpd`.
 
-On Debian you can download 
-[mellon_create_metadata.sh](https://github.com/UNINETT/mod_auth_mellon/blob/master/mellon_create_metadata.sh) 
-from the mod_auth_mellon repository and use that instead.
-
 ## Configuration
 
-On CentOS a convenience script is installed by `mod_auth_mellon` to generate
-all required files to configure the SAML SP:
+Generate a TLS certificate for your SP:
 
-    $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
+    $ openssl req \
+        -nodes \
+        -subj "/CN=vpn.example" \
+        -x509 \
+        -sha256 \
+        -newkey rsa:3072 \
+        -keyout vpn.example.key \
+        -out vpn.example.crt \
+        -days 3600
 
-You can now modify the `https_vpn.example_saml.xml` file. Make sure you have
-`<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>` 
-inside the `<SPSSODescriptor>`.
-
-Copy the files:
+Copy them to `/etc/httpd/saml`:
 
     $ sudo mkdir /etc/httpd/saml
-    $ sudo cp *.cert *.key *.xml /etc/httpd/saml
+    $ sudo cp *.crt *.key /etc/httpd/saml
 
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
@@ -46,7 +45,7 @@ the following:
     $ curl -o engine.test.surfconext.nl.xml https://engine.test.surfconext.nl/authentication/idp/metadata
     $ curl -o engine.surfconext.nl.xml https://engine.surfconext.nl/authentication/idp/metadata
 
-Now copy the metadata as well:
+Now copy the metadata to the right location as well:
 
     $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
@@ -88,9 +87,12 @@ configure the entitlement authorization.
 For example:
 
     'MellonAuthentication' => [
-        'attribute' => 'MELLON_NAME_ID',
+        // eduPersonTargetedId
+        'attribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
         'addEntityID' => false,
-        'entitlementAttribute' => 'MELLON_eduPersonEntitlement',
+
+        // eduPersonEntitlement
+        'entitlementAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
         'entitlementAuthorization' => [
             'https://idp.example.com/saml|urn:example:LC-admin',
         ],
@@ -159,7 +161,4 @@ you'll directly end up at the IdP.
 **NOTE**: if you want to add multiple IdPs that use identifiers that are not 
 guaranteed globally unique, you MUST set `addEntityID` to `true` in 
 `/etc/vpn-user-portal/default/config.php` and 
-`/etc/vpn-admin-portal/default/config.php`. This is for example the case when 
-you use persistent NameIDs. This is not needed if you use an identity 
-federation that acts as a proxy and generates their own persistent NameIDs like
-for example SURFconext.
+`/etc/vpn-admin-portal/default/config.php`.
