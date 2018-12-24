@@ -1,8 +1,8 @@
-%global git bdfa9835c8396bc563776f676686286493f32098
+%global git e67cde9755d3e20507da1fda2cc3857600e9d334
 
 Name:       vpn-server-api
 Version:    1.4.10
-Release:    0.4%{?dist}
+Release:    0.6%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -130,7 +130,7 @@ mkdir -p %{buildroot}%{_datadir}/vpn-server-api
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
-for i in housekeeping init show-instance-info stats status update-api-secrets update-ip update
+for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
@@ -194,6 +194,12 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.4.10-0.6
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.4.10-0.5
+- rebuilt
+
 * Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.4.10-0.4
 - rebuilt
 
