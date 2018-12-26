@@ -1,8 +1,8 @@
-%global git e239641800413e064c19834089b5af048940fdbf
+%global git 158f3203919bc975b6c8a49022cdc0ac77605c60
 
 Name:       php-saml-idp
 Version:    0.0.0
-Release:    0.47%{?dist}
+Release:    0.49%{?dist}
 Summary:    SAML IdP
 
 Group:      Applications/Internet
@@ -119,6 +119,7 @@ AUTOLOAD
 mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
 install -m 0755 -D -p bin/generate-salt.php %{buildroot}%{_bindir}/php-saml-idp-generate-salt
+install -m 0755 -D -p bin/add-user.php %{buildroot}%{_bindir}/php-saml-idp-add-user
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
 cp -pr schema views locale web %{buildroot}%{_datadir}/%{name}
 
@@ -148,6 +149,12 @@ install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}
 %license LICENSE
 
 %changelog
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.49
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.48
+- rebuilt
+
 * Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.47
 - rebuilt
 

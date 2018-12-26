@@ -1,3 +1,18 @@
+diff --git a/bin/add-user.php b/bin/add-user.php
+index a2c613e..0e66205 100644
+--- a/bin/add-user.php
++++ b/bin/add-user.php
+@@ -23,8 +23,8 @@
+  * SOFTWARE.
+  */
+ 
+-require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
++require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
+ 
+ use fkooman\SAML\IdP\Config;
+ 
 diff --git a/bin/generate-salt.php b/bin/generate-salt.php
 index 66291fd..57ce753 100644
 --- a/bin/generate-salt.php
@@ -29,7 +44,7 @@ index 5f23222..61621f9 100644
  use fkooman\SAML\IdP\ErrorHandler;
  use fkooman\SAML\IdP\Template;
 diff --git a/web/metadata.php b/web/metadata.php
-index 1a2fd05..56f0a2c 100644
+index e54ae48..e3f7663 100644
 --- a/web/metadata.php
 +++ b/web/metadata.php
 @@ -22,8 +22,8 @@
@@ -44,7 +59,7 @@ index 1a2fd05..56f0a2c 100644
  use fkooman\SAML\IdP\Certificate;
  use fkooman\SAML\IdP\Config;
 diff --git a/web/slo.php b/web/slo.php
-index c0dac51..6ae9726 100644
+index a6c4b96..e585753 100644
 --- a/web/slo.php
 +++ b/web/slo.php
 @@ -22,8 +22,8 @@
@@ -59,7 +74,7 @@ index c0dac51..6ae9726 100644
  use fkooman\SAML\IdP\Config;
  use fkooman\SAML\IdP\ErrorHandler;
 diff --git a/web/sso.php b/web/sso.php
-index bac11a5..ace9a1b 100644
+index 8b1eb34..bb0a3a4 100644
 --- a/web/sso.php
 +++ b/web/sso.php
 @@ -22,8 +22,8 @@
