@@ -1,101 +1,90 @@
-diff --git a/bin/generate-salt.php b/bin/generate-salt.php
-index e4ebcb1..0d212a6 100644
---- a/bin/generate-salt.php
-+++ b/bin/generate-salt.php
-@@ -23,7 +23,7 @@
+diff --git a/bin/add-user.php b/bin/add-user.php
+index a2c613e..0e66205 100644
+--- a/bin/add-user.php
++++ b/bin/add-user.php
+@@ -23,8 +23,8 @@
   * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
+ 
+ use fkooman\SAML\IdP\Config;
+ 
+diff --git a/bin/generate-salt.php b/bin/generate-salt.php
+index 66291fd..57ce753 100644
+--- a/bin/generate-salt.php
++++ b/bin/generate-salt.php
+@@ -23,8 +23,8 @@
+  * SOFTWARE.
+  */
+ 
+-require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
++require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
  
  use ParagonIE\ConstantTime\Base64UrlSafe;
  
 diff --git a/web/logout.php b/web/logout.php
-index 9289715..0bfe24f 100644
+index 5f23222..61621f9 100644
 --- a/web/logout.php
 +++ b/web/logout.php
-@@ -22,7 +22,7 @@
+@@ -22,8 +22,8 @@
   * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
  
  use fkooman\SAML\IdP\ErrorHandler;
  use fkooman\SAML\IdP\Template;
-@@ -31,7 +31,7 @@ use fkooman\SeCookie\Session;
- 
- ErrorHandler::register();
- 
--$baseDir = \dirname(__DIR__);
-+$baseDir = '/usr/share/php-saml-idp';
- 
- $tpl = new Template([\sprintf('%s/views', $baseDir)]);
- 
 diff --git a/web/metadata.php b/web/metadata.php
-index 2458b42..3931959 100644
+index e54ae48..e3f7663 100644
 --- a/web/metadata.php
 +++ b/web/metadata.php
-@@ -22,7 +22,7 @@
+@@ -22,8 +22,8 @@
   * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
  
  use fkooman\SAML\IdP\Certificate;
  use fkooman\SAML\IdP\Config;
-@@ -30,7 +30,7 @@ use fkooman\SAML\IdP\Http\Request;
- use fkooman\SAML\IdP\Http\Response;
- use fkooman\SAML\IdP\Template;
- 
--$baseDir = \dirname(__DIR__);
-+$baseDir = '/usr/share/php-saml-idp';
- 
- $config = Config::fromFile($baseDir.'/config/config.php');
- $request = new Request($_SERVER, $_GET, $_POST);
 diff --git a/web/slo.php b/web/slo.php
-index 8dad5e1..49c7a75 100644
+index a6c4b96..e585753 100644
 --- a/web/slo.php
 +++ b/web/slo.php
-@@ -22,7 +22,7 @@
+@@ -22,8 +22,8 @@
   * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
  
  use fkooman\SAML\IdP\Config;
  use fkooman\SAML\IdP\ErrorHandler;
-@@ -35,7 +35,7 @@ use ParagonIE\ConstantTime\Base64;
- 
- ErrorHandler::register();
- 
--$baseDir = \dirname(__DIR__);
-+$baseDir = '/usr/share/php-saml-idp';
- 
- $tpl = new Template([\sprintf('%s/views', $baseDir)]);
- 
 diff --git a/web/sso.php b/web/sso.php
-index df789b5..44593fa 100644
+index 8b1eb34..bb0a3a4 100644
 --- a/web/sso.php
 +++ b/web/sso.php
-@@ -22,7 +22,7 @@
+@@ -22,8 +22,8 @@
   * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = \dirname(__DIR__);
 +require_once '/usr/share/php/fkooman/SAML/IdP/autoload.php';
++$baseDir = '/usr/share/php-saml-idp';
  
  use fkooman\SAML\IdP\Certificate;
  use fkooman\SAML\IdP\Config;
-@@ -38,7 +38,7 @@ use ParagonIE\ConstantTime\Base64UrlSafe;
- 
- ErrorHandler::register();
- 
--$baseDir = \dirname(__DIR__);
-+$baseDir = '/usr/share/php-saml-idp';
- 
- $tpl = new Template([\sprintf('%s/views', $baseDir)]);
- 

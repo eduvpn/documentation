@@ -1,8 +1,8 @@
-%global git 3539dd0a8136e269ebcec45b98bc37c04343d6a5
+%global git 4eeed86f7a56cdc2e3f8fd4bc1a01109e7ad7c5f
 
 Name:       vpn-user-portal
 Version:    1.8.6
-Release:    0.25%{?dist}
+Release:    0.29%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -46,6 +46,7 @@ BuildRequires:  phpunit
 #        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
@@ -60,6 +61,7 @@ BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
+BuildRequires:  php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 %endif
@@ -93,6 +95,7 @@ Requires:   crontabs
 #        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
@@ -108,6 +111,7 @@ Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(paragonie/constant_time_encoding)
+Requires:   php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
 %endif
@@ -145,6 +149,7 @@ require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
+require_once '%{_datadir}/php/fkooman/SAML/SP/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
@@ -219,6 +224,18 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Jan 06 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.29
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.28
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.27
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.26
+- rebuilt
+
 * Sun Dec 23 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.25
 - rebuilt
 

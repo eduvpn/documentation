@@ -1,8 +1,8 @@
-%global git 635ce8738704b14bd8415346d3b5fd4ee62c4698
+%global git db4d1fb20e98beff2497c0d65f17fd98591206e3
 
 Name:       php-saml-idp
 Version:    0.0.0
-Release:    0.45%{?dist}
+Release:    0.60%{?dist}
 Summary:    SAML IdP
 
 Group:      Applications/Internet
@@ -119,6 +119,7 @@ AUTOLOAD
 mkdir -p %{buildroot}%{_datadir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
 install -m 0755 -D -p bin/generate-salt.php %{buildroot}%{_bindir}/php-saml-idp-generate-salt
+install -m 0755 -D -p bin/add-user.php %{buildroot}%{_bindir}/php-saml-idp-add-user
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/IdP
 cp -pr schema views locale web %{buildroot}%{_datadir}/%{name}
 
@@ -148,6 +149,51 @@ install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}
 %license LICENSE
 
 %changelog
+* Wed Jan 02 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.60
+- rebuilt
+
+* Sun Dec 30 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.59
+- rebuilt
+
+* Thu Dec 27 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.58
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.57
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.56
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.55
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.54
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.53
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.52
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.51
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.50
+- rebuilt
+
+* Wed Dec 26 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.49
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.48
+- rebuilt
+
+* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.47
+- rebuilt
+
+* Sun Dec 23 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.46
+- rebuilt
+
 * Sun Dec 23 2018 François Kooman <fkooman@tuxed.net> - 0.0.0-0.45
 - rebuilt
 

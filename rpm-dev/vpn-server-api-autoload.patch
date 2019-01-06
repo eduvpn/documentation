@@ -103,21 +103,6 @@ index 8f30d6a..2b67223 100644
  
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
-diff --git a/bin/update.php b/bin/update.php
-index 8da8b74..5ca96af 100644
---- a/bin/update.php
-+++ b/bin/update.php
-@@ -8,8 +8,8 @@
-  * SPDX-License-Identifier: AGPL-3.0+
-  */
- 
--require_once dirname(__DIR__).'/vendor/autoload.php';
--$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
-+$baseDir = '/usr/share/vpn-server-api';
- 
- use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
 index 7a69f45..a44d785 100644
 --- a/web/api.php
