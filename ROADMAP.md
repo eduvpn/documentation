@@ -8,3 +8,6 @@
 
 - Merge vpn-server-api in vpn-portal (eduVPN 3.0?)
 - Remove "multi instance" support (we only want 1 instance per VM)
+- Remove "use case" buttons from the apps
+  - Allow user to select their IdP in the app, after which only 'relevant' VPN 
+    servers are shown
