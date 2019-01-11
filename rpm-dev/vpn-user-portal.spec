@@ -1,8 +1,8 @@
-%global git a7a912efc125467694f25e95df56e8bfb71ae122
+%global git f6ad16693097e7954d296daa9005228886bbd178
 
 Name:       vpn-user-portal
 Version:    1.8.6
-Release:    0.35%{?dist}
+Release:    0.40%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -75,6 +75,7 @@ BuildRequires:  php-sodium
 BuildRequires:  php-pecl(libsodium)
 %endif
 
+Requires:   roboto-fontface-fonts
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -224,6 +225,21 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.40
+- rebuilt
+
+* Thu Jan 10 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.39
+- rebuilt
+
+* Thu Jan 10 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.38
+- rebuilt
+
+* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.37
+- rebuilt
+
+* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.36
+- rebuilt
+
 * Tue Jan 08 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.35
 - rebuilt
 

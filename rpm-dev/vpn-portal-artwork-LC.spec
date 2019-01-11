@@ -1,8 +1,8 @@
-%global git 9dc5605d5311147d35ce7efa79998e4b2c838259
+%global git d015601fb65e7c70de174918fcb54e5923859c29
 
 Name:       vpn-portal-artwork-LC
 Version:    1.4.0
-Release:    0.1%{?dist}
+Release:    0.2%{?dist}
 Summary:    VPN Portal Artwork for LC
 License:    AGPLv3+
 
@@ -20,7 +20,6 @@ BuildArch:  noarch
 BuildRequires:  gnupg2
 
 Requires:   vpn-user-portal
-Requires:   vpn-admin-portal
 
 %description
 VPN Portal Artwork for LC.
@@ -37,28 +36,22 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/LC
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/css/LC
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/img/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/css/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/img/LC
 
 cp -p css/LC.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/LC
-cp -p css/LC.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/LC
 cp -p img/LC.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/LC
-cp -p img/LC.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/LC
 cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/LC
-cp -p views/vpn-admin-portal/*.php %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
 
 %files
 %defattr(-,root,root,-)
 %{_datadir}/vpn-user-portal/views/LC
 %{_datadir}/vpn-user-portal/web/css/LC
 %{_datadir}/vpn-user-portal/web/img/LC
-%{_datadir}/vpn-admin-portal/views/LC
-%{_datadir}/vpn-admin-portal/web/css/LC
-%{_datadir}/vpn-admin-portal/web/img/LC
 %doc CHANGES.md README.md
 
 %changelog
+* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.4.0-0.2
+- rebuilt
+
 * Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.1
 - update to 1.4.0
 

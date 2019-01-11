@@ -1,8 +1,8 @@
-%global git d821c0fdf1f61ec9b78236cdbff52ab6ca88fcf0
+%global git 985e886762743add80ee48a8c9a6d5263eb64a70
 
 Name:       vpn-portal-artwork-eduVPN
 Version:    1.4.0
-Release:    0.2%{?dist}
+Release:    0.3%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -20,7 +20,6 @@ BuildArch:  noarch
 BuildRequires:  gnupg2
 
 Requires:   vpn-user-portal
-Requires:   vpn-admin-portal
 
 %description
 VPN Portal Artwork for eduVPN.
@@ -37,28 +36,22 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/css/eduVPN
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/img/eduVPN
 
 cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
-cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/eduVPN
 cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
-cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/eduVPN
 cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
-cp -p views/vpn-admin-portal/*.php %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
 
 %files
 %defattr(-,root,root,-)
 %{_datadir}/vpn-user-portal/views/eduVPN
 %{_datadir}/vpn-user-portal/web/css/eduVPN
 %{_datadir}/vpn-user-portal/web/img/eduVPN
-%{_datadir}/vpn-admin-portal/views/eduVPN
-%{_datadir}/vpn-admin-portal/web/css/eduVPN
-%{_datadir}/vpn-admin-portal/web/img/eduVPN
 %doc CHANGES.md README.md
 
 %changelog
+* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.4.0-0.3
+- rebuilt
+
 * Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.2
 - rebuilt
 
