@@ -1,8 +1,8 @@
 %global git 39cb35a8683c8c56ffacef2f5b483ccd39dc0ee0
 
 Name:       vpn-lib-common
-Version:    1.3.3
-Release:    0.21%{?dist}
+Version:    2.0.0
+Release:    0.1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -158,68 +158,8 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
-* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.21
-- rebuilt
-
-* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.20
-- rebuilt
-
-* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.19
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.18
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.17
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.16
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.15
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.14
-- rebuilt
-
-* Mon Jan 07 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.13
-- rebuilt
-
-* Sun Jan 06 2019 François Kooman <fkooman@tuxed.net> - 1.3.3-0.12
-- rebuilt
-
-* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.11
-- rebuilt
-
-* Sun Dec 16 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.10
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.9
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.8
-- remove Twig and gettext 
-
-* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.7
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.6
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.5
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.4
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.3
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.2
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.3.3-0.1
-- update to 1.3.3
+* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+- update to 2.0.0
 
 * Wed Dec 05 2018 François Kooman <fkooman@tuxed.net> - 1.3.2-1
 - update to 1.3.2
