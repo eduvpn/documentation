@@ -1,8 +1,8 @@
-%global git 3d4fc387bd00704860639cf952b52794c280086f
+%global git b6cefd7c34044a9ea5dd7440b0bd48163af770e4
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.3%{?dist}
+Release:    0.5%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -130,7 +130,7 @@ mkdir -p %{buildroot}%{_datadir}/vpn-server-api
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
-for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
+for i in housekeeping init stats status update-api-secrets update-ip
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
@@ -139,8 +139,8 @@ cp -pr schema web %{buildroot}%{_datadir}/vpn-server-api
 install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/vpn-server-api.conf
 
 # config
-mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-api/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-api/default/config.php
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-api
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-api/config.php
 ln -s ../../../etc/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/config
 
 # data
@@ -176,8 +176,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-server-api.conf
 %dir %attr(0750,root,apache) %{_sysconfdir}/vpn-server-api
-%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-server-api/default
-%config(noreplace) %{_sysconfdir}/vpn-server-api/default/config.php
+%config(noreplace) %{_sysconfdir}/vpn-server-api/config.php
 %config(noreplace) %{_sysconfdir}/cron.d/vpn-server-api
 %{_bindir}/*
 %dir %{_datadir}/vpn-server-api
@@ -194,5 +193,11 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
+- rebuilt
+
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
+- rebuilt
+
 * Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
 - update to 2.0.0

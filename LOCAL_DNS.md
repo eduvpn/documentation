@@ -69,7 +69,7 @@ Enable Unbound during boot, and (re)start it:
 
 ## Profile Configuration
 
-Modify `/etc/vpn-server-api/default/config.php` for each of the VPN profiles 
+Modify `/etc/vpn-server-api/config.php` for each of the VPN profiles 
 where you want to use "local DNS", set the `dns` entry to:
 
     'dns' => ['@GW4@', '@GW6@'],

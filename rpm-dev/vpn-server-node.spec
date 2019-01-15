@@ -1,8 +1,8 @@
-%global git bd1778dd9d7d5421fc87e2e49e0212755ab74661
+%global git 0968ce8eb97b728da6cea2ee1fb22b4623d05909
 
 Name:       vpn-server-node
 Version:    2.0.0
-Release:    0.3%{?dist}
+Release:    0.5%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -117,8 +117,8 @@ do
     install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
 
-mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/default/config.php
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/config.php
 cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/firewall.php
 ln -s ../../../etc/vpn-server-node %{buildroot}%{_datadir}/vpn-server-node/config
 ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/vpn-server-node/openvpn-config
@@ -142,8 +142,7 @@ AUTOLOAD
 %defattr(-,root,root,-)
 %dir %attr(0750,root,openvpn) %{_sysconfdir}/vpn-server-node
 %config(noreplace) %{_sysconfdir}/vpn-server-node/firewall.php
-%dir %attr(0750,root,openvpn) %{_sysconfdir}/vpn-server-node/default
-%config(noreplace) %{_sysconfdir}/vpn-server-node/default/config.php
+%config(noreplace) %{_sysconfdir}/vpn-server-node/config.php
 %{_bindir}/*
 %{_libexecdir}/*
 %dir %{_datadir}/vpn-server-node
@@ -158,5 +157,11 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
+- rebuilt
+
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
+- rebuilt
+
 * Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
 - update to 2.0.0

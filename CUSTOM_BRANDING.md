@@ -11,8 +11,8 @@ The portals use templates, located in the following folders:
     /usr/share/vpn-admin-portal/views
 
 You can copy the `base.php` from these folders to 
-`/etc/vpn-user-portal/default/views/base.php` and 
-`/etc/vpn-admin-portal/default/views/base.php` respectively and modify them to
+`/etc/vpn-user-portal/views/base.php` and 
+`/etc/vpn-admin-portal/views/base.php` respectively and modify them to
 override the defaults. For instance by adding an extra line pointing to an 
 additional CSS file.
 

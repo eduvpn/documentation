@@ -10,11 +10,6 @@ sudo systemctl stop php7.0-fpm
 # install updates
 sudo apt-get update && sudo apt-get -y dist-upgrade 
 
-# delete template cache
-# ONLY enable when using your own custom theme not packaged as RPM/DEB
-#rm -rf /var/lib/vpn-user-portal/default/tpl
-#rm -rf /var/lib/vpn-admin-portal/default/tpl
-
 sudo systemctl start php7.0-fpm
 sudo systemctl start apache2
 

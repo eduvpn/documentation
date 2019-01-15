@@ -2,7 +2,7 @@
 
 For this document we assume you used the included `deploy_${DIST}.sh` script.
 
-Profiles, are configured in `/etc/vpn-server-api/default/config.php` and
+Profiles, are configured in `/etc/vpn-server-api/config.php` and
 can contain many options to support various deployment scenarios. These are 
 described in the table below.
 
@@ -147,7 +147,7 @@ The OpenVPN server configuration can be regenerated like this:
 
 To restart all OpenVPN processes, do this:
 
-    $ sudo systemctl restart "openvpn-server@default-*"
+    $ sudo systemctl restart "openvpn-server@*"
 
 If you changed the entry `vpnProtoPorts`, to say 
 `['udp/1194', 'udp/1195', 'tcp/1194', 'tcp/1195']` you now have two more 
@@ -155,11 +155,11 @@ OpenVPN processes to deal with:
 
 Enable the two extra processes on boot:
 
-    $ sudo systemctl enable openvpn-server@default-internet-{2,3}
+    $ sudo systemctl enable openvpn-server@internet-{2,3}
 
 (Re)start them all:
 
-    $ sudo systemctl restart "openvpn-server@default-*"
+    $ sudo systemctl restart "openvpn-server@*"
 
 If you changed any of the port configuration(s), you also need to update the
 firewall to allow the UDP/TCP ports through, in that case modify 

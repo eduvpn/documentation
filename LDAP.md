@@ -15,8 +15,8 @@ The first one is what we focus on here, the second one is documented in the
 # Configuration
 
 You can configure both `vpn-user-portal` and `vpn-admin-portal` to use LDAP. 
-This is configured in the files `/etc/vpn-user-portal/default/config.php` and
-`/etc/vpn-admin-portal/default/config.php`.
+This is configured in the files `/etc/vpn-user-portal/config.php` and
+`/etc/vpn-admin-portal/config.php`.
 
 You have to set `authMethod` first:
 

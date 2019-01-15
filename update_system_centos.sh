@@ -10,11 +10,6 @@ sudo systemctl stop php-fpm
 # install updates
 sudo yum clean expire-cache && sudo yum -y update
 
-# delete template cache
-# ONLY enable when using your own custom theme not packaged as RPM/DEB
-#rm -rf /var/lib/vpn-user-portal/default/tpl
-#rm -rf /var/lib/vpn-admin-portal/default/tpl
-
 sudo systemctl start php-fpm
 sudo systemctl start httpd
 

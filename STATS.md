@@ -1,7 +1,7 @@
 # Statistics
 
 Some very basic anonymous statistics are recorded regarding VPN usage. The 
-files are stored in e.g. `/var/lib/vpn-server-api/default/stats.json`.
+files are stored in e.g. `/var/lib/vpn-server-api/stats.json`.
 
 The statistics only store information about the last 30 days, information older
 than that is automatically removed.

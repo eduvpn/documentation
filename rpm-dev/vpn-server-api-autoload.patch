@@ -1,5 +1,5 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index 0a90fcf..aeeb957 100644
+index 34b9a5b..4524dc3 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
 @@ -8,8 +8,8 @@
@@ -11,10 +11,10 @@ index 0a90fcf..aeeb957 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Server\Storage;
+ 
 diff --git a/bin/init.php b/bin/init.php
-index 409d436..af99191 100644
+index b273100..045ba36 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -8,8 +8,8 @@
@@ -26,25 +26,10 @@ index 409d436..af99191 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
-diff --git a/bin/show-instance-info.php b/bin/show-instance-info.php
-index 014bd18..d1f90b7 100644
---- a/bin/show-instance-info.php
-+++ b/bin/show-instance-info.php
-@@ -8,8 +8,8 @@
-  * SPDX-License-Identifier: AGPL-3.0+
-  */
- 
--require_once dirname(__DIR__).'/vendor/autoload.php';
--$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
-+$baseDir = '/usr/share/vpn-server-api';
- 
- use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Server\CA\EasyRsaCa;
 diff --git a/bin/stats.php b/bin/stats.php
-index 50b7c95..0f73017 100644
+index 9702f58..7f6c39c 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
 @@ -8,8 +8,8 @@
@@ -56,10 +41,10 @@ index 50b7c95..0f73017 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\FileIO;
 diff --git a/bin/status.php b/bin/status.php
-index d925aa9..fccf3b6 100644
+index b1524cb..130dacd 100644
 --- a/bin/status.php
 +++ b/bin/status.php
 @@ -8,8 +8,8 @@
@@ -72,9 +57,9 @@ index d925aa9..fccf3b6 100644
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;
- use SURFnet\VPN\Common\CliParser;
+ use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index f7f5889..6f1d597 100644
+index 6c9859b..40d3add 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
 @@ -8,8 +8,8 @@
@@ -89,7 +74,7 @@ index f7f5889..6f1d597 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 8f30d6a..2b67223 100644
+index 0414f96..9d6b7cf 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
 @@ -8,8 +8,8 @@
@@ -104,7 +89,7 @@ index 8f30d6a..2b67223 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index 7a69f45..a44d785 100644
+index d30949f..00c88a0 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@

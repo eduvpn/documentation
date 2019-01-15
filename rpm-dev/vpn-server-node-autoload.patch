@@ -1,5 +1,5 @@
 diff --git a/bin/certificate-info.php b/bin/certificate-info.php
-index faf4177..a408817 100644
+index 3a295b8..98c468b 100644
 --- a/bin/certificate-info.php
 +++ b/bin/certificate-info.php
 @@ -8,8 +8,8 @@
@@ -14,7 +14,7 @@ index faf4177..a408817 100644
  use SURFnet\VPN\Common\FileIO;
  
 diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
-index 55fdcad..c2cfd86 100644
+index cdc4928..6b19b14 100644
 --- a/bin/generate-firewall.php
 +++ b/bin/generate-firewall.php
 @@ -8,8 +8,8 @@
@@ -29,7 +29,7 @@ index 55fdcad..c2cfd86 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/server-config.php b/bin/server-config.php
-index 0658630..1d2c2d4 100644
+index 864287a..942977b 100644
 --- a/bin/server-config.php
 +++ b/bin/server-config.php
 @@ -8,8 +8,8 @@
@@ -41,10 +41,10 @@ index 0658630..1d2c2d4 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-connect.php b/libexec/client-connect.php
-index eef1fb6..58f7106 100644
+index ae768f0..e4bc6cf 100644
 --- a/libexec/client-connect.php
 +++ b/libexec/client-connect.php
 @@ -8,8 +8,8 @@
@@ -57,9 +57,9 @@ index eef1fb6..58f7106 100644
 +$baseDir = '/usr/share/vpn-server-node';
  
  use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\Http\Exception\InputValidationException;
+ use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-disconnect.php b/libexec/client-disconnect.php
-index 49deea7..8c48fe7 100644
+index 30fa447..49de71c 100644
 --- a/libexec/client-disconnect.php
 +++ b/libexec/client-disconnect.php
 @@ -8,8 +8,8 @@
@@ -72,4 +72,4 @@ index 49deea7..8c48fe7 100644
 +$baseDir = '/usr/share/vpn-server-node';
  
  use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\Http\Exception\InputValidationException;
+ use SURFnet\VPN\Common\HttpClient\CurlHttpClient;

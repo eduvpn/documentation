@@ -1,8 +1,8 @@
-%global git 01268541c25bb31b21b0eaa1d7e809325a241573
+%global git 6795860a4e1d17cc41bec18689c0c9356c3534d9
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.7%{?dist}
+Release:    0.9%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -171,8 +171,8 @@ done
 
 cp -pr schema web views locale %{buildroot}%{_datadir}/vpn-user-portal
 
-mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal/default
-cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/default/config.php
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal
+cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/config.php
 ln -s ../../../etc/vpn-user-portal %{buildroot}%{_datadir}/vpn-user-portal/config
 
 mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-user-portal
@@ -206,8 +206,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-user-portal.conf
 %dir %attr(0750,root,apache) %{_sysconfdir}/vpn-user-portal
-%dir %attr(0750,root,apache) %{_sysconfdir}/vpn-user-portal/default
-%config(noreplace) %{_sysconfdir}/vpn-user-portal/default/config.php
+%config(noreplace) %{_sysconfdir}/vpn-user-portal/config.php
 %config(noreplace) %{_sysconfdir}/cron.d/vpn-user-portal
 %{_bindir}/*
 %dir %{_datadir}/php/SURFnet
@@ -225,5 +224,11 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.9
+- rebuilt
+
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.8
+- rebuilt
+
 * Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
 - update to 2.0.0

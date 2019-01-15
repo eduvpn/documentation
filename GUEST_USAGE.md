@@ -28,7 +28,7 @@ There are two ways to configure other public keys:
 
 ## Manual
 
-Inside the `Api` section in `/etc/vpn-user-portal/default/config.php`, see 
+Inside the `Api` section in `/etc/vpn-user-portal/config.php`, see 
 configuration file
 [template](https://github.com/eduvpn/vpn-user-portal/blob/master/config/config.php.example).
 
@@ -47,7 +47,7 @@ server(s).
 
 ## Registry
 
-Inside the `Api` section in `/etc/vpn-user-portal/default/config.php`, see 
+Inside the `Api` section in `/etc/vpn-user-portal/config.php`, see 
 configuration file
 [template](https://github.com/eduvpn/vpn-user-portal/blob/master/config/config.php.example).
 

@@ -66,7 +66,7 @@ at your IdP. You can use the following URL with metadata:
 You also need to modify the `vpn-user-portal` configuration to specify the 
 attribute that should be used to identify the users.
 
-Edit `/etc/vpn-user-portal/default/config.php` and set:
+Edit `/etc/vpn-user-portal/config.php` and set:
         
     'authMethod' => 'MellonAuthentication'
 
@@ -78,7 +78,7 @@ you uncomment the `<Location /vpn-admin-portal>` section in
 `/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
 are associated with the administrator(s). 
 
-Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
+Also modify `/etc/vpn-admin-portal/config.php` in the same way as 
 the user portal.
 
 **NOTE** if you want to allow access to the admin portal, you MUST also 
@@ -160,5 +160,5 @@ you'll directly end up at the IdP.
 
 **NOTE**: if you want to add multiple IdPs that use identifiers that are not 
 guaranteed globally unique, you MUST set `addEntityID` to `true` in 
-`/etc/vpn-user-portal/default/config.php` and 
-`/etc/vpn-admin-portal/default/config.php`.
+`/etc/vpn-user-portal/config.php` and 
+`/etc/vpn-admin-portal/config.php`.

@@ -125,8 +125,8 @@ sudo -u www-data vpn-user-portal-init
 ###############################################################################
 
 # On Debian different user/group for running OpenVPN
-sed -i "s|'vpnUser' => 'openvpn'|'vpnUser' => 'nobody'|" /etc/vpn-server-node/default/config.php
-sed -i "s|'vpnGroup' => 'openvpn'|'vpnGroup' => 'nogroup'|" /etc/vpn-server-node/default/config.php
+sed -i "s|'vpnUser' => 'openvpn'|'vpnUser' => 'nobody'|" /etc/vpn-server-node/config.php
+sed -i "s|'vpnGroup' => 'openvpn'|'vpnGroup' => 'nogroup'|" /etc/vpn-server-node/config.php
 
 ###############################################################################
 # NETWORK

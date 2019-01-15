@@ -1,5 +1,5 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index 215d35d..0a58cb5 100644
+index e7b7915..10b77e7 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
 @@ -8,8 +8,8 @@
@@ -14,7 +14,7 @@ index 215d35d..0a58cb5 100644
  use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
 diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 9bc7ee9..b4cb59c 100644
+index 8b78b36..08d4727 100644
 --- a/bin/foreign-key-list-fetcher.php
 +++ b/bin/foreign-key-list-fetcher.php
 @@ -8,8 +8,8 @@
@@ -26,10 +26,10 @@ index 9bc7ee9..b4cb59c 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\Config;
+ use SURFnet\VPN\Portal\ForeignKeyListFetcher;
 diff --git a/bin/init.php b/bin/init.php
-index c755e0c..0a57daf 100644
+index a0a014f..852bda1 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -8,8 +8,8 @@
@@ -41,10 +41,10 @@ index c755e0c..0a57daf 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
+ use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
 diff --git a/bin/show-public-key.php b/bin/show-public-key.php
-index fea3f4a..335a396 100644
+index 5a5f414..426e02b 100644
 --- a/bin/show-public-key.php
 +++ b/bin/show-public-key.php
 @@ -8,8 +8,8 @@
@@ -56,10 +56,10 @@ index fea3f4a..335a396 100644
 +require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use SURFnet\VPN\Common\CliParser;
  use SURFnet\VPN\Common\FileIO;
+ 
 diff --git a/web/api.php b/web/api.php
-index 19c1423..e86dd77 100644
+index 0cdcdfe..2dd9b9a 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -74,7 +74,7 @@ index 19c1423..e86dd77 100644
  use fkooman\OAuth\Server\BearerValidator;
  use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/index.php b/web/index.php
-index 2afb576..dd0d53c 100644
+index 21d547b..3ec7054 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -89,7 +89,7 @@ index 2afb576..dd0d53c 100644
  use fkooman\OAuth\Server\OAuthServer;
  use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/oauth.php b/web/oauth.php
-index 917bae3..1148ace 100644
+index 0b68be4..97f2e4c 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@

@@ -13,7 +13,7 @@ sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 
 ## VPN
 
-We need to modify `/etc/vpn-server-api/default/config.php` and modify 
+We need to modify `/etc/vpn-server-api/config.php` and modify 
 `exposedVpnProtoPorts` to announce to VPN clients that we also want to 
 advertise `tcp/443` to clients:
 

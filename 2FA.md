@@ -29,7 +29,7 @@ users to enroll for 2FA when they (first) authenticate to the service.
 
 ### Optional 2FA
 
-The default configuration, in `/etc/vpn-user-portal/default/config.php`:
+The default configuration, in `/etc/vpn-user-portal/config.php`:
 
     'requireTwoFactor' => false,
     'twoFactorMethods' => ['totp'],
@@ -68,7 +68,7 @@ the admin portal for that particular user.
 If access to the admin portal is not available (anymore), the 2FA enrollment
 can also be removed manually. 
 
-    $ sudo sqlite3 /var/lib/vpn-server-api/default/db.sqlite
+    $ sudo sqlite3 /var/lib/vpn-server-api/db.sqlite
 
 Perform the following query to remove the OTP secret for the user `foo`:
 

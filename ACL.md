@@ -20,14 +20,14 @@ all authentication backends have a way to validate the permissions
 
 The configuration is done in two locations:
 
-- `/etc/vpn-user-portal/default/config.php`: configure which access control
+- `/etc/vpn-user-portal/config.php`: configure which access control
   mechanism is used and the period for which to _cache_ the permissions;
-- `/etc/vpn-server-api/default/config.php`: configure which profiles are 
+- `/etc/vpn-server-api/config.php`: configure which profiles are 
   restricted by access control.
 
 ## Cache
 
-The permission cache is configured in `/etc/vpn-user-portal/default/config.php`
+The permission cache is configured in `/etc/vpn-user-portal/config.php`
 using the `sessionExpiry` option. The default is 90 days, `P90D`. The following
 is a list of common values you can use:
 
@@ -50,7 +50,7 @@ membership. Typically, that would be `eduPersonEntitlement` or
 the OID variant as shown in the example below depending on your IdP / identity
 federation.
 
-In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
+In order to configure this, modify `/etc/vpn-user-portal/config.php` 
 and set the `entitlementAttribute` to the name of the attribute:
 
     // SAML
@@ -82,7 +82,7 @@ We assume [LDAP](LDAP.md) is already configured and working.
 You have to choose an LDAP attribute you want to use for determining the 
 membership. Typically, that would be `memberOf`, but any LDAP attribute will work.
 
-In order to configure this, modify `/etc/vpn-user-portal/default/config.php` 
+In order to configure this, modify `/etc/vpn-user-portal/config.php` 
 and set the `entitlementAttribute` to the name of the attribute:
 
     // LDAP
@@ -108,7 +108,7 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 
 ## Profile Mapping
 
-Modify `/etc/vpn-server-api/default/config.php`, and set the `enableAcl` to 
+Modify `/etc/vpn-server-api/config.php`, and set the `enableAcl` to 
 `true` and add the authorized attribute values to `aclGroupList` for each of 
 the profiles where you want to restrict access, for example:
 

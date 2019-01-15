@@ -281,4 +281,4 @@ A list of OAuth client registrations that are available for all installations
 can be found [here](https://github.com/eduvpn/vpn-user-portal/blob/master/src/OAuthClientInfo.php).
 
 Administrators MAY define additional OAuth clients in the 
-`/etc/vpn-user-portal/default/config.php` configuration file.
+`/etc/vpn-user-portal/config.php` configuration file.

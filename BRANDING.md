@@ -20,8 +20,8 @@ your server installation. By default a simple "plain" branding is used.
 
 # Configuration
 
-Now you can enable the `styleName` in `/etc/vpn-user-portal/default/config.php` 
-and `/etc/vpn-admin-portal/default/config.php`. Set it to `LC` (or `eduVPN`).
+Now you can enable the `styleName` in `/etc/vpn-user-portal/config.php` 
+and `/etc/vpn-admin-portal/config.php`. Set it to `LC` (or `eduVPN`).
 
 For `vpn-admin-portal` you can also configure the color of the bar graphs on
 the "Stats" page.

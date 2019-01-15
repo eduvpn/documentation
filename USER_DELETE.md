@@ -16,7 +16,7 @@ delete the user from the user database. This is *NOT* relevant for SAML, LDAP
 and RADIUS authentication:
 
 ```bash
-    $ sudo sqlite3 /var/lib/vpn-user-portal/default/userdb.sqlite
+    $ sudo sqlite3 /var/lib/vpn-user-portal/userdb.sqlite
     SQLite version 3.7.17 2013-05-20 00:56:22
     Enter ".help" for instructions
     Enter SQL statements terminated with a ";"
@@ -27,7 +27,7 @@ and RADIUS authentication:
 Delete the OAuth tokens for the user, relevant for all authentication backends:
 
 ```bash
-    $ sudo sqlite3 /var/lib/vpn-user-portal/default/tokens.sqlite
+    $ sudo sqlite3 /var/lib/vpn-user-portal/tokens.sqlite
     SQLite version 3.7.17 2013-05-20 00:56:22
     Enter ".help" for instructions
     Enter SQL statements terminated with a ";"
@@ -42,7 +42,7 @@ this is to delete the user data from all other tables that have a foreign key
 associated with the user in the users table.
 
 ```bash
-    $ sudo sqlite3 /var/lib/vpn-server-api/default/db.sqlite
+    $ sudo sqlite3 /var/lib/vpn-server-api/db.sqlite
     SQLite version 3.7.17 2013-05-20 00:56:22
     Enter ".help" for instructions
     Enter SQL statements terminated with a ";"
