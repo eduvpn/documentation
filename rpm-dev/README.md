@@ -12,7 +12,7 @@ The repository contains two additional scripts:
 * `copr_build.sh` to build the package remotely (in COPR);
 
 The resulting packages are available in the COPR repository at 
-[https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/](https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/).
+[https://copr.fedorainfracloud.org/coprs/fkooman/lc-dev/](https://copr.fedorainfracloud.org/coprs/fkooman/lc-dev/).
 
 # Requirements
 
@@ -26,10 +26,10 @@ The resulting packages are available in the COPR repository at
 or on packages in this repository, so you need to install (and build) those 
 first.
 
-    $ ./local_build.sh php-fkooman-oauth2-client
+    $ ./local_build.sh php-fkooman-oauth2-server
 
 ## Remote Building
 
 Same rules apply.
 
-    $ ./copr_build.sh php-fkooman-oauth2-client
+    $ ./copr_build.sh php-fkooman-oauth2-server
