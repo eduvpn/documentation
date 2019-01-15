@@ -1,5 +1,5 @@
 #!/bin/sh
-COPR_REPO=eduvpn-testing
+COPR_REPO=lc-v1-dev
 
 # setup the build directory
 rpmdev-setuptree
