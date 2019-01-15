@@ -67,15 +67,13 @@ deployments.
 | `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8 or 16 entries. See [OpenVPN Processes](#openvpn-processes)                                                      | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443`           | no       | `[]`                       | `[]`                       |
 | `hideProfile`          | Hide the profile from the user portal, i.e. do not allow the user to choose it                                                                                              | no       | `false`                    | `false`                    |
-| `tlsProtection`        | TLS control channel protection. Supported values are `tls-crypt`, `tls-auth` and `false`                                                                                    | no       | `tls-auth`                 | `tls-crypt`                |
-| `enableCompression`    | Enable compression _framing_, but explicitly disable compression                                                                                                            | no       | `true`                     | `false`                    |
+| `tlsProtection`        | TLS control channel protection. Supported values are `tls-crypt` and `false`                                                                                                | no       | `tls-crypt`                 | `tls-crypt`                |
 
 Changing any of the following options _WILL_ prevent OpenVPN clients from 
 connecting without updating the configuration, unless the eduVPN/Let's Connect! 
 applications are used:
 
 * `tlsProtection`: client cannot handle a change here;
-* `enableCompression`: client cannot handle a change here;
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
