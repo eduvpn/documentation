@@ -1,7 +1,0 @@
-[eduVPN]
-name=eduVPN
-baseurl=https://repo.eduvpn.org/rpm/
-gpgcheck=1
-enabled=1
-gpgkey=https://repo.eduvpn.org/rpm/RPM-GPG-KEY-eduVPN
-skip_if_unavailable=False
