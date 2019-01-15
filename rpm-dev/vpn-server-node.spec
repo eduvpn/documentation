@@ -2,7 +2,7 @@
 
 Name:       vpn-server-node
 Version:    2.0.0
-Release:    0.1%{?dist}
+Release:    0.3%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -158,107 +158,5 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
 - update to 2.0.0
-
-* Fri Nov 09 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
-- update to 1.1.2
-
-* Sun Oct 21 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-1
-- update to 1.1.1
-
-* Mon Oct 15 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-1
-- update to 1.1.0
-
-* Wed Oct 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.22-1
-- update to 1.0.22
-
-* Fri Oct 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.21-1
-- update to 1.0.21
-
-* Wed Sep 19 2018 François Kooman <fkooman@tuxed.net> - 1.0.20-1
-- update to 1.0.20
-
-* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.19-1
-- update to 1.0.19
-
-* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.18-2
-- merge dev and prod spec files in one
-- cleanup requirements
-
-* Sun Aug 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.18-1
-- update to 1.0.18
-- use PHPUnit 7 on supported platforms
-
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-3
-- add missing BR
-
-* Mon Jul 23 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-2
-- use fedora phpab template for generating autoloader
-
-* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.0.17-1
-- update to 1.0.17
-
-* Fri Jun 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-2
-- use release tarball instead of Git tarball
-- verify GPG signature
-
-* Tue Jun 12 2018 François Kooman <fkooman@tuxed.net> - 1.0.16-1
-- update to 1.0.16
-
-* Wed Jun 06 2018 François Kooman <fkooman@tuxed.net> - 1.0.15-1
-- update to 1.0.15
-
-* Tue Apr 17 2018 François Kooman <fkooman@tuxed.net> - 1.0.14-1
-- update to 1.0.14
-
-* Thu Apr 12 2018 François Kooman <fkooman@tuxed.net> - 1.0.13-1
-- update to 1.0.13
-
-* Thu Apr 05 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-1
-- update to 1.0.12
-
-* Thu Mar 29 2018 François Kooman <fkooman@tuxed.net> - 1.0.11-1
-- update to 1.0.11
-
-* Thu Mar 15 2018 François Kooman <fkooman@tuxed.net> - 1.0.10-1
-- update to 1.0.10
-
-* Sun Feb 25 2018 François Kooman <fkooman@tuxed.net> - 1.0.9-1
-- update to 1.0.9
-
-* Wed Jan 17 2018 François Kooman <fkooman@tuxed.net> - 1.0.8-1
-- update to 1.0.8
-
-* Sun Dec 17 2017 François Kooman <fkooman@tuxed.net> - 1.0.7-1
-- cleanup autoloading
-- update to 1.0.7
-
-* Fri Dec 15 2017 François Kooman <fkooman@tuxed.net> - 1.0.6-1
-- update to 1.0.6
-
-* Thu Dec 07 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-2
-- use phpab to generate the classloader
-
-* Mon Nov 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.5-1
-- update to 1.0.5
-
-* Wed Oct 25 2017 François Kooman <fkooman@tuxed.net> - 1.0.4-1
-- update to 1.0.4
-- change handling of libexec and bin scripts by using changelogs
-- add LICENSE.spdx
-
-* Fri Oct 20 2017 François Kooman <fkooman@tuxed.net> - 1.0.3-1
-- update to 1.0.3
-
-* Fri Sep 29 2017 François Kooman <fkooman@tuxed.net> - 1.0.2-1
-- update to 1.0.2
-
-* Fri Jul 28 2017 François Kooman <fkooman@tuxed.net> - 1.0.1-1
-- update to 1.0.1
-
-* Tue Jul 18 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
-- remove obsolete composer variables
-
-* Thu Jul 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
-- initial package
