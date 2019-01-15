@@ -1,15 +1,13 @@
 #!/bin/sh
 
 PACKAGE_LIST=(\
+    php-fkooman-saml-sp \
     php-fkooman-otp-verifier \
-    php-fkooman-oauth2-client \
     php-fkooman-oauth2-server \
-    php-fkooman-yubitwee \
     php-fkooman-secookie \
     php-fkooman-sqlite-migrate \
     php-LC-openvpn-connection-manager \
     vpn-lib-common \
-    vpn-admin-portal \
     vpn-server-api \
     vpn-server-node \
     vpn-user-portal \
@@ -18,7 +16,6 @@ PACKAGE_LIST=(\
     vpn-portal-artwork-eduVPN \
     vpn-portal-artwork-LC \
     php-saml-ds-artwork-eduVPN \
-    openvpn-plugin-auth-script \
 )
 
 rpmdev-setuptree
