@@ -59,20 +59,17 @@ else
 fi
 
 # Add production RPM repository
-curl -L -o /etc/yum.repos.d/LC.repo \
-    https://repo.letsconnect-vpn.org/rpm/release/enterprise/LC.repo
-
-# Development RPMs (COPR)
-#curl -L -o /etc/yum.repos.d/eduVPN.repo \
-#   https://copr.fedorainfracloud.org/coprs/fkooman/eduvpn-testing/repo/epel-7/fkooman-eduvpn-testing-epel-7.repo
+#curl -L -o /etc/yum.repos.d/LC.repo \
+#    https://repo.letsconnect-vpn.org/rpm/release/enterprise/LC.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
+${PACKAGE_MANAGER} -y install yum-plugin-copr mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python chrony
 
+${PACKAGE_MANAGER} -y copr -y enable fkooman/lc-dev
+
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
-    vpn-user-portal
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal
 
 ###############################################################################
 # SELINUX
@@ -228,20 +225,14 @@ systemctl enable --now ip6tables
 ###############################################################################
 
 USER_PASS=$(pwgen 12 -n 1)
-ADMIN_PASS=$(pwgen 12 -n 1)
-sudo -u apache vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
-sudo -u apache vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
+sudo -u apache vpn-user-portal-add-user --user me --pass "${USER_PASS}"
 
 ###############################################################################
 # SHOW INFO
 ###############################################################################
 
 echo "########################################################################"
-echo "# Admin Portal"
-echo "#     https://${WEB_FQDN}/vpn-admin-portal"
-echo "#         User: admin"
-echo "#         Pass: ${ADMIN_PASS}"
-echo "# User Portal"
+echo "# Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"
 echo "#         Pass: ${USER_PASS}"
