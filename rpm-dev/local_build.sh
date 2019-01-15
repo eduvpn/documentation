@@ -3,11 +3,11 @@
 # setup the build directory
 rpmdev-setuptree
 
-# download the tar from GitHub
+# download the archive from the web
 spectool -g -R $1.spec
 
-# copy the additional sources
-cp $1*.conf $1*.cron $1*.patch $HOME/rpmbuild/SOURCES
+# copy required sources
+cp $1*.conf $1*.cron $1*.patch gpgkey-* $HOME/rpmbuild/SOURCES
 
-# create the RPM
+# build the RPM
 rpmbuild -bb $1.spec

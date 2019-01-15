@@ -1,4 +1,4 @@
-%global git af508ac3b6c1949c52a0cc8b09c6e11d182a6618
+#global git af508ac3b6c1949c52a0cc8b09c6e11d182a6618
 
 Name:           php-fkooman-otp-verifier
 Version:        0.2.1

@@ -1,8 +1,8 @@
-%global git 01268541c25bb31b21b0eaa1d7e809325a241573
+#global git 50f093bd4e36569411f88177eabcd97fd3aa334a
 
 Name:       vpn-user-portal
-Version:    2.0.0
-Release:    0.5%{?dist}
+Version:    1.8.6
+Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -41,12 +41,11 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
-#        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
-#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
@@ -57,11 +56,10 @@ BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(fkooman/sqlite-migrate)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-BuildRequires:  php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 %endif
@@ -75,7 +73,6 @@ BuildRequires:  php-sodium
 BuildRequires:  php-pecl(libsodium)
 %endif
 
-Requires:   roboto-fontface-fonts
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -91,12 +88,11 @@ Requires:   crontabs
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
-#        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
-#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
@@ -108,11 +104,10 @@ Requires:   php-json
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
+Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
-Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(paragonie/constant_time_encoding)
-Requires:   php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
 %endif
@@ -146,11 +141,10 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
-require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
-require_once '%{_datadir}/php/fkooman/SAML/SP/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
@@ -164,12 +158,12 @@ mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
 
-for i in add-user foreign-key-list-fetcher init show-public-key
+for i in add-user foreign-key-list-fetcher init show-public-key generate-voucher
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
 done
 
-cp -pr schema web views locale %{buildroot}%{_datadir}/vpn-user-portal
+cp -pr web views locale %{buildroot}%{_datadir}/vpn-user-portal
 
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal/default
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/default/config.php
@@ -197,6 +191,9 @@ AUTOLOAD
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
 restorecon -R %{_localstatedir}/lib/vpn-user-portal || :
 
+# remove template cache if it is there
+rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
+
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
 semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
@@ -216,7 +213,6 @@ fi
 %dir %{_datadir}/vpn-user-portal
 %{_datadir}/vpn-user-portal/data
 %{_datadir}/vpn-user-portal/web
-%{_datadir}/vpn-user-portal/schema
 %{_datadir}/vpn-user-portal/views
 %{_datadir}/vpn-user-portal/config
 %{_datadir}/vpn-user-portal/locale
@@ -225,20 +221,8 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
-- rebuilt
-
-* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
-- rebuilt
-
-* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
-- rebuilt
-
-* Sun Jan 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.2
-- rebuilt
-
-* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
-- update to 2.0.0
+* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-1
+- update to 1.8.6
 
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.8.5-1
 - update to 1.8.5

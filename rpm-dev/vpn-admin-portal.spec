@@ -1,8 +1,8 @@
-%global git 9dcaca841bb2d529e09e47dee55f909408ff7dec
+#global git 063418350e91ef1f35c7b4d2fd6f5745b7d1f05f
 
 Name:       vpn-admin-portal
-Version:    1.7.4
-Release:    0.8%{?dist}
+Version:    1.7.3
+Release:    1%{?dist}
 Summary:    VPN Admin Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -41,7 +41,8 @@ BuildRequires:  phpunit
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">5.4"
+#        "php": ">5.4",
+#        "twig/twig": "^1"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  vpn-lib-common
@@ -50,6 +51,7 @@ BuildRequires:  php-gd
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fkooman/secookie)
+BuildRequires:  php-composer(twig/twig) < 2
 
 Requires:   roboto-fontface-fonts
 %if 0%{?fedora} >= 24
@@ -65,7 +67,8 @@ Requires:   httpd
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">5.4"
+#        "php": ">5.4",
+#        "twig/twig": "^1"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
@@ -75,6 +78,7 @@ Requires:   php-gd
 Requires:   php-pdo
 Requires:   php-spl
 Requires:   php-composer(fkooman/secookie)
+Requires:   php-composer(twig/twig) < 2
 
 Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
@@ -96,6 +100,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
+require_once '%{_datadir}/php/Twig/autoload.php';
 AUTOLOAD
 
 %install
@@ -123,6 +128,18 @@ AUTOLOAD
 
 %{phpunit} tests --bootstrap=tests/autoload.php
 
+%post
+semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-admin-portal(/.*)?' 2>/dev/null || :
+restorecon -R %{_localstatedir}/lib/vpn-admin-portal || :
+
+# remove template cache if it is there
+rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
+
+%postun
+if [ $1 -eq 0 ] ; then  # final removal
+semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-admin-portal(/.*)?' 2>/dev/null || :
+fi
+
 %files
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/vpn-admin-portal.conf
@@ -143,30 +160,6 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Sun Dec 16 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.8
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.7
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.6
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.5
-- remove Twig dependency
-
-* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.4
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.3
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.2
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.7.4-0.1
-- update to 1.7.4
-
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.7.3-1
 - update to 1.7.3
 

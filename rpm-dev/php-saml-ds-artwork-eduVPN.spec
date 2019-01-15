@@ -1,8 +1,8 @@
-%global git eb5267819cf73094d3a421b1994a7dc447d809b0
+#global git c735ec8ce841cc0334d7c61c1b1f2685af1ed9a8
 
 Name:       php-saml-ds-artwork-eduVPN
-Version:    1.1.0
-Release:    0.1%{?dist}
+Version:    1.0.1
+Release:    5%{?dist}
 Summary:    SAML Discovery Artwork for eduVPN
 License:    AGPLv3+
 
@@ -39,7 +39,15 @@ mkdir -p %{buildroot}%{_datadir}/php-saml-ds/web/img/eduVPN
 
 cp -p css/eduvpn.css %{buildroot}%{_datadir}/php-saml-ds/web/css/eduVPN
 cp -p img/eduvpn.png %{buildroot}%{_datadir}/php-saml-ds/web/img/eduVPN
-cp -p views/*.php %{buildroot}%{_datadir}/php-saml-ds/views/eduVPN
+cp -p views/*.twig %{buildroot}%{_datadir}/php-saml-ds/views/eduVPN
+
+%post
+# clear template cache
+rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
+
+%postun
+# clear template cache
+rm -rf %{_localstatedir}/lib/php-saml-ds/tpl/* >/dev/null 2>/dev/null || :
 
 %files
 %defattr(-,root,root,-)
@@ -49,9 +57,6 @@ cp -p views/*.php %{buildroot}%{_datadir}/php-saml-ds/views/eduVPN
 %doc README.md CHANGES.md
 
 %changelog
-* Thu Dec 13 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.1
-- update to 1.1.0
-
 * Thu Sep 27 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-5
 - point to properly named release tarballs
 

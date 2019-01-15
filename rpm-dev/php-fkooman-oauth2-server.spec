@@ -1,4 +1,4 @@
-%global git 557488bad563db97ff2349dbc561f0593a77c3cc
+#global git 557488bad563db97ff2349dbc561f0593a77c3cc
 
 Name:           php-fkooman-oauth2-server
 Version:        3.0.5

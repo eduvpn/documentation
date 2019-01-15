@@ -1,8 +1,8 @@
-%global git 3d4fc387bd00704860639cf952b52794c280086f
+#global git f30ce4c3c22c6e80de5247eb9971e6b5512e6f38
 
 Name:       vpn-server-api
-Version:    2.0.0
-Release:    0.1%{?dist}
+Version:    1.4.9
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -44,8 +44,10 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
+#        "fkooman/yubitwee": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
 #    },
@@ -58,8 +60,10 @@ BuildRequires:  php-openssl
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/oauth2-client)
 BuildRequires:  php-composer(fkooman/otp-verifier)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
+BuildRequires:  php-composer(fkooman/yubitwee)
 BuildRequires:  php-composer(psr/log)
 
 Requires:   crontabs
@@ -81,8 +85,10 @@ Requires:   openssl
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/oauth2-client": "^7",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
+#        "fkooman/yubitwee": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
 #    },
@@ -96,8 +102,10 @@ Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
+Requires:   php-composer(fkooman/oauth2-client)
 Requires:   php-composer(fkooman/otp-verifier)
 Requires:   php-composer(fkooman/sqlite-migrate)
+Requires:   php-composer(fkooman/yubitwee)
 Requires:   php-composer(psr/log)
 
 Requires(post): /usr/sbin/semanage
@@ -120,8 +128,10 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
 require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/fkooman/OAuth/Client/autoload.php';
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
+require_once '%{_datadir}/php/fkooman/YubiTwee/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
 AUTOLOAD
 
@@ -130,7 +140,7 @@ mkdir -p %{buildroot}%{_datadir}/vpn-server-api
 mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
 
-for i in housekeeping init show-instance-info stats status update-api-secrets update-ip
+for i in housekeeping init show-instance-info stats status update-api-secrets update-ip update
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
@@ -194,9 +204,6 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
-- update to 2.0.0
-
 * Wed Dec 05 2018 François Kooman <fkooman@tuxed.net> - 1.4.9-1
 - update to 1.4.9
 

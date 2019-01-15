@@ -1,8 +1,8 @@
-%global git 94550097530b87c0d77ab1b5738ae1fc7dd0c403
+#global git bdd25c8bf2bab34d42048c38732be95478a5c564
 
 Name:       vpn-portal-artwork-eduVPN
-Version:    1.4.0
-Release:    0.4%{?dist}
+Version:    1.3.0
+Release:    1%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -20,6 +20,7 @@ BuildArch:  noarch
 BuildRequires:  gnupg2
 
 Requires:   vpn-user-portal
+Requires:   vpn-admin-portal
 
 %description
 VPN Portal Artwork for eduVPN.
@@ -36,31 +37,38 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
+mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
+mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/css/eduVPN
+mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/img/eduVPN
 
 cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
+cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/eduVPN
 cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
-cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
+cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/eduVPN
+cp -p views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
+cp -p views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/eduVPN
+
+%post
+# clear template cache
+rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
+
+%postun
+# clear template cache
+rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
+rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
 
 %files
 %defattr(-,root,root,-)
 %{_datadir}/vpn-user-portal/views/eduVPN
 %{_datadir}/vpn-user-portal/web/css/eduVPN
 %{_datadir}/vpn-user-portal/web/img/eduVPN
+%{_datadir}/vpn-admin-portal/views/eduVPN
+%{_datadir}/vpn-admin-portal/web/css/eduVPN
+%{_datadir}/vpn-admin-portal/web/img/eduVPN
 %doc CHANGES.md README.md
 
 %changelog
-* Sun Jan 13 2019 François Kooman <fkooman@tuxed.net> - 1.4.0-0.4
-- rebuilt
-
-* Wed Jan 09 2019 François Kooman <fkooman@tuxed.net> - 1.4.0-0.3
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.2
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.4.0-0.1
-- update to 1.4.0
-
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
 - update to 1.3.0
 
