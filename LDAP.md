@@ -14,9 +14,8 @@ The first one is what we focus on here, the second one is documented in the
 
 # Configuration
 
-You can configure both `vpn-user-portal` and `vpn-admin-portal` to use LDAP. 
-This is configured in the files `/etc/vpn-user-portal/config.php` and
-`/etc/vpn-admin-portal/config.php`.
+You can configure the portal to use LDAP. This is configured in the file 
+`/etc/vpn-user-portal/config.php`.
 
 You have to set `authMethod` first:
 
@@ -27,6 +26,13 @@ Then you can configure the LDAP server:
     'FormLdapAuthentication' => [
         'ldapUri' => 'ldaps://ipa.example.org',
         'userDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
+        // use eduPersonEntitlement attribute
+        //'entitlementAttribute' => 'eduPersonEntitlement',
+        //'adminEntitlementValue' => ['urn:example:LC-admin'],
+
+        // use LDAP "memberOf"
+        //'entitlementAttribute' => 'memberOf',
+        //'adminEntitlementValue' => ['cn=ipausers,cn=groups,cn=accounts,dc=example,dc=org'],
     ],
 
 Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
@@ -46,26 +52,11 @@ is the name of your domain:
 
     'userDnTemplate' => 'DOMAIN\{{UID}}'
 
-Repeat this for `vpn-admin-portal`. For `vpn-admin-portal` you also need to 
-configure the authorization, e.g. who is allowed to access the admin portal in
-addition to user authentication. First the basic configuration:
+You may also want to configure the authorization, e.g. who is allowed to access 
+the admin parts of the portal.
 
-    'baseDn' => 'cn=users,cn=accounts,dc=example,dc=org',
-    'searchFilterTemplate' => 'uid={{UID}}',
-
-After this, you have to decide which _attribute_ will be used, and which 
-values this attribute must have for a user to be allow to access 
-`vpn-admin-portal`. Two examples:
-
-    // use eduPersonEntitlement attribute
-    'entitlementAttribute' => 'eduPersonEntitlement',
-    'adminEntitlementValue' => ['urn:example:LC-admin'],
-
-    // use LDAP "memberOf"
-    'entitlementAttribute' => 'memberOf',
-    'adminEntitlementValue' => ['cn=ipausers,cn=groups,cn=accounts,dc=example,dc=org'],
-
-Choose one and you should be all set!
+You have to decide which _attribute_ will be used, and which values this 
+attribute must have for a user.
 
 # CA
 

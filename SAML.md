@@ -50,8 +50,7 @@ Now copy the metadata to the right location as well:
     $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
 Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
-there. Make sure you modify the lines that refer to certificates and keys and
-if you want to enable SAML for the admin portal as well.
+there. Make sure you modify the lines that refer to certificates and keys.
 
 Restart the web server:
 
@@ -73,16 +72,8 @@ Edit `/etc/vpn-user-portal/config.php` and set:
 By default the NAME_ID will be used to identify the users, if you want to 
 change that change the `attribute` value under `MellonAuthentication`.
 
-If you want to also have `vpn-admin-portal` be protected by SAML, make sure
-you uncomment the `<Location /vpn-admin-portal>` section in 
-`/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
-are associated with the administrator(s). 
-
-Also modify `/etc/vpn-admin-portal/config.php` in the same way as 
-the user portal.
-
-**NOTE** if you want to allow access to the admin portal, you MUST also 
-configure the entitlement authorization. 
+**NOTE** if you want to allow access to the admin parts of the portal, you 
+MUST also configure the entitlement authorization. 
 
 For example:
 
@@ -99,7 +90,7 @@ For example:
     ],
 
 Also see the example configuration file in 
-`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`.
+`/usr/share/doc/vpn-user-portal-VERSION/config.php.example`.
 
 ## Discovery
 
@@ -160,5 +151,4 @@ you'll directly end up at the IdP.
 
 **NOTE**: if you want to add multiple IdPs that use identifiers that are not 
 guaranteed globally unique, you MUST set `addEntityID` to `true` in 
-`/etc/vpn-user-portal/config.php` and 
-`/etc/vpn-admin-portal/config.php`.
+`/etc/vpn-user-portal/config.php`.

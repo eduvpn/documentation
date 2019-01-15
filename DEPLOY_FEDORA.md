@@ -57,19 +57,19 @@ settings.
 
 #### Username & Password
 
-By default there is a user `me` with a generated password for the User Portal
-and a user `admin` with a generated password for the Admin Portal. Those are
-printed at the end of the deploy script.
+By default there is a user `me` and `admin` with a generated password for 
+portal access. Those are printed at the end of the deploy script.
 
-If you want to update/add users you can use the `vpn-user-portal-add-user` and
-`vpn-admin-portal-add-user` scripts. Provide an existing account to _update_ 
-the password:
+If you want to update/add users you can use the `vpn-user-portal-add-user`. 
+Provide an existing account to _update_ the password:
 
     $ sudo vpn-user-portal-add-user
     User ID: foo
     Setting password for user "foo"
     Password: 
     Password (repeat): 
+
+Use the `--admin` flag to make the user an "admin".
 
 #### LDAP
 

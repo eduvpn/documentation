@@ -8,8 +8,7 @@ eduVPN.
 The VPN service consists of the following components:
 
 - Server API (vpn-server-api);
-- User Portal (vpn-user-portal);
-- Admin Portal (vpn-admin-portal);
+- Portal (vpn-user-portal);
 - Server Node (vpn-server-node);
 
 ### Server API
@@ -18,21 +17,17 @@ This is the central component. It manages the CA, users, and interfaces with
 various other components, for example to verify [2FA](2FA.md) tokens or group 
 [ACLs](ACL.md).
 
-### User Portal
+### Portal
 
 This components is for interacting with the user through the browser. It allows
-the user to download OpenVPN configuration files and enroll for 2FA.
+the user to download OpenVPN configuration files and enroll for 2FA. It also 
+allows administrators to manage the service.
 
 #### API
 
-The user portal has an [API](API.md) that is used by (mobile) applications to 
-use the VPN service as user friendly as possible. This API implements OAuth 
-2.0 and is called the "Public API".
-
-### Admin Portal
-
-This component exists to allow designated administrators to manage the VPN 
-service, see active connections and see connection statistics.
+The portal has an [API](API.md) that is used by (mobile) applications to use 
+the VPN service as user friendly as possible. This API implements OAuth 2.0 and 
+is called the "Public API".
 
 ### Server Node
 
@@ -41,19 +36,18 @@ the firewall rules.
 
 ## IPC
 
-The User Portal, Admin Portal and Server Node components communicate with the 
-Server API over HTTP. They use HTTP Basic credentials for authentication. 
-This is the "Private API". When the Server Node component is installed on 
-another machine, HTTPS is used to communicate with the Server API.
+The portal, and server node components communicate with the 
+server API over HTTP. They use HTTP Basic credentials for authentication. 
+This is the "Private API". When the server node component is installed on 
+another machine, HTTPS is used to communicate with the server API.
 
-In addition, the Server API needs to talk to the OpenVPN processes using a 
+In addition, the server API needs to talk to the OpenVPN processes using a 
 private (V)LAN, this is to kill active connections and obtain a list of 
 currently connected clients.
 
 ## Authentication
 
-The users and administrators authenticate with the User Portal and Admin
-Portal, either with:
+The users and administrators authenticate to the portal, either with:
 
 - username and password;
 - SAML (identity federations).
@@ -69,9 +63,8 @@ The are two ways to deploy the software:
 - run it on multiple machines (VMs).
 
 When run on 1 machine, all four mentioned components are installed on the same
-machine. When run on multiple machines, the User Portal, Admin Portal and 
-Server API are installed on 1 machine, and the Server Node on the other 
-machine(s).
+machine. When run on multiple machines, the portal and server API are installed 
+on 1 machine, and the server node on the other machine(s).
 
 ![Architecture](img/ARCH.jpg)
 

@@ -36,6 +36,3 @@ processing.
         "total_traffic": 407896290730,
         "unique_user_count": 70
     }
-
-If a "multi instance" deploy is used, the `default` in the path above is the
-FQDN of the instance.

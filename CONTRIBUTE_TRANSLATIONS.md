@@ -7,7 +7,6 @@ You can check which translations are already available, and possibly update
 them if they are out of date:
 
 * [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/master/locale)
-* [vpn-admin-portal](https://github.com/eduvpn/vpn-admin-portal/tree/master/locale)
 
 The files use the PHP 
 [Array](https://secure.php.net/manual/en/language.types.array.php) syntax.

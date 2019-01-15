@@ -15,11 +15,9 @@ DATETIME=$(date +%Y%m%d%H%M%S)
 
 tar --selinux -cpJf "${TMP_DIR}/backup-${DATETIME}.tar.xz" \
     /etc/vpn-user-portal \
-    /etc/vpn-admin-portal \
     /etc/vpn-server-api \
     /etc/vpn-server-node \
     /var/lib/vpn-user-portal \
-    /var/lib/vpn-admin-portal \
     /var/lib/vpn-server-api
 
 echo "${TMP_DIR}/backup-${DATETIME}.tar.xz"

@@ -7,28 +7,23 @@
 # a new configuration! All OAuth access tokens will become invalid!
 #
 
-if [ -z "${INSTANCE}" ]; then
-    INSTANCE=default
-fi
-
 (
-    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_disable_stop_remove.sh"
+    "./openvpn_disable_stop_remove.sh"
 )
 
 systemctl stop httpd
 systemctl stop php-fpm
 
 # remove data
-rm -rf /var/lib/vpn-server-api/${INSTANCE}
-rm -rf /var/lib/vpn-user-portal/${INSTANCE}
-rm -rf /var/lib/vpn-admin-portal/${INSTANCE}
+rm -rf /var/lib/vpn-server-api
+rm -rf /var/lib/vpn-user-portal
 
 # initialize
-sudo -u apache vpn-user-portal-init --instance ${INSTANCE}
-sudo -u apache vpn-server-api-init --instance ${INSTANCE}
+sudo -u apache vpn-user-portal-init
+sudo -u apache vpn-server-api-init
 
 # regenerate internal API secrets
-vpn-server-api-update-api-secrets --instance ${INSTANCE}
+vpn-server-api-update-api-secrets
 
 systemctl start php-fpm
 systemctl start httpd
@@ -39,5 +34,5 @@ systemctl restart iptables
 systemctl restart ip6tables
 
 (
-    INSTANCE=${INSTANCE} "$(dirname "$0")/openvpn_generate_enable_start.sh"
+    ./openvpn_generate_enable_start.sh
 )

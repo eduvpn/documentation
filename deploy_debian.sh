@@ -39,7 +39,7 @@ apt update
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
-    vpn-admin-portal vpn-user-portal
+    vpn-user-portal
 
 ###############################################################################
 # LOCALES
@@ -83,7 +83,6 @@ sed -i "s/vpn.example/${WEB_FQDN}/" /etc/apache2/sites-available/${WEB_FQDN}.con
 
 a2enconf vpn-server-api
 a2enconf vpn-user-portal
-a2enconf vpn-admin-portal
 a2dissite 000-default
 a2ensite ${WEB_FQDN}
 a2ensite localhost
@@ -190,15 +189,9 @@ systemctl restart netfilter-persistent
 ###############################################################################
 
 USER_PASS=$(pwgen 12 -n 1)
-ADMIN_PASS=$(pwgen 12 -n 1)
 sudo -u www-data vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
-sudo -u www-data vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
 
 echo "########################################################################"
-echo "# Admin Portal"
-echo "#     https://${WEB_FQDN}/vpn-admin-portal"
-echo "#         User: admin"
-echo "#         Pass: ${ADMIN_PASS}"
 echo "# User Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"

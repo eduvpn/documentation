@@ -62,7 +62,7 @@ ${PACKAGE_MANAGER} -y install glibc-langpack-nl glibc-langpack-nb \
     glibc-langpack-da glibc-langpack-fr
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-admin-portal \
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api \
     vpn-user-portal
 
 ###############################################################################
@@ -198,19 +198,13 @@ systemctl enable --now ip6tables
 ###############################################################################
 
 USER_PASS=$(pwgen 12 -n 1)
-ADMIN_PASS=$(pwgen 12 -n 1)
 sudo -u apache vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
-sudo -u apache vpn-admin-portal-add-user --user admin --pass "${ADMIN_PASS}"
 
 ###############################################################################
 # SHOW INFO
 ###############################################################################
 
 echo "########################################################################"
-echo "# Admin Portal"
-echo "#     https://${WEB_FQDN}/vpn-admin-portal"
-echo "#         User: admin"
-echo "#         Pass: ${ADMIN_PASS}"
 echo "# User Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
 echo "#         User: me"

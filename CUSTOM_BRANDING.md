@@ -1,20 +1,17 @@
 # Introduction
 
-This document describes how to apply your own branding (style and e.g. logo) 
-for the VPN user and admin portal.
+This document describes how to apply your own branding (style and e.g. logo) to
+the portal.
 
 # Template Overriding
 
 The portals use templates, located in the following folders:
 
     /usr/share/vpn-user-portal/views
-    /usr/share/vpn-admin-portal/views
 
-You can copy the `base.php` from these folders to 
-`/etc/vpn-user-portal/views/base.php` and 
-`/etc/vpn-admin-portal/views/base.php` respectively and modify them to
-override the defaults. For instance by adding an extra line pointing to an 
-additional CSS file.
+You can copy the `base.php` from this folder to 
+`/etc/vpn-user-portal/views/base.php` and modify it to override the defaults. 
+For instance by adding an extra line pointing to an additional CSS file.
 
 **NOTE**: It is NOT recommended to update other templates than `base.php` as 
 they MAY break future software updates. We do NOT guarantee template 
@@ -42,16 +39,11 @@ for example:
     }
 
     a {
-        color: #df7f0c;
-    }
-
-    ul.menu {
-        /* same height as background image of the h1 */
-        height: 119px;
+        color: #ed6b06;
     }
 
     ul.menu li.active a, ul.menu li.active span {
-        background-color: #df7f0c;
+        background-color: #ed6b06;
     }
 
     /* only show the logo when width is >= 800px */
@@ -61,9 +53,15 @@ for example:
             float: right;
             color: transparent; /* hide header text */
             width: 300px;
-            height: 119px;
-            background-image: url("../img/eduvpn.png");
+            height: 120px;
+            background-image: url("../../img/eduVPN/eduVPN.png");
             background-repeat: no-repeat;
             background-position: 100% 0%;
+        }
+
+        ul.menu {
+            /* leave enough room for the background logo */
+            margin-right: 325px;
+            min-height: 120px;
         }
     }

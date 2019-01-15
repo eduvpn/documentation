@@ -9,10 +9,8 @@ authorization/ACL purposes.
 
 # Configuration
 
-You can configure both `vpn-user-portal` and `vpn-admin-portal` to use RADIUS. 
-This is configured in the files `/etc/vpn-user-portal/config.php` and
-`/etc/vpn-admin-portal/config.php`. We will only show how to configure
-`vpn-user-portal` as `vpn-admin-portal` is exactly the same.
+You can configure the portal to use RADIUS. This is configured in the file 
+`/etc/vpn-user-portal/config.php`.
 
 You have to set `authMethod` first:
 
@@ -44,5 +42,3 @@ user provides. If for example the user provides `foo` as a user ID, the
 `foo@example.org` and uses that to authenticate to the RADIUS server.
 
 The `host` and `secret` options are REQUIRED, the others are optional.
-
-Repeat this for `vpn-admin-portal` if required you're all set.

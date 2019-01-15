@@ -1,19 +1,15 @@
 #!/bin/sh
 
-if [ -z "${INSTANCE}" ]; then
-    INSTANCE=default
-fi
-
 #
 # Generate new OpenVPN configurations
 #
-vpn-server-node-server-config --instance ${INSTANCE}
+vpn-server-node-server-config
 
 #
 # Enable and start all available OpenVPN processes
 #
 
-for i in /etc/openvpn/server/${INSTANCE}-*.conf
+for i in /etc/openvpn/server/*.conf
 do
     f=$(basename "${i}" .conf)
     systemctl enable --now "openvpn-server@${f}"
