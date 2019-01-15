@@ -15,8 +15,8 @@ systemctl stop apache2
 systemctl stop php7.0-fpm
 
 # remove data
-rm -rf /var/lib/vpn-server-api
-rm -rf /var/lib/vpn-user-portal
+rm -rf /var/lib/vpn-server-api/*
+rm -rf /var/lib/vpn-user-portal/*
 
 # initialize
 sudo -u www-data vpn-user-portal-init
