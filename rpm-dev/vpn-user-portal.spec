@@ -1,8 +1,8 @@
-%global git 4eeed86f7a56cdc2e3f8fd4bc1a01109e7ad7c5f
+%global git 01268541c25bb31b21b0eaa1d7e809325a241573
 
 Name:       vpn-user-portal
-Version:    1.8.6
-Release:    0.29%{?dist}
+Version:    2.0.0
+Release:    0.5%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -75,6 +75,7 @@ BuildRequires:  php-sodium
 BuildRequires:  php-pecl(libsodium)
 %endif
 
+Requires:   roboto-fontface-fonts
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -224,92 +225,20 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Sun Jan 06 2019 François Kooman <fkooman@tuxed.net> - 1.8.6-0.29
+* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
 - rebuilt
 
-* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.28
+* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
 - rebuilt
 
-* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.27
+* Mon Jan 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
 - rebuilt
 
-* Mon Dec 24 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.26
+* Sun Jan 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.2
 - rebuilt
 
-* Sun Dec 23 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.25
-- rebuilt
-
-* Fri Dec 21 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.24
-- rebuilt
-
-* Fri Dec 21 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.23
-- rebuilt
-
-* Sun Dec 16 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.22
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.21
-- rebuilt
-
-* Fri Dec 14 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.20
-- rebuilt
-
-* Thu Dec 13 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.19
-- rebuilt
-
-* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.18
-- rebuilt
-
-* Mon Dec 10 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.17
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.16
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.15
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.14
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.13
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.12
-- rebuilt
-
-* Fri Dec 07 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.11
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.10
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.9
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.8
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.7
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.6
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.5
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.4
-- rebuilt
-
-* Thu Dec 06 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.3
-- rebuilt
-
-* Wed Dec 05 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.2
-- rebuilt
-
-* Wed Dec 05 2018 François Kooman <fkooman@tuxed.net> - 1.8.6-0.1
-- update to 1.8.6
+* Fri Jan 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+- update to 2.0.0
 
 * Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.8.5-1
 - update to 1.8.5
