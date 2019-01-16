@@ -173,8 +173,9 @@ systemctl restart apache2
 # generate the OpenVPN server configuration files and certificates
 vpn-server-node-server-config
 
-systemctl enable --now openvpn-server@default-internet-0
-systemctl enable --now openvpn-server@default-internet-1
+# enable and start OpenVPN
+systemctl enable --now openvpn-server@internet-0
+systemctl enable --now openvpn-server@internet-1
 
 ###############################################################################
 # FIREWALL

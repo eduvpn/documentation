@@ -207,8 +207,8 @@ systemctl enable --now httpd
 vpn-server-node-server-config
 
 # enable and start OpenVPN
-systemctl enable --now openvpn-server@default-internet-0
-systemctl enable --now openvpn-server@default-internet-1
+systemctl enable --now openvpn-server@internet-0
+systemctl enable --now openvpn-server@internet-1
 
 ###############################################################################
 # FIREWALL
