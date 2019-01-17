@@ -37,7 +37,7 @@ Generate an SP signing key:
 Copy the files:
 
     $ sudo mkdir /etc/httpd/saml
-    $ sudo cp *.cert *.key /etc/httpd/saml
+    $ sudo cp *.crt *.key /etc/httpd/saml
 
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
