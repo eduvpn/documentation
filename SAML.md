@@ -20,25 +20,24 @@ First install `mod_auth_mellon`:
 In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
 base path, and for `systemctl` you use `apache2` instead of `httpd`.
 
-On Debian you can download 
-[mellon_create_metadata.sh](https://github.com/UNINETT/mod_auth_mellon/blob/master/mellon_create_metadata.sh) 
-from the mod_auth_mellon repository and use that instead.
-
 ## Configuration
 
-On CentOS a convenience script is installed by `mod_auth_mellon` to generate
-all required files to configure the SAML SP:
+Generate an SP signing key:
 
-    $ /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh https://vpn.example/saml https://vpn.example/saml
-
-You can now modify the `https_vpn.example_saml.xml` file. Make sure you have
-`<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>` 
-inside the `<SPSSODescriptor>`.
+    $ openssl req \
+        -nodes \
+        -subj "/CN=SAML SP" \
+        -x509 \
+        -sha256 \
+        -newkey rsa:3072 \
+        -keyout "sp.key" \
+        -out "sp.crt" \
+        -days 3650
 
 Copy the files:
 
     $ sudo mkdir /etc/httpd/saml
-    $ sudo cp *.cert *.key *.xml /etc/httpd/saml
+    $ sudo cp *.cert *.key /etc/httpd/saml
 
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
@@ -51,8 +50,7 @@ Now copy the metadata as well:
     $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
 Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
-there. Make sure you modify the lines that refer to certificates and keys and
-if you want to enable SAML for the admin portal as well.
+there. Make sure you modify the lines to refer to IdP metadata.
 
 Restart the web server:
 
