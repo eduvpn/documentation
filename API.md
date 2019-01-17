@@ -31,6 +31,9 @@ basis:
 * [iOS](https://github.com/openid/AppAuth-iOS)
 * [Windows](https://github.com/googlesamples/oauth-apps-for-windows)
 
+With this library it is very important that you handle all standard OAuth 
+"error" conditions regarding expired, invalid or revoked tokens.
+
 # Definitions
 
 A VPN service running at a particular domain is called an _instance_, e.g. 
@@ -185,7 +188,7 @@ The call will create a certificate and private key and return them:
     }
 
 The certificate and the private key SHOULD be stored in the platform's 
-"key store" in such a way that the user can not export the private key.
+"key store" in such a way that the user can **NOT** export the private key.
 
 In traditional OpenVPN client configuration files, the certificate would be 
 placed in the `<cert>...</cert>` inline section, and the private key in the 
