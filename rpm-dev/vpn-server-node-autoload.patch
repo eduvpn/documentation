@@ -1,8 +1,8 @@
 diff --git a/bin/certificate-info.php b/bin/certificate-info.php
-index 3a295b8..98c468b 100644
+index 0013e4f..40c9ecb 100644
 --- a/bin/certificate-info.php
 +++ b/bin/certificate-info.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -11,13 +11,13 @@ index 3a295b8..98c468b 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\FileIO;
+ use LetsConnect\Common\FileIO;
  
 diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
-index cdc4928..6b19b14 100644
+index a1f9204..18d87cd 100644
 --- a/bin/generate-firewall.php
 +++ b/bin/generate-firewall.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -26,13 +26,13 @@ index cdc4928..6b19b14 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
+ use LetsConnect\Common\CliParser;
+ use LetsConnect\Common\Config;
 diff --git a/bin/server-config.php b/bin/server-config.php
-index 864287a..942977b 100644
+index bce6893..6da66d5 100644
 --- a/bin/server-config.php
 +++ b/bin/server-config.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -41,13 +41,13 @@ index 864287a..942977b 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
+ use LetsConnect\Common\Config;
+ use LetsConnect\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-connect.php b/libexec/client-connect.php
-index ae768f0..e4bc6cf 100644
+index a6df3d5..5b20411 100644
 --- a/libexec/client-connect.php
 +++ b/libexec/client-connect.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -56,13 +56,13 @@ index ae768f0..e4bc6cf 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
+ use LetsConnect\Common\Config;
+ use LetsConnect\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-disconnect.php b/libexec/client-disconnect.php
-index 30fa447..49de71c 100644
+index ad65347..c1ecaf1 100644
 --- a/libexec/client-disconnect.php
 +++ b/libexec/client-disconnect.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -71,5 +71,5 @@ index 30fa447..49de71c 100644
 +require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\HttpClient\CurlHttpClient;
+ use LetsConnect\Common\Config;
+ use LetsConnect\Common\HttpClient\CurlHttpClient;

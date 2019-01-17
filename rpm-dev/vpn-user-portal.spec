@@ -1,8 +1,8 @@
-%global git 2334fad9642d063fbef2f16b194ebd4fed2fae25
+%global git df8687a73fdef8a964a055fdbc22715584c69d6c
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.14%{?dist}
+Release:    0.16%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -145,7 +145,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
@@ -161,12 +161,13 @@ AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
-mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
-cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Portal
+mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Portal
+cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Portal
 
 for i in add-user foreign-key-list-fetcher init show-public-key
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
+    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-user-portal-${i}
 done
 
 cp -pr schema web views locale %{buildroot}%{_datadir}/vpn-user-portal
@@ -209,9 +210,8 @@ fi
 %config(noreplace) %{_sysconfdir}/vpn-user-portal/config.php
 %config(noreplace) %{_sysconfdir}/cron.d/vpn-user-portal
 %{_bindir}/*
-%dir %{_datadir}/php/SURFnet
-%dir %{_datadir}/php/SURFnet/VPN
-%{_datadir}/php/SURFnet/VPN/Portal
+%dir %{_datadir}/php/LetsConnect
+%{_datadir}/php/LetsConnect/Portal
 %dir %{_datadir}/vpn-user-portal
 %{_datadir}/vpn-user-portal/data
 %{_datadir}/vpn-user-portal/web
@@ -224,6 +224,12 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
+- rebuilt
+
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
+- rebuilt
+
 * Wed Jan 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
 - rebuilt
 

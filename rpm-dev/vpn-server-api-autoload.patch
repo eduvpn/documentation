@@ -1,8 +1,8 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index 34b9a5b..4524dc3 100644
+index e7ff7cd..1990086 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -11,13 +11,13 @@ index 34b9a5b..4524dc3 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Server\Storage;
+ use LetsConnect\Server\Storage;
  
 diff --git a/bin/init.php b/bin/init.php
-index b273100..045ba36 100644
+index aaf18b7..fbddea8 100644
 --- a/bin/init.php
 +++ b/bin/init.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -26,13 +26,13 @@ index b273100..045ba36 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Server\CA\EasyRsaCa;
+ use LetsConnect\Common\Config;
+ use LetsConnect\Server\CA\EasyRsaCa;
 diff --git a/bin/stats.php b/bin/stats.php
-index 9702f58..7f6c39c 100644
+index b8996cb..14e599f 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -41,13 +41,13 @@ index 9702f58..7f6c39c 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\Config;
- use SURFnet\VPN\Common\FileIO;
+ use LetsConnect\Common\Config;
+ use LetsConnect\Common\FileIO;
 diff --git a/bin/status.php b/bin/status.php
-index b1524cb..130dacd 100644
+index 4a73982..8bef619 100644
 --- a/bin/status.php
 +++ b/bin/status.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -57,12 +57,12 @@ index b1524cb..130dacd 100644
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;
- use SURFnet\VPN\Common\Config;
+ use LetsConnect\Common\Config;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index 6c9859b..40d3add 100644
+index 68e7684..5dfde18 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -71,13 +71,13 @@ index 6c9859b..40d3add 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
+ use LetsConnect\Common\CliParser;
+ use LetsConnect\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 0414f96..9d6b7cf 100644
+index 4089bfc..36432a8 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
-@@ -8,8 +8,8 @@
+@@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -86,10 +86,10 @@ index 0414f96..9d6b7cf 100644
 +require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use SURFnet\VPN\Common\CliParser;
- use SURFnet\VPN\Common\Config;
+ use LetsConnect\Common\CliParser;
+ use LetsConnect\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index d30949f..00c88a0 100644
+index 50e2643..08cc30f 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -102,4 +102,4 @@ index d30949f..00c88a0 100644
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;
- use SURFnet\VPN\Common\Config;
+ use LetsConnect\Common\Config;

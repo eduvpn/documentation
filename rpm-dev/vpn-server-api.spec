@@ -1,8 +1,8 @@
-%global git b6cefd7c34044a9ea5dd7440b0bd48163af770e4
+%global git 8dfd8a278bb8e7c58f056d2277cd59e3e193bf4e
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.5%{?dist}
+Release:    0.6%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -119,7 +119,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
@@ -127,12 +127,13 @@ AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-server-api
-mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
-cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Server
+mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Server
+cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Server
 
 for i in housekeeping init stats status update-api-secrets update-ip
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
+    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
 cp -pr schema web %{buildroot}%{_datadir}/vpn-server-api
@@ -185,14 +186,16 @@ fi
 %{_datadir}/vpn-server-api/easy-rsa
 %{_datadir}/vpn-server-api/config
 %{_datadir}/vpn-server-api/data
-%dir %{_datadir}/php/SURFnet
-%dir %{_datadir}/php/SURFnet/VPN
-%{_datadir}/php/SURFnet/VPN/Server
+%dir %{_datadir}/php/LetsConnect
+%{_datadir}/php/LetsConnect/Server
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-server-api
 %doc README.md composer.json config/config.php.example CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
+- rebuilt
+
 * Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
 - rebuilt
 

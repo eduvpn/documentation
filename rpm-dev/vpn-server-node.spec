@@ -1,8 +1,8 @@
-%global git 0968ce8eb97b728da6cea2ee1fb22b4623d05909
+%global git b39a58b35a886271dcd43767ecf0d06988d3375b
 
 Name:       vpn-server-node
 Version:    2.0.0
-Release:    0.5%{?dist}
+Release:    0.6%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -97,24 +97,26 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
-require_once '%{_datadir}/php/SURFnet/VPN/Common/autoload.php';
+require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
 AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-server-node
-mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
-cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Node
+mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Node
+cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Node
 
 # bin
 for i in certificate-info generate-firewall server-config
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-node-${i}
+    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
 done
 
 # libexec
 for i in client-connect client-disconnect
 do
     install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
+    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
 
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node
@@ -122,13 +124,6 @@ cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/conf
 cp -pr config/firewall.php.example %{buildroot}%{_sysconfdir}/vpn-server-node/firewall.php
 ln -s ../../../etc/vpn-server-node %{buildroot}%{_datadir}/vpn-server-node/config
 ln -s ../../../etc/openvpn/server %{buildroot}%{_datadir}/vpn-server-node/openvpn-config
-
-# legacy libexec symlinks
-mkdir -p %{buildroot}%{_datadir}/vpn-server-node/libexec
-ln -s ../../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-connect.php
-ln -s ../../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_datadir}/vpn-server-node/libexec/client-disconnect.php
-ln -s ../../../usr/libexec/vpn-server-node/client-connect %{buildroot}%{_libexecdir}/vpn-server-node-client-connect
-ln -s ../../../usr/libexec/vpn-server-node/client-disconnect %{buildroot}%{_libexecdir}/vpn-server-node-client-disconnect
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -146,17 +141,17 @@ AUTOLOAD
 %{_bindir}/*
 %{_libexecdir}/*
 %dir %{_datadir}/vpn-server-node
-%dir %{_datadir}/php/SURFnet
-%dir %{_datadir}/php/SURFnet/VPN
-%{_datadir}/php/SURFnet/VPN/Node
+%dir %{_datadir}/php/LetsConnect
+%{_datadir}/php/LetsConnect/Node
 %{_datadir}/vpn-server-node/config
 %{_datadir}/vpn-server-node/openvpn-config
-# legacy libexec
-%{_datadir}/vpn-server-node/libexec
 %doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
+- rebuilt
+
 * Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
 - rebuilt
 

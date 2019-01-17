@@ -1,8 +1,8 @@
-%global git 3a483ae1ede2a859d0c459554257a5d938f0025d
+%global git 1f389b92a509145fca60a3aeb53f7c8a125d01c5
 
 Name:           php-fkooman-saml-sp
 Version:        0.0.0
-Release:        0.19%{?dist}
+Release:        0.20%{?dist}
 Summary:        SAML Service Provider library
 
 License:        MIT
@@ -131,6 +131,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SAML/SP
 
 %changelog
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.20
+- rebuilt
+
 * Wed Jan 16 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.19
 - rebuilt
 

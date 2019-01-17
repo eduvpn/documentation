@@ -1,8 +1,8 @@
-%global git 07332b971d223e6615c9194ae2f81cf3be263c6d
+%global git 1fdb9447cbfc41eeaad6abb5d7cac4bb1471e238
 
 Name:       vpn-lib-common
 Version:    2.0.0
-Release:    0.6%{?dist}
+Release:    0.7%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -139,8 +139,8 @@ AUTOLOAD
 %endif
 
 %install
-mkdir -p %{buildroot}%{_datadir}/php/SURFnet/VPN/Common
-cp -pr src/* %{buildroot}%{_datadir}/php/SURFnet/VPN/Common
+mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Common
+cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Common
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -151,13 +151,15 @@ AUTOLOAD
 %{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
-%dir %{_datadir}/php/SURFnet
-%dir %{_datadir}/php/SURFnet/VPN
-%{_datadir}/php/SURFnet/VPN/Common
+%dir %{_datadir}/php/LetsConnect
+%{_datadir}/php/LetsConnect/Common
 %doc README.md composer.json CHANGES.md
 %license LICENSE
 
 %changelog
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
+- rebuilt
+
 * Wed Jan 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
 - rebuilt
 
