@@ -1,3 +1,3 @@
 RANDOM_DELAY=10
 
-@hourly apache /usr/bin/vpn-user-portal-foreign-key-list-fetcher --instance default
+@hourly apache /usr/bin/vpn-user-portal-foreign-key-list-fetcher
