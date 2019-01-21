@@ -1,5 +1,5 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index e7ff7cd..1990086 100644
+index e7ff7cd..41e6497 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
 @@ -7,8 +7,8 @@
@@ -14,7 +14,7 @@ index e7ff7cd..1990086 100644
  use LetsConnect\Server\Storage;
  
 diff --git a/bin/init.php b/bin/init.php
-index aaf18b7..fbddea8 100644
+index 9acb9c3..da5a48f 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -26,10 +26,10 @@ index aaf18b7..fbddea8 100644
 +require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Common\Config;
  use LetsConnect\Server\CA\EasyRsaCa;
+ use LetsConnect\Server\Storage;
 diff --git a/bin/stats.php b/bin/stats.php
-index b8996cb..14e599f 100644
+index b8996cb..46b7938 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
 @@ -7,8 +7,8 @@
@@ -44,7 +44,7 @@ index b8996cb..14e599f 100644
  use LetsConnect\Common\Config;
  use LetsConnect\Common\FileIO;
 diff --git a/bin/status.php b/bin/status.php
-index 4a73982..8bef619 100644
+index 4a73982..a152a27 100644
 --- a/bin/status.php
 +++ b/bin/status.php
 @@ -7,8 +7,8 @@
@@ -59,7 +59,7 @@ index 4a73982..8bef619 100644
  use LC\OpenVpn\ManagementSocket;
  use LetsConnect\Common\Config;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index 68e7684..5dfde18 100644
+index 68e7684..ad593c3 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
 @@ -7,8 +7,8 @@
@@ -74,7 +74,7 @@ index 68e7684..5dfde18 100644
  use LetsConnect\Common\CliParser;
  use LetsConnect\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 4089bfc..36432a8 100644
+index 4089bfc..2d21084 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
 @@ -7,8 +7,8 @@
@@ -89,7 +89,7 @@ index 4089bfc..36432a8 100644
  use LetsConnect\Common\CliParser;
  use LetsConnect\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index 50e2643..08cc30f 100644
+index e7b330c..7835681 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
