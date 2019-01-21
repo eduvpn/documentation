@@ -2,7 +2,7 @@
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.6%{?dist}
+Release:    0.8%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -193,6 +193,12 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Sun Jan 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.8
+- rebuilt
+
+* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
+- rebuilt
+
 * Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
 - rebuilt
 

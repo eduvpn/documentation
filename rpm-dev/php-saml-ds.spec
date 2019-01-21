@@ -1,8 +1,8 @@
-%global git de6003ebef732e03fc1310b6803e7b6f7d336581
+%global git f36f1bb2afb4a8611bff4939f637b4b50d60a458
 
 Name:       php-saml-ds
 Version:    1.1.0
-Release:    0.4%{?dist}
+Release:    0.6%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -107,6 +107,7 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr web views %{buildroot}%{_datadir}/%{name}
 install -m 0755 -D -p bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
+sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/%{name}-generate
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
@@ -143,6 +144,12 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Jan 21 2019 François Kooman <fkooman@tuxed.net> - 1.1.0-0.6
+- rebuilt
+
+* Sat Jan 19 2019 François Kooman <fkooman@tuxed.net> - 1.1.0-0.5
+- rebuilt
+
 * Sat Dec 22 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.4
 - rebuilt
 

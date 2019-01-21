@@ -8,7 +8,7 @@ index b80af68..6cf9d3f 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\CliParser;
@@ -23,7 +23,7 @@ index 0160081..87c8742 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\Config;
@@ -38,7 +38,7 @@ index ccc5381..dd96363 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\FileIO;
@@ -53,7 +53,7 @@ index bb06348..904df63 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\FileIO;
@@ -68,7 +68,7 @@ index a9ace84..814a46b 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\BearerValidator;
@@ -83,7 +83,7 @@ index e2ec585..36799c4 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\OAuthServer;
@@ -98,7 +98,7 @@ index 44900f8..69fe370 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Portal/autoload.php';
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\OAuthServer;

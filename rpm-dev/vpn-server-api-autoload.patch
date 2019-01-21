@@ -8,7 +8,7 @@ index e7ff7cd..1990086 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LetsConnect\Server\Storage;
@@ -23,7 +23,7 @@ index aaf18b7..fbddea8 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LetsConnect\Common\Config;
@@ -38,7 +38,7 @@ index b8996cb..14e599f 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LetsConnect\Common\Config;
@@ -53,7 +53,7 @@ index 4a73982..8bef619 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;
@@ -68,7 +68,7 @@ index 68e7684..5dfde18 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LetsConnect\Common\CliParser;
@@ -83,7 +83,7 @@ index 4089bfc..36432a8 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LetsConnect\Common\CliParser;
@@ -98,7 +98,7 @@ index 50e2643..08cc30f 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Server/autoload.php';
++require_once '/usr/share/php/LetsConnect/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
  use LC\OpenVpn\ManagementSocket;

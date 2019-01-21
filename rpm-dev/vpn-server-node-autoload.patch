@@ -8,7 +8,7 @@ index 0013e4f..40c9ecb 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
++require_once '/usr/share/php/LetsConnect/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
  use LetsConnect\Common\FileIO;
@@ -23,7 +23,7 @@ index a1f9204..18d87cd 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
++require_once '/usr/share/php/LetsConnect/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
  use LetsConnect\Common\CliParser;
@@ -38,7 +38,7 @@ index bce6893..6da66d5 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
++require_once '/usr/share/php/LetsConnect/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
  use LetsConnect\Common\Config;
@@ -53,7 +53,7 @@ index a6df3d5..5b20411 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
++require_once '/usr/share/php/LetsConnect/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
  use LetsConnect\Common\Config;
@@ -68,7 +68,7 @@ index ad65347..c1ecaf1 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/SURFnet/VPN/Node/autoload.php';
++require_once '/usr/share/php/LetsConnect/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
  use LetsConnect\Common\Config;
