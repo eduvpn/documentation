@@ -7,20 +7,7 @@ more specifically: the configuration choices that were made.
 
 ### Crypto
 
-The crypto configuration when a server was installed with the 1.0.0 release of
-the software and the configuration was not updated since then, but the server
-configuration is regenerated, as recommended on every update:
-
-    tls-version-min 1.2
-    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
-    dh none
-    ncp-ciphers AES-256-GCM
-    cipher AES-256-GCM
-    auth SHA256
-    tls-auth /path/to/tls-auth.key 0
-
-The basic OpenVPN server (and client) crypto configuration for installations
-after 2018-02-25:
+The basic OpenVPN server (and client) crypto configuration:
 
     tls-version-min 1.2
     tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
@@ -65,3 +52,5 @@ helpful in the case of [Guest Usage](GUEST_USAGE.md).
 The CA of the VPN service is "online" as it needs to generate valid 
 certificates on the fly. The [easy-rsa](https://github.com/OpenVPN/easy-rsa) 
 software is used as CA.
+
+The CA uses keys of length 3072 bits, and signs using RSA-SHA256.
