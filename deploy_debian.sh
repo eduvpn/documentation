@@ -189,15 +189,18 @@ systemctl restart netfilter-persistent
 # USERS
 ###############################################################################
 
+USER_ID=admin
 USER_PASS=$(pwgen 12 -n 1)
-sudo -u www-data vpn-user-portal-add-user  --user me    --pass "${USER_PASS}"
+sudo -u www-data vpn-user-portal-add-user --user ${USER_ID} --pass "${USER_PASS}" --admin
+
+###############################################################################
+# SHOW INFO
+###############################################################################
 
 echo "########################################################################"
-echo "# User Portal"
+echo "# Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
-echo "#         User: me"
+echo "#         User: ${USER_ID}"
 echo "#         Pass: ${USER_PASS}"
-echo "# OAuth Public Key:"
-echo "#     $(vpn-user-portal-show-public-key)"
 echo "########################################################################"
 # ALL DONE!
