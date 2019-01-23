@@ -1,5 +1,5 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index b80af68..6cf9d3f 100644
+index 7d36dff..2f9ba78 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
 @@ -7,8 +7,8 @@
@@ -14,7 +14,7 @@ index b80af68..6cf9d3f 100644
  use LetsConnect\Common\CliParser;
  use LetsConnect\Common\Config;
 diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 0160081..87c8742 100644
+index 0160081..8359a2f 100644
 --- a/bin/foreign-key-list-fetcher.php
 +++ b/bin/foreign-key-list-fetcher.php
 @@ -7,8 +7,8 @@
@@ -29,7 +29,7 @@ index 0160081..87c8742 100644
  use LetsConnect\Common\Config;
  use LetsConnect\Portal\ForeignKeyListFetcher;
 diff --git a/bin/init.php b/bin/init.php
-index ccc5381..dd96363 100644
+index f12077b..613b25a 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -42,9 +42,9 @@ index ccc5381..dd96363 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\FileIO;
- use LetsConnect\Common\HttpClient\CurlHttpClient;
+ use LetsConnect\Portal\Storage;
 diff --git a/bin/show-public-key.php b/bin/show-public-key.php
-index bb06348..904df63 100644
+index bb06348..020c9e5 100644
 --- a/bin/show-public-key.php
 +++ b/bin/show-public-key.php
 @@ -7,8 +7,8 @@
@@ -59,7 +59,7 @@ index bb06348..904df63 100644
  use LetsConnect\Common\FileIO;
  
 diff --git a/web/api.php b/web/api.php
-index a9ace84..814a46b 100644
+index 0ea57fd..cb31ae9 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -72,9 +72,9 @@ index a9ace84..814a46b 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\BearerValidator;
- use fkooman\OAuth\Server\SodiumSigner;
+ use fkooman\OAuth\Server\LocalSigner;
 diff --git a/web/index.php b/web/index.php
-index e2ec585..36799c4 100644
+index 950c2b0..a13a33c 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -86,10 +86,10 @@ index e2ec585..36799c4 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use fkooman\OAuth\Server\LocalSigner;
  use fkooman\OAuth\Server\OAuthServer;
- use fkooman\OAuth\Server\SodiumSigner;
 diff --git a/web/oauth.php b/web/oauth.php
-index 44900f8..69fe370 100644
+index af31a15..0abfffa 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@
@@ -101,5 +101,5 @@ index 44900f8..69fe370 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use fkooman\OAuth\Server\LocalSigner;
  use fkooman\OAuth\Server\OAuthServer;
- use fkooman\OAuth\Server\SodiumSigner;
