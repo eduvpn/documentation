@@ -43,21 +43,6 @@ index f12077b..613b25a 100644
  
  use LetsConnect\Common\FileIO;
  use LetsConnect\Portal\Storage;
-diff --git a/bin/show-public-key.php b/bin/show-public-key.php
-index bb06348..020c9e5 100644
---- a/bin/show-public-key.php
-+++ b/bin/show-public-key.php
-@@ -7,8 +7,8 @@
-  * SPDX-License-Identifier: AGPL-3.0+
-  */
- 
--require_once dirname(__DIR__).'/vendor/autoload.php';
--$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
-+$baseDir = '/usr/share/vpn-user-portal';
- 
- use LetsConnect\Common\FileIO;
- 
 diff --git a/web/api.php b/web/api.php
 index 0ea57fd..cb31ae9 100644
 --- a/web/api.php
