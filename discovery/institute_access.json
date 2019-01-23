@@ -30,6 +30,11 @@
             "logo": "https://static.eduvpn.nl/disco/img/nikhef.png"
         },
         {
+            "base_uri": "https://dev-eduvpn.renater.fr/",
+            "display_name": "RENATER",
+            "logo": "https://static.eduvpn.nl/disco/img/renater.png"
+        },
+        {
             "base_uri": "https://ru.eduvpn.nl/",
             "display_name": {
                 "en-US": "Radboud University",
@@ -62,5 +67,5 @@
         }
     ],
     "seq": 78,
-    "signed_at": "2019-01-17 14:52:11"
+    "signed_at": "2019-01-23 15:31:47"
 }

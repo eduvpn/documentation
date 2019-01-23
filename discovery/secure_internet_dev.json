@@ -8,7 +8,7 @@
                 "nl-NL": "Rood (labrat.eduvpn.nl)"
             },
             "logo": "https://static.eduvpn.nl/disco/img/red.png",
-            "public_key": "BZExQZY3KO08iFJb/1bgjyF1K/MfRZL30sMIQYnabBE="
+            "public_key": "wGos0zPERxPYZHyJXQXz/OOSCWWej27PEScjScJzXQ8="
         },
         {
             "base_uri": "https://fedora-vpn.tuxed.net/",
@@ -21,5 +21,5 @@
         }
     ],
     "seq": 80,
-    "signed_at": "2019-01-17 14:52:11"
+    "signed_at": "2019-01-23 15:31:47"
 }
