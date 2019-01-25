@@ -224,9 +224,16 @@ systemctl enable --now ip6tables
 # USERS
 ###############################################################################
 
-USER_ID=admin
-USER_PASS=$(pwgen 12 -n 1)
-sudo -u apache vpn-user-portal-add-user --user ${USER_ID} --pass "${USER_PASS}" --admin
+REGULAR_USER=demo
+REGULAR_USER_PASS=$(pwgen 12 -n 1)
+
+# the "admin" user is a special user, listed by ID to have access to "admin" 
+# functionality in /etc/vpn-user-portal/config.php (adminUserIdList)
+ADMIN_USER=admin
+ADMIN_USER_PASS=$(pwgen 12 -n 1)
+
+sudo -u apache vpn-user-portal-add-user --user ${REGULAR_USER} --pass "${REGULAR_USER_PASS}"
+sudo -u apache vpn-user-portal-add-user --user ${ADMIN_USER} --pass "${ADMIN_USER_PASS}"
 
 ###############################################################################
 # SHOW INFO
@@ -235,7 +242,9 @@ sudo -u apache vpn-user-portal-add-user --user ${USER_ID} --pass "${USER_PASS}" 
 echo "########################################################################"
 echo "# Portal"
 echo "#     https://${WEB_FQDN}/vpn-user-portal"
-echo "#         User: ${USER_ID}"
-echo "#         Pass: ${USER_PASS}"
+echo "#         Regular User: ${REGULAR_USER}"
+echo "#         Regular User Pass: ${REGULAR_USER_PASS}"
+echo "#"
+echo "#         Admin User: ${ADMIN_USER}"
+echo "#         Admin User Pass: ${ADMIN_USER_PASS}"
 echo "########################################################################"
-# ALL DONE!
