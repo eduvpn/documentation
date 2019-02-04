@@ -28,8 +28,23 @@ index 0160081..8359a2f 100644
  
  use LetsConnect\Common\Config;
  use LetsConnect\Portal\ForeignKeyListFetcher;
+diff --git a/bin/generate-key.php b/bin/generate-key.php
+index 1f42c06..6919932 100644
+--- a/bin/generate-key.php
++++ b/bin/generate-key.php
+@@ -7,8 +7,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LetsConnect\Common\FileIO;
+ use ParagonIE\ConstantTime\Base64UrlSafe;
 diff --git a/bin/init.php b/bin/init.php
-index f12077b..613b25a 100644
+index f251ef7..682a9ba 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -44,7 +59,7 @@ index f12077b..613b25a 100644
  use LetsConnect\Common\FileIO;
  use LetsConnect\Portal\Storage;
 diff --git a/web/api.php b/web/api.php
-index 0ea57fd..cb31ae9 100644
+index 5d0ed14..3bf8d9c 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -59,7 +74,7 @@ index 0ea57fd..cb31ae9 100644
  use fkooman\OAuth\Server\BearerValidator;
  use fkooman\OAuth\Server\LocalSigner;
 diff --git a/web/index.php b/web/index.php
-index 950c2b0..a13a33c 100644
+index f7ce175..a5011c3 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -74,7 +89,7 @@ index 950c2b0..a13a33c 100644
  use fkooman\OAuth\Server\LocalSigner;
  use fkooman\OAuth\Server\OAuthServer;
 diff --git a/web/oauth.php b/web/oauth.php
-index af31a15..0abfffa 100644
+index 59ce3c8..c289147 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@

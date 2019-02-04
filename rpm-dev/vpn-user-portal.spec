@@ -1,8 +1,8 @@
-%global git a03154de31c7ae616cf427650f54a8008b39e3cf
+%global git e432125d259371b056af249104928ec67a2f4e97
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.35%{?dist}
+Release:    0.39%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -164,7 +164,7 @@ mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Portal
 cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Portal
 
-for i in add-user foreign-key-list-fetcher init
+for i in add-user foreign-key-list-fetcher init generate-key
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
     sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-user-portal-${i}
@@ -224,6 +224,18 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Feb 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.39
+- rebuilt
+
+* Mon Feb 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.38
+- rebuilt
+
+* Mon Feb 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.37
+- rebuilt
+
+* Mon Feb 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.36
+- rebuilt
+
 * Fri Jan 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.35
 - rebuilt
 

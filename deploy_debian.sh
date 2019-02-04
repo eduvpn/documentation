@@ -116,7 +116,10 @@ sudo -u www-data vpn-server-api-init
 # VPN-USER-PORTAL
 ###############################################################################
 
-# generate OAuth public/private keys
+# generate OAuth key
+sudo vpn-user-portal-generate-key
+
+# DB init
 sudo -u www-data vpn-user-portal-init
 
 ###############################################################################
