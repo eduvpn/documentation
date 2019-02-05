@@ -29,7 +29,7 @@ index 0160081..8359a2f 100644
  use LetsConnect\Common\Config;
  use LetsConnect\Portal\ForeignKeyListFetcher;
 diff --git a/bin/generate-key.php b/bin/generate-key.php
-index 1f42c06..6919932 100644
+index cbf129f..da16ba5 100644
 --- a/bin/generate-key.php
 +++ b/bin/generate-key.php
 @@ -7,8 +7,8 @@
@@ -42,7 +42,7 @@ index 1f42c06..6919932 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use LetsConnect\Common\FileIO;
- use ParagonIE\ConstantTime\Base64UrlSafe;
+ use LetsConnect\Portal\OAuth\Keys\SecretKey;
 diff --git a/bin/init.php b/bin/init.php
 index f251ef7..682a9ba 100644
 --- a/bin/init.php
@@ -59,7 +59,7 @@ index f251ef7..682a9ba 100644
  use LetsConnect\Common\FileIO;
  use LetsConnect\Portal\Storage;
 diff --git a/web/api.php b/web/api.php
-index 5d0ed14..3bf8d9c 100644
+index f2e4a97..348633d 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -72,9 +72,9 @@ index 5d0ed14..3bf8d9c 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\OAuth\Server\BearerValidator;
- use fkooman\OAuth\Server\LocalSigner;
+ use LetsConnect\Common\Config;
 diff --git a/web/index.php b/web/index.php
-index f7ce175..a5011c3 100644
+index 6059d4b..fd36d89 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -86,10 +86,10 @@ index f7ce175..a5011c3 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use fkooman\OAuth\Server\LocalSigner;
  use fkooman\OAuth\Server\OAuthServer;
+ use fkooman\SAML\SP\PrivateKey;
 diff --git a/web/oauth.php b/web/oauth.php
-index 59ce3c8..c289147 100644
+index db39ec4..ac04817 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@
@@ -101,5 +101,5 @@ index 59ce3c8..c289147 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use fkooman\OAuth\Server\LocalSigner;
  use fkooman\OAuth\Server\OAuthServer;
+ use LetsConnect\Common\Config;
