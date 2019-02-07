@@ -14,7 +14,7 @@ index 7d36dff..2f9ba78 100644
  use LetsConnect\Common\CliParser;
  use LetsConnect\Common\Config;
 diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 0160081..8359a2f 100644
+index 0c32c49..918519e 100644
 --- a/bin/foreign-key-list-fetcher.php
 +++ b/bin/foreign-key-list-fetcher.php
 @@ -7,8 +7,8 @@
@@ -29,7 +29,7 @@ index 0160081..8359a2f 100644
  use LetsConnect\Common\Config;
  use LetsConnect\Portal\ForeignKeyListFetcher;
 diff --git a/bin/generate-key.php b/bin/generate-key.php
-index cbf129f..da16ba5 100644
+index 038dbff..af8c8d3 100644
 --- a/bin/generate-key.php
 +++ b/bin/generate-key.php
 @@ -7,8 +7,8 @@
@@ -41,8 +41,8 @@ index cbf129f..da16ba5 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use LetsConnect\Common\FileIO;
- use LetsConnect\Portal\OAuth\Keys\SecretKey;
 diff --git a/bin/init.php b/bin/init.php
 index f251ef7..682a9ba 100644
 --- a/bin/init.php
@@ -59,7 +59,7 @@ index f251ef7..682a9ba 100644
  use LetsConnect\Common\FileIO;
  use LetsConnect\Portal\Storage;
 diff --git a/web/api.php b/web/api.php
-index f2e4a97..348633d 100644
+index 20f7169..fb2b2d5 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -71,10 +71,10 @@ index f2e4a97..348633d 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use fkooman\OAuth\Server\BearerValidator;
+ use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use LetsConnect\Common\Config;
 diff --git a/web/index.php b/web/index.php
-index 6059d4b..fd36d89 100644
+index 8c40b90..4583050 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -86,10 +86,10 @@ index 6059d4b..fd36d89 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use fkooman\OAuth\Server\OAuthServer;
- use fkooman\SAML\SP\PrivateKey;
 diff --git a/web/oauth.php b/web/oauth.php
-index db39ec4..ac04817 100644
+index 119e988..1f3543a 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@
@@ -101,5 +101,5 @@ index db39ec4..ac04817 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use fkooman\OAuth\Server\OAuthServer;
- use LetsConnect\Common\Config;

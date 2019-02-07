@@ -1,8 +1,8 @@
-%global git c030ef0ff0de1da56e88f1a5b6a3e8077d8f9276
+%global git e465d5b7298d656f664af0fe436116619e3e497c
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.41%{?dist}
+Release:    0.42%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -41,6 +41,7 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/jwt": "dev-master",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
@@ -57,6 +58,7 @@ BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
+BuildRequires:  php-composer(fkooman/jwt)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
@@ -91,6 +93,7 @@ Requires:   crontabs
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
+#        "fkooman/jwt": "dev-master",
 #        "fkooman/oauth2-server": "^3",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
@@ -108,6 +111,7 @@ Requires:   php-json
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
+Requires:   php-composer(fkooman/jwt)
 Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/sqlite-migrate)
@@ -146,6 +150,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
 require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
+require_once '%{_datadir}/php/fkooman/Jwt/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
@@ -224,6 +229,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Feb 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.42
+- rebuilt
+
 * Mon Feb 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.41
 - rebuilt
 
