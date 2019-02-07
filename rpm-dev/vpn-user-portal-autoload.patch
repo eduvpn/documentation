@@ -28,10 +28,10 @@ index 0c32c49..918519e 100644
  
  use LetsConnect\Common\Config;
  use LetsConnect\Portal\ForeignKeyListFetcher;
-diff --git a/bin/generate-key.php b/bin/generate-key.php
+diff --git a/bin/generate-oauth-key.php b/bin/generate-oauth-key.php
 index 038dbff..af8c8d3 100644
---- a/bin/generate-key.php
-+++ b/bin/generate-key.php
+--- a/bin/generate-oauth-key.php
++++ b/bin/generate-oauth-key.php
 @@ -7,8 +7,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
@@ -58,8 +58,23 @@ index f251ef7..682a9ba 100644
  
  use LetsConnect\Common\FileIO;
  use LetsConnect\Portal\Storage;
+diff --git a/bin/show-oauth-key.php b/bin/show-oauth-key.php
+index 763b4e4..0fb0419 100644
+--- a/bin/show-oauth-key.php
++++ b/bin/show-oauth-key.php
+@@ -7,8 +7,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use fkooman\Jwt\Keys\EdDSA\SecretKey;
+ use LetsConnect\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index 20f7169..fb2b2d5 100644
+index 450cb65..b455c71 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
