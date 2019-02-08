@@ -1,8 +1,8 @@
-%global git 16de44cb19c057ef5c917139f8b9d66b58ef61ff
+%global git ed260457c2bc87e21cfd56eb1069422d4b94e5b4
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.46%{?dist}
+Release:    0.49%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -41,8 +41,8 @@ BuildRequires:  phpunit
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/jwt": "dev-master",
-#        "fkooman/oauth2-server": "^3",
+#        "fkooman/jwt": "^0.3",
+#        "fkooman/oauth2-server": "dev-master",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -93,8 +93,8 @@ Requires:   crontabs
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/jwt": "dev-master",
-#        "fkooman/oauth2-server": "^3",
+#        "fkooman/jwt": "^0.3",
+#        "fkooman/oauth2-server": "dev-master",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
 #        "paragonie/constant_time_encoding": "^1|^2",
@@ -229,6 +229,15 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Feb 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.49
+- rebuilt
+
+* Fri Feb 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.48
+- rebuilt
+
+* Thu Feb 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.47
+- rebuilt
+
 * Thu Feb 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.46
 - rebuilt
 
