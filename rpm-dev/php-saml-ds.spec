@@ -1,8 +1,8 @@
-%global git d7292634b02e4c78528172e4992bf10cef2bc6a8
+%global git e6de7d89904fde728eb118ebc79d8124a678dc21
 
 Name:       php-saml-ds
 Version:    2.0.0
-Release:    0.1%{?dist}
+Release:    0.2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -144,6 +144,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Feb 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.2
+- rebuilt
+
 * Mon Feb 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
 - update to 2.0.0
 - remove Twig dependency
