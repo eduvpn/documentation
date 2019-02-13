@@ -1,7 +1,7 @@
 %global git eb5267819cf73094d3a421b1994a7dc447d809b0
 
 Name:       php-saml-ds-artwork-eduVPN
-Version:    1.1.0
+Version:    2.0.0
 Release:    0.1%{?dist}
 Summary:    SAML Discovery Artwork for eduVPN
 License:    AGPLv3+
@@ -49,8 +49,8 @@ cp -p views/*.php %{buildroot}%{_datadir}/php-saml-ds/views/eduVPN
 %doc README.md CHANGES.md
 
 %changelog
-* Thu Dec 13 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-0.1
-- update to 1.1.0
+* Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+- update to 2.0.0
 
 * Thu Sep 27 2018 François Kooman <fkooman@tuxed.net> - 1.0.1-5
 - point to properly named release tarballs

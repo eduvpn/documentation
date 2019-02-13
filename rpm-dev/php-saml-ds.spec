@@ -1,12 +1,12 @@
-%global git e6de7d89904fde728eb118ebc79d8124a678dc21
+%global git 47fd43bfdd78be579563ed99573bfa8424a97f99
 
 Name:       php-saml-ds
 Version:    2.0.0
-Release:    0.2%{?dist}
+Release:    0.7%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
-License:    ASL2.0
+License:    MIT
 
 URL:        https://software.tuxed.net/php-saml-ds
 %if %{defined git}
@@ -36,23 +36,27 @@ BuildRequires:  phpunit
 %endif
 #    "require": {
 #        "ext-curl": "*",
+#        "ext-dom": "*",
 #        "ext-filter": "*",
 #        "ext-imagick": "*",
 #        "ext-json": "*",
+#        "ext-libxml": "*",
+#        "ext-openssl": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
-#        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
+BuildRequires:  php-dom
 BuildRequires:  php-filter
 BuildRequires:  php-pecl-imagick
 BuildRequires:  php-json
+BuildRequires:  php-libxml
+BuildRequires:  php-openssl
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
-BuildRequires:  php-xml
 BuildRequires:  php-composer(fkooman/secookie)
 
 %if 0%{?fedora} >= 24
@@ -63,24 +67,28 @@ Requires:   httpd
 %endif
 #    "require": {
 #        "ext-curl": "*",
+#        "ext-dom": "*",
 #        "ext-filter": "*",
 #        "ext-imagick": "*",
 #        "ext-json": "*",
+#        "ext-libxml": "*",
+#        "ext-openssl": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
-#        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
 #        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
 Requires:   php-curl
+Requires:   php-dom
 Requires:   php-filter
 Requires:   php-pecl-imagick
 Requires:   php-json
+Requires:   php-libxml
+Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-spl
-Requires:   php-xml
 Requires:   php-composer(fkooman/secookie)
 
 %description
@@ -144,10 +152,13 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
-* Mon Feb 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.2
+* Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
 - rebuilt
 
-* Mon Feb 11 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+* Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
+- rebuilt
+
+* Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
 - update to 2.0.0
 - remove Twig dependency
 

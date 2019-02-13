@@ -1,9 +1,9 @@
 diff --git a/bin/generate.php b/bin/generate.php
-index 74b5c30..93bab5f 100644
+index 9d4079a..80b88ba 100644
 --- a/bin/generate.php
 +++ b/bin/generate.php
-@@ -17,8 +17,8 @@
-  * limitations under the License.
+@@ -22,8 +22,8 @@
+  * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
@@ -14,11 +14,11 @@ index 74b5c30..93bab5f 100644
  use fkooman\SAML\DS\Config;
  use fkooman\SAML\DS\HttpClient\CurlHttpClient;
 diff --git a/web/index.php b/web/index.php
-index b6f24dd..fd0fdcf 100644
+index 793d9aa..d5c15dd 100644
 --- a/web/index.php
 +++ b/web/index.php
-@@ -16,8 +16,8 @@
-  * limitations under the License.
+@@ -22,8 +22,8 @@
+  * SOFTWARE.
   */
  
 -require_once \dirname(__DIR__).'/vendor/autoload.php';
