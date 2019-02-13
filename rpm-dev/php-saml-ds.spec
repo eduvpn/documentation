@@ -1,12 +1,12 @@
-#global git e7c014f9b1f03923c56d37e1347eb350077fb16b
+%global git 58c14390684194be2b5dc3114859d0c1c30d3f3e
 
 Name:       php-saml-ds
-Version:    1.0.12
-Release:    4%{?dist}
+Version:    2.0.0
+Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
-License:    ASL2.0
+License:    MIT
 
 URL:        https://software.tuxed.net/php-saml-ds
 %if %{defined git}
@@ -36,26 +36,28 @@ BuildRequires:  phpunit
 %endif
 #    "require": {
 #        "ext-curl": "*",
+#        "ext-dom": "*",
 #        "ext-filter": "*",
 #        "ext-imagick": "*",
 #        "ext-json": "*",
+#        "ext-libxml": "*",
+#        "ext-openssl": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
-#        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">=5.4.0",
-#        "twig/twig": "^1"
+#        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
+BuildRequires:  php-dom
 BuildRequires:  php-filter
 BuildRequires:  php-pecl-imagick
 BuildRequires:  php-json
+BuildRequires:  php-libxml
+BuildRequires:  php-openssl
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
-BuildRequires:  php-xml
 BuildRequires:  php-composer(fkooman/secookie)
-BuildRequires:  php-composer(twig/twig) < 2
 
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -65,27 +67,29 @@ Requires:   httpd
 %endif
 #    "require": {
 #        "ext-curl": "*",
+#        "ext-dom": "*",
 #        "ext-filter": "*",
 #        "ext-imagick": "*",
 #        "ext-json": "*",
+#        "ext-libxml": "*",
+#        "ext-openssl": "*",
 #        "ext-pcre": "*",
 #        "ext-spl": "*",
-#        "ext-xml": "*",
 #        "fkooman/secookie": "^2",
-#        "php": ">=5.4.0",
-#        "twig/twig": "^1"
+#        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
 Requires:   php-curl
+Requires:   php-dom
 Requires:   php-filter
 Requires:   php-pecl-imagick
 Requires:   php-json
+Requires:   php-libxml
+Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-spl
-Requires:   php-xml
 Requires:   php-composer(fkooman/secookie)
-Requires:   php-composer(twig/twig) < 2
 
 %description
 SAML Discovery Service written in PHP.
@@ -102,7 +106,6 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once '%{_datadir}/php/Twig/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
 AUTOLOAD
 
@@ -112,6 +115,7 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr web views %{buildroot}%{_datadir}/%{name}
 install -m 0755 -D -p bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
+sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/%{name}-generate
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
@@ -121,10 +125,6 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
 ln -s ../../../var/lib/%{name} %{buildroot}%{_datadir}/%{name}/data
 
 install -m 0644 -D -p %{SOURCE3} %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
-
-%post
-# remove template cache if it is there
-rm -rf %{_localstatedir}/lib/%{name}/tpl/* >/dev/null 2>/dev/null || :
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -152,6 +152,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
+- update to 2.0.0
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.0.12-4
 - merge dev and prod spec files in one
 - cleanup requirements
