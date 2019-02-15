@@ -2,7 +2,7 @@
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.52%{?dist}
+Release:    0.55%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -131,6 +131,7 @@ Requires:   php-pecl(libsodium)
 %endif
 
 Requires(post): /usr/sbin/semanage
+Requires(post): /usr/bin/openssl
 Requires(postun): /usr/sbin/semanage
 
 %description
@@ -203,6 +204,24 @@ AUTOLOAD
 semanage fcontext -a -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
 restorecon -R %{_localstatedir}/lib/vpn-user-portal || :
 
+# generate SAML keys if they do not yet exist
+if [ ! -f "%{_sysconfdir}/%{name}/sp.key" ]
+then
+    /usr/bin/openssl \
+        req \
+        -nodes \
+        -subj "/CN=SAML SP" \
+        -x509 \
+        -sha256 \
+        -newkey rsa:2048 \
+        -keyout "%{_sysconfdir}/%{name}/sp.key" \
+        -out "%{_sysconfdir}/%{name}/sp.crt" \
+        -days 1825 \
+        2>/dev/null
+
+    /usr/bin/chmod 0644 %{_sysconfdir}/%{name}/sp.key
+fi
+
 %postun
 if [ $1 -eq 0 ] ; then  # final removal
 semanage fcontext -d -t httpd_sys_rw_content_t '%{_localstatedir}/lib/vpn-user-portal(/.*)?' 2>/dev/null || :
@@ -229,6 +248,15 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Feb 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.55
+- rebuilt
+
+* Fri Feb 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.54
+- rebuilt
+
+* Fri Feb 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.53
+- rebuilt
+
 * Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.52
 - rebuilt
 
