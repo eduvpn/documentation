@@ -22,6 +22,7 @@ rm -f /etc/vpn-user-portal/secret.key
 
 # initialize
 sudo -u apache vpn-user-portal-init
+sudo -u apache vpn-user-portal-generate-oauth-key
 sudo -u apache vpn-server-api-init
 vpn-user-portal-generate-key
 
