@@ -22,9 +22,8 @@ rm -f /etc/vpn-user-portal/secret.key
 
 # initialize
 sudo -u www-data vpn-user-portal-init
-sudo vpn-user-portal-generate-oauth-key
+vpn-user-portal-generate-oauth-key
 sudo -u www-data vpn-server-api-init
-vpn-user-portal-generate-key
 
 # regenerate internal API secrets
 vpn-server-api-update-api-secrets
