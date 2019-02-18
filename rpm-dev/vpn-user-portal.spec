@@ -2,7 +2,7 @@
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.55%{?dist}
+Release:    0.56%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -218,8 +218,14 @@ then
         -out "%{_sysconfdir}/%{name}/sp.crt" \
         -days 1825 \
         2>/dev/null
-
+    # allow web server to read the private key
     /usr/bin/chmod 0644 %{_sysconfdir}/%{name}/sp.key
+fi
+
+# Generate OAuth key if it not yet exists
+if [ ! -f "%{_sysconfdir}/%{name}/secret.key" ]
+then
+    %{_bindir}/vpn-user-portal-generate-oauth-key
 fi
 
 %postun
@@ -248,6 +254,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.56
+- rebuilt
+
 * Fri Feb 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.55
 - rebuilt
 

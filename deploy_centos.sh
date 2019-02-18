@@ -142,9 +142,6 @@ sudo -u apache vpn-server-api-init
 # VPN-USER-PORTAL
 ###############################################################################
 
-# generate OAuth key
-sudo vpn-user-portal-generate-oauth-key
-
 # DB init
 sudo -u apache vpn-user-portal-init
 
