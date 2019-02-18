@@ -132,8 +132,8 @@ restorecon -R /var/lib/php/session
 # VPN-SERVER-API
 ###############################################################################
 
-# update the IPv4 CIDR and IPv6 prefix to random IP ranges and set the extIf
-vpn-server-api-update-ip --profile internet --host "${VPN_FQDN}" --ext "${EXTERNAL_IF}"
+# update the IPv4 CIDR and IPv6 prefix to random IP ranges
+vpn-server-api-update-ip --profile internet --host "${VPN_FQDN}"
 
 # initialize the CA
 sudo -u apache vpn-server-api-init
