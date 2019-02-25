@@ -38,14 +38,14 @@ library to implement secure PHP sessions (and cookies).
 ## OAuth
 
 The built-in [OAuth server](https://git.tuxed.net/fkooman/php-oauth2-server) 
-uses public key cryptography signed Bearer tokens constructed and verified by 
-[libsodium](https://libsodium.org/). The reason we are using public key 
-cryptography for the Bearer tokens is that no "back channel" is needed between 
-the services verifying the token and issuing the token. This is especially 
-helpful in the case of [Guest Usage](GUEST_USAGE.md).
+uses public key cryptography signed JWT Bearer tokens of the type `EdDSA` 
+implemented in [php-jwt](https://git.tuxed.net/fkooman/php-jwt). The `EdDSA` 
+JWT token in specified in [RFC 8037](https://tools.ietf.org/html/rfc8037).
 
-[Ed25519](https://ed25519.cr.yp.to/) is used for the signatures as documented 
-[here](https://download.libsodium.org/doc/public-key_cryptography/public-key_signatures.html).
+The reason we are using public key cryptography for the Bearer tokens is that 
+no "back channel" is needed between the services verifying the token and 
+issuing the token. This is especially helpful in the case of 
+[Guest Usage](GUEST_USAGE.md).
 
 ## CA
 
