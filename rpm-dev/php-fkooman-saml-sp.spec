@@ -1,8 +1,8 @@
-%global git ea1d21181107636df92d619a639a07cd2d8fe19c
+%global git d0a86021d5c572d0dddd2359743a4692a7df303d
 
 Name:           php-fkooman-saml-sp
 Version:        0.0.0
-Release:        0.39%{?dist}
+Release:        0.44%{?dist}
 Summary:        SAML Service Provider library
 
 License:        MIT
@@ -56,6 +56,11 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires:  php-sodium
+%else
+BuildRequires:  php-pecl(libsodium)
+%endif
 
 #    "require": {
 #        "ext-date": "*",
@@ -83,6 +88,11 @@ Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
 %endif
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+Requires:   php-sodium
+%else
+Requires:   php-pecl(libsodium)
+%endif
 
 Provides:       php-composer(fkooman/saml-sp) = %{version}
 
@@ -105,6 +115,7 @@ require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
+require_once __DIR__.'/sodium_compat.php';
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
@@ -131,6 +142,21 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SAML/SP
 
 %changelog
+* Wed Feb 27 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.44
+- rebuilt
+
+* Wed Feb 27 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.43
+- rebuilt
+
+* Tue Feb 26 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.42
+- rebuilt
+
+* Tue Feb 26 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.41
+- rebuilt
+
+* Mon Feb 25 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.40
+- rebuilt
+
 * Mon Feb 25 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.39
 - rebuilt
 
