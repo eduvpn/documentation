@@ -38,7 +38,8 @@ attention to the following options:
 
 Next, we want to allow access from the node to the `vpn-server-api` component, 
 modify `/etc/httpd/conf.d/vpn-server-api.conf` and add `Require ip` lines 
-containing the _public_ IP address(es) of the node.
+containing the _public_ IP address(es) of the node. Make sure you restart 
+Apache!
 
 Next, take note of the secret under `apiConsumers => vpn-server-node` in 
 `/etc/vpn-server-api/default/config.php`, you'll need it on the node
@@ -57,9 +58,10 @@ when setting up the controller.
 The `apiUrl` will look like this: 
 `https://vpn.example.org/vpn-server-api/api.php`.
 
-Now you should be able to setup the node:
+Now you should be able to configure the node:
 
     $ vpn-server-node-server-config
     $ vpn-server-node-generate-firewall --install
 
-
+This should generate the OpenVPN configuration files and generate and install
+the firewall rules.
