@@ -49,3 +49,17 @@ later.
 Currently we do not have a `deploy_node_${DIST}.sh` unfortunately. You'll have
 to manually walk through the `deploy_${DIST}.sh` and perform the relevant steps
 until such time we have proper documentation for this.
+
+Modify `/etc/vpn-server-node/default/config.php` and make sure `apiPass` and
+`apiUri` are set correctly. The `apiPass` contains the string you took note of
+when setting up the controller.
+
+The `apiUrl` will look like this: 
+`https://vpn.example.org/vpn-server-api/api.php`.
+
+Now you should be able to setup the node:
+
+    $ vpn-server-node-server-config
+    $ vpn-server-node-generate-firewall --install
+
+
