@@ -1,8 +1,8 @@
-%global git 5d3d80c0e1c873570c41587eb5e072b668e965f0
+%global git d029260a5367a4675d633d7399ed00c59119474c
 
 Name:           php-fkooman-jwt
-Version:        0.3.0
-Release:        1%{?dist}
+Version:        1.0.0
+Release:        0.1%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -39,8 +39,7 @@ BuildRequires:  phpunit
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4.8",
-#        "symfony/polyfill-php56": "^1",
-#        "symfony/polyfill-php70": "^1"
+#        "symfony/polyfill-php56": "^1"
 #    },
 BuildRequires:  php(language) >= 5.4.8
 BuildRequires:  php-date
@@ -52,7 +51,6 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
-BuildRequires:  php-composer(symfony/polyfill-php70)
 %endif
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -73,8 +71,7 @@ BuildRequires:  php-pecl(libsodium)
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4.8",
-#        "symfony/polyfill-php56": "^1",
-#        "symfony/polyfill-php70": "^1"
+#        "symfony/polyfill-php56": "^1"
 #    },
 Requires:  php(language) >= 5.4.8
 Requires:  php-date
@@ -86,7 +83,6 @@ Requires:  php-composer(paragonie/constant_time_encoding)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
-Requires:  php-composer(symfony/polyfill-php70)
 %endif
 #    "suggest": {
 #        "ext-libsodium": "PHP < 7.2 sodium implementation",
@@ -147,6 +143,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Tue Mar 05 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-0.1
+- update to 1.0.0
+
 * Fri Feb 08 2019 François Kooman <fkooman@tuxed.net> - 0.3.0-1
 - update to 0.3.0
 

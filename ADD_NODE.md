@@ -11,26 +11,27 @@ process(es).
 
 # Prerequisites
 
-In order to add a node to your VPN setup, you need to arrange for a private
-network, e.g. a management VLAN, between the controller and node(s). How this 
-is done is out of scope for this document. Make sure you can "ping" in both 
-directions and there is no network filtering, e.g. with firewall rules, taking 
-place.
+In order to add a node to your VPN setup there needs to be a *SECURE* way for
+the controller to communicate with the node. Typically you'd use a private 
+VLAN for this. However, how exactly this is done is out of scope here.
 
-This private network is used by the controller to retrieve a list of connected
-clients and have the ability to "kick" VPN clients offline.
+We assume your node will be reachable by the controller so it can access the 
+OpenVPN management ports, i.e. TCP ports 11940 and up.
+
+Note: these ports MUST only be available to the controller NOT to the public
+Internet!
 
 # Setup
 
 ## Controller
 
-Initially we'll leave the controller, your existing node alone. We'll just add
-a new "profile" that is delegated to your new node.
+Initially we'll leave the controller, your existing VPN server, alone. We'll 
+just add a new "profile" that is delegated to your new node.
 
 Add a new profile as described [here](MULTI_PROFILE.md). In addition pay close
 attention to the following options:
 
-* `managementIp` - set it to the _private_ IP address of the node;
+* `managementIp` - set it to the private VLAN IP address of the node;
 * `hostName` - set it to the hostname of the VPN node that points to its 
   public IP address;
 * `range` and `range6` - set them to the IP addresses issued by the node;
