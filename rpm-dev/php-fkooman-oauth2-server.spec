@@ -1,8 +1,8 @@
-%global git 7ab73db7f93fa05a43f055ced4cc735dee20d2fe
+%global git 6f101f97135175ef69157a0202013f1b5351d40c
 
 Name:           php-fkooman-oauth2-server
 Version:        4.0.0
-Release:        0.1%{?dist}
+Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -127,7 +127,7 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
-* Tue Jan 22 2019 François Kooman <fkooman@tuxed.net> - 4.0.0-0.1
+* Wed Mar 06 2019 François Kooman <fkooman@tuxed.net> - 4.0.0-1
 - update to 4.0.0
 
 * Mon Nov 26 2018 François Kooman <fkooman@tuxed.net> - 3.0.5-1
