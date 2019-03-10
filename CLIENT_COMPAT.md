@@ -43,7 +43,7 @@ user portal to be able to keep using the VPN.
 ## iOS
 
 * [eduVPN](https://itunes.apple.com/nl/app/eduvpn-client/id1292557340?mt=8)
-* Let's Connect! (https://itunes.apple.com/us/app/lets-connect-vpn/id1449261843?mt=8)
+* [Let's Connect!](https://itunes.apple.com/us/app/lets-connect-vpn/id1449261843?mt=8)
 
 ## Linux
 
