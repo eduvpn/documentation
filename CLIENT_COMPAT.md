@@ -3,7 +3,7 @@
 This document describes a number of VPN clients that can be used to connect to 
 the VPN service.
 
-# Offical Applications
+# Official Applications
 
 Official applications are available on most platforms. These are optimized for
 working with the VPN software. The official applications are made available 
@@ -43,14 +43,7 @@ user portal to be able to keep using the VPN.
 ## iOS
 
 * [eduVPN](https://itunes.apple.com/nl/app/eduvpn-client/id1292557340?mt=8)
-* Let's Connect! (_not yet available_)
-
-On iOS we do not currently have a "full" application. You will also need to 
-download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981?mt=8) 
-to be able to connect to the VPN. The eduVPN/Let's Connect! application will 
-handle configuration downloads and then offer to import the configuration in 
-the OpenVPN Connect application. We are currently working on improving the 
-situation!
+* Let's Connect! (https://itunes.apple.com/us/app/lets-connect-vpn/id1449261843?mt=8)
 
 ## Linux
 
