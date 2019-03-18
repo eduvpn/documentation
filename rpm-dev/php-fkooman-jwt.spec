@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-jwt
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -97,7 +97,17 @@ Requires:   php-pecl(libsodium)
 Provides:  php-composer(fkooman/jwt) = %{version}
 
 %description
-JWT Library.
+This is small JSON Web Token implementation. It only supports signatures 
+with the following signature algorithms:
+
+* HS256 (HMAC using SHA-256)
+* RS256 (RSASSA-PKCS1-v1_5 using SHA-256)
+* EdDSA (Ed25519, RFC 8037)
+
+The first two seem to be the most widely deployed JWT signature algorithms. 
+The library does NOT support encryption/decryption due to the can of worms 
+that would open. It MAY support encryption/decryption in the future, but not 
+with RSA.
 
 %prep
 %if %{defined git}
@@ -143,6 +153,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Mon Mar 18 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-2
+- rebuilt
+
 * Wed Mar 06 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-1
 - update to 1.0.0
 
