@@ -1,7 +1,7 @@
-%global git 58c14390684194be2b5dc3114859d0c1c30d3f3e
+%global git 471666ff1dd7e46461bd467b39b19f2b78200a73
 
 Name:       php-saml-ds
-Version:    2.0.0
+Version:    2.0.1
 Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
@@ -152,6 +152,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
+- update to 2.0.1
+
 * Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
 
