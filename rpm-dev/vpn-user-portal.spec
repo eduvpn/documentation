@@ -1,8 +1,8 @@
-%global git db7a655e12968eb043043ddcaba2ced056c9064b
+%global git b087ab4a312fc724ad44faff81b4f9e6979671e4
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.74%{?dist}
+Release:    0.96%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -254,6 +254,72 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.96
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.95
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.94
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.93
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.92
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.91
+- rebuilt
+
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.90
+- rebuilt
+
+* Fri Mar 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.89
+- rebuilt
+
+* Fri Mar 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.88
+- rebuilt
+
+* Fri Mar 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.87
+- rebuilt
+
+* Fri Mar 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.86
+- rebuilt
+
+* Fri Mar 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.85
+- rebuilt
+
+* Thu Mar 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.84
+- rebuilt
+
+* Thu Mar 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.83
+- rebuilt
+
+* Thu Mar 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.82
+- rebuilt
+
+* Thu Mar 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.81
+- rebuilt
+
+* Thu Mar 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.80
+- rebuilt
+
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.79
+- rebuilt
+
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.78
+- rebuilt
+
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.77
+- rebuilt
+
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.76
+- rebuilt
+
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.75
+- rebuilt
+
 * Mon Mar 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.74
 - rebuilt
 

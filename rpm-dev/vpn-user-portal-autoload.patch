@@ -1,5 +1,5 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index 7d36dff..2f9ba78 100644
+index cf8d6d6..a4006a9 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
 @@ -7,8 +7,8 @@
@@ -44,7 +44,7 @@ index 038dbff..af8c8d3 100644
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use LetsConnect\Common\FileIO;
 diff --git a/bin/init.php b/bin/init.php
-index f251ef7..682a9ba 100644
+index 33b1c8a..aac2579 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -56,10 +56,10 @@ index f251ef7..682a9ba 100644
 +require_once '/usr/share/php/LetsConnect/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
+ use LetsConnect\Common\Config;
  use LetsConnect\Common\FileIO;
- use LetsConnect\Portal\Storage;
 diff --git a/bin/show-oauth-key.php b/bin/show-oauth-key.php
-index 763b4e4..0fb0419 100644
+index 4893eab..d3d7916 100644
 --- a/bin/show-oauth-key.php
 +++ b/bin/show-oauth-key.php
 @@ -7,8 +7,8 @@
@@ -74,7 +74,7 @@ index 763b4e4..0fb0419 100644
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use LetsConnect\Common\FileIO;
 diff --git a/web/api.php b/web/api.php
-index 450cb65..b455c71 100644
+index 05a4482..5cc35d1 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -89,7 +89,7 @@ index 450cb65..b455c71 100644
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use LetsConnect\Common\Config;
 diff --git a/web/index.php b/web/index.php
-index 8c40b90..4583050 100644
+index 9a62fb7..fbb8361 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -104,7 +104,7 @@ index 8c40b90..4583050 100644
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use fkooman\OAuth\Server\OAuthServer;
 diff --git a/web/oauth.php b/web/oauth.php
-index 119e988..1f3543a 100644
+index f961b5b..1b566ba 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@

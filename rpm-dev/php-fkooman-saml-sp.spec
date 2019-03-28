@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-saml-sp
 Version:        0.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SAML Service Provider library
 
 License:        MIT
@@ -142,5 +142,8 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SAML/SP
 
 %changelog
+* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 0.1.0-2
+- rebuilt
+
 * Fri Mar 15 2019 François Kooman <fkooman@tuxed.net> - 0.1.0-1
 - initial package
