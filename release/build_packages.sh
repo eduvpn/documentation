@@ -25,7 +25,7 @@ mkdir -p "${SRPM_DIR}/unsigned"
 
 # Create Source RPMs
 SRPM_LIST=""
-cd rpm-dev || exit
+cd rpm || exit
 cp ./*.conf ./*.cron ./*.patch ./gpgkey-* "${HOME}/rpmbuild/SOURCES"
 for f in "${PACKAGE_LIST[@]}"
 do

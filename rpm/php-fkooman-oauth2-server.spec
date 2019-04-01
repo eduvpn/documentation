@@ -1,7 +1,7 @@
-#global git 557488bad563db97ff2349dbc561f0593a77c3cc
+#global git 4b793ab79dff67cfb678bc8e3b9fa0fbe586448f
 
 Name:           php-fkooman-oauth2-server
-Version:        3.0.5
+Version:        5.0.0
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
@@ -36,7 +36,8 @@ BuildRequires:  phpunit
 #        "ext-json": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
-#        "paragonie/constant_time_encoding": "^1|^2",
+#        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">=5.4",
 #        "symfony/polyfill-php56": "^1"
@@ -47,16 +48,8 @@ BuildRequires:  php-hash
 BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
+BuildRequires:  php-spl
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-BuildRequires:  php-sodium
-%else
-BuildRequires:  php-pecl(libsodium)
-%endif
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
@@ -68,7 +61,8 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "ext-json": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
-#        "paragonie/constant_time_encoding": "^1|^2",
+#        "ext-spl": "*",
+#        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
 #        "php": ">=5.4",
 #        "symfony/polyfill-php56": "^1"
@@ -79,16 +73,8 @@ Requires:       php-hash
 Requires:       php-json
 Requires:       php-pcre
 Requires:       php-pdo
+Requires:       php-spl
 Requires:       php-composer(paragonie/constant_time_encoding)
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
-%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-Requires:       php-sodium
-%else
-Requires:       php-pecl(libsodium)
-%endif
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
@@ -116,7 +102,6 @@ require_once '%{_datadir}/php/ParagonIE/ConstantTime/autoload.php';
 AUTOLOAD
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 cat <<'AUTOLOAD' | tee -a src/autoload.php
-require_once sprintf('%s/sodium_compat.php', __DIR__);
 require_once '%{_datadir}/php/random_compat/autoload.php';
 require_once '%{_datadir}/php/Symfony/Polyfill/autoload.php';
 AUTOLOAD
@@ -142,6 +127,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 5.0.0-1
+- update to 5.0.0
+
+* Wed Mar 06 2019 François Kooman <fkooman@tuxed.net> - 4.0.0-1
+- update to 4.0.0
+
 * Mon Nov 26 2018 François Kooman <fkooman@tuxed.net> - 3.0.5-1
 - update to 3.0.5
 

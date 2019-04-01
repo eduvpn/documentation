@@ -1,7 +1,7 @@
-#global git 93e68dfdc13a4adf2d5b57cc66b4dcc942150d98
+#global git 39e22cec84ec88b4e687648cc1f5ec6c6d9f7c6c
 
 Name:       vpn-portal-artwork-LC
-Version:    1.3.0
+Version:    2.0.0
 Release:    1%{?dist}
 Summary:    VPN Portal Artwork for LC
 License:    AGPLv3+
@@ -20,7 +20,6 @@ BuildArch:  noarch
 BuildRequires:  gnupg2
 
 Requires:   vpn-user-portal
-Requires:   vpn-admin-portal
 
 %description
 VPN Portal Artwork for LC.
@@ -34,68 +33,24 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %endif
 
 %install
+mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/LC
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/css/LC
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/img/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/css/LC
-mkdir -p %{buildroot}%{_datadir}/vpn-admin-portal/web/img/LC
 
+cp -p config/LC.php.example %{buildroot}%{_sysconfdir}/vpn-user-portal/LC.php
 cp -p css/LC.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/LC
-cp -p css/LC.css %{buildroot}%{_datadir}/vpn-admin-portal/web/css/LC
 cp -p img/LC.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/LC
-cp -p img/LC.png %{buildroot}%{_datadir}/vpn-admin-portal/web/img/LC
-cp -p views/vpn-user-portal/*.twig %{buildroot}%{_datadir}/vpn-user-portal/views/LC
-cp -p views/vpn-admin-portal/*.twig %{buildroot}%{_datadir}/vpn-admin-portal/views/LC
-
-%post
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
-
-%postun
-# clear template cache
-rm -rf %{_localstatedir}/lib/vpn-user-portal/*/tpl/* >/dev/null 2>/dev/null || :
-rm -rf %{_localstatedir}/lib/vpn-admin-portal/*/tpl/* >/dev/null 2>/dev/null || :
+cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/LC
 
 %files
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/vpn-user-portal/LC.php
 %{_datadir}/vpn-user-portal/views/LC
 %{_datadir}/vpn-user-portal/web/css/LC
 %{_datadir}/vpn-user-portal/web/img/LC
-%{_datadir}/vpn-admin-portal/views/LC
-%{_datadir}/vpn-admin-portal/web/css/LC
-%{_datadir}/vpn-admin-portal/web/img/LC
 %doc CHANGES.md README.md
 
 %changelog
-* Wed Nov 28 2018 François Kooman <fkooman@tuxed.net> - 1.3.0-1
-- update to 1.3.0
-
-* Wed Oct 03 2018 François Kooman <fkooman@tuxed.net> - 1.2.0-1
-- update to 1.2.0
-
-* Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-2
-- merge dev and prod spec files in one
-
-* Fri Sep 07 2018 François Kooman <fkooman@tuxed.net> - 1.1.2-1
-- update to 1.1.2
-
-* Mon Jul 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-2
-- use release tarball instead of Git tarball
-- verify GPG signature
-
-* Thu May 24 2018 François Kooman <fkooman@tuxed.net> - 1.1.1-1
-- update to 1.1.1
-
-* Tue Jan 02 2018 François Kooman <fkooman@tuxed.net> - 1.1.0-2
-- artwork moved to own repository
-
-* Tue Dec 05 2017 François Kooman <fkooman@tuxed.net> - 1.1.0-1
-- update for template refactor
-
-* Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-2
-- no longer include README/CHANGES
-
-* Mon Nov 13 2017 François Kooman <fkooman@tuxed.net> - 1.0.0-1
-- initial package
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
+- update to 2.0.0
