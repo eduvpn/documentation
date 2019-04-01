@@ -1,8 +1,8 @@
-%global git d27c63c639e4cf1cbd09d2257032e86ba94ddcb0
+%global git 76304267df66fedcd94b20aef154739c418fd8e3
 
 Name:       php-LC-common
 Version:    2.0.0
-Release:    0.18%{?dist}
+Release:    0.21%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -159,6 +159,15 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.21
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.20
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.19
+- rebuilt
+
 * Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
 - rebuilt
 

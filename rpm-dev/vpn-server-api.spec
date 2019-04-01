@@ -1,8 +1,8 @@
-%global git 3700d73aba2d43bb9a3f486d88042011ecba0e42
+%global git 7f77fa1ff8c065763371e6113e62e16d77cfe837
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.14%{?dist}
+Release:    0.19%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -130,7 +130,7 @@ mkdir -p %{buildroot}%{_datadir}/vpn-server-api
 mkdir -p %{buildroot}%{_datadir}/php/LC/Server
 cp -pr src/* %{buildroot}%{_datadir}/php/LC/Server
 
-for i in housekeeping init stats status update-api-secrets update-ip
+for i in housekeeping init stats status update-api-secrets update-ip disconnect-expired-certificates
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
     sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
@@ -193,6 +193,21 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.19
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.17
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
+- rebuilt
+
 * Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
 - rebuilt
 

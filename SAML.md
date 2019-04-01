@@ -5,23 +5,39 @@ systems. We assume you used the `deploy_${DIST}.sh` script to deploy the
 software. Below we assume you use `vpn.example`, but modify this domain to your 
 own domain name!
 
+## Installation
+
+### CentOS 
+
+First install `mod_auth_mellon`:
+
+    $ sudo yum -y install mod_auth_mellon
+
+### Debian
+
+    $ sudo apt -y install libapache2-mod-auth-mellon
+
+In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
+base path, and for `systemctl` you use `apache2` instead of `httpd`.
+
 ## Configuration
 
-Generate a TLS certificate for your SP:
+Generate an SP signing key:
 
     $ openssl req \
         -nodes \
-        -subj "/CN=vpn.example" \
+        -subj "/CN=SAML SP" \
         -x509 \
         -sha256 \
         -newkey rsa:3072 \
-        -keyout sp.key \
-        -out sp.crt \
-        -days 3600
+        -keyout "sp.key" \
+        -out "sp.crt" \
+        -days 3650
 
-Copy them to `/etc/vpn-user-portal`:
+Copy the files:
 
-    $ sudo cp *.crt *.key /etc/vpn-user-portal
+    $ sudo mkdir /etc/httpd/saml
+    $ sudo cp *.crt *.key /etc/httpd/saml
 
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
@@ -29,69 +45,57 @@ the following:
     $ curl -o engine.test.surfconext.nl.xml https://engine.test.surfconext.nl/authentication/idp/metadata
     $ curl -o engine.surfconext.nl.xml https://engine.surfconext.nl/authentication/idp/metadata
 
-Now copy the metadata to the right location as well:
+Now copy the metadata as well:
 
-    $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/vpn-user-portal
+    $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
-Edit `/etc/vpn-user-portal/config.php` and set:
-        
-    'authMethod' => 'SamlAuthentication'
+Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
+there. Make sure you modify the lines to refer to IdP metadata.
 
-By default the `eduPersonTargetedId` (`urn:oid:1.3.6.1.4.1.5923.1.1.1.10`) 
-attribute will be used to uniquely identify the users. See the configuration
-template below to set other supported options. Make sure to set the 
-`idpEntityId` and `idpMetadata` parameters.
+Restart the web server:
 
-    // SAML
-    'SamlAuthentication' => [
-        // 'OID for eduPersonTargetedID
-        'attribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.10',
-        // OID for eduPersonPrincipalName
-        //'attribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.6',
-
-        // add the entityID of the IdP to the user ID. This MUST be enabled
-        // if multiple IdPs are used *and* the attribute used for the user ID
-        // is not enforced to be unique among the different IdPs
-        'addEntityId' => false,
-
-        // ** AUTHORIZATION | ENTITLEMENT **
-        // OID for eduPersonEntitlement
-        //'entitlementAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.7',
-        // OID for eduPersonAffiliation
-        //'entitlementAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.1',
-
-        // override the SP entityId
-        //'spEntityId' => 'https://vpn.example.org/saml',
-
-        // set a fixed IdP for use with this service, it MUST be available in
-        // the IdP metadata file
-        'idpEntityId' => 'https://idp.example.org/saml',
-
-        // set a URL that performs IdP discovery, all IdPs listed in the 
-        // discovery service MUST also be available in the IdP metadata file
-        //'discoUrl' => 'http://disco.example.org/index.php',
-
-        // (Aggregate) SAML metadata file containing the IdP metadata of IdPs 
-        // that are allowed to access this service
-        'idpMetadata' => '/path/to/idp/metadata.xml',
-
-        // Create a mapping between "entitlement values" and their required 
-        // AuthnContext. Users getting a certain "entitlement" can have a 
-        // "higher" LoA
-        //'entitlementAuthnContextMapping' => [
-        //    'urn:example:LC-admin' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'],
-        //],
-    ],
-
-**NOTE** if you want to allow access to the admin parts of the portal, you 
-MUST also configure the entitlement authorization as shown in the configuration 
-template above.
+    $ sudo systemctl restart httpd
 
 Now when you visit `https://vpn.example/vpn-user-portal/` you should be 
 redirected to the IdP. If this works, you probably need to register your SP
 at your IdP. You can use the following URL with metadata:
 
-    https://vpn.example/vpn-user-portal/_saml/metadata
+    https://vpn.example/saml/metadata
+
+You also need to modify the `vpn-user-portal` configuration to specify the 
+attribute that should be used to identify the users.
+
+Edit `/etc/vpn-user-portal/default/config.php` and set:
+        
+    'authMethod' => 'MellonAuthentication'
+
+By default the NAME_ID will be used to identify the users, if you want to 
+change that change the `attribute` value under `MellonAuthentication`.
+
+If you want to also have `vpn-admin-portal` be protected by SAML, make sure
+you uncomment the `<Location /vpn-admin-portal>` section in 
+`/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
+are associated with the administrator(s). 
+
+Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
+the user portal.
+
+**NOTE** if you want to allow access to the admin portal, you MUST also 
+configure the entitlement authorization. 
+
+For example:
+
+    'MellonAuthentication' => [
+        'attribute' => 'MELLON_NAME_ID',
+        'addEntityID' => false,
+        'entitlementAttribute' => 'MELLON_eduPersonEntitlement',
+        'entitlementAuthorization' => [
+            'https://idp.example.com/saml|urn:example:LC-admin',
+        ],
+    ],
+
+Also see the example configuration file in 
+`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`.
 
 ## Discovery
 
@@ -105,12 +109,13 @@ supports the
 If you don't yet have a WAYF and want to create one for the VPN service, you 
 can use [php-saml-ds](https://git.tuxed.net/fkooman/php-saml-ds/) software, it
 implements "Identity Provider Discovery Service Protocol and Profile", see 
-below on how to configure this with `discoUrl`.
+below on how to configure this with `MellonIdPMetadataFile` and 
+`MellonDiscoveryUrl`.
 
 You need to have the metadata for all IdPs. For SURFconext you can use 
 [this](https://engine.surfconext.nl/authentication/proxy/idps-metadata) URL. 
-The URL mentioned previously only contains the SURFconext "proxy" IdP 
-information, that does not contain enough information to create the WAYF.
+The URL mentioned above only contains the SURFconext "proxy" IdP information,
+that does not contain enough information to create the WAYF.
 
 You can install the software, it is also packaged for CentOS and Debian in the 
 eduVPN repository:
@@ -124,21 +129,22 @@ Or on Debian:
 
 Modify the configuration in `/etc/php-saml-ds/config.php` and make sure the 
 IdP metadata file(s) are placed in `/etc/php-saml-ds/metadata/`. As entityID
-of the SP you need to use `https://vpn.example/vpn-user-portal/_saml/metadata`. 
-Specify the entityIDs of the IdPs you want to show up in the WAYF in the 
-configuration file under `idpList` as well.
+of the SP you need to use `https://vpn.example/saml`. Specify the entityIDs
+of the IdPs you want to show up in the WAYF in the configuration file under 
+`idpList` as well.
 
 Run the file generator:
 
     $ sudo php-saml-ds-generate
 
-This should download the logos, when enabled, and create configuration files.
+This should download the logos if enabled and create configuration files.
 
-Modify `/etc/vpn-user-portal/config.php` and set the following under the 
-`SamlAuthentication`:
+Modify `/etc/httpd/conf.d/vpn.example.conf` by removing or commenting out the 
+`MellonIdPMetadataFile` field and enabling the following two and configure 
+them like this:
 
-        'discoUrl' => 'https://vpn.example/php-saml-ds/index.php',
-        'idpMetadata' => '/var/lib/php-saml-ds/https_vpn.example_saml.xml',
+    MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+    MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
 
 Restart Apache:
 
@@ -149,5 +155,9 @@ and shown it. If there is only one IdP configured the WAYF will be skipped and
 you'll directly end up at the IdP.
 
 **NOTE**: if you want to add multiple IdPs that use identifiers that are not 
-guaranteed globally unique, you MUST set `addEntityId` to `true` in 
-`/etc/vpn-user-portal/config.php`.
+guaranteed globally unique, you MUST set `addEntityID` to `true` in 
+`/etc/vpn-user-portal/default/config.php` and 
+`/etc/vpn-admin-portal/default/config.php`. This is for example the case when 
+you use persistent NameIDs. This is not needed if you use an identity 
+federation that acts as a proxy and generates their own persistent NameIDs like
+for example SURFconext.

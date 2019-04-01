@@ -1,8 +1,8 @@
-%global git 97583675de344a5bf1f4a2c899ff26768ed3cddd
+%global git 7e26446ce6d526b2c8d3736225ae848633071e24
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.102%{?dist}
+Release:    0.103%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -214,7 +214,7 @@ then
         -subj "/CN=SAML SP" \
         -x509 \
         -sha256 \
-        -newkey rsa:2048 \
+        -newkey rsa:3072 \
         -keyout "%{_sysconfdir}/%{name}/sp.key" \
         -out "%{_sysconfdir}/%{name}/sp.crt" \
         -days 1825 \
@@ -224,7 +224,7 @@ then
 fi
 
 # Generate OAuth key if it not yet exists
-if [ ! -f "%{_sysconfdir}/%{name}/secret.key" ]
+if [ ! -f "%{_sysconfdir}/%{name}/oauth.key" ]
 then
     %{_bindir}/vpn-user-portal-generate-oauth-key
 fi
@@ -255,6 +255,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.103
+- rebuilt
+
 * Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.102
 - rebuilt
 

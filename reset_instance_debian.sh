@@ -18,7 +18,7 @@ systemctl stop php7.0-fpm
 rm -rf /var/lib/vpn-server-api/*
 rm -rf /var/lib/vpn-user-portal/*
 rm -rf /var/lib/php/sessions/*
-rm -f /etc/vpn-user-portal/secret.key
+rm -f /etc/vpn-user-portal/oauth.key
 
 # initialize
 sudo -u www-data vpn-user-portal-init
