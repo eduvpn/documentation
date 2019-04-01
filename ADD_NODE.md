@@ -43,7 +43,7 @@ containing the _public_ IP address(es) of the node. Make sure you restart
 Apache!
 
 Next, take note of the secret under `apiConsumers => vpn-server-node` in 
-`/etc/vpn-server-api/default/config.php`, you'll need it on the node
+`/etc/vpn-server-api/config.php`, you'll need it on the node
 later.
 
 ## Node
@@ -52,7 +52,7 @@ Currently we do not have a `deploy_node_${DIST}.sh` unfortunately. You'll have
 to manually walk through the `deploy_${DIST}.sh` and perform the relevant steps
 until such time we have proper documentation for this.
 
-Modify `/etc/vpn-server-node/default/config.php` and make sure `apiPass` and
+Modify `/etc/vpn-server-node/config.php` and make sure `apiPass` and
 `apiUri` are set correctly. The `apiPass` contains the string you took note of
 when setting up the controller.
 
