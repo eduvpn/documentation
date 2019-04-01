@@ -5,22 +5,22 @@ systems. We assume you used the `deploy_${DIST}.sh` script to deploy the
 software. Below we assume you use `vpn.example`, but modify this domain to your 
 own domain name!
 
-## Installation
+# Installation
 
-### CentOS 
+## CentOS 
 
 First install `mod_auth_mellon`:
 
     $ sudo yum -y install mod_auth_mellon
 
-### Debian
+## Debian
 
     $ sudo apt -y install libapache2-mod-auth-mellon
 
 In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
 base path, and for `systemctl` you use `apache2` instead of `httpd`.
 
-## Configuration
+# Configuration
 
 Generate an SP signing key:
 
@@ -37,7 +37,7 @@ Generate an SP signing key:
 Copy the files:
 
     $ sudo mkdir /etc/httpd/saml
-    $ sudo cp *.crt *.key /etc/httpd/saml
+    $ sudo cp sp.crt sp.key /etc/httpd/saml
 
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
@@ -49,8 +49,9 @@ Now copy the metadata as well:
 
     $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
 
-Modify your `/etc/httpd/conf.d/vpn.example.conf`, and enable the SAML lines 
-there. Make sure you modify the lines to refer to IdP metadata.
+Modify the `/etc/httpd/conf.d/vpn.example.conf` file, and add the contents as
+shown [here](#apache) inside the Apache configuration file in the right 
+section.
 
 Restart the web server:
 
@@ -65,39 +66,19 @@ at your IdP. You can use the following URL with metadata:
 You also need to modify the `vpn-user-portal` configuration to specify the 
 attribute that should be used to identify the users.
 
-Edit `/etc/vpn-user-portal/default/config.php` and set:
+Edit `/etc/vpn-user-portal/config.php` and set:
         
     'authMethod' => 'MellonAuthentication'
 
-By default the NAME_ID will be used to identify the users, if you want to 
-change that change the `attribute` value under `MellonAuthentication`.
+By default the `eduPersonTargetedId` attribute will be used to identify users.
+You can change the `userIdAttribute` value under the `MellonAuthentication` 
+section.
 
-If you want to also have `vpn-admin-portal` be protected by SAML, make sure
-you uncomment the `<Location /vpn-admin-portal>` section in 
-`/etc/httpd/conf.d/vpn.example.conf` and figure out the attribute values that 
-are associated with the administrator(s). 
+If you also want to use authorization based on an attribute, e.g. 
+`eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
+`permissionAttribute` as well.
 
-Also modify `/etc/vpn-admin-portal/default/config.php` in the same way as 
-the user portal.
-
-**NOTE** if you want to allow access to the admin portal, you MUST also 
-configure the entitlement authorization. 
-
-For example:
-
-    'MellonAuthentication' => [
-        'attribute' => 'MELLON_NAME_ID',
-        'addEntityID' => false,
-        'entitlementAttribute' => 'MELLON_eduPersonEntitlement',
-        'entitlementAuthorization' => [
-            'https://idp.example.com/saml|urn:example:LC-admin',
-        ],
-    ],
-
-Also see the example configuration file in 
-`/usr/share/doc/vpn-admin-portal-VERSION/config.php.example`.
-
-## Discovery
+# Discovery
 
 If you use only one IdP or a "hub & spoke" identity federation that provides 
 their own WAYF service (the default), you don't need to do anything else. 
@@ -137,7 +118,7 @@ Run the file generator:
 
     $ sudo php-saml-ds-generate
 
-This should download the logos if enabled and create configuration files.
+This should download the logos, if enabled, and create configuration files.
 
 Modify `/etc/httpd/conf.d/vpn.example.conf` by removing or commenting out the 
 `MellonIdPMetadataFile` field and enabling the following two and configure 
@@ -154,10 +135,87 @@ If you now browse to https://vpn.example/ you will get redirected to the WAYF
 and shown it. If there is only one IdP configured the WAYF will be skipped and
 you'll directly end up at the IdP.
 
-**NOTE**: if you want to add multiple IdPs that use identifiers that are not 
-guaranteed globally unique, you MUST set `addEntityID` to `true` in 
-`/etc/vpn-user-portal/default/config.php` and 
-`/etc/vpn-admin-portal/default/config.php`. This is for example the case when 
-you use persistent NameIDs. This is not needed if you use an identity 
-federation that acts as a proxy and generates their own persistent NameIDs like
-for example SURFconext.
+# Apache
+
+## CentOS 
+
+    <VirtualHost *:443>
+
+        ...
+
+        <Location />
+            MellonEnable "info"
+            MellonSecureCookie On
+            MellonIdP "IDP"
+            MellonMergeEnvVars On
+            MellonSPPrivateKeyFile /etc/httpd/saml/sp.key
+            MellonSPCertFile /etc/httpd/saml/sp.crt
+            MellonSignatureMethod rsa-sha256
+            MellonEndpointPath /saml
+            # When using SURFconext as a WAYF, use this line
+            #MellonIdPMetadataFile /etc/httpd/saml/engine.test.surfconext.nl.xml
+            MellonIdPMetadataFile /etc/httpd/saml/engine.surfconext.nl.xml
+            # When using php-saml-ds, use these two lines below 
+            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+            # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
+        </Location>
+        
+        <Location /vpn-user-portal>
+            MellonEnable "auth"
+        </Location>
+        
+        # disable Mellon for the API
+        <Location /vpn-user-portal/api.php>
+            MellonEnable "off"
+        </Location>
+        # disable Mellon for the OAuth Token Endpoint
+        <Location /vpn-user-portal/oauth.php>
+            MellonEnable "off"
+        </Location>
+
+        ...
+
+    </VirtualHost>
+
+## Debian
+
+    <VirtualHost *:443>
+
+        ...
+
+        <Location />
+            MellonEnable "info"
+            MellonSecureCookie On
+            MellonIdP "IDP"
+            MellonMergeEnvVars On
+            MellonSPPrivateKeyFile /etc/apache2/saml/sp.key
+            MellonSPCertFile /etc/apache2/saml/sp.crt
+            # Some IdPs only accept RSA-SHA256 signatures, but the version of
+            # mod_auth_mellon in Debian 9 does not support this yet, you need
+            # to use the backport, see: 
+            # https://packages.debian.org/stretch-backports/libapache2-mod-auth-mellon 
+            #MellonSignatureMethod rsa-sha256
+            MellonEndpointPath /saml
+            # When using SURFconext as a WAYF, use this line
+            MellonIdPMetadataFile /etc/apache2/saml/engine.test.surfconext.nl.xml
+            #MellonIdPMetadataFile /etc/apache2/saml/engine.surfconext.nl.xml
+            # When using php-saml-ds, use these two lines below 
+            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+            # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
+        </Location>
+
+        <Location /vpn-user-portal>
+            MellonEnable "auth"
+        </Location>
+        # disable Mellon for the API
+        <Location /vpn-user-portal/api.php>
+            MellonEnable "off"
+        </Location>
+        # disable Mellon for the OAuth Token Endpoint
+        <Location /vpn-user-portal/oauth.php>
+            MellonEnable "off"
+        </Location>
+
+        ...
+
+    </VirtualHost>
