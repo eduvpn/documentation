@@ -1,5 +1,5 @@
 diff --git a/bin/certificate-info.php b/bin/certificate-info.php
-index 0013e4f..e615103 100644
+index 61f6dab..74c3323 100644
 --- a/bin/certificate-info.php
 +++ b/bin/certificate-info.php
 @@ -7,8 +7,8 @@
@@ -8,13 +8,13 @@ index 0013e4f..e615103 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Node/autoload.php';
++require_once '/usr/share/php/LC/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use LetsConnect\Common\FileIO;
+ use LC\Common\FileIO;
  
 diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
-index 28186f9..f6594b8 100644
+index 9785cfc..20be226 100644
 --- a/bin/generate-firewall.php
 +++ b/bin/generate-firewall.php
 @@ -7,8 +7,8 @@
@@ -23,13 +23,13 @@ index 28186f9..f6594b8 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Node/autoload.php';
++require_once '/usr/share/php/LC/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use LetsConnect\Common\Config;
- use LetsConnect\Common\FileIO;
+ use LC\Common\Config;
+ use LC\Common\FileIO;
 diff --git a/bin/server-config.php b/bin/server-config.php
-index bce6893..cdff4ed 100644
+index 1a59896..bf311e0 100644
 --- a/bin/server-config.php
 +++ b/bin/server-config.php
 @@ -7,8 +7,8 @@
@@ -38,13 +38,13 @@ index bce6893..cdff4ed 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Node/autoload.php';
++require_once '/usr/share/php/LC/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use LetsConnect\Common\Config;
- use LetsConnect\Common\HttpClient\CurlHttpClient;
+ use LC\Common\Config;
+ use LC\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-connect.php b/libexec/client-connect.php
-index a6df3d5..1b8230c 100644
+index b4cffde..c3501a2 100644
 --- a/libexec/client-connect.php
 +++ b/libexec/client-connect.php
 @@ -7,8 +7,8 @@
@@ -53,13 +53,13 @@ index a6df3d5..1b8230c 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Node/autoload.php';
++require_once '/usr/share/php/LC/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use LetsConnect\Common\Config;
- use LetsConnect\Common\HttpClient\CurlHttpClient;
+ use LC\Common\Config;
+ use LC\Common\HttpClient\CurlHttpClient;
 diff --git a/libexec/client-disconnect.php b/libexec/client-disconnect.php
-index ad65347..d5f8c03 100644
+index a7c75b3..d61874e 100644
 --- a/libexec/client-disconnect.php
 +++ b/libexec/client-disconnect.php
 @@ -7,8 +7,8 @@
@@ -68,8 +68,8 @@ index ad65347..d5f8c03 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Node/autoload.php';
++require_once '/usr/share/php/LC/Node/autoload.php';
 +$baseDir = '/usr/share/vpn-server-node';
  
- use LetsConnect\Common\Config;
- use LetsConnect\Common\HttpClient\CurlHttpClient;
+ use LC\Common\Config;
+ use LC\Common\HttpClient\CurlHttpClient;

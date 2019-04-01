@@ -1,8 +1,8 @@
-%global git 88b2a95eb5fa2fa44b682c26d4baa63c902fa310
+%global git 3700d73aba2d43bb9a3f486d88042011ecba0e42
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.13%{?dist}
+Release:    0.14%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -36,8 +36,6 @@ BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
 #    "require": {
-#        "LC/openvpn-connection-manager": "^1",
-#        "eduvpn/common": "^1",
 #        "ext-date": "*",
 #        "ext-json": "*",
 #        "ext-openssl": "*",
@@ -46,12 +44,12 @@ BuildRequires:  phpunit
 #        "ext-spl": "*",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
+#        "lc/common": "dev-master",
+#        "lc/openvpn-connection-manager": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
 #    },
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-composer(LC/openvpn-connection-manager)
-BuildRequires:  vpn-lib-common
 BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-openssl
@@ -60,6 +58,8 @@ BuildRequires:  php-pdo
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fkooman/otp-verifier)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
+BuildRequires:  php-composer(lc/common)
+BuildRequires:  php-composer(lc/openvpn-connection-manager)
 BuildRequires:  php-composer(psr/log)
 
 Requires:   crontabs
@@ -73,8 +73,6 @@ Requires:   httpd
 # We have an embedded modified copy of https://github.com/OpenVPN/easy-rsa
 Requires:   openssl
 #    "require": {
-#        "LC/openvpn-connection-manager": "^1",
-#        "eduvpn/common": "^1",
 #        "ext-date": "*",
 #        "ext-json": "*",
 #        "ext-openssl": "*",
@@ -83,13 +81,13 @@ Requires:   openssl
 #        "ext-spl": "*",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
+#        "lc/common": "dev-master",
+#        "lc/openvpn-connection-manager": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
-Requires:   php-composer(LC/openvpn-connection-manager)
-Requires:   vpn-lib-common
 Requires:   php-date
 Requires:   php-json
 Requires:   php-openssl
@@ -98,6 +96,8 @@ Requires:   php-pdo
 Requires:   php-spl
 Requires:   php-composer(fkooman/otp-verifier)
 Requires:   php-composer(fkooman/sqlite-migrate)
+Requires:   php-composer(lc/common)
+Requires:   php-composer(lc/openvpn-connection-manager)
 Requires:   php-composer(psr/log)
 
 Requires(post): /usr/sbin/semanage
@@ -119,7 +119,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/LC/OpenVpn/autoload.php';
-require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
+require_once '%{_datadir}/php/LC/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/Otp/autoload.php';
 require_once '%{_datadir}/php/fkooman/SqliteMigrate/autoload.php';
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
@@ -127,8 +127,8 @@ AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-server-api
-mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Server
-cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Server
+mkdir -p %{buildroot}%{_datadir}/php/LC/Server
+cp -pr src/* %{buildroot}%{_datadir}/php/LC/Server
 
 for i in housekeeping init stats status update-api-secrets update-ip
 do
@@ -186,13 +186,16 @@ fi
 %{_datadir}/vpn-server-api/easy-rsa
 %{_datadir}/vpn-server-api/config
 %{_datadir}/vpn-server-api/data
-%dir %{_datadir}/php/LetsConnect
-%{_datadir}/php/LetsConnect/Server
+%dir %{_datadir}/php/LC
+%{_datadir}/php/LC/Server
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-server-api
 %doc README.md composer.json config/config.php.example CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
+- rebuilt
+
 * Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.13
 - rebuilt
 

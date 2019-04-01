@@ -1,8 +1,8 @@
-#global git 03af3fbe32c0e9255c1d5bc6cee3ee79f4a57abd
+%global git 9712e920bdeefba455f7191f5ce7d1a61d81b708
 
 Name:           php-LC-openvpn-connection-manager
-Version:        1.0.2
-Release:        7%{?dist}
+Version:        1.0.3
+Release:        1%{?dist}
 Summary:        Manage client connections to OpenVPN processes
 
 License:        MIT
@@ -44,7 +44,7 @@ BuildRequires:  php-composer(psr/log)
 Requires:       php(language) >= 5.4.0
 Requires:       php-composer(psr/log)
 
-Provides:       php-composer(LC/openvpn-connection-manager) = %{version}
+Provides:       php-composer(lc/openvpn-connection-manager) = %{version}
 
 %description
 Simple library written in PHP to manage client connections to OpenVPN processes 
@@ -83,6 +83,9 @@ AUTOLOAD
 %{_datadir}/php/LC/OpenVpn
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 1.0.3-1
+- update to 1.0.3
+
 * Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 1.0.2-7
 - merge dev and prod spec files in one
 - cleanup requirements

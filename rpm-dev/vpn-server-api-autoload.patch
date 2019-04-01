@@ -1,5 +1,5 @@
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index e7ff7cd..41e6497 100644
+index 07a377f..20cb70e 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
 @@ -7,8 +7,8 @@
@@ -8,13 +8,13 @@ index e7ff7cd..41e6497 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Server\Storage;
+ use LC\Server\Storage;
  
 diff --git a/bin/init.php b/bin/init.php
-index 9acb9c3..da5a48f 100644
+index bf3a1b1..d022f9f 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -23,13 +23,13 @@ index 9acb9c3..da5a48f 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Server\CA\EasyRsaCa;
- use LetsConnect\Server\Storage;
+ use LC\Server\CA\EasyRsaCa;
+ use LC\Server\Storage;
 diff --git a/bin/stats.php b/bin/stats.php
-index b8996cb..46b7938 100644
+index 45a73fc..2aef4a6 100644
 --- a/bin/stats.php
 +++ b/bin/stats.php
 @@ -7,8 +7,8 @@
@@ -38,13 +38,13 @@ index b8996cb..46b7938 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Common\Config;
- use LetsConnect\Common\FileIO;
+ use LC\Common\Config;
+ use LC\Common\FileIO;
 diff --git a/bin/status.php b/bin/status.php
-index 4a73982..a152a27 100644
+index 330f891..f408a1e 100644
 --- a/bin/status.php
 +++ b/bin/status.php
 @@ -7,8 +7,8 @@
@@ -53,13 +53,13 @@ index 4a73982..a152a27 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LC\OpenVpn\ManagementSocket;
- use LetsConnect\Common\Config;
+ use LC\Common\Config;
+ use LC\Common\Logger;
 diff --git a/bin/update-api-secrets.php b/bin/update-api-secrets.php
-index 68e7684..ad593c3 100644
+index e28053d..d8f82ba 100644
 --- a/bin/update-api-secrets.php
 +++ b/bin/update-api-secrets.php
 @@ -7,8 +7,8 @@
@@ -68,13 +68,13 @@ index 68e7684..ad593c3 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Common\CliParser;
- use LetsConnect\Common\Config;
+ use LC\Common\CliParser;
+ use LC\Common\Config;
 diff --git a/bin/update-ip.php b/bin/update-ip.php
-index 4089bfc..2d21084 100644
+index aace998..9b0875f 100644
 --- a/bin/update-ip.php
 +++ b/bin/update-ip.php
 @@ -7,8 +7,8 @@
@@ -83,13 +83,13 @@ index 4089bfc..2d21084 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LetsConnect\Common\CliParser;
- use LetsConnect\Common\Config;
+ use LC\Common\CliParser;
+ use LC\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index e7b330c..7835681 100644
+index 8bf6c83..327cb48 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -98,8 +98,8 @@ index e7b330c..7835681 100644
  
 -require_once dirname(__DIR__).'/vendor/autoload.php';
 -$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LetsConnect/Server/autoload.php';
++require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LC\OpenVpn\ManagementSocket;
- use LetsConnect\Common\Config;
+ use LC\Common\Config;
+ use LC\Common\Http\BasicAuthenticationHook;

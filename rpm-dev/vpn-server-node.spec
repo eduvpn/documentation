@@ -1,8 +1,8 @@
-%global git 2fcc1a0a6d34902cb153abe7f47b129df15e74ad
+%global git 147f97c678b8dea137605e0e91b5faf5ca507047
 
 Name:       vpn-server-node
 Version:    2.0.0
-Release:    0.23%{?dist}
+Release:    0.24%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -34,7 +34,7 @@ BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
 #    "require": {
-#        "eduvpn/common": "^1",
+#        "lc/common": "dev-master",
 #        "ext-date": "*",
 #        "ext-filter": "*",
 #        "ext-mbstring": "*",
@@ -45,7 +45,7 @@ BuildRequires:  phpunit
 #        "psr/log": "^1"
 #    },
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  vpn-lib-common
+BuildRequires:  php-composer(lc/common)
 BuildRequires:  php-date
 BuildRequires:  php-filter
 BuildRequires:  php-mbstring
@@ -56,7 +56,7 @@ BuildRequires:  php-composer(psr/log)
 
 Requires:   openvpn
 #    "require": {
-#        "eduvpn/common": "dev-master",
+#        "lc/common": "dev-master",
 #        "ext-date": "*",
 #        "ext-filter": "*",
 #        "ext-mbstring": "*",
@@ -67,6 +67,7 @@ Requires:   openvpn
 #        "psr/log": "^1"
 #    },
 Requires:   php(language) >= 5.4.0
+Requires:   php-composer(lc/common)
 Requires:   php-cli
 Requires:   php-date
 Requires:   php-filter
@@ -74,8 +75,6 @@ Requires:   php-mbstring
 Requires:   php-openssl
 Requires:   php-pcre
 Requires:   php-spl
-Requires:   php-standard
-Requires:   vpn-lib-common
 Requires:   php-composer(psr/log)
 
 Requires(post): policycoreutils-python
@@ -97,13 +96,13 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/Psr/Log/autoload.php';
-require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
+require_once '%{_datadir}/php/LC/Common/autoload.php';
 AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-server-node
-mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Node
-cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Node
+mkdir -p %{buildroot}%{_datadir}/php/LC/Node
+cp -pr src/* %{buildroot}%{_datadir}/php/LC/Node
 
 # bin
 for i in certificate-info generate-firewall server-config
@@ -141,14 +140,17 @@ AUTOLOAD
 %{_bindir}/*
 %{_libexecdir}/*
 %dir %{_datadir}/vpn-server-node
-%dir %{_datadir}/php/LetsConnect
-%{_datadir}/php/LetsConnect/Node
+%dir %{_datadir}/php/LC
+%{_datadir}/php/LC/Node
 %{_datadir}/vpn-server-node/config
 %{_datadir}/vpn-server-node/openvpn-config
 %doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.24
+- rebuilt
+
 * Thu Mar 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.23
 - rebuilt
 

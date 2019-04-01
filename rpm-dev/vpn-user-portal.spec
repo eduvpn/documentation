@@ -1,8 +1,8 @@
-%global git b087ab4a312fc724ad44faff81b4f9e6979671e4
+%global git 97583675de344a5bf1f4a2c899ff26768ed3cddd
 
 Name:       vpn-user-portal
 Version:    2.0.0
-Release:    0.96%{?dist}
+Release:    0.102%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -33,26 +33,26 @@ BuildRequires:  phpunit7
 BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
+
 #    "require": {
 #        "bacon/bacon-qr-code": "^1.0",
-#        "eduvpn/common": "^1",
 #        "ext-date": "*",
 #        "ext-json": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/jwt": "^0.3",
-#        "fkooman/oauth2-server": "dev-master",
+#        "fkooman/jwt": "^1",
+#        "fkooman/oauth2-server": "^5",
+#        "fkooman/php-saml-sp": "^0",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
+#        "lc/common": "dev-master",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
-#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-composer(bacon/bacon-qr-code)
-BuildRequires:  vpn-lib-common
 BuildRequires:  php-date
 BuildRequires:  php-json
 BuildRequires:  php-pcre
@@ -62,6 +62,7 @@ BuildRequires:  php-composer(fkooman/jwt)
 BuildRequires:  php-composer(fkooman/oauth2-server)
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(fkooman/sqlite-migrate)
+BuildRequires:  php-composer(lc/common)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
@@ -87,25 +88,24 @@ Requires:   httpd
 Requires:   crontabs
 #    "require": {
 #        "bacon/bacon-qr-code": "^1.0",
-#        "eduvpn/common": "^1",
 #        "ext-date": "*",
 #        "ext-json": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
-#        "fkooman/jwt": "^0.3",
-#        "fkooman/oauth2-server": "dev-master",
+#        "fkooman/jwt": "^1",
+#        "fkooman/oauth2-server": "^5",
+#        "fkooman/php-saml-sp": "^0",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
+#        "lc/common": "dev-master",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
-#        "fkooman/php-saml-sp": "dev-master",
 #        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
 Requires:   php-composer(bacon/bacon-qr-code)
-Requires:   vpn-lib-common
 Requires:   php-date
 Requires:   php-json
 Requires:   php-pcre
@@ -115,6 +115,7 @@ Requires:   php-composer(fkooman/jwt)
 Requires:   php-composer(fkooman/oauth2-server)
 Requires:   php-composer(fkooman/secookie)
 Requires:   php-composer(fkooman/sqlite-migrate)
+Requires:   php-composer(lc/common)
 Requires:   php-composer(paragonie/constant_time_encoding)
 Requires:   php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
@@ -150,7 +151,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %{_bindir}/phpab -t fedora -o src/autoload.php src
 cat <<'AUTOLOAD' | tee -a src/autoload.php
 require_once '%{_datadir}/php/BaconQrCode/autoload.php';
-require_once '%{_datadir}/php/LetsConnect/Common/autoload.php';
+require_once '%{_datadir}/php/LC/Common/autoload.php';
 require_once '%{_datadir}/php/fkooman/Jwt/autoload.php';
 require_once '%{_datadir}/php/fkooman/OAuth/Server/autoload.php';
 require_once '%{_datadir}/php/fkooman/SeCookie/autoload.php';
@@ -167,8 +168,8 @@ AUTOLOAD
 
 %install
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal
-mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Portal
-cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Portal
+mkdir -p %{buildroot}%{_datadir}/php/LC/Portal
+cp -pr src/* %{buildroot}%{_datadir}/php/LC/Portal
 
 for i in add-user foreign-key-list-fetcher init generate-oauth-key show-oauth-key
 do
@@ -240,8 +241,8 @@ fi
 %config(noreplace) %{_sysconfdir}/vpn-user-portal/config.php
 %config(noreplace) %{_sysconfdir}/cron.d/vpn-user-portal
 %{_bindir}/*
-%dir %{_datadir}/php/LetsConnect
-%{_datadir}/php/LetsConnect/Portal
+%dir %{_datadir}/php/LC
+%{_datadir}/php/LC/Portal
 %dir %{_datadir}/vpn-user-portal
 %{_datadir}/vpn-user-portal/data
 %{_datadir}/vpn-user-portal/web
@@ -254,6 +255,24 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.102
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.101
+- rebuilt
+
+* Fri Mar 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.100
+- rebuilt
+
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.99
+- rebuilt
+
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.98
+- rebuilt
+
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.97
+- rebuilt
+
 * Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.96
 - rebuilt
 

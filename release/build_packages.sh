@@ -7,7 +7,7 @@ PACKAGE_LIST=(\
     php-fkooman-secookie \
     php-fkooman-sqlite-migrate \
     php-LC-openvpn-connection-manager \
-    vpn-lib-common \
+    php-LC-common \
     vpn-server-api \
     vpn-server-node \
     vpn-user-portal \

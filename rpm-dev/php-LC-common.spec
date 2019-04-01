@@ -1,8 +1,8 @@
-%global git 90021719bda86e482fcd85ced18945c5f54320af
+%global git d27c63c639e4cf1cbd09d2257032e86ba94ddcb0
 
-Name:       vpn-lib-common
+Name:       php-LC-common
 Version:    2.0.0
-Release:    0.14%{?dist}
+Release:    0.18%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -45,7 +45,7 @@ BuildRequires:  phpunit
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
 #        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1",
@@ -86,7 +86,7 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
 #        "paragonie/constant_time_encoding": "^1|^2",
-#        "paragonie/random_compat": "^1|^2",
+#        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
 #        "symfony/polyfill-php56": "^1",
@@ -111,6 +111,8 @@ Requires:       php-composer(ircmaxell/password-compat)
 Requires:       php-composer(paragonie/random_compat)
 Requires:       php-composer(symfony/polyfill-php56)
 %endif
+
+Provides:       php-composer(lc/common) = %{version}
 
 %description
 Common VPN library.
@@ -139,8 +141,8 @@ AUTOLOAD
 %endif
 
 %install
-mkdir -p %{buildroot}%{_datadir}/php/LetsConnect/Common
-cp -pr src/* %{buildroot}%{_datadir}/php/LetsConnect/Common
+mkdir -p %{buildroot}%{_datadir}/php/LC/Common
+cp -pr src/* %{buildroot}%{_datadir}/php/LC/Common
 
 %check
 %{_bindir}/phpab -o tests/autoload.php tests
@@ -151,12 +153,24 @@ AUTOLOAD
 %{phpunit} tests --verbose --bootstrap=tests/autoload.php
 
 %files
-%dir %{_datadir}/php/LetsConnect
-%{_datadir}/php/LetsConnect/Common
+%dir %{_datadir}/php/LC
+%{_datadir}/php/LC/Common
 %doc README.md composer.json CHANGES.md
 %license LICENSE
 
 %changelog
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
+- rebuilt
+
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.17
+- rebuilt
+
+* Fri Mar 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
+- rebuilt
+
+* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
+- rebuilt
+
 * Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
 - rebuilt
 
