@@ -67,6 +67,6 @@ echo "Build in progress, this may take a long time..."
     DATETIME=$(date +%Y%m%d%H%M%S)
     (
         cd "${REPO_ROOT}" || exit
-        tar -cJf "${HOME}/rpmRepo-${MOCK_CONFIG}-${DATETIME}.tar.xz" .
+        tar -cJf "${HOME}/rpmRepo-v2-${MOCK_CONFIG}-${DATETIME}.tar.xz" .
     )
 )
