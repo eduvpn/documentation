@@ -70,11 +70,11 @@ used by all components you can modify it and push the changes. Using
 the projects. You may need to change `composer.json` and change the version
 requirements to a (temporary) branch, e.g `master`. Change this:
 
-    "eduvpn/common": "^1",
+    "lc/common": "^2",
 
 Into this:
 
-    "eduvpn/common": "dev-master",
+    "lc/common": "dev-master",
 
 If you work in a fork of `eduvpn/common` you can update the URL referenced in
 the `composer.json` before running `composer update`.
