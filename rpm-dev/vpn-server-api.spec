@@ -1,8 +1,8 @@
-%global git 7f77fa1ff8c065763371e6113e62e16d77cfe837
+%global git 68c1ae9abbc9bb34354bcc5cdb37102fafe07bdd
 
 Name:       vpn-server-api
 Version:    2.0.0
-Release:    0.19%{?dist}
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -44,7 +44,7 @@ BuildRequires:  phpunit
 #        "ext-spl": "*",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
-#        "lc/common": "dev-master",
+#        "lc/common": "^2",
 #        "lc/openvpn-connection-manager": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
@@ -81,7 +81,7 @@ Requires:   openssl
 #        "ext-spl": "*",
 #        "fkooman/otp-verifier": "^0",
 #        "fkooman/sqlite-migrate": "^0",
-#        "lc/common": "dev-master",
+#        "lc/common": "^2",
 #        "lc/openvpn-connection-manager": "^1",
 #        "php": ">=5.4",
 #        "psr/log": "^1"
@@ -193,53 +193,5 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.19
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.17
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
-- rebuilt
-
-* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.13
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.12
-- rebuilt
-
-* Fri Jan 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.11
-- rebuilt
-
-* Fri Jan 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.10
-- rebuilt
-
-* Mon Jan 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.9
-- rebuilt
-
-* Sun Jan 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.8
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0

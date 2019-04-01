@@ -1,8 +1,8 @@
-%global git 76304267df66fedcd94b20aef154739c418fd8e3
+%global git e9c8a688c2c18966b978f29fb31e2ab8f97fa229
 
 Name:       php-LC-common
 Version:    2.0.0
-Release:    0.21%{?dist}
+Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -159,59 +159,5 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.21
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.20
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.19
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.17
-- rebuilt
-
-* Fri Mar 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
-- rebuilt
-
-* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
-- rebuilt
-
-* Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
-- rebuilt
-
-* Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.13
-- rebuilt
-
-* Mon Mar 04 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.12
-- rebuilt
-
-* Mon Feb 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.11
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.10
-- rebuilt
-
-* Fri Jan 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.9
-- rebuilt
-
-* Tue Jan 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.8
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
-- rebuilt
-
-* Wed Jan 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0

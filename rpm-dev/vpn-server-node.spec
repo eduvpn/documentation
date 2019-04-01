@@ -1,8 +1,8 @@
-%global git 613dff9638e82b7e72d91d8c8639fc192b581621
+%global git 6b2a34864d22df2b7e40db515b907676353b39c4
 
 Name:       vpn-server-node
 Version:    2.0.0
-Release:    0.27%{?dist}
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -34,7 +34,7 @@ BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
 #    "require": {
-#        "lc/common": "dev-master",
+#        "lc/common": "^2",
 #        "ext-date": "*",
 #        "ext-filter": "*",
 #        "ext-mbstring": "*",
@@ -56,7 +56,7 @@ BuildRequires:  php-composer(psr/log)
 
 Requires:   openvpn
 #    "require": {
-#        "lc/common": "dev-master",
+#        "lc/common": "^2",
 #        "ext-date": "*",
 #        "ext-filter": "*",
 #        "ext-mbstring": "*",
@@ -148,77 +148,5 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.27
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.26
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.25
-- rebuilt
-
-* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.24
-- rebuilt
-
-* Thu Mar 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.23
-- rebuilt
-
-* Thu Mar 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.22
-- rebuilt
-
-* Thu Mar 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.21
-- rebuilt
-
-* Thu Feb 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.20
-- rebuilt
-
-* Thu Feb 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.19
-- rebuilt
-
-* Thu Feb 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.18
-- rebuilt
-
-* Thu Feb 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.17
-- rebuilt
-
-* Thu Feb 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.16
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.15
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.14
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.13
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.12
-- rebuilt
-
-* Mon Feb 18 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.11
-- rebuilt
-
-* Tue Feb 05 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.10
-- rebuilt
-
-* Sun Jan 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.9
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.8
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.7
-- rebuilt
-
-* Thu Jan 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.6
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.5
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.4
-- rebuilt
-
-* Tue Jan 15 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.3
+* Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0

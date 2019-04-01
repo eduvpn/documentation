@@ -2,7 +2,7 @@
 
 OS_VERSION=28
 MOCK_CONFIG=fedora-${OS_VERSION}-x86_64
-REPO_ROOT=${HOME}/repo/${MOCK_CONFIG}
+REPO_ROOT=${HOME}/repo-v2/${MOCK_CONFIG}
 RPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/x86_64
 SRPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/Source
 
