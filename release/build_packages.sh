@@ -2,6 +2,7 @@
 
 PACKAGE_LIST=(\
     php-fkooman-saml-sp \
+    php-fkooman-jwt \
     php-fkooman-otp-verifier \
     php-fkooman-oauth2-server \
     php-fkooman-secookie \
