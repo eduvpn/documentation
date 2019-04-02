@@ -83,27 +83,21 @@ Modify `/etc/vpn-server-node/firewall.php` to allow traffic from the VPN
 clients to both `udp/53` and `tcp/53`. Replace the IP ranges with your VPN 
 client ranges:
 
-    'inputChain' => [
-        'tcp' => [
-    
-            ...
+    'inputRules' => [
 
-            // allow VPN clients to query local DNS server
-            ['src' => ['10.0.0.0/8', 'fd00::/8'], 'port' => '53'],
+        ...
 
-            ...
-
+        // Allow access to local DNS server from VPN clients
+        [
+            'proto' => ['tcp', 'udp'],
+            'src_net' => ['10.0.0.0/8', 'fd00::/8'],
+            'dst_port' => [
+                53,     // DNS
+            ],
         ],
-        'udp' => [
 
-            ...
+        ...
 
-            // allow VPN clients to query local DNS server
-            ['src' => ['10.0.0.0/8', 'fd00::/8'], 'port' => '53'],
-
-            ...
-
-        ],
     ],
 
 ## Apply

@@ -48,7 +48,11 @@ Now, in the file `/etc/vpn-user-portal/config.php` you need to enable
 
 The `production` example above is to allow access from all 
 [eduVPN](https://eduvpn.org/) servers part of the federation. You can of course
-also create your own registry.
+also create your own registry. See 
+[php-json-signer](https://software.tuxed.net/php-json-signer/index.html) for
+the tool to create signatures, and the 
+[discovery](https://github.com/eduvpn/discovery) repository for the file 
+format.
 
 If you want to register your server for eduVPN, please contact 
 [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
