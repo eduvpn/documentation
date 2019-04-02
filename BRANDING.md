@@ -22,10 +22,3 @@ your server installation. By default a simple "plain" branding is used.
 
 Now you can enable the `styleName` in `/etc/vpn-user-portal/config.php`. Set it 
 to `LC` (or `eduVPN`).
-
-You can also configure the color of the bar graphs on the "Stats" page.
-
-    'statsConfig' => [
-        'barColor' => [0x11, 0x93, 0xf5], // Let's Connect Blue
-        //'barColor' => [0xdf, 0x7f, 0x0c], // eduVPN orange
-    ],
