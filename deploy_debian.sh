@@ -33,8 +33,8 @@ apt update
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
     apache2 php-fpm pwgen iptables-persistent sudo locales-all
 
-curl -L https://repo.letsconnect-vpn.org/deb/release/eduVPN.key | apt-key add -
-echo "deb https://repo.letsconnect-vpn.org/deb/release/stretch stretch main" > /etc/apt/sources.list.d/LC.list
+curl -L https://repo.letsconnect-vpn.org/2/deb/release/eduVPN.key | apt-key add -
+echo "deb https://repo.letsconnect-vpn.org/2/deb/release/stretch stretch main" > /etc/apt/sources.list.d/LC.list
 apt update
 
 # install software (VPN packages)

@@ -59,14 +59,12 @@ else
 fi
 
 # Add production RPM repository
-#curl -L -o /etc/yum.repos.d/LC.repo \
-#    https://repo.letsconnect-vpn.org/rpm/release/enterprise/LC.repo
+curl -L -o /etc/yum.repos.d/LC.repo \
+    https://repo.letsconnect-vpn.org/2/rpm/release/enterprise/LC.repo
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install yum-plugin-copr mod_ssl php-opcache httpd iptables pwgen \
+${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python chrony
-
-${PACKAGE_MANAGER} -y copr -y enable fkooman/lc-dev
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal
