@@ -23,9 +23,18 @@ supported.
 
 ## Configuration
 
-By default, the user has the option to self-enroll for 2FA at their discretion. 
-However, the software can be configured to _enforce_ 2FA, thus forcing all 
-users to enroll for 2FA when they (first) authenticate to the service.
+By default, 2FA is disabled on new installations. The software can be 
+configured to make 2FA optional, or to enforce the use of 2FA, i.e. enroll 
+"on first use".
+
+### Disable 2FA
+
+This will fully disable 2FA and is the _default_. The user won't be asked for 
+2FA, nor are they able to enroll themselves. Users that enrolled themselves 
+before are no longer asked for 2FA.
+
+    'requireTwoFactor' => false,
+    'twoFactorMethods' => [],
 
 ### Optional 2FA
 
@@ -36,15 +45,6 @@ The default configuration, in `/etc/vpn-user-portal/config.php`:
 
 This allows users to enroll for TOTP themselves, but does not force them to do 
 so.
-
-### Disable 2FA
-
-This will fully disable 2FA. The user won't be asked for 2FA, nor are they 
-able to enroll themselves. Users that enrolled themselves before are no longer
-asked for 2FA.
-
-    'requireTwoFactor' => false,
-    'twoFactorMethods' => [],
 
 ### Enforce 2FA
 
@@ -58,7 +58,7 @@ or through an application obtaining authorization.
 ## Enrollment
 
 Users can enroll themselves in the portal on the "Account" page if 2FA is 
-optional.
+optional, or will be forced directly when 2FA is enforced.
 
 ## Recovery
 
