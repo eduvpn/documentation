@@ -69,7 +69,10 @@ Provide an existing account to _update_ the password:
     Password: 
     Password (repeat): 
 
-Use the `--admin` flag to make the user an "admin".
+You can configure which user(s) is/are an administrator by setting the 
+`adminUserIdList` option in `/etc/vpn-user-portal/config.php`, e.g.:
+
+    'adminUserIdList' => ['admin'],
 
 #### LDAP
 
