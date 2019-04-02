@@ -1,8 +1,3 @@
-## eduVPN 2.0 (Q1-2019)
-
-- Use JWT (EdDSA) OAuth tokens
-- Integrate php-saml-sp for SAML support
-
 ## eduVPN 3.0 (Q4-2019)
 
 - Merge vpn-server-api in vpn-portal (eduVPN 3.0?)
