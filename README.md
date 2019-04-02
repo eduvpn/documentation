@@ -1,5 +1,9 @@
 # Introduction
 
+**NOTE**: this is documentation for Let's Connect!/eduVPN 2.0. Click 
+[here](https://github.com/eduvpn/documentation/tree/v1) for the 1.0 
+documentation.
+
 This is the eduVPN/Let's Connect! documentation repository. This repository 
 targets administrators and developers. It contains information on how to deploy 
 the VPN software, but also (technical) details about the implementation needed 
