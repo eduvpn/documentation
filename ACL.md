@@ -51,25 +51,20 @@ the OID variant as shown in the example below depending on your IdP / identity
 federation.
 
 In order to configure this, modify `/etc/vpn-user-portal/config.php` 
-and set the `entitlementAttribute` to the name of the attribute:
+and set the `permissionAttribute` to the name of the attribute:
 
-    // SAML
     'MellonAuthentication' => [
-        'attribute' => 'MELLON_NAME_ID',
-        // 'OID for eduPersonTargetedID
-        //'attribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
+        // OID for eduPersonTargetedId
+        'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
         // OID for eduPersonPrincipalName
-        //'attribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6',
+        //'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6',
 
-        // add the entityID of the IdP to the user ID. This MUST be enabled
-        // if multiple IdPs are used *and* the attribute used for the user ID
-        // is not enforced to be unique among the different IdPs
-        'addEntityID' => false,
-
-        // ** AUTHORIZATION | ENTITLEMENT **
+        // ** AUTHORIZATION | PERMISSIONS **
         // OID for eduPersonEntitlement
-        'entitlementAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
-    ],
+        //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
+        // OID for eduPersonAffiliation
+        //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_1',
+],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
 `https://vpn.example/vpn-user-portal/account`, you should see the 
@@ -83,23 +78,22 @@ You have to choose an LDAP attribute you want to use for determining the
 membership. Typically, that would be `memberOf`, but any LDAP attribute will work.
 
 In order to configure this, modify `/etc/vpn-user-portal/config.php` 
-and set the `entitlementAttribute` to the name of the attribute:
+and set the `permissionAttribute` to the name of the attribute:
 
     // LDAP
     'FormLdapAuthentication' => [
+        // *** OpenLDAP / FreeIPA ***
         'ldapUri' => 'ldaps://ipa.example.org',
-        // "{{UID}}" will be replaced with the username the user provides
-        // on the login page
-        'userDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        // Active Directory
-        //'userDnTemplate' => 'DOMAIN\{{UID}}',
+        'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
+        //'permissionAttribute' => 'eduPersonEntitlement',
+        //'permissionAttribute' => 'memberOf',
 
-        // ** AUTHORIZATION | ENTITLEMENT **
-        // use eduPerson "eduPersonEntitlement"
-        //'entitlementAttribute' => 'eduPersonEntitlement',
-
-        // use LDAP "memberOf"
-        'entitlementAttribute' => 'memberOf',
+        // *** Active Directory ***
+        //'ldapUri' => 'ldap://ad.example.org',
+        //'bindDnTemplate' => 'DOMAIN\{{UID}}',
+        //'baseDn' => 'dc=example,dc=org',
+        //'userFilterTemplate' => '(sAMAccountName={{UID}})',
+        //'permissionAttribute' => 'memberOf',
     ],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
@@ -109,8 +103,8 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 ## Profile Mapping
 
 Modify `/etc/vpn-server-api/config.php`, and set the `enableAcl` to 
-`true` and add the authorized attribute values to `aclGroupList` for each of 
-the profiles where you want to restrict access, for example:
+`true` and add the authorized attribute values to `aclPermissionList` for each 
+of the profiles where you want to restrict access, for example:
 
     // Whether or not to enable ACLs for controlling who can connect
     // DEFAULT = false
@@ -119,6 +113,6 @@ the profiles where you want to restrict access, for example:
     // The list of groups to allow access, requires enableAcl to be 
     // true
     // DEFAULT  = []
-    'aclGroupList' => [
+    'aclPermissionList' => [
         'urn:example:LC-admin',
     ],

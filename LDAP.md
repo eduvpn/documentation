@@ -7,7 +7,8 @@ you use `vpn.example`, but modify this domain to your own domain name!
 LDAP integration is used for two aspects:
 
 1. LDAP user authentication
-2. LDAP group membership retrieval
+2. LDAP group membership retrieval to restrict access to the "Admin" and/or 
+   profiles
 
 The first one is what we focus on here, the second one is documented in the 
 [ACL](ACL.md) document.
@@ -24,15 +25,18 @@ You have to set `authMethod` first:
 Then you can configure the LDAP server:
 
     'FormLdapAuthentication' => [
+        // *** OpenLDAP / FreeIPA ***
         'ldapUri' => 'ldaps://ipa.example.org',
-        'userDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        // use eduPersonEntitlement attribute
-        //'entitlementAttribute' => 'eduPersonEntitlement',
-        //'adminEntitlementValue' => ['urn:example:LC-admin'],
+        'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
+        //'permissionAttribute' => 'eduPersonEntitlement',
+        //'permissionAttribute' => 'memberOf',
 
-        // use LDAP "memberOf"
-        //'entitlementAttribute' => 'memberOf',
-        //'adminEntitlementValue' => ['cn=ipausers,cn=groups,cn=accounts,dc=example,dc=org'],
+        // *** Active Directory ***
+        //'ldapUri' => 'ldap://ad.example.org',
+        //'bindDnTemplate' => 'DOMAIN\{{UID}}',
+        //'baseDn' => 'dc=example,dc=org',
+        //'userFilterTemplate' => '(sAMAccountName={{UID}})',
+        //'permissionAttribute' => 'memberOf',
     ],
 
 Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
@@ -40,23 +44,17 @@ may need to obtain the CA certificate of the LDAP server and store it
 locally so it can be used to verify the LDAP server certificate. See the
 CA section below.
 
-The `userDnTemplate` will be used to "generate" a DN to use to bind to the 
+The `bindDnTemplate` will be used to "generate" a DN to use to bind to the 
 LDAP server. This example is for [FreeIPA](https://www.freeipa.org/).
 
 For your LDAP server it may be different. The `{{UID}}` is replaced by what the 
 user provides in the `Username` field when trying to authenticate to the 
 portal(s).
 
-For Active Directory you can use the following `userDnTemplate`, where `DOMAIN`
+For Active Directory you can use the following `bindDnTemplate`, where `DOMAIN`
 is the name of your domain:
 
-    'userDnTemplate' => 'DOMAIN\{{UID}}'
-
-You may also want to configure the authorization, e.g. who is allowed to access 
-the admin parts of the portal.
-
-You have to decide which _attribute_ will be used, and which values this 
-attribute must have for a user.
+    'bindDnTemplate' => 'DOMAIN\{{UID}}'
 
 # CA
 
