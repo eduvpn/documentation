@@ -8,10 +8,10 @@ Currently it will build packages for the following platforms on those same
 platforms:
 
 * CentOS / Red Hat Enterprise Linux 7
-* Fedora 28
+* Fedora 29
 
 This means, if you want to build CentOS 7 packages, you MUST run on CentOS 7. 
-If you want to build Fedora 28 packages, you MUST run on Fedora 28.
+If you want to build Fedora 29 packages, you MUST run on Fedora >= 28.
 
 Typically you'd want to use VMs for this.
 
@@ -27,7 +27,7 @@ installed:
 
 ## Fedora
 
-We assume you have a fresh install of Fedora 28 with the following software 
+We assume you have a fresh install of Fedora 29 with the following software 
 installed:
 
     $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils gnupg2
@@ -86,7 +86,7 @@ Clone the `eduVPN/documentation` repository:
 
     $ cd documentation
     $ release/centos_7_x86_64.sh         # run this on CentOS 7
-    $ release/fedora_28_x86_64.sh        # run this on Fedora 28
+    $ release/fedora_29_x86_64.sh        # run this on Fedora 29
 
 This will put all RPMs and source RPMs in the `${HOME}/repo` directory and 
 create a tarball in `${HOME}` as well with the name 
@@ -123,7 +123,7 @@ mentioned below:
     gpgkey=https://repo.letsconnect-vpn.org/rpm/release/RPM-GPG-KEY-LC
     skip_if_unavailable=False
 
-## Fedora >= 28
+## Fedora >= 29
 
     [LC]
     name=Let's Connect Packages (Fedora $releasever) 
