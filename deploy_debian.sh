@@ -33,7 +33,7 @@ apt update
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
     apache2 php-fpm pwgen iptables-persistent sudo locales-all
 
-curl -L https://repo.letsconnect-vpn.org/2/deb/release/eduVPN.key | apt-key add -
+curl -L https://repo.letsconnect-vpn.org/2/deb/release/stretch/LC.key | apt-key add -
 echo "deb https://repo.letsconnect-vpn.org/2/deb/release/stretch stretch main" > /etc/apt/sources.list.d/LC.list
 apt update
 
@@ -92,12 +92,12 @@ a2ensite localhost
 ###############################################################################
 
 # set timezone to UTC
-cp resources/70-timezone.ini /etc/php/7.0/mods-available/eduvpn-timezone.ini
-phpenmod -v 7.0 -s ALL eduvpn-timezone
+cp resources/70-timezone.ini /etc/php/7.0/mods-available/lc-timezone.ini
+phpenmod -v 7.0 -s ALL lc-timezone
 
 # session hardening
-cp resources/75-session.debian.ini /etc/php/7.0/mods-available/eduvpn-session.ini
-phpenmod -v 7.0 -s ALL eduvpn-session
+cp resources/75-session.debian.ini /etc/php/7.0/mods-available/lc-session.ini
+phpenmod -v 7.0 -s ALL lc-session
 
 # restart php-fpm to read the new configuration
 systemctl restart php7.0-fpm
