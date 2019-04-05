@@ -10,6 +10,8 @@ We expect a release in Q4-2019.
   - Have a proper full security audit
 - Think about making additional nodes work independent (for a time) without
   the "controller"
+- Never have the included scripts modify and 'reformat' configuration files,
+  it makes it horrible for the admin to modify the file and loses comments
 - Drop support for CentOS 7, Debian 9, only support:
   - Debian >= 10 
   - RHEL / CentOS >= 8
