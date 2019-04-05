@@ -11,7 +11,7 @@
 MACHINE_HOSTNAME=$(hostname -f)
 
 # DNS name of the Web Server
-printf "DNS name of the Web Server [${MACHINE_HOSTNAME}]: "; read -r WEB_FQDN
+printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 ###############################################################################

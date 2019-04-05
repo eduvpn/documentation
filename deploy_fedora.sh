@@ -12,7 +12,7 @@
 MACHINE_HOSTNAME=$(hostname -f)
 
 # DNS name of the Web Server
-printf "DNS name of the Web Server [${MACHINE_HOSTNAME}]: "; read -r WEB_FQDN
+printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 # DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
@@ -197,12 +197,12 @@ systemctl enable --now ip6tables
 # USERS
 ###############################################################################
 
-REGULAR_USER=demo
+REGULAR_USER="demo"
 REGULAR_USER_PASS=$(pwgen 12 -n 1)
 
 # the "admin" user is a special user, listed by ID to have access to "admin" 
 # functionality in /etc/vpn-user-portal/config.php (adminUserIdList)
-ADMIN_USER=admin
+ADMIN_USER="admin"
 ADMIN_USER_PASS=$(pwgen 12 -n 1)
 
 sudo -u apache vpn-user-portal-add-user --user ${REGULAR_USER} --pass "${REGULAR_USER_PASS}"

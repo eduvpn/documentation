@@ -11,7 +11,7 @@
 MACHINE_HOSTNAME=$(hostname -f)
 
 # DNS name of the Web Server
-printf "DNS name of the Web Server [${MACHINE_HOSTNAME}]: "; read -r WEB_FQDN
+printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 # DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
@@ -75,16 +75,16 @@ a2enconf php7.0-fpm
 
 # VirtualHost
 cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf 
-cp resources/vpn.example.debian.conf /etc/apache2/sites-available/${WEB_FQDN}.conf
+cp resources/vpn.example.debian.conf "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 
 # update hostname
-sed -i "s/vpn.example/${WEB_FQDN}/" /etc/apache2/sites-available/${WEB_FQDN}.conf
+sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
 a2enconf vpn-server-api
 a2enconf vpn-user-portal
 a2dissite 000-default
-a2ensite ${WEB_FQDN}
+a2ensite "${WEB_FQDN}"
 a2ensite localhost
 
 ###############################################################################
@@ -143,10 +143,10 @@ vpn-server-api-update-api-secrets
 # WEB
 ###############################################################################
 
-mkdir -p /var/www/${WEB_FQDN}
+mkdir -p "/var/www/${WEB_FQDN}"
 # Copy server info JSON file
-cp resources/info.json /var/www/${WEB_FQDN}/info.json
-sed -i "s/vpn.example/${WEB_FQDN}/" /var/www/${WEB_FQDN}/info.json
+cp resources/info.json "/var/www/${WEB_FQDN}/info.json"
+sed -i "s/vpn.example/${WEB_FQDN}/" "/var/www/${WEB_FQDN}/info.json"
 
 ###############################################################################
 # DAEMONS
@@ -181,12 +181,12 @@ systemctl restart netfilter-persistent
 # USERS
 ###############################################################################
 
-REGULAR_USER=demo
+REGULAR_USER="demo"
 REGULAR_USER_PASS=$(pwgen 12 -n 1)
 
 # the "admin" user is a special user, listed by ID to have access to "admin" 
 # functionality in /etc/vpn-user-portal/config.php (adminUserIdList)
-ADMIN_USER=admin
+ADMIN_USER="admin"
 ADMIN_USER_PASS=$(pwgen 12 -n 1)
 
 sudo -u www-data vpn-user-portal-add-user --user ${REGULAR_USER} --pass "${REGULAR_USER_PASS}"
