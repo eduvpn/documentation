@@ -15,6 +15,18 @@ We expect a release in Q4-2019.
 - Drop support for CentOS 7, Debian 9, only support:
   - Debian >= 10 
   - RHEL / CentOS >= 8
+- Simplify App API, reduce number of calls
+  - 1 for profile/config discovery?
+  - 1 to make sure the client is allowed to connect?
+  - remove some calls no longer relevant
+- Move API discovery to `.well-known` location instead of `info.json` in the 
+  web root and ideally part of the software so it can get updates when updating
+  the package(s)
+- Move network (sysctl) configuration to the `vpn-server-node` package
+- Reduce the number of steps in the "deploy" scripts, make it easier to perform
+  manual install without needing the deploy script
+- Store the (profile) configuration in a database?
+- Automatically (re)configure OpenVPN processes/restart them when needed?
 
 ## Apps
 
