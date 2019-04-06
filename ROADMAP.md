@@ -4,14 +4,17 @@ We expect a release in Q4-2019.
 
 ## Server
 
-- Merge vpn-server-api and vpn-user-portal and call them "controller"
+- Merge `vpn-server-api` and `vpn-user-portal` and call them `vpn-controller` 
+  or `vpn-portal`
+- Remove "internal" API, only keep the part needed for `vpn-server-node`
 - Remove all SAML authentication backends except 
   [php-saml-sp](https://software.tuxed.net/php-saml-sp/)
   - Have a proper full security audit
 - Think about making additional nodes work independent (for a time) without
   the "controller"
-- Never have the included scripts modify and 'reformat' configuration files,
-  it makes it horrible for the admin to modify the file and loses comments
+- Never have the included deploy scripts modify and 'reformat' configuration 
+  files, it makes it horrible for the admin to modify the file and loses 
+  comments
 - Drop support for CentOS 7, Debian 9, only support:
   - Debian >= 10 
   - RHEL / CentOS >= 8
