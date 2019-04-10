@@ -13,7 +13,7 @@ programming and some experience deploying software. The document will show you
 "DevOps" on steroids!
 
 These practices slowly "evolved" while developing [eduVPN](https://eduvpn.org/) 
-and [Let's Connect](https://letsconnect-vpn.org/). These are projects sharing
+and [Let's Connect!](https://letsconnect-vpn.org/). These are projects sharing
 the same code base that can be used to run your own managed VPN service. The 
 code can be found [here](https://github.com/eduVPN/).
 
@@ -33,7 +33,7 @@ EOLed version of PHP is maintained by Red Hat, which means I will rely on
 them to fix (critical) security problems in PHP and the rest of the OS. I'm 
 doing all development and testing initially on the latest release of 
 [Fedora](https://getfedora.org/), which typically includes the latest version 
-of PHP, at this time of writing PHP 7.1. This means, my code will run on all 
+of PHP, at this time of writing PHP 7.2. This means, my code will run on all 
 PHP versions >= 5.4.
 
 Unfortunately targeting PHP 5.4 rules out a number of useful libraries, for 
@@ -76,24 +76,20 @@ number of high quality dependencies!
 Some dependencies that made the cut, i.e. followed the principles mentioned 
 above:
 
-- [Twig](https://twig.symfony.com/), a PHP template engine;
 - [Symfony PHP polyfills](https://github.com/symfony/polyfill), to make 
   some functionality from PHP versions > 5.4 available in 5.4;
 - [Constant-Time Character Encoding in PHP Projects](https://github.com/paragonie/constant_time_encoding); 
 - [QR codes](https://github.com/Bacon/BaconQrCode);
-- [OTP](https://github.com/ChristianRiesen/otp); 
 
 Some already widely used and available dependencies that I found through e.g. 
 Packagist, that did not follow my principles, for which I wrote my own 
 versions:
 
 - [Secure Cookie and Session library for PHP](https://git.tuxed.net/fkooman/php-secookie);
-- [YubiKey Validator](https://git.tuxed.net/fkooman/php-yubitwee);
-- [Very simple OAuth 2.0 client](https://git.tuxed.net/fkooman/php-oauth2-client);
 - [Very simple OAuth 2.0 server](https://git.tuxed.net/fkooman/php-oauth2-server);
 
 The rationale for creating each of those libraries is described in the their 
-accompanying `README.md` file. Those are also published on Packagist, more on 
+accompanying `README.md` file. Those MAY also published on Packagist, more on 
 that later.
 
 ## PHP 5.4
@@ -101,7 +97,7 @@ that later.
 The biggest problem with using PHP 5.4 as a minimum is the lack of support of 
 some of the libraries I wanted to use. It turns out it is not that hard to 
 develop PHP code that is compatible with all versions of PHP. The only really 
-annoying thing is the lack of static typing in older PHP versions. However, 
+sad thing is the lack of static typing in older PHP versions. However, 
 this can be mitigated somewhat by using Psalm and provide annotations as much 
 as possible, that will also ease later conversion to statically typed code.
 
@@ -321,7 +317,7 @@ PHPMD:
 
 PHPStan:
 
-    $ phpstan analyse -l 7 src web tests
+    $ phpstan analyse --level max src web tests
 
 Psalm:
 
@@ -815,6 +811,7 @@ installation and providing updates that will then be automatically installed
 when the server is updated using e.g. `yum update`. 
 
 I'm using a small script that takes care of this. 
+
 # Deployment
 
 This section will describe deployment of the code on a server. This becomes 
