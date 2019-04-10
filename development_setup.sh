@@ -5,11 +5,18 @@ BASE_DIR=${HOME}/Projects/LC
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
-# clone all repositories
+# clone all repositories (read-only)
 git clone https://github.com/eduvpn/vpn-server-api.git
 git clone https://github.com/eduvpn/vpn-user-portal.git
 git clone https://github.com/eduvpn/vpn-server-node.git
 git clone https://github.com/eduvpn/vpn-lib-common.git
+
+# clone all repositories (read/write, your own "fork")
+#GITHUB_USER=fkooman
+#git clone git@github.com:${GITHUB_USER}/vpn-server-api.git
+#git clone git@github.com:${GITHUB_USER}/vpn-user-portal.git
+#git clone git@github.com:${GITHUB_USER}/vpn-server-node.git
+#git clone git@github.com:${GITHUB_USER}/vpn-lib-common.git
 
 # vpn-server-api
 cd "${BASE_DIR}/vpn-server-api" || exit
