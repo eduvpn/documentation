@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BASE_DIR=${HOME}/Projects/tmp/eduVPN
+BASE_DIR=${HOME}/Projects/LC
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
@@ -15,7 +15,13 @@ git clone https://github.com/eduvpn/vpn-lib-common.git
 cd "${BASE_DIR}/vpn-server-api" || exit
 mkdir -p data
 composer update
-cp config/config.php.example config/config.php
+cat << 'EOF' > config/config.php
+<?php
+$baseConfig = include __DIR__.'/config.php.example';
+$localConfig = [
+];
+return array_merge($baseConfig, $localConfig);
+EOF
 php bin/init.php
 
 # vpn-user-portal
@@ -42,7 +48,6 @@ php bin/add-user.php --user admin --pass secret
 cd "${BASE_DIR}/vpn-server-node" || exit
 mkdir -p data openvpn-config
 composer update
-
 cp config/firewall.php.example config/firewall.php
 cat << 'EOF' > config/config.php
 <?php
