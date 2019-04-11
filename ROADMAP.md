@@ -30,6 +30,9 @@ We expect a release in Q4-2019.
   manual install without needing the deploy script
 - Store the (profile) configuration in a database?
 - Automatically (re)configure OpenVPN processes/restart them when needed?
+- Create pseudonym for "Guest" usage, now the (local) identifier is directly 
+  used in the "Guest" identifier. Do something like `hash(salt+user_id)` 
+  instead and simply log it at 'generation time'
 
 ## Apps
 

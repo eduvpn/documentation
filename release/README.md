@@ -110,13 +110,13 @@ packages in `${HOME}/repo` as well as put them in the generated tarball.
 # Configuration
 
 Create the following snippet in `/etc/yum.repos.d/LC.repo` on the machine where 
-you want to install Let's Connect. Make sure the files can be found on the URLs 
+you want to install Let's Connect!. Make sure the files can be found on the URLs 
 mentioned below:
 
 ## CentOS / Red Hat Enterprise Linux >= 7
 
     [LC]
-    name=Let's Connect Packages (EL $releasever)
+    name=Let's Connect! Packages (EL $releasever)
     baseurl=https://repo.letsconnect-vpn.org/rpm/release/enterprise/$releasever/$basearch
     gpgcheck=1
     enabled=1
@@ -126,7 +126,7 @@ mentioned below:
 ## Fedora >= 29
 
     [LC]
-    name=Let's Connect Packages (Fedora $releasever) 
+    name=Let's Connect! Packages (Fedora $releasever) 
     baseurl=https://repo.letsconnect-vpn.org/rpm/release/fedora/$releasever/$basearch
     gpgcheck=1
     enabled=1
