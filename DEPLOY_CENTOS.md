@@ -98,9 +98,7 @@ documented separately. See [SAML](SAML.md).
 
 ### 2FA
 
-For connecting to the VPN service by default only certificates are used, no 
-additional user name/password authentication. It is possible to enable 
-[2FA](2FA.md) to require an additional TOTP or YubiKey.
+It is possible to enable [2FA](2FA.md) with TOTP.
 
 ### ACLs
 
