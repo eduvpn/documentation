@@ -42,12 +42,12 @@ Copy the files:
 Fetch the IdP metadata from the IdP. For example, for SURFconext you would use 
 the following:
 
-    $ curl -o engine.test.surfconext.nl.xml https://engine.test.surfconext.nl/authentication/idp/metadata
-    $ curl -o engine.surfconext.nl.xml https://engine.surfconext.nl/authentication/idp/metadata
+    $ curl -o metadata.test.surfconext.nl.xml https://metadata.test.surfconext.nl/idp-metadata.xml
+    $ curl -o metadata.surfconext.nl.xml https://metadata.surfconext.nl/idp-metadata.xml
 
 Now copy the metadata as well:
 
-    $ sudo cp engine.test.surfconext.nl.xml engine.surfconext.nl.xml /etc/httpd/saml
+    $ sudo cp metadata.test.surfconext.nl.xml metadata.surfconext.nl.xml /etc/httpd/saml
 
 Modify the `/etc/httpd/conf.d/vpn.example.conf` file, and add the contents as
 shown [here](#apache) inside the Apache configuration file in the right 
@@ -94,7 +94,7 @@ below on how to configure this with `MellonIdPMetadataFile` and
 `MellonDiscoveryUrl`.
 
 You need to have the metadata for all IdPs. For SURFconext you can use 
-[this](https://engine.surfconext.nl/authentication/proxy/idps-metadata) URL. 
+[this](https://metadata.surfconext.nl/idps-metadata.xml) URL. 
 The URL mentioned above only contains the SURFconext "proxy" IdP information,
 that does not contain enough information to create the WAYF.
 
@@ -153,8 +153,8 @@ you'll directly end up at the IdP.
             MellonSignatureMethod rsa-sha256
             MellonEndpointPath /saml
             # When using SURFconext as a WAYF, use this line
-            #MellonIdPMetadataFile /etc/httpd/saml/engine.test.surfconext.nl.xml
-            MellonIdPMetadataFile /etc/httpd/saml/engine.surfconext.nl.xml
+            #MellonIdPMetadataFile /etc/httpd/saml/metadata.test.surfconext.nl.xml
+            MellonIdPMetadataFile /etc/httpd/saml/metadata.surfconext.nl.xml
             # When using php-saml-ds, use these two lines below 
             # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
             # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
@@ -197,8 +197,8 @@ you'll directly end up at the IdP.
             #MellonSignatureMethod rsa-sha256
             MellonEndpointPath /saml
             # When using SURFconext as a WAYF, use this line
-            MellonIdPMetadataFile /etc/apache2/saml/engine.test.surfconext.nl.xml
-            #MellonIdPMetadataFile /etc/apache2/saml/engine.surfconext.nl.xml
+            MellonIdPMetadataFile /etc/apache2/saml/metadata.test.surfconext.nl.xml
+            #MellonIdPMetadataFile /etc/apache2/saml/metadata.surfconext.nl.xml
             # When using php-saml-ds, use these two lines below 
             # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
             # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
