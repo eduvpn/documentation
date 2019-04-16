@@ -3,12 +3,12 @@
 #
 # Backup
 # 
-# NOTE: this script only backs-up the VPN configuration and data, NOT things
-# like SAML configuration, installed LDAP certificates and/or network 
-# configuration.
+# NOTE: this script backs-up the VPN configuration and data as well as the 
+# HTTP configuration. It will NOT backup things like installed LDAP 
+# certificates and/or network configuration.
 #
 # This is only for the installations performed with the "deploy_${DIST}.sh" 
-# scripts for the various platforms.
+# scripts
 
 TMP_DIR=$(mktemp -d)
 DATETIME=$(date +%Y%m%d%H%M%S)
@@ -20,7 +20,8 @@ tar --selinux -cpJf "${TMP_DIR}/backup-${DATETIME}.tar.xz" \
     /etc/vpn-server-node \
     /var/lib/vpn-user-portal \
     /var/lib/vpn-admin-portal \
-    /var/lib/vpn-server-api
+    /var/lib/vpn-server-api \
+    /etc/httpd
 
 echo "${TMP_DIR}/backup-${DATETIME}.tar.xz"
 
