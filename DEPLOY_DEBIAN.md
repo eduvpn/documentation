@@ -12,6 +12,8 @@ Additional scripts are available after deployment:
 ## Requirements
 
 * Clean Debian 9 installation with all updates installed;
+* Have a **STATIC** IPv4 and IPv6 address configured on your external 
+  interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
   `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
   script will take care of the host firewall;

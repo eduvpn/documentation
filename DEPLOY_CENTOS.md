@@ -17,6 +17,8 @@ An additional script is available after deployment:
   with the subscription manager (not required for CentOS);
 * SELinux MUST be enabled 
   ([CentOS SELinux](https://wiki.centos.org/HowTos/SELinux));
+* Have a **STATIC** IPv4 and IPv6 address configured on your external 
+  interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
   `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
   script will take care of the host firewall;

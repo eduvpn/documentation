@@ -21,10 +21,6 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
 VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
 
-# The interface that connects to "the Internet" (for firewall rules)
-printf "External interface connecting to the Internet [eth0]: "; read -r EXTERNAL_IF
-EXTERNAL_IF=${EXTERNAL_IF:-eth0}
-
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -126,7 +122,7 @@ cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 # allow RA for IPv6 on external interface, NOT for static IPv6!
-net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+#net.ipv6.conf.eth0.accept_ra = 2
 EOF
 
 sysctl --system
