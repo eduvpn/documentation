@@ -139,6 +139,7 @@ See the instructions below on how to get the VPN working manually.
 | Ubuntu 16.04 LTS        | no             | no     | Uses OpenVPN 2.3                                                                                              |
 | Ubuntu 18.04 LTS        | yes*           | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648)                            |
 | Ubuntu 18.10            | yes            | yes    | -                                                                                                             | 
+| Ubuntu 19.04            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
 | Fedora 28, 29           | yes            | yes    | -                                                                                                             |
 
