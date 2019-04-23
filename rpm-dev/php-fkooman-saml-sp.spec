@@ -145,8 +145,5 @@ AUTOLOAD
 * Tue Apr 23 2019 François Kooman <fkooman@tuxed.net> - 0.1.1-1
 - update to 0.1.1
 
-* Wed Mar 20 2019 François Kooman <fkooman@tuxed.net> - 0.1.0-2
-- rebuilt
-
 * Fri Mar 15 2019 François Kooman <fkooman@tuxed.net> - 0.1.0-1
 - initial package
