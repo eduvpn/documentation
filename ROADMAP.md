@@ -33,6 +33,7 @@ We expect a release in Q4-2019.
 - Create pseudonym for "Guest" usage, now the (local) identifier is directly 
   used in the "Guest" identifier. Do something like `hash(salt+user_id)` 
   instead and simply log it at 'generation time'
+- Support MySQL/MariaDB as database next to SQLite?
 
 ## Apps
 
