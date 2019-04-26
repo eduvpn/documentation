@@ -2,7 +2,7 @@
 
 Name:       vpn-server-node
 Version:    2.0.1
-Release:    0.1%{?dist}
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -148,7 +148,7 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
-* Fri Apr 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+* Fri Apr 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 
 * Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
