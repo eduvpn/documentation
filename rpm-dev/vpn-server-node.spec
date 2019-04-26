@@ -1,8 +1,8 @@
-%global git 6b2a34864d22df2b7e40db515b907676353b39c4
+%global git 1e68ba9f3a593147b23c522c2629b23f5e8b01d6
 
 Name:       vpn-server-node
-Version:    2.0.0
-Release:    1%{?dist}
+Version:    2.0.1
+Release:    0.1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -148,5 +148,8 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Apr 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-0.1
+- update to 2.0.1
+
 * Mon Apr 01 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
