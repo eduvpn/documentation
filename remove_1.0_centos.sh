@@ -59,6 +59,6 @@ rm -f /etc/httpd/conf.d/vpn-user-portal*
 rm -f /etc/httpd/conf.d/vpn-admin-portal*
 rm -f /etc/httpd/conf.d/vpn-server-api*
 
-# Delete old repository file
-rm /etc/yum.repos.d/LC.repo
-rm /etc/yum.repos.d/eduVPN.repo
+# Delete old repository file(s)
+rm -f /etc/yum.repos.d/LC.repo
+rm -f /etc/yum.repos.d/eduVPN.repo
