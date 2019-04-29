@@ -110,3 +110,13 @@ The OAuth key, if you need to keep using the old one needs to be modified:
 
 The location also changed. Copy the `OAuth.new.key` to 
 `/etc/vpn-user-portal/oauth.key`.
+
+If you update your configuration files, you can also take a look at the 
+"templates" that contain the default configuration. Some of the scripts that 
+run during the deployment stage modify those files and remove all the comments
+in the process, which is unfortunate. The templates can be found here:
+
+- https://github.com/eduvpn/vpn-user-portal/blob/v2/config/config.php.example
+- https://github.com/eduvpn/vpn-server-api/blob/v2/config/config.php.example
+- https://github.com/eduvpn/vpn-server-node/blob/v2/config/config.php.example
+- https://github.com/eduvpn/vpn-server-node/blob/v2/config/firewall.php.example
