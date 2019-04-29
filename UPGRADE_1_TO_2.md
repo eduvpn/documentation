@@ -1,28 +1,29 @@
-# From 1.0 to 2.0
+# Upgrade from 1.0 to 2.0
 
-This post describes how to "upgrade" your 1.0 server to 2.0. I wrote "upgrade" 
-as there is no way to automatically upgrade your server to 2.0. The reason for
-this is the extensive changes during the lifetime of 1.0. Therefore, there are
-many different "deployments" out there in various stages. As we needed to break 
-compatibility for client configurations anyway as we removed some legacy 
-OpenVPN configuration options and changed the OAuth token format we didn't 
-bother handling the upgrade scenario. This also means that all current users
-will need to download a new configuration and configure their device. If they
-are using the Let's Connect! or eduVPN [apps](apps.html) this will be handled 
+This document describes how to "upgrade" your 1.0 server to 2.0. I wrote 
+"upgrade" as there is no way to automatically upgrade your server to 2.0. The 
+reason for this is the extensive changes during the lifetime of 1.0. Therefore, 
+there are many different "deployments" out there in various stages. As we 
+needed to break compatibility for client configurations anyway as we removed 
+some legacy OpenVPN configuration options and changed the OAuth token format we 
+didn't bother handling the upgrade scenario. This also means that all current 
+users will need to download a new configuration and configure their device. If 
+they are using the Let's Connect! or eduVPN apps this will be handled 
 automatically: only a new authentication/authorization will be triggered.
 
-The way we approach an "upgrade" now consists of these steps:
+The way we approach an "upgrade" consists of these steps:
 
 1. Create a backup of relevant configuration files;
-2. Reset your VPN server or remove the 1.0 software, configuration and data;
+2. Reset your VPN server _or_ remove the 1.0 software, configuration and data;
 3. Run the `deploy_${DIST}.sh` 2.0 script;
-4. Merge the old configuration with the new configuration.
+4. (Optionally) manually merge the old configuration with the new 
+   configuration.
 
 ## Backup
 
-A few files are "nice to keep" as they may help you configure your 2.0 server 
-if you don't remember all the details of the changes you made during the 1.0
-installation.
+A few files are interesting to keep as they may help you configure your 2.0 
+server if you don't remember all the details of the changes you made during the 
+1.0 installation.
 
 - `/etc/vpn-user-portal/default/config.php`
 - `/etc/vpn-admin-portal/default/config.php`
@@ -30,14 +31,13 @@ installation.
 - `/etc/vpn-server-node/firewall.php`
 - `/var/lib/vpn-user-portal/default/OAuth.key` (only for servers that have 
   "Guest Access" enabled)
+- `/etc/httpd/conf.d/${HOSTNAME}.conf` (where `${HOSTNAME}` is the name of your 
+  VPN server)
 
 You SHOULD also make sure you have a copy of your TLS certificate/key if you 
 used something else than Let's Encrypt as the new deploy script MAY overwrite 
-your TLS certificate!
-
-Also create a backup of the Apache virtual host file in 
-`/etc/httpd/conf.d/${HOSTNAME}.conf` where `${HOSTNAME}` is the name of your 
-VPN server. This is especially important if you are using SAML authentication.
+your TLS certificate! However, this depends on how/where you installed the 
+certificate.
 
 ## Remove
 
