@@ -38,6 +38,7 @@ We expect a release in Q4-2019.
   instead and simply log it at 'generation time' so we can always find back the
   actual user
 - Support MySQL/MariaDB as database next to SQLite?
+- Support multiple (SAML) attributes for determining permissions / admin
 
 ## Apps
 
