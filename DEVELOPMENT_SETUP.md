@@ -66,12 +66,6 @@ To generate the OpenVPN server configuration files:
 
 The configuration will be stored in the `openvpn-config` folder.
 
-# Developing
-
-The `lc/common` dependency is stored in the `vpn-lib-common` folder. The 
-components `vpn-user-portal`, `vpn-server-api` and `vpn-server-node` have a
-symlink to this folder.
-
 # Making a Release
 
 ## Setup
