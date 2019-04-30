@@ -29,8 +29,6 @@ server if you don't remember all the details of the changes you made during the
 - `/etc/vpn-admin-portal/default/config.php`
 - `/etc/vpn-server-api/default/config.php`
 - `/etc/vpn-server-node/firewall.php`
-- `/var/lib/vpn-user-portal/default/OAuth.key` (only for servers that have 
-  "Guest Access" enabled)
 - `/etc/httpd/conf.d/${HOSTNAME}.conf` (where `${HOSTNAME}` is the name of your 
   VPN server)
 
@@ -104,13 +102,6 @@ For example, in 1.0 the configuration for `vpn-user-portal` was located in the
 file `/etc/vpn-user-portal/default/config.php`, but in 2.0 this is now 
 `/etc/vpn-user-portal/config.php`.
 
-The OAuth key, if you need to keep using the old one needs to be modified:
-
-    $ cat OAuth.key | tr '+/' '-_' | tr -d '=' > OAuth.new.key
-
-The location also changed. Copy the `OAuth.new.key` to 
-`/etc/vpn-user-portal/oauth.key`.
-
 If you update your configuration files, you can also take a look at the 
 "templates" that contain the default configuration. Some of the scripts that 
 run during the deployment stage modify those files and remove all the comments
@@ -120,3 +111,17 @@ in the process, which is unfortunate. The templates can be found here:
 - https://github.com/eduvpn/vpn-server-api/blob/v2/config/config.php.example
 - https://github.com/eduvpn/vpn-server-node/blob/v2/config/config.php.example
 - https://github.com/eduvpn/vpn-server-node/blob/v2/config/firewall.php.example
+
+If you are using the [Guest Usage](GUEST_USAGE.md) mode, i.e. are part of the 
+"Secure Internet" list in the eduVPN apps you need to make your public key 
+available for us to add to the "discovery list" so other VPN servers can trust
+your users:
+
+    $ sudo vpn-user-portal-show-oauth-key | sudo tee /var/www/${HOSTNAME}/public_key.txt
+    OAuth Key
+        Public Key: nLa3nis8gHQJrKJfjnreITIzUUHdJX1DX8537x8MTLg
+        Key ID    : qzmnAbX7mJYEMN6aP2jO-AAKxYerc5ApskEB0Jn9iJU
+
+Provide us the `${HOSTNAME}` so we can fetch the public key over HTTPS. Make 
+sure your TLS certificate is correctly configured and trusted. We'll ask for
+confirmation that the public key is correct using another channel.
