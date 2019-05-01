@@ -45,6 +45,8 @@ We expect a release in Q4-2019.
   actual user
 - Support MySQL/MariaDB as database next to SQLite?
 - Support multiple (SAML) attributes for determining permissions / admin
+- Allow API clients to register themselves and use a secret in the future to
+  avoid needing to ask for permission again when the refresh_token expires
 
 ## Apps
 
