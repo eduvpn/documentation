@@ -11,13 +11,15 @@ We expect a release in Q4-2019.
 - remove `MellonAuthentication` and `ShibAuthentication`, for 3.0 only 
   [php-saml-sp](https://git.tuxed.net/fkooman/php-saml-sp/) will be supported
 - Remove internal API, only keep calls relevant for `vpn-server-node`
+- Support multiple (SAML/LDAP) attributes for determining permissions / admin
 
 ### In Progress
 
-- Support multiple (SAML) attributes for determining permissions / admin
+- ...
 
 ### TODO
 
+- Support AND/OR logic for permission attribute(s)
 - Find better name for `vpn-user-portal` and `vpn-server-node`, maybe simply
   `portal` and `node`?
 - Have a full php-saml-sp audit
