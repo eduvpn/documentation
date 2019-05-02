@@ -12,6 +12,9 @@ We expect a release in Q4-2019.
   [php-saml-sp](https://git.tuxed.net/fkooman/php-saml-sp/) will be supported
 - Remove internal API, only keep calls relevant for `vpn-server-node`
 - Support multiple (SAML/LDAP) attributes for determining permissions / admin
+- Never have the included deploy scripts modify and 'reformat' configuration 
+  files, it makes it horrible for the admin to modify the file and loses 
+  comments
 
 ### In Progress
 
@@ -25,9 +28,6 @@ We expect a release in Q4-2019.
 - Have a full php-saml-sp audit
 - Think about making additional node(s) work independent (for a time) without
   the `portal`
-- Never have the included deploy scripts modify and 'reformat' configuration 
-  files, it makes it horrible for the admin to modify the file and loses 
-  comments
 - Drop support for CentOS 7, Debian 9, only support:
   - Debian >= 10 
   - RHEL / CentOS >= 8
