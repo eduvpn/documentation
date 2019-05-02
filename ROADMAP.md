@@ -12,6 +12,10 @@ We expect a release in Q4-2019.
   [php-saml-sp](https://git.tuxed.net/fkooman/php-saml-sp/) will be supported
 - Remove internal API, only keep calls relevant for `vpn-server-node`
 
+### In Progress
+
+- Support multiple (SAML) attributes for determining permissions / admin
+
 ### TODO
 
 - Find better name for `vpn-user-portal` and `vpn-server-node`, maybe simply
@@ -35,18 +39,20 @@ We expect a release in Q4-2019.
 - Move network (sysctl) configuration to the `node` package
 - Reduce the number of steps in the "deploy" scripts, make it easier to perform
   manual install without needing the deploy script
-- Store the (profile) configuration in a database instead of configuration 
-  file?
 - Automatically (re)configure OpenVPN processes/restart them when needed with
   a cronjob?
 - Create pseudonym for "Guest" usage, now the (local) identifier is directly 
   used in the "Guest" identifier. Do something like `hash(salt+user_id)` 
   instead and simply log it at 'generation time' so we can always find back the
   actual user
-- Support MySQL/MariaDB as database next to SQLite?
-- Support multiple (SAML) attributes for determining permissions / admin
 - Allow API clients to register themselves and use a secret in the future to
-  avoid needing to ask for permission again when the refresh_token expires
+  avoid needing to ask for permission again when the refresh_tokenex expires
+
+### Maybe
+
+- Support MySQL/MariaDB as database next to SQLite?
+- Store the (profile) configuration in a database instead of configuration 
+  file?
 
 ## Apps
 
