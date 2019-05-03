@@ -1,5 +1,6 @@
 ---
-title: Let's Connect! & eduVPN 3.0 Roadmap
+title: Roadmap
+description: Development of Let's Connect! / eduVPN 3.0
 ---
 
 We expect a release in Q4-2019.

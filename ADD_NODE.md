@@ -1,5 +1,6 @@
 ---
 title: Add Node
+description: Add a VPN node for handling OpenVPN connections
 category: howto
 ---
 
