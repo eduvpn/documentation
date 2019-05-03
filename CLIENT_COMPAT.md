@@ -1,4 +1,7 @@
-# Introduction
+---
+title: Client Compatibility
+description: List of Supported VPN Clients
+---
 
 This document describes a number of VPN clients that can be used to connect to 
 the VPN service.

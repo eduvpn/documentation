@@ -1,4 +1,7 @@
-# Introduction
+---
+title: Add Node
+category: howto
+---
 
 This document describes how to add a new VPN server to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh`.
@@ -35,7 +38,6 @@ attention to the following options:
 * `hostName` - set it to the hostname of the VPN node that points to its 
   public IP address;
 * `range` and `range6` - set them to the IP addresses issued by the node;
-* `extIf` - set the external interface of the _node_.
 
 Next, we want to allow access from the node to the `vpn-server-api` component, 
 modify `/etc/httpd/conf.d/vpn-server-api.conf` and add `Require ip` lines 

@@ -1,4 +1,8 @@
-# DNS filtering
+---
+title: DNS Filtering
+description: Block malware/tracking/advertisement domains with Local DNS Resolver
+category: howto
+---
 
 If you run a local DNS server on your VPN server, you can let users benefit from
 ad/malware/tracking domain blocking by adding a VPN profile. Additionally, this

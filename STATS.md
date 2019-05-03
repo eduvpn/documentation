@@ -1,4 +1,7 @@
-# Statistics
+---
+title: Stats
+description: Statistics Notes
+---
 
 Some very basic anonymous statistics are recorded regarding VPN usage. The 
 files are stored in e.g. `/var/lib/vpn-server-api/stats.json`.

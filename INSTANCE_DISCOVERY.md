@@ -1,4 +1,8 @@
-# Instance Discovery
+---
+title: Instance Discovery
+description: Obtain a list of VPN server Instances
+category: dev
+---
 
 Applications can use "Instance Discovery" to obtain a list of known servers to
 show in the application instead of asking the user to provide the FQDN of the

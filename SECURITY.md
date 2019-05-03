@@ -1,4 +1,7 @@
-# Security
+---
+title: Security
+description: Security Notes
+---
 
 This document contains some information about the security of the software, 
 more specifically: the configuration choices that were made.

@@ -1,4 +1,8 @@
-# Multi Profile
+---
+title: Multi Profile
+description: Configure VPN Profiles on VPN Server
+category: howto
+---
 
 It is possible to add additional "profiles" to a VPN service. This is useful 
 when you for example have two categories of users using the same VPN server,
@@ -29,7 +33,6 @@ modified, you can remove the `internet` profile that was there by default:
             'displayName' => 'Office',
             ...
             ...
-            'extIf' => 'eth0',
             'hostName' => 'office.vpn.example',
             'range' => '10.0.5.0/24',
             'range6' => 'fd10:0:5::/48',
@@ -43,7 +46,6 @@ modified, you can remove the `internet` profile that was there by default:
             'displayName' => 'Administrators',
             ...
             ...
-            'extIf' => 'eth0',
             'hostName' => 'admin.vpn.example',
             'range' => '10.0.10.0/24',
             'range6' => 'fd10:0:10::/48',
@@ -52,10 +54,8 @@ modified, you can remove the `internet` profile that was there by default:
         ],
     ],
 
-In this scenario, `extIf` is actually the interface where the traffic needs 
-to go, so the "LAN" interface of the VPN server. It is best to use different
-`hostName` values for the profiles as this gives more flexibility to move to
-a setup with multiple machines in the future.
+It is best to use different `hostName` values for the profiles as this gives 
+more flexibility to move to a setup with multiple machines in the future.
 
 If you have multiple (public) IP addresses at your disposal for the VPN server, 
 you can use the `listen` key to specify them. This will make you loose the IPv4 

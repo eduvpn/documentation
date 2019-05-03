@@ -1,4 +1,8 @@
-# Guest Usage
+---
+title: Guest Usage
+description: Setup and Enable Guest Usage (VPN Federation)
+category: howto
+---
 
 The VPN server software implements "Guest Usage". This means that users of one
 VPN server deployment, e.g operated by organization A, can use another 

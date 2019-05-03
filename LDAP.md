@@ -1,4 +1,8 @@
-# Introduction
+---
+title: LDAP
+description: Enable LDAP Authentication
+category: howto
+---
 
 This document describes how to configure LDAP for deployed systems. We assume 
 you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 

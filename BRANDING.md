@@ -1,3 +1,9 @@
+---
+title: Branding
+description: Configure Branding/Themes (eduVPN/Let's Connect!)
+category: howto
+---
+
 This document describes how to add the Let's Connect! or eduVPN branding to 
 your server installation. By default a simple "plain" branding is used.
 

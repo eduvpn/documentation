@@ -1,4 +1,8 @@
-# Local DNS
+---
+title: Local DNS
+description: Run Local DNS Resolver on VPN server
+category: howto
+---
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
 DNS servers used by the server itself (as configured in `/etc/resolv.conf`) for

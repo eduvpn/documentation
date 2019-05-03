@@ -1,6 +1,10 @@
-**NOTE**: this is a work in progress!
+---
+title: Development Practices
+description: Developer Guidelines
+category: dev
+---
 
-# Introduction
+**NOTE**: this is a work in progress!
 
 This post will describe my development practices for 
 [PHP](https://secure.php.net/) software development running in production on 

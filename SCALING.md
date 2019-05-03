@@ -1,4 +1,7 @@
-# Introduction
+---
+title: Scaling
+description: Performance/Scaling Notes
+---
 
 Most organizations start by deploying a single server, which can scale quite 
 well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 

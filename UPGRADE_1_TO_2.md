@@ -1,4 +1,6 @@
-# Upgrade from 1.0 to 2.0
+---
+title: Upgrade from 1.0 to 2.0
+---
 
 This document describes how to "upgrade" your 1.0 server to 2.0. I wrote 
 "upgrade" as there is no way to automatically upgrade your server to 2.0. The 

@@ -1,4 +1,7 @@
-# SELinux
+---
+title: SELinux
+description: SELinux Notes
+---
 
 If you used the `deploy_${DIST}.sh` script on CentOS, Red Hat Enterprise Linux 
 or Fedora, your VPN server has SELinux fully enabled and configured. If you 

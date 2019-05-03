@@ -1,4 +1,8 @@
-# Introduction
+---
+title: Development Setup
+description: Setup a Developer Environment
+category: dev
+---
 
 This document will describe how to set up an Let's Connect! / eduVPN 
 development environment for easy development and running it on your development 

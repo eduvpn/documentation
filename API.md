@@ -1,4 +1,8 @@
-# Introduction
+---
+title: API
+description: API Documentation for (Native) Application Developers
+category: dev
+---
 
 This document describes the API provided by all Let's Connect!/eduVPN services.
 

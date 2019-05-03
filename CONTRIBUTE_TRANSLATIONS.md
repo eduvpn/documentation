@@ -1,3 +1,9 @@
+---
+title: Contribute Translations
+description: Contribute Translations for the User and Admin portal(s)
+category: howto
+---
+
 If you'd like to contribute translations to the VPN software this document
 explains how.
 

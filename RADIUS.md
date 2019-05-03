@@ -1,4 +1,8 @@
-# Introduction
+---
+title: RADIUS
+description: Enable RADIUS Authentication
+category: howto
+---
 
 This document describes how to configure RADIUS for deployed systems. We assume 
 you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 

@@ -1,4 +1,8 @@
-# Introduction
+---
+title: Custom Branding
+description: Apply your own Branding/Themes
+category: howto
+---
 
 This document describes how to apply your own branding (style and e.g. logo) to
 the portal.
