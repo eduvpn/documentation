@@ -22,6 +22,9 @@ We expect a release in Q4-2019.
 
 ### TODO
 
+- "Autoconfig" as much as possible, i.e. do not require (optional) 
+  configuration parameters to be set, e.g. `Api` section, etc. Have good 
+  defaults when config is missing
 - Support AND/OR logic for permission attribute(s)
 - Find better name for `vpn-user-portal` and `vpn-server-node`, maybe simply
   `portal` and `node`?
