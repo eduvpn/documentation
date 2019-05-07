@@ -28,9 +28,9 @@ the deploy script and follow the steps.
 
 Perform these steps on the host where you want to deploy:
 
-    $ curl -L -O https://github.com/eduvpn/documentation/archive/master.tar.gz
-    $ tar -xzf master.tar.gz
-    $ cd documentation-master
+    $ curl -L -O https://github.com/eduvpn/documentation/archive/v1.tar.gz
+    $ tar -xzf v1.tar.gz
+    $ cd documentation-v1
 
 Run the script (as root):
 
