@@ -37,9 +37,9 @@ about modifying the PHP configuration.
 
 Perform these steps on the host where you want to deploy:
 
-    $ wget https://github.com/eduvpn/documentation/archive/master.tar.gz
-    $ tar -xzf master.tar.gz
-    $ cd documentation-master
+    $ wget https://github.com/eduvpn/documentation/archive/v2.tar.gz
+    $ tar -xzf v2.tar.gz
+    $ cd documentation-v2
 
 We assume you have `sudo` installed and configured for your user first, after
 this:
