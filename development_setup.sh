@@ -29,22 +29,24 @@ $localConfig = [
 return array_merge($baseConfig, $localConfig);
 EOF
 
-php bin/init.php
+php libexec/init.php
 php bin/add-user.php --user foo   --pass bar
 php bin/add-user.php --user admin --pass secret
+NODE_API_SECRET=$(cat config/node-api.key)
 
 # vpn-server-node
 cd "${BASE_DIR}/vpn-server-node" || exit
 mkdir -p data openvpn-config
 composer update
 cp config/firewall.php.example config/firewall.php
-cat << 'EOF' > config/config.php
+cat << EOF > config/config.php
 <?php
-$baseConfig = include __DIR__.'/config.php.example';
-$localConfig = [
+\$baseConfig = include __DIR__.'/config.php.example';
+\$localConfig = [
     'apiUri' => 'http://localhost:8082/node-api.php',
+    'apiPass' => '${NODE_API_SECRET}',
 ];
-return array_merge($baseConfig, $localConfig);
+return array_merge(\$baseConfig, \$localConfig);
 EOF
 
 # launch script
