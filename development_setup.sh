@@ -1,18 +1,19 @@
 #!/bin/sh
 
-BASE_DIR=${HOME}/Projects/LC
+LC_BRANCH=master
+BASE_DIR=${HOME}/Projects/LC-${LC_BRANCH}
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone https://github.com/eduvpn/vpn-user-portal.git
-git clone https://github.com/eduvpn/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-user-portal.git
+git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-node.git
 
 # clone all repositories (read/write, your own "fork")
 #GITHUB_USER=fkooman
-#git clone git@github.com:${GITHUB_USER}/vpn-user-portal.git
-#git clone git@github.com:${GITHUB_USER}/vpn-server-node.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-user-portal.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
@@ -24,13 +25,11 @@ cat << 'EOF' > config/config.php
 $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
     'secureCookie' => false,
-    'apiUri' => 'http://localhost:8008/api.php',
 ];
 return array_merge($baseConfig, $localConfig);
 EOF
 
 php bin/init.php
-php bin/generate-oauth-key.php
 php bin/add-user.php --user foo   --pass bar
 php bin/add-user.php --user admin --pass secret
 
@@ -43,7 +42,7 @@ cat << 'EOF' > config/config.php
 <?php
 $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
-    'apiUri' => 'http://localhost:8008/api.php',
+    'apiUri' => 'http://localhost:8082/node-api.php',
 ];
 return array_merge($baseConfig, $localConfig);
 EOF
