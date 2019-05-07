@@ -1,5 +1,5 @@
 #!/bin/sh
-COPR_REPO=lc-v2-dev
+COPR_REPO=lc-dev
 
 # setup the build directory
 rpmdev-setuptree
