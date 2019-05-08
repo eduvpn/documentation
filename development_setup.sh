@@ -9,6 +9,7 @@ cd "${BASE_DIR}" || exit
 # clone repositories (read-only)
 git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-user-portal.git
 git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/eduvpn/documentation.git
 
 # clone all repositories (read/write, your own "fork")
 #GITHUB_USER=fkooman
