@@ -28,10 +28,10 @@ Install the required software:
         php-gd google-roboto-fonts
 
 Download the `development_setup.sh` script from this repository and run it. It
-will by default create a directory `${HOME}/Project/LC` under which 
+will by default create a directory `${HOME}/Project/LC-v2` under which 
 everything will be installed. No `root` is required!
 
-    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/master/development_setup.sh
+    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup.sh
     $ sh ./development_setup.sh
 
 # Testing
@@ -39,7 +39,7 @@ everything will be installed. No `root` is required!
 All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
-    $ cd ${HOME}/Projects/LC/vpn-user-portal
+    $ cd ${HOME}/Projects/LC-v2/vpn-user-portal
     $ phpunit7
 
 # Using
@@ -47,7 +47,7 @@ e.g.:
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
 
-    $ cd ${HOME}/Projects/LC
+    $ cd ${HOME}/Projects/LC-v2
     $ sh ./launch.sh
 
 Now with your browser you can connect to the user portal on 
@@ -60,12 +60,12 @@ You can login with the users `foo` and password `bar` or `admin` with password
 
 To generate the firewall and output the data to `stdout`:
     
-    $ cd ${HOME}/Projects/LC/vpn-server-node 
+    $ cd ${HOME}/Projects/LC-v2/vpn-server-node 
     $ php bin/generate-firewall.php
 
 To generate the OpenVPN server configuration files:
 
-    $ cd ${HOME}/Projects/LC/vpn-server-node
+    $ cd ${HOME}/Projects/LC-v2/vpn-server-node
     $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
