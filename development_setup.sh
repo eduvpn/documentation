@@ -1,16 +1,27 @@
 #!/bin/sh
 
-BASE_DIR=${HOME}/Projects/eduVPN
+LC_BRANCH=v1
+GITHUB_USER=eduvpn
+BASE_DIR=${HOME}/Projects/LC-${LC_BRANCH}
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
-# clone all repositories
-git clone https://github.com/eduvpn/vpn-server-api.git
-git clone https://github.com/eduvpn/vpn-user-portal.git
-git clone https://github.com/eduvpn/vpn-admin-portal.git
-git clone https://github.com/eduvpn/vpn-server-node.git
-git clone https://github.com/eduvpn/vpn-lib-common.git
+# clone repositories (read-only)
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-lib-common.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-user-portal.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-admin-portal.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
+
+# clone all repositories (read/write, your own "forks")
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-user-portal.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-admin-portal.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-api.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
 
 # vpn-server-api
 cd "${BASE_DIR}/vpn-server-api" || exit
@@ -60,12 +71,10 @@ cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
     cd vpn-server-api || exit
     VPN_INSTANCE_ID=default php -S localhost:8008 -t web &
 )
-
 (
     cd vpn-user-portal || exit
     VPN_INSTANCE_ID=default php -S localhost:8082 -t web &
 )
-
 (
     cd vpn-admin-portal || exit
     VPN_INSTANCE_ID=default php -S localhost:8083 -t web &
