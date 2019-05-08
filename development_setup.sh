@@ -1,23 +1,25 @@
 #!/bin/sh
 
 LC_BRANCH=v2
+GITHUB_USER=eduvpn
 BASE_DIR=${HOME}/Projects/LC-${LC_BRANCH}
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-lib-common.git
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-user-portal.git
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-api.git
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-lib-common.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-user-portal.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
 
-# clone all repositories (read/write, your own "fork")
-#GITHUB_USER=fkooman
+# clone all repositories (read/write, your own "forks")
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-user-portal.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-api.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
