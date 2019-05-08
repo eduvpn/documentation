@@ -1,7 +1,8 @@
 # Introduction
 
-This document will describe how to set up an eduVPN development environment 
-for easy development and running it on your development system. 
+This document will describe how to set up an Let's Connect! / eduVPN 
+development environment for easy development and running it on your development 
+system. 
 
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
@@ -23,10 +24,10 @@ Install the required software:
         php-gd google-roboto-fonts
 
 Download the `development_setup.sh` script from this repository and run it. It
-will by default create a directory `${HOME}/Project/eduVPN` under which 
+will by default create a directory `${HOME}/Project/LC-v1` under which 
 everything will be installed. No `root` is required!
 
-    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/master/development_setup.sh
+    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v1/development_setup.sh
     $ sh ./development_setup.sh
 
 # Testing
@@ -34,7 +35,7 @@ everything will be installed. No `root` is required!
 All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
-    $ cd ${HOME}/Projects/eduVPN/vpn-user-portal
+    $ cd ${HOME}/Projects/LC-v1/vpn-user-portal
     $ phpunit7
 
 # Using
@@ -42,42 +43,28 @@ e.g.:
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
 
-    $ cd ${HOME}/Projects/eduVPN
+    $ cd ${HOME}/Projects/LC-v1
     $ sh ./launch.sh
 
 Now with your browser you can connect to the user portal on 
 `http://localhost:8082/` and to the admin portal on `http://localhost:8083/`.
 
+You can login with the user `foo` and password `bar` in the user portal, and
+user `admin` with password `secret` in the admin portal.
+
 # VPN Configuration
 
 To generate the firewall and output the data to `stdout`:
     
-    $ cd ${HOME}/Projects/eduVPN/vpn-server-node 
+    $ cd ${HOME}/Projects/LC-v1/vpn-server-node 
     $ php bin/generate-firewall.php
 
 To generate the OpenVPN server configuration files:
 
-    $ cd ${HOME}/Projects/eduVPN/vpn-server-node
+    $ cd ${HOME}/Projects/LC-v1/vpn-server-node
     $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
-
-# Developing
-
-If you want to make changes to `vpn-lib-common`, which is a shared library 
-used by all components you can modify it and push the changes. Using 
-`composer update` you can retrieve the new version of `vpn-lib-common` in 
-the projects. You may need to change `composer.json` and change the version
-requirements to a (temporary) branch, e.g `master`. Change this:
-
-    "eduvpn/common": "^1",
-
-Into this:
-
-    "eduvpn/common": "dev-master",
-
-If you work in a fork of `eduvpn/common` you can update the URL referenced in
-the `composer.json` before running `composer update`.
 
 # Translations
 

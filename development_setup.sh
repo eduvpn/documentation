@@ -49,7 +49,7 @@ composer update
 mkdir config/default
 cp config/config.php.example config/default/config.php
 mkdir -p data/default
-php bin/add-user.php --user foo --pass bar
+php bin/add-user.php --user admin --pass secret
 sed -i "s/'secureCookie' => true/'secureCookie' => false/" config/default/config.php
 sed -i "s/'enableTemplateCache' => true/'enableTemplateCache' => false/" config/default/config.php
 sed -i "s|'apiUri' => 'http://localhost/vpn-server-api/api.php'|'apiUri' => 'http://localhost:8008/api.php'|" config/default/config.php
