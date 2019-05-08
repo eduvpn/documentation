@@ -35,34 +35,54 @@ php bin/init.php
 cd "${BASE_DIR}/vpn-user-portal" || exit
 composer update
 mkdir config/default
-cp config/config.php.example config/default/config.php
 mkdir -p data/default
+cat << 'EOF' > config/default/config.php
+<?php
+$baseConfig = include dirname(__DIR__).'/config.php.example';
+$localConfig = [
+    'secureCookie' => false,
+    'enableTemplateCache' => false,
+    'apiUri' => 'http://localhost:8008/api.php',
+];
+return array_merge($baseConfig, $localConfig);
+EOF
+
 php bin/init.php
 php bin/add-user.php --user foo --pass bar
-sed -i "s/'secureCookie' => true/'secureCookie' => false/" config/default/config.php
-sed -i "s/'enableTemplateCache' => true/'enableTemplateCache' => false/" config/default/config.php
-sed -i "s|'apiUri' => 'http://localhost/vpn-server-api/api.php'|'apiUri' => 'http://localhost:8008/api.php'|" config/default/config.php
 
 # vpn-admin-portal
 cd "${BASE_DIR}/vpn-admin-portal" || exit
 composer update
 mkdir config/default
-cp config/config.php.example config/default/config.php
 mkdir -p data/default
+cat << 'EOF' > config/default/config.php
+<?php
+$baseConfig = include dirname(__DIR__).'/config.php.example';
+$localConfig = [
+    'secureCookie' => false,
+    'enableTemplateCache' => false,
+    'apiUri' => 'http://localhost:8008/api.php',
+];
+return array_merge($baseConfig, $localConfig);
+EOF
+
 php bin/add-user.php --user admin --pass secret
-sed -i "s/'secureCookie' => true/'secureCookie' => false/" config/default/config.php
-sed -i "s/'enableTemplateCache' => true/'enableTemplateCache' => false/" config/default/config.php
-sed -i "s|'apiUri' => 'http://localhost/vpn-server-api/api.php'|'apiUri' => 'http://localhost:8008/api.php'|" config/default/config.php
 
 # vpn-server-node
 cd "${BASE_DIR}/vpn-server-node" || exit
 composer update
 mkdir config/default
-cp config/config.php.example config/default/config.php
-cp config/firewall.php.example config/firewall.php
 mkdir -p data/default
 mkdir openvpn-config
-sed -i "s|'apiUri' => 'http://localhost/vpn-server-api/api.php'|'apiUri' => 'http://localhost:8008/api.php'|" config/default/config.php
+cp config/firewall.php.example config/firewall.php
+cat << 'EOF' > config/default/config.php
+<?php
+$baseConfig = include dirname(__DIR__).'/config.php.example';
+$localConfig = [
+    'apiUri' => 'http://localhost:8008/api.php',
+];
+return array_merge($baseConfig, $localConfig);
+EOF
 
 # launch script
 cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
