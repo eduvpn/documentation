@@ -2,19 +2,20 @@
 
 LC_BRANCH=master
 BASE_DIR=${HOME}/Projects/LC-${LC_BRANCH}
+GITHUB_USER=eduvpn
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-user-portal.git
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-node.git
-git clone -b ${LC_BRANCH} https://github.com/eduvpn/documentation.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-user-portal.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
+git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
 
 # clone all repositories (read/write, your own "fork")
-#GITHUB_USER=fkooman
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-user-portal.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
+#git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
