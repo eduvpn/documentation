@@ -30,8 +30,8 @@ return array_merge($baseConfig, $localConfig);
 EOF
 
 php libexec/init.php
-php bin/add-user.php --user foo   --pass bar
-php bin/add-user.php --user admin --pass secret
+php bin/add-user.php foo   bar
+php bin/add-user.php admin secret
 NODE_API_SECRET=$(cat config/node-api.key)
 
 # vpn-server-node
