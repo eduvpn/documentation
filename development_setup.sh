@@ -27,6 +27,7 @@ cat << 'EOF' > config/config.php
 $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
     'secureCookie' => false,
+    'adminUserIdList' => ['admin'],
 ];
 return array_merge($baseConfig, $localConfig);
 EOF

@@ -11,9 +11,9 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using Fedora >= 28 for development work, but other 
-distributions will of course also work, but some minor details, regarding 
-installation of the required software, will be different.
+We assume you will be using Fedora >= 30 for development work, but other 
+distributions may also work, but some minor details, regarding installation of 
+the required software, will be different.
 
 See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
 about guidelines to follow.
@@ -22,7 +22,7 @@ about guidelines to follow.
 
 Install the required software:
 
-    $ sudo dnf -y install git composer phpunit7 openvpn \
+    $ sudo dnf -y install git composer phpunit8 openvpn \
         php-date php-filter php-hash php-json php-mbstring \
         php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
         php-gd google-roboto-fonts
