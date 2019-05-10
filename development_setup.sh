@@ -39,17 +39,16 @@ NODE_API_SECRET=$(cat config/node-api.key)
 
 # vpn-server-node
 cd "${BASE_DIR}/vpn-server-node" || exit
-mkdir -p data openvpn-config
+mkdir -p openvpn-config
 composer update
-cp config/firewall.php.example config/firewall.php
-cat << EOF > config/config.php
+cp "${BASE_DIR}/vpn-user-portal/config/node-api.key" config/node-api.key
+cat << 'EOF' > config/config.php
 <?php
-\$baseConfig = include __DIR__.'/config.php.example';
-\$localConfig = [
-    'apiUri' => 'http://localhost:8082/node-api.php',
-    'apiPass' => '${NODE_API_SECRET}',
+$baseConfig = include __DIR__.'/config.php.example';
+$localConfig = [
+    'apiUrl' => 'http://localhost:8082/node-api.php',
 ];
-return array_merge(\$baseConfig, \$localConfig);
+return array_merge($baseConfig, $localConfig);
 EOF
 
 # launch script
