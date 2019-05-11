@@ -18,6 +18,12 @@ We expect a release in Q4-2019.
 - Never have the included deploy scripts modify and 'reformat' configuration 
   files, it makes it horrible for the admin to modify the file and loses 
   comments
+- "Autoconfig" as much as possible, i.e. do not require (optional) 
+  configuration parameters to be set, e.g. `Api` section, etc. Have good 
+  defaults when config is missing
+- Fully remove firewall from VPN, should be done in deploy script, or not at 
+  all... as the firewall is 'static' anyway now, i.e. the same for all deploys
+  that is totally fine
 
 ### In Progress
 
@@ -25,12 +31,9 @@ We expect a release in Q4-2019.
 
 ### TODO
 
-- "Autoconfig" as much as possible, i.e. do not require (optional) 
-  configuration parameters to be set, e.g. `Api` section, etc. Have good 
-  defaults when config is missing
 - Support AND/OR logic for permission attribute(s)
 - Find better name for `vpn-user-portal` and `vpn-server-node`, maybe simply
-  `portal` and `node`?
+  `portal` and `node`? LC-vpn? lc-vpn? 
 - Have a full php-saml-sp audit
 - Think about making additional node(s) work independent (for a time) without
   the `portal`
@@ -44,7 +47,7 @@ We expect a release in Q4-2019.
 - Move API discovery to `.well-known` location instead of `info.json` in the 
   web root and ideally part of the software so it can get updates when updating
   the package(s)
-- Move network (sysctl) configuration to the `node` package
+- Move network (sysctl) configuration to the `node` package, or maybe not...?
 - Reduce the number of steps in the "deploy" scripts, make it easier to perform
   manual install without needing the deploy script
 - Automatically (re)configure OpenVPN processes/restart them when needed with
@@ -55,6 +58,23 @@ We expect a release in Q4-2019.
   actual user
 - Allow API clients to register themselves and use a secret in the future to
   avoid needing to ask for permission again when the refresh_tokenex expires
+- Move `node` functionality also in portal to have only 1 package
+  - optional `node` package when you deploy on multiple machines
+- Rework `node` API to make it a lot simpler, i.e. generate server configs
+  already in the `portal`, just put it in the right place
+- Write a `node` daemon that uses TLS
+
+#### Deployment
+
+I want:
+
+1. install lc-vpn or whatever it is called package
+2. restart Apache
+3. run some kind of 'apply' script to configure / launch OpenVPN
+4. basic VPN is up!
+
+After that you have to tweak the firewall and enable IP forwarding, but that's
+it. The rest should be working automatically...
 
 ### Maybe
 
