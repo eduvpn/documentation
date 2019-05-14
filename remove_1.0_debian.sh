@@ -29,7 +29,7 @@ apt-get -y remove \
     php-fkooman-secookie \
     php-fkooman-sqlite-migrate \
     php-lc-openvpn-connection-manager \
-    vpn-lib-common \
+    php-eduvpn-common \
     vpn-admin-portal \
     vpn-server-api \
     vpn-server-node \
