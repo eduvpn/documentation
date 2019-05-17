@@ -18,7 +18,7 @@ Install firewalld, if not already installed:
 ### Zone
 
 Put your external interface, e.g. `eth0` in the `external` zone, which enables
-NAT. If you are using 
+NAT _and_ IP forwarding. If you are using 
 [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager/) on your 
 server and the interface is managed by NetworkManager:
 
@@ -48,12 +48,12 @@ the VPN, go and make these rules permanent:
 
     $ firewall-cmd --runtime-to-permanent
 
-### IPv6
+### Dynamic IPv6
 
 When you host uses "dynamic" IPv6 addresses, i.e. through 
-"Router Advertisements" (RA), IPv6 forwarding will NOT work. This is because
-enabling IPv6 forwarding disables listening for RAs. There are two things you 
-can do, you need to do one of them:
+"Router Advertisements" (RA), as some VM platforms may do, IPv6 forwarding will 
+NOT work. This is because enabling IPv6 forwarding disables listening for RAs. 
+There are two things you can do, you need to do one of them:
 
 1. switch to a fixed IPv6 address on your server;
 2. modify a `sysctl` setting on your system.
