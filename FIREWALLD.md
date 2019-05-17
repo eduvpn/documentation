@@ -43,7 +43,8 @@ Open the relevant ports for "runtime", i.e. do not (yet) make them permanent:
     $ sudo firewall-cmd --zone=external --add-service=openvpn
     $ sudo firewall-cmd --zone=external --add-port=1194/tcp
 
-If everything works, go and make them permanent:
+If everything works, i.e., you can connect to the VPN and get traffic through
+the VPN, go and make these rules permanent:
 
     $ firewall-cmd --runtime-to-permanent
 
