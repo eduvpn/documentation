@@ -27,7 +27,10 @@ We expect a release in Q4-2019.
 
 ### In Progress
 
-- ...
+- Move API discovery to `.well-known` location instead of `info.json` in the 
+  web root and ideally part of the software so it can get updates when updating
+  the package(s). 
+  [Idea](https://gist.github.com/fkooman/b41271a791be83cb4e9f56b82b4bfb42).
 
 ### TODO
 
@@ -44,10 +47,6 @@ We expect a release in Q4-2019.
   - 1 for profile/config discovery?
   - 1 to make sure the client is allowed to connect?
   - remove some calls no longer relevant
-- Move API discovery to `.well-known` location instead of `info.json` in the 
-  web root and ideally part of the software so it can get updates when updating
-  the package(s)
-- Move network (sysctl) configuration to the `node` package, or maybe not...?
 - Reduce the number of steps in the "deploy" scripts, make it easier to perform
   manual install without needing the deploy script
 - Automatically (re)configure OpenVPN processes/restart them when needed with
@@ -74,7 +73,8 @@ I want:
 4. basic VPN is up!
 
 After that you have to tweak the firewall and enable IP forwarding, but that's
-it. The rest should be working automatically...
+it. The rest should be working automatically... I guess one or two firewalld
+commands should be enough to enable NAT and open udp/1194 and tcp/1194...
 
 ### Maybe
 
