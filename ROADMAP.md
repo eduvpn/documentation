@@ -62,6 +62,8 @@ We expect a release in Q4-2019.
 - Rework `node` API to make it a lot simpler, i.e. generate server configs
   already in the `portal`, just put it in the right place
 - Write a `node` daemon that uses TLS
+- implement SVG for the "Stats", drop weird font requirement and 
+  GD/ImageMagick? dependency
 
 #### Deployment
 
