@@ -24,7 +24,7 @@ server and the interface is managed by NetworkManager:
 
     $ sudo firewall-cmd --zone=external --add-interface=eth0 --permanent
 
-If you are NOT using NetworkManager, simple add `ZONE=external` to 
+If you are NOT using NetworkManager, simply add `ZONE=external` to 
 `/etc/sysconfig/network-scripts/ifcfg-eth0`.
 
 To make sure everything works out, it is best to reboot and then verify if
@@ -53,7 +53,8 @@ the VPN, go and make these rules permanent:
 When you host uses "dynamic" IPv6 addresses, i.e. through 
 "Router Advertisements" (RA), as some VM platforms may do, IPv6 forwarding will 
 NOT work. This is because enabling IPv6 forwarding disables listening for RAs. 
-There are two things you can do, you need to do one of them:
+There are two things you can do, you need to do one of them. It is recommended
+to do the first thing, if possible:
 
 1. switch to a fixed IPv6 address on your server;
 2. modify a `sysctl` setting on your system.
