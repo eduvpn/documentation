@@ -33,6 +33,10 @@ We expect a release in Q4-2019.
   [Idea](https://gist.github.com/fkooman/b41271a791be83cb4e9f56b82b4bfb42).
 - implement SVG for the "Stats", drop weird font requirement and 
   GD/ImageMagick? dependency
+- Optimize "stats" generation and KISS, do not require crazy amounts of memory
+  This should be done now, but we have to really test, but have no big data 
+  set available at the moment, have to wait for nl.eduvpn.org to have more 
+  days of logging :)
 
 ### TODO
 
@@ -64,7 +68,6 @@ We expect a release in Q4-2019.
 - Rework `node` API to make it a lot simpler, i.e. generate server configs
   already in the `portal`, just put it in the right place
 - Write a `node` daemon that uses TLS
-- Optimize "stats" generation and KISS, do not require crazy amounts of memory
 
 #### Deployment
 
