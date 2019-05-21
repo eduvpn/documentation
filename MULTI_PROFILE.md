@@ -94,5 +94,12 @@ configuration in `/etc/vpn-server-node/firewall.php`.
 Regenerate and restart the firewall:
 
     $ sudo vpn-server-node-generate-firewall --install
+
+On CentOS / Fedora:
+
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
+
+On Debian:
+
+    $ sudo systemctl restart netfilter-persistent
