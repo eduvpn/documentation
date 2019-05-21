@@ -39,7 +39,7 @@ Perform these steps on the host where you want to deploy:
 
     $ wget https://github.com/eduvpn/documentation/archive/v2.tar.gz
     $ tar -xzf v2.tar.gz
-    $ cd documentation-v2
+    $ cd documentation-2
 
 We assume you have `sudo` installed and configured for your user first, after
 this:
