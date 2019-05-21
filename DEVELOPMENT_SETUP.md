@@ -23,9 +23,8 @@ about guidelines to follow.
 Install the required software:
 
     $ sudo dnf -y install git composer phpunit8 openvpn \
-        php-date php-filter php-hash php-json php-mbstring \
-        php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
-        php-gd google-roboto-fonts
+        php-date php-filter php-hash php-json php-mbstring php-pcre php-pdo \
+        php-spl php-sodium php-pecl-radius php-ldap php-curl php-gd
 
 Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/LC-master` under which 
