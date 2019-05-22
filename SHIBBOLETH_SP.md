@@ -33,6 +33,10 @@ Verify the Shibboleth configuration:
     $ sudo shibd -t
     overall configuration is loadable, check console for non-fatal problems
 
+Restart Shibboleth:
+
+    $ sudo systemctl restart shibd
+
 Next: register your SP in your identity federation, or in your IdP.
 
 ### Apache
@@ -86,4 +90,6 @@ and set the `authMethod` and `ShibAuthentication` options:
     ...
 
 The mentioned attributes `persistent-id` and `entitlement` are configured in 
-the Shibboleth configuration. Modify as required. These are the defaults.
+the Shibboleth configuration. Modify/add others as required in 
+`/etc/shibboleth/attribute-map.xml`. Do not forget to restart Shibboleth if
+you make any changes to its configuration.
