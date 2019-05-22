@@ -22,6 +22,8 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
   element
 * Set the `entityID` to the entity ID of your IdP, or configure the 
   `discoveryURL` in the `<SSO>` element
+* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
+  1.0 support
 * Set the `file` in the `<MetadataProvider>` element for a simple static 
   metadata file
 
