@@ -15,7 +15,8 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [DEPLOY_FEDORA](DEPLOY_FEDORA.md)                     | Install and Maintain eduVPN/Let's Connect! on Fedora |
 | [LDAP](LDAP.md)                                       | Enable LDAP Authentication |
 | [RADIUS](RADIUS.md)                                   | Enable RADIUS Authentication |
-| [SAML](SAML.md)                                       | Enable SAML Authentication |
+| [SAML](SAML.md)                                       | Enable SAML (Mellon) Authentication |
+| [SHIBBOLETH_SP](SHIBBOLETH_SP.md)                     | Enable SAML (Shibboleth) Authentication |
 | [2FA](2FA.md)                                         | Configure 2FA (Two Factor Authentication) |
 | [ACL](ACL.md)                                         | Configure ACL (Access Control Lists) to manage access to VPN profiles |
 | [BRANDING](BRANDING.md)                               | Configure Branding/Themes (eduVPN/Let's Connect!) |
