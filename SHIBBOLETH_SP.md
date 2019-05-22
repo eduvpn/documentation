@@ -39,7 +39,7 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` on Debian or in
 Make sure you restart Apache after changing the configuration.
 
 In order to configure the VPN portal, modify `/etc/vpn-user-portal/config.php`
-and set the `authType` and `ShibAuthentication` options:
+and set the `authMethod` and `ShibAuthentication` options:
 
     ...
 
