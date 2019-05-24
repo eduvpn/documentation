@@ -28,6 +28,15 @@ $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
     'secureCookie' => false,
     'adminUserIdList' => ['admin'],
+    'ProfileList' => [
+        'default' => [
+              'profileNumber' => 1,
+              'displayName' => 'Default Profile',
+              'rangeFour' => '10.42.42.0/25',
+              'rangeSix' => 'fd42:4242:4242:4242::/64',
+              'hostName' => 'localhost',
+        ],
+    ],
 ];
 return array_merge($baseConfig, $localConfig);
 EOF
