@@ -19,8 +19,9 @@ git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
-mkdir -p data
 composer update
+mkdir -p openvpn-config
+mkdir -p data
 
 cat << 'EOF' > config/config.php
 <?php
@@ -30,11 +31,11 @@ $localConfig = [
     'adminUserIdList' => ['admin'],
     'ProfileList' => [
         'default' => [
-              'profileNumber' => 1,
-              'displayName' => 'Default Profile',
-              'rangeFour' => '10.42.42.0/25',
-              'rangeSix' => 'fd42:4242:4242:4242::/64',
-              'hostName' => 'localhost',
+            'profileNumber' => 1,
+            'displayName' => 'Default Profile',
+            'rangeFour' => '10.42.42.0/25',
+            'rangeSix' => 'fd42:4242:4242:4242::/64',
+            'hostName' => 'localhost',
         ],
     ],
 ];
@@ -66,6 +67,9 @@ cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
 (
     cd vpn-user-portal || exit
     php -S localhost:8082 -t web &
+    #php libexec/generate-openvpn-config.php --dev
+    #sudo openvpn --config openvpn-config/default-0.conf &
+    #sudo openvpn --config openvpn-config/default-1.conf &
 )
 EOF
 chmod +x "${BASE_DIR}/launch.sh"
