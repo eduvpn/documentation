@@ -24,6 +24,8 @@ We expect a release in Q4-2019.
 - Fully remove firewall from VPN, should be done in deploy script, or not at 
   all... as the firewall is 'static' anyway now, i.e. the same for all deploys
   that is totally fine
+- implement SVG for the "Stats", drop weird font requirement and 
+  GD/ImageMagick? dependency
 
 ### In Progress
 
@@ -31,8 +33,6 @@ We expect a release in Q4-2019.
   web root and ideally part of the software so it can get updates when updating
   the package(s). 
   [Idea](https://gist.github.com/fkooman/b41271a791be83cb4e9f56b82b4bfb42).
-- implement SVG for the "Stats", drop weird font requirement and 
-  GD/ImageMagick? dependency
 - Optimize "stats" generation and KISS, do not require crazy amounts of memory
   This should be done now, but we have to really test, but have no big data 
   set available at the moment, have to wait for nl.eduvpn.org to have more 
@@ -43,7 +43,7 @@ We expect a release in Q4-2019.
 - Support AND/OR logic for permission attribute(s)
 - Find better name for `vpn-user-portal` and `vpn-server-node`, maybe simply
   `portal` and `node`? LC-vpn? lc-vpn? 
-- Have a full php-saml-sp audit
+- Have a full php-saml-sp audit ([TODO](https://github.com/fkooman/php-saml-sp/blob/master/TODO.md))
 - Think about making additional node(s) work independent (for a time) without
   the `portal`
 - Drop support for CentOS 7, Debian 9, only support:
@@ -62,7 +62,7 @@ We expect a release in Q4-2019.
   instead and simply log it at 'generation time' so we can always find back the
   actual user
 - Allow API clients to register themselves and use a secret in the future to
-  avoid needing to ask for permission again when the refresh_tokenex expires
+  avoid needing to ask for permission again when the refresh_token expires
 - Move `node` functionality also in portal to have only 1 package
   - optional `node` package when you deploy on multiple machines
 - Rework `node` API to make it a lot simpler, i.e. generate server configs
