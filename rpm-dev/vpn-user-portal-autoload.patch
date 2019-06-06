@@ -1,8 +1,13 @@
 diff --git a/bin/add-user.php b/bin/add-user.php
-index cd79e62..05a40d7 100644
+index 498908f..c5f0a5a 100644
 --- a/bin/add-user.php
 +++ b/bin/add-user.php
-@@ -7,8 +7,8 @@
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -11,13 +16,18 @@ index cd79e62..05a40d7 100644
 +require_once '/usr/share/php/LC/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use LC\Common\CliParser;
- use LC\Common\Config;
-diff --git a/bin/foreign-key-list-fetcher.php b/bin/foreign-key-list-fetcher.php
-index 05cd7b3..3c57e8a 100644
---- a/bin/foreign-key-list-fetcher.php
-+++ b/bin/foreign-key-list-fetcher.php
-@@ -7,8 +7,8 @@
+ use LC\Portal\Config\PortalConfig;
+ use LC\Portal\Storage;
+diff --git a/bin/status.php b/bin/status.php
+index d6da5de..29e7b8f 100644
+--- a/bin/status.php
++++ b/bin/status.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -26,13 +36,158 @@ index 05cd7b3..3c57e8a 100644
 +require_once '/usr/share/php/LC/Portal/autoload.php';
 +$baseDir = '/usr/share/vpn-user-portal';
  
- use LC\Common\Config;
+ use LC\OpenVpn\ManagementSocket;
+ use LC\Portal\Config\PortalConfig;
+diff --git a/libexec/client-connect.php b/libexec/client-connect.php
+index f21cba1..99717b9 100644
+--- a/libexec/client-connect.php
++++ b/libexec/client-connect.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\Config\PortalConfig;
+ use LC\Portal\Logger;
+diff --git a/libexec/client-disconnect.php b/libexec/client-disconnect.php
+index 965092f..e3f1168 100644
+--- a/libexec/client-disconnect.php
++++ b/libexec/client-disconnect.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\Config\PortalConfig;
+ use LC\Portal\Logger;
+diff --git a/libexec/disconnect-expired-certificates.php b/libexec/disconnect-expired-certificates.php
+index 93ca5a1..57ec112 100644
+--- a/libexec/disconnect-expired-certificates.php
++++ b/libexec/disconnect-expired-certificates.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\OpenVpn\ManagementSocket;
+ use LC\Portal\Config\PortalConfig;
+diff --git a/libexec/foreign-key-list-fetcher.php b/libexec/foreign-key-list-fetcher.php
+index 746659d..de542dd 100644
+--- a/libexec/foreign-key-list-fetcher.php
++++ b/libexec/foreign-key-list-fetcher.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\Config\PortalConfig;
  use LC\Portal\ForeignKeyListFetcher;
-diff --git a/bin/generate-oauth-key.php b/bin/generate-oauth-key.php
-index da9e661..2445e25 100644
---- a/bin/generate-oauth-key.php
-+++ b/bin/generate-oauth-key.php
-@@ -7,8 +7,8 @@
+diff --git a/libexec/generate-openvpn-config.php b/libexec/generate-openvpn-config.php
+index c2147e7..9e86f62 100644
+--- a/libexec/generate-openvpn-config.php
++++ b/libexec/generate-openvpn-config.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\CA\EasyRsaCa;
+ use LC\Portal\Config\PortalConfig;
+diff --git a/libexec/generate-stats.php b/libexec/generate-stats.php
+index d2f5604..4da5d9c 100644
+--- a/libexec/generate-stats.php
++++ b/libexec/generate-stats.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\Config\PortalConfig;
+ use LC\Portal\FileIO;
+diff --git a/libexec/housekeeping.php b/libexec/housekeeping.php
+index cdc16da..0b3b7e7 100644
+--- a/libexec/housekeeping.php
++++ b/libexec/housekeeping.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Portal/autoload.php';
++$baseDir = '/usr/share/vpn-user-portal';
+ 
+ use LC\Portal\Storage;
+ 
+diff --git a/libexec/show-oauth-public-key.php b/libexec/show-oauth-public-key.php
+index 2638375..32c9deb 100644
+--- a/libexec/show-oauth-public-key.php
++++ b/libexec/show-oauth-public-key.php
+@@ -1,3 +1,4 @@
++#!/usr/bin/env php
+ <?php
+ 
+ /*
+@@ -7,8 +8,8 @@
   * SPDX-License-Identifier: AGPL-3.0+
   */
  
@@ -42,39 +197,9 @@ index da9e661..2445e25 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
- use LC\Common\FileIO;
-diff --git a/bin/init.php b/bin/init.php
-index 0e41697..b93d23b 100644
---- a/bin/init.php
-+++ b/bin/init.php
-@@ -7,8 +7,8 @@
-  * SPDX-License-Identifier: AGPL-3.0+
-  */
- 
--require_once dirname(__DIR__).'/vendor/autoload.php';
--$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LC/Portal/autoload.php';
-+$baseDir = '/usr/share/vpn-user-portal';
- 
- use LC\Common\Config;
- use LC\Common\FileIO;
-diff --git a/bin/show-oauth-key.php b/bin/show-oauth-key.php
-index d528642..9a7a07b 100644
---- a/bin/show-oauth-key.php
-+++ b/bin/show-oauth-key.php
-@@ -7,8 +7,8 @@
-  * SPDX-License-Identifier: AGPL-3.0+
-  */
- 
--require_once dirname(__DIR__).'/vendor/autoload.php';
--$baseDir = dirname(__DIR__);
-+require_once '/usr/share/php/LC/Portal/autoload.php';
-+$baseDir = '/usr/share/vpn-user-portal';
- 
- use fkooman\Jwt\Keys\EdDSA\SecretKey;
- use LC\Common\FileIO;
+ use LC\Portal\FileIO;
 diff --git a/web/api.php b/web/api.php
-index 10c1f7f..1cfc1a6 100644
+index 8d85935..7222a02 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@
@@ -87,9 +212,9 @@ index 10c1f7f..1cfc1a6 100644
 +$baseDir = '/usr/share/vpn-user-portal';
  
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
- use LC\Common\Config;
+ use LC\Portal\CA\EasyRsaCa;
 diff --git a/web/index.php b/web/index.php
-index c26a929..42272e3 100644
+index 8ecc97d..63c3a11 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -7,8 +7,8 @@
@@ -104,7 +229,7 @@ index c26a929..42272e3 100644
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use fkooman\OAuth\Server\OAuthServer;
 diff --git a/web/oauth.php b/web/oauth.php
-index 6984276..e131fdd 100644
+index 0642412..911138e 100644
 --- a/web/oauth.php
 +++ b/web/oauth.php
 @@ -7,8 +7,8 @@
@@ -118,3 +243,16 @@ index 6984276..e131fdd 100644
  
  use fkooman\Jwt\Keys\EdDSA\SecretKey;
  use fkooman\OAuth\Server\OAuthServer;
+diff --git a/web/well-known.php b/web/well-known.php
+index a066eed..7f86eae 100644
+--- a/web/well-known.php
++++ b/web/well-known.php
+@@ -7,7 +7,7 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
++require_once '/usr/share/php/LC/Portal/autoload.php';
+ 
+ use LC\Portal\Http\JsonResponse;
+ use LC\Portal\Http\Request;

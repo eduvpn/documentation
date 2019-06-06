@@ -1,6 +1,6 @@
 RANDOM_DELAY=10
 
-@hourly apache /usr/libexec/vpn-user-portal-foreign-key-list-fetcher
-@hourly apache /usr/libexec/vpn-user-portal-housekeeping
-@hourly apache /usr/libexec/vpn-user-portal-disconnect-expired-certificates
-@daily  apache /usr/libexec/vpn-user-portal-stats
+@hourly apache /usr/libexec/vpn-user-portal/foreign-key-list-fetcher
+@hourly apache /usr/libexec/vpn-user-portal/housekeeping
+@hourly apache /usr/libexec/vpn-user-portal/disconnect-expired-certificates
+@daily  apache /usr/libexec/vpn-user-portal/generate-stats
