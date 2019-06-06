@@ -26,13 +26,12 @@ We expect a release in Q4-2019.
   that is totally fine
 - implement SVG for the "Stats", drop weird font requirement and 
   GD/ImageMagick? dependency
+- Move API discovery to `.well-known` location instead of `info.json` in the 
+  web root and ideally part of the software so it can get updates when updating
+  the package(s).
 
 ### In Progress
 
-- Move API discovery to `.well-known` location instead of `info.json` in the 
-  web root and ideally part of the software so it can get updates when updating
-  the package(s). 
-  [Idea](https://gist.github.com/fkooman/b41271a791be83cb4e9f56b82b4bfb42).
 - Optimize "stats" generation and KISS, do not require crazy amounts of memory
   This should be done now, but we have to really test, but have no big data 
   set available at the moment, have to wait for nl.eduvpn.org to have more 
@@ -82,7 +81,7 @@ After that you have to tweak the firewall and enable IP forwarding, but that's
 it. The rest should be working automatically... I guess one or two firewalld
 commands should be enough to enable NAT and open udp/1194 and tcp/1194...
 
-### Maybe
+### Maybe Not
 
 - Support MySQL/MariaDB as database next to SQLite?
 - Store the (profile) configuration in a database instead of configuration 
