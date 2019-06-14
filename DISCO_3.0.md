@@ -42,6 +42,10 @@ be able to be opened as soon as this URL is called from the discovery service.
 The native app MAY use an embedded "web view" to enhance the user experience 
 by not opening an external browser and listening for the callback.
 
+The app MUST cache the `server_list` URL and refresh it periodically, e.g. once
+per day by storing the originally retrieved `ETag` and using that with a `HEAD`
+request to figure out whether the file changed.
+
 ## Server List
 
 The app can now retrieve the URL 
@@ -100,3 +104,4 @@ Information about the particular server can be obtained by requesting e.g.
   put this on the VPN server itself, i.e. listed in 
   `https://vpn.example.org/.well-known/lc-vpn`? We do need to trust the VPN 
   server then to not use a fake name and logo to "phish" the user...
+- do we want to sign this file like the "Disco 1.0" files?
