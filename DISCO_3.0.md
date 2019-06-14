@@ -1,0 +1,102 @@
+# Discovery 3.0
+
+**NOTE**: this is currently a proposal, feedback welcome!
+
+To make it possible for the native eduVPN apps to figure out which particular 
+VPN server is available for which particular user we implement a _discovery_ 
+service. This is NOT to be confused with the discovery service as used with 
+e.g. SAML.
+
+The native application can query this service, i.e. open the browser to the
+discovery service URL and after the user picks their IdP gets a URL back that
+contains information about VPN servers available for that particular IdP.
+
+## Request
+
+The native application opens an external browser, or internal "web view" to 
+the discovery URL, for example:
+
+    https://disco.eduvpn.org/?return_to=org.eduvpn.app.ios://callback/disco&nonce=6CBlXTnsRRPOcjL0jHarTcH2cP-wKyQFCan99rkygLs
+
+The `return_to` parameter contains the URL to which the application wants the
+discovery service to return after the discovery step. This URL MUST be 
+registered in the discovery service beforehand! The URL MUST not contain a 
+"query" part. The `nonce` parameter MUST be a Base64 URL encoded 
+cryptographically randomly generate 256 (32 bytes) string without padding 
+(See RFC XXXX).
+
+## Response
+
+After the user selected their IdP, the entity ID of this IdP is returned to 
+the specified `return_to` address in the request, for example:
+
+    org.eduvpn.app.ios://callback/disco?server_list=https://disco.eduvpn.org/list/https%3A%2F%2Fidp.surfnet.nl.json&nonce=6CBlXTnsRRPOcjL0jHarTcH2cP-wKyQFCan99rkygLs
+
+The `nonce` received MUST exactly match the `nonce` that was part of the 
+request.
+
+The native application needs to register this `return_to` URL, in this case
+`org.eduvpn.app.ios://callback/disco` in its application manifest in order to 
+be able to be opened as soon as this URL is called from the discovery service.
+
+The native app MAY use an embedded "web view" to enhance the user experience 
+by not opening an external browser and listening for the callback.
+
+## Server List
+
+The app can now retrieve the URL 
+`https://disco.eduvpn.org/list/https%3A%2F%2Fidp.surfnet.nl.json`. It looks 
+like this:
+
+    {
+        "server_list": {
+            "https://eduvpn1.eduvpn.de": {
+                "api_authz_source": "https://nl.eduvpn.org",
+                "display_name": {
+                    "de-DE": "Deutschland",
+                    "en-US": "Germany",
+                    "nb-NO": "Tyskland",
+                    "nl-NL": "Duitsland"
+                },
+                "logo_uri": "https://static.eduvpn.nl/disco/img/de.png"
+            },
+            "https://nl.eduvpn.org": {
+                "api_authz_source": "https://nl.eduvpn.org",
+                "display_name": {
+                    "da-DK": "Holland",
+                    "en-US": "The Netherlands",
+                    "nb-NO": "Nederland",
+                    "nl-NL": "Nederland"
+                },
+                "logo_uri": "https://static.eduvpn.nl/disco/img/nl.png"
+            },
+            "https://surfnet.eduvpn.nl": {
+                "api_authz_source": "https://surfnet.eduvpn.nl",
+                "display_name": {
+                    "nl_NL": "SURFnet"
+                },
+                "logo_uri": "https://static.eduvpn.nl/disco/img/surfnet.png"
+            }
+        }
+    }
+
+As you can notice, this a list of all the available VPN servers for this 
+particular IdP (`https://idp.surfnet.nl`).
+
+The `api_authz_source` indicates at which server to obtain an OAuth token for
+use with this particular server. So in this case, if the user decides to 
+connect to "Germany", it needs an access_token from `https://nl.eduvpn.org` 
+first.
+
+The "key" of the `server_list` is the "Origin" of the server. It contains the
+scheme, the host and optionally port. It does NOT contain a path. 
+
+Information about the particular server can be obtained by requesting e.g. 
+`https://nl.eduvpn.org/.well-known/lc-vpn`.
+
+# Open Issues
+
+- do we want to have a `logo_uri` and  `display_name` here, or do we want to 
+  put this on the VPN server itself, i.e. listed in 
+  `https://vpn.example.org/.well-known/lc-vpn`? We do need to trust the VPN 
+  server then to not use a fake name and logo to "phish" the user...
