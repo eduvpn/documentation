@@ -105,3 +105,4 @@ Information about the particular server can be obtained by requesting e.g.
   `https://vpn.example.org/.well-known/lc-vpn`? We do need to trust the VPN 
   server then to not use a fake name and logo to "phish" the user...
 - do we want to sign this file like the "Disco 1.0" files?
+- not sure if the `api_authz_source` is such a good idea? Any other ideas?
