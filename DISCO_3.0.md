@@ -98,12 +98,18 @@ scheme, the host and optionally port. It does NOT contain a path.
 Information about the particular server can be obtained by requesting e.g. 
 `https://nl.eduvpn.org/.well-known/lc-vpn`.
 
+The `display_name` is a map from language code to string. The `logo_uri` is 
+either an absolute URL to an common image format, or a "data URI". Both keys 
+are OPTIONAL. In case they are missing, they SHOULD be taken from the server's 
+`.well-known/lc-vpn` resource. The `display_name` and `logo_uri` if available
+from the (global) discovery file MUST be used if available.
+
+If the `display_name` is not available, the "Origin" of the server MUST be used 
+as its display name. If the `logo_uri` is not available it is up to the 
+application to handle this case and e.g. show a "default logo".
+
 # Open Issues
 
-- do we want to have a `logo_uri` and  `display_name` here, or do we want to 
-  put this on the VPN server itself, i.e. listed in 
-  `https://vpn.example.org/.well-known/lc-vpn`? We do need to trust the VPN 
-  server then to not use a fake name and logo to "phish" the user...
 - do we want to sign this file like the "Disco 1.0" files?
 - not sure if the `api_authz_source` is such a good idea? Any other ideas?
 - do we need to include a `version` query parameter? Or can we just add this
