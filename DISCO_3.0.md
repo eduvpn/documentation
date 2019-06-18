@@ -95,7 +95,7 @@ first.
 The "key" of the `server_list` is the "Origin" of the server. It contains the
 scheme, the host and optionally port. It does NOT contain a path. 
 
-Information about the particular server can be obtained by requesting e.g. 
+Information about the particular server can be obtained by requesting 
 `https://nl.eduvpn.org/.well-known/lc-vpn`.
 
 The `display_name` is a map from language code to string. The `logo_uri` is 
