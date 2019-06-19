@@ -3,17 +3,17 @@
 **NOTE**: this is currently a proposal, feedback welcome!
 
 To make it possible for the native eduVPN apps to figure out which particular 
-VPN server is available for which particular user we implement a _discovery_ 
-service. This is NOT to be confused with the discovery service as used with 
-e.g. SAML.
+VPN server is available for which particular user we implement a 
+_discovery service_. This is NOT to be confused with the discovery service as 
+used with e.g. SAML.
 
 The native application can query this service, i.e. open the browser to the
-discovery service URL and after the user picks their IdP gets a URL back that
-contains information about VPN servers available for that particular IdP.
+discovery service URL, and after the user picks their IdP, gets a URL back that
+point to information about VPN servers available for that particular IdP.
 
 ## Request
 
-The native application opens an external browser, or internal "web view" to 
+The native application opens an external browser, or embedded "web view" to 
 the discovery URL, for example:
 
     https://disco.eduvpn.org/?return_to=org.eduvpn.app.ios://callback/disco&nonce=6CBlXTnsRRPOcjL0jHarTcH2cP-wKyQFCan99rkygLs
@@ -21,9 +21,10 @@ the discovery URL, for example:
 The `return_to` parameter contains the URL to which the application wants the
 discovery service to return after the discovery step. This URL MUST be 
 registered in the discovery service beforehand! The URL MUST not contain a 
-"query" part. The `nonce` parameter MUST be a Base64 URL encoded 
-cryptographically randomly generate 256 (32 bytes) string without padding 
-(See RFC XXXX).
+"query" part. 
+
+The `nonce` parameter MUST be a Base64 URL encoded cryptographically randomly 
+generate 256 (32 bytes) string without padding (See RFC XXXX).
 
 ## Response
 
@@ -35,16 +36,11 @@ the specified `return_to` address in the request, for example:
 The `nonce` received MUST exactly match the `nonce` that was part of the 
 request.
 
-The native application needs to register this `return_to` URL, in this case
-`org.eduvpn.app.ios://callback/disco` in its application manifest in order to 
-be able to be opened as soon as this URL is called from the discovery service.
-
-The native app MAY use an embedded "web view" to enhance the user experience 
-by not opening an external browser and listening for the callback.
-
-The app MUST cache the `server_list` URL and refresh it periodically, e.g. once
-per day by storing the originally retrieved `ETag` and using that with a `HEAD`
-request to figure out whether the file changed.
+In case the application uses an embedded "web view" it may be possible to 
+obtain the `return_to` URL directly. In case an external browser is used, it
+MAY be required to register the `return_to` URL in the application manifest, 
+depending on the OS. Every platform will have their own unique `return_to` 
+address thta is pre-registered at the server.
 
 ## Server List
 
@@ -84,29 +80,41 @@ like this:
         }
     }
 
-As you can notice, this a list of all the available VPN servers for this 
+As one can notice, this a list of all the available VPN servers for this 
 particular IdP (`https://idp.surfnet.nl`).
 
 The `api_authz_source` indicates at which server to obtain an OAuth token for
 use with this particular server. So in this case, if the user decides to 
 connect to "Germany", it needs an access_token from `https://nl.eduvpn.org` 
-first.
+first. The server in Germany accepts OAuth tokens issued by 
+`https://nl.eduvpn.org`.
 
 The "key" of the `server_list` is the "Origin" of the server. It contains the
 scheme, the host and optionally port. It does NOT contain a path. 
 
-Information about the particular server can be obtained by requesting 
+Information about a particular server can be obtained by requesting 
+`${ORIGIN}/.well-known/lc-vpn`, e.g. 
 `https://nl.eduvpn.org/.well-known/lc-vpn`.
 
 The `display_name` is a map from language code to string. The `logo_uri` is 
 either an absolute URL to an common image format, or a "data URI". Both keys 
-are OPTIONAL. In case they are missing, they SHOULD be taken from the server's 
-`.well-known/lc-vpn` resource. The `display_name` and `logo_uri` if available
-from the (global) discovery file MUST be used if available.
+are OPTIONAL. In case they are missing, they SHOULD be taken from the 
+`${ORIGIN}/.well-known/lc-vpn` resource. If `display_name` and `logo_uri` are
+specified at both through the `server_list` URL and the 
+`${ORIGIN}/.well-known/lc-vpn` resource, the first one MUST be used.
 
-If the `display_name` is not available, the "Origin" of the server MUST be used 
-as its display name. If the `logo_uri` is not available it is up to the 
-application to handle this case and e.g. show a "default logo".
+If `logo_uri` and `display_name` are not available from either resource, the 
+Origin MUST be used as `display_name` and a "default" logo, at the 
+application's discretion is to be used for this server.
+
+## Caching
+
+If any local caching of the content of the `server_list` URL is implemented, 
+the application MUST respect the HTTP server response headers regarding caching 
+of this data, e.g. respect `Cache-Control` and other headers. If no caching is 
+implemented, the application MUST fetch the `server_list` URL at every 
+application start, or periodically (once a day) on platforms where applications 
+are not typically (re)started by the user.
 
 # Open Issues
 
