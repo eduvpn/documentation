@@ -17,18 +17,8 @@ This "Guest Usage" scenario is OPTIONAL and **DISABLED** by default.
 
 # Deployment
 
-In order to show your public key needed for the registry file, you can use the
-following command:
-
-```bash
-$ sudo vpn-user-portal-show-oauth-key 
-OAuth Key
-    Public Key: o4KD2G_-t1fHVyB8VNpD3DbGEOsWvX6EmuPddJCWCPA
-    Key ID    : eia8y1dTfbTIj_6W4fadk6OZPb2jRULclVh69b0ZS20
-```
-
-Now, in the file `/etc/vpn-user-portal/config.php` you need to enable 
-`remoteAccess` and the registry:
+In the file `/etc/vpn-user-portal/config.php` you need to enable `remoteAccess` 
+and the registry:
 
     'Api' => [
 
@@ -59,4 +49,12 @@ the tool to create signatures, and the
 format.
 
 If you want to register your server for eduVPN, please contact 
-[eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
+[eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl) and provide your server's public
+key, for example:
+
+```bash
+$ sudo vpn-user-portal-show-oauth-key 
+OAuth Key
+    Public Key: o4KD2G_-t1fHVyB8VNpD3DbGEOsWvX6EmuPddJCWCPA
+    Key ID    : eia8y1dTfbTIj_6W4fadk6OZPb2jRULclVh69b0ZS20
+```
