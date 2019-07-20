@@ -1,7 +1,7 @@
-%global git a880a60f32552edc1ca0aee7f77392624763cd24
+%global git 8bd60c9a5355683ec3272075703d479ea8b10671
 
 Name:       php-LC-common
-Version:    2.0.2
+Version:    2.0.3
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -159,6 +159,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Sat Jul 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-1
+- update to 2.0.3
+
 * Fri Jun 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
 - update to 2.0.2
 
