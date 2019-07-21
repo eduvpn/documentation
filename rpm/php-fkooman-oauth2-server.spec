@@ -1,7 +1,7 @@
-#global git 4b793ab79dff67cfb678bc8e3b9fa0fbe586448f
+#global git d5fca179de2e09212db20df2bf8187c3320124d0
 
 Name:           php-fkooman-oauth2-server
-Version:        5.0.0
+Version:        5.0.1
 Release:        1%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
@@ -127,6 +127,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Sun Jul 21 2019 François Kooman <fkooman@tuxed.net> - 5.0.1-1
+- update to 5.0.1
+
 * Wed Mar 27 2019 François Kooman <fkooman@tuxed.net> - 5.0.0-1
 - update to 5.0.0
 
