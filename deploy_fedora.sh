@@ -1,9 +1,16 @@
 #!/bin/sh
 
 #
-# Deploy a single VPN machine
-# Fedora 29
+# Deploy a single VPN machine on Fedora
 #
+FEDORA_VERSION=30
+
+# make sure we only run on ${FEDORA_VERSION}
+if ! grep "Fedora release ${FEDORA_VERSION}" /etc/redhat-release >/dev/null
+then
+    echo "We only support Fedora ${FEDORA_VERSION}!"
+    exit 1
+fi
 
 ###############################################################################
 # VARIABLES

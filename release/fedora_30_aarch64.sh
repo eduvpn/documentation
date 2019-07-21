@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OS_VERSION=29
+OS_VERSION=30
 MOCK_CONFIG=fedora-${OS_VERSION}-aarch64
 REPO_ROOT=${HOME}/repo-v2/${MOCK_CONFIG}
 RPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/aarch64

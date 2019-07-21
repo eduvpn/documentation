@@ -144,7 +144,7 @@ See the instructions below on how to get the VPN working manually.
 | Ubuntu 18.10            | yes            | yes    | -                                                                                                             | 
 | Ubuntu 19.04            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
-| Fedora 28, 29           | yes            | yes    | -                                                                                                             |
+| Fedora 29, 30           | yes            | yes    | -                                                                                                             |
 
 For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)

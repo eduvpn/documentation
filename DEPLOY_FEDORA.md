@@ -5,8 +5,8 @@ category: howto
 ---
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Fedora 29 or 30 installation. It will configure all 
-components and will be ready for use after running!
+you can run on a fresh Fedora installation. It will configure all components 
+and will be ready for use after running!
 
 Additional scripts are available after deployment:
 
@@ -15,7 +15,7 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Fedora 29 or 30 installation with all updates installed;
+* Clean Fedora installation with all updates installed;
 * SELinux MUST be enabled;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
