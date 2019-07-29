@@ -22,7 +22,7 @@ algorithms, see the project
 
 There's nothing to be done, it is part of Let's Connect! / eduVPN already.
 
-### Configuration
+### Configuration of the SP
 
 There are a number of "special" configuration options available next to the 
 "basic" ones that are similar to other SAML implementations. The configuration
@@ -83,7 +83,7 @@ Now the `SamlAuthentication` specific options can be set as well:
         //],
     ],
 
-### Configuration Details
+#### Details
 
 The `authnContext`, `permissionAuthnContext` and `permissionSessionExpiry` 
 option require extra explanation as they are not typically configurable using
@@ -110,6 +110,21 @@ once every 90 days. This setting will affect the time the OAuth token and
 issued client certificates are valid. The expiry time is determined by taking
 the _minimum_ between the "global" `sessionExpiry` option and the value of this
 option. The server default for `sessionExpiry` is 90 days.
+
+### Configuration of the IdP
+
+The metadata URL will be 
+`https://vpn.example.org/vpn-user-portal/_saml/metadata` where 
+`vpn.example.org` is the hostname of your VPN server.
+
+Make sure:
+
+- the IdP uses the HTTP-Redirect binding for receiving the `AuthnRequest`;
+- the IdP uses the HTTP-POST binding to provide the `samlp:Response` to the SP;
+- the IdP signs the `saml:Assertion` and/or the `samlp:Response`;
+- the IdP verifies the signature on the `samlp:AuthnRequest`;
+- the IdP verifies the signature on the `samlp:LogoutRequest`;
+- the IdP signs the `samlp:LogoutResponse`.
 
 ### Changes
 
