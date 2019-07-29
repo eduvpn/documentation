@@ -113,8 +113,10 @@ option. The server default for `sessionExpiry` is 90 days.
 
 ### Changes
 
-Since `vpn-user-portal` 2.0.7 the `permissionAttribute` configuration option 
-takes multiple values using the PHP array syntax, e.g.:
+Since `vpn-user-portal` 
+[2.0.7](https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md#207-2019-07-20) 
+the `permissionAttribute` configuration option _also_ takes multiple values 
+using the PHP array syntax in addition to strings, e.g.:
 
         'permissionAttribute' => [
             'urn:oid:1.3.6.1.4.1.5923.1.1.1.7', 
