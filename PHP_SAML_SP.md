@@ -16,7 +16,7 @@ cases.
 The library was written to be (a lot) simpler to use and configure than 
 simpleSAMLphp and only work as a SAML SP supporting only secure cryptographic 
 algorithms, see the project 
-[site](https://software.tuxed.net/fkooman/php-saml-sp) for more information.
+[site](https://software.tuxed.net/php-saml-sp/) for more information.
 
 ### Installation
 
