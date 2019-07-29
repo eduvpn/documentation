@@ -97,7 +97,7 @@ Setting `authnContext` means this context will be required for ALL users.
 The `permissionAuthnContext` is a mapping between "permission" and required 
 `authnContext`. This can be used to e.g. force MFA/2FA only for a subset of
 users that have the specified attribute values as obtained through the 
-`permissionAttribute`. Indirectly this can be used to restrict certains VPN 
+`permissionAttribute`. Indirectly this can be used to restrict certain VPN 
 profiles to uses that have a certain "permission" and at the same time enforce
 MFA/2FA for those users. Note that an AuthnContext is bound to a _user_, not a
 VPN _profile_.
@@ -107,7 +107,7 @@ sense that it for certain `permissionAttribute` values it will shorten the
 user's session time. For example, "high risk" users can be required to 
 authenticate/authorize every day, while "normal" users only have to do that 
 once every 90 days. This setting will affect the time the OAuth token and 
-issued client certificates are valid. The expity time is determined by taking
+issued client certificates are valid. The expiry time is determined by taking
 the _minimum_ between the "global" `sessionExpiry` option and the value of this
 option. The server default for `sessionExpiry` is 90 days.
 
