@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-oauth2-server
 Version:        5.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Very simple OAuth 2.0 server
 
 License:        MIT
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-oauth2-server
 Source0:        https://git.tuxed.net/fkooman/php-oauth2-server/snapshot/php-oauth2-server-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-oauth2-server/files/php-oauth2-server-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-oauth2-server/files/php-oauth2-server-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-oauth2-server/files/php-oauth2-server-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -91,7 +91,7 @@ The main purpose is to be compatible with PHP 5.4.
 %if %{defined git}
 %autosetup -n php-oauth2-server-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-oauth2-server-%{version}
 %endif
 
@@ -127,6 +127,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/OAuth/Server
 
 %changelog
+* Sun Aug 04 2019 François Kooman <fkooman@tuxed.net> - 5.0.1-2
+- switch to minisign signature verification for release builds
+
 * Sun Jul 21 2019 François Kooman <fkooman@tuxed.net> - 5.0.1-1
 - update to 5.0.1
 

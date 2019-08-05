@@ -8,7 +8,7 @@ rpmdev-setuptree
 spectool -g -R $1.spec
 
 # copy the additional sources
-cp $1*.conf $1*.cron $1*.patch $HOME/rpmbuild/SOURCES
+cp *.pub $1*.conf $1*.cron $1*.patch $HOME/rpmbuild/SOURCES
 
 # create the SRPM
 SRPM_FILE_PATH=$(rpmbuild -bs $1.spec | cut -d ':' -f 2)
