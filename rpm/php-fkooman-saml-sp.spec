@@ -1,7 +1,7 @@
-#global git c4f4c33016b7d15b4f8fc88bbba8016d66f18305
+#global git f541bea8680f61b2500fd4ce79433d0f21d9aa42
 
 Name:           php-fkooman-saml-sp
-Version:        0.2.0
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        SAML Service Provider library
 
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-saml-sp
 Source0:        https://git.tuxed.net/fkooman/php-saml-sp/snapshot/php-saml-sp-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-saml-sp/files/php-saml-sp-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-saml-sp/files/php-saml-sp-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-saml-sp/files/php-saml-sp-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -102,7 +102,7 @@ application.
 %if %{defined git}
 %setup -qn php-saml-sp-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn php-saml-sp-%{version}
 %endif
 
@@ -139,6 +139,10 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SAML/SP
 
 %changelog
+* Mon Aug 05 2019 François Kooman <fkooman@tuxed.net> - 0.2.1-1
+- update to 0.2.1
+- switch to minisign signature verification for release builds
+
 * Wed Jul 31 2019 François Kooman <fkooman@tuxed.net> - 0.2.0-1
 - update to 0.2.0
 
