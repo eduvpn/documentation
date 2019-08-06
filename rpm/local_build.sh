@@ -4,10 +4,10 @@
 rpmdev-setuptree
 
 # download the source(s)
-spectool -g -R $1.spec
+spectool -g -R ${1}.spec
 
 # copy additional sources
-cp *.pub $1*.conf $1*.cron $1*.patch $HOME/rpmbuild/SOURCES
+cp *.pub ${1}*.conf ${1}*.cron ${1}*.patch gpgkey-* ${HOME}/rpmbuild/SOURCES
 
 # build the RPM
-rpmbuild -bb $1.spec
+rpmbuild -bb ${1}.spec
