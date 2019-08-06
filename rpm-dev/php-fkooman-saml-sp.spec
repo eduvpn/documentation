@@ -1,7 +1,7 @@
-%global git f541bea8680f61b2500fd4ce79433d0f21d9aa42
+%global git c913ee158193350371e181f2490a16125cade809
 
 Name:           php-fkooman-saml-sp
-Version:        0.2.1
+Version:        0.2.2
 Release:        1%{?dist}
 Summary:        SAML Service Provider library
 
@@ -139,6 +139,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SAML/SP
 
 %changelog
+* Tue Aug 06 2019 François Kooman <fkooman@tuxed.net> - 0.2.2-1
+- update to 0.2.2
+
 * Mon Aug 05 2019 François Kooman <fkooman@tuxed.net> - 0.2.1-1
 - update to 0.2.1
 - switch to minisign signature verification for release builds
