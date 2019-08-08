@@ -2,7 +2,7 @@
 
 Name:       php-saml-ds
 Version:    2.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -115,7 +115,7 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr web views %{buildroot}%{_datadir}/%{name}
 install -m 0755 -D -p bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
-sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/%{name}-generate
+sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/%{name}-generate
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
@@ -152,6 +152,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 

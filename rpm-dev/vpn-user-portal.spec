@@ -2,7 +2,7 @@
 
 Name:       vpn-user-portal
 Version:    2.0.9
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -174,7 +174,7 @@ cp -pr src/* %{buildroot}%{_datadir}/php/LC/Portal
 for i in add-user foreign-key-list-fetcher init generate-oauth-key show-oauth-key
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-user-portal-${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-user-portal-${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-user-portal-${i}
 done
 
 cp -pr schema web views locale %{buildroot}%{_datadir}/vpn-user-portal
@@ -255,6 +255,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.9-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.9-1
 - update to 2.0.9
 - switch to minisign signature verification for release builds

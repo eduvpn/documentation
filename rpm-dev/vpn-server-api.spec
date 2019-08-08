@@ -2,7 +2,7 @@
 
 Name:       vpn-server-api
 Version:    2.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -133,7 +133,7 @@ cp -pr src/* %{buildroot}%{_datadir}/php/LC/Server
 for i in housekeeping init stats status update-api-secrets update-ip disconnect-expired-certificates
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
 cp -pr schema web %{buildroot}%{_datadir}/vpn-server-api
@@ -193,6 +193,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Fri Jun 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 

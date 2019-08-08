@@ -2,7 +2,7 @@
 
 Name:       vpn-server-node
 Version:    2.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -108,14 +108,14 @@ cp -pr src/* %{buildroot}%{_datadir}/php/LC/Node
 for i in certificate-info generate-firewall server-config
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-node-${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
 done
 
 # libexec
 for i in client-connect client-disconnect
 do
     install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_libexecdir}/vpn-server-node/${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
 
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node
@@ -148,6 +148,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Fri Apr 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 
