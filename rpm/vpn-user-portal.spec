@@ -1,7 +1,7 @@
-#global git ef505faf66999833403e14f649e1dc0569558d9b
+#global git b18028a5e8ce87242c637cdb9408a2ab0b8d1f51
 
 Name:       vpn-user-portal
-Version:    2.0.8
+Version:    2.0.9
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -11,8 +11,8 @@ URL:        https://github.com/eduvpn/vpn-user-portal
 Source0:    https://github.com/eduvpn/vpn-user-portal/archive/%{git}/vpn-user-portal-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/vpn-user-portal/releases/download/%{version}/vpn-user-portal-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/vpn-user-portal/releases/download/%{version}/vpn-user-portal-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/vpn-user-portal/releases/download/%{version}/vpn-user-portal-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Source3:    vpn-user-portal-httpd.conf
 Source4:    vpn-user-portal.cron
@@ -20,7 +20,7 @@ Patch0:     vpn-user-portal-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -142,7 +142,7 @@ VPN User Portal.
 %if %{defined git}
 %setup -qn vpn-user-portal-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn vpn-user-portal-%{version}
 %endif
 %patch0 -p1
@@ -251,10 +251,15 @@ fi
 %{_datadir}/vpn-user-portal/config
 %{_datadir}/vpn-user-portal/locale
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-user-portal
-%doc README.md CHANGES.md composer.json config/config.php.example
+%doc README.md CHANGES.md composer.json config/config.php.example CONFIG_CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.9-1
+- update to 2.0.9
+- switch to minisign signature verification for release builds
+- add CONFIG_CHANGES to documentation
+
 * Wed Jul 31 2019 François Kooman <fkooman@tuxed.net> - 2.0.8-1
 - update to 2.0.8
 
