@@ -1,4 +1,4 @@
-%global git c913ee158193350371e181f2490a16125cade809
+#global git c913ee158193350371e181f2490a16125cade809
 
 Name:           php-fkooman-saml-sp
 Version:        0.2.2

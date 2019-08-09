@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-sqlite-migrate
 Version:        0.1.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Simple SQLite Migrations
 
 License:        MIT
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-sqlite-migrate
 Source0:        https://git.tuxed.net/fkooman/php-sqlite-migrate/snapshot/php-sqlite-migrate-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-sqlite-migrate/files/php-sqlite-migrate-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-sqlite-migrate/files/php-sqlite-migrate-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-sqlite-migrate/files/php-sqlite-migrate-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -61,7 +61,7 @@ Library written in PHP that can assist with SQLite database migrations.
 %if %{defined git}
 %autosetup -n php-sqlite-migrate-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-sqlite-migrate-%{version}
 %endif
 
@@ -87,6 +87,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SqliteMigrate
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 0.1.1-4
+- switch to minisign signature verification for release builds
+
 * Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 0.1.1-3
 - merge dev and prod spec files in one
 - cleanup requirements

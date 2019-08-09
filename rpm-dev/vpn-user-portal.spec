@@ -1,4 +1,4 @@
-%global git b18028a5e8ce87242c637cdb9408a2ab0b8d1f51
+#global git b18028a5e8ce87242c637cdb9408a2ab0b8d1f51
 
 Name:       vpn-user-portal
 Version:    2.0.9

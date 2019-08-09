@@ -1,8 +1,8 @@
-%global git f14d6c3e874a36f455c7bcbcafa6b9f847d9eade
+#global git f14d6c3e874a36f455c7bcbcafa6b9f847d9eade
 
 Name:       vpn-server-api
 Version:    2.0.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -11,8 +11,8 @@ URL:        https://github.com/eduvpn/vpn-server-api
 Source0:    https://github.com/eduvpn/vpn-server-api/archive/%{git}/vpn-server-api-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Source3:    vpn-server-api-httpd.conf
 Source4:    vpn-server-api.cron
@@ -20,7 +20,7 @@ Patch0:     vpn-server-api-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -110,7 +110,7 @@ VPN Server API.
 %if %{defined git}
 %setup -qn vpn-server-api-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn vpn-server-api-%{version}
 %endif
 %patch0 -p1
@@ -193,6 +193,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-3
+- switch to minisign signature verification for release builds
+
 * Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
 - use /usr/bin/php instead of /usr/bin/env php
 

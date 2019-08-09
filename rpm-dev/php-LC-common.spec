@@ -1,8 +1,8 @@
-%global git 8bd60c9a5355683ec3272075703d479ea8b10671
+#global git 8bd60c9a5355683ec3272075703d479ea8b10671
 
 Name:       php-LC-common
 Version:    2.0.3
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -11,13 +11,13 @@ URL:        https://github.com/eduvpn/vpn-lib-common
 Source0:    https://github.com/eduvpn/vpn-lib-common/archive/%{git}/vpn-lib-common-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/vpn-lib-common/releases/download/%{version}/vpn-lib-common-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/vpn-lib-common/releases/download/%{version}/vpn-lib-common-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/vpn-lib-common/releases/download/%{version}/vpn-lib-common-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -121,7 +121,7 @@ Common VPN library.
 %if %{defined git}
 %setup -qn vpn-lib-common-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn vpn-lib-common-%{version}
 %endif
 
@@ -159,6 +159,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-2
+- switch to minisign signature verification for release builds
+
 * Sat Jul 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-1
 - update to 2.0.3
 

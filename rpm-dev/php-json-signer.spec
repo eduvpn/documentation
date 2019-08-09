@@ -2,7 +2,7 @@
 
 Name:       php-json-signer
 Version:    3.0.2
-Release:    10%{?dist}
+Release:    11%{?dist}
 Summary:    PHP JSON Signer
 
 Group:      Applications/System
@@ -13,14 +13,14 @@ URL:        https://software.tuxed.net/php-json-signer
 Source0:    https://git.tuxed.net/fkooman/php-json-signer/snapshot/php-json-signer-%{git}.tar.xz
 %else
 Source0:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz
-Source1:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://software.tuxed.net/php-json-signer/files/php-json-signer-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -87,7 +87,7 @@ signature in the file itself.
 %if %{defined git}
 %setup -qn php-json-signer-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn php-json-signer-%{version}
 %endif
 %patch0 -p1
@@ -125,6 +125,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 3.0.2-11
+- switch to minisign signature verification for release builds
+
 * Mon Sep 10 2018 François Kooman <fkooman@tuxed.net> - 3.0.2-10
 - merge dev and prod spec files in one
 - cleanup requirements

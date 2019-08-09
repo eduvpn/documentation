@@ -1,8 +1,8 @@
-%global git af508ac3b6c1949c52a0cc8b09c6e11d182a6618
+#global git af508ac3b6c1949c52a0cc8b09c6e11d182a6618
 
 Name:           php-fkooman-otp-verifier
 Version:        0.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        OTP Verification Library
 
 License:        MIT
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-otp-verifier
 Source0:        https://git.tuxed.net/fkooman/php-otp-verifier/snapshot/php-otp-verifier-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-otp-verifier/files/php-otp-verifier-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -81,7 +81,7 @@ OTP Verification Library.
 %if %{defined git}
 %autosetup -n php-otp-verifier-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-otp-verifier-%{version}
 %endif
 
@@ -116,6 +116,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Otp
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 0.2.1-2
+- switch to minisign signature verification for release builds
+
 * Fri Oct 19 2018 François Kooman <fkooman@tuxed.net> - 0.2.1-1
 - update to 0.2.1
 

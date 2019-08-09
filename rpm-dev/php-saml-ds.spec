@@ -1,4 +1,4 @@
-%global git ecdb7999cf28de4d78730391266405fe772f9d7e
+#global git ecdb7999cf28de4d78730391266405fe772f9d7e
 
 Name:       php-saml-ds
 Version:    2.0.2

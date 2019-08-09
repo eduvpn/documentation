@@ -1,8 +1,8 @@
-%global git 0c4c0e2b156cc41a38776baecaf1a0e01e76c9d9
+#global git 0c4c0e2b156cc41a38776baecaf1a0e01e76c9d9
 
 Name:       php-saml-ds-artwork-eduVPN
 Version:    2.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    SAML Discovery Artwork for eduVPN
 License:    AGPLv3+
 
@@ -11,13 +11,13 @@ URL:        https://github.com/eduvpn/disco-artwork
 Source0:    https://github.com/eduvpn/disco-artwork/archive/%{git}/disco-artwork-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/php-saml-ds-artwork-eduVPN-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/php-saml-ds-artwork-eduVPN-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/disco-artwork/releases/download/%{version}/php-saml-ds-artwork-eduVPN-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 
 Requires:   php-saml-ds
 
@@ -28,7 +28,7 @@ SAML Discovery Artwork for eduVPN.
 %if %{defined git}
 %setup -qn disco-artwork-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn php-saml-ds-artwork-eduVPN-%{version}
 %endif
 
@@ -49,6 +49,9 @@ cp -p views/*.php %{buildroot}%{_datadir}/php-saml-ds/views/eduVPN
 %doc README.md CHANGES.md
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-2
+- switch to minisign signature verification for release builds
+
 * Wed Feb 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.0-1
 - update to 2.0.0
 

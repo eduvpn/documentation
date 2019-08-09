@@ -2,7 +2,7 @@
 
 Name:           php-fkooman-secookie
 Version:        2.0.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Secure Cookie and Session library for PHP
 
 License:        MIT
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-secookie
 Source0:        https://git.tuxed.net/fkooman/php-secookie/snapshot/php-secookie-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-secookie/files/php-secookie-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-secookie/files/php-secookie-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-secookie/files/php-secookie-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -57,7 +57,7 @@ Secure Cookie and Session library for PHP.
 %if %{defined git}
 %autosetup -n php-secookie-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-secookie-%{version}
 %endif
 
@@ -83,6 +83,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/SeCookie
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-8
+- switch to minisign signature verification for release builds
+
 * Sun Sep 09 2018 François Kooman <fkooman@tuxed.net> - 2.0.1-7
 - merge dev and prod spec files in one
 - cleanup requirements

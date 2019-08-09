@@ -1,4 +1,4 @@
-%global git d5fca179de2e09212db20df2bf8187c3320124d0
+#global git d5fca179de2e09212db20df2bf8187c3320124d0
 
 Name:           php-fkooman-oauth2-server
 Version:        5.0.1

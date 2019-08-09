@@ -1,8 +1,8 @@
-%global git b4de428759b1bd56195ae0c22e140799c5d13c40
+#global git b4de428759b1bd56195ae0c22e140799c5d13c40
 
 Name:           php-fkooman-jwt
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -11,13 +11,13 @@ URL:            https://software.tuxed.net/php-jwt
 Source0:        https://git.tuxed.net/fkooman/php-jwt/snapshot/php-jwt-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -113,7 +113,7 @@ with RSA.
 %if %{defined git}
 %autosetup -n php-jwt-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-jwt-%{version}
 %endif
 
@@ -153,6 +153,9 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- switch to minisign signature verification for release builds
+
 * Mon Mar 18 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - rebuilt
 
