@@ -1,7 +1,7 @@
-#global git 471666ff1dd7e46461bd467b39b19f2b78200a73
+#global git ecdb7999cf28de4d78730391266405fe772f9d7e
 
 Name:       php-saml-ds
-Version:    2.0.1
+Version:    2.0.2
 Release:    1%{?dist}
 Summary:    SAML Discovery Service
 
@@ -13,15 +13,15 @@ URL:        https://software.tuxed.net/php-saml-ds
 Source0:    https://git.tuxed.net/fkooman/php-saml-ds/snapshot/php-saml-ds-%{git}.tar.xz
 %else
 Source0:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz
-Source1:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://software.tuxed.net/php-saml-ds/files/php-saml-ds-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Source3:    %{name}-httpd.conf
 Patch0:     %{name}-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -98,7 +98,7 @@ SAML Discovery Service written in PHP.
 %if %{defined git}
 %setup -qn php-saml-ds-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn php-saml-ds-%{version}
 %endif
 %patch0 -p1
@@ -115,7 +115,7 @@ mkdir -p %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr src/* %{buildroot}%{_datadir}/php/fkooman/SAML/DS
 cp -pr web views %{buildroot}%{_datadir}/%{name}
 install -m 0755 -D -p bin/generate.php %{buildroot}%{_bindir}/%{name}-generate
-sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/%{name}-generate
+sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/%{name}-generate
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
 cp -pr config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
@@ -152,6 +152,13 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
+- update to 2.0.2
+- switch to minisign signature verification for release builds
+
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Thu Mar 28 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 
