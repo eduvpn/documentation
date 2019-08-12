@@ -114,9 +114,9 @@ Or on Debian:
 
 Modify the configuration in `/etc/php-saml-ds/config.php` and make sure the 
 IdP metadata file(s) are placed in `/etc/php-saml-ds/metadata/`. As entityID
-of the SP you need to use `https://vpn.example/saml`. Specify the entityIDs
-of the IdPs you want to show up in the WAYF in the configuration file under 
-`idpList` as well.
+of the SP you need to use `https://vpn.example/saml/metadata`. Specify the 
+entityIDs of the IdPs you want to show up in the WAYF in the configuration file 
+under `idpList` as well.
 
 Run the file generator:
 
@@ -128,7 +128,7 @@ Modify `/etc/httpd/conf.d/vpn.example.conf` by removing or commenting out the
 `MellonIdPMetadataFile` field and enabling the following two and configure 
 them like this:
 
-    MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+    MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
     MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
 
 Restart Apache:
