@@ -160,7 +160,7 @@ you'll directly end up at the IdP.
             #MellonIdPMetadataFile /etc/httpd/saml/metadata.test.surfconext.nl.xml
             MellonIdPMetadataFile /etc/httpd/saml/metadata.surfconext.nl.xml
             # When using php-saml-ds, use these two lines below 
-            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
             # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
         </Location>
         
@@ -204,7 +204,7 @@ you'll directly end up at the IdP.
             MellonIdPMetadataFile /etc/apache2/saml/metadata.test.surfconext.nl.xml
             #MellonIdPMetadataFile /etc/apache2/saml/metadata.surfconext.nl.xml
             # When using php-saml-ds, use these two lines below 
-            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml.xml
+            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
             # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
         </Location>
 
