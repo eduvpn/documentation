@@ -4,6 +4,15 @@
 # *ONLY* run this during a maintenance window!
 #
 
+OPENVPN_PROCESS_LIST=$(systemctl -a --no-legend | grep openvpn-server@ | awk {'print $1'})
+
+# stop running OpenVPN processes
+for OPENVPN_PROCESS in ${OPENVPN_PROCESS_LIST}
+do
+    echo "Stopping ${OPENVPN_PROCESS}..."
+    sudo systemctl stop "${OPENVPN_PROCESS}"
+done
+
 sudo systemctl stop httpd
 sudo systemctl stop php-fpm
 
@@ -23,5 +32,9 @@ sudo vpn-server-node-generate-firewall --install
 sudo systemctl restart iptables
 sudo systemctl restart ip6tables
 
-# restart OpenVPN
-sudo systemctl restart "openvpn-server@*"
+# start OpenVPN processes
+for OPENVPN_PROCESS in ${OPENVPN_PROCESS_LIST}
+do
+    echo "Starting ${OPENVPN_PROCESS}..."
+    sudo systemctl start "${OPENVPN_PROCESS}"
+done
