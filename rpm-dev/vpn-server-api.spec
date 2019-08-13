@@ -2,7 +2,7 @@
 
 Name:       vpn-server-api
 Version:    2.0.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -189,10 +189,13 @@ fi
 %dir %{_datadir}/php/LC
 %{_datadir}/php/LC/Server
 %dir %attr(0700,apache,apache) %{_localstatedir}/lib/vpn-server-api
-%doc README.md composer.json config/config.php.example CHANGES.md
+%doc README.md composer.json config/config.php.example CHANGES.md CONFIG_CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-2
+- add CONFIG_CHANGES.md as doc
+
 * Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
 - update to 2.0.2
 
