@@ -13,6 +13,21 @@ index 61f6dab..74c3323 100644
  
  use LC\Common\FileIO;
  
+diff --git a/bin/generate-dns-zones.php b/bin/generate-dns-zones.php
+index 01b9cec..dc0fe94 100644
+--- a/bin/generate-dns-zones.php
++++ b/bin/generate-dns-zones.php
+@@ -7,8 +7,8 @@
+  * SPDX-License-Identifier: AGPL-3.0+
+  */
+ 
+-require_once dirname(__DIR__).'/vendor/autoload.php';
+-$baseDir = dirname(__DIR__);
++require_once '/usr/share/php/LC/Node/autoload.php';
++$baseDir = '/usr/share/vpn-server-node';
+ 
+ use LC\Common\Config;
+ use LC\Common\HttpClient\CurlHttpClient;
 diff --git a/bin/generate-firewall.php b/bin/generate-firewall.php
 index 9785cfc..20be226 100644
 --- a/bin/generate-firewall.php

@@ -1,8 +1,8 @@
-#global git 8bd60c9a5355683ec3272075703d479ea8b10671
+#global git 805c1e832daec7d1d336df3557e90e7d2b0f33ed
 
 Name:       php-LC-common
-Version:    2.0.3
-Release:    2%{?dist}
+Version:    2.0.4
+Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
 License:    AGPLv3+
@@ -159,6 +159,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.4-1
+- update to 2.0.4
+
 * Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-2
 - switch to minisign signature verification for release builds
 

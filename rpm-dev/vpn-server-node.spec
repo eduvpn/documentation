@@ -1,8 +1,8 @@
-#global git 1e68ba9f3a593147b23c522c2629b23f5e8b01d6
+#global git 9780a1176b0d48a1406d3d16f1ca9436c2250126
 
 Name:       vpn-server-node
-Version:    2.0.1
-Release:    3%{?dist}
+Version:    2.0.2
+Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -105,7 +105,7 @@ mkdir -p %{buildroot}%{_datadir}/php/LC/Node
 cp -pr src/* %{buildroot}%{_datadir}/php/LC/Node
 
 # bin
-for i in certificate-info generate-firewall server-config
+for i in certificate-info generate-firewall server-config generate-dns-zones
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-node-${i}
     sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
@@ -148,6 +148,9 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
+- update to 2.0.2
+
 * Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-3
 - switch to minisign signature verification for release builds
 

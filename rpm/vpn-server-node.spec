@@ -1,7 +1,7 @@
-#global git 1e68ba9f3a593147b23c522c2629b23f5e8b01d6
+#global git 9780a1176b0d48a1406d3d16f1ca9436c2250126
 
 Name:       vpn-server-node
-Version:    2.0.1
+Version:    2.0.2
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
@@ -11,14 +11,14 @@ URL:        https://github.com/eduvpn/vpn-server-node
 Source0:    https://github.com/eduvpn/vpn-server-node/archive/%{git}/vpn-server-node-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/vpn-server-node/releases/download/%{version}/vpn-server-node-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/vpn-server-node/releases/download/%{version}/vpn-server-node-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/vpn-server-node/releases/download/%{version}/vpn-server-node-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Patch0:     vpn-server-node-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -87,7 +87,7 @@ OpenVPN node controller.
 %if %{defined git}
 %setup -qn vpn-server-node-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn vpn-server-node-%{version}
 %endif
 %patch0 -p1
@@ -105,17 +105,17 @@ mkdir -p %{buildroot}%{_datadir}/php/LC/Node
 cp -pr src/* %{buildroot}%{_datadir}/php/LC/Node
 
 # bin
-for i in certificate-info generate-firewall server-config
+for i in certificate-info generate-firewall server-config generate-dns-zones
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-node-${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-server-node-${i}
 done
 
 # libexec
 for i in client-connect client-disconnect
 do
     install -m 0755 -D -p libexec/${i}.php %{buildroot}%{_libexecdir}/vpn-server-node/${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_libexecdir}/vpn-server-node/${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_libexecdir}/vpn-server-node/${i}
 done
 
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-server-node
@@ -148,6 +148,15 @@ AUTOLOAD
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
+- update to 2.0.2
+
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-3
+- switch to minisign signature verification for release builds
+
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Fri Apr 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 

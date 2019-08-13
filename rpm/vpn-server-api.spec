@@ -1,7 +1,7 @@
-#global git f14d6c3e874a36f455c7bcbcafa6b9f847d9eade
+#global git fe4dd80dec35e011eb610125d699fc15fd9a4477
 
 Name:       vpn-server-api
-Version:    2.0.1
+Version:    2.0.2
 Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
@@ -11,8 +11,8 @@ URL:        https://github.com/eduvpn/vpn-server-api
 Source0:    https://github.com/eduvpn/vpn-server-api/archive/%{git}/vpn-server-api-%{version}-%{git}.tar.gz
 %else
 Source0:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz
-Source1:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz.asc
-Source2:    gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:    https://github.com/eduvpn/vpn-server-api/releases/download/%{version}/vpn-server-api-%{version}.tar.xz.minisig
+Source2:    minisign-8466FFE127BCDC82.pub
 %endif
 Source3:    vpn-server-api-httpd.conf
 Source4:    vpn-server-api.cron
@@ -20,7 +20,7 @@ Patch0:     vpn-server-api-autoload.patch
 
 BuildArch:  noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -110,7 +110,7 @@ VPN Server API.
 %if %{defined git}
 %setup -qn vpn-server-api-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %setup -qn vpn-server-api-%{version}
 %endif
 %patch0 -p1
@@ -133,7 +133,7 @@ cp -pr src/* %{buildroot}%{_datadir}/php/LC/Server
 for i in housekeeping init stats status update-api-secrets update-ip disconnect-expired-certificates
 do
     install -m 0755 -D -p bin/${i}.php %{buildroot}%{_bindir}/vpn-server-api-${i}
-    sed -i '1s/^/#!\/usr\/bin\/env php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
+    sed -i '1s/^/#!\/usr\/bin\/php\n/' %{buildroot}%{_bindir}/vpn-server-api-${i}
 done
 
 cp -pr schema web %{buildroot}%{_datadir}/vpn-server-api
@@ -193,6 +193,15 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
+- update to 2.0.2
+
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-3
+- switch to minisign signature verification for release builds
+
+* Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-2
+- use /usr/bin/php instead of /usr/bin/env php
+
 * Fri Jun 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.1-1
 - update to 2.0.1
 

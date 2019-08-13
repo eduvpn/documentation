@@ -1,8 +1,8 @@
-#global git b18028a5e8ce87242c637cdb9408a2ab0b8d1f51
+#global git 9d7519ed107fdb064188d67da78b2280190bf9a5
 
 Name:       vpn-user-portal
-Version:    2.0.9
-Release:    2%{?dist}
+Version:    2.0.10
+Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -255,6 +255,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.10-1
+- update to 2.0.10
+
 * Thu Aug 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.9-2
 - use /usr/bin/php instead of /usr/bin/env php
 
