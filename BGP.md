@@ -18,7 +18,7 @@ If your network allows it, the IP ranges used by your vpn-server-node can be obt
   * `neighbor` IP-address of your routers (this may differ from the default gateway)
   * `local-address` Your own IP-address
   * `router-id` Your router ID, often this is your IPv4 address - also for IPv6 announces  
-  * `local-as` AS number for your eduVPN setup (obtained from your institutions netops)
+  * `local-as` AS number for your VPN setup (obtained from your institutions netops)
   * `peer-as` AS number of your network
 
 The netops must know the IP-address your vpn-server-node is using, and the subnets it will be requesting.
