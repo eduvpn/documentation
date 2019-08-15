@@ -37,16 +37,12 @@ Now the `SamlAuthentication` specific options can be set as well:
 
     // SAML (php-saml-sp)
     'SamlAuthentication' => [
-        // 'OID for eduPersonTargetedID
-        'userIdAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.10',
-        // OID for eduPersonPrincipalName
-        //'userIdAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.6',
+        'userIdAttribute' => 'eduPersonTargetedID',
+        //'userIdAttribute' => 'eduPersonPrincipalName',
 
         // ** AUTHORIZATION | PERMISSIONS **
-        // OID for eduPersonEntitlement
-        //'permissionAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.7',
-        // OID for eduPersonAffiliation
-        //'permissionAttribute' => 'urn:oid:1.3.6.1.4.1.5923.1.1.1.1',
+        //'permissionAttribute' => 'eduPersonEntitlement',
+        //'permissionAttribute' => 'eduPersonAffiliation',
 
         // override the SP entityId, the default is:
         // https://vpn.example.org/vpn-user-portal/_saml/metadata
@@ -134,8 +130,7 @@ Since `vpn-user-portal`
 the `permissionAttribute` configuration option _also_ takes multiple values 
 using the PHP array syntax in addition to strings, e.g.:
 
-        'permissionAttribute' => [
-            'urn:oid:1.3.6.1.4.1.5923.1.1.1.7', 
-            'urn:oid:1.3.6.1.4.1.5923.1.1.1.1'
-        ],
-
+    'permissionAttribute' => [
+        'eduPersonEntitlement', 
+        'eduPersonAffiliation'
+    ],
