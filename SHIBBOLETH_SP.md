@@ -1,6 +1,6 @@
 ---
 title: Shibboleth SP
-description: Configuration instructions for using the Shibboleth SP
+description: SAML Authentication using Shibboleth
 ---
 
 This document only describes installing Shibboleth on Debian 9 as there it is

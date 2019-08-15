@@ -1,5 +1,5 @@
 ---
-title: PHP SAML SP
+title: PHP-SAML-SP
 description: SAML Authentication using php-saml-sp
 category: howto
 ---

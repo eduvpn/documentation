@@ -1,6 +1,6 @@
 ---
-title: SAML
-description: Enable SAML Authentication
+title: Mellon
+description: SAML Authentication using mod_auth_mellon
 category: howto
 ---
 
