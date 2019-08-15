@@ -6,14 +6,19 @@ category: howto
 
 # BGP
 
+## Warning
+
+This guide is provided as is.  The eduVPN project provides no support for BGP.
+
+
 ## Introduction
 
-If your network allows it, the IP ranges used by your eduVPN server node can be obtained through BGP.  For this to work, you must know the following:
+If your network allows it, the IP ranges used by your vpn-server-node can be obtained through BGP.  For this to work, you must know the following:
 
   * `neighbor` IP-address of your routers (this may differ from the default gateway)
   * `local-address` Your own IP-address
   * `router-id` Your router ID, often this is your IPv4 address - also for IPv6 announces  
-  * `local-as` AS number for your eduVPN setup (obtained from netops)
+  * `local-as` AS number for your eduVPN setup (obtained from your institutions netops)
   * `peer-as` AS number of your network
 
 The netops must know the IP-address your vpn-server-node is using, and the subnets it will be requesting.
@@ -21,6 +26,7 @@ Please note that many BGP implementations will refuse to issue subnets smaller t
 If you need to be able to split your subnet, discuss this with your network operator.
 
 **DO NOT SET THIS UP BEFORE TALKING TO YOUR NETWORK ADMINISTRATOR FIRST**
+
 
 ## Install exaBGP
 
