@@ -4,7 +4,8 @@ description: SAML Authentication using php-saml-sp
 category: howto
 ---
 
-**NOTE**: the php-saml-sp authenitcation method is **EXPERIMENTAL**. 
+**NOTE**: the php-saml-sp authentication method is **EXPERIMENTAL**. It is 
+**NOT** supported!
 
 Do **NOT** use unless you know what you are doing. Use 
 [mod_auth_mellon](MOD_AUTH_MELLON.md) if you are connecting to only 1 IdP or 
