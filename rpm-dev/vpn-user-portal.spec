@@ -1,7 +1,7 @@
-#global git 9d7519ed107fdb064188d67da78b2280190bf9a5
+#global git 5f4ad648576a1d59619db3eb855f8ae8af203296
 
 Name:       vpn-user-portal
-Version:    2.0.10
+Version:    2.0.11
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -24,8 +24,10 @@ BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
+#        "ext-json": "*",
 #        "phpunit/phpunit": "^4.8.35|^5|^6|^7"
 #    },
+BuildRequires:  php-json
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  phpunit7
 %global phpunit %{_bindir}/phpunit7
@@ -36,25 +38,27 @@ BuildRequires:  phpunit
 
 #    "require": {
 #        "bacon/bacon-qr-code": "^1.0",
+#        "ext-curl": "*",
 #        "ext-date": "*",
-#        "ext-json": "*",
+#        "ext-hash": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
 #        "fkooman/jwt": "^1",
 #        "fkooman/oauth2-server": "^5",
-#        "fkooman/php-saml-sp": "^0",
+#        "fkooman/php-saml-sp": "^0.2",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
-#        "lc/common": "^2",
+#        "lc/common": "v2.x-dev",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-composer(bacon/bacon-qr-code)
+BuildRequires:  php-curl
 BuildRequires:  php-date
-BuildRequires:  php-json
+BuildRequires:  php-hash
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
 BuildRequires:  php-spl
@@ -78,7 +82,6 @@ BuildRequires:  php-sodium
 BuildRequires:  php-pecl(libsodium)
 %endif
 
-Requires:   roboto-fontface-fonts
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
@@ -88,17 +91,18 @@ Requires:   httpd
 Requires:   crontabs
 #    "require": {
 #        "bacon/bacon-qr-code": "^1.0",
+#        "ext-curl": "*",
 #        "ext-date": "*",
-#        "ext-json": "*",
+#        "ext-hash": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
 #        "ext-spl": "*",
 #        "fkooman/jwt": "^1",
 #        "fkooman/oauth2-server": "^5",
-#        "fkooman/php-saml-sp": "^0",
+#        "fkooman/php-saml-sp": "^0.2",
 #        "fkooman/secookie": "^2",
 #        "fkooman/sqlite-migrate": "^0",
-#        "lc/common": "^2",
+#        "lc/common": "v2.x-dev",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
 #        "php": ">=5.4.0"
@@ -106,8 +110,9 @@ Requires:   crontabs
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
 Requires:   php-composer(bacon/bacon-qr-code)
+Requires:   php-curl
 Requires:   php-date
-Requires:   php-json
+Requires:   php-hash
 Requires:   php-pcre
 Requires:   php-pdo
 Requires:   php-spl
@@ -255,6 +260,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Aug 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.11-1
+- update to 2.0.11
+
 * Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.10-1
 - update to 2.0.10
 
