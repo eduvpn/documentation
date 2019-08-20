@@ -1,8 +1,8 @@
-#global git b4de428759b1bd56195ae0c22e140799c5d13c40
+#global git d25a76d5faa03166daf87a40bc65965f6f3512eb
 
 Name:           php-fkooman-jwt
-Version:        1.0.0
-Release:        2%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        JWT Library
 
 License:        MIT
@@ -11,13 +11,19 @@ URL:            https://software.tuxed.net/php-jwt
 Source0:        https://git.tuxed.net/fkooman/php-jwt/snapshot/php-jwt-%{git}.tar.xz
 %else
 Source0:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz
-Source1:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz.asc
-Source2:        gpgkey-6237BAF1418A907DAA98EAA79C5EDD645A571EB2
+Source1:        https://software.tuxed.net/php-jwt/files/php-jwt-%{version}.tar.xz.minisig
+Source2:        minisign-8466FFE127BCDC82.pub
 %endif
+
+# we do not wish to depend on paragonie/sodium_compat as we'll always require
+# php-pecl(libsodium) on CentOS 7, instead we have a small mapping wrapper that
+# converts calls to the Sodium namespaced php-pecl(libsodium) 1.x 
+# constants/functions
+Patch0:         php-fkooman-jwt-sodium.patch
 
 BuildArch:      noarch
 
-BuildRequires:  gnupg2
+BuildRequires:  minisign
 BuildRequires:  php-fedora-autoloader-devel
 BuildRequires:  %{_bindir}/phpab
 #    "require-dev": {
@@ -38,6 +44,7 @@ BuildRequires:  phpunit
 #        "ext-spl": "*",
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
+#        "paragonie/sodium_compat": "^1",
 #        "php": ">= 5.4.8",
 #        "symfony/polyfill-php56": "^1"
 #    },
@@ -52,10 +59,7 @@ BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(paragonie/random_compat)
 BuildRequires:  php-composer(symfony/polyfill-php56)
 %endif
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
+
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  php-sodium
 %else
@@ -70,6 +74,7 @@ BuildRequires:  php-pecl(libsodium)
 #        "ext-spl": "*",
 #        "paragonie/constant_time_encoding": "^1.0.3|^2.2.0",
 #        "paragonie/random_compat": ">=1",
+#        "paragonie/sodium_compat": "^1",
 #        "php": ">= 5.4.8",
 #        "symfony/polyfill-php56": "^1"
 #    },
@@ -84,10 +89,7 @@ Requires:  php-composer(paragonie/constant_time_encoding)
 Requires:  php-composer(paragonie/random_compat)
 Requires:  php-composer(symfony/polyfill-php56)
 %endif
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
+
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 Requires:   php-sodium
 %else
@@ -113,8 +115,12 @@ with RSA.
 %if %{defined git}
 %autosetup -n php-jwt-%{git}
 %else
-gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
+/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -p %{SOURCE2}
 %autosetup -n php-jwt-%{version}
+%endif
+
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+%patch0 -p1
 %endif
 
 %build
@@ -153,6 +159,12 @@ AUTOLOAD
 %{_datadir}/php/fkooman/Jwt
 
 %changelog
+* Tue Aug 20 2019 François Kooman <fkooman@tuxed.net> - 1.0.1-1
+- update to 1.0.1
+
+* Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- switch to minisign signature verification for release builds
+
 * Mon Mar 18 2019 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - rebuilt
 
