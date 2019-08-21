@@ -11,7 +11,7 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either macOS >= 10.15 or Fedora >= 30 for 
+We assume you will be using either macOS >= 10.14 (Mojave) or Fedora >= 30 for 
 development work, but other distributions will of course also work, but some 
 minor details, regarding installation of the required software, will be 
 different.
@@ -21,7 +21,7 @@ about guidelines to follow.
 
 # macOS
 
-We assume a clean macOS 10.15 installation. There is no need to install 
+We assume a clean macOS 10.14 (Mojave) installation. There is no need to install 
 [MacPorts](https://www.macports.org/) or [Homebrew](https://brew.sh/), we 
 explain how to get going without using them, but feel free to use them, for 
 example to install Composer.
