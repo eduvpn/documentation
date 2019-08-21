@@ -11,21 +11,52 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using Fedora >= 28 for development work, but other 
-distributions will of course also work, but some minor details, regarding 
-installation of the required software, will be different.
+We assume you will be using either macOS >= 10.15 or Fedora >= 30 for 
+development work, but other distributions will of course also work, but some 
+minor details, regarding installation of the required software, will be 
+different.
 
 See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
 about guidelines to follow.
 
-# Preparation
+# macOS
 
-Install the required software:
+We assume a clean macOS 10.15 installation. There is no need to install 
+[MacPorts](https://www.macports.org/) or [Homebrew](https://brew.sh/), we 
+explain how to get going without using them, but feel free to use them, for 
+example to install Composer.
 
-    $ sudo dnf -y install git composer phpunit7 openvpn \
-        php-date php-filter php-hash php-json php-mbstring \
-        php-pcre php-pdo php-spl php-sodium php-pecl-radius php-ldap php-curl \
-        php-gd
+1. install Xcode command line tools, if not already done
+2. install [Go](https://golang.org/dl/)
+3. install [Composer](https://getcomposer.org/download/)
+
+The easiest way to install the command line tools is simply open the terminal 
+on macOS and type `xcode-select --install`. This will ask if you want to 
+install the tools. Agree to it.
+
+Make sure you install the Go package for "Apple macOS", e.g. 
+`go1.12.9.darwin-amd64.pkg`.
+
+As for Composer, what I did is download the "Latest Snapshot" at the bottom 
+of the page, make sure it is downloaded to your "Downloads" folder, otherwise
+change the command below, then:
+
+    $ mkdir -p ${HOME}/.local/bin
+    $ cp ${HOME}/Downloads/composer.phar ${HOME}/.local/bin/composer
+    $ chmod +x ${HOME}/.local/bin/composer
+    $ echo 'export PATH=${PATH}:${HOME}/.local/bin' >> ~/.bash_profile
+
+Then restart the terminal and you should be good to go!
+
+# Fedora
+
+Install the required software (dependencies):
+
+    $ sudo dnf -y install golang php-cli git composer php-date php-filter \
+        php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
+        php-curl php-gd
+
+# Installation
 
 Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/LC-v2` under which 
@@ -40,7 +71,7 @@ All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
     $ cd ${HOME}/Projects/LC-v2/vpn-user-portal
-    $ phpunit7
+    $ vendor/bin/phpunit
 
 # Using
 
@@ -69,60 +100,3 @@ To generate the OpenVPN server configuration files:
     $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
-
-# Making a Release
-
-## Setup
-
-We want to use `tar.xz` archives, and not `zip` or `tar.gz`, for this to work
-we need to add a little snippet to `${HOME}/.gitconfig`:
-
-    [tar "tar.xz"]
-            command = xz -c
-
-Now, with that out of the way, you can put the following POSIX shell script in
-`${HOME}/.local/bin/make_release`. Make sure you make it "executable" with 
-`chmod 0755 ${HOME}/.local/bin/make_release`:
-
-    #!/bin/sh
-    PROJECT_NAME=$(basename "${PWD}")
-    PROJECT_VERSION=${1}
-
-    if [ -z "${1}" ]
-    then
-        # we take the last "tag" of the Git repository as version
-        PROJECT_VERSION=$(git describe --abbrev=0 --tags)
-        echo Version: "${PROJECT_VERSION}"
-    fi
-
-    git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
-    gpg2 --armor --detach-sign --yes "${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
-
-## Creating a Release
-
-To create a (annotated) tag of your tree:
-
-    $ git tag 1.1.4 -a -m '1.1.4'
-    $ git push origin 1.1.4
-
-Now, from your checked out repository you can run `make_release` and it will 
-create (by default) a signed archive of the last (annotated) tag of the 
-project. If you want to create a release of a specific tag, provide it as the 
-first argument to `make_release`:
-
-    $ make_release
-    Version: 1.1.4
-
-The following files are created, e.g:
-
-    $ ls -l php-yubitwee-*
-    -rw-rw-r--. 1 fkooman fkooman 8240 Jun  8 17:18 php-yubitwee-1.1.4.tar.xz
-    -rw-rw-r--. 1 fkooman fkooman  833 Jun  8 17:18 php-yubitwee-1.1.4.tar.xz.asc
-
-You can verify the signature:
-
-    $ gpg2 --verify php-yubitwee-1.1.4.tar.xz.asc
-    gpg: assuming signed data in 'php-yubitwee-1.1.4.tar.xz'
-    gpg: Signature made Fri 08 Jun 2018 05:18:37 PM CEST
-    gpg:                using RSA key 6237BAF1418A907DAA98EAA79C5EDD645A571EB2
-    gpg: Good signature from "François Kooman <fkooman@tuxed.net>" [ultimate]
