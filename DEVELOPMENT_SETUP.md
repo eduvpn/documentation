@@ -19,6 +19,14 @@ different.
 See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
 about guidelines to follow.
 
+# Fedora
+
+Install the required software (dependencies):
+
+    $ sudo dnf -y install golang php-cli git composer php-date php-filter \
+        php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
+        php-curl php-gd
+
 # macOS
 
 We assume a clean macOS 10.14 (Mojave) installation. There is no need to install 
@@ -47,14 +55,6 @@ change the command below, then:
     $ echo 'export PATH=${PATH}:${HOME}/.local/bin' >> ~/.bash_profile
 
 Then restart the terminal and you should be good to go!
-
-# Fedora
-
-Install the required software (dependencies):
-
-    $ sudo dnf -y install golang php-cli git composer php-date php-filter \
-        php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
-        php-curl php-gd
 
 # Installation
 
