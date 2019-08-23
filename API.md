@@ -47,8 +47,9 @@ A VPN service running at a particular domain is called an _instance_, e.g.
 # API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
-from the instance, based on the `base_uri`, e.g. `demo.eduvpn.nl`. As an 
-example, here is the content of `https://demo.eduvpn.nl/info.json`:
+(`info.json`) from the instance, based on the `base_uri`, e.g. 
+`demo.eduvpn.nl`. As an example, here is the content of 
+`https://demo.eduvpn.nl/info.json`:
 
     {
         "api": {
@@ -59,6 +60,9 @@ example, here is the content of `https://demo.eduvpn.nl/info.json`:
             }
         }
     }
+
+When fetching the `info.json` file, _redirects_, e.g. `301`, `302`, `303`, 
+MUST be followed.
 
 # Authorization Endpoint
 
