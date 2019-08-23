@@ -44,7 +44,7 @@ This file is obtained when:
 1. no "Secure Internet" instance is configured yet (or were removed) and the 
    user selects to add a "Secure Internet" instance through "Add Provider";
 2. a "Secure Internet" instance is already configured, in that case it is 
-   fetched automatically, but more than once a week (7 days).
+   fetched automatically, but NOT more than once a week (7 days).
 
 This makes sure the user can manually trigger a reload after deleting the 
 "Secure Internet" server and then trying to add it again.
