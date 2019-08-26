@@ -16,7 +16,8 @@ This document can be used by application developers implementing the
 For eduVPN the discovery file is available 
 [here](https://static.eduvpn.nl/disco/). Discovery files are JSON files 
 describing the available VPN servers. The files are accompanied with a file 
-containing a signature as well, to make sure they were not tampered with.
+containing a signature as well, to make sure they were not tampered with on the
+server.
 
 ## Types
 
@@ -28,9 +29,9 @@ The "Secure Internet" list contains VPN servers the user can connect to after
 
 The "Institute Access" list contains VPN servers that typically only allow 
 users from the organization itself to connect to it. These servers are 
-used to protect "private" networks at an organization.
+used to protect (private) networks at an organization.
 
-eduVPN applications MUST implement both discovery files and make a clear 
+eduVPN applications MUST support both discovery files and make a clear 
 distinction in the UI of the application between them.
 
 ## Fetching Frequency
@@ -48,6 +49,9 @@ This file is obtained when:
 
 This makes sure the user can manually trigger a reload after deleting the 
 "Secure Internet" server and then trying to add it again.
+
+If no "Secure Internet" server was selected, the "Secure Internet" discovery 
+file is NOT fetched.
 
 ### "Institute Access"
 
@@ -108,7 +112,7 @@ The flow:
    file is higher than in the current file;
 5. Overwrite the file you already have if `seq` was incremented.
 
-The `signed_at` key is just informative and MUST NOT be relied on to be 
+The `signed_at` key is just informational and MUST NOT be relied on to be 
 available.
 
 The public key that is currently used is 
@@ -117,29 +121,16 @@ The public key that is currently used is
 
 # Authorization
 
-Every VPN server runs their own OAuth server, so that would mean that for each 
-instance a new token needs to be obtained. However, in order to support sharing 
-access tokens between instances for [Guest Usage](GUEST_USAGE.md). We introduce 
-two "types" of authorization:
+## Institute Access
 
-1. `local`: every instance has their own OAuth server;
-2. `distributed`: there is no central OAuth server, tokens from all instances 
-   can be used at all (other) instances.
+Every server configured for "Institute Access" has their own OAuth server. The
+application needs to (try) to start the authorization flow for each of them 
+individually. This of course only succeeds if the user has an account at that 
+particular server. All "Institute Access" servers are completely independent, 
+the only thing in common is that they are mentioned in the "Institute Access"
+discovery file.
 
-The `authorization_type` key indicates which type is used. The supported 
-values are `local` and `distributed` mapping to the two modes described above.
-
-The entries in the discovery file are bound to the `authorization_type` 
-specified in the discovery file. So, may sure they are NOT mixed!
-
-## Local
-
-See API Discovery section above for determining the OAuth endpoints. The 
-application MUST store the obtained access token and bind it to the instance
-the token was obtained from. If a user wants to use multiple VPN instances, a 
-token MUST be obtained from all of them individually.
-
-## Distributed
+## Secure Internet
 
 Obtaining an access token from any of the instances listed in the discovery 
 file is enough and can then be used at all the instances. Typically the user
@@ -156,4 +147,3 @@ When API discovery is performed, the keys for
 `authorization_endpoint` and `token_endpoint` for the specific instance MUST
 be ignored. Refreshing access tokens MUST also be done at the original OAuth
 server that was used to obtain the access token.
-
