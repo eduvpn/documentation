@@ -2,7 +2,7 @@
 
 Name:       vpn-server-api
 Version:    2.0.3
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -62,6 +62,7 @@ BuildRequires:  php-composer(lc/common)
 BuildRequires:  php-composer(lc/openvpn-connection-manager)
 BuildRequires:  php-composer(psr/log)
 
+Requires:   openssl
 Requires:   crontabs
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
@@ -98,6 +99,7 @@ Requires:   php-composer(lc/common)
 Requires:   php-composer(lc/openvpn-connection-manager)
 Requires:   php-composer(psr/log)
 
+# We have an embedded modified copy of https://github.com/OpenVPN/easy-rsa
 Requires:   openssl
 
 Requires(post): /usr/sbin/semanage
@@ -148,6 +150,9 @@ ln -s ../../../etc/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-server-api
 ln -s ../../../var/lib/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/data
 
+# easy-rsa
+cp -pr easy-rsa %{buildroot}%{_datadir}/vpn-server-api
+
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -m 0640 -D -p %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/vpn-server-api
@@ -180,6 +185,7 @@ fi
 %dir %{_datadir}/vpn-server-api
 %{_datadir}/vpn-server-api/web
 %{_datadir}/vpn-server-api/schema
+%{_datadir}/vpn-server-api/easy-rsa
 %{_datadir}/vpn-server-api/config
 %{_datadir}/vpn-server-api/data
 %dir %{_datadir}/php/LC
@@ -189,6 +195,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-2
+- install easy-rsa again
+
 * Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-1
 - update to 2.0.3
 
