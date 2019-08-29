@@ -14,7 +14,7 @@ index 35d0c80..39b906e 100644
  use LC\Common\Config;
  use LC\Common\Logger;
 diff --git a/bin/housekeeping.php b/bin/housekeeping.php
-index 93a5a19..fefe00b 100644
+index 9694e44..a52d5bf 100644
 --- a/bin/housekeeping.php
 +++ b/bin/housekeeping.php
 @@ -7,8 +7,8 @@
@@ -29,7 +29,7 @@ index 93a5a19..fefe00b 100644
  use LC\Server\Storage;
  
 diff --git a/bin/init.php b/bin/init.php
-index 53746a8..64c429e 100644
+index cf99c3d..b34a84b 100644
 --- a/bin/init.php
 +++ b/bin/init.php
 @@ -7,8 +7,8 @@
@@ -41,8 +41,8 @@ index 53746a8..64c429e 100644
 +require_once '/usr/share/php/LC/Server/autoload.php';
 +$baseDir = '/usr/share/vpn-server-api';
  
- use LC\Server\CA\EasyRsaCa;
- use LC\Server\Storage;
+ use LC\Common\Config;
+ use LC\Common\FileIO;
 diff --git a/bin/stats.php b/bin/stats.php
 index c898aa8..d7d22dd 100644
 --- a/bin/stats.php
@@ -104,7 +104,7 @@ index aace998..9b0875f 100644
  use LC\Common\CliParser;
  use LC\Common\Config;
 diff --git a/web/api.php b/web/api.php
-index b05e796..bc5228e 100644
+index 5a1f771..62b0094 100644
 --- a/web/api.php
 +++ b/web/api.php
 @@ -7,8 +7,8 @@

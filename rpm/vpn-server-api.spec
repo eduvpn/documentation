@@ -1,8 +1,8 @@
-#global git fe4dd80dec35e011eb610125d699fc15fd9a4477
+#global git e66a72a12d42c2bbdbfc2ac56587b43b38354253
 
 Name:       vpn-server-api
-Version:    2.0.2
-Release:    2%{?dist}
+Version:    2.0.3
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -63,15 +63,13 @@ BuildRequires:  php-composer(lc/openvpn-connection-manager)
 BuildRequires:  php-composer(psr/log)
 
 Requires:   crontabs
-Requires:   openvpn
 %if 0%{?fedora} >= 24
 Requires:   httpd-filesystem
 %else
 # EL7 does not have httpd-filesystem
 Requires:   httpd
 %endif
-# We have an embedded modified copy of https://github.com/OpenVPN/easy-rsa
-Requires:   openssl
+
 #    "require": {
 #        "ext-date": "*",
 #        "ext-json": "*",
@@ -99,6 +97,8 @@ Requires:   php-composer(fkooman/sqlite-migrate)
 Requires:   php-composer(lc/common)
 Requires:   php-composer(lc/openvpn-connection-manager)
 Requires:   php-composer(psr/log)
+
+Requires:   openssl
 
 Requires(post): /usr/sbin/semanage
 Requires(postun): /usr/sbin/semanage
@@ -148,9 +148,6 @@ ln -s ../../../etc/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/config
 mkdir -p %{buildroot}%{_localstatedir}/lib/vpn-server-api
 ln -s ../../../var/lib/vpn-server-api %{buildroot}%{_datadir}/vpn-server-api/data
 
-# easy-rsa
-cp -pr easy-rsa %{buildroot}%{_datadir}/vpn-server-api
-
 # cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 %{__install} -m 0640 -D -p %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/vpn-server-api
@@ -183,7 +180,6 @@ fi
 %dir %{_datadir}/vpn-server-api
 %{_datadir}/vpn-server-api/web
 %{_datadir}/vpn-server-api/schema
-%{_datadir}/vpn-server-api/easy-rsa
 %{_datadir}/vpn-server-api/config
 %{_datadir}/vpn-server-api/data
 %dir %{_datadir}/php/LC
@@ -193,6 +189,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-1
+- update to 2.0.3
+
 * Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-2
 - add CONFIG_CHANGES.md as doc
 
