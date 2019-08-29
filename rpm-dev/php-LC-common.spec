@@ -1,7 +1,7 @@
-#global git 805c1e832daec7d1d336df3557e90e7d2b0f33ed
+#global git 9555ed5e8b4157135a2eeb57e3754aedd74361c8
 
 Name:       php-LC-common
-Version:    2.0.4
+Version:    2.0.5
 Release:    1%{?dist}
 Summary:    Common VPN library
 Group:      System Environment/Libraries
@@ -36,11 +36,9 @@ BuildRequires:  phpunit
 #        "ext-filter": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
-#        "ext-ldap": "*",
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
-#        "ext-radius": "*",
 #        "ext-spl": "*",
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
@@ -48,7 +46,11 @@ BuildRequires:  phpunit
 #        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1",
+#        "symfony/polyfill-php56": "^1"
+#    },
+#    "suggest": {
+#        "ext-ldap": "Support LDAP user authentication",
+#        "ext-radius": "Support RADIUS user authentication"
 #    },
 BuildRequires:  php(language) >= 5.4.0
 BuildRequires:  php-curl
@@ -56,15 +58,15 @@ BuildRequires:  php-date
 BuildRequires:  php-filter
 BuildRequires:  php-hash
 BuildRequires:  php-json
-BuildRequires:  php-ldap
 BuildRequires:  php-mbstring
 BuildRequires:  php-pcre
 BuildRequires:  php-pdo
-BuildRequires:  php-radius
 BuildRequires:  php-spl
 BuildRequires:  php-composer(fkooman/secookie)
 BuildRequires:  php-composer(paragonie/constant_time_encoding)
 BuildRequires:  php-composer(psr/log)
+BuildRequires:  php-ldap
+BuildRequires:  php-radius
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(ircmaxell/password-compat)
 BuildRequires:  php-composer(paragonie/random_compat)
@@ -77,11 +79,9 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "ext-filter": "*",
 #        "ext-hash": "*",
 #        "ext-json": "*",
-#        "ext-ldap": "*",
 #        "ext-mbstring": "*",
 #        "ext-pcre": "*",
 #        "ext-pdo": "*",
-#        "ext-radius": "*",
 #        "ext-spl": "*",
 #        "fkooman/secookie": "^2",
 #        "ircmaxell/password-compat": "^1",
@@ -89,7 +89,11 @@ BuildRequires:  php-composer(symfony/polyfill-php56)
 #        "paragonie/random_compat": ">=1",
 #        "php": ">= 5.4",
 #        "psr/log": "^1.0",
-#        "symfony/polyfill-php56": "^1",
+#        "symfony/polyfill-php56": "^1"
+#    },
+#    "suggest": {
+#        "ext-ldap": "Support LDAP user authentication",
+#        "ext-radius": "Support RADIUS user authentication"
 #    },
 Requires:       php(language) >= 5.4.0
 Requires:       php-curl
@@ -97,15 +101,15 @@ Requires:       php-date
 Requires:       php-filter
 Requires:       php-hash
 Requires:       php-json
-Requires:       php-ldap
 Requires:       php-mbstring
 Requires:       php-pcre
 Requires:       php-pdo
-Requires:       php-radius
 Requires:       php-spl
 Requires:       php-composer(fkooman/secookie)
 Requires:       php-composer(paragonie/constant_time_encoding)
 Requires:       php-composer(psr/log)
+Requires:       php-ldap
+Requires:       php-radius
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:       php-composer(ircmaxell/password-compat)
 Requires:       php-composer(paragonie/random_compat)
@@ -159,6 +163,9 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.5-1
+- update to 2.0.5
+
 * Tue Aug 13 2019 François Kooman <fkooman@tuxed.net> - 2.0.4-1
 - update to 2.0.4
 

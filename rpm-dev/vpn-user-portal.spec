@@ -1,7 +1,7 @@
-#global git 5f4ad648576a1d59619db3eb855f8ae8af203296
+#global git 43cc69668ecec6f087d7d440e2fe9034cf9f0a65
 
 Name:       vpn-user-portal
-Version:    2.0.11
+Version:    2.0.12
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -17,6 +17,12 @@ Source2:    minisign-8466FFE127BCDC82.pub
 Source3:    vpn-user-portal-httpd.conf
 Source4:    vpn-user-portal.cron
 Patch0:     vpn-user-portal-autoload.patch
+
+# we do not wish to depend on paragonie/sodium_compat as we'll always require
+# php-pecl(libsodium) on CentOS 7, instead we have a small mapping wrapper that
+# converts calls to the Sodium namespaced php-pecl(libsodium) 1.x 
+# constants/functions
+Patch1:     vpn-user-portal-sodium.patch
 
 BuildArch:  noarch
 
@@ -52,6 +58,7 @@ BuildRequires:  phpunit
 #        "lc/common": "v2.x-dev",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "paragonie/sodium_compat": "^1",
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
@@ -72,10 +79,7 @@ BuildRequires:  php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires:  php-composer(paragonie/random_compat)
 %endif
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
+
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  php-sodium
 %else
@@ -105,6 +109,7 @@ Requires:   crontabs
 #        "lc/common": "v2.x-dev",
 #        "paragonie/constant_time_encoding": "^1|^2",
 #        "paragonie/random_compat": "^1|^2",
+#        "paragonie/sodium_compat": "^1",
 #        "php": ">=5.4.0"
 #    },
 Requires:   php(language) >= 5.4.0
@@ -126,10 +131,7 @@ Requires:   php-composer(fkooman/saml-sp)
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 Requires:   php-composer(paragonie/random_compat)
 %endif
-#    "suggest": {
-#        "ext-libsodium": "PHP < 7.2 sodium implementation",
-#        "ext-sodium": "PHP >= 7.2 sodium implementation"
-#    },
+
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 Requires:   php-sodium
 %else
@@ -151,6 +153,9 @@ VPN User Portal.
 %setup -qn vpn-user-portal-%{version}
 %endif
 %patch0 -p1
+%if 0%{?fedora} < 28 && 0%{?rhel} < 8
+%patch1 -p1
+%endif
 
 %build
 %{_bindir}/phpab -t fedora -o src/autoload.php src
@@ -260,6 +265,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.12-1
+- update to 2.0.12
+
 * Mon Aug 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.11-1
 - update to 2.0.11
 
