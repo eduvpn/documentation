@@ -1,14 +1,14 @@
 ---
-title: Port Sharing
-description: Enable Port Sharing for the Web Server for `TCP/443`
+title: Use Common Ports
+description: Use common ports for your VPN server that enable its use in many restricted networks
 ---
 
 This document describes how to configure your VPN server in such a way as to
 make it most likely people can connect to it. This is done by making it 
-possible to connect to the VPN service using `tcp/443` in addition to 
-`udp/1194` and `tcp/1194`. Because the web server claims `tcp/443` we need to 
-share `tcp/443` between the web server and OpenVPN we'll use 
-[sslh](https://github.com/yrutschle/sslh).
+possible to connect to the VPN service using both `udp/443` and `tcp/443`. A
+complication here is that the web server claims `tcp/443`, so we need to share 
+`tcp/443` between the web server and OpenVPN. We'll use 
+[sslh](https://github.com/yrutschle/sslh) for this task.
 
 In larger deployments you'll want to use multiple machines where the portal(s) 
 and API run on a different machine from the OpenVPN backend server(s) so port
@@ -17,21 +17,25 @@ sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 ## VPN
 
 We need to modify `/etc/vpn-server-api/config.php` and modify 
-`exposedVpnProtoPorts` to announce to VPN clients that we also want to 
-advertise `tcp/443` to clients:
+`vpnProtoPorts` and set `exposedVpnProtoPorts` to announce to VPN clients that 
+we want them to use `udp/443` and `tcp/443` and not any of the normal OpenVPN 
+ports:
 
     'vpnProtoPorts' => [
-        'udp/1194',
+        'udp/443',
         'tcp/1194',
     ],
 
     ...
 
     'exposedVpnProtoPorts' => [
-        'udp/1194',
-        'tcp/1194',
+        'udp/443',
         'tcp/443',
     ],
+
+In `vpnProtoPorts` we make OpenVPN listen on `tcp/1194` and NOT on `tcp/443` 
+as the sslh will listen there later and forward connections to `tcp/443` to 
+this port internally.
 
 ## Web Server
 
@@ -101,14 +105,54 @@ PRE_HOOK="--pre-hook 'systemctl stop sslh'"
 POST_HOOK="--post-hook 'systemctl start sslh'"
 ```
 
+## SELinux
+
+On CentOS/Fedora you need to modify SELinux to allow OpenVPN to listen on 
+`udp/443`:
+
+    $ sudo semanage port -a -t openvpn_port_t -p udp 443
+
+## Firewall
+
+By default the firewall only allows connections to `udp/1194` and `tcp/1194` 
+for OpenVPN, we need to modify this in `/etc/vpn-server-node/firewall.php`:
+
+The `inputRules` section should look something like this:
+
+    'inputRules' => [
+        [
+            'proto' => ['tcp'],
+            'dst_port' => [
+                22,     // SSH
+                80,     // HTTP
+                443,    // HTTPS
+            ],
+        ],
+        [
+            'proto' => ['udp'],
+            'dst_port' => [
+                443,    // OPENVPN
+            ],
+        ],
+    ],
+
 ## Applying
 
 ### CentOS/Fedora
 
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
-
+    $ sudo vpn-server-node-server-config
+    $ sudo vpn-server-node-generate-firewall --install
+    $ sudo systemctl restart "openvpn-server@*"
+    $ sudo systemctl restart iptables
+    $ sudo systemctl restart ip6tables
+    
 ### Debian
 
     $ sudo systemctl restart apache2
     $ sudo systemctl restart sslh
+    $ sudo vpn-server-node-server-config
+    $ sudo vpn-server-node-generate-firewall --install
+    $ sudo systemctl restart "openvpn-server@*"
+    $ sudo systemctl restart netfilter-persistent
