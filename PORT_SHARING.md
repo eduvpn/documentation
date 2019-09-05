@@ -96,6 +96,8 @@ Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
 
 ## Let's Encrypt
 
+TODO: this is only for CentOS/Fedora and not for Debian...
+
 If you are using Let's Encrypt with automatic certificate renewal you should 
 modify your `/etc/sysconfig/certbot` and set the `PRE_HOOK` and `POST_HOOK` to 
 stop/start `sslh` instead of `httpd`:
@@ -125,7 +127,7 @@ The `inputRules` section should look something like this:
             'dst_port' => [
                 22,     // SSH
                 80,     // HTTP
-                443,    // HTTPS
+                443,    // HTTPS / OPENVPN
             ],
         ],
         [
