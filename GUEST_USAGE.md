@@ -41,16 +41,11 @@ and the registry:
     ],
 
 The `production` example above is to allow access from all 
-[eduVPN](https://eduvpn.org/) servers part of the federation. You can of course
-also create your own registry. See 
-[php-json-signer](https://software.tuxed.net/php-json-signer/index.html) for
-the tool to create signatures, and the 
-[discovery](https://github.com/eduvpn/discovery) repository for the file 
-format.
+[eduVPN](https://eduvpn.org/) servers part of the federation. 
 
 If you want to register your server for eduVPN, please contact 
-[eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl) and provide your server's public
-key, for example:
+[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 
+provide your server's public key, for example:
 
 ```bash
 $ sudo vpn-user-portal-show-oauth-key 
