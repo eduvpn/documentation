@@ -26,6 +26,7 @@ We expect a release in Q4-2019.
 
 ### SHOULD
 
+- look into using `tun0`, `tun1`, ... again for TUN devices (BSD compat)
 - have a full php-saml-sp audit ([TODO](https://github.com/fkooman/php-saml-sp/blob/master/TODO.md))
 - remove as many configuration options as possible, and have sane defaults
 - Support AND/OR logic for permission attribute(s)
