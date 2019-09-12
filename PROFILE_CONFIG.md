@@ -59,7 +59,7 @@ deployments.
 | `routes`               | IPv4 and IPv6 routes to push to the client, only used when `defaultGateway` is `false`. Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                     | no       | `[]`                       | `[]`                       |
 | `dns`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | from `/etc/resolv.conf`    |
 | `clientToClient`       | Whether or not to allow client-to-client traffic                                                                                                                            | no       | `false`                    | `false`                    |
-| `enableLog`            | Whether or not to enable OpenVPN logging                                                                                                                                    | no       | `false`                    | `false`                    |
+| `enableLog`            | Whether or not to enable OpenVPN [logging](#logging)                                                                                                                                    | no       | `false`                    | `false`                    |
 | `enableAcl`            | Whether or not to enable [ACL](ACL.md)s for controlling who can connect                                                                                                     | no       | `false`                    | `false`                    |
 | `aclPermissionList`    | List of acceptable permissions (OR) for access to this profile. Requires `enableAcl` to be `true`, see [ACL](ACL.md)                                                                                    | no       | `[]`                       | `[]`                       |
 | `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8, 16, 32 or 64 entries. See [OpenVPN Processes](#openvpn-processes)                                                      | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
@@ -137,6 +137,12 @@ You can manually work around providing both IPv4+IPv6 for profiles where you
 specify a `listen` address by using a proxy like 
 [socat](http://www.dest-unreach.org/socat/).
 
+### Logging
+
+Once logging is enabled and changes applied, you can follow the log like this:
+
+	$ sudo journalctl -f -t openvpn
+	
 ## Apply Changes
 
 The OpenVPN server configuration can be regenerated like this:
