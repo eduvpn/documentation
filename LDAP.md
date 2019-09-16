@@ -17,6 +17,9 @@ LDAP integration is used for two aspects:
 The first one is what we focus on here, the second one is documented in the 
 [ACL](ACL.md) document.
 
+In order to make a particular user an "administrator" in the portal, see 
+[PORTAL_ADMIN](PORTAL_ADMIN.md).
+
 # Configuration
 
 You can configure the portal to use LDAP. This is configured in the file 

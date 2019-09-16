@@ -11,6 +11,9 @@ you use `vpn.example`, but modify this domain to your own domain name!
 RADIUS integration can currently only be used to _authenticate_ users, not for 
 authorization/ACL purposes.
 
+In order to make a particular user an "administrator" in the portal, see 
+[PORTAL_ADMIN](PORTAL_ADMIN.md).
+
 # Configuration
 
 You can configure the portal to use RADIUS. This is configured in the file 

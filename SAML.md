@@ -16,3 +16,6 @@ There are three, yeah I know, options for configuring SAML for your VPN server:
 
 They are listed here in order of preference. Do **NOT** use php-saml-sp until 
 it received a complete security audit.
+
+In order to make a particular user an "administrator" in the portal, see 
+[PORTAL_ADMIN](PORTAL_ADMIN.md).
