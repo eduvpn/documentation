@@ -73,7 +73,7 @@ for the IdP `https://idp.tuxed.net/metadata` one would query
         ]
     }
 
-The `privateServerList` contains a list of VPN servers that are exclusivly 
+The `privateServerList` contains a list of VPN servers that are exclusively 
 available for this IdP. The access tokens for servers mentioned here are tied 
 to each individual VPN server in this list.
 
@@ -86,27 +86,43 @@ The `privateServerList` used to be the "Institute Access" servers, the
 
 ## IdP Hint
 
-**OPTIONAL**: the VPN server can decide whether or not to do this
+Many (all?) servers that want to provide "Guest Usage" are linked to SAML 
+federations. If the discovery of the user's IdP is moved to the application 
+itself, opening the OAuth authorization URL may trigger another "WAYF" from 
+the identify federation. 
 
-The app typically opens the OAuth authorize URI discovered from the `info.json` 
-on the server. For SAML logins it makes sense to indidicate which IdP to use
-so the user does not get another IdP selector associated with the SP. We could
-have a key in the `info.json` file that triggers SAML login and after that 
-returns to the OAuth authorize URI
+In order to avoid the user having to choose their IdP twice, it makes sense to
+be able to provide an IdP hint to the VPN server and avoid the WAYF.
 
-    "authorize_uri_template": "https://nl.eduvpn.org/saml/login?IdP=https://idp.surfnet.nl?return_to=@AUTHORIZE_URI@
+OAuth does not provide a mechanism for this directly, OIDC would, but we do not
+exclusively use OIDC, so we need something "vendor independent" to open the 
+correct URL.
 
-Here the app takes the `authorize_uri_template` if it exists, constructs the 
-`authorize_uri` as it would normally, and then replaces `@AUTHORIZE_URI@` with
-the (url encoded) `authorize_uri`.
+How to this exactly depends on the SAML implementation chosen by the VPN 
+server. As the VPN app has no knowledge of the used authentication mechanism, 
+we can provide some kind of "IdP hint". 
 
+Typically, an SP uses the "Identity Provider Discovery Service Protocol and 
+Profile". This means that a WAYF, after the user selects the IdP, returns 
+to the SP. By using a special URL, we can already "choose" for the user based
+on the IdP the user chose in the eduVPN app, and use the OAuth "authorize URI"
+as the `return` or `ReturnTo` parameter.
 
-	{
-	    "api": {
-	        "http://eduvpn.org/api#2": {
-	            "api_base_uri": "https://vpn.tuxed.net/vpn-user-portal/api.php",
-	            "authorization_endpoint": "https://vpn.tuxed.net/vpn-user-portal/_oauth/authorize",
-	            "token_endpoint": "https://vpn.tuxed.net/vpn-user-portal/oauth.php/token"
-	        }
-	    }
-	}
+For example, for `vpn.tuxed.net` the following URL can be used to trigger a 
+login using the IdP `https://idp.tuxed.net/metadata` and `ReturnTo` the OAuth 
+authorization URL, skipping the VPN server WAYF:
+
+    https://vpn.tuxed.net/vpn-user-portal/_saml/login?ReturnTo=https%3A%2F%2Fvpn.tuxed.net%2Fvpn-user-portal%2F_oauth%2Fauthorize%3Fclient_id%3Dorg.eduvpn.app.windows%26redirect_uri%3Dhttp%3A%2F%2F127.0.0.1%3A12345%2Fcallback%26response_type%3Dcode%26scope%3Dconfig%26state%3D12345%26code_challenge_method%3DS256%26code_challenge%3DE9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&IdP=https%3A%2F%2Fidp.tuxed.net%2Fmetadata
+
+A mechanism exist to tell the app about server specific configurations, i.e. 
+the `info.json` file. We can add a special key there that provides a template 
+for the application to use. For example, the template for the above URL could
+be:
+
+    https://vpn.tuxed.net/vpn-user-portal/_saml/login?ReturnTo=@AUTHORIZE_URI@&IdP=@IDP_ENTITY_ID@
+
+This template URL will depend on the SAML software used at the SP, and 
+also on the host name of the VPN server. 
+
+**NOTE**: the `@AUTHORIZE_URI@` MUST be already URL encoded before being used 
+as a replacement for the `@AUTHORIZE_URI@` string!
