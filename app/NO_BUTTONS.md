@@ -1,5 +1,7 @@
 # Getting rid of the buttons...
 
+**NOTE**: none of the file formats / JSON encodings are final!
+
 We are trying to get rid of the "use case" buttons in the eduVPN apps. 
 Currently the user first has to choose "Institute Access" or "Secure Internet". 
 This is not easy to explain to users. It would be better when users can simply
@@ -7,7 +9,7 @@ select their institute from a list, like they are already used to from the
 existing identity federations.
 
 The advantage here is that the user does not have to choose from a list of 
-VPN servers that don't necessarily have a (direct) link to their IdP.
+VPN servers that don't necessarily have a (direct) link to their organization.
 
 ## User Flow
 
@@ -15,76 +17,94 @@ In the "first run" scenario:
 
 1. The user opens the application;
 
-2. The user chooses their IdP
+2. The user chooses their organization;
 
-3. The app shows the available VPN servers linked to that particular IdP, 
-   e.g. a VPN server for "Institute Access" and a list of VPNs around the 
-   world that can be used for "Secure Internet".
+3. The app shows the available VPN servers linked to that particular 
+   organization, e.g. a VPN server for "Institute Access" and a list of VPNs 
+   around the world that can be used for "Secure Internet".
    
-The app stores the IdP the user chooses so this IdP selector step does not 
-need to be repeated anymore. 
+4. (Optionally) the app connects automatically to a / one of the VPN servers
 
-On subsequent runs the app immediately shows VPN 
-servers as obtained/configured during the last run.
+The app stores the organization identifier the user chooses so this selector 
+step does not need to be repeated anymore. 
+
+On subsequent runs the app immediately shows VPN servers as obtained/configured 
+during the last run.
 
 ## App Flow
 
 In the "first run" scenario:
 
-1. Application opens the IdP discovery URL either in an external browser or in 
-   an embedded "Web View"; 
+1. Application opens the institute chooser URL either in an external browser or 
+   in an embedded "Web View"; 
    
-2. The users chooses their IdP from a list of all available IdPs, e.g. an 
-   eduGAIN WAYF;
+2. The users chooses their organization from a list;
 
-3. The application gets the IdP identifier back through a "callback URL", e.g.
-   `org.eduvpn.app://callback?IdP=https://idp.tuxed.net/metadata`, the app can
-   either register this scheme, or obtain the redirect URI from the Web View 
+3. The application gets the organization identifier back through a 
+   "callback URL", e.g. 
+   `org.eduvpn.app://callback?orgId=https://idp.tuxed.net/metadata`, the app 
+   can either register this scheme, or obtain the URI from the Web View 
    control(s);
 
-4. The app downloads the IdP -> Server mapping from a web server to obtain the
-   list of VPN servers the chosen IdP has access to;
+4. The app downloads the `orgId` -> Server mapping from a web server to obtain 
+   the list of VPN servers the chosen organization has access to;
 
 5. The app adds the obtained server addresses to the app so the user can choose
    them afterwards;
 
+6. The app automatically connects to a VPN server if specified in the 
+   mapping file.
+
 ### Notes
 
-* The app MUST allow for forgetting the chosen IdP;
+* The app MUST allow for forgetting the chosen organization;
 * The app MUST NOT contact the network unless the user tries to add a new VPN 
   server, or tries to connect to an existing one;
 
 ## Mapping file
 
-**NOTE**: mapping file format is NOT stable
-
-Obtain all available servers for an IdP by querying the central server, e.g. 
-for the IdP `https://idp.tuxed.net/metadata` one would query 
+Obtain all available servers for an `orgId` by querying the central server, 
+e.g. for `https://idp.tuxed.net/metadata` one would query 
 `https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.tuxed.net%2Fmetadata.json`.
 
+The result may look like this:
+
     {
-        "privateServerList": [
+        "autoConnect": [
+            {
+                "https://nl.eduvpn.org/": {
+                    "profileId": "default"
+                }
+            }
+        ],
+        "instituteAccess": [
             "https://surfnet.eduvpn.nl/"
         ],
-        "publicServer": "https://nl.eduvpn.org/",
-        "publicServerList": [
+        "secureInternet": [
+            "https://nl.eduvpn.org/",
             "https://guest.uninett.no/",
             "..."
-        ]
+        ],
+        "secureInternetHome": "https://nl.eduvpn.org/"
     }
 
-The `privateServerList` contains a list of VPN servers that are exclusively 
-available for this IdP. The access tokens for servers mentioned here are tied 
-to each individual VPN server in this list.
+The entry `instituteAccess` contains a list of VPN servers that are exclusively 
+available for this organization. The access tokens for servers mentioned here 
+are tied to each individual VPN server in this list.
 
-The `publicServer` entry contains the "Home" server of users of that IdP. It 
-will be used to obtain an access token that can be used at all servers 
-mentioned in the `publicServerList`.
+The entry `secureInternetHome` entry contains the "Home" server of users of 
+that organization. It will be used to obtain an access token that can be used 
+at all servers mentioned in the `secureInternet`.
 
-The `privateServerList` used to be the "Institute Access" servers, the 
-`publicServerList` used to be the list of "Secure Internet" servers.
+The `autoConnect` entry contains a list of server(s) that the application 
+should automatically connect to after adding the servers to the application. 
+Here "auto connect" means: obtain OAuth authorization, and connect to the 
+server. If multiple profiles are available for this user on tihs 
 
-## IdP Hint
+## Organization Hint
+
+**NOTE**: this is currently only relevant for SAML, we use IdP here instead of
+organization.
 
 Many (all?) servers that want to provide "Guest Usage" are linked to SAML 
 federations. If the discovery of the user's IdP is moved to the application 
