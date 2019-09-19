@@ -25,6 +25,7 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [ADD_NODE](ADD_NODE.md)                               | Add a VPN node for handling OpenVPN connections |
 | [DNS_FILTERING](DNS_FILTERING.md)                     | Block malware/tracking/advertisement domains with Local DNS Resolver |
 | [MULTI_PROFILE](MULTI_PROFILE.md)                     | Configure VPN Profiles on VPN Server|
+| [PUBLIC_ADDR](PUBLIC_ADDR.md)                         | Use Public IP Addresses for VPN Clients |
 | [PORT_SHARING](PORT_SHARING.md)                       | Use common ports for your VPN server that enable its use in many restricted networks |
 | [USER_DELETE](USER_DELETE.md)                         | Manually fully Delete a User | 
 | [CONTRIBUTE_TRANSLATIONS](CONTRIBUTE_TRANSLATIONS.md) | Contribute Translations for the User and Admin portal(s) |
