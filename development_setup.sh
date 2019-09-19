@@ -13,7 +13,7 @@ git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-user-portal.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
-git clone -b master       https://github.com/fkooman/vpn-ca.git
+git clone -b master       https://git.tuxed.net/fkooman/vpn-ca
 
 # clone all repositories (read/write, your own "forks")
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
@@ -21,7 +21,7 @@ git clone -b master       https://github.com/fkooman/vpn-ca.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-api.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
-#git clone -b master       git@github.com:fkooman/vpn-ca.git
+#git clone -b master       git@git.tuxed.net:fkooman/vpn-ca.git
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
