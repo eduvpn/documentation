@@ -16,7 +16,7 @@ the identity management system, using permissions may make more sense.
 
 ### User ID
 
-Thr default deploy, using `deploy_${DIST}.sh` sets the `admin` user as an
+The default deploy, using `deploy_${DIST}.sh` sets the `admin` user as an
 admin in `/etc/vpn-user-portal/config.php` using the `adminUserIdList` 
 configuration array:
 
