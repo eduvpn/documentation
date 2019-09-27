@@ -61,23 +61,20 @@ later.
 
 ## Node
 
-Currently we do not have a `deploy_node_${DIST}.sh` unfortunately. You'll have
-to manually walk through the `deploy_${DIST}.sh` and perform the relevant steps
-until such time we have proper documentation for this. You *only* need to 
-install the `vpn-server-node` package, not any of the other packages related to
-the portal. After installing `vpn-server-node`, you can modify the default
-configuration in `/etc/vpn-server-node/config.php` and make sure `apiPass` and
-`apiUri` are set correctly. The `apiPass` contains the string you took note of
-when setting up the controller.
+You can use the `deploy_${DIST}_node.sh` for installing the node. It will only
+install the relevant software to connect to your controller and handle VPN 
+connections.
 
-The `apiUri` will look like this: 
+The deploy script will ask for your API URL, which is the full HTTPS URL to 
+your VPN controller. Replace the host name with your controller's name, e.g. 
 `https://vpn.example.org/vpn-server-api/api.php`.
 
-Now you should be able to configure the node, by running this on the node:
+You will need the API secret as well that you took note of before, the script
+will also ask for that!
 
-    $ vpn-server-node-server-config
-    $ vpn-server-node-generate-firewall --install
+If everything was setup correctly, the node script should run without any 
+problems!
 
-This should generate the OpenVPN configuration files and generate and install
-the firewall rules. You need to apply the changes on the node, as shown 
-[here](PROFILE_CONFIG.md#apply-changes).
+You need to apply the changes on the node, as shown 
+[here](PROFILE_CONFIG.md#apply-changes) if you make any changes to the 
+profile's configuration on the controller.
