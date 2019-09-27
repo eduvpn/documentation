@@ -110,7 +110,7 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 
 The authentication backends `FormPdoAuthentication` (default), 
 `FormLdapAuthentication` and `FormRadiusAuthentication` support "static" 
-entitlements. This means that you can use a (JSON) file where the mapping 
+permissions. This means that you can use a (JSON) file where the mapping 
 between permissions and users are stored.
 
 Thie file is stored in `/etc/vpn-user-portal/static_permissions.json` and has
