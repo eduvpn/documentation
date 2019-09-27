@@ -14,6 +14,8 @@ Currently, the following access control mechanisms are supported:
 - SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
   `eduPersonEntitlement`)
 - LDAP (via LDAP attribute, e.g. `memberOf`)
+- Static (supported by `FormPdoAuthentication` (default), 
+  `FormLdapAuthentication` and `FormRadiusAuthentication`)
 
 The permissions are _cached_ for up to a configurable period. By default this 
 is 3 months, but can easily be modified. This cache is required, because not
@@ -103,6 +105,37 @@ and set the `permissionAttribute` to the name of the attribute:
 Once you authenticate to the portal, on the "Account" page, i.e. 
 `https://vpn.example/vpn-user-portal/account`, you should see the 
 "Group Membership(s)" listed there.
+
+## Static
+
+The authentication backends `FormPdoAuthentication` (default), 
+`FormLdapAuthentication` and `FormRadiusAuthentication` support "static" 
+entitlements. This means that you can use a (JSON) file where the mapping 
+between permissions and users are stored.
+
+Thie file is stored in `/etc/vpn-user-portal/static_permissions.json` and has
+the following format:
+
+    {
+        "administrators": [
+            "foobar",
+            "foobaz"
+        ],
+        "employees": [
+            "foobar",
+            "foo",
+            "bar",
+            "baz"
+        ]
+    }
+
+This means that the users `foobar` and `foobaz` get the `administrators` 
+permission and the users `foobar`, `foo`, `bar` and `baz` get the `employees`
+permission. Note that the user `foobar` has two permissions.
+
+**NOTE**: if you are using the `FormLdapAuthentication` authentication backend, 
+the static permissions are _added_ to the ones that may have been retrieved 
+through LDAP.
 
 ## Profile Mapping
 
