@@ -47,7 +47,7 @@ deployments.
 
 | Option                 | Description                                                                                                                                                                 | Required | Default Value              | Deploy Value               |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- | -------------------------- |
-| `profileNumber`        | The number of this profile, every profile per instance has a unique number                                                                                                  | yes      | _N/A_                      | `1`                        |
+| `profileNumber`        | The number of this profile, every profile per instance has a unique number `1 <= profileNumber <= 64`                                                                       | yes      | _N/A_                      | `1`                        |
 | `displayName`          | The name of the profile as shown in the user and admin portals                                                                                                              | yes      | _N/A_                      | `Internet Access`          |
 | `range`                | The IPv4 range of the network that will be assigned to clients                                                                                                              | yes      | _N/A_                      | Random `10.X.Y.0/25`       |
 | `range6`               | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 112 and divisible by 4 (the "smallest" range an OpenVPN process supports is `::/112`) | yes      | _N/A_                      | Random `fdX:Y:Z:A::/64`    |
@@ -114,11 +114,11 @@ but not both.
 
 By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
 one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
-the total number of them must be either 1, 2, 4, 8 or 16. This is because the 
-total available IP range will be split among them. Depending on your address
-space the ideal number of simultaneous clients per process is at most 64. So 
-if you have a `/24` network, you'd probably want to run 4 OpenVPN processes, 
-e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
+the total number of them must be either 1, 2, 4, 8, 16, 32 or 64. This is 
+because the total available IP range will be split among them. Depending on 
+your address space the ideal number of simultaneous clients per process is at 
+most 64. So if you have a `/24` network, you'd probably want to run 4 OpenVPN 
+processes, e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
 
 You can also specify ports like `udp/53` and `tcp/443`, but then those ports
 need to be available to be claimed by OpenVPN and can't be shared by a DNS 

@@ -10,7 +10,7 @@ e.g. "employees" and "administrators".
 
 Each profile needs to either use different ports, or different IP addresses 
 to listen on. Furthermore, each profile MUST have its own unique 
-`profileNumber` and `profileId`. A maximum of 16 profiles is supported.
+`profileNumber` and `profileId`. A maximum of 64 profiles is supported.
 
 Below, we will end up with two profiles:
 
