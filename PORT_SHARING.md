@@ -17,25 +17,36 @@ sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 ## VPN
 
 We need to modify `/etc/vpn-server-api/config.php` and modify 
-`vpnProtoPorts` and set `exposedVpnProtoPorts` to announce to VPN clients that 
-we want them to use `udp/443` and `tcp/443` and not any of the normal OpenVPN 
-ports:
+`vpnProtoPorts` and set `exposedVpnProtoPorts`, i.e. the ports exposed to the 
+VPN client, to announce to VPN clients that we want them to use `udp/443` and 
+`tcp/443` and not any of the normal OpenVPN ports:
 
     'vpnProtoPorts' => [
-        'udp/443',
-        'tcp/1194',
+        'udp/443',  // HTTP/3 QUIC port
+        'tcp/1194', // OpenVPN TCP port (sslh will forward tcp/443 to this 
+                    // port)
     ],
 
     ...
 
     'exposedVpnProtoPorts' => [
-        'udp/443',
-        'tcp/443',
+        'udp/443',  // HTTP/3 QUIC port
+        'tcp/443',  // HTTPS port
     ],
 
 In `vpnProtoPorts` we make OpenVPN listen on `tcp/1194` and NOT on `tcp/443` 
 as the sslh will listen there later and forward connections to `tcp/443` to 
 this port internally.
+
+If you want to add additional ports, make sure the `vpnProtoPorts` entry 
+contains 2, 4, 8, 16, 32 or 64 entries, e.g.:
+
+    'vpnProtoPorts' => [
+        'udp/53',   // DNS port
+        'tcp/80',   // HTTP port
+        'udp/443',  // HTTP/3 QUIC port
+        'tcp/1194', // OpenVPN TCP port
+    ],
 
 ## Web Server
 
@@ -110,7 +121,7 @@ POST_HOOK="--post-hook 'systemctl start sslh'"
 ## SELinux
 
 On CentOS/Fedora you need to modify SELinux to allow OpenVPN to listen on 
-`udp/443`:
+`udp/443`, or any of the other ports you decided to use, e.g.:
 
     $ sudo semanage port -a -t openvpn_port_t -p udp 443
 
