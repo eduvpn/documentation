@@ -40,6 +40,8 @@ We expect a release in Q4-2019.
   actual user
 - Allow API clients to register themselves and use a secret in the future to
   avoid needing to ask for permission again when the refresh_token expires
+- use Ed25519 client/server certificates instead of RSA
+- require TLS >= 1.3
 
 ### MAY
 
