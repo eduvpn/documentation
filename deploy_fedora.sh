@@ -57,16 +57,10 @@ curl -L -o /etc/yum.repos.d/LC.repo \
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
-    iptables-services php-fpm php-cli policycoreutils-python chrony
-
-# install additional language packs
-# this is needed on Fedora, not on CentOS where they are all in glibc-common
-${PACKAGE_MANAGER} -y install glibc-langpack-nl glibc-langpack-nb \
-    glibc-langpack-da glibc-langpack-fr
+    iptables-services php-fpm php-cli policycoreutils-python-utils chrony
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api \
-    vpn-user-portal
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal
 
 ###############################################################################
 # SELINUX
