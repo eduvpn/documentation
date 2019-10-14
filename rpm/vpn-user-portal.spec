@@ -1,7 +1,7 @@
-#global git 1c6c7301c4ba319c5acfec52b63a7cfcc82cadf4
+#global git 5693a5a6e69b665bf8db900e3198e54c40862e92
 
 Name:       vpn-user-portal
-Version:    2.0.13
+Version:    2.0.14
 Release:    1%{?dist}
 Summary:    VPN User Portal
 Group:      Applications/Internet
@@ -62,7 +62,7 @@ BuildRequires:  phpunit
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-composer(bacon/bacon-qr-code)
+BuildRequires:  php-composer(bacon/bacon-qr-code) < 2.0.0
 BuildRequires:  php-curl
 BuildRequires:  php-date
 BuildRequires:  php-hash
@@ -114,7 +114,7 @@ Requires:   crontabs
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
-Requires:   php-composer(bacon/bacon-qr-code)
+Requires:   php-composer(bacon/bacon-qr-code) < 2.0.0
 Requires:   php-curl
 Requires:   php-date
 Requires:   php-hash
@@ -265,6 +265,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Oct 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.14-1
+- update to 2.0.14
+
 * Wed Sep 25 2019 François Kooman <fkooman@tuxed.net> - 2.0.13-1
 - update to 2.0.13
 

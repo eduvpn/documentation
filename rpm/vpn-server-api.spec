@@ -1,8 +1,8 @@
-#global git e66a72a12d42c2bbdbfc2ac56587b43b38354253
+#global git 4aadbbb9b05dd8ab155ff6107f8fa3d1d8ce0683
 
 Name:       vpn-server-api
-Version:    2.0.3
-Release:    2%{?dist}
+Version:    2.0.4
+Release:    1%{?dist}
 Summary:    Web service to control OpenVPN processes
 Group:      Applications/Internet
 License:    AGPLv3+
@@ -195,6 +195,9 @@ fi
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Oct 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.4-1
+- update to 2.0.4
+
 * Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-2
 - install easy-rsa again
 
