@@ -75,6 +75,16 @@ will also ask for that!
 If everything was setup correctly, the node script should run without any 
 problems!
 
+You can restrict the profiles you deploy on the node. By default, all profiles
+will be deployed. 
+
+You can use the configuration option `profileList` in 
+`/etc/vpn-server-node/config.php`. It takes an array containing a list of 
+profiles to deploy on this particular node. The default, when the option is 
+missing, is to deploy _all_ profiles on this node. Example:
+
+    'profileList' => ['office', 'sysadm'],
+
 You need to apply the changes on the node, as shown 
 [here](PROFILE_CONFIG.md#apply-changes) if you make any changes to the 
 profile's configuration on the controller.
