@@ -1,12 +1,11 @@
 #!/bin/sh
 
+ARCH=x86_64
 OS_VERSION=30
-MOCK_CONFIG=fedora-${OS_VERSION}-x86_64
-REPO_ROOT=${HOME}/repo-v2/${MOCK_CONFIG}
-RPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/x86_64
-SRPM_DIR=${REPO_ROOT}/release/fedora/${OS_VERSION}/Source
+MOCK_CONFIG=fedora-${OS_VERSION}-${ARCH}
+REPO_ROOT=${HOME}/repo-v2
 
-export REPO_ROOT RPM_DIR SRPM_DIR MOCK_CONFIG
+export REPO_ROOT MOCK_CONFIG ARCH
 
 (
     sh release/build_packages.sh
