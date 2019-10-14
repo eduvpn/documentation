@@ -54,6 +54,10 @@ Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
     config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '3072m'
     config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
     config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = False
+    config_opts['plugin_conf']['sign_enable'] = True
+    config_opts['plugin_conf']['sign_opts'] = {}
+    config_opts['plugin_conf']['sign_opts']['cmd'] = 'rpmsign'
+    config_opts['plugin_conf']['sign_opts']['opts'] = '--addsign %(rpms)s'
 
 I set the `require_ram_mb` to 4GB and `max_fs_size` to 3G, assuming your 
 machine has 8GB this is reasonable. If you have less memory you may need to 
