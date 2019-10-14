@@ -1,7 +1,7 @@
-#global git 3d02ea898ba9ce84477fac464382f363ce7fee45
+#global git 4859b66695088c20ba5b0243bb358c58fd6afd8e
 
 Name:       vpn-server-node
-Version:    2.0.3
+Version:    2.0.4
 Release:    1%{?dist}
 Summary:    OpenVPN node controller
 Group:      Applications/Internet
@@ -77,9 +77,6 @@ Requires:   php-pcre
 Requires:   php-spl
 Requires:   php-composer(psr/log)
 
-Requires(post): policycoreutils-python
-Requires(postun): policycoreutils-python
-
 %description
 OpenVPN node controller.
 
@@ -144,10 +141,13 @@ AUTOLOAD
 %{_datadir}/php/LC/Node
 %{_datadir}/vpn-server-node/config
 %{_datadir}/vpn-server-node/openvpn-config
-%doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example
+%doc README.md CHANGES.md composer.json config/config.php.example config/firewall.php.example CONFIG_CHANGES.md
 %license LICENSE LICENSE.spdx
 
 %changelog
+* Mon Oct 14 2019 François Kooman <fkooman@tuxed.net> - 2.0.4-1
+- update to 2.0.4
+
 * Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-1
 - update to 2.0.3
 
