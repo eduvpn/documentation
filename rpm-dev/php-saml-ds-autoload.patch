@@ -1,5 +1,5 @@
 diff --git a/bin/generate.php b/bin/generate.php
-index 9d4079a..80b88ba 100644
+index 8219cdb..53c29b2 100644
 --- a/bin/generate.php
 +++ b/bin/generate.php
 @@ -22,8 +22,8 @@
@@ -12,9 +12,9 @@ index 9d4079a..80b88ba 100644
 +$baseDir = '/usr/share/php-saml-ds';
  
  use fkooman\SAML\DS\Config;
- use fkooman\SAML\DS\HttpClient\CurlHttpClient;
+ use fkooman\SAML\DS\Json;
 diff --git a/web/index.php b/web/index.php
-index 793d9aa..d5c15dd 100644
+index afe8f04..28dab96 100644
 --- a/web/index.php
 +++ b/web/index.php
 @@ -22,8 +22,8 @@

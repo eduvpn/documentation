@@ -1,8 +1,8 @@
-#global git 7e49327dbc18eac4e13ea16db7d774e88164b654
+%global git 5fcb8594631bc8b9bf9d364a4900f8fe5ef19660
 
 Name:       vpn-portal-artwork-eduVPN
-Version:    2.0.2
-Release:    1%{?dist}
+Version:    2.0.3
+Release:    0.23%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -35,21 +35,93 @@ VPN Portal Artwork for eduVPN.
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/vpn-user-portal
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
+mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/locale/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
 mkdir -p %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
 
-cp -p css/eduVPN.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
-cp -p img/eduVPN.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
-cp -p views/vpn-user-portal/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
+cp -p css/*.css %{buildroot}%{_datadir}/vpn-user-portal/web/css/eduVPN
+cp -p img/*.png %{buildroot}%{_datadir}/vpn-user-portal/web/img/eduVPN
+cp -p locale/*.php %{buildroot}%{_datadir}/vpn-user-portal/locale/eduVPN
+cp -p views/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
 
 %files
 %defattr(-,root,root,-)
 %{_datadir}/vpn-user-portal/views/eduVPN
+%{_datadir}/vpn-user-portal/locale/eduVPN
 %{_datadir}/vpn-user-portal/web/css/eduVPN
 %{_datadir}/vpn-user-portal/web/img/eduVPN
 %doc CHANGES.md README.md
 
 %changelog
+* Wed Oct 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.23
+- rebuilt
+
+* Wed Oct 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.22
+- rebuilt
+
+* Tue Oct 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.21
+- rebuilt
+
+* Tue Oct 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.20
+- rebuilt
+
+* Tue Oct 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.19
+- rebuilt
+
+* Tue Oct 08 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.18
+- rebuilt
+
+* Mon Oct 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.17
+- rebuilt
+
+* Mon Oct 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.16
+- rebuilt
+
+* Mon Oct 07 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.15
+- rebuilt
+
+* Sun Sep 29 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.14
+- rebuilt
+
+* Fri Sep 27 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.13
+- rebuilt
+
+* Thu Sep 26 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.12
+- rebuilt
+
+* Tue Sep 24 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.11
+- rebuilt
+
+* Thu Sep 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.10
+- rebuilt
+
+* Thu Sep 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.9
+- rebuilt
+
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.8
+- rebuilt
+
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.7
+- rebuilt
+
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.6
+- rebuilt
+
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.5
+- rebuilt
+
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.4
+- rebuilt
+
+* Wed Aug 21 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.3
+- rebuilt
+
+* Tue Aug 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.2
+- rebuilt
+
+* Tue Aug 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.1
+- update to 2.0.3
+
 * Tue Aug 20 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
 - update to 2.0.2
 
