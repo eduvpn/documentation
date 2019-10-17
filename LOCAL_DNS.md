@@ -65,7 +65,7 @@ to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in
         # disable DoH
         # See: https://use-application-dns.net/
         # See: https://support.mozilla.org/en-US/kb/configuring-networks-disable-dns-over-https
-        local-zone: use-application-dns.net always_nxdomain
+        local-zone: use-application-dns.net refuse
  
 With these options Unbound listens on all interfaces and the ranges 
 `10.0.0.0/8` and `fd00::/8` are white-listed. These ranges are the defaults for 
