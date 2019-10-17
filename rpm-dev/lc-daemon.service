@@ -1,0 +1,10 @@
+[Unit]
+Description=Daemon to manage OpenVPN processes
+
+[Service]
+ExecStart=/usr/bin/lc-daemon
+Restart=on-failure
+PrivateDevices=yes
+
+[Install]
+WantedBy=multi-user.target
