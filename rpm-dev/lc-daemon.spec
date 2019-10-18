@@ -6,7 +6,7 @@
 
 Name:           lc-daemon
 Version:        0.0.0
-Release:        0.6%{?dist}
+Release:        0.7%{?dist}
 Summary:        Daemon to manage OpenVPN for use with Let's Connect! VPN
 
 License:        MIT
@@ -70,6 +70,9 @@ install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %license LICENSE
 
 %changelog
+* Fri Oct 18 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.7
+- rebuilt
+
 * Fri Oct 18 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.6
 - rebuilt
 

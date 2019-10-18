@@ -2,6 +2,7 @@
 Description=Daemon to manage OpenVPN processes
 
 [Service]
+Environment=LISTEN=127.0.0.1:41194
 EnvironmentFile=-/etc/sysconfig/lc-daemon
 ExecStart=/usr/bin/lc-daemon -listen ${LISTEN}
 Restart=on-failure
