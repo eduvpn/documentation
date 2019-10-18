@@ -1,4 +1,4 @@
-%global git a9e8d8b17e10e8191a95de401009fd7e05d4ee8b
+%global git e4fd2ea979fb693aea7e0133d1403ad554fb9e5e
 
 %if ! 0%{?gobuild:1}
 %define gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**}; 
@@ -6,7 +6,7 @@
 
 Name:           lc-daemon
 Version:        0.0.0
-Release:        0.3%{?dist}
+Release:        0.6%{?dist}
 Summary:        Daemon to manage OpenVPN for use with Let's Connect! VPN
 
 License:        MIT
@@ -21,6 +21,7 @@ Source2:        minisign-8466FFE127BCDC82.pub
 %endif 
 
 Source3:        %{name}.service
+Source4:        %{name}.sysconfig
 
 BuildRequires:  minisign
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
@@ -50,7 +51,7 @@ done
 %install
 install -m 0755 -D _bin/%{name} %{buildroot}%{_bindir}/%{name}
 install -m 0644 -D %{SOURCE3}   %{buildroot}%{_unitdir}/%{name}.service
-
+install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %post
 %systemd_post lc-daemon.service
 
@@ -61,6 +62,7 @@ install -m 0644 -D %{SOURCE3}   %{buildroot}%{_unitdir}/%{name}.service
 %systemd_postun_with_restart lc-daemon.service
 
 %files
+%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_bindir}/*
 %{_unitdir}/%{name}.service
 
@@ -68,6 +70,15 @@ install -m 0644 -D %{SOURCE3}   %{buildroot}%{_unitdir}/%{name}.service
 %license LICENSE
 
 %changelog
+* Fri Oct 18 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.6
+- rebuilt
+
+* Fri Oct 18 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.5
+- rebuilt
+
+* Fri Oct 18 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.4
+- rebuilt
+
 * Thu Oct 17 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.3
 - rebuilt
 

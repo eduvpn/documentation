@@ -2,7 +2,8 @@
 Description=Daemon to manage OpenVPN processes
 
 [Service]
-ExecStart=/usr/bin/lc-daemon
+EnvironmentFile=-/etc/sysconfig/lc-daemon
+ExecStart=/usr/bin/lc-daemon -listen ${LISTEN}
 Restart=on-failure
 PrivateDevices=yes
 
