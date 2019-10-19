@@ -1,8 +1,8 @@
-%global git e360fe203cc1ed34aca7d62fcdd278f36a0a2a42
+%global git 577e3a490e5d7fc4d65b8603d1ad0567466d5c56
 
 Name:       vpn-portal-artwork-LC
 Version:    2.0.2
-Release:    0.6%{?dist}
+Release:    0.7%{?dist}
 Summary:    VPN Portal Artwork for LC
 License:    AGPLv3+
 
@@ -53,6 +53,9 @@ cp -p views/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/LC
 %doc CHANGES.md README.md
 
 %changelog
+* Sat Oct 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-0.7
+- rebuilt
+
 * Thu Oct 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-0.6
 - rebuilt
 
