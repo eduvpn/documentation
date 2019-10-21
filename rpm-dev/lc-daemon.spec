@@ -1,12 +1,15 @@
-%global git 28b793ee6eb16e8ddbb7ee2c9de0cd567735605b
+%global git a060b0ff6f8858d43a7f55395e508f8dd990bc3a
 
 %if ! 0%{?gobuild:1}
 %define gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**}; 
 %endif
+%if ! 0%{?gotest:1}
+%define gotest(o:) go test -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**}; 
+%endif
 
 Name:           lc-daemon
 Version:        0.0.0
-Release:        0.11%{?dist}
+Release:        0.14%{?dist}
 Summary:        Daemon to manage OpenVPN for use with Let's Connect! VPN
 
 License:        MIT
@@ -52,6 +55,12 @@ done
 install -m 0755 -D _bin/%{name} %{buildroot}%{_bindir}/%{name}
 install -m 0644 -D %{SOURCE3}   %{buildroot}%{_unitdir}/%{name}.service
 install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+
+%check
+for cmd in lc-daemon; do
+    %gotest $cmd/main.go $cmd/main_test.go
+done
+
 %post
 %systemd_post lc-daemon.service
 
@@ -70,6 +79,15 @@ install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %license LICENSE
 
 %changelog
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.14
+- rebuilt
+
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.13
+- rebuilt
+
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.12
+- rebuilt
+
 * Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.11
 - rebuilt
 
