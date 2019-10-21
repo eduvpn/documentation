@@ -1,4 +1,4 @@
-%global git a2515b1764fba639aaf3b9a45d42cbd4b7669232
+%global git 28b793ee6eb16e8ddbb7ee2c9de0cd567735605b
 
 %if ! 0%{?gobuild:1}
 %define gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**}; 
@@ -6,7 +6,7 @@
 
 Name:           lc-daemon
 Version:        0.0.0
-Release:        0.8%{?dist}
+Release:        0.11%{?dist}
 Summary:        Daemon to manage OpenVPN for use with Let's Connect! VPN
 
 License:        MIT
@@ -70,6 +70,15 @@ install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %license LICENSE
 
 %changelog
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.11
+- rebuilt
+
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.10
+- rebuilt
+
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.9
+- rebuilt
+
 * Sat Oct 19 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.8
 - rebuilt
 
