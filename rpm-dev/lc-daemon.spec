@@ -9,7 +9,7 @@
 
 Name:           lc-daemon
 Version:        0.0.0
-Release:        0.16%{?dist}
+Release:        0.17%{?dist}
 Summary:        Daemon to manage OpenVPN for use with Let's Connect! VPN
 
 License:        MIT
@@ -23,8 +23,7 @@ Source1:        https://software.tuxed.net/lc-daemon/files/lc-daemon-%{version}.
 Source2:        minisign-8466FFE127BCDC82.pub
 %endif 
 
-Source3:        %{name}.service
-Source4:        %{name}.sysconfig
+Source3:        %{name}.sysconfig
 
 BuildRequires:  minisign
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
@@ -52,9 +51,9 @@ for cmd in lc-daemon; do
 done
 
 %install
-install -m 0755 -D _bin/%{name} %{buildroot}%{_bindir}/%{name}
-install -m 0644 -D %{SOURCE3}   %{buildroot}%{_unitdir}/%{name}.service
-install -m 0644 -D %{SOURCE4}   %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -m 0755 -D _bin/%{name}    %{buildroot}%{_bindir}/%{name}
+install -m 0644 -D %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+install -m 0644 -D %{SOURCE3}      %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %check
 for cmd in lc-daemon; do
@@ -79,6 +78,9 @@ done
 %license LICENSE
 
 %changelog
+* Wed Oct 23 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.17
+- rebuilt
+
 * Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.16
 - rebuilt
 
