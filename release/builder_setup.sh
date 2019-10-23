@@ -26,3 +26,8 @@ cat << EOF > ${HOME}/.rpmmacros
 EOF
 
 gpg2 --export -a ${KEY_IDENTITY} > ${HOME}/RPM-GPG-KEY-LC
+
+# setup the ${HOME}/rpmbuild structure (if not yet there)
+rpmdev-setuptree
+# clean it up if it already existed...
+rpmdev-wipetree

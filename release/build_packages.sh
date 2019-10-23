@@ -20,9 +20,6 @@ PACKAGE_LIST=(\
     php-saml-ds-artwork-eduVPN \
 )
 
-rpmdev-wipetree
-rpmdev-setuptree
-
 # Create Source RPMs
 SRPM_LIST=""
 
