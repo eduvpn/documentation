@@ -47,7 +47,7 @@ fi
 
 echo "Build in progress, this may take a long time..."
 (
-    mock --chain -r "${MOCK_CONFIG}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" "${SRPM_LIST}" 
+    mock --chain -r "${MOCK_CONFIG}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" ${SRPM_LIST}
 )
 
 (
