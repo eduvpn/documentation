@@ -1,11 +1,11 @@
-#global git c5c617980f198c897ff76ecc14e75b97520e4c50
+%global git 74e0a2c9d89490f8aa78123da58bc4f88aecd3fe
 
 %if ! 0%{?gobuild:1}
 %define gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**}; 
 %endif
 
 Name:           vpn-ca
-Version:        0.0.2
+Version:        0.0.6
 Release:        1%{?dist}
 Summary:        Simple CA intended for use with Let's Connect! VPN
 
@@ -46,12 +46,21 @@ install -m 0755 -vp _bin/*              %{buildroot}%{_bindir}/
 %files
 %{_bindir}/*
 
-%doc README.md
+%doc README.md AUTHORS.md
 %license LICENSE.txt
 
 %changelog
-* Thu Sep 19 2019 François Kooman <fkooman@tuxed.net> - 0.0.2-1
-- update to 0.0.2
+* Thu Oct 10 2019 François Kooman <fkooman@tuxed.net> - 0.0.6-1
+- update to 0.0.6
 
-* Fri Aug 16 2019 François Kooman <fkooman@tuxed.net> - 0.0.0-0.1
+* Thu Oct 10 2019 François Kooman <fkooman@tuxed.net> - 0.0.5-1
+- update to 0.0.5
+
+* Wed Oct 09 2019 François Kooman <fkooman@tuxed.net> - 0.0.4-1
+- update to 0.0.4
+
+* Sat Sep 28 2019 François Kooman <fkooman@tuxed.net> - 0.0.3-1
+- update to 0.0.3
+
+* Thu Sep 19 2019 François Kooman <fkooman@tuxed.net> - 0.0.2-1
 - initial package

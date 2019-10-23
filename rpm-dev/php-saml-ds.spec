@@ -1,8 +1,8 @@
-#global git ecdb7999cf28de4d78730391266405fe772f9d7e
+%global git 24d54df6b2e1b8c915bfe24b7ecdf5d81b4f1299
 
 Name:       php-saml-ds
-Version:    2.0.2
-Release:    1%{?dist}
+Version:    3.0.0
+Release:    0.7%{?dist}
 Summary:    SAML Discovery Service
 
 Group:      Applications/Internet
@@ -35,10 +35,9 @@ BuildRequires:  phpunit
 %global phpunit %{_bindir}/phpunit
 %endif
 #    "require": {
-#        "ext-curl": "*",
+#        "ext-date": "*",
 #        "ext-dom": "*",
 #        "ext-filter": "*",
-#        "ext-imagick": "*",
 #        "ext-json": "*",
 #        "ext-libxml": "*",
 #        "ext-openssl": "*",
@@ -48,10 +47,9 @@ BuildRequires:  phpunit
 #        "php": ">=5.4.0"
 #    },
 BuildRequires:  php(language) >= 5.4.0
-BuildRequires:  php-curl
+BuildRequires:  php-date
 BuildRequires:  php-dom
 BuildRequires:  php-filter
-BuildRequires:  php-pecl-imagick
 BuildRequires:  php-json
 BuildRequires:  php-libxml
 BuildRequires:  php-openssl
@@ -66,10 +64,9 @@ Requires:   httpd-filesystem
 Requires:   httpd
 %endif
 #    "require": {
-#        "ext-curl": "*",
+#        "ext-date": "*",
 #        "ext-dom": "*",
 #        "ext-filter": "*",
-#        "ext-imagick": "*",
 #        "ext-json": "*",
 #        "ext-libxml": "*",
 #        "ext-openssl": "*",
@@ -80,10 +77,9 @@ Requires:   httpd
 #    },
 Requires:   php(language) >= 5.4.0
 Requires:   php-cli
-Requires:   php-curl
+Requires:   php-date
 Requires:   php-dom
 Requires:   php-filter
-Requires:   php-pecl-imagick
 Requires:   php-json
 Requires:   php-libxml
 Requires:   php-openssl
@@ -152,6 +148,27 @@ AUTOLOAD
 %license LICENSE
 
 %changelog
+* Tue Sep 10 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.7
+- rebuilt
+
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.6
+- rebuilt
+
+* Thu Aug 29 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.5
+- rebuilt
+
+* Wed Aug 28 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.4
+- rebuilt
+
+* Tue Aug 27 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.3
+- rebuilt
+
+* Tue Aug 27 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.2
+- rebuilt
+
+* Tue Aug 27 2019 François Kooman <fkooman@tuxed.net> - 3.0.0-0.1
+- update to 3.0.0
+
 * Fri Aug 09 2019 François Kooman <fkooman@tuxed.net> - 2.0.2-1
 - update to 2.0.2
 - switch to minisign signature verification for release builds
