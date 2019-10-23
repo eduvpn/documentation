@@ -1,8 +1,8 @@
-%global git 5fcb8594631bc8b9bf9d364a4900f8fe5ef19660
+%global git b3930ed674f81bd7dfea02995758118e0e7cd2ca
 
 Name:       vpn-portal-artwork-eduVPN
 Version:    2.0.3
-Release:    0.23%{?dist}
+Release:    0.31%{?dist}
 Summary:    VPN Portal Artwork for eduVPN
 License:    AGPLv3+
 
@@ -53,6 +53,30 @@ cp -p views/*.php %{buildroot}%{_datadir}/vpn-user-portal/views/eduVPN
 %doc CHANGES.md README.md
 
 %changelog
+* Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.31
+- rebuilt
+
+* Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.30
+- rebuilt
+
+* Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.29
+- rebuilt
+
+* Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.28
+- rebuilt
+
+* Tue Oct 22 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.27
+- rebuilt
+
+* Sat Oct 19 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.26
+- rebuilt
+
+* Thu Oct 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.25
+- rebuilt
+
+* Thu Oct 17 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.24
+- rebuilt
+
 * Wed Oct 16 2019 François Kooman <fkooman@tuxed.net> - 2.0.3-0.23
 - rebuilt
 

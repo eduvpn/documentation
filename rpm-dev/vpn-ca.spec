@@ -6,7 +6,7 @@
 
 Name:           vpn-ca
 Version:        0.0.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Simple CA intended for use with Let's Connect! VPN
 
 License:        MIT
@@ -50,6 +50,9 @@ install -m 0755 -vp _bin/*              %{buildroot}%{_bindir}/
 %license LICENSE.txt
 
 %changelog
+* Mon Oct 21 2019 François Kooman <fkooman@tuxed.net> - 0.0.6-2
+- rebuilt
+
 * Thu Oct 10 2019 François Kooman <fkooman@tuxed.net> - 0.0.6-1
 - update to 0.0.6
 
