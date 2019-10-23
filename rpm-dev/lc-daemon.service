@@ -7,6 +7,7 @@ EnvironmentFile=-/etc/sysconfig/lc-daemon
 ExecStart=/usr/bin/lc-daemon -listen ${LISTEN}
 Restart=on-failure
 PrivateDevices=yes
+DynamicUser=yes
 
 [Install]
 WantedBy=multi-user.target
