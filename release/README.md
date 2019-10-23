@@ -8,7 +8,7 @@ Currently it will build packages for the following platforms on those same
 platforms:
 
 * CentOS / Red Hat Enterprise Linux 7
-* Fedora Latest
+* Fedora `${LATEST}`
 
 This means, if you want to build CentOS 7 packages, you MUST run on CentOS 7. 
 If you want to build Fedora packages, you MUST run on Fedora.
@@ -41,50 +41,23 @@ Make sure your current user account is a member of the `mock` group:
 
     $ sudo usermod -a -G mock $(id -un)
 
-**NOTE**: after adding yourself to the group make sure you logout and in 
-again!
-
-Create a Mock configuration file in `${HOME}/.config/mock.cfg`:
-
-    # Speed up package installation in Mock
-    config_opts['nosync'] = True
-    config_opts['plugin_conf']['tmpfs_enable'] = True
-    config_opts['plugin_conf']['tmpfs_opts'] = {}
-    config_opts['plugin_conf']['tmpfs_opts']['required_ram_mb'] = 4096
-    config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '3072m'
-    config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
-    config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = False
-    config_opts['plugin_conf']['sign_enable'] = True
-    config_opts['plugin_conf']['sign_opts'] = {}
-    config_opts['plugin_conf']['sign_opts']['cmd'] = 'rpmsign'
-    config_opts['plugin_conf']['sign_opts']['opts'] = '--addsign %(rpms)s'
-
-I set the `require_ram_mb` to 4GB and `max_fs_size` to 3G, assuming your 
-machine has 8GB this is reasonable. If you have less memory you may need to 
-tweak these settings a bit or disable the `tmpfs` plugin.
-
-## GPG
-
-Make sure you have a PGP key available. If not, create one:
-
-    $ gpg2 --gen-key
-
-Add the following to `${HOME}/.rpmmacros`, assuming the email address you used 
-is `software@letsconnect-vpn.org`:
-
-    %_signature gpg
-    %_gpg_name software@letsconnect-vpn.org
-    %_gpg_digest_algo sha256
-
-To export the public key, for use by clients using this repository:
-
-    $ gpg2 --export -a 'software@letsconnect-vpn.org' > RPM-GPG-KEY-LC
-
 ## Repository
 
 Clone the `eduVPN/documentation` repository:
 
     $ git clone https://github.com/eduVPN/documentation.git
+	$ cd documentation
+	$ git checkout v2
+
+## Setup
+
+Run `release/builder_setup.sh` with the user account you are going to 
+build as.
+
+	$ release/builder_setup.sh
+	
+This will create a GPG key and setup various configuration files. Check 
+the file if you are curious, it is very simple!
 
 # Building
 
@@ -109,7 +82,7 @@ of the repository:
 
     $ git pull
 
-And then, run the build scripts again, see above. This should add any new 
+And then, run the build script(s) again, see above. This should add any new 
 packages in `${HOME}/repo` as well as put them in the generated tarball.
 
 # Configuration
@@ -126,7 +99,6 @@ mentioned below:
     gpgcheck=1
     enabled=1
     gpgkey=https://repo.letsconnect-vpn.org/rpm/release/RPM-GPG-KEY-LC
-    skip_if_unavailable=False
 
 ## Fedora
 
@@ -136,4 +108,3 @@ mentioned below:
     gpgcheck=1
     enabled=1
     gpgkey=https://repo.letsconnect-vpn.org/rpm/release/RPM-GPG-KEY-LC
-    skip_if_unavailable=False
