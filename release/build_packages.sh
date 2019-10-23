@@ -24,7 +24,7 @@ PACKAGE_LIST=(\
 SRPM_LIST=""
 
 cd rpm || exit 1
-cp ./*.pub ./*.conf ./*.cron ./*.patch ./gpgkey-* "${HOME}/rpmbuild/SOURCES"
+cp ./*.pub ./*.sysconfig ./*.service ./*.conf ./*.cron ./*.patch ./gpgkey-* "${HOME}/rpmbuild/SOURCES"
 for f in "${PACKAGE_LIST[@]}"
 do
     spectool -g -R "${f}".spec || exit 1
