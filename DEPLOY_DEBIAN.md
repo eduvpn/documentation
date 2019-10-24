@@ -52,6 +52,11 @@ Specify the hostname you want to use for your VPN server. Both the "Web" and
 
 **NOTE**: you can NOT use `localhost` as a hostname, nor an IP address!
 
+**NOTE**: by default there is **NO** firewall for the traffic between VPN 
+client and VPN server. So if you have SSH running on your server, the clients
+will be able to connect to it when you don't take additional steps! Look 
+[here](FIREWALL.md).
+
 ## Update
 
 Periodically install [updates](update_system_debian.sh)!
