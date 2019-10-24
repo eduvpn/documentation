@@ -30,7 +30,7 @@ installed:
 We assume you have a fresh install of Fedora with the following software 
 installed:
 
-    $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils gnupg2
+    $ sudo dnf -y install fedora-packager rpm-sign nosync dnf-utils gnupg2 yum
 
 If you want to perform cross compiles, e.g. for `aarch64`, also install 
 `qemu-user-static`

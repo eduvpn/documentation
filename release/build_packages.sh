@@ -1,5 +1,7 @@
 #!/bin/sh
 
+REPO_ROOT=${HOME}/repo-v2
+
 # list of packages to build, in order
 PACKAGE_LIST=(\
     php-fkooman-saml-sp \
@@ -48,13 +50,4 @@ fi
 echo "Build in progress, this may take a long time..."
 (
     mock --chain -r "${MOCK_CONFIG}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" ${SRPM_LIST}
-)
-
-(
-    # Create Archive
-    DATETIME=$(date +%Y%m%d%H%M%S)
-    (
-        cd "${REPO_ROOT}" || exit 1
-        tar -cJf "${HOME}/rpmRepo-v2-${MOCK_CONFIG}-${DATETIME}.tar.xz" .
-    )
 )

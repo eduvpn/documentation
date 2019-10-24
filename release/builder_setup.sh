@@ -1,5 +1,6 @@
 #!/bin/sh
 KEY_IDENTITY=release@example.org
+REPO_ROOT=${HOME}/repo-v2
 
 # generate a PGP key
 gpg2 --batch --quick-generate-key --passphrase '' ${KEY_IDENTITY}
