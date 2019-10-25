@@ -45,6 +45,7 @@ Extended documentation about various topics.
 | [STATS](STATS.md)                                     | Statistics Notes |
 | [ARCH](ARCH.md)                                       | Description of Service Architecture |
 | [CLIENT_COMPAT](CLIENT_COMPAT.md)                     | List of Supported VPN Client |
+| [FIREWALL](FIREWALL.md)								| Configure the VPN Firewall |
 
 ## Development
 
