@@ -30,7 +30,7 @@ mkdir -p rpm
 for PACKAGE_NAME in lc-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-fkooman-saml-sp php-fkooman-secookie php-fkooman-sqlite-migrate php-json-signer php-saml-ds php-saml-ds-artwork-eduVPN vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal
 do
 	git clone -b master https://git.tuxed.net/rpm/${PACKAGE_NAME} rpm/${PACKAGE_NAME}
-	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME} rpm/${PACKAGE_NAME}
+	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
 done
 
 # vpn-user-portal
