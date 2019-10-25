@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 REPO_ROOT=${HOME}/repo-v2
 PACKAGE_BRANCH=master
@@ -42,15 +42,29 @@ do
     # packages that need to be (re)build
     for PACKAGE_NAME in "${PACKAGE_LIST[@]}"
     do
-        git clone -b ${PACKAGE_BRANCH} https://git.tuxed.net/rpm/${PACKAGE_NAME}
+		# if we already have the package git repository, simply update it
+		if [ -f "${PACKAGE_NAME}" ]
+		then
+			(
+				cd ${PACKAGE_NAME}
+				git checkout ${PACKAGE_BRANCH}
+				git pull origin ${PACKAGE_BRANCH}
+			)
+		else
+			# clone fresh
+      		git clone -b ${PACKAGE_BRANCH} https://git.tuxed.net/rpm/${PACKAGE_NAME}
+		fi
+		
+		# generate source RPM
         cp ${PACKAGE_NAME}/SOURCES/* ${HOME}/rpmbuild/SOURCES
 		spectool -g -R ${PACKAGE_NAME}/SPECS/${PACKAGE_NAME}.spec
 		SRPM_FILE=$(rpmbuild -bs "${PACKAGE_NAME}/SPECS/${PACKAGE_NAME}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
         PACKAGE_NAME=$(basename "${SRPM_FILE}" .src.rpm)
+
+		# check whether we already have a build of this exact version, if not,
+		# add it to the list
         if [ ! -f "${REPO_ROOT}/results/${TARGET_NAME}/${PACKAGE_NAME}/success" ]
         then
-            # only list the package for building if this exact version did not 
-            # build successfully before...
             SRPM_LIST="${SRPM_LIST} ${SRPM_FILE}"
         fi
     done
@@ -59,8 +73,8 @@ do
     if [ "" = "${SRPM_LIST}" ]
     then
             echo "*** No (new) packages to build!"
-            exit 0
-    fi
+			continue
+	fi
 
 	echo "**********************************************************"
 	echo "* Building (${TARGET_NAME}): ${SRPM_LIST}..."
