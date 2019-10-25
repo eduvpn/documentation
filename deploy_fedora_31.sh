@@ -53,7 +53,7 @@ systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
 # Add RPM repository
 cat << EOF > /etc/yum.repos.d/LC-master.repo
-[LC]
+[LC-master]
 name=Let's Connect! Packages (Fedora $releasever) 
 baseurl=https://vpn-builder.tuxed.net/repo/master/fedora-$releasever-$basearch
 gpgcheck=1
