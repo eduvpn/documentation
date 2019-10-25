@@ -51,8 +51,15 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# Add development RPM repository
-${PACKAGE_MANAGER} -y copr enable fkooman/lc-v2-dev
+# Add RPM repository
+cat << EOF > /etc/yum.repos.d/LC-master.repo
+[LC]
+name=Let's Connect! Packages (Fedora $releasever) 
+baseurl=https://vpn-builder.tuxed.net/repo/master/fedora-$releasever-$basearch
+gpgcheck=1
+EOF
+# import repository PGP key
+rpm --import https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
