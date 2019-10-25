@@ -10,8 +10,13 @@ the VPN software, but also (technical) details about the implementation needed
 to (better) integrate it in existing infrastructure, and how to modify the 
 software for one's own needs.
 
+For more information see:
+
+- https://www.eduvpn.org
+- https://letsconnect-vpn.org
+
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
-contact [eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
+contact [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
 # Features
 

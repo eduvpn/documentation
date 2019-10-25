@@ -26,6 +26,6 @@ TBD.
 
 Once you are done, you can submit your translation file either by creating a 
 "Pull Request" on GitHub, or simply mailing the file with your translations to
-[eduvpn@surfnet.nl](mailto:eduvpn@surfnet.nl).
+[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
 Thanks!
