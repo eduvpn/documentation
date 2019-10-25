@@ -63,8 +63,8 @@ channel `#eduvpn`.
 
 ## Supported Operating Systems
 
-* [CentOS & Red Hat Enterprise Linux 7](DEPLOY_CENTOS.md) (x86_64)
-* [Fedora 30](DEPLOY_FEDORA.md) (x86_64)
+* [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (x86_64)
+* [Fedora](DEPLOY_FEDORA.md) 30, 31 (x86_64)
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
