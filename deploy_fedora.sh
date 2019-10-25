@@ -3,14 +3,6 @@
 #
 # Deploy a single VPN machine on Fedora
 #
-FEDORA_VERSION=30
-
-# make sure we only run on ${FEDORA_VERSION}
-if ! grep "Fedora release ${FEDORA_VERSION}" /etc/redhat-release >/dev/null
-then
-    echo "We only support Fedora ${FEDORA_VERSION}!"
-    exit 1
-fi
 
 ###############################################################################
 # VARIABLES
@@ -51,9 +43,16 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# Add production RPM repository
-curl -L -o /etc/yum.repos.d/LC.repo \
-    https://repo.letsconnect-vpn.org/2/rpm/release/fedora/LC.repo
+# import repository PGP key
+rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
+
+# Add RPM repository
+cat << 'EOF' > /etc/yum.repos.d/LC-v2.repo
+[LC-v2]
+name=LC Packages (Fedora $releasever)
+baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-$releasever-$basearch
+gpgcheck=1
+EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \

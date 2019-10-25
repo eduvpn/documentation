@@ -48,9 +48,16 @@ else
     ${PACKAGE_MANAGER} -y install epel-release
 fi
 
-# Add production RPM repository
-curl -L -o /etc/yum.repos.d/LC.repo \
-    https://repo.letsconnect-vpn.org/2/rpm/release/enterprise/LC.repo
+# import repository PGP key
+rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
+
+# Add RPM repository
+cat << 'EOF' > /etc/yum.repos.d/LC-v2.repo
+[LC-v2]
+name=LC Packages (EL $releasever)
+baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-$releasever-$basearch
+gpgcheck=1
+EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install php-opcache iptables iptables-services php-cli \
