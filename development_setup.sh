@@ -14,6 +14,7 @@ git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
 git clone -b master       https://git.tuxed.net/fkooman/vpn-ca
+git clone -b master       https://git.tuxed.net/fkooman/lc-daemon
 
 # clone all repositories (read/write, your own "forks")
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
@@ -22,6 +23,15 @@ git clone -b master       https://git.tuxed.net/fkooman/vpn-ca
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
 #git clone -b master       git@git.tuxed.net:fkooman/vpn-ca.git
+#git clone -b master       git@git.tuxed.net:fkooman/lc-daemon.git
+
+# clone all RPM packages
+mkdir -p rpm
+for PACKAGE_NAME in lc-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-fkooman-saml-sp php-fkooman-secookie php-fkooman-sqlite-migrate php-json-signer php-saml-ds php-saml-ds-artwork-eduVPN vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal
+do
+	git clone -b master https://git.tuxed.net/rpm/${PACKAGE_NAME} rpm/${PACKAGE_NAME}
+	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME} rpm/${PACKAGE_NAME}
+done
 
 # vpn-user-portal
 cd "${BASE_DIR}/vpn-user-portal" || exit
