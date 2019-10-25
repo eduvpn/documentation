@@ -1,6 +1,7 @@
 #!/bin/sh
 
 REPO_DIR=${HOME}/repo-SPEC
+rm -rf ${REPO_DIR}
 
 for SPEC in $(ls *.spec)
 do
@@ -14,13 +15,12 @@ do
 	rm ${REPO_DIR}/${REPO_NAME}/SOURCES/*.spec
 	(
 		cd ${REPO_DIR}/${REPO_NAME}
-		if [ ! -d ".git" ]
-		then
-			git init
-			git remote add origin git@git.tuxed.net:rpm/${REPO_NAME}
-		fi
+		git init
 		git add .
-		git commit -a -m 'add development spec'
+		git commit -a -m 'initial commit'
+		git remote add origin git@git.tuxed.net:rpm/${REPO_NAME}
 		git push origin master
+		git branch v2
+		git push origin v2
 	)
 done
