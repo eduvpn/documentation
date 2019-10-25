@@ -46,7 +46,7 @@ do
         spectool -g -R ${PACKAGE_NAME}.spec
         SRPM_FILE=$(rpmbuild -bs "${PACKAGE_NAME}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
         PACKAGE_NAME=$(basename "${SRPM_FILE}" .src.rpm)
-        if [ ! -f "${REPO_ROOT}/results/${MOCK_CONFIG}/${PACKAGE_NAME}/success" ]
+        if [ ! -f "${REPO_ROOT}/results/${TARGET_NAME}/${PACKAGE_NAME}/success" ]
         then
             # only list the package for building if this exact version did not 
             # build successfully before...
@@ -61,8 +61,5 @@ do
             exit 0
     fi
 
-    echo "Build in progress, this may take a long time..."
-    (
-        mock --chain -r "${MOCK_CONFIG}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" ${SRPM_LIST}
-    )
+    mock --chain -r "${TARGET_NAME}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" ${SRPM_LIST}
 done
