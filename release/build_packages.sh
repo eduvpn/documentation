@@ -22,22 +22,25 @@ PACKAGE_LIST=(\
     php-saml-ds-artwork-eduVPN \
 )
 
-# Create Source RPMs
 SRPM_LIST=""
 
-cd rpm || exit 1
-cp ./*.pub ./*.sysconfig ./*.service ./*.conf ./*.cron ./*.patch ./gpgkey-* "${HOME}/rpmbuild/SOURCES"
-for f in "${PACKAGE_LIST[@]}"
+# generate source RPMs for all the packages and add them to the list of 
+# packages that need to be (re)build
+for PACKAGE_NAME in "${PACKAGE_LIST[@]}"
 do
-    spectool -g -R "${f}".spec || exit 1
-    SRPM_FILE=$(rpmbuild -bs "${f}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
-	PACKAGE_NAME=$(basename "${SRPM_FILE}" .src.rpm)
-	if [ ! -f "${REPO_ROOT}/results/${MOCK_CONFIG}/${PACKAGE_NAME}/success" ]
-	then
-		# only list the package for building if this exact version did not 
-		# build successfully before...
-		SRPM_LIST="${SRPM_LIST} ${SRPM_FILE}"
-	fi
+    # XXX clone in a tmp location
+    git clone https://git.tuxed.net/rpm/${PACKAGE_NAME}
+    cp ${PACKAGE_NAME}/SOURCES/* ${HOME}/rpmbuild/SOURCES
+    cd ${PACKAGE_NAME}/SPECS
+    spectool -g -R ${PACKAGE_NAME}.spec
+    SRPM_FILE=$(rpmbuild -bs "${PACKAGE_NAME}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
+    PACKAGE_NAME=$(basename "${SRPM_FILE}" .src.rpm)
+    if [ ! -f "${REPO_ROOT}/results/${MOCK_CONFIG}/${PACKAGE_NAME}/success" ]
+    then
+        # only list the package for building if this exact version did not 
+        # build successfully before...
+        SRPM_LIST="${SRPM_LIST} ${SRPM_FILE}"
+    fi
 done
 
 # only call mock when we have something to do...
