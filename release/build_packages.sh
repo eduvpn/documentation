@@ -5,14 +5,17 @@ PACKAGE_BRANCH=master
 
 # targets to build for
 TARGET_LIST=(\
-    epel-7-x86_64 \
-    fedora-30-x86_64 \
-    fedora-30-aarch64 \
+    #epel-7-x86_64 \
+    #fedora-30-x86_64 \
+    #fedora-30-aarch64 \
     fedora-31-x86_64 \
 )
 
 for TARGET_NAME in "${TARGET_LIST[@]}"
 do
+	echo "**********************************************************"
+	echo "* Building ${TARGET_NAME}..."
+	echo "**********************************************************"
     # determine ARCH based on target name
     ARCH=$(echo ${TARGET_NAME} | cut -d '-' -f 3)
 
@@ -39,12 +42,10 @@ do
     # packages that need to be (re)build
     for PACKAGE_NAME in "${PACKAGE_LIST[@]}"
     do
-        # XXX clone in a tmp location
         git clone -b ${PACKAGE_BRANCH} https://git.tuxed.net/rpm/${PACKAGE_NAME}
         cp ${PACKAGE_NAME}/SOURCES/* ${HOME}/rpmbuild/SOURCES
-        cd ${PACKAGE_NAME}/SPECS
-        spectool -g -R ${PACKAGE_NAME}.spec
-        SRPM_FILE=$(rpmbuild -bs "${PACKAGE_NAME}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
+		spectool -g -R ${PACKAGE_NAME}/SPECS/${PACKAGE_NAME}.spec
+		SRPM_FILE=$(rpmbuild -bs "${PACKAGE_NAME}/SPECS/${PACKAGE_NAME}".spec | grep Wrote | cut -d ':' -f 2 | xargs)
         PACKAGE_NAME=$(basename "${SRPM_FILE}" .src.rpm)
         if [ ! -f "${REPO_ROOT}/results/${TARGET_NAME}/${PACKAGE_NAME}/success" ]
         then
@@ -61,5 +62,8 @@ do
             exit 0
     fi
 
+	echo "**********************************************************"
+	echo "* Building (${TARGET_NAME}): ${SRPM_LIST}..."
+	echo "**********************************************************"
     mock --chain -r "${TARGET_NAME}" --localrepo="${REPO_ROOT}" --arch "${ARCH}" ${SRPM_LIST}
 done
