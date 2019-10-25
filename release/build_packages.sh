@@ -6,7 +6,7 @@ PACKAGE_BRANCH=master
 # targets to build for
 TARGET_LIST=(\
     #epel-7-x86_64 \
-    #fedora-30-x86_64 \
+    fedora-30-x86_64 \
     #fedora-30-aarch64 \
     fedora-31-x86_64 \
 )
@@ -43,7 +43,7 @@ do
     for PACKAGE_NAME in "${PACKAGE_LIST[@]}"
     do
 		# if we already have the package git repository, simply update it
-		if [ -f "${PACKAGE_NAME}" ]
+		if [ ! -f "${PACKAGE_NAME}" ]
 		then
 			(
 				cd ${PACKAGE_NAME}
