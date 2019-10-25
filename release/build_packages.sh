@@ -5,10 +5,11 @@ PACKAGE_BRANCH=master
 
 # targets to build for
 TARGET_LIST=(\
-    #epel-7-x86_64 \
+    epel-7-x86_64 \
     fedora-30-x86_64 \
     #fedora-30-aarch64 \
     fedora-31-x86_64 \
+    #fedora-31-aarch64 \
 )
 
 for TARGET_NAME in "${TARGET_LIST[@]}"
