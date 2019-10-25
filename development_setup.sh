@@ -14,7 +14,7 @@ git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
 git clone -b master       https://git.tuxed.net/fkooman/vpn-ca
-git clone -b master       https://git.tuxed.net/fkooman/lc-daemon
+git clone -b master       https://git.tuxed.net/LC/lc-daemon
 
 # clone all repositories (read/write, your own "forks")
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
@@ -23,7 +23,7 @@ git clone -b master       https://git.tuxed.net/fkooman/lc-daemon
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
 #git clone -b master       git@git.tuxed.net:fkooman/vpn-ca.git
-#git clone -b master       git@git.tuxed.net:fkooman/lc-daemon.git
+#git clone -b master       git@git.tuxed.net:LC/lc-daemon.git
 
 # clone all RPM packages
 mkdir -p rpm
