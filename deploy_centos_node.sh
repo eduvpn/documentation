@@ -57,15 +57,14 @@ baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-$releasever-$basearch
 gpgcheck=1
 EOF
 
-# Development Packages
-## import PGP key and add repository
-#rpm --import https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
-#cat << 'EOF' > /etc/yum.repos.d/LC-master.repo
-#[LC-master]
-#name=VPN Packages (EL $releasever)
-#baseurl=https://vpn-builder.tuxed.net/repo/master/epel-$releasever-$basearch
-#gpgcheck=1
-#EOF
+cat << 'EOF' > /etc/yum.repos.d/LC-master.repo
+[LC-master]
+name=VPN Packages (EL $releasever)
+baseurl=https://vpn-builder.tuxed.net/repo/master/epel-$releasever-$basearch
+gpgcheck=1
+gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
+enabled=0
+EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install php-opcache iptables iptables-services php-cli \
