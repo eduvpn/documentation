@@ -43,16 +43,24 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# import repository PGP key
+# import PGP key and add repository
 rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
-
-# Add RPM repository
 cat << 'EOF' > /etc/yum.repos.d/LC-v2.repo
 [LC-v2]
-name=LC Packages (Fedora $releasever)
+name=VPN Packages (Fedora $releasever)
 baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 EOF
+
+# Development Packages
+## import PGP key and add repository
+#rpm --import https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
+#cat << 'EOF' > /etc/yum.repos.d/LC-master.repo
+#[LC-master]
+#name=VPN Packages (Fedora $releasever) 
+#baseurl=https://vpn-builder.tuxed.net/repo/master/fedora-$releasever-$basearch
+#gpgcheck=1
+#EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
