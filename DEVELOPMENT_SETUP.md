@@ -100,3 +100,48 @@ To generate the OpenVPN server configuration files:
     $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
+
+# Updating RPM Packages
+
+The `${HOME}/Projects/LC-v2/rpm` folder has RPM package descriptions, "SPEC" 
+files. These can be used to build RPM packages (on Fedora).
+
+Assuming you are developing on component and want to create a new (test) 
+package. Do the following:
+
+1. Determine the last "commit" hash of the component you are building. E.g. 
+   with `git log -1`;
+2. Go to the `rpm` folder of the component, e.g. `rpm/vpn-user-portal`;
+3. Make sure you are on the `master` branch: `git checkout master`;
+4. "Bump" the SPEC file, e.g. `rpmdev-bumpspec SPECS/vpn-user-portal.spec`;
+5. Put the hash in the top as `%global git <HASH>`;
+6. Optionally update other parts of the SPEC file;
+7. Run `local_build` in order to trigger a local build, to make sure the 
+   package is correct and the unit tests properly run.
+
+The `local_build` script looks like this:
+
+    #!/bin/sh
+    spectool -g -R SPECS/*.spec
+    cp SOURCES/* ${HOME}/rpmbuild/SOURCES
+    rpmbuild -bs SPECS/*.spec
+    rpmbuild -bb SPECS/*.spec
+
+You can save it under `${HOME}/.local/bin/local_build`. Make sure it is 
+executable: `chmod 0755 ${HOME}/.local/bin/local_build`. Run this from the 
+package directory, e.g `rpm/vpn-user-portal`.
+
+If you want to have your own builder, please set it up using the "builder" 
+project, look [here](https://git.tuxed.net/rpm/builder/about/).
+
+Commit the package changes to master, and run the builder. It should pick up 
+your new spec file.
+
+## Issues
+
+* One has to setup their own builder
+* There are multiple branches for the RPM packages depending on the version of
+  the software, i.e. there is a `v2` and a `master` branch. We need to explain 
+  that the `v2` branch is for production packages of LC/eduVPN 2.x.
+* We still have to explain how to make a production release, i.e. explain 
+  minisign, tags, etc.
