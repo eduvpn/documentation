@@ -5,10 +5,10 @@ description: Use common ports for your VPN server that enable its use in many re
 
 This document describes how to configure your VPN server in such a way as to
 make it most likely people can connect to it. This is done by making it 
-possible to connect to the VPN service using both `udp/443` and `tcp/443`. A
-complication here is that the web server claims `tcp/443`, so we need to share 
-`tcp/443` between the web server and OpenVPN. We'll use 
-[sslh](https://github.com/yrutschle/sslh) for this task.
+possible to connect to the VPN service using both `udp/443` and `tcp/443` in 
+addition to `udp/1194` and `tcp/1194`. A complication here is that the web 
+server claims `tcp/443`, so we need to share `tcp/443` between the web server 
+and OpenVPN. We'll use [sslh](https://github.com/yrutschle/sslh) for this task.
 
 In larger deployments you'll want to use multiple machines where the portal(s) 
 and API run on a different machine from the OpenVPN backend server(s) so port
@@ -18,35 +18,32 @@ sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 
 We need to modify `/etc/vpn-server-api/config.php` and modify 
 `vpnProtoPorts` and set `exposedVpnProtoPorts`, i.e. the ports exposed to the 
-VPN client, to announce to VPN clients that we want them to use `udp/443` and 
-`tcp/443` and not any of the normal OpenVPN ports:
+VPN client, to announce to VPN clients that we want them to use `tcp/443` and 
+not `tcp/1195`:
 
     'vpnProtoPorts' => [
-        'udp/443',  // HTTP/3 QUIC port
-        'tcp/1194', // OpenVPN TCP port (sslh will forward tcp/443 to this 
-                    // port)
+        'udp/1194',
+        'tcp/1194',
+        'udp/443',
+        'tcp/1195',
     ],
 
     ...
 
     'exposedVpnProtoPorts' => [
-        'udp/443',  // HTTP/3 QUIC port
-        'tcp/443',  // HTTPS port
+        'udp/1194',
+        'tcp/1194',
+        'udp/443',
+        'tcp/443',
     ],
 
-In `vpnProtoPorts` we make OpenVPN listen on `tcp/1194` and NOT on `tcp/443` 
+In `vpnProtoPorts` we make OpenVPN listen on `tcp/1195` and NOT on `tcp/443` 
 as the sslh will listen there later and forward connections to `tcp/443` to 
-this port internally.
+this port internally (and to the web server, depending on what makes the 
+request).
 
-If you want to add additional ports, make sure the `vpnProtoPorts` entry 
-contains 2, 4, 8, 16, 32 or 64 entries, e.g.:
-
-    'vpnProtoPorts' => [
-        'udp/53',   // DNS port
-        'tcp/80',   // HTTP port
-        'udp/443',  // HTTP/3 QUIC port
-        'tcp/1194', // OpenVPN TCP port
-    ],
+You _may_ also want to modify the `range` setting. For 4 OpenVPN processes we
+recommend to use a `/24` IP range. For the IPv6 range nothing needs to change.
 
 ## Web Server
 
@@ -142,6 +139,12 @@ The `inputRules` section should look something like this:
             ],
         ],
         [
+            'proto' => ['udp', 'tcp'],
+            'dst_port' => [
+                1194,    // OPENVPN
+            ],
+        ],
+        [
             'proto' => ['udp'],
             'dst_port' => [
                 443,    // OPENVPN
@@ -155,17 +158,22 @@ The `inputRules` section should look something like this:
 
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
-    $ sudo vpn-server-node-server-config
     $ sudo vpn-server-node-generate-firewall --install
-    $ sudo systemctl restart "openvpn-server@*"
     $ sudo systemctl restart iptables
     $ sudo systemctl restart ip6tables
+    $ sudo vpn-server-node-server-config
+    $ sudo systemctl enable --now openvpn-server@internet-2
+    $ sudo systemctl enable --now openvpn-server@internet-3
+    $ sudo systemctl restart "openvpn-server@*"
     
 ### Debian
 
     $ sudo systemctl restart apache2
     $ sudo systemctl restart sslh
-    $ sudo vpn-server-node-server-config
     $ sudo vpn-server-node-generate-firewall --install
-    $ sudo systemctl restart "openvpn-server@*"
     $ sudo systemctl restart netfilter-persistent
+    $ sudo vpn-server-node-server-config
+    $ sudo systemctl enable --now openvpn-server@internet-2
+    $ sudo systemctl enable --now openvpn-server@internet-3
+    $ sudo systemctl restart "openvpn-server@*"
+
