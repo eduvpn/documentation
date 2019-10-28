@@ -1,6 +1,6 @@
 ---
 title: Use Common Ports
-description: Use common ports for your VPN server that enable its use in many restricted networks
+description: Add additional ports for your VPN server to listen on
 ---
 
 This document describes how to configure your VPN server in such a way as to
@@ -10,16 +10,17 @@ addition to `udp/1194` and `tcp/1194`. A complication here is that the web
 server claims `tcp/443`, so we need to share `tcp/443` between the web server 
 and OpenVPN. We'll use [sslh](https://github.com/yrutschle/sslh) for this task.
 
-In larger deployments you'll want to use multiple machines where the portal(s) 
+In larger deployments you'll want to use multiple machines where the portal
 and API run on a different machine from the OpenVPN backend server(s) so port
 sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 
 ## VPN
 
-We need to modify `/etc/vpn-server-api/config.php` and modify 
-`vpnProtoPorts` and set `exposedVpnProtoPorts`, i.e. the ports exposed to the 
-VPN client, to announce to VPN clients that we want them to use `tcp/443` and 
-not `tcp/1195`:
+We need to edit `/etc/vpn-server-api/config.php` and modify `vpnProtoPorts` and 
+set `exposedVpnProtoPorts`. The `vpnProtoPorts` option includes the protocols 
+and ports the OpenVPN processes actually listen on, and `exposedVpnProtoPorts` 
+is what the client will get. So here we do not expose `tcp/1195`, but `tcp/443` 
+instead:
 
     'vpnProtoPorts' => [
         'udp/1194',
@@ -37,13 +38,14 @@ not `tcp/1195`:
         'tcp/443',
     ],
 
-In `vpnProtoPorts` we make OpenVPN listen on `tcp/1195` and NOT on `tcp/443` 
-as the sslh will listen there later and forward connections to `tcp/443` to 
-this port internally (and to the web server, depending on what makes the 
-request).
+In `vpnProtoPorts` we make OpenVPN listen on `tcp/1195` and NOT on `tcp/443`, 
+we need `tcp/443` for sslh to listen on. It will forward connections to 
+`tcp/443` to `tcp/1195` internally (or to the web server, depending on what 
+makes the request).
 
 You _may_ also want to modify the `range` setting. For 4 OpenVPN processes we
-recommend to use a `/24` IP range. For the IPv6 range nothing needs to change.
+recommend to use a `/24` IP range. For the IPv6 range nothing needs to change 
+as the default is a `/64` which is big enough.
 
 ## Web Server
 
@@ -104,7 +106,7 @@ Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
 
 ## Let's Encrypt
 
-TODO: this is only for CentOS/Fedora and not for Debian...
+### CentOS/Fedora
 
 If you are using Let's Encrypt with automatic certificate renewal you should 
 modify your `/etc/sysconfig/certbot` and set the `PRE_HOOK` and `POST_HOOK` to 
@@ -114,6 +116,10 @@ stop/start `sslh` instead of `httpd`:
 PRE_HOOK="--pre-hook 'systemctl stop sslh'"
 POST_HOOK="--post-hook 'systemctl start sslh'"
 ```
+
+### Debian
+
+I have no idea how to _properly_ configure certificate renewal on Debian...
 
 ## SELinux
 
