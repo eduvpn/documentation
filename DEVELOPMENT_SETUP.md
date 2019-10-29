@@ -122,10 +122,24 @@ package. Do the following:
 The `local_build` script looks like this:
 
     #!/bin/sh
-    spectool -g -R SPECS/*.spec
-    cp SOURCES/* ${HOME}/rpmbuild/SOURCES
-    rpmbuild -bs SPECS/*.spec
-    rpmbuild -bb SPECS/*.spec
+    if [ -d SPECS ]
+    then
+        # we are in the package root
+        spectool -g -R SPECS/*.spec
+        cp SOURCES/* "${HOME}/rpmbuild/SOURCES"
+        rpmbuild -bs SPECS/*.spec
+        rpmbuild -bb SPECS/*.spec    
+    elif [ -d ../SPECS ]
+    then
+        # we are in the SPECS directory already
+        spectool -g -R ./*.spec
+        cp ../SOURCES/* "${HOME}/rpmbuild/SOURCES"
+        rpmbuild -bs ./*.spec
+        rpmbuild -bb ./*.spec    
+    else 
+        echo "ERROR: cannot find SPEC file"
+        exit 1
+    fi
 
 You can save it under `${HOME}/.local/bin/local_build`. Make sure it is 
 executable: `chmod 0755 ${HOME}/.local/bin/local_build`. Run this from the 
