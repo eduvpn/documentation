@@ -13,8 +13,8 @@ git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-user-portal.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-api.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/vpn-server-node.git
 git clone -b ${LC_BRANCH} https://github.com/${GITHUB_USER}/documentation.git
-git clone -b master       https://git.tuxed.net/fkooman/vpn-ca
-git clone -b master       https://git.tuxed.net/LC/lc-daemon
+git clone -b master       https://github.com/letsconnectvpn/vpn-ca.git
+git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 
 # clone all repositories (read/write, your own "forks")
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-lib-common.git
@@ -22,12 +22,12 @@ git clone -b master       https://git.tuxed.net/LC/lc-daemon
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-api.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/vpn-server-node.git
 #git clone -b ${LC_BRANCH} git@github.com:${GITHUB_USER}/documentation.git
-#git clone -b master       git@git.tuxed.net:fkooman/vpn-ca.git
-#git clone -b master       git@git.tuxed.net:LC/lc-daemon.git
+#git clone -b master       git@github.com:letsconnectvpn/vpn-ca.git
+#git clone -b master       git@github.com:letsconnectvpn/vpn-daemon.git
 
 # clone all RPM packages
 mkdir -p rpm
-for PACKAGE_NAME in lc-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-fkooman-saml-sp php-fkooman-secookie php-fkooman-sqlite-migrate php-json-signer php-saml-ds php-saml-ds-artwork-eduVPN vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal
+for PACKAGE_NAME in vpn-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-fkooman-saml-sp php-fkooman-secookie php-fkooman-sqlite-migrate php-json-signer php-saml-ds php-saml-ds-artwork-eduVPN vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal
 do
 	git clone -b master https://git.tuxed.net/rpm/${PACKAGE_NAME} rpm/${PACKAGE_NAME}
 	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
@@ -56,6 +56,10 @@ php bin/add-user.php --user admin --pass secret
 # vpn-ca
 cd "${BASE_DIR}/vpn-ca" || exit
 go build -o _bin/vpn-ca vpn-ca/*.go
+
+# vpn-daemon
+cd "${BASE_DIR}/vpn-daemon" || exit
+go build -o _bin/vpn-daemon vpn-daemon/*.go
 
 # vpn-server-api
 cd "${BASE_DIR}/vpn-server-api" || exit
