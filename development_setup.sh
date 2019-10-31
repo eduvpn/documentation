@@ -12,6 +12,8 @@ git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-user-portal.git
 git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-api.git
 git clone -b ${LC_BRANCH} https://github.com/eduvpn/vpn-server-node.git
 git clone -b ${LC_BRANCH} https://github.com/eduvpn/documentation.git
+git clone -b master       https://github.com/eduvpn/vpn-portal-artwork.git vpn-portal-artwork-eduVPN
+git clone -b master       https://github.com/letsconnectvpn/vpn-portal-artwork.git vpn-portal-artwork-LC
 git clone -b master       https://github.com/letsconnectvpn/vpn-ca.git
 git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 
@@ -26,6 +28,10 @@ git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 #(cd vpn-server-node && git remote add github git@github.com:eduvpn/vpn-server-node.git)
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/documentation.git
 #(cd documentation && git remote add github git@github.com:eduvpn/documentation.git)
+#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-portal-artwork-eduVPN.git
+#(cd vpn-portal-artwork-eduVPN && git remote add github git@github.com:eduvpn/vpn-portal-artwork.git)
+#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-portal-artwork-LC.git
+#(cd vpn-portal-artwork-LC && git remote add github git@github.com:letsconnectvpn/vpn-portal-artwork.git)
 #git clone -b master       git@git.tuxed.net:LC/vpn-ca.git
 #(cd vpn-ca && git remote add github git@github.com:letsconnectvpn/vpn-ca.git)
 #git clone -b master       git@git.tuxed.net:LC/vpn-daemon.git
@@ -39,7 +45,9 @@ do
 	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
 done
 
-# vpn-user-portal
+######################################
+# vpn-user-portal                    #
+######################################
 cd "${BASE_DIR}/vpn-user-portal" || exit
 mkdir -p data
 composer update
@@ -48,6 +56,8 @@ cat << 'EOF' > config/config.php
 <?php
 $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
+    //'styleName' => 'eduVPN',
+    //'styleName' => 'LC',
     'secureCookie' => false,
     'apiUri' => 'http://localhost:8008/api.php',
 ];
@@ -59,15 +69,32 @@ php bin/generate-oauth-key.php
 php bin/add-user.php --user foo   --pass bar
 php bin/add-user.php --user admin --pass secret
 
-# vpn-ca
+# symlink to the official templates we have so we can easily modify and test
+# them
+mkdir -p web/css web/img
+for TPL in eduVPN LC
+do
+    ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/views"  "views/${TPL}"
+    ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/locale" "locale/${TPL}"
+    ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/css"    "web/css/${TPL}"
+    ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/img"    "web/img/${TPL}"
+done
+
+######################################
+# vpn-ca                             #
+######################################
 cd "${BASE_DIR}/vpn-ca" || exit
 go build -o _bin/vpn-ca vpn-ca/*.go
 
-# vpn-daemon
+######################################
+# vpn-daemon                         #
+######################################
 cd "${BASE_DIR}/vpn-daemon" || exit
 go build -o _bin/vpn-daemon vpn-daemon/*.go
 
-# vpn-server-api
+######################################
+# vpn-server-api                     #
+######################################
 cd "${BASE_DIR}/vpn-server-api" || exit
 mkdir -p data
 composer update
@@ -83,7 +110,9 @@ EOF
 
 php bin/init.php
 
-# vpn-server-node
+######################################
+# vpn-server-node                    #
+######################################
 cd "${BASE_DIR}/vpn-server-node" || exit
 mkdir -p data openvpn-config
 composer update
@@ -97,7 +126,9 @@ $localConfig = [
 return array_merge($baseConfig, $localConfig);
 EOF
 
-# launch script
+######################################
+# launch script                      #
+######################################
 cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
 #!/bin/sh
 (
