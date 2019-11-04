@@ -17,7 +17,7 @@ git clone -b master       https://github.com/letsconnectvpn/vpn-portal-artwork.g
 git clone -b master       https://github.com/letsconnectvpn/vpn-ca.git
 git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 
-# clone all repositories (read/write, my own "forks")
+## clone all repositories (read/write, my own "forks")
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-lib-common.git
 #(cd vpn-lib-common && git remote add github git@github.com:eduvpn/vpn-lib-common.git)
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-user-portal.git
@@ -28,9 +28,9 @@ git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 #(cd vpn-server-node && git remote add github git@github.com:eduvpn/vpn-server-node.git)
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/documentation.git
 #(cd documentation && git remote add github git@github.com:eduvpn/documentation.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-portal-artwork-eduVPN.git
+#git clone -b master git@git.tuxed.net:LC/vpn-portal-artwork-eduVPN.git
 #(cd vpn-portal-artwork-eduVPN && git remote add github git@github.com:eduvpn/vpn-portal-artwork.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-portal-artwork-LC.git
+#git clone -b master git@git.tuxed.net:LC/vpn-portal-artwork-LC.git
 #(cd vpn-portal-artwork-LC && git remote add github git@github.com:letsconnectvpn/vpn-portal-artwork.git)
 #git clone -b master       git@git.tuxed.net:LC/vpn-ca.git
 #(cd vpn-ca && git remote add github git@github.com:letsconnectvpn/vpn-ca.git)
