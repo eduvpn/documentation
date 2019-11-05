@@ -52,8 +52,16 @@ In the "first run" scenario:
 ### Notes
 
 * The app MUST allow for forgetting the chosen organization;
-* The app MUST NOT contact the network unless the user tries to add a new VPN 
-  server, or tries to connect to an existing one;
+* The app MUST periodically (on app start?) fetch the "mapping file" to see if 
+  there are any new servers available for this `orgId`;
+* Servers are only ever added from the app, NEVER removed. If a server is no 
+  longer available in the mapping file, the app marks this server with a 
+  special tag/icon to indicate it is not listed anymore;
+* If the mapping file is no longer available for this `orgId` this is also 
+  indicated in the app, but nothing is ever removed.
+* The individual VPN servers are ONLY contacted AFTER the user decides to 
+  connect to it, never before. The only connection the app makes by itself 
+  is fetching the mapping file on start, nothing more.
 
 ## Organization file
 
