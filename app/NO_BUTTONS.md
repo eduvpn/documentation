@@ -55,8 +55,11 @@ In the "first run" scenario:
 * The app MUST NOT contact the network unless the user tries to add a new VPN 
   server, or tries to connect to an existing one;
 
-
 ## Organization file
+
+This file is for example hosted on `https://disco.eduvpn.org/org_list.json`. If
+we include all eduGAIN IdPs, we'd have ~ 3000 entries, the file is around 500kB
+in that case (uncompressed).
 
     {
         "orgList": [
