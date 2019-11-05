@@ -25,8 +25,8 @@ In the "first run" scenario:
    
 4. (Optionally) the app connects automatically to a / one of the VPN servers
 
-The app stores the organization identifier the user chooses so this selector 
-step does not need to be repeated anymore. 
+The app stores the organization identifier (`orgId`) the user chooses so this 
+selector step does not need to be repeated anymore. 
 
 On subsequent runs the app immediately shows VPN servers as obtained/configured 
 during the last run.
@@ -35,18 +35,12 @@ during the last run.
 
 In the "first run" scenario:
 
-1. Application opens the institute chooser URL either in an external browser or 
-   in an embedded "Web View"; 
-   
+1. Application shows available organizations and allows users to scroll/search 
+   the list by name / keywords;
+
 2. The users chooses their organization from a list;
 
-3. The application gets the organization identifier back through a 
-   "callback URL", e.g. 
-   `org.eduvpn.app://callback?orgId=https://idp.tuxed.net/metadata`, the app 
-   can either register this scheme, or obtain the URI from the Web View 
-   control(s);
-
-4. The app downloads the `orgId` -> Server mapping from a web server to obtain 
+3. The app downloads the `orgId` -> Server mapping from a web server to obtain 
    the list of VPN servers the chosen organization has access to;
 
 5. The app adds the obtained server addresses to the app so the user can choose
@@ -61,11 +55,36 @@ In the "first run" scenario:
 * The app MUST NOT contact the network unless the user tries to add a new VPN 
   server, or tries to connect to an existing one;
 
+
+## Organization file
+
+    {
+        "orgList": [
+            {
+                "displayName": "SURFnet bv",
+                "orgId": "https://idp.surfnet.nl",
+                "keywords": [
+                    "SURFnet",
+                    "bv",
+                    "SURF",
+                    "konijn",
+                    "surf",
+                    "surfnet",
+                    "powered",
+                    "by"
+                ]
+            },
+            {
+                 ...
+            }
+        ]
+    }
+
 ## Mapping file
 
 Obtain all available servers for an `orgId` by querying the central server, 
-e.g. for `https://idp.tuxed.net/metadata` one would query 
-`https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.tuxed.net%2Fmetadata.json`.
+e.g. for `https://idp.surfnet.nl` one would query 
+`https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json`.
 
 The result may look like this:
 
