@@ -100,13 +100,10 @@ e.g. for `https://idp.surfnet.nl` one would query
 The result may look like this:
 
     {
-        "autoConnect": [
-            {
-                "https://nl.eduvpn.org/": {
-                    "profileId": "default"
-                }
-            }
-        ],
+        "autoConnect": {
+            "baseUri": "https://nl.eduvpn.org/",
+            "profileId": "default"
+        },
         "instituteAccess": [
             "https://surfnet.eduvpn.nl/"
         ],
