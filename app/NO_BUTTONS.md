@@ -57,11 +57,19 @@ In the "first run" scenario:
 * Servers are only ever added from the app, NEVER removed. If a server is no 
   longer available in the mapping file, the app marks this server with a 
   special tag/icon to indicate it is not listed anymore;
+* Allow the user to (un)hide VPN servers they never use (anymore) or that are 
+  no longer mentioned in the mapping file;
 * If the mapping file is no longer available for this `orgId` this is also 
   indicated in the app, but nothing is ever removed.
 * The individual VPN servers are ONLY contacted AFTER the user decides to 
   connect to it, never before. The only connection the app makes by itself 
   is fetching the mapping file on start, nothing more.
+* Be careful with caching! At most cache the data until the user (fully) 
+  restarts the app to avoid needing to wait 3 months before the app starts 
+  working again if something changes.
+* The "orgList" can be quite big, so caching for this for longer time _is_ 
+  important. However, it should always be possible for the user to refresh the
+  list.
 
 ## Organization file
 
@@ -105,7 +113,17 @@ The result may look like this:
             "profileId": "default"
         },
         "instituteAccess": [
-            "https://surfnet.eduvpn.nl/"
+            {
+                "baseUri": "https://surfnet.eduvpn.nl/",
+                "displayName": {
+                    "nl-NL": "Nederland",
+                    "en-US": "The Netherlands"
+                },
+                "logoUri": "https://example.org/logo.png"
+            },
+            {
+                ...
+            }
         ],
         "secureInternet": [
             "https://nl.eduvpn.org/",
@@ -123,10 +141,18 @@ The entry `secureInternetHome` entry contains the "Home" server of users of
 that organization. It will be used to obtain an access token that can be used 
 at all servers mentioned in the `secureInternet`.
 
-The `autoConnect` entry contains a list of server(s) that the application 
+The `displayName` can have a string as value, OR an object with translations 
+in various languages. If the application language is not specified here, use 
+`en-US`. The same is true of `logoUri`. Note that the `logoUri` MAY also be 
+a "data URI".
+
+The `autoConnect` entry contains a server that the application 
 should automatically connect to after adding the servers to the application. 
 Here "auto connect" means: obtain OAuth authorization, and connect to the 
-server. If multiple profiles are available for this user on tihs 
+server. If multiple profiles are available for the user, use the one mentioned 
+in `profileId`.
+
+The `autoConnect` entry is OPTIONAL. So it does not necessarily exist!
 
 ## Organization Hint
 
