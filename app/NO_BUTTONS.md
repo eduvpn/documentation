@@ -109,26 +109,41 @@ The result may look like this:
 
     {
         "autoConnect": {
-            "baseUri": "https://nl.eduvpn.org/",
+            "baseUrl": "https://nl.eduvpn.org/",
             "profileId": "default"
         },
         "instituteAccess": [
             {
-                "baseUri": "https://surfnet.eduvpn.nl/",
+                "baseUrl": "https://surfnet.eduvpn.nl/",
                 "displayName": {
-                    "nl-NL": "Nederland",
-                    "en-US": "The Netherlands"
+                    "nl-NL": "SURFnet"
                 },
-                "logoUri": "https://example.org/logo.png"
-            },
-            {
-                ...
+                "logoUri": {
+                    "nl-NL": "https://surfnet.nl/logo.png"
+                }
             }
         ],
         "secureInternet": [
-            "https://nl.eduvpn.org/",
-            "https://guest.uninett.no/",
-            "..."
+            {
+                "baseUri": "https://nl.eduvpn.org/",
+                "displayName": {
+                    "en-US": "The Netherlands",
+                    "nl-NL": "Nederland"
+                },
+                "logoUri": {
+                    "en-US": "https://nl.eduvpn.org/logo.png"
+                }
+            },
+            {
+                "baseUri": "https://guest.uninett.no/",
+                "displayName": {
+                    "en-US": "Norway",
+                    "nl-NL": "Noorwegen"
+                },
+                "logoUri": {
+                    "en-US": "https://guest.uninett.no/logo.png"
+                }
+            }
         ],
         "secureInternetHome": "https://nl.eduvpn.org/"
     }
