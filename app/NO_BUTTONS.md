@@ -207,10 +207,25 @@ the `info.json` file. We can add a special key there that provides a template
 for the application to use. For example, the template for the above URL could
 be:
 
-    https://vpn.tuxed.net/vpn-user-portal/_saml/login?ReturnTo=@AUTHORIZE_URI@&IdP=@IDP_ENTITY_ID@
+    https://vpn.tuxed.net/vpn-user-portal/_saml/login?ReturnTo=@AUTHORIZE_URI@&IdP=@ORG_ID@
 
 This template URL will depend on the SAML software used at the SP, and 
 also on the host name of the VPN server. 
 
 **NOTE**: the `@AUTHORIZE_URI@` MUST be already URL encoded before being used 
-as a replacement for the `@AUTHORIZE_URI@` string!
+as a replacement for the `@AUTHORIZE_URI@` string! `@ORG_ID@` is the entity ID
+of the IdP in SAML terminology, obtained from the `org_list.json`.
+
+Example:
+
+    {
+        "api": {
+            "http://eduvpn.org/api#2": {
+                "api_base_uri": "https://vpn.tuxed.net/vpn-user-portal/api.php",
+                "authorization_endpoint": "https://vpn.tuxed.net/vpn-user-portal/_oauth/authorize",
+                "authorization_endpoint_template": "https://vpn.tuxed.net/vpn-user-portal/_saml/login?ReturnTo=@AUTHORIZE_URI@&IdP=@ORG_ID@",
+                "token_endpoint": "https://vpn.tuxed.net/vpn-user-portal/oauth.php/token"
+            }
+        }
+    }
+
