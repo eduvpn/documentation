@@ -47,6 +47,12 @@ You _may_ also want to modify the `range` setting. For 4 OpenVPN processes we
 recommend to use a `/24` IP range. For the IPv6 range nothing needs to change 
 as the default is a `/64` which is big enough.
 
+If you specify any of the "special" ports, i.e. `udp/443`, `tcp/443`, `udp/53` 
+or `tcp/80` they are ALWAYS added to the generated client configuration next
+to one "normal" UDP and TCP port. This way, when the connection to the normal 
+ports fails, there is a fallback to the special ones which have a higher
+chance of working.
+
 ## Web Server
 
 ### CentOS / Fedora
