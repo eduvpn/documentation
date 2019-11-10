@@ -49,19 +49,20 @@ software is not multi-threaded, client connections will not automatically be
 multiple OpenVPN server processes on one server. The approach we took is to 
 start multiple OpenVPN server processes and distribute clients over them.
 
-The server software is currently limited to 16 OpenVPN processes per VPN 
-profile. This means that for simple single server deploys, the software scales 
-to ~16 CPU cores, allowing for 16 * 64 = 1024 clients to connect. This will be 
+The server software is currently limited to 64 OpenVPN processes per VPN 
+profile. This means that for single server deploys, the software scales 
+to ~64 CPU cores, allowing for 64 * 64 = 4096 clients to connect. This will be 
 rounded down due to "loss" of VPN server IPs and IPv4 network/broadcast 
-addresses.
+addresses. Of course, a machine with 64 cores is still pretty rare. It will be
+more common to divide this over multiple (physical) machines.
 
 To issue an IP address to all connected clients in this scenario, one would 
-need a `/22` IPv4 network configured in the `range` setting of the VPN profile.
+need a `/20` IPv4 network configured in the `range` setting of the VPN profile.
 As for IPv6, at least an `/108` is required in the `range6` option. Each 
 OpenVPN process will get a `/112`, the smallest block currently supported by 
 OpenVPN.
 
-Additional UDP/TCP ports (up to 16) can be configured with `vpnProtoPorts`. For 
+Additional UDP/TCP ports (up to 64) can be configured with `vpnProtoPorts`. For 
 example:
 
     'vpnProtoPorts' => [
@@ -89,12 +90,34 @@ information.
 ## Client
 
 In order to distribute client connections over the various ports, the client
-configuration contains a random subset of this list. One UDP and one TCP 
-entry is chosen from this list. So for example, when a user downloads a 
-configuration, the `remote` lines could be like this:
+configuration is generated with one UDP and TCP port picked at random. So for 
+example, when a user downloads a configuration, the `remote` lines could be 
+like this:
 
     remote vpn.example 1195 udp
     remote vpn.example 1200 tcp
 
 Because every configuration download will result in another (random) selection
 of ports, the load will eventually be distributed among the various processes.
+
+Starting from release 2.1.1 of 
+[vpn-user-portal](https://github.com/eduvpn/vpn-user-portal) the following way
+of dealing with "special" ports is implemented, assuming they are used. Special 
+ports are always added at the end of the configuration files, below the 
+"remote" lines as mentioned above. By special ports the following ports and 
+protocols are meant:
+
+    * `udp/53`
+    * `udp/443`
+    * `tcp/80`
+    * `tcp/443`
+
+They have a higher risk of working in restricted networks. If they are made 
+available through `vpnProtoPorts`, or `exposedVpnProtoPorts` one UDP and one 
+TCP port is picked at random from the special ports, that way at most 4 
+"remotes" are listed in the client configuration, e.g.:
+
+    remote vpn.example 1195 udp
+    remote vpn.example 1200 tcp
+    remote vpn.example 443 udp
+    remote vpn.example 80 tcp
