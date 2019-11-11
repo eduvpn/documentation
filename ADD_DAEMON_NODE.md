@@ -33,6 +33,9 @@ The VPN daemon should only be reachable from the VPN controller!
 
 ## Controller
 
+**TODO** we need to switch the controller to use the daemon as well if it 
+runs local OpenVPN processes
+
 Initially we'll leave the controller, your existing VPN server, alone. We'll 
 just add a new "profile" that is delegated to your new node.
 
@@ -135,7 +138,11 @@ Copy `ca.crt`, `vpn-daemon-client.crt` and `vpn-daemon-client.key` to your
 controller and put them in the `/etc/vpn-server-api/vpn-daemon` directory. 
 Make sure the permissions are correct.
 
-On your **controller**: 
+Enable the use of the daemon in `/etc/vpn-server-node/config.php`:
+
+    'useVpnDaemon' => true,
+
+Now, on your **controller**: 
     
     $ sudo mkdir /etc/vpn-server-api/vpn-daemon
     $ cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
