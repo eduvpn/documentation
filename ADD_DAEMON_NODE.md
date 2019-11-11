@@ -4,16 +4,21 @@ description: Add additional VPN nodes for handling OpenVPN connections
 category: howto
 ---
 
-This document describes how to add new VPN servers to your VPN setup. We 
-assume you setup your current VPN server using `deploy_${DIST}.sh`.
+**NOTE**: currently the `LC-master` repositories needs to be used until such 
+time we consider this stable. Only tested on CentOS 7.
 
-Adding more servers will allow you to handle more VPN users concurrently.
+This document describes how to add new VPN servers to your VPN setup. We 
+assume you setup your current VPN server using `deploy_${DIST}.sh` and have 
+everything on one machine.
+
+Adding more servers will allow you to handle more VPN users concurrently!
 
 When using multiple servers, we'll make a distinction between _controller_ and
 _node(s)_. The controller runs the portal and API, the node runs the OpenVPN 
 process(es). A typical deploy looks like this:
 
-* Machine 1 has both _controller_ and _node_ functionality in location X;
+* Machine 1 has both _controller_ and _node_ functionality in location X (this 
+  is what you end up with when you use `deploy_${DIST}.sh`);
 * Machine 2 has _node_ functionality in location Y;
 * Machine _n_ has _node_ functionality in location _N_.
 
@@ -24,36 +29,74 @@ locations.
 
 In order to securely add node(s) to your VPN setup we implemented a simple 
 [VPN daemon](https://github.com/letsconnectvpn/vpn-daemon) that runs on the 
-node(s). This communication channel is protected by TLS and will be accessed
-from the VPN controller.
-
-The VPN daemon should only be reachable from the VPN controller!
+node(s). The communication channel between the controller and node is 
+protected by TLS (client certificates) when contacting remote nodes.
 
 # Setup
 
 ## Controller
 
-**TODO** we need to switch the controller to use the daemon as well if it 
-runs local OpenVPN processes
+First we switch our controller to use the daemon as well to talk to the local
+OpenVPN processes. This is rather simple:
 
-Initially we'll leave the controller, your existing VPN server, alone. We'll 
-just add a new "profile" that is delegated to your new node.
+    $ sudo yum -y install vpn-daemon
+    $ sudo systemctl enable --now vpn-daemon
 
-Add a new profile as described [here](MULTI_PROFILE.md). In addition pay close
-attention to the following options:
+Modify `/etc/vpn-server-api/config.php` and add the configuration key 
+`useVpnDaemon` and set its value to `true`.
 
-* `managementIp` - set it to the (public) IP address of your node;
+Make sure everything still works, i.e. you can see connected clients when 
+visiting the "Connections" tab in the portal.
+
+### CA 
+
+As the daemon will use TLS with client certificates when talking to remote 
+daemons, we have to set up a (new) PKI with our own root certificate and 
+generate server & client certificates.
+
+    $ sudo yum -y install vpn-ca
+
+Generate the CA and certificates:
+
+    $ vpn-ca -init
+    $ vpn-ca -server vpn-daemon
+    $ vpn-ca -client vpn-daemon-client
+
+Now you have to copy the `ca.crt`, `vpn-daemon-client.crt` and 
+`vpn-daemon-client.key` to `/etc/vpn-server-api/vpn-daemon` and make sure the 
+web server can read them:
+
+    $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
+    $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
+    $ sudo chmod 0640 /etc/vpn-server-api/vpn-daemon/*
+    $ sudo chgrp -R apache /etc/vpn-server-api/vpn-daemon
+
+Keep track of the `vpn-daemon.crt` and `vpn-daemon.key` files as you'll need
+them later on the node.
+
+Add a new profile to your server as described [here](MULTI_PROFILE.md). For 
+every node you need to add an additional profile. You need to take care of 
+setting the following options correctly for the new node:
+
+* `managementIp` - set it to the IP address on which you will contact your 
+  new node;
 * `hostName` - set it to the hostname of the VPN node that points to its 
   public IP address;
 * `range` and `range6` - set them to the IP addresses you want that particular 
   node to issue to the clients.
 
-Next, we want to allow access from the node to the `vpn-server-api` component 
-on the controller. Modify `/etc/httpd/conf.d/vpn-server-api.conf` and add 
-`Require ip` lines containing the _public_ IP address(es) of the node. Make 
-sure you restart Apache!
+If you want to use "round robin" DNS to balance the load over various nodes
+you can set the `hostName` to the same hostname of your other profile. You 
+can also use the `hideProfile` in the configuration to not show it to users
+directly.
 
-Next, take note of the secret under `apiConsumers => vpn-server-node` in 
+Next, we want to allow access from the node(s) to the `vpn-server-api` API 
+component on the controller. Modify `/etc/httpd/conf.d/vpn-server-api.conf` and 
+add `Require ip` lines containing the IP address(es) of the node(s). Most 
+likely this will be the public IP address(es) of the node(s). Make sure you 
+restart Apache!
+
+Take note of the secret under `apiConsumers => vpn-server-node` in 
 `/etc/vpn-server-api/config.php`, you'll need it on the node
 later.
 
@@ -71,10 +114,10 @@ You will need the API secret as well that you took note of before, the script
 will also ask for that!
 
 If everything was setup correctly, the node script should run without any 
-problems!
+problems! If it doesn't you can always re-run it.
 
 You can restrict the profiles you deploy on the node. By default, all profiles
-will be deployed. 
+will be deployed, which is not always what you want.
 
 You can use the configuration option `profileList` in 
 `/etc/vpn-server-node/config.php`. It takes an array containing a list of 
@@ -83,46 +126,56 @@ missing, is to deploy _all_ profiles on this node. Example:
 
     'profileList' => ['office', 'sysadm'],
 
-You need to apply the changes on the node, as shown 
-[here](PROFILE_CONFIG.md#apply-changes) if you make any changes to the 
-profile's configuration on the controller.
+Next, you have to modify the firewall configuration in 
+`/etc/vpn-server-node/firewall.php` to allow access to the daemon from your 
+controller:
+
+    [
+        'proto' => ['tcp'],
+        'src_net' => ['x.y.z.a/32'],
+        'dst_port' => [41194],
+    ],
+
+Here `x.y.z.a` is the IP address of your controller. If you are using NAT on
+your node, make sure to also update `natRules` in the firewall config.
+
+Tell the node to use the daemon by adding this to 
+`/etc/vpn-server-node/config.php`:
+
+    'useVpnDaemon' => true,
+
+To "apply" the VPN configuration and firewall, you can run the 
+`apply_changes.sh` from the documentation repository, that should (re)start 
+everything.
+
+Now, we are ready to configure the daemon.
 
 ### Daemon 
 
 Now to allow the controller to contact the node, we have to setup the daemon.
 
     $ sudo yum -y install vpn-daemon
-    $ sudo systemctl enable --now vpn-daemon
 
 Enable TLS by removing the comment in `/etc/sysconfig/vpn-daemon` and set the
 `LISTEN` line to the IP address that you configured in the `managementIp` in
 the controller, e.g.
 
     ENABLE_TLS=-enable-tls
-    LISTEN=145.100.181.30:41194
+    LISTEN=x.y.z.b:41194
 
-Now we need to generate TLS certificates:
+Where `x.y.z.b` is the IP address of the node. This is probably the public
+IP address of the node.
 
-    $ sudo yum -y install vpn-ca
-
-Create a working directory for generating the CA and certificates:
-
-    $ mkdir ${HOME}/ca
-    $ cd ${HOME}/ca
-    $ vpn-ca -init
-    $ vpn-ca -server vpn-daemon
-    $ vpn-ca -client vpn-daemon-client
-    $ chmod 0640 *.crt *.key
-
-Copy the certificates to the right place:
+Copy the certificates you generated on the controller to the right place on the
+node:
 
     $ cp ca.crt vpn-daemon.crt /etc/pki/vpn-daemon/
     $ cp vpn-daemon.key /etc/pki/vpn-daemon/private/
     $ chgrp -R vpn-daemon /etc/pki/vpn-daemon
 
-Restart vpn-daemon:
+Start the daemon and enable it on boot:
 
-    $ sudo systemctl restart vpn-daemon
+    $ sudo systemctl enable --now vpn-daemon
 
 Make sure `vpn-daemon` runs:
 
@@ -134,20 +187,5 @@ being unreadable:
 
     $ journalctl -f -t vpn-daemon
 
-Copy `ca.crt`, `vpn-daemon-client.crt` and `vpn-daemon-client.key` to your 
-controller and put them in the `/etc/vpn-server-api/vpn-daemon` directory. 
-Make sure the permissions are correct.
-
-Enable the use of the daemon in `/etc/vpn-server-node/config.php`:
-
-    'useVpnDaemon' => true,
-
-Now, on your **controller**: 
-    
-    $ sudo mkdir /etc/vpn-server-api/vpn-daemon
-    $ cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
-    $ chmod 0640 /etc/vpn-server-api/vpn-daemon/*
-    $ chgrp -R apache /etc/vpn-server-api/vpn-daemon
-
-Now everything should work... Test it by downloading a configuration file from
-the portal for your new node and make sure you can connect.
+Once the daemon runs, everything should work. Try to connect to the new 
+profile using the eduVPN / Let's Connect! app or through the portal.
