@@ -95,5 +95,10 @@ cd "${HOME}/repoBackup-${DATE_TIME}" || exit 1
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
-    git clone --bare "${REPO_URL}" || exit 1
+    ENCODED_URL=$(echo ${REPO_URL} | base64 | tr '+/' '-_')
+    (
+        mkdir -p ${ENCODED_URL} || exit 1
+        cd "${ENCODED_URL}" || exit 1
+        git clone --bare "${REPO_URL}" || exit 1
+    )
 done
