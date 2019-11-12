@@ -14,8 +14,8 @@ REPO_URL_LIST=(\
     https://github.com/eduvpn/vpn-user-portal \
     https://github.com/eduvpn/vpn-server-node \
     https://github.com/eduvpn/documentation \
-    https://github.com/eduvpn/vpn-portal-artwork \
-    https://github.com/letsconnectvpn/vpn-portal-artwork \
+    https://git.tuxed.net/LC/vpn-portal-artwork-eduVPN \
+    https://git.tuxed.net/LC/vpn-portal-artwork-LC \
 
     # Extras
     https://github.com/fkooman/php-saml-ds \
