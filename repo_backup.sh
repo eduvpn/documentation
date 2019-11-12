@@ -1,14 +1,18 @@
 #!/bin/bash
 
-# this script makes a backup of all repositories that are related to eduVPN /
-# Let's Connect!
+# this script makes a backup of all, or at least I hope all, repositories that 
+# are related to eduVPN / Let's Connect!
+# 
+# The goal is that if everyting is lost, e.g. all Git hosting servers are gone,
+# we can recreate everything, except private keys, from a backup.
+#
 
 REPO_URL_LIST=(\
     # Website
     https://github.com/eduvpn/eduvpn.org \
     https://github.com/eduvpn/discovery \
 
-    # Server
+    # Server Components
     https://github.com/eduvpn/vpn-lib-common \
     https://github.com/eduvpn/vpn-server-api \
     https://github.com/eduvpn/vpn-user-portal \
@@ -17,9 +21,37 @@ REPO_URL_LIST=(\
     https://git.tuxed.net/LC/vpn-portal-artwork-eduVPN \
     https://git.tuxed.net/LC/vpn-portal-artwork-LC \
 
+    # Server Debian Packages \
+    https://github.com/eduvpn/eduvpn-debian
+
+    # Server RPM Builder 
+    https://github.com/eduvpn/builder \
+
+    # Server RPM Packages \
+    https://git.tuxed.net/rpm/vpn-server-node \
+    https://git.tuxed.net/rpm/vpn-server-api \
+    https://git.tuxed.net/rpm/vpn-user-portal \
+    https://git.tuxed.net/rpm/vpn-daemon \
+    https://git.tuxed.net/rpm/vpn-ca \
+    https://git.tuxed.net/rpm/vpn-portal-artwork-LC \
+    https://git.tuxed.net/rpm/vpn-portal-artwork-eduVPN \
+    https://git.tuxed.net/rpm/builder \
+    https://git.tuxed.net/rpm/php-saml-ds \
+    https://git.tuxed.net/rpm/php-saml-ds-artwork-eduVPN \
+    https://git.tuxed.net/rpm/php-json-signer \
+    https://git.tuxed.net/rpm/php-fkooman-sqlite-migrate \
+    https://git.tuxed.net/rpm/php-fkooman-secookie \
+    https://git.tuxed.net/rpm/php-LC-openvpn-connection-manager \
+    https://git.tuxed.net/rpm/php-fkooman-saml-sp \
+    https://git.tuxed.net/rpm/php-fkooman-otp-verifier \
+    https://git.tuxed.net/rpm/php-fkooman-oauth2-server \
+    https://git.tuxed.net/rpm/php-fkooman-jwt \
+    https://git.tuxed.net/rpm/php-LC-common \
+
     # Extras
     https://github.com/fkooman/php-saml-ds \
     https://github.com/fkooman/php-json-signer \
+    https://github.com/eduvpn/disco-artwork \
 
     # Server Dependencies
     https://github.com/fkooman/php-otp-verifier \
@@ -32,6 +64,12 @@ REPO_URL_LIST=(\
     https://github.com/letsconnectvpn/vpn-ca \
     https://github.com/letsconnectvpn/vpn-daemon \
     https://github.com/letsconnectvpn/php-openvpn-connection-manager \
+
+    # Apps
+    https://github.com/eduvpn/app-update \
+
+    # Linux App
+    https://github.com/eduvpn/python-eduvpn-client \
 
     # Android app
     https://github.com/eduvpn/android \
