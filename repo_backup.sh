@@ -95,7 +95,7 @@ cd "${HOME}/repoBackup-${DATE_TIME}" || exit 1
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
-    ENCODED_URL=$(echo ${REPO_URL} | base64 | tr '+/' '-_')
+	ENCODED_URL=$(echo ${REPO_URL} | sed 's/[^a-zA-Z0-9-.]/_/g')
     (
         mkdir -p ${ENCODED_URL} || exit 1
         cd "${ENCODED_URL}" || exit 1
