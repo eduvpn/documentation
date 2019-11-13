@@ -7,6 +7,8 @@
 # we can recreate everything, except private keys, from a backup.
 #
 
+BACKUP_ROOT=${HOME}
+
 REPO_URL_LIST=(\
     # Website
     https://github.com/eduvpn/eduvpn.org \
@@ -90,14 +92,14 @@ REPO_URL_LIST=(\
 )
 
 DATE_TIME=$(date +%Y%m%d%H%M%S)
-mkdir -p "${HOME}/repoBackup-${DATE_TIME}" || exit 1
-cd "${HOME}/repoBackup-${DATE_TIME}" || exit 1
+mkdir -p "${BACKUP_ROOT}/repoBackup-${DATE_TIME}" || exit 1
+cd "${BACKUP_ROOT}/repoBackup-${DATE_TIME}" || exit 1
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
-	ENCODED_URL=$(echo ${REPO_URL} | sed 's/[^a-zA-Z0-9-.]/_/g')
+	ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
     (
-        mkdir -p ${ENCODED_URL} || exit 1
+        mkdir -p "${ENCODED_URL}" || exit 1
         cd "${ENCODED_URL}" || exit 1
         git clone --bare "${REPO_URL}" || exit 1
     )
