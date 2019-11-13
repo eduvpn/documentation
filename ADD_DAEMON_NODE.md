@@ -4,8 +4,9 @@ description: Add additional VPN nodes for handling OpenVPN connections
 category: howto
 ---
 
-**NOTE**: currently the `LC-master` repositories needs to be used until such 
-time we consider this stable. Only tested on CentOS 7.
+**NOTE**: currently the development repository needs to be 
+[enabled](DEVELOPMENT_REPO.md) until such time we consider this stable. Only 
+available on CentOS and Fedora.
 
 This document describes how to add new VPN servers to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh` and have 
