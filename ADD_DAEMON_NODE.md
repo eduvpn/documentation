@@ -51,8 +51,9 @@ visiting the "Connections" tab in the portal.
 ### CA 
 
 As the daemon will use TLS with client certificates when talking to remote 
-daemons, we have to set up a (new) PKI with our own root certificate and 
-generate server & client certificates.
+daemons, and **only** when talking to remove daemons, we have to set up a 
+(new) PKI with our own root certificate and generate server & client 
+certificates.
 
     $ sudo yum -y install vpn-ca
 
