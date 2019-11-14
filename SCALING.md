@@ -26,12 +26,6 @@ bare metal as it depends on the VM platform that is being used and how it is
 configured. Dedicated network interfaces, for example using IOMMU may also 
 increase the performance.
 
-The current architecture limits the number of OpenVPN processes to 16 per 
-profile. It makes sense to match the number of CPU cores with the number of 
-OpenVPN processes. So up to 16 cores per server (profile) makes sense. It is in 
-no way required to start with 16 cores for a VM server, but it is possible to 
-slowly grow to 16 cores when the VPN server use increases.
-
 A CPU with AES-NI (hardware accelerated AES) is highly recommended. It will
 substantially improve the performance.
 
@@ -44,7 +38,7 @@ two.
 
 Gathering information from other VPN operators resulted in estimating that one 
 needs one CPU core for ~64 concurrent client connections. As the OpenVPN 
-software is not multi-threaded, client connections will not automatically be 
+software is not multi threaded, client connections will not automatically be 
 "distributed" over CPU cores. So in order to use multiple cores, we need 
 multiple OpenVPN server processes on one server. The approach we took is to 
 start multiple OpenVPN server processes and distribute clients over them.
@@ -58,7 +52,7 @@ more common to divide this over multiple (physical) machines.
 
 To issue an IP address to all connected clients in this scenario, one would 
 need a `/20` IPv4 network configured in the `range` setting of the VPN profile.
-As for IPv6, at least an `/108` is required in the `range6` option. Each 
+As for IPv6, at least an `/100` is required in the `range6` option. Each 
 OpenVPN process will get a `/112`, the smallest block currently supported by 
 OpenVPN.
 
