@@ -107,10 +107,10 @@ ports are always added at the end of the configuration files, below the
 "remote" lines as mentioned above. By special ports the following ports and 
 protocols are meant:
 
-    * `udp/53`
-    * `udp/443`
-    * `tcp/80`
-    * `tcp/443`
+* `udp/53`
+* `udp/443`
+* `tcp/80`
+* `tcp/443`
 
 They have a higher risk of working in restricted networks. If they are made 
 available through `vpnProtoPorts`, or `exposedVpnProtoPorts` one UDP and one 
