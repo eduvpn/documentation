@@ -85,6 +85,5 @@ missing, is to deploy _all_ profiles on this node. Example:
 
     'profileList' => ['office', 'sysadm'],
 
-You need to apply the changes on the node, as shown 
-[here](PROFILE_CONFIG.md#apply-changes) if you make any changes to the 
-profile's configuration on the controller.
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN node.

@@ -32,5 +32,5 @@ modify `/etc/vpn-server-node/firewall.php`:
 	    ],
 	],
 
-Modify the listed IP addresses here to a range of trusted IP addresses. Don't 
-forget to [APPLY](PROFILE_CONFIG.md#apply-changes) the changes!
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.

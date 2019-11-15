@@ -146,9 +146,8 @@ Tell the node to use the daemon by adding this to
 
     'useVpnDaemon' => true,
 
-To "apply" the VPN configuration and firewall, you can run the 
-`apply_changes.sh` from the documentation repository, that should (re)start 
-everything.
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.
 
 Now, we are ready to configure the daemon.
 
