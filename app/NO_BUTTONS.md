@@ -53,23 +53,22 @@ In the "first run" scenario:
 
 * The app MUST allow for forgetting the chosen organization;
 * The app MUST periodically (on app start?) fetch the "mapping file" to see if 
-  there are any new servers available for this `orgId`;
+  there are any new servers available for this `org_id`;
 * Servers are only ever added from the app, NEVER removed. If a server is no 
   longer available in the mapping file, the app marks this server with a 
   special tag/icon to indicate it is not listed anymore;
 * Allow the user to (un)hide VPN servers they never use (anymore) or that are 
   no longer mentioned in the mapping file;
-* If the mapping file is no longer available for this `orgId` this is also 
-  indicated in the app, but nothing is ever removed.
+* If the mapping file is no longer available for this `org_id` this is also 
+  indicated in the app, but nothing is ever (automatically) removed.
 * The individual VPN servers are ONLY contacted AFTER the user decides to 
   connect to it, never before. The only connection the app makes by itself 
   is fetching the mapping file on start, nothing more.
 * Be careful with caching! At most cache the data until the user (fully) 
   restarts the app to avoid needing to wait 3 months before the app starts 
   working again if something changes.
-* The "orgList" can be quite big, so caching for this for longer time _is_ 
-  important. However, it should always be possible for the user to refresh the
-  list.
+* The "org_list" is ONLY fetched when the app is launched for the first time,
+  OR when the user wants to choose a new organization.
 
 ## Organization file
 
