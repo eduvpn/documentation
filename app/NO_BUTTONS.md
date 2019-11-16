@@ -91,7 +91,8 @@ in that case (uncompressed).
                     "surfnet",
                     "powered",
                     "by"
-                ]
+                ],
+                "serverInfoUrl": "https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
             },
             {
                  ...
