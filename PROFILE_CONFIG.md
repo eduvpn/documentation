@@ -25,10 +25,6 @@ Every profile has an identifier (`profileId`) in this case `internet` and a
 number (`profileNumber`), in this case `1`. They must be unique. The counting 
 starts at `1`.
 
-If you modify any of these values as described below, you need to regenerate 
-the server configuration and possibly the firewall, see the 
-[Apply Changes](#apply-changes) section below.
-
 On CentOS you may also need to take a look at the [SELinux](SELINUX.md) 
 instructions.
 
@@ -145,47 +141,5 @@ Once logging is enabled and changes applied, you can follow the log like this:
 	
 ## Apply Changes
 
-The OpenVPN server configuration can be regenerated like this:
-
-    $ sudo vpn-server-node-server-config
-
-To restart all OpenVPN processes, do this:
-
-    $ sudo systemctl restart "openvpn-server@*"
-
-If you changed the entry `vpnProtoPorts`, to say 
-`['udp/1194', 'udp/1195', 'tcp/1194', 'tcp/1195']` you now have two more 
-OpenVPN processes to deal with:
-
-Enable the two extra processes on boot:
-
-    $ sudo systemctl enable openvpn-server@internet-{2,3}
-
-(Re)start them all:
-
-    $ sudo systemctl restart "openvpn-server@*"
-
-If you changed any of the port configuration(s), you also need to update the
-firewall to allow the UDP/TCP ports through, in that case modify 
-`/etc/vpn-server-node/firewall.php`.
-
-### Red Hat Enterprise Linux / CentOS / Fedora
-
-To regenerate and install the new firewall rules, run this:
-
-    $ sudo vpn-server-node-generate-firewall --install
-
-To activate the updated firewall, do this:
-
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
-
-### Debian
-
-To regenerate and install the new firewall rules, run this:
-
-    $ sudo vpn-server-node-generate-firewall --install
-
-To activate the updated firewall, do this:
-
-    $ sudo systemctl restart netfilter-persistent
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.

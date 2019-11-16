@@ -42,5 +42,5 @@ array like this:
         ],
     ],
 
-Now make sure you [apply](PROFILE_CONFIG.md#apply-changes) the changes for both 
-the OpenVPN processes and the firewall!
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.

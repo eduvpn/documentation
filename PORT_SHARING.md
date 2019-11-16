@@ -163,29 +163,22 @@ The `inputRules` section should look something like this:
             ],
         ],
     ],
-
+	
 ## Applying
 
 ### CentOS/Fedora
 
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
-    $ sudo vpn-server-node-generate-firewall --install
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
-    $ sudo vpn-server-node-server-config
-    $ sudo systemctl enable --now openvpn-server@internet-2
-    $ sudo systemctl enable --now openvpn-server@internet-3
-    $ sudo systemctl restart "openvpn-server@*"
+	
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.
+	
     
 ### Debian
 
     $ sudo systemctl restart apache2
     $ sudo systemctl restart sslh
-    $ sudo vpn-server-node-generate-firewall --install
-    $ sudo systemctl restart netfilter-persistent
-    $ sudo vpn-server-node-server-config
-    $ sudo systemctl enable --now openvpn-server@internet-2
-    $ sudo systemctl enable --now openvpn-server@internet-3
-    $ sudo systemctl restart "openvpn-server@*"
-
+	
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.

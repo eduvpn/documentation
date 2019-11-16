@@ -111,4 +111,5 @@ client ranges:
 
 ## Apply
 
-Do not forget to [apply](PROFILE_CONFIG.md#apply-changes) the changes!
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.
