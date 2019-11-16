@@ -25,7 +25,7 @@ In the "first run" scenario:
    
 4. (Optionally) the app connects automatically to a / one of the VPN servers
 
-The app stores the organization identifier (`orgId`) the user chooses so this 
+The app stores the organization identifier (`org_id`) the user chooses so this 
 selector step does not need to be repeated anymore. 
 
 On subsequent runs the app immediately shows VPN servers as obtained/configured 
@@ -40,7 +40,7 @@ In the "first run" scenario:
 
 2. The users chooses their organization from a list;
 
-3. The app downloads the `orgId` -> Server mapping from a web server to obtain 
+3. The app downloads the `org_id` -> Server mapping from a web server to obtain 
    the list of VPN servers the chosen organization has access to;
 
 5. The app adds the obtained server addresses to the app so the user can choose
@@ -78,11 +78,11 @@ we include all eduGAIN IdPs, we'd have ~ 3000 entries, the file is around 500kB
 in that case (uncompressed).
 
     {
-        "orgList": [
+        "org_list": [
             {
-                "displayName": "SURFnet bv",
-                "orgId": "https://idp.surfnet.nl",
-                "keywords": [
+                "display_name": "SURFnet bv",
+                "org_id": "https://idp.surfnet.nl",
+                "keyword_list": [
                     "SURFnet",
                     "bv",
                     "SURF",
@@ -92,7 +92,7 @@ in that case (uncompressed).
                     "powered",
                     "by"
                 ],
-                "serverInfoUrl": "https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
+                "server_info_url": "https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
             },
             {
                  ...
@@ -102,73 +102,74 @@ in that case (uncompressed).
 
 ## Mapping file
 
-Obtain all available servers for an `orgId` by querying the central server, 
-e.g. for `https://idp.surfnet.nl` one would query 
-`https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json`.
+Obtain the server information available servers for an `org_id` by querying the
+server mentioned in `server_info_url`.
 
 The result may look like this:
 
     {
-        "autoConnect": {
-            "baseUrl": "https://nl.eduvpn.org/",
-            "profileId": "default"
+        "auto_connect": {
+            "base_url": "https://nl.eduvpn.org/",
+            "profile_id": "default"
         },
-        "instituteAccess": [
+        "secure_internet_home": "https://nl.eduvpn.org/",
+        "server_list": [
             {
-                "baseUrl": "https://surfnet.eduvpn.nl/",
-                "displayName": {
+                "base_url": "https://surfnet.eduvpn.nl/",
+                "display_name": {
                     "nl-NL": "SURFnet"
                 },
-                "logoUri": {
+                "logo_uri": {
                     "nl-NL": "https://surfnet.nl/logo.png"
-                }
-            }
-        ],
-        "secureInternet": [
+                },
+                "server_type": "institute_access"
+            },
             {
-                "baseUri": "https://nl.eduvpn.org/",
-                "displayName": {
+                "base_url": "https://nl.eduvpn.org/",
+                "display_name": {
                     "en-US": "The Netherlands",
                     "nl-NL": "Nederland"
                 },
-                "logoUri": {
+                "logo_uri": {
                     "en-US": "https://nl.eduvpn.org/logo.png"
-                }
+                },
+                "server_type": "secure_internet"
             },
             {
-                "baseUri": "https://guest.uninett.no/",
-                "displayName": {
+                "base_url": "https://guest.uninett.no/",
+                "display_name": {
                     "en-US": "Norway",
                     "nl-NL": "Noorwegen"
                 },
-                "logoUri": {
+                "logo_uri": {
                     "en-US": "https://guest.uninett.no/logo.png"
-                }
+                },
+                "server_type": "secure_internet"
             }
-        ],
-        "secureInternetHome": "https://nl.eduvpn.org/"
+        ]
     }
 
-The entry `instituteAccess` contains a list of VPN servers that are exclusively 
-available for this organization. The access tokens for servers mentioned here 
-are tied to each individual VPN server in this list.
+The servers marked with `server_type` value `institute_access` are VPN servers 
+that are exclusively available for this organization. The access tokens for 
+servers mentioned here are tied to each individual VPN server in this list.
 
-The entry `secureInternetHome` entry contains the "Home" server of users of 
+The entry `secure_internet_home` entry contains the "Home" server of users of 
 that organization. It will be used to obtain an access token that can be used 
-at all servers mentioned in the `secureInternet`.
+at all servers of type `secure_internet`. The field `secure_internet_home` is
+OPTIONAL.
 
-The `displayName` can have a string as value, OR an object with translations 
+The `display_name` can have a string as value, OR an object with translations 
 in various languages. If the application language is not specified here, use 
-`en-US`. The same is true of `logoUri`. Note that the `logoUri` MAY also be 
+`en-US`. The same is true of `logo_uri`. Note that the `logo_uri` MAY also be 
 a "data URI".
 
-The `autoConnect` entry contains a server that the application 
+The `auto_connect` entry contains a server that the application 
 should automatically connect to after adding the servers to the application. 
 Here "auto connect" means: obtain OAuth authorization, and connect to the 
 server. If multiple profiles are available for the user, use the one mentioned 
-in `profileId`.
+in `profile_id`.
 
-The `autoConnect` entry is OPTIONAL. So it does not necessarily exist!
+The `auto_connect` entry is OPTIONAL. So it does not necessarily exist!
 
 ## Organization Hint
 
