@@ -1,27 +1,51 @@
 # Getting rid of the buttons...
 
+## TODO
+
+* maybe we SHOULD have entries no longer found in the mapping file be deleted
+  from the app? Only always keep manually added servers... Seems risky though!
+* we consider using 3 files for discovery, also the "secure_internet.json" as
+  currently provided... this would simplify the mapping files as they no longer
+  need to include (all) secure internet servers...
+
 **NOTE**: none of the file formats / JSON encodings are final!
 
-We are trying to get rid of the "use case" buttons in the eduVPN apps. 
-Currently the user first has to choose "Institute Access" or "Secure Internet". 
-This is not easy to explain to users. It would be better when users can simply
-select their institute from a list, like they are already used to from the 
-existing identity federations.
+## Introduction
 
-The advantage here is that the user does not have to choose from a list of 
-VPN servers that don't necessarily have a (direct) link to their organization.
+Our current eduVPN applications suffer from a complication making it 
+difficult for (new) users to get started. The initial screen asks them to 
+choose whether they want to "safely use the Internet" (Secure Internet) or 
+access their institute's network (Institute Access). Especially for 
+"Secure Internet" this is a problem. The "Secure Internet" function allows 
+users (after authentication and authorization) to choose servers in any other 
+country that participates in eduVPN. The way the authorization is set up, the 
+user *first* has to select their "home" country and login there before being 
+able to choose other countries. This works by using the token obtained from
+the "home" organization at the other VPN servers.
+
+We try to solve this by allowing the user to choose their organization first, 
+after which the application will determine which (if any) VPN servers are 
+available for the user.
+
+## Advantages
+
+1. The user no longer has to know which is their "Home" server;
+2. The user no longer has to browse a (long) list to find their organization
+   server, which does not necessarily map 1-to-1 to their institute name;
+3. There can be no confusion by getting stuck at a login screen where the 
+   user can not go any further as they do not have an account at the server.
 
 ## User Flow
 
-In the "first run" scenario:
+In the app's "first run" scenario:
 
 1. The user opens the application;
 
 2. The user chooses their organization;
 
 3. The app shows the available VPN servers linked to that particular 
-   organization, e.g. a VPN server for "Institute Access" and a list of VPNs 
-   around the world that can be used for "Secure Internet".
+   organization, e.g. a VPN server for "Institute Access" and a list of VPN 
+   servers around the world that can be used for "Secure Internet".
    
 4. (Optionally) the app connects automatically to a / one of the VPN servers
 
@@ -33,42 +57,35 @@ during the last run.
 
 ## App Flow
 
-In the "first run" scenario:
+0. Application Starts;
+1. Do we have a `server_info_url`? Yes: go to 5, No: go to 2;
+2. Download `organization_list.json`;
+3. Show a list of all organizations from the `organization_list.json` and 
+   allow the user to browse and search based on name and keywords;
+4. Store the `server_info_url` associated with the user's choice from 
+   `organization_list.json` in the app's internal storage;
+5. Download the mapping file linked to in `server_info_url`;
+6. Add all servers that are found in the `server_info_url` document to the list 
+   of (pre)configured VPN servers in the application if they are not yet there;
+7. Visually mark servers previously configured using the `server_info_url` 
+   which are no longer listed in the `server_info_url` document, i.e. by 
+   "graying" them out, but still allow the user to use them (and/or hide them);
 
-1. Application shows available organizations and allows users to scroll/search 
-   the list by name / keywords;
+## Notes
 
-2. The users chooses their organization from a list;
-
-3. The app downloads the `org_id` -> Server mapping from a web server to obtain 
-   the list of VPN servers the chosen organization has access to;
-
-5. The app adds the obtained server addresses to the app so the user can choose
-   them afterwards;
-
-6. The app automatically connects to a VPN server if specified in the 
-   mapping file.
-
-### Notes
-
-* The app MUST allow for forgetting the chosen organization;
-* The app MUST periodically (on app start?) fetch the "mapping file" to see if 
-  there are any new servers available for this `org_id`;
-* Servers are only ever added from the app, NEVER removed. If a server is no 
-  longer available in the mapping file, the app marks this server with a 
-  special tag/icon to indicate it is not listed anymore;
-* Allow the user to (un)hide VPN servers they never use (anymore) or that are 
-  no longer mentioned in the mapping file;
-* If the mapping file is no longer available for this `org_id` this is also 
-  indicated in the app, but nothing is ever (automatically) removed.
+* The app MUST allow for forgetting the chosen organization (which deletes 
+  the `server_info_url` from the app's internal storage);
+* Allow the user to (un)hide VPN servers they never use;
+* If the mapping file is no longer available allow the user to select an 
+  organization (again), but nothing is ever (automatically) removed from the 
+  application;
 * The individual VPN servers are ONLY contacted AFTER the user decides to 
-  connect to it, never before. The only connection the app makes by itself 
+  connect to them, never before. The only connection the app makes by itself 
   is fetching the mapping file on start, nothing more.
-* Be careful with caching! At most cache the data until the user (fully) 
-  restarts the app to avoid needing to wait 3 months before the app starts 
-  working again if something changes.
-* The "org_list" is ONLY fetched when the app is launched for the first time,
-  OR when the user wants to choose a new organization.
+* Do not cache any of the JSON files retrieved;
+* The `organization_list` is ONLY retrieved when the user needs to choose 
+  their organization, so typically only once and then never again;
+* The rules above do not hold for manually added servers by the user.
 
 ## Organization file
 
