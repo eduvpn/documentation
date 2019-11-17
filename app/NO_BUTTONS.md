@@ -1,16 +1,4 @@
-# Getting rid of the buttons...
-
-## TODO
-
-* maybe we SHOULD have entries no longer found in the mapping file be deleted
-  from the app? Only always keep manually added servers... Seems risky though!
-* we consider using 3 files for discovery, also the "secure_internet.json" as
-  currently provided... this would simplify the mapping files as they no longer
-  need to include (all) secure internet servers...
-
-**NOTE**: none of the file formats / JSON encodings are final!
-
-## Introduction
+# Introduction
 
 Our current eduVPN applications suffer from a complication making it 
 difficult for (new) users to get started. The initial screen asks them to 
@@ -27,7 +15,7 @@ We try to solve this by allowing the user to choose their organization first,
 after which the application will determine which (if any) VPN servers are 
 available for the user.
 
-## Advantages
+# Advantages
 
 1. The user no longer has to know which is their "Home" server;
 2. The user no longer has to browse a (long) list to find their organization
@@ -35,7 +23,7 @@ available for the user.
 3. There can be no confusion by getting stuck at a login screen where the 
    user can not go any further as they do not have an account at the server.
 
-## User Flow
+# User Flow
 
 In the app's "first run" scenario:
 
@@ -55,7 +43,7 @@ selector step does not need to be repeated anymore.
 On subsequent runs the app immediately shows VPN servers as obtained/configured 
 during the last run.
 
-## App Flow
+# App Flow
 
 0. Application Starts;
 1. Do we have a `server_info_url`? Yes: go to 5, No: go to 2;
@@ -83,21 +71,28 @@ during the last run.
   connect to them, never before. The only connection the app makes by itself 
   is fetching the mapping file on start, nothing more.
 * Do not cache any of the JSON files retrieved;
-* The `organization_list` is ONLY retrieved when the user needs to choose 
-  their organization, so typically only once and then never again;
+* The file `organization_list.json` is ONLY retrieved when the user needs to 
+  choose their organization, so typically only once and then never again;
 * The rules above do not hold for manually added servers by the user.
+
+# Discovery Files
 
 ## Organization file
 
-This file is for example hosted on `https://disco.eduvpn.org/org_list.json`. If
-we include all eduGAIN IdPs, we'd have ~ 3000 entries, the file is around 500kB
-in that case (uncompressed).
+Proposed URL:
+
+    https://discovery.eduvpn.org/v2/organization_list.json
+
+Format:
 
     {
-        "org_list": [
+        "organization_list": [
             {
-                "display_name": "SURFnet bv",
-                "org_id": "https://idp.surfnet.nl",
+                "display_name": {
+                    "nl-NL": "SURFnet bv",
+                    "en-US": "SURFnet bv"
+                },
+                "organization_id": "https://idp.surfnet.nl",
                 "keyword_list": [
                     "SURFnet",
                     "bv",
@@ -108,7 +103,7 @@ in that case (uncompressed).
                     "powered",
                     "by"
                 ],
-                "server_info_url": "https://disco.eduvpn.org/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
+                "server_info_url": "https://discovery.eduvpn.org/v2/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
             },
             {
                  ...
@@ -116,19 +111,22 @@ in that case (uncompressed).
         ]
     }
 
+The `server_info_url` can point to other domains than `discovery.eduvpn.org`, 
+for example if an NREN wants to maintain their own mapping from organization 
+to server list, see below.
+
+**FIXME**: also have multi language keywords?!
+**FIXME**: MUST always have `en-US` language? That seems not okay...
+**FIXME**: language thing MUST always be object? simplifies app code somewhat
+
 ## Mapping file
 
-Obtain the server information available servers for an `org_id` by querying the
-server mentioned in `server_info_url`.
+Obtain the server information available servers for an `organization_id` by 
+querying the server mentioned in `server_info_url`.
 
 The result may look like this:
 
     {
-        "auto_connect": {
-            "base_url": "https://nl.eduvpn.org/",
-            "profile_id": "default"
-        },
-        "secure_internet_home": "https://nl.eduvpn.org/",
         "server_list": [
             {
                 "base_url": "https://surfnet.eduvpn.nl/",
@@ -152,15 +150,7 @@ The result may look like this:
                 "server_type": "secure_internet"
             },
             {
-                "base_url": "https://guest.uninett.no/",
-                "display_name": {
-                    "en-US": "Norway",
-                    "nl-NL": "Noorwegen"
-                },
-                "logo_uri": {
-                    "en-US": "https://guest.uninett.no/logo.png"
-                },
-                "server_type": "secure_internet"
+                ...
             }
         ]
     }
@@ -169,25 +159,66 @@ The servers marked with `server_type` value `institute_access` are VPN servers
 that are exclusively available for this organization. The access tokens for 
 servers mentioned here are tied to each individual VPN server in this list.
 
-The entry `secure_internet_home` entry contains the "Home" server of users of 
-that organization. It will be used to obtain an access token that can be used 
-at all servers of type `secure_internet`. The field `secure_internet_home` is
-OPTIONAL.
+The `secure_internet` value of the `server_type` field is special in the sense 
+that the token obtained here can ALSO be used at other "Secure Internet" 
+servers, see below.
 
-The `display_name` can have a string as value, OR an object with translations 
-in various languages. If the application language is not specified here, use 
-`en-US`. The same is true of `logo_uri`. Note that the `logo_uri` MAY also be 
-a "data URI".
+The field `display_name` is an object with translations in various languages. 
+If the language of the user's device running the app is not available, the app
+decides which language to choose. Typically `en-US` would be a good fallback, 
+but it does not necessarily exist.
 
-The `auto_connect` entry contains a server that the application 
-should automatically connect to after adding the servers to the application. 
-Here "auto connect" means: obtain OAuth authorization, and connect to the 
-server. If multiple profiles are available for the user, use the one mentioned 
-in `profile_id`.
+The field `logo_uri` contains the URL or URI (data URI) of the logo.
 
-The `auto_connect` entry is OPTIONAL. So it does not necessarily exist!
+**FIXME**: we removed "auto connect" as we first have to think about *when* to 
+actually auto connect, on initial launch? On every launch? And how to implement 
+this (properly) in all apps... To me it would just seem very cumbersome and 
+annoying, especially if the user cannot override this...
 
-## Organization Hint
+## Secure Internet File
+
+Proposed URL:
+
+    https://discovery.eduvpn.org/v2/secure_internet.json
+
+Format:
+
+    {
+        "server_list": [
+            {
+                "base_url": "https://guest.eduvpn.no/",
+                "display_name": {
+                    "da-DK": "Norge",
+                    "en-US": "Norway",
+                    "nb-NO": "Norge",
+                    "nl-NL": "Noorwegen"
+                },
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/no.png"
+                }
+            },
+            {
+                "base_url": "https://nl.eduvpn.org/",
+                "display_name": {
+                    "da-DK": "Holland",
+                    "en-US": "The Netherlands",
+                    "nb-NO": "Nederland",
+                    "nl-NL": "Nederland"
+                },
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/nl.png"
+                }
+            },
+            {
+                ...
+            }
+        ]
+    }
+
+
+# Organization Hint
+
+**FIXME**: text below is WAAAY too long
 
 **NOTE**: this is currently only relevant for SAML, we use IdP here instead of
 organization.
