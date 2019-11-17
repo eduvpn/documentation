@@ -34,8 +34,6 @@ In the app's "first run" scenario:
 3. The app shows the available VPN servers linked to that particular 
    organization, e.g. a VPN server for "Institute Access" and a list of VPN 
    servers around the world that can be used for "Secure Internet".
-   
-4. (Optionally) the app connects automatically to a / one of the VPN servers
 
 The app stores the organization identifier (`org_id`) the user chooses so this 
 selector step does not need to be repeated anymore. 
