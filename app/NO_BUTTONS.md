@@ -70,16 +70,13 @@ servers...
 * The app MUST allow for forgetting the chosen organization (which deletes 
   the `server_info_url` from the app's internal storage);
 * Allow the user to (un)hide VPN servers they never use;
-* If the mapping file is no longer available allow the user to select an 
-  organization (again), but nothing is ever (automatically) removed from the 
-  application;
 * The individual VPN servers are ONLY contacted AFTER the user decides to 
   connect to them, never before. The only connection the app makes by itself 
-  is fetching the mapping file on start, nothing more.
-* Do not cache any of the JSON files retrieved;
+  is fetching the mapping file and `secure_internet.json` on start, nothing 
+  more.
+* Do NOT cache any of the JSON files retrieved;
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
   choose their organization, so typically only once and then never again;
-* The rules above do not hold for manually added servers by the user.
 
 # Discovery Files
 
