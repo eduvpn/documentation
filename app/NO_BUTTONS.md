@@ -35,16 +35,14 @@ In the app's "first run" scenario:
    organization, e.g. a VPN server for "Institute Access" and a list of VPN 
    servers around the world that can be used for "Secure Internet".
 
-The app stores the organization identifier (`org_id`) the user chooses so this 
-selector step does not need to be repeated anymore. 
-
-On subsequent runs the app immediately shows VPN servers as obtained/configured 
-during the last run.
+On subsequent runs, the list of servers is immediately available and 
+potentially shows new servers that the user can now access based on their 
+organization.
 
 # App Flow
 
 0. Application Starts;
-1. Do we have a `server_info_url`? Yes: go to 5, No: go to 2;
+1. Do we have a configured `server_info_url`? Yes: go to 5, No: go to 2;
 2. Download `organization_list.json`;
 3. Show a list of all organizations from the `organization_list.json` and 
    allow the user to browse and search based on name and keywords;
@@ -56,6 +54,16 @@ during the last run.
 7. Visually mark servers previously configured using the `server_info_url` 
    which are no longer listed in the `server_info_url` document, i.e. by 
    "graying" them out, but still allow the user to use them (and/or hide them);
+
+**FIXME**: now there is no way to modify the `server_info_url` maybe we should
+include the requirement for the app to delete the URL when it is unable to 
+fetch the file and pretend it is a "first run"? Maybe a 410 response header 
+is required for it to forget the `server_info_url`? Seems quite complicated,
+what if the domain is no longer there?!
+
+**FIXME**: how do we handle VPN server removals? Maybe we should really just 
+delete them from the app as well? Of course NOT for manually added VPN 
+servers...
 
 ## Notes
 
