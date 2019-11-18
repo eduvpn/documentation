@@ -101,6 +101,46 @@ To generate the OpenVPN server configuration files:
 
 The configuration will be stored in the `openvpn-config` folder.
 
+# Software Releases
+
+`${HOME}/.local/bin/make_release`:
+
+    #!/bin/sh
+    PROJECT_NAME=$(basename "${PWD}")
+    PROJECT_VERSION=${1}
+    RELEASE_DIR="${PWD}/output/files"
+
+    if [ -z "${1}" ]
+    then
+        # we take the last "tag" of the Git repository as version
+        PROJECT_VERSION=$(git describe --abbrev=0 --tags)
+        echo Version: "${PROJECT_VERSION}"
+    fi
+
+    mkdir -p "${RELEASE_DIR}"
+    if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]
+    then
+        echo "Version ${PROJECT_VERSION} already has a release!"
+        exit 1
+    fi
+
+    git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+    gpg2 --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+    minisign -Sm "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+
+`${HOME}/.local/bin/upload_site`:
+
+    #!/bin/sh
+    PROJECT_NAME=$(basename "${PWD}")
+    OUTPUT_DIR="${PWD}/output"
+
+    rsync -avz -e ssh "${OUTPUT_DIR}/" "helium.tuxed.net:/var/www/software.tuxed.net/${PROJECT_NAME}"
+
+Make the scripts executable:
+
+    $ chmod +x ${HOME}/.local/bin/upload_site
+    $ chmod +x ${HOME}/.local/bin/make_release
+
 # Updating RPM Packages
 
 The `${HOME}/Projects/LC-v2/rpm` folder has RPM package descriptions, "SPEC" 
