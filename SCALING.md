@@ -115,3 +115,16 @@ TCP port is picked at random from the special ports, that way at most 4
     remote vpn.example 1200 tcp
     remote vpn.example 443 udp
     remote vpn.example 80 tcp
+
+# Multiple Servers
+
+It is also possible to deploy extra servers with OpenVPN processes. This can
+currently be configured in two ways:
+
+1. Over a private (V)LAN between the controller (portal) and additional 
+   node(s). Documented [here](ADD_NODE.md).
+2. Over a TLS connection between the controller (portal) and additional 
+   node(s). Documented [here](ADD_DAEMON_NODE.md).
+
+The first one has been supported since 2.x of eduVPN / Let's Connect!. The 
+second one is supported in vpn-server-node >= 2.0.5.

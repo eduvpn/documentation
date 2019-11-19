@@ -131,10 +131,11 @@ The configuration will be stored in the `openvpn-config` folder.
 `${HOME}/.local/bin/upload_site`:
 
     #!/bin/sh
+    REMOTE_HOST=argon.tuxed.net
     PROJECT_NAME=$(basename "${PWD}")
     OUTPUT_DIR="${PWD}/output"
 
-    rsync -avz -e ssh "${OUTPUT_DIR}/" "helium.tuxed.net:/var/www/software.tuxed.net/${PROJECT_NAME}"
+    rsync -avz -e ssh "${OUTPUT_DIR}/" "${REMOTE_HOST}:/var/www/software.tuxed.net/${PROJECT_NAME}"
 
 Make the scripts executable:
 

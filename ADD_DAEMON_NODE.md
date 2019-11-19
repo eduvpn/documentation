@@ -4,9 +4,7 @@ description: Add additional VPN nodes for handling OpenVPN connections
 category: howto
 ---
 
-**NOTE**: currently the development repository needs to be 
-[enabled](DEVELOPMENT_REPO.md) until such time we consider this stable. Only 
-available on CentOS and Fedora.
+**NOTE**: the daemon is currently only supported on CentOS and Fedora!
 
 This document describes how to add new VPN servers to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh` and have 
@@ -52,7 +50,7 @@ visiting the "Connections" tab in the portal.
 ### CA 
 
 As the daemon will use TLS with client certificates when talking to remote 
-daemons, and **only** when talking to remove daemons, we have to set up a 
+daemons, and **only** when talking to remote daemons, we have to set up a 
 (new) PKI with our own root certificate and generate server & client 
 certificates.
 
