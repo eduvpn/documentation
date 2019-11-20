@@ -212,6 +212,14 @@ Only get the profile configuration without certificate and private key.
 The response will be an OpenVPN configuration file without the `<cert>` and 
 `<key>` fields.
 
+Starting from vpn-user-portal >= 2.1.1, an optional parameter `remote_strategy` 
+can be specified that takes an integer. It determines which `remote` lines are 
+returned as part of the generated configuration file. Value `0` takes the first 
+UDP/TCP ports of the "normal" and "special" sets. Value `1` takes random ports 
+from both the "normal" and "special" sets. Value `2` returns them _all_. The 
+default is `1`. Only change this if you know what you are doing! More on 
+`remote` lines in the VPN configuration can be read [here](SCALING.md#client).
+
 ### Check Certificate
 
 A call is available to check whether an already obtained certificate will be 
