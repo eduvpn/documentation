@@ -106,7 +106,7 @@ protocols are meant:
 * `tcp/80`
 * `tcp/443`
 
-They have a higher risk of working in restricted networks. If they are made 
+They have a higher chance of working in restricted networks. If they are made 
 available through `vpnProtoPorts`, or `exposedVpnProtoPorts` one UDP and one 
 TCP port is picked at random from the special ports, that way at most 4 
 "remotes" are listed in the client configuration, e.g.:
