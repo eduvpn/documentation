@@ -127,4 +127,4 @@ currently be configured in two ways:
    node(s). Documented [here](ADD_DAEMON_NODE.md).
 
 The first one has been supported since 2.x of eduVPN / Let's Connect!. The 
-second one is supported in vpn-server-api >= 2.0.5.
+second one is supported in vpn-server-api >= 2.1.0.
