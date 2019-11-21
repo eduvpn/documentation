@@ -70,13 +70,18 @@ servers...
 * The app MUST allow for forgetting the chosen organization (which deletes 
   the `server_info_url` from the app's internal storage);
 * Allow the user to (un)hide VPN servers they never use;
-* The individual VPN servers are ONLY contacted AFTER the user decides to 
+* The VPN servers themselves are ONLY contacted AFTER the user decides to 
   connect to them, never before. The only connection the app makes by itself 
-  is fetching the mapping file and `secure_internet.json` on start, nothing 
-  more.
+  is fetching the `server_info_url` file and the `server_group_url` if 
+  applicable.
 * Do NOT cache any of the JSON files retrieved;
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
   choose their organization, so typically only once and then never again;
+* `display_name`, `keyword_list` and `logo_uri` ALWAYS contain a map with a 
+  language code according to [BCP 47](https://tools.ietf.org/html/rfc5646) and
+  their respective value. See the examples below. Note that it is up to the 
+  application to pick the best "translation" for the current application 
+  language settings. There is no guarantee that any language (always) exists!
 
 # Discovery Files
 
@@ -84,7 +89,7 @@ servers...
 
 Proposed URL:
 
-    https://discovery.eduvpn.org/v2/organization_list.json
+    https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/organization_list.json
 
 Format:
 
@@ -92,21 +97,14 @@ Format:
         "organization_list": [
             {
                 "display_name": {
-                    "nl-NL": "SURFnet bv",
-                    "en-US": "SURFnet bv"
+                    "nl": "SURFnet bv",
+                    "en": "SURFnet bv"
                 },
-                "organization_id": "https://idp.surfnet.nl",
-                "keyword_list": [
-                    "SURFnet",
-                    "bv",
-                    "SURF",
-                    "konijn",
-                    "surf",
-                    "surfnet",
-                    "powered",
-                    "by"
-                ],
-                "server_info_url": "https://discovery.eduvpn.org/v2/mapping/https%3A%2F%2Fidp.surfnet.nl.json"
+                "keyword_list": {
+                    "en": "SURFnet bv SURF konijn surf surfnet powered by",
+                    "nl": "SURFnet bv SURF konijn powered by"
+                },
+                "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json"
             },
             {
                  ...
@@ -114,105 +112,105 @@ Format:
         ]
     }
 
-The `server_info_url` can point to other domains than `discovery.eduvpn.org`, 
-for example if an NREN wants to maintain their own mapping from organization 
-to server list, see below.
+The `display_name` is shown to the user in the preferred locale. The 
+`display_name` and `keyword_list` can be used to allow the application to 
+provide an interface where the user can search for an organization.
 
-**FIXME**: also have multi language keywords?!
-**FIXME**: MUST always have `en-US` language? That seems not okay...
-**FIXME**: language thing MUST always be object? simplifies app code somewhat
+The `server_info_url` is the URL that needs to be stored in the application 
+AFTER the user chooses an organization. The URL needs to be retrieved on 
+every application start. Redirects MUST be followed.
 
-## Mapping file
+## Server Info URL
 
-Obtain the server information available servers for an `organization_id` by 
-querying the server mentioned in `server_info_url`.
+Obtain the available servers for an organization by fetching the URL specified
+in `server_info_url`, see the previous section.
 
-The result may look like this:
-
-    {
-        "server_list": [
-            {
-                "base_url": "https://surfnet.eduvpn.nl/",
-                "display_name": {
-                    "nl-NL": "SURFnet"
-                },
-                "logo_uri": {
-                    "nl-NL": "https://surfnet.nl/logo.png"
-                },
-            },
-            {
-                "base_url": "https://nl.eduvpn.org/",
-                "display_name": {
-                    "en-US": "The Netherlands",
-                    "nl-NL": "Nederland"
-                },
-                "logo_uri": {
-                    "en-US": "https://nl.eduvpn.org/logo.png"
-                },
-                "server_group_url": "https://discovery.eduvpn.org/v2/secure_internet.json"
-            },
-            {
-                ...
-            }
-        ]
-    }
-
-The `server_group_url` points to a list of servers that can be used with an 
-access token obtained from this server. This is the "Secure Internet" usage 
-where users can use VPN servers hosted by other NRENs.
-
-The field `display_name` is an object with translations in various languages. 
-If the language of the user's device running the app is not available, the app
-decides which language to choose. Typically `en-US` would be a good fallback, 
-but it does not necessarily exist.
-
-The field `logo_uri` contains the URL or URI (data URI) of the logo.
-
-**FIXME**: we removed "auto connect" as we first have to think about *when* to 
-actually auto connect, on initial launch? On every launch? And how to implement 
-this (properly) in all apps... To me it would just seem very cumbersome and 
-annoying, especially if the user cannot override this...
-
-## Secure Internet File
-
-Proposed URL:
-
-    https://discovery.eduvpn.org/v2/secure_internet.json
-
-Format:
+Example format:
 
     {
         "server_list": [
             {
-                "base_url": "https://guest.eduvpn.no/",
-                "display_name": {
-                    "da-DK": "Norge",
-                    "en-US": "Norway",
-                    "nb-NO": "Norge",
-                    "nl-NL": "Noorwegen"
-                },
-                "logo_uri": {
-                    "en-US": "https://static.eduvpn.nl/disco/img/no.png"
-                }
-            },
-            {
-                "base_url": "https://nl.eduvpn.org/",
                 "display_name": {
                     "da-DK": "Holland",
                     "en-US": "The Netherlands",
                     "nb-NO": "Nederland",
                     "nl-NL": "Nederland"
                 },
+                "base_url": "https://nl.eduvpn.org/",
                 "logo_uri": {
                     "en-US": "https://static.eduvpn.nl/disco/img/nl.png"
+                },
+                "server_group_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/secure_internet.json"
+            },
+            {
+                "display_name": {
+                    "en-US": "Demo"
+                },
+                "base_url": "https://demo.eduvpn.nl/",
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/demo.png"
                 }
             },
             {
-                ...
+                "display_name": {
+                    "en-US": "SURFnet"
+                },
+                "base_url": "https://surfnet.eduvpn.nl/",
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/surfnet.png"
+                }
             }
         ]
     }
 
+The `server_group_url` points to a list of servers that can be used with an 
+access token obtained from this server. This is the "Secure Internet" use case 
+where users can use VPN servers hosted by other NRENs. For "Institute Access"
+servers this key does NOT exist.
+
+## Server Group URL
+
+This URL is obtained from the `server_group_url` key, see previous section.
+
+Format:
+
+    {
+        "server_list": [
+            {
+                "display_name": {
+                    "da-DK": "Norge",
+                    "en-US": "Norway",
+                    "nb-NO": "Norge",
+                    "nl-NL": "Noorwegen"
+                },
+                "public_key_list": [
+                    "qOLCcqXWZm9nmjsrwiJQxxWD606vDEJ2MIcc85oJmnE"
+                ],
+                "base_url": "https://guest.eduvpn.no/",
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/no.png"
+                }
+            },
+            {
+                "display_name": {
+                    "da-DK": "Holland",
+                    "en-US": "The Netherlands",
+                    "nb-NO": "Nederland",
+                    "nl-NL": "Nederland"
+                },
+                "public_key_list": [
+                    "O53DTgB956magGaWpVCKtdKIMYqywS3FMAC5fHXdFNg"
+                ],
+                "base_url": "https://nl.eduvpn.org/",
+                "logo_uri": {
+                    "en-US": "https://static.eduvpn.nl/disco/img/nl.png"
+                }
+            }
+        ]
+    }
+
+The `public_key_list` is NOT used by the applications, but only by other 
+VPN servers belonging to the same server group.
 
 # Organization Hint
 
