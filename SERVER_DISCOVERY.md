@@ -244,6 +244,26 @@ info to all servers...
 **FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
 name when the logo changes?
 
-**FIXME**: we will have a signature over the `organization_list.json` and over
-the `server_info_url` content as well and the `server_group_url`... Need to be 
-more specific!
+# Signatures
+
+We need signatures over the JSON files. We use 
+[minisign](https://jedisct1.github.io/minisign/) and 
+[signify](https://man.openbsd.org/signify) compatible signatures. This way we 
+can use standard tooling to generate the signatures.
+
+The signature of `organization_list.json` is hosted on 
+`organization_list.json.sig`. This public key to verify this signature will be 
+hard coded in the application doing the verification.
+
+The individual `server_info_url` URLs, as pointed to from 
+`organization_list.json`, also host an `{$server_info_url}.sig` file that is 
+used to verify the signatures. The public key for this signature is available
+in the `server_info_url_public_key` field.
+
+The same holds for the `server_group_url`. It also has a 
+`server_group_url_public_key` field containing the public key to verify 
+`${server_group_url}.sig`.
+
+The application MUST verify ALL signatures.
+
+**FIXME**: key rollover, because why not make it more complicated? :-)
