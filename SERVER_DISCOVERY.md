@@ -264,6 +264,5 @@ The same holds for the `server_group_url`. It also has a
 `server_group_url_public_key` field containing the public key to verify 
 `${server_group_url}.sig`.
 
-The application MUST verify ALL signatures.
-
-**FIXME**: key rollover, because why not make it more complicated? :-)
+The application MUST verify ALL signatures over ALL files when retrieving them
+BEFORE using them.
