@@ -266,3 +266,6 @@ The same holds for the `server_group_url`. It also has a
 
 The application MUST verify ALL signatures over ALL files when retrieving them
 BEFORE using them.
+
+**FIXME**: apps MUST also store the public key for the `server_info_url` 
+entries, maybe "encode" it as part of the fragment?
