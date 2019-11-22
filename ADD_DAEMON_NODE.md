@@ -168,8 +168,9 @@ IP address of the node.
 Copy the certificates you generated on the controller to the right place on the
 node:
 
-    $ cp ca.crt vpn-daemon.crt /etc/pki/vpn-daemon/
-    $ cp vpn-daemon.key /etc/pki/vpn-daemon/private/
+    $ cp ca.crt           /etc/pki/vpn-daemon/
+    $ cp vpn-daemon.crt   /etc/pki/vpn-daemon/server.crt
+    $ cp vpn-daemon.key   /etc/pki/vpn-daemon/private/server.key
     $ chgrp -R vpn-daemon /etc/pki/vpn-daemon
 
 Start the daemon and enable it on boot:
