@@ -223,7 +223,8 @@ info to all servers...
 
 * The app MUST allow for forgetting the chosen organization, which then deletes 
   the `server_info_url` from the app's internal storage;
-* Allow the user to (un)hide VPN servers they never use;
+* The application sorts VPN servers in descending order of use. Servers never
+  or infrequently used drop to the bottom of the list;
 * The VPN servers themselves are ONLY contacted AFTER the user decides to 
   connect to them, never before. The only connection the app makes by itself 
   is fetching the `server_info_url` file and the `server_group_url` if 
