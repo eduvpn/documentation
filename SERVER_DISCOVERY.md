@@ -75,12 +75,6 @@ downloaded, and allow them to choose to select an new organization again? But
 NOT if the network is down? Maybe the 410 (or maybe also 404?) thing is really 
 the best? 
 
-**FIXME**: do we handle VPN server removals? Maybe we should just delete them 
-from the app as well when they are no longer listed in the `server_info_url` or
-`server_group_url`? That would allow us to remove servers if they no longer 
-follow our policies. Of course this does NOT hold for manually added VPN 
-servers...
-
 # Discovery Files
 
 ## Organization file
@@ -243,7 +237,10 @@ info to all servers...
 * When retrieving URLs, *always* make sure HTTPS is used, also in the redirect 
   path! You MUST reject any HTTP URL or redirects to a HTTP URL! The easiest is
   to white list only HTTPS protocol.
-
+* If a VPN server that was previously configured *through* the 
+  `server_info_url` is no longer listed there, it MUST be removed from the 
+  client as well. Manually added servers are NEVER deleted.
+  
 **FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
 name when the logo changes?
 
