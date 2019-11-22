@@ -244,3 +244,6 @@ info to all servers...
 **FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
 name when the logo changes?
 
+**FIXME**: we will have a signature over the `organization_list.json` and over
+the `server_info_url` content as well and the `server_group_url`... Need to be 
+more specific!
