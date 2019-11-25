@@ -14,8 +14,8 @@ API_URL=${API_URL:-${DEFAULT_API_URL}}
 
 printf "API Secret (from /etc/vpn-server-api/config.php on 'Controller'): "; read -r API_SECRET
 
+VPN_STABLE_REPO=1
 VPN_DEV_REPO=${VPN_DEV_REPO:-0}
-VPN_STABLE_REPO=${VPN_STABLE_REPO:-1}
 if [ "${VPN_DEV_REPO}" = 1 ]
 then
     VPN_STABLE_REPO=0
