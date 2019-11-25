@@ -67,8 +67,9 @@ Now you have to copy the `ca.crt`, `vpn-daemon-client.crt` and
 web server can read them:
 
     $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
+    $ sudo chmod 0710 /etc/vpn-server-api/vpn-daemon
+    $ chmod 0640 ca.crt vpn-daemon-client.crt vpn-daemon-client.key
     $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
-    $ sudo chmod 0640 /etc/vpn-server-api/vpn-daemon/*
     $ sudo chgrp -R apache /etc/vpn-server-api/vpn-daemon
 
 Keep track of the `vpn-daemon.crt` and `vpn-daemon.key` files as you'll need
