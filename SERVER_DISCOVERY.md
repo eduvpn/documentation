@@ -256,7 +256,7 @@ The signature of `organization_list.json` is hosted on
 hard coded in the application doing the verification.
 
 The individual `server_info_url` URLs, as pointed to from 
-`organization_list.json`, also host an `{$server_info_url}.sig` file that is 
+`organization_list.json`, also host an `${server_info_url}.sig` file that is 
 used to verify the signatures. The public key for this signature is available
 in the `server_info_url_public_key` field.
 
@@ -269,3 +269,6 @@ BEFORE using them.
 
 **FIXME**: apps MUST also store the public key for the `server_info_url` 
 entries, maybe "encode" it as part of the fragment?
+
+**FIXME** we need to record the time stamp (or sequence) to make sure it is not 
+possible to do rollback.
