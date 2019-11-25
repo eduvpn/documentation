@@ -60,6 +60,10 @@ client and VPN server. So if you have SSH running on your server, the clients
 will be able to connect to it when you don't take additional steps! Look 
 [here](FIREWALL.md).
 
+**NOTE**: if you want to use the development repository, use:
+
+    # VPN_DEV_REPO=1 ./deploy_centos.sh
+
 ## Update
 
 Periodically install [updates](update_system_centos.sh)!

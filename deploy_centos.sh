@@ -56,20 +56,21 @@ fi
 
 # import PGP key and add repository
 rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
-cat << 'EOF' > /etc/yum.repos.d/LC-v2.repo
+cat << EOF > /etc/yum.repos.d/LC-v2.repo
 [LC-v2]
-name=VPN Packages (EL $releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-$releasever-$basearch
+name=VPN Stable Packages (EL \$releasever)
+baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-\$releasever-\$basearch
 gpgcheck=1
+enabled=${VPN_DEV_REPO:-1}
 EOF
 
-cat << 'EOF' > /etc/yum.repos.d/LC-master.repo
+cat << EOF > /etc/yum.repos.d/LC-master.repo
 [LC-master]
-name=VPN Packages (EL $releasever)
-baseurl=https://vpn-builder.tuxed.net/repo/master/epel-$releasever-$basearch
+name=VPN Development Packages (EL \$releasever)
+baseurl=https://vpn-builder.tuxed.net/repo/master/epel-\$releasever-\$basearch
 gpgcheck=1
 gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
-enabled=0
+enabled=${VPN_DEV_REPO:-0}
 EOF
 
 # install software (dependencies)

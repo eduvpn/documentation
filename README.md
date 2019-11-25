@@ -77,6 +77,7 @@ rebooted before you install the software!
 ## Experimental
 
 * [Debian 9](DEPLOY_DEBIAN.md) (x86_64) ([issues](https://github.com/eduvpn/eduvpn-debian/issues))
+* [Fedora](DEPLOY_FEDORA.md) 30, 31 (aarch64) (Only available through the "development" repository)
 
 # Development
 
