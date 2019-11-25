@@ -32,6 +32,11 @@ the deploy script and follow the steps.
 
 ## Base Deploy
 
+**NOTE**: make sure you have `tar` installed, the Fedora "minimal" image does
+not have `tar`:
+
+    $ sudo dnf -y install tar
+
 Perform these steps on the host where you want to deploy:
 
     $ curl -L -O https://github.com/eduvpn/documentation/archive/v2.tar.gz
