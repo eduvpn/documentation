@@ -20,6 +20,13 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
 VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
 
+VPN_DEV_REPO=${VPN_DEV_REPO:-0}
+VPN_STABLE_REPO=${VPN_STABLE_REPO:-1}
+if [ "${VPN_DEV_REPO}" = 1 ]
+then
+    VPN_STABLE_REPO=0
+fi
+
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -50,7 +57,7 @@ cat << EOF > /etc/yum.repos.d/LC-v2.repo
 name=VPN Stable Packages (Fedora \$releasever)
 baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
-enabled=${VPN_DEV_REPO:-1}
+enabled=${VPN_STABLE_REPO}
 EOF
 
 cat << EOF > /etc/yum.repos.d/LC-master.repo
@@ -59,7 +66,7 @@ name=VPN Development Packages (Fedora \$releasever)
 baseurl=https://vpn-builder.tuxed.net/repo/master/fedora-\$releasever-\$basearch
 gpgcheck=1
 gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
-enabled=${VPN_DEV_REPO:-0}
+enabled=${VPN_DEV_REPO}
 EOF
 
 # install software (dependencies)

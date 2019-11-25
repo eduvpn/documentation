@@ -14,6 +14,13 @@ API_URL=${API_URL:-${DEFAULT_API_URL}}
 
 printf "API Secret (from /etc/vpn-server-api/config.php on 'Controller'): "; read -r API_SECRET
 
+VPN_DEV_REPO=${VPN_DEV_REPO:-0}
+VPN_STABLE_REPO=${VPN_STABLE_REPO:-1}
+if [ "${VPN_DEV_REPO}" = 1 ]
+then
+    VPN_STABLE_REPO=0
+fi
+
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -55,7 +62,7 @@ cat << EOF > /etc/yum.repos.d/LC-v2.repo
 name=VPN Stable Packages (EL \$releasever)
 baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-\$releasever-\$basearch
 gpgcheck=1
-enabled=${VPN_DEV_REPO:-1}
+enabled=${VPN_STABLE_REPO}
 EOF
 
 cat << EOF > /etc/yum.repos.d/LC-master.repo
@@ -64,7 +71,7 @@ name=VPN Development Packages (EL \$releasever)
 baseurl=https://vpn-builder.tuxed.net/repo/master/epel-\$releasever-\$basearch
 gpgcheck=1
 gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
-enabled=${VPN_DEV_REPO:-0}
+enabled=${VPN_DEV_REPO}
 EOF
 
 # install software (dependencies)
