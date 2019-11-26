@@ -69,5 +69,5 @@ When run on 1 machine, all four mentioned components are installed on the same
 machine. When run on multiple machines, the portal and server API are installed 
 on 1 machine, and the server node on the other machine(s).
 
-![Architecture](img/ARCH.jpg)
+![Architecture](img/ARCH.png)
 
