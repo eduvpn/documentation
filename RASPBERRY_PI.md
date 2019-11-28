@@ -38,8 +38,16 @@ use WiFi, it DOES work out of the box on Fedora 31, but you need to configure
 it through the CLI as mentioned on the Wiki. The "installer" the not support 
 it.
 
+To install all updates:
+    
+    $ sudo dnf -y --refresh update
+
+Set the hostname to the name you want to give your VPN server:
+
+    $ sudo hostnamectl set-hostname vpn.example.org
+
 This concludes setting up Fedora on your Pi. Make sure everything works as 
-expected.
+expected and reboot before attempting to install the VPN software.
 
 # Installing the VPN server
 
