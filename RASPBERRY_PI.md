@@ -35,7 +35,7 @@ You need to boot this image, configure the network, install all software
 updates and enable (remote) SSH login if you prefer. It is a little bit easier 
 and you don't need a keyboard/mouse attached to your Pi anymore. If you want to 
 use WiFi, it DOES work out of the box on Fedora 31, but you need to configure
-it through the CLI as mentioned on the Wiki. The "installer" the not support 
+it through the CLI as mentioned on the Wiki. The "installer" does not support 
 it.
 
 To install all updates:
