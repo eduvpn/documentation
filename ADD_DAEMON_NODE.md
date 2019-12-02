@@ -75,6 +75,8 @@ web server can read them:
 Keep track of the `vpn-daemon.crt` and `vpn-daemon.key` files as you'll need
 them later on the node.
 
+### Profile
+
 Add a new profile to your server as described [here](MULTI_PROFILE.md). For 
 every node you need to add an additional profile. You need to take care of 
 setting the following options correctly for the new node:
@@ -101,6 +103,12 @@ Take note of the secret under `apiConsumers => vpn-server-node` in
 `/etc/vpn-server-api/config.php`, you'll need it on the node
 later.
 
+Set the configuration option `profileList` in `/etc/vpn-server-node/config.php` 
+and list only the VPN profiles that are active on the controller, not the one 
+you want to deploy on the node, e.g.:
+
+    'profileList' => ['internet'],
+
 ## Node
 
 You can use the `deploy_${DIST}_node.sh` for installing the node. It will only
@@ -125,7 +133,7 @@ You can use the configuration option `profileList` in
 profiles to deploy on this particular node. The default, when the option is 
 missing, is to deploy _all_ profiles on this node. Example:
 
-    'profileList' => ['office', 'sysadm'],
+    'profileList' => ['internet-far-away'],
 
 Next, you have to modify the firewall configuration in 
 `/etc/vpn-server-node/firewall.php` to allow access to the daemon from your 
