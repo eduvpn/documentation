@@ -119,8 +119,8 @@ modify your `/etc/sysconfig/certbot` and set the `PRE_HOOK` and `POST_HOOK` to
 stop/start `sslh` instead of `httpd`:
 
 ```
-PRE_HOOK="--pre-hook 'systemctl stop sslh'"
-POST_HOOK="--post-hook 'systemctl start sslh'"
+PRE_HOOK="--pre-hook 'systemctl stop sslh httpd'"
+POST_HOOK="--post-hook 'systemctl start sslh httpd'"
 ```
 
 ### Debian
