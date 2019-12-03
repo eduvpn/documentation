@@ -27,6 +27,20 @@ ECDHE is faster than DHE.
 
 For the data channel we chose to use `AES-256-GCM`.
 
+### TLS Crypt
+
+Starting from vpn-server-api 2.1.1 there no longer is a "global" `tls-crypt` 
+key that is the same for all profiles. From this version on all new 
+installations will use a `tls-crypt` key per profile. 
+
+**NOTE**: if you already installed your VPN server before the release of 
+vpn-server-api 2.1.1 you will continue to use the same `tls-crypt` key for all
+profiles. If you want to switch to using one key per profile you need to 
+delete `/var/lib/vpn-server-api/ta.key` and run the `apply_changes.sh` script 
+from this repository on your VPN server(s). Please be aware that existing 
+clients will need to fetch a new configuration, unless the eduVPN or Let's 
+Connect! apps are used where that will happen automatically.
+
 ## PHP
 
 CentOS 7 by default provides PHP 5.4. This is not without risks. This version 
