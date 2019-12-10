@@ -153,7 +153,7 @@ footer {
         <td>
             <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
 <?php if ($serverInfo['hasIpSix']): ?>
-                <small>(<span class="success" title="IPv6">6</span>)</small>
+                <sup><small><span class="success" title="IPv6">6</span></small></sup>
 <?php endif; ?>
         </td>
         <td>
