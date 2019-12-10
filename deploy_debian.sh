@@ -136,15 +136,6 @@ sysctl --system
 vpn-server-api-update-api-secrets
 
 ###############################################################################
-# WEB
-###############################################################################
-
-mkdir -p "/var/www/${WEB_FQDN}"
-# Copy server info JSON file
-cp resources/info.json "/var/www/${WEB_FQDN}/info.json"
-sed -i "s/vpn.example/${WEB_FQDN}/" "/var/www/${WEB_FQDN}/info.json"
-
-###############################################################################
 # DAEMONS
 ###############################################################################
 

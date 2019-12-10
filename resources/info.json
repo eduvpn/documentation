@@ -1,9 +1,0 @@
-{
-    "api": {
-        "http://eduvpn.org/api#2": {
-            "api_base_uri": "https://vpn.example/vpn-user-portal/api.php",
-            "authorization_endpoint": "https://vpn.example/vpn-user-portal/_oauth/authorize",
-            "token_endpoint": "https://vpn.example/vpn-user-portal/oauth.php/token"
-        }
-    }
-}
