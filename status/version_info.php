@@ -23,6 +23,7 @@ $otherServerList = [
     'https://vpn-dev.tuxed.net/',
     'https://meko.eduvpn.nl/',
     'https://vpn.spoor.nu/',
+    'https://pi-vpn.tuxed.net/',
 ];
 
 $streamContext = stream_context_create(
@@ -80,6 +81,10 @@ body {
     max-width: 50em;
     margin: 1em auto;
     color: #444;
+}
+
+code {
+    font-size: 125%;
 }
 
 h1 {
@@ -156,6 +161,13 @@ footer {
 <?php endforeach; ?>
 </tbody>
 </table>
+<p>The version <span class="warning">N/A</span> means the eduVPN component 
+<code>vpn-user-portal</code> is older than version 
+<a href="https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md#214-2019-12-10">2.1.4</a>, 
+the first release reporting the version. When the version is 
+<span class="error">Error</span>, it means the server could not be reached, or 
+there was problem establishing the (TLS) connection.
+</p>
 <footer>
 Generated on <?=$dateTime->format(DateTime::ATOM); ?>
 </footer>
