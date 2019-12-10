@@ -52,17 +52,22 @@ foreach ($discoFiles as $serverType => $discoFile) {
 $serverList['other'] = $otherServerList;
 
 // now retrieve the info.json file from all servers
-$serverVersionList = [];
+$serverInfoList = [];
 foreach ($serverList as $serverType => $serverList) {
     foreach ($serverList as $baseUri) {
-        //echo '*** '.$baseUri.PHP_EOL;
-        if (false === $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
-            $serverVersionList[$baseUri] = null;
-            continue;
+        $serverHost = parse_url($baseUri, PHP_URL_HOST);
+        $hasIpSix = checkdnsrr($serverHost, 'AAAA');
+        $serverInfo = [
+            'v' => null,
+            'h' => $serverHost,
+            'hasIpSix' => $hasIpSix,
+        ];
+        if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
+            // we were able to obtain "info.json"
+            $infoData = json_decode($infoJson, true);
+            $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : 'N/A';
         }
-        $infoData = json_decode($infoJson, true);
-        $serverVersion = array_key_exists('v', $infoData) ? $infoData['v'] : 'N/A';
-        $serverVersionList[$baseUri] = $serverVersion;
+        $serverInfoList[$baseUri] = $serverInfo;
     }
 }
 
@@ -143,17 +148,22 @@ footer {
     </tr>
 </thead>
 <tbody>
-<?php foreach ($serverVersionList as $baseUri => $serverVersion): ?>
+<?php foreach ($serverInfoList as $baseUri => $serverInfo): ?>
     <tr>
-        <td><a href="<?=$baseUri; ?>"><?=parse_url($baseUri, PHP_URL_HOST); ?></a></td>
         <td>
-<?php if (null === $serverVersion): ?>
+            <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
+<?php if ($serverInfo['hasIpSix']): ?>
+                <small>(<span class="success" title="IPv6">6</span>)</small>
+<?php endif; ?>
+        </td>
+        <td>
+<?php if (null === $serverInfo['v']): ?>
             <span class="error">Error</span>
 <?php else: ?>
-<?php if ($serverVersion === $latestVersion): ?>
-            <span class="success"><?=$serverVersion; ?></span>
+<?php if ($serverInfo['v'] === $latestVersion): ?>
+            <span class="success"><?=$serverInfo['v']; ?></span>
 <?php else: ?>
-            <span class="warning"><?=$serverVersion; ?></span>
+            <span class="warning"><?=$serverInfo['v']; ?></span>
 <?php endif; ?>
 <?php endif; ?>
         </td>
