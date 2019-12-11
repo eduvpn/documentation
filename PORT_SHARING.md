@@ -116,7 +116,7 @@ Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
 
 If you are using Let's Encrypt with automatic certificate renewal you should 
 modify your `/etc/sysconfig/certbot` and set the `PRE_HOOK` and `POST_HOOK` to 
-stop/start `sslh` instead of `httpd`:
+stop/start `sslh` and `httpd`:
 
 ```
 PRE_HOOK="--pre-hook 'systemctl stop sslh httpd'"
