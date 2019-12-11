@@ -63,43 +63,16 @@ and IPv6 support though, but you _can_ use the same port numbers for both
 profiles. In most cases you will want to keep `::` as the value of `listen` and
 just use different ports.
 
+**NOTE**: if you add/modify UDP and TCP ports you may also need to update the 
+[firewall](FIREWALL.md)!
+
 # Additional Configuration
 
 It is e.g. possible to activate [Two-factor Authentication](2FA.md) for the 
 `admin` profile, or see [Profile Configuration](PROFILE_CONFIG.md) for more
 configuration options.
 
-# Activate
+## Apply Changes
 
-If you had an old profile, e.g. the default `internet`, as is the default when
-deploying using `deploy_${DIST}.sh` it needs to be stopped first, and can be 
-removed:
-
-    $ sudo systemctl disable --now openvpn-server@internet-{0,1}
-    $ sudo rm "/etc/openvpn/server-internet-*.conf"
-    $ sudo rm -rf /etc/openvpn/server/tls/internet
-
-Now the new configurations can be generated:
-
-    $ sudo vpn-server-node-server-config
-
-Enable and start them:
-
-    $ sudo systemctl enable --now openvpn-server@office-{0,1}
-    $ sudo systemctl enable --now openvpn-server@admin-{0,1}
-
-If you changed UDP/TCP ports, you also need to update the firewall 
-configuration in `/etc/vpn-server-node/firewall.php`.
-
-Regenerate and restart the firewall:
-
-    $ sudo vpn-server-node-generate-firewall --install
-
-On CentOS / Fedora:
-
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
-
-On Debian:
-
-    $ sudo systemctl restart netfilter-persistent
+To apply the changes run the `apply_changes.sh` script from this repository 
+on your VPN server.
