@@ -185,7 +185,7 @@ sudo -u www-data vpn-user-portal-add-user --user ${ADMIN_USER} --pass "${ADMIN_U
 
 echo "########################################################################"
 echo "# Portal"
-echo "#     https://${WEB_FQDN}/vpn-user-portal"
+echo "#     https://${WEB_FQDN}/"
 echo "#         Regular User: ${REGULAR_USER}"
 echo "#         Regular User Pass: ${REGULAR_USER_PASS}"
 echo "#"

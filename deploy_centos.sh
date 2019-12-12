@@ -249,7 +249,7 @@ sudo -u apache vpn-user-portal-add-user --user ${ADMIN_USER} --pass "${ADMIN_USE
 
 echo "########################################################################"
 echo "# Portal"
-echo "#     https://${WEB_FQDN}/vpn-user-portal"
+echo "#     https://${WEB_FQDN}/"
 echo "#         Regular User: ${REGULAR_USER}"
 echo "#         Regular User Pass: ${REGULAR_USER_PASS}"
 echo "#"
