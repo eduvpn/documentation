@@ -105,6 +105,11 @@ It is easy to enable RADIUS authentication. This is documented separately. See
 It is easy to enable SAML authentication for identity federations, this is 
 documented separately. See [SAML](SAML.md).
 
+#### OpenID Connect (OIDC)
+
+It is even easier to enable OpenID Connect (OIDC) authentication for identity federations, this is 
+documented separately. See [OIDC](OIDC.md).
+
 ### 2FA
 
 It is possible to enable [2FA](2FA.md) with TOTP.

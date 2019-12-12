@@ -16,6 +16,7 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [LDAP](LDAP.md)                                       | Enable LDAP Authentication |
 | [RADIUS](RADIUS.md)                                   | Enable RADIUS Authentication |
 | [SAML](SAML.md)                                       | Enable SAML Authentication |
+| [OIDC](OIDC.md)                                       | Enable OpenID Connect (OIDC) Authentication |
 | [2FA](2FA.md)                                         | Configure 2FA (Two Factor Authentication) |
 | [ACL](ACL.md)                                         | Configure ACL (Access Control Lists) to manage access to VPN profiles |
 | [BRANDING](BRANDING.md)                               | Configure Branding/Themes (eduVPN/Let's Connect!) |
