@@ -114,6 +114,10 @@ table tbody tr:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
+p, sup {
+    font-size: 85%;
+}
+
 a {
     color: #444;
 }
@@ -124,6 +128,10 @@ span.error {
 
 span.success {
     color: darkgreen;
+}
+
+span.awesome {
+    color: lightgreen;
 }
 
 span.warning {
@@ -140,6 +148,7 @@ footer {
 </head>
 <body>
 <h1>eduVPN Server Info</h1>
+<p>The current version is <span class="success"><?=$latestVersion; ?></span>.</p>
 <table>
 <thead>
     <tr>
@@ -153,17 +162,21 @@ footer {
         <td>
             <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
 <?php if ($serverInfo['hasIpSix']): ?>
-                <sup><small><span class="success" title="IPv6">6</span></small></sup>
+                <sup><span class="success" title="IPv6">6</span></sup>
 <?php endif; ?>
         </td>
         <td>
 <?php if (null === $serverInfo['v']): ?>
             <span class="error">Error</span>
 <?php else: ?>
-<?php if ($serverInfo['v'] === $latestVersion): ?>
-            <span class="success"><?=$serverInfo['v']; ?></span>
-<?php else: ?>
+<?php if ('N/A' === $serverInfo['v']): ?>
             <span class="warning"><?=$serverInfo['v']; ?></span>
+<?php elseif (0 === strnatcmp($serverInfo['v'], $latestVersion)): ?>
+            <span class="success"><?=$serverInfo['v']; ?></span>
+<?php elseif (0 > strnatcmp($serverInfo['v'], $latestVersion)): ?>
+            <span class="warning"><?=$serverInfo['v']; ?></span>
+<?php else: ?>
+            <span class="awesome"><?=$serverInfo['v']; ?></span>
 <?php endif; ?>
 <?php endif; ?>
         </td>
