@@ -19,11 +19,13 @@ $discoFiles = [
 
 // other servers not part of any discovery file
 $otherServerList = [
+    'https://eduvpn.pionier.net.pl/',
     'https://vpn.tuxed.net/',
     'https://vpn-dev.tuxed.net/',
     'https://meko.eduvpn.nl/',
     'https://vpn.spoor.nu/',
     'https://pi-vpn.tuxed.net/',
+    'https://dia.eduroam.de/',
 ];
 
 $streamContext = stream_context_create(

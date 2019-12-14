@@ -17,7 +17,6 @@ The basic OpenVPN server (and client) crypto configuration:
     dh none
     ncp-ciphers AES-256-GCM
     cipher AES-256-GCM
-    auth none
     tls-crypt /path/to/tls-crypt.key
 
 We chose `TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384` as TLS cipher because it is 
@@ -26,6 +25,9 @@ the only cipher that could be used with RSA keys and AES-256-GCM. Furthermore,
 ECDHE is faster than DHE.
 
 For the data channel we chose to use `AES-256-GCM`.
+
+We do _not_ specify the `auth` OpenVPN configuration option as it is no longer 
+used when using an AEAD cipher like `AES-256-GCM` and `tls-crypt`.
 
 ### TLS Crypt
 
