@@ -1,7 +1,7 @@
 <?php
 
 // *** Source Formatting
-// $ php-cs-fixer fix --rules @PSR2,@Symfony version_info.php
+// $ php-cs-fixer fix --rules @Symfony version_info.php
 //
 // *** Cron
 // $ crontab -l
@@ -126,10 +126,6 @@ a {
     color: #444;
 }
 
-span.no {
-    color: lightgrey;
-}
-
 span.error {
     color: darkred;
 }
@@ -172,12 +168,12 @@ footer {
 <?php if ($serverInfo['hasIpFour']): ?>
                 <sup><span class="success" title="IPv4">4</span></sup>
 <?php else: ?>
-                <sup><span class="no" title="No IPv4 :-)">4</span></sup>
+                <sup><span class="warning" title="No IPv4">4</span></sup>
 <?php endif; ?>
 <?php if ($serverInfo['hasIpSix']): ?>
                 <sup><span class="success" title="IPv6">6</span></sup>
 <?php else: ?>
-                <sup><span class="no" title="No IPv6 :-(">6</span></sup>
+                <sup><span class="warning" title="No IPv6">6</span></sup>
 <?php endif; ?>
         </td>
         <td>
