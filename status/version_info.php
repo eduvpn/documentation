@@ -58,10 +58,12 @@ $serverInfoList = [];
 foreach ($serverList as $serverType => $serverList) {
     foreach ($serverList as $baseUri) {
         $serverHost = parse_url($baseUri, PHP_URL_HOST);
+        $hasIpFour = checkdnsrr($serverHost, 'A');
         $hasIpSix = checkdnsrr($serverHost, 'AAAA');
         $serverInfo = [
             'v' => null,
             'h' => $serverHost,
+            'hasIpFour' => $hasIpFour,
             'hasIpSix' => $hasIpSix,
         ];
         if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
@@ -124,6 +126,10 @@ a {
     color: #444;
 }
 
+span.no {
+    color: lightgrey;
+}
+
 span.error {
     color: darkred;
 }
@@ -163,8 +169,15 @@ footer {
     <tr>
         <td>
             <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
+<?php if ($serverInfo['hasIpFour']): ?>
+                <sup><span class="success" title="IPv4">4</span></sup>
+<?php else: ?>
+                <sup><span class="no" title="No IPv4 :-)">4</span></sup>
+<?php endif; ?>
 <?php if ($serverInfo['hasIpSix']): ?>
                 <sup><span class="success" title="IPv6">6</span></sup>
+<?php else: ?>
+                <sup><span class="no" title="No IPv6 :-(">6</span></sup>
 <?php endif; ?>
         </td>
         <td>
