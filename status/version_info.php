@@ -150,11 +150,11 @@ footer {
 </head>
 <body>
 <h1>eduVPN Server Info</h1>
-<p>The current version is <span class="success"><?=$latestVersion; ?></span>.</p>
+<p>The current <span class="success">STABLE</span> release is <?=$latestVersion; ?>.</p>
 <table>
 <thead>
     <tr>
-        <th>Server URL</th>
+        <th>Server FQDN</th>
         <th>Version</th>
     </tr>
 </thead>
