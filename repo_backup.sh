@@ -80,6 +80,7 @@ REPO_URL_LIST=(\
 
     # iOS app
     https://github.com/eduvpn/ios \
+    https://github.com/passepartoutvpn/tunnelkit \
 
     # macOS app
     https://github.com/eduvpn/macos \
