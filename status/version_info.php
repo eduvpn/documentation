@@ -19,6 +19,7 @@ $discoFiles = [
 
 // other servers not part of any discovery file
 $otherServerList = [
+    'https://eduvpn.fyrkat.no/',
     'https://eduvpn.pionier.net.pl/',
     'https://vpn.tuxed.net/',
     'https://vpn-dev.tuxed.net/',
@@ -86,7 +87,7 @@ foreach ($serverList as $serverType => $serverList) {
         if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
             // we were able to obtain "info.json"
             $infoData = json_decode($infoJson, true);
-            $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : 'N/A';
+            $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : 'Unknown';
 
             // figure out the "Server"
             $serverHeaderString = null;
@@ -162,6 +163,10 @@ span.success {
     color: darkgreen;
 }
 
+span.fade {
+    color: lightgray;
+}
+
 span.awesome {
     color: lightgreen;
 }
@@ -209,7 +214,7 @@ footer {
 <?php if (null === $serverInfo['v']): ?>
             <span class="error">Error</span>
 <?php else: ?>
-<?php if ('N/A' === $serverInfo['v']): ?>
+<?php if ('Unknown' === $serverInfo['v']): ?>
             <span class="warning"><?=$serverInfo['v']; ?></span>
 <?php elseif (0 === strnatcmp($serverInfo['v'], $latestVersion)): ?>
             <span class="success"><?=$serverInfo['v']; ?></span>
@@ -222,7 +227,7 @@ footer {
         </td>
         <td>
 <?php if (null === $serverInfo['osRelease']): ?>
-            <span class="warning">Unknown</span>
+            <span class="fade">Unknown</span>
 <?php else: ?>
             <span><?=$serverInfo['osRelease']; ?></span>
 <?php endif; ?>
