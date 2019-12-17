@@ -28,6 +28,22 @@ $otherServerList = [
     'https://dia.eduroam.de/',
 ];
 
+/**
+ * @param string $serverHeaderKey
+ *
+ * @return string|null
+ */
+function determineOsRelease($serverHeaderKey)
+{
+    foreach (['CentOS', 'Debian', 'Fedora', 'Red Hat Enterprise Linux'] as $osRelease) {
+        if (false !== strpos($serverHeaderKey, $osRelease)) {
+            return $osRelease;
+        }
+    }
+
+    return null;
+}
+
 $streamContext = stream_context_create(
     [
         'http' => [
@@ -65,11 +81,23 @@ foreach ($serverList as $serverType => $serverList) {
             'h' => $serverHost,
             'hasIpFour' => $hasIpFour,
             'hasIpSix' => $hasIpSix,
+            'osRelease' => null,
         ];
         if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
             // we were able to obtain "info.json"
             $infoData = json_decode($infoJson, true);
             $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : 'N/A';
+
+            // figure out the "Server"
+            $serverHeaderString = null;
+            if (isset($http_response_header)) {
+                // we got the response header...
+                foreach ($http_response_header as $responseHeader) {
+                    if (0 === stripos($responseHeader, 'Server: ')) {
+                        $serverInfo['osRelease'] = determineOsRelease($responseHeader);
+                    }
+                }
+            }
         }
         $serverInfoList[$baseUri] = $serverInfo;
     }
@@ -158,6 +186,7 @@ footer {
     <tr>
         <th>Server FQDN</th>
         <th>Version</th>
+        <th>OS</th>
     </tr>
 </thead>
 <tbody>
@@ -189,6 +218,13 @@ footer {
 <?php else: ?>
             <span class="awesome"><?=$serverInfo['v']; ?></span>
 <?php endif; ?>
+<?php endif; ?>
+        </td>
+        <td>
+<?php if (null === $serverInfo['osRelease']): ?>
+            <span class="warning">Unknown</span>
+<?php else: ?>
+            <span><?=$serverInfo['osRelease']; ?></span>
 <?php endif; ?>
         </td>
     </tr>
