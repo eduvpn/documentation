@@ -236,7 +236,7 @@ footer {
 <?php endforeach; ?>
 </tbody>
 </table>
-<p>The version <span class="warning">N/A</span> means the eduVPN component 
+<p>The version <span class="warning">Unknown</span> means the eduVPN component 
 <code>vpn-user-portal</code> is older than version 
 <a href="https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md#214-2019-12-10">2.1.4</a>, 
 the first release reporting the version. When the version is 
