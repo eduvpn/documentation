@@ -87,7 +87,7 @@ foreach ($serverList as $serverType => $serverList) {
         if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
             // we were able to obtain "info.json"
             $infoData = json_decode($infoJson, true);
-            $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : 'Unknown';
+            $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : '?';
 
             // figure out the "Server"
             $serverHeaderString = null;
@@ -214,8 +214,8 @@ footer {
 <?php if (null === $serverInfo['v']): ?>
             <span class="error">Error</span>
 <?php else: ?>
-<?php if ('Unknown' === $serverInfo['v']): ?>
-            <span class="warning"><?=$serverInfo['v']; ?></span>
+<?php if ('?' === $serverInfo['v']): ?>
+            <span class="warning">?</span>
 <?php elseif (0 === strnatcmp($serverInfo['v'], $latestVersion)): ?>
             <span class="success"><?=$serverInfo['v']; ?></span>
 <?php elseif (0 > strnatcmp($serverInfo['v'], $latestVersion)): ?>
@@ -236,7 +236,7 @@ footer {
 <?php endforeach; ?>
 </tbody>
 </table>
-<p>The version <span class="warning">Unknown</span> means the eduVPN component 
+<p>The version <span class="warning">?</span> means the eduVPN component 
 <code>vpn-user-portal</code> is older than version 
 <a href="https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md#214-2019-12-10">2.1.4</a>, 
 the first release reporting the version. When the version is 
