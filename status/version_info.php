@@ -20,7 +20,6 @@ $discoFiles = [
 // other servers not part of any discovery file
 $otherServerList = [
     'https://eduvpn.fyrkat.no/',
-    'https://eduvpn.pionier.net.pl/',
     'https://vpn.tuxed.net/',
     'https://vpn-dev.tuxed.net/',
     'https://meko.eduvpn.nl/',
