@@ -82,6 +82,7 @@ foreach ($serverList as $serverType => $serverList) {
             'hasIpFour' => $hasIpFour,
             'hasIpSix' => $hasIpSix,
             'osRelease' => null,
+            'serverType' => $serverType,
         ];
         if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
             // we were able to obtain "info.json"
@@ -188,6 +189,7 @@ footer {
 <table>
 <thead>
     <tr>
+        <th></th>
         <th>Server FQDN</th>
         <th>Version</th>
         <th>OS</th>
@@ -196,6 +198,15 @@ footer {
 <tbody>
 <?php foreach ($serverInfoList as $baseUri => $serverInfo): ?>
     <tr>
+        <td>
+<?php if ('secure_internet' === $serverInfo['serverType']): ?>
+            <span title="Secure Internet">🌍</span>
+<?php elseif ('institute_access' === $serverInfo['serverType']): ?>
+            <span title="Institute Access">🏛️</span>
+<?php else: ?>
+            <span title="Alien">👽</span>
+<?php endif; ?>
+        </td>
         <td>
             <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
 <?php if ($serverInfo['hasIpFour']): ?>
