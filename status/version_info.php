@@ -44,6 +44,11 @@ function determineOsRelease($serverHeaderKey)
     return null;
 }
 
+$lastError = null;
+set_error_handler(function ($errno, $errstr, $errfile, $errline) use (&$lastError) {
+    $lastError = $errstr;
+});
+
 $streamContext = stream_context_create(
     [
         'http' => [
@@ -83,8 +88,13 @@ foreach ($serverList as $serverType => $serverList) {
             'hasIpSix' => $hasIpSix,
             'osRelease' => null,
             'serverType' => $serverType,
+            'errMsg' => null,
         ];
-        if (false !== $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
+        if (false === $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
+            // find error
+            $serverInfo['errMsg'] = $lastError;
+            $lastError = null;
+        } else {
             // we were able to obtain "info.json"
             $infoData = json_decode($infoJson, true);
             $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : '?';
@@ -222,7 +232,11 @@ footer {
         </td>
         <td>
 <?php if (null === $serverInfo['v']): ?>
+<?php if (null !== $serverInfo['errMsg']): ?>
+            <span class="error" title="<?=htmlentities($serverInfo['errMsg']); ?>">Error</span>
+<?php else: ?>
             <span class="error">Error</span>
+<?php endif; ?>
 <?php else: ?>
 <?php if ('?' === $serverInfo['v']): ?>
             <span class="warning">?</span>
