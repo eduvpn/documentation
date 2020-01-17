@@ -3,7 +3,12 @@ title: Roadmap
 description: Development of Let's Connect! / eduVPN 3.0
 ---
 
-We expect a release in Q4-2019.
+Let's Connect! / eduVPN 3.0 will target CentOS >= 8. We are waiting for 
+[this](https://pagure.io/epel/issue/75) issue to be resolved before we can 
+consider moving to CentOS 8.
+
+Assuming in Q1-2020 we can deploy on CentOS 8, we aim to release 3.0 
+in Q4-2020.
 
 ## Server
 
@@ -19,14 +24,9 @@ We expect a release in Q4-2019.
   used by OpenVPN or cron
 - never have any of the included (bin/libexec) scripts rewrite the
   configuration file(s)
-- expose `info.json` instead as a `.well-known` URL so we can update it on 
-  package updates
-  - make `info.json` requests a 301 to the `.well-known` URL in the VirtualHost 
-    config
 
 ### SHOULD
 
-- look into using `tun0`, `tun1`, ... again for TUN devices (BSD compat)
 - have a full php-saml-sp audit ([TODO](https://github.com/fkooman/php-saml-sp/blob/master/TODO.md))
 - remove as many configuration options as possible, and have sane defaults
 - Support AND/OR logic for permission attribute(s)
