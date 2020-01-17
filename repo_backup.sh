@@ -78,11 +78,11 @@ REPO_URL_LIST=(\
     https://github.com/eduvpn/android \
     https://github.com/eduvpn/ics-openvpn \
 
-    # iOS app
-    https://github.com/eduvpn/ios \
+    # iOS/macOS app
+    https://github.com/eduvpn/apple \
     https://github.com/passepartoutvpn/tunnelkit \
 
-    # macOS app
+    # DEPRECATED macOS app
     https://github.com/eduvpn/macos \
 
     # Windows app
