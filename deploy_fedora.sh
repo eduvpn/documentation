@@ -207,8 +207,8 @@ REGULAR_USER_PASS=$(pwgen 12 -n 1)
 ADMIN_USER="admin"
 ADMIN_USER_PASS=$(pwgen 12 -n 1)
 
-sudo -u apache vpn-user-portal-add-user --user ${REGULAR_USER} --pass "${REGULAR_USER_PASS}"
-sudo -u apache vpn-user-portal-add-user --user ${ADMIN_USER} --pass "${ADMIN_USER_PASS}"
+sudo -u apache vpn-user-portal-add-user --user "${REGULAR_USER}" --pass "${REGULAR_USER_PASS}"
+sudo -u apache vpn-user-portal-add-user --user "${ADMIN_USER}" --pass "${ADMIN_USER_PASS}"
 
 ###############################################################################
 # SHOW INFO
