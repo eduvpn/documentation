@@ -9,7 +9,7 @@
 
 // set this to the latest version of vpn-user-portal
 // @see https://github.com/eduvpn/vpn-user-portal/releases
-$latestVersion = '2.1.4';
+$latestVersion = '2.1.6';
 
 // discovery files
 $discoFiles = [
@@ -26,6 +26,7 @@ $otherServerList = [
     'https://vpn.spoor.nu/',
     'https://pi-vpn.tuxed.net/',
     'https://dia.eduroam.de/',
+    'https://prod-eduvpn01.geant.org/',
 ];
 
 /**
