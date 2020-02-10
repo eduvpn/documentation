@@ -174,6 +174,13 @@ the controller, e.g.
 Where `x.y.z.b` is the IP address of the node. This is probably the public
 IP address of the node.
 
+**NOTE** we have some problems with automatically starting `vpn-daemon` on boot
+when you specify an IP address. The IP won't be assigned to the interface 
+before `vpn-daemon` tries to start and thus fail to start. The (dirty) solution 
+is to use `LISTEN=:41194` so it listens on ALL IPs and interfaces. It is VERY
+important then to firewall this port appropriately. See above where this is 
+done.
+
 Copy the certificates you generated on the controller to the right place on the
 node:
 
