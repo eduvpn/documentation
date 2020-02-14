@@ -1,25 +1,30 @@
 # Who?
 
-This document is ONLY relevant if you were using the experimental "php-saml-sp"
-authentication module in your VPN portal. As this module was experimental we 
-kept the freedom to break things if necessary :-)
+This document is ONLY relevant if you were using the experimental 
+`SamlAuthentication` authentication module in your VPN portal. As this module 
+is experimental we kept the freedom to break things if necessary without you 
+being able to complain about that ;-) However, it is nice to "support" it at 
+least a little bit.
 
 # What?
 
-Versions of vpn-user-portal < 2.2.0 supported only the `php-fkooman-saml-sp`
-library. From 2.2.0 there is support for both `php-fkooman-saml-sp` and 
-`php-saml-sp`. The former is a "full" SAML SP application, similar to 
-simpleSAMLphp in how it functions. From version 2.3.0 support for the 
-`php-fkooman-saml-sp` is removed, and thus any user of `php-fkooman-saml-sp` 
-MUST upgrade to `php-saml-sp`. Luckily, this is quite easy!
+Versions of vpn-user-portal < 2.2.0 supported only the `SamlAuthentication`
+method. From 2.2.0 there is support for both `SamlAuthentication` and 
+`PhpSamlSpAuthentication`. The former is a "full" SAML SP application, similar 
+to simpleSAMLphp in how it functions. From version 2.3.0 support for 
+`SamlAuthentication` will be removed, and thus any user of this MUST upgrade to 
+`PhpSamlSpAuthentication`. Luckily, this is quite easy! It also makes sense to 
+upgrade in window between the 2.2.0 release and the 2.3.0 release as it gives 
+you the option and time to switch back if necessary and complain to us.
 
 # How?
 
 Make sure your system is fully up to date by installing and applying all 
-updates and rebooting if necessary.
+updates and rebooting if necessary. When updating to 2.2.0 everything will keep
+working, don't worry.
 
-Switch from `php-fkooman-saml-sp` to `php-saml-sp`. This will NOT break the 
-SAML authentication you have currently configured:
+Switch from `php-fkooman-saml-sp` to `php-saml-sp`. This will also NOT yet 
+break the SAML authentication you have currently configured:
 
 On CentOS:
 
@@ -37,7 +42,7 @@ Copy your metadata file(s) from `/etc/vpn-user-portal/metadata` to
 `/etc/php-saml-sp/metadata` (as root):
 
 	# mkdir /etc/php-saml-sp/metadata
-	# cp /etc/vpn-user-portal/metadata/* /etc/php-saml-sp/metadata
+	# cp /etc/vpn-user-portal/metadata/*.xml /etc/php-saml-sp/metadata
 	
 Figure out which IdP is currently supported by looking for 
 `idpEntityId` in `/etc/vpn-user-portal/config.php` configure
@@ -49,7 +54,9 @@ under `idpList` in `/etc/php-saml-sp/config.php`.
 You can set the entity ID of your SP under `entityId` if you want to keep 
 using the old one. The default SP entityID for `php-fkooman-saml-sp` was 
 `https://vpn.example.org/vpn-user-portal/_saml/metadata`. The default SP 
-entity ID of `php-saml-sp` is `https://vpn.example.org/php-saml-sp/metadata`.
+entity ID of `php-saml-sp` is `https://vpn.example.org/php-saml-sp/metadata`. 
+Keeping the entity ID the same is especially important when using 
+`eduPersonTargetedID` as the identity depends on the entity ID of the SP.
 
 Once you configured these, your new SP should be up and running. Now you need 
 to talk to your IdP(s) to reimport the metadata from 
@@ -63,9 +70,9 @@ Once everything works, you can switch `vpn-user-portal` to use `php-saml-sp`
 instead of `php-fkooman-saml-sp`:
 
 Rename `SamlAuthentication` under `/etc/vpn-user-portal/config.php` to 
-`PhpSamlAuthentication`. Set the `authMethod` to `PhpSamlAuthentication`. The 
-following options left over from `php-fkooman-saml-sp` are no longer needed 
-and can be removed:
+`PhpSamlAuthentication` and set the `authMethod` to `PhpSamlAuthentication`. 
+The following options left over from `SamlAuthentication` are no longer needed 
+and can be removed. They are now configured in `php-saml-sp`:
 
 * `spEntityId`
 * `idpMetadata`
@@ -73,4 +80,12 @@ and can be removed:
 * `discoUrl`
 
 The rest stays as is. After making these changes, the VPN portal should be 
-using php-saml-sp.
+using php-saml-sp!
+
+# Cleanup 
+
+After everything works you can now remove the old SAML keys and metadata from 
+`/etc/vpn-user-portal`:
+
+    # rm -rf /etc/vpn-user-portal/metadata
+    # rm /etc/vpn-user-portal/sp.*
