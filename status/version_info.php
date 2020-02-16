@@ -9,7 +9,7 @@
 
 // set this to the latest version of vpn-user-portal
 // @see https://github.com/eduvpn/vpn-user-portal/releases
-$latestVersion = '2.1.6';
+$latestVersion = '2.2.1';
 
 // discovery files
 $discoFiles = [
@@ -18,16 +18,10 @@ $discoFiles = [
 ];
 
 // other servers not part of any discovery file
-$otherServerList = [
-    'https://eduvpn.fyrkat.no/',
-    'https://vpn.tuxed.net/',
-    'https://vpn-dev.tuxed.net/',
-    'https://meko.eduvpn.nl/',
-    'https://vpn.spoor.nu/',
-    'https://pi-vpn.tuxed.net/',
-    'https://dia.eduroam.de/',
-    'https://prod-eduvpn01.geant.org/',
-];
+$otherServerList = [];
+if (file_exists('other_server_list.txt')) {
+    $otherServerList = explode("\n", trim(file_get_contents('other_server_list.txt')));
+}
 
 /**
  * @param string $serverHeaderKey
@@ -54,6 +48,12 @@ $streamContext = stream_context_create(
     [
         'http' => [
             'timeout' => 5,
+        ],
+        'ssl' => [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+            // Fedora/CentOS & Debian/Ubuntu
+            'cafile' => file_exists('/etc/redhat-release') ? '/etc/pki/tls/certs/ca-bundle.crt' : '/etc/ssl/certs/ca-certificates.crt',
         ],
     ]
 );
