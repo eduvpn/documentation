@@ -24,6 +24,40 @@ if (file_exists('other_server_list.txt')) {
 }
 
 /**
+ * @param string $u
+ *
+ * @return string
+ */
+function getUrl($u, &$responseHeaders = [])
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $u);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+    curl_setopt(
+        $ch,
+        CURLOPT_HEADERFUNCTION,
+        function ($ch, $headerString) use (&$responseHeaders) {
+            $responseHeaders[] = $headerString;
+
+            return strlen($headerString);
+        }
+    );
+
+    if (false === $responseData = curl_exec($ch)) {
+        $errorMessage = curl_error($ch);
+        curl_close($ch);
+        throw new RuntimeException('ERROR: '.$errorMessage);
+    }
+    curl_close($ch);
+
+    return $responseData;
+}
+
+/**
  * @param string $serverHeaderKey
  *
  * @return string|null
@@ -39,39 +73,24 @@ function determineOsRelease($serverHeaderKey)
     return null;
 }
 
-$lastError = null;
-set_error_handler(function ($errno, $errstr, $errfile, $errline) use (&$lastError) {
-    $lastError = $errstr;
-});
-
-$streamContext = stream_context_create(
-    [
-        'http' => [
-            'timeout' => 5,
-        ],
-        'ssl' => [
-            'verify_peer' => true,
-            'verify_peer_name' => true,
-            // Fedora/CentOS & Debian/Ubuntu
-            'cafile' => file_exists('/etc/redhat-release') ? '/etc/pki/tls/certs/ca-bundle.crt' : '/etc/ssl/certs/ca-certificates.crt',
-        ],
-    ]
-);
-
 $serverList = [];
 // extract the "base_uri" from all discovery files
 foreach ($discoFiles as $serverType => $discoFile) {
     if (!array_key_exists($serverType, $serverList)) {
         $serverList[$serverType] = [];
     }
-    if (false === $discoJson = @file_get_contents($discoFile, false, $streamContext)) {
-        continue;
-    }
-    $discoData = json_decode($discoJson, true);
-    foreach ($discoData['instances'] as $serverInstance) {
-        $serverList[$serverType][] = $serverInstance['base_uri'];
+
+    try {
+        $discoJson = getUrl($discoFile);
+        $discoData = json_decode($discoJson, true);
+        foreach ($discoData['instances'] as $serverInstance) {
+            $serverList[$serverType][] = $serverInstance['base_uri'];
+        }
+    } catch (RuntimeException $e) {
+        // do nothing
     }
 }
+
 // add the other servers to the list as well
 $serverList['other'] = $otherServerList;
 
@@ -91,26 +110,20 @@ foreach ($serverList as $serverType => $serverList) {
             'serverType' => $serverType,
             'errMsg' => null,
         ];
-        if (false === $infoJson = @file_get_contents($baseUri.'info.json', false, $streamContext)) {
-            // find error
-            $serverInfo['errMsg'] = $lastError;
-            $lastError = null;
-        } else {
-            // we were able to obtain "info.json"
+        try {
+            $responseHeaderList = [];
+            $infoJson = getUrl($baseUri.'info.json', $responseHeaderList);
             $infoData = json_decode($infoJson, true);
             $serverInfo['v'] = array_key_exists('v', $infoData) ? $infoData['v'] : '?';
-
-            // figure out the "Server"
-            $serverHeaderString = null;
-            if (isset($http_response_header)) {
-                // we got the response header...
-                foreach ($http_response_header as $responseHeader) {
-                    if (0 === stripos($responseHeader, 'Server: ')) {
-                        $serverInfo['osRelease'] = determineOsRelease($responseHeader);
-                    }
+            foreach ($responseHeaderList as $responseHeader) {
+                if (0 === stripos($responseHeader, 'Server: ')) {
+                    $serverInfo['osRelease'] = determineOsRelease($responseHeader);
                 }
             }
+        } catch (RuntimeException $e) {
+            $serverInfo['errMsg'] = $e->getMessage();
         }
+
         $serverInfoList[$baseUri] = $serverInfo;
     }
 }
