@@ -80,63 +80,6 @@ If you also want to use authorization based on an attribute, e.g.
 `eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
 `permissionAttribute` as well.
 
-# Discovery
-
-If you use only one IdP or a "hub & spoke" identity federation that provides 
-their own WAYF service (the default), you don't need to do anything else. 
-
-If you want to use your existing WAYF, you can integrate this directly if it 
-supports the 
-[Identity Provider Discovery Service Protocol and Profile](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-idp-discovery.pdf).
-
-If you don't yet have a WAYF and want to create one for the VPN service, you 
-can use [php-saml-ds](https://git.tuxed.net/fkooman/php-saml-ds/) software, it
-implements "Identity Provider Discovery Service Protocol and Profile", see 
-below on how to configure this with `MellonIdPMetadataFile` and 
-`MellonDiscoveryUrl`.
-
-You need to have the metadata for all IdPs. For SURFconext you can use 
-[this](https://metadata.surfconext.nl/idps-metadata.xml) URL. 
-The URL mentioned above only contains the SURFconext "proxy" IdP information,
-that does not contain enough information to create the WAYF.
-
-You can install the software, it is also packaged for CentOS and Debian in the 
-eduVPN repository:
-
-    $ sudo yum -y install php-saml-ds
-
-Or on Debian:
-
-    $ sudo apt -y install php-saml-ds
-    $ sudo a2enconf php-saml-ds 
-
-Modify the configuration in `/etc/php-saml-ds/config.php` and make sure the 
-IdP metadata file(s) are placed in `/etc/php-saml-ds/metadata/`. As entityID
-of the SP you need to use `https://vpn.example/saml/metadata`. Specify the 
-entityIDs of the IdPs you want to show up in the WAYF in the configuration file 
-under `idpList` as well.
-
-Run the file generator:
-
-    $ sudo php-saml-ds-generate
-
-This should download the logos, if enabled, and create configuration files.
-
-Modify `/etc/httpd/conf.d/vpn.example.conf` by removing or commenting out the 
-`MellonIdPMetadataFile` field and enabling the following two and configure 
-them like this:
-
-    MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
-    MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
-
-Restart Apache:
-
-    $ sudo systemctl restart httpd
-
-If you now browse to https://vpn.example/ you will get redirected to the WAYF 
-and shown it. If there is only one IdP configured the WAYF will be skipped and
-you'll directly end up at the IdP.
-
 # Apache
 
 ## CentOS 
@@ -157,9 +100,9 @@ you'll directly end up at the IdP.
             # When using SURFconext as a WAYF, use this line
             #MellonIdPMetadataFile /etc/httpd/saml/metadata.test.surfconext.nl.xml
             MellonIdPMetadataFile /etc/httpd/saml/metadata.surfconext.nl.xml
-            # When using php-saml-ds, use these two lines below 
-            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
-            # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
+            # When using a discovery service, use these two lines below 
+            # MellonIdPMetadataFile /path/to/metadata.xml
+            # MellonDiscoveryUrl "https://disco.example.org/"
         </Location>
         
         <Location /vpn-user-portal>
@@ -201,9 +144,9 @@ you'll directly end up at the IdP.
             # When using SURFconext as a WAYF, use this line
             MellonIdPMetadataFile /etc/apache2/saml/metadata.test.surfconext.nl.xml
             #MellonIdPMetadataFile /etc/apache2/saml/metadata.surfconext.nl.xml
-            # When using php-saml-ds, use these two lines below 
-            # MellonIdPMetadataFile /var/lib/php-saml-ds/https_vpn.example_saml_metadata.xml
-            # MellonDiscoveryUrl "https://vpn.example/php-saml-ds/index.php"
+            # When using a discovery service, use these two lines below 
+            # MellonIdPMetadataFile /path/to/metadata.xml
+            # MellonDiscoveryUrl "https://disco.example.org/"
         </Location>
 
         <Location /vpn-user-portal>

@@ -39,8 +39,6 @@ REPO_URL_LIST=(\
     https://git.tuxed.net/rpm/vpn-portal-artwork-LC \
     https://git.tuxed.net/rpm/vpn-portal-artwork-eduVPN \
     https://git.tuxed.net/rpm/builder \
-    https://git.tuxed.net/rpm/php-saml-ds \
-    https://git.tuxed.net/rpm/php-saml-ds-artwork-eduVPN \
     https://git.tuxed.net/rpm/php-json-signer \
     https://git.tuxed.net/rpm/php-fkooman-sqlite-migrate \
     https://git.tuxed.net/rpm/php-fkooman-secookie \
@@ -52,9 +50,7 @@ REPO_URL_LIST=(\
     https://git.tuxed.net/rpm/php-LC-common \
 
     # Extras
-    https://github.com/fkooman/php-saml-ds \
     https://github.com/fkooman/php-json-signer \
-    https://github.com/eduvpn/disco-artwork \
 
     # Server Dependencies
     https://github.com/fkooman/php-otp-verifier \

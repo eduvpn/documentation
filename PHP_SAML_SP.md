@@ -60,7 +60,7 @@ Now the `SamlAuthentication` specific options can be set as well:
         // discovery service MUST also be available in the IdP metadata file,
         // NOTE: do NOT enable idpEntityId as it will take precedence over
         // using discovery...
-        //'discoUrl' => 'http://vpn.example.org/php-saml-ds/index.php',
+        //'discoUrl' => 'http://disco.example.org/',
 
         // AuthnContext required for *all* users
         //'authnContext' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
