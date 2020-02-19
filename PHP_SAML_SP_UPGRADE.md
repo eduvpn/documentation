@@ -82,8 +82,6 @@ using php-saml-sp!
 
 # Cleanup 
 
-After everything works you can now remove the old SAML keys and metadata from 
-`/etc/vpn-user-portal`:
+After everything works you can now remove the old SAML keys:
 
-    # rm -rf /etc/vpn-user-portal/metadata
     # rm /etc/vpn-user-portal/sp.*
