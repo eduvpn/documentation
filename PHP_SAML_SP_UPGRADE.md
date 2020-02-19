@@ -68,7 +68,8 @@ Once everything works, you can switch `vpn-user-portal` to use `php-saml-sp`
 instead of `php-fkooman-saml-sp`:
 
 Rename `SamlAuthentication` under `/etc/vpn-user-portal/config.php` to 
-`PhpSamlAuthentication` and set the `authMethod` to `PhpSamlSpAuthentication`. 
+`PhpSamlSpAuthentication` and set the `authMethod` to 
+`PhpSamlSpAuthentication`. 
 The following options left over from `SamlAuthentication` are no longer needed 
 and can be removed. They are now configured in `php-saml-sp`:
 
