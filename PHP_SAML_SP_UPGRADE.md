@@ -38,18 +38,16 @@ Make sure you restart Apache at this point:
 
 	$ sudo systemctl restart httpd
 
-Copy your metadata file(s) from `/etc/vpn-user-portal/metadata` to 
-`/etc/php-saml-sp/metadata` (as root):
+Figure out which IdP is currently supported by looking for `idpEntityId` in 
+`/etc/vpn-user-portal/config.php` configure that as an entry in 
+`/etc/php-saml-sp/config.php` under `idpList`. In case you were using a 
+discovery service you would have to check your discovery service configuration 
+for which IdPs are supported and include all of them under `idpList` in 
+`/etc/php-saml-sp/config.php`. The metadata used before is specified under 
+`idpMetadata`. Copy this file to `/etc/php-saml-sp/metadata` (as root):
 
 	# mkdir /etc/php-saml-sp/metadata
-	# cp /etc/vpn-user-portal/metadata/*.xml /etc/php-saml-sp/metadata
-	
-Figure out which IdP is currently supported by looking for 
-`idpEntityId` in `/etc/vpn-user-portal/config.php` configure
-that as an entry in `/etc/php-saml-sp/config.php` under `idpList`. In case 
-you were using a discovery service you would have to check your discovery 
-service configuration for which IdPs are supported and include all of them 
-under `idpList` in `/etc/php-saml-sp/config.php`.
+	# cp /path/to/idp/metadata.xml /etc/php-saml-sp/metadata
 
 You can set the entity ID of your SP under `entityId` if you want to keep 
 using the old one. The default SP entityID for `php-fkooman-saml-sp` was 
