@@ -142,7 +142,7 @@ See the instructions below on how to get the VPN working manually.
 | Debian 10               | yes            | yes    | -                                                                                                             |
 | Ubuntu 16.04 LTS        | no             | no     | Uses OpenVPN 2.3                                                                                              |
 | Ubuntu 18.04 LTS        | yes*           | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648)                            |
-| Kubuntu 18.04 LTS       | yes*           | yes    | Manual import does NOT work, use `nmcli connection import type openvpn file <file.ovpn>` from CLI             |
+| Kubuntu 18.04 LTS       | yes*           | yes    | Manual import does NOT work, use `nmcli connection import type openvpn file <file.ovpn>` from Konsole         |
 | Ubuntu 18.10            | yes            | yes    | -                                                                                                             | 
 | Ubuntu 19.04            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
