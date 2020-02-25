@@ -25,6 +25,8 @@ if (file_exists('other_server_list.txt')) {
         $otherServerList[] = [
             'base_uri' => $otherBaseUri,
             'display_name' => parse_url($otherBaseUri, PHP_URL_HOST),
+            'tech_contact_uri' => null,
+            'support_contact_uri' => null,
         ];
     }
 }
@@ -111,6 +113,8 @@ foreach ($discoFiles as $serverType => $discoFile) {
             $serverList[$serverType][] = [
                 'base_uri' => $serverInstance['base_uri'],
                 'display_name' => getDisplayName($serverInstance),
+                'tech_contact_uri' => array_key_exists('tech_contact_uri', $serverInstance) ? $serverInstance['tech_contact_uri'] : null,
+                'support_contact_uri' => array_key_exists('support_contact_uri', $serverInstance) ? $serverInstance['support_contact_uri'] : null,
             ];
         }
     } catch (RuntimeException $e) {
@@ -138,6 +142,8 @@ foreach ($serverList as $serverType => $serverList) {
             'serverType' => $serverType,
             'errMsg' => null,
             'displayName' => $srvInfo['display_name'],
+            'tech_contact_uri' => $srvInfo['tech_contact_uri'],
+            'support_contact_uri' => $srvInfo['support_contact_uri'],
         ];
         try {
             $responseHeaderList = [];
@@ -205,6 +211,10 @@ table tbody tr:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
+td.contact a {
+    text-decoration: none;
+}
+
 p, sup {
     font-size: 85%;
 }
@@ -251,6 +261,7 @@ footer {
         <th>Server FQDN</th>
         <th>Version</th>
         <th>OS</th>
+        <th>Contact</th>
     </tr>
 </thead>
 <tbody>
@@ -302,6 +313,14 @@ footer {
             <span class="fade">Unknown</span>
 <?php else: ?>
             <span><?=$serverInfo['osRelease']; ?></span>
+<?php endif; ?>
+        </td>
+        <td class="contact">
+<?php if (null !== $serverInfo['tech_contact_uri']): ?>
+            <span><a href="<?=$serverInfo['tech_contact_uri']; ?>" title="Technical">🔧</a></span>
+<?php endif; ?>
+<?php if (null !== $serverInfo['support_contact_uri']): ?>
+            <span><a href="<?=$serverInfo['support_contact_uri']; ?>" title="Support">💁</a></span>
 <?php endif; ?>
         </td>
     </tr>
