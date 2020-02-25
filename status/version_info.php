@@ -20,7 +20,13 @@ $discoFiles = [
 // other servers not part of any discovery file
 $otherServerList = [];
 if (file_exists('other_server_list.txt')) {
-    $otherServerList = explode("\n", trim(file_get_contents('other_server_list.txt')));
+    $otherBaseUriList = explode("\n", trim(file_get_contents('other_server_list.txt')));
+    foreach ($otherBaseUriList as $otherBaseUri) {
+        $otherServerList[] = [
+            'base_uri' => $otherBaseUri,
+            'display_name' => parse_url($otherBaseUri, PHP_URL_HOST),
+        ];
+    }
 }
 
 /**
@@ -73,6 +79,24 @@ function determineOsRelease($serverHeaderKey)
     return null;
 }
 
+/**
+ * @return string
+ */
+function getDisplayName(array $serverInstance)
+{
+    if (!array_key_exists('display_name', $serverInstance)) {
+        return $serverInstance['base_uri'];
+    }
+    if (!is_array($serverInstance['display_name'])) {
+        return $serverInstance['display_name'];
+    }
+    if (array_key_exists('en-US', $serverInstance['display_name'])) {
+        return $serverInstance['display_name']['en-US'];
+    }
+
+    return array_values($serverInstance['display_name'])[0];
+}
+
 $serverList = [];
 // extract the "base_uri" from all discovery files
 foreach ($discoFiles as $serverType => $discoFile) {
@@ -84,7 +108,10 @@ foreach ($discoFiles as $serverType => $discoFile) {
         $discoJson = getUrl($discoFile);
         $discoData = json_decode($discoJson, true);
         foreach ($discoData['instances'] as $serverInstance) {
-            $serverList[$serverType][] = $serverInstance['base_uri'];
+            $serverList[$serverType][] = [
+                'base_uri' => $serverInstance['base_uri'],
+                'display_name' => getDisplayName($serverInstance),
+            ];
         }
     } catch (RuntimeException $e) {
         // do nothing
@@ -97,7 +124,8 @@ $serverList['other'] = $otherServerList;
 // now retrieve the info.json file from all servers
 $serverInfoList = [];
 foreach ($serverList as $serverType => $serverList) {
-    foreach ($serverList as $baseUri) {
+    foreach ($serverList as $srvInfo) {
+        $baseUri = $srvInfo['base_uri'];
         $serverHost = parse_url($baseUri, PHP_URL_HOST);
         $hasIpFour = checkdnsrr($serverHost, 'A');
         $hasIpSix = checkdnsrr($serverHost, 'AAAA');
@@ -109,6 +137,7 @@ foreach ($serverList as $serverType => $serverList) {
             'osRelease' => null,
             'serverType' => $serverType,
             'errMsg' => null,
+            'displayName' => $srvInfo['display_name'],
         ];
         try {
             $responseHeaderList = [];
@@ -143,6 +172,11 @@ body {
     max-width: 50em;
     margin: 1em auto;
     color: #444;
+}
+
+small {
+    font-size: 75%;
+    color: #888;
 }
 
 code {
@@ -232,7 +266,7 @@ footer {
 <?php endif; ?>
         </td>
         <td>
-            <a href="<?=$baseUri; ?>"><?=$serverInfo['h']; ?></a>
+            <a href="<?=$baseUri; ?>"><?=$serverInfo['displayName']; ?></a> <small>[<?=$serverInfo['h']; ?>]</small>
 <?php if ($serverInfo['hasIpFour']): ?>
                 <sup><span class="success" title="IPv4">4</span></sup>
 <?php else: ?>
