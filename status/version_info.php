@@ -310,17 +310,16 @@ footer {
         </td>
         <td>
 <?php if (null === $serverInfo['osRelease']): ?>
-            <span class="fade">Unknown</span>
+            <span class="fade">?</span>
 <?php else: ?>
             <span><?=$serverInfo['osRelease']; ?></span>
 <?php endif; ?>
         </td>
         <td class="contact">
-<?php if (null !== $serverInfo['tech_contact_uri']): ?>
-            <span><a href="<?=$serverInfo['tech_contact_uri']; ?>" title="Technical">🔧</a></span>
-<?php endif; ?>
 <?php if (null !== $serverInfo['support_contact_uri']): ?>
             <span><a href="<?=$serverInfo['support_contact_uri']; ?>" title="Support">💁</a></span>
+<?php else: ?>
+            <span class="fade">?</span>
 <?php endif; ?>
         </td>
     </tr>
