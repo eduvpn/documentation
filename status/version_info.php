@@ -25,8 +25,7 @@ if (file_exists('other_server_list.txt')) {
         $otherServerList[] = [
             'base_uri' => $otherBaseUri,
             'display_name' => parse_url($otherBaseUri, PHP_URL_HOST),
-            'tech_contact_uri' => null,
-            'support_contact_uri' => null,
+            'support_contact' => [],
         ];
     }
 }
@@ -99,6 +98,23 @@ function getDisplayName(array $serverInstance)
     return array_values($serverInstance['display_name'])[0];
 }
 
+/**
+ * @param string $uriStr
+ *
+ * @return string
+ */
+function removeUriPrefix($uriStr)
+{
+    if (0 === strpos($uriStr, 'tel:')) {
+        return substr($uriStr, 4);
+    }
+    if (0 === strpos($uriStr, 'mailto:')) {
+        return substr($uriStr, 7);
+    }
+
+    return $uriStr;
+}
+
 $serverList = [];
 // extract the "base_uri" from all discovery files
 foreach ($discoFiles as $serverType => $discoFile) {
@@ -113,8 +129,7 @@ foreach ($discoFiles as $serverType => $discoFile) {
             $serverList[$serverType][] = [
                 'base_uri' => $serverInstance['base_uri'],
                 'display_name' => getDisplayName($serverInstance),
-                'tech_contact_uri' => array_key_exists('tech_contact_uri', $serverInstance) ? $serverInstance['tech_contact_uri'] : null,
-                'support_contact_uri' => array_key_exists('support_contact_uri', $serverInstance) ? $serverInstance['support_contact_uri'] : null,
+                'support_contact' => array_key_exists('support_contact', $serverInstance) ? $serverInstance['support_contact'] : [],
             ];
         }
     } catch (RuntimeException $e) {
@@ -142,8 +157,7 @@ foreach ($serverList as $serverType => $serverList) {
             'serverType' => $serverType,
             'errMsg' => null,
             'displayName' => $srvInfo['display_name'],
-            'tech_contact_uri' => $srvInfo['tech_contact_uri'],
-            'support_contact_uri' => $srvInfo['support_contact_uri'],
+            'support_contact' => $srvInfo['support_contact'],
         ];
         try {
             $responseHeaderList = [];
@@ -211,8 +225,9 @@ table tbody tr:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
-td.contact a {
-    text-decoration: none;
+ul {
+    margin: 0;
+    padding: 0 1em;
 }
 
 p, sup {
@@ -261,7 +276,7 @@ footer {
         <th>Server FQDN</th>
         <th>Version</th>
         <th>OS</th>
-        <th>Contact</th>
+        <th>Support</th>
     </tr>
 </thead>
 <tbody>
@@ -315,9 +330,13 @@ footer {
             <span><?=$serverInfo['osRelease']; ?></span>
 <?php endif; ?>
         </td>
-        <td class="contact">
-<?php if (null !== $serverInfo['support_contact_uri']): ?>
-            <span><a href="<?=$serverInfo['support_contact_uri']; ?>" title="Support">💁</a></span>
+        <td>
+<?php if (0 !== count($serverInfo['support_contact'])): ?>
+            <ul>
+<?php foreach ($serverInfo['support_contact'] as $supportContact): ?>
+            <li><a href="<?=$supportContact; ?>"><?=removeUriPrefix($supportContact); ?></a></li>
+<?php endforeach; ?>
+            </ul>
 <?php else: ?>
             <span class="fade">?</span>
 <?php endif; ?>
