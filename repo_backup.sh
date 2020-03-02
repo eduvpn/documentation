@@ -24,6 +24,7 @@ REPO_URL_LIST=(\
     https://github.com/eduvpn/vpn-portal-artwork \
     https://github.com/eduvpn/php-saml-sp-artwork \
     https://github.com/letsconnectvpn/vpn-portal-artwork \
+    https://github.com/eduvpn/status \
 
     # Server Debian Packages \
     https://github.com/eduvpn/eduvpn-debian
