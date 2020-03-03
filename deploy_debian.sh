@@ -67,6 +67,7 @@ openssl req \
 ###############################################################################
 
 a2enmod ssl headers rewrite proxy_fcgi setenvif 
+a2dismod status
 a2enconf php7.0-fpm
 
 # VirtualHost

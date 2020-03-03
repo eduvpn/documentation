@@ -177,6 +177,12 @@ on your VPN server.
     
 ### Debian
 
+On Debian, make sure to disable `mod_status`, otherwise `/server-status` will 
+be accessible to the whole world. It is enabled by default, and restricted to 
+`localhost`, which is exactly where web request appear to be coming from when
+using `sslh`.
+
+    $ sudo a2dismod status
     $ sudo systemctl restart apache2
     $ sudo systemctl restart sslh
 	
