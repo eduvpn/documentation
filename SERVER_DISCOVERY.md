@@ -287,9 +287,11 @@ the app data model?
   connect to them, never before. The only connection the app makes by itself 
   is fetching the `server_info_url` file and the `server_group_url` if 
   applicable;
-* Retrieved JSON files SHOULD be cached, EXCEPT `organization_list.json`, but 
-  MUST be retrieved again at every application (re)start;
-* The `logo_uri` contents SHOULD be cached and MAY periodically be checked 
+* The contents of `server_info_url` and `server_group_url` MUST be cached;
+* The cached contents SHOULD be refreshed periodically;
+* The cached contents MUST be refreshed at application start;
+* If cache refreshing fails, the cached version SHOULD be used;
+* The `logo_uri` contents MUST be cached and SHOULD periodically be checked 
   for changes;
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
   choose their organization, so typically only once and then never again;
