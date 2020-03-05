@@ -313,7 +313,7 @@ the app data model?
   to white list only HTTPS protocol.
 * If a VPN server that was previously configured *through* the 
   `server_info_url` is no longer listed there, it MUST be marked as "no longer
-  available". Manually added servers are NEVER deleted.
+  available". NOTE: they MAY come back at some point!
   
 **FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
 name when the logo changes?
