@@ -230,12 +230,11 @@ servers (`server_list`) that were retrieved from `server_info_url` and possibly
 from one or more `server_group_url` entries.
 
     {
-        "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": [
-            {
+        "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": {
+            "https://nl.eduvpn.org/": {
                 "access_token": "${ACCESS_TOKEN}",
                 "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                 "refresh_token": "${REFRESH_TOKEN}",
-                "base_url": "https://nl.eduvpn.org/",
                 "server_group_list": [
                     "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
                     "https://eduvpn.deic.dk/",
@@ -252,21 +251,19 @@ from one or more `server_group_url` entries.
                 ],
                 "still_in_discovery": true
             },
-            {
+            "https://demo.eduvpn.nl/": {
                 "access_token": "${ACCESS_TOKEN}",
                 "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                 "refresh_token": "${REFRESH_TOKEN}",
-                "base_url": "https://demo.eduvpn.nl/",
                 "still_in_discovery": true
             },
-            {
+            "https://surfnet.eduvpn.nl/": {
                 "access_token": "${ACCESS_TOKEN}",
                 "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                 "refresh_token": "${REFRESH_TOKEN}",
-                "base_url": "https://surfnet.eduvpn.nl/",
                 "still_in_discovery": true
             }
-        ]
+        }
     }
 
 This is the minimal data model. Together with the downloaded JSON discovery
