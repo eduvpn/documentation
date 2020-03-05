@@ -230,46 +230,41 @@ servers (`server_list`) that were retrieved from `server_info_url` and possibly
 from one or more `server_group_url` entries.
 
     {
-        "app_data": [
+        "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": [
             {
-                "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json",
-                "server_list": [
-                    {
-                        "access_token": "${ACCESS_TOKEN}",
-                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
-                        "refresh_token": "${REFRESH_TOKEN}",
-                        "base_url": "https://nl.eduvpn.org/",
-                        "server_group_list": [
-                            "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
-                            "https://eduvpn.deic.dk/",
-                            "https://eduvpn1.funet.fi/",
-                            "https://eduvpn-poc.renater.fr/",
-                            "https://eduvpn1.eduvpn.de/",
-                            "https://eduvpn.marwan.ma/",
-                            "https://guest.eduvpn.no/",
-                            "https://vpn.pern.edu.pk/",
-                            "https://eduvpn.ac.lk/",
-                            "https://nl.eduvpn.org/",
-                            "https://eduvpn.renu.ac.ug/",
-                            "https://eduvpn.uran.ua/"
-                        ],
-                        "still_in_discovery": true
-                    },
-                    {
-                        "access_token": "${ACCESS_TOKEN}",
-                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
-                        "refresh_token": "${REFRESH_TOKEN}",
-                        "base_url": "https://demo.eduvpn.nl/",
-                        "still_in_discovery": true
-                    },
-                    {
-                        "access_token": "${ACCESS_TOKEN}",
-                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
-                        "refresh_token": "${REFRESH_TOKEN}",
-                        "base_url": "https://surfnet.eduvpn.nl/",
-                        "still_in_discovery": true
-                    }
-                ]
+                "access_token": "${ACCESS_TOKEN}",
+                "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                "refresh_token": "${REFRESH_TOKEN}",
+                "base_url": "https://nl.eduvpn.org/",
+                "server_group_list": [
+                    "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
+                    "https://eduvpn.deic.dk/",
+                    "https://eduvpn1.funet.fi/",
+                    "https://eduvpn-poc.renater.fr/",
+                    "https://eduvpn1.eduvpn.de/",
+                    "https://eduvpn.marwan.ma/",
+                    "https://guest.eduvpn.no/",
+                    "https://vpn.pern.edu.pk/",
+                    "https://eduvpn.ac.lk/",
+                    "https://nl.eduvpn.org/",
+                    "https://eduvpn.renu.ac.ug/",
+                    "https://eduvpn.uran.ua/"
+                ],
+                "still_in_discovery": true
+            },
+            {
+                "access_token": "${ACCESS_TOKEN}",
+                "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                "refresh_token": "${REFRESH_TOKEN}",
+                "base_url": "https://demo.eduvpn.nl/",
+                "still_in_discovery": true
+            },
+            {
+                "access_token": "${ACCESS_TOKEN}",
+                "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                "refresh_token": "${REFRESH_TOKEN}",
+                "base_url": "https://surfnet.eduvpn.nl/",
+                "still_in_discovery": true
             }
         ]
     }
