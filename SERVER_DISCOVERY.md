@@ -213,6 +213,69 @@ VPN servers belonging to the same server group.
 this with client discovery info. There is not really a need to expose all this
 info to all servers...
 
+# Application Data Model
+
+This section proposes an internal data model for the (eduVPN) application. The
+focus is to make it as minimal as possible, while retaining full application 
+functionality when the discovery files are temporary not available.
+
+This data model supports multiple "home" organizations by having multiple 
+objects in `app_data`.
+
+This first thing to store is the `server_info_url`. Linked to this are all 
+servers (`server_list`) that were retrieved from `server_info_url` and possibly 
+from a `server_group_url`.
+
+    {
+        "app_data": [
+            {
+                "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json",
+                "server_list": [
+                    {
+                        "access_token": "${ACCESS_TOKEN}",
+                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                        "refresh_token": "${REFRESH_TOKEN}",
+                        "base_url": "https://nl.eduvpn.org/",
+                        "server_group_list": [
+                            "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
+                            "https://eduvpn.deic.dk/",
+                            "https://eduvpn1.funet.fi/",
+                            "https://eduvpn-poc.renater.fr/",
+                            "https://eduvpn1.eduvpn.de/",
+                            "https://eduvpn.marwan.ma/",
+                            "https://guest.eduvpn.no/",
+                            "https://vpn.pern.edu.pk/",
+                            "https://eduvpn.ac.lk/",
+                            "https://nl.eduvpn.org/",
+                            "https://eduvpn.renu.ac.ug/",
+                            "https://eduvpn.uran.ua/"
+                        ]
+                    },
+                    {
+                        "access_token": "${ACCESS_TOKEN}",
+                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                        "refresh_token": "${REFRESH_TOKEN}",
+                        "base_url": "https://demo.eduvpn.nl/"
+                    },
+                    {
+                        "access_token": "${ACCESS_TOKEN}",
+                        "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
+                        "refresh_token": "${REFRESH_TOKEN}",
+                        "base_url": "https://surfnet.eduvpn.nl/"
+                    }
+                ]
+            }
+        ]
+    }
+
+This is the minimal data model. Together with the downloaded JSON discovery
+files one can fully populate the UI. In case the discovery files are 
+(temporary) not available, the app will still be fully functional.
+
+The `access_token`, `access_token_expires_at` and `refresh_token` will only 
+be added after the user selected this particular server and completed the 
+authorization phase.
+
 # Notes
 
 * The app MUST allow for forgetting the chosen organization, which then deletes 
