@@ -213,18 +213,21 @@ VPN servers belonging to the same server group.
 this with client discovery info. There is not really a need to expose all this
 info to all servers...
 
+**FIXME**: the key should probably by `server_group_list`, and not 
+`server_list`.
+
 # Application Data Model
 
 This section proposes an internal data model for the (eduVPN) application. The
 focus is to make it as minimal as possible, while retaining full application 
-functionality when the discovery files are temporary not available.
+functionality when the discovery files are (temporary) not available.
 
 This data model supports multiple "home" organizations by having multiple 
 objects in `app_data`.
 
 This first thing to store is the `server_info_url`. Linked to this are all 
 servers (`server_list`) that were retrieved from `server_info_url` and possibly 
-from a `server_group_url`.
+from one or more `server_group_url` entries.
 
     {
         "app_data": [
@@ -249,19 +252,22 @@ from a `server_group_url`.
                             "https://nl.eduvpn.org/",
                             "https://eduvpn.renu.ac.ug/",
                             "https://eduvpn.uran.ua/"
-                        ]
+                        ],
+                        "still_in_discovery": true
                     },
                     {
                         "access_token": "${ACCESS_TOKEN}",
                         "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                         "refresh_token": "${REFRESH_TOKEN}",
-                        "base_url": "https://demo.eduvpn.nl/"
+                        "base_url": "https://demo.eduvpn.nl/",
+                        "still_in_discovery": true
                     },
                     {
                         "access_token": "${ACCESS_TOKEN}",
                         "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                         "refresh_token": "${REFRESH_TOKEN}",
-                        "base_url": "https://surfnet.eduvpn.nl/"
+                        "base_url": "https://surfnet.eduvpn.nl/",
+                        "still_in_discovery": true
                     }
                 ]
             }
@@ -273,8 +279,11 @@ files one can fully populate the UI. In case the discovery files are
 (temporary) not available, the app will still be fully functional.
 
 The `access_token`, `access_token_expires_at` and `refresh_token` will only 
-be added after the user selected this particular server and completed the 
-authorization phase.
+be added after the user selected this particular server and successfully 
+completed the authorization phase.
+
+**FIXME**: should we instead actually "merge" the retrieved JSON documents in 
+the app data model?
 
 # Notes
 
@@ -286,8 +295,10 @@ authorization phase.
   connect to them, never before. The only connection the app makes by itself 
   is fetching the `server_info_url` file and the `server_group_url` if 
   applicable;
-* Do NOT cache any of the JSON files retrieved, `logo_uri` content SHOULD be 
-  cached;
+* Retrieved JSON files SHOULD be cached, EXCEPT `organization_list.json`, but 
+  MUST be retrieved again at every application (re)start;
+* The `logo_uri` contents SHOULD be cached and MAY periodically be checked 
+  for changes;
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
   choose their organization, so typically only once and then never again;
 * `display_name`, `keyword_list` and `logo_uri` ALWAYS contain a map with a 
@@ -301,8 +312,8 @@ authorization phase.
   path! You MUST reject any HTTP URL or redirects to a HTTP URL! The easiest is
   to white list only HTTPS protocol.
 * If a VPN server that was previously configured *through* the 
-  `server_info_url` is no longer listed there, it MUST be removed from the 
-  client as well. Manually added servers are NEVER deleted.
+  `server_info_url` is no longer listed there, it MUST be marked as "no longer
+  available". Manually added servers are NEVER deleted.
   
 **FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
 name when the logo changes?
