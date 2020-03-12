@@ -125,7 +125,7 @@ It is also possible to deploy extra servers with OpenVPN processes. This can
 currently be configured in two ways:
 
 1. Over a private (V)LAN between the controller (portal) and additional 
-   node(s). Documented [here](ADD_NODE.md).
+   node(s). Documented [here](ADD_NODE.md) (**NOT RECOMMENDED**).
 2. Over a TLS connection between the controller (portal) and additional 
    node(s). Documented [here](ADD_DAEMON_NODE.md).
 
