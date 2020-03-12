@@ -3,6 +3,9 @@ title: Scaling
 description: Performance/Scaling Notes
 ---
 
+**NOTE**: as of today (2020-03-12) we only support using multiple servers on 
+CentOS or Fedora as some packages are missing on Debian to facilitate this!
+
 Most organizations start by deploying a single server, which can scale quite 
 well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
 AES-NI and adequate network performance, e.g. 10+ Gbit interface(s).
