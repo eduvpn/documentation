@@ -13,6 +13,7 @@ Currently, the following access control mechanisms are supported:
 
 - SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
   `eduPersonEntitlement`)
+- OpenID COnnect (via OIDC claims, e.g. `entitlement`)
 - LDAP (via LDAP attribute, e.g. `memberOf`)
 - Static (supported by `FormPdoAuthentication` (default), 
   `FormLdapAuthentication` and `FormRadiusAuthentication`)
@@ -70,6 +71,28 @@ and set the `permissionAttribute` to the name of the attribute:
         //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
         // OID for eduPersonAffiliation
         //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_1',
+],
+
+Once you authenticate to the portal, on the "Account" page, i.e. 
+`https://vpn.example/vpn-user-portal/account`, you should see the 
+"Group Membership(s)" listed there.
+
+## OpenID Connect (OIDC)
+
+We assume [OIDC](OIDC.md) is already configured and working.
+
+You have to choose a OIDC custom claim you want to use for determining the 
+membership. Ask your OpenID Provider for suitable claims.
+Typically, that would be `eduPersonEntitlement` or 
+`eduPersonAffiliation`, but any OIDC claim will do.
+
+In order to configure this, modify `/etc/vpn-user-portal/config.php` 
+and set the `permissionClaim` to the name of the attribute:
+
+    'OpenidcAuthentication' => [
+        'subjectClaim' => 'OIDC_CLAIM_sub',
+        // ** AUTHORIZATION | PERMISSIONS **
+        'permissionClaim' => 'OIDC_CLAIM_eduperson_entitlement',
 ],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
