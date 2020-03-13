@@ -103,16 +103,15 @@ Example Content:
                     "da": "Danmarks Tekniske Universitet",
                     "en": "Technical University of Denmark (DTU)"
                 },
-                "keyword_list": [],
                 "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cDovL2Jpcmsud2F5Zi5kay9iaXJrLnBocC9zdHMuYWl0LmR0dS5kay9hZGZzL3NlcnZpY2VzL3RydXN0.json"
             }
         ]
     }
 
 The `display_name` is shown to the user in the preferred locale. The 
-`display_name` and `keyword_list` are used to allow the application to 
-provide an interface where the user can search for an organization without 
-needing to browse through the whole list.
+`display_name` (REQUIRED) and `keyword_list` (OPTIONAL) are used to allow the 
+application to provide an interface where the user can search for an 
+organization without needing to browse through the whole list.
 
 The `server_info_url` is the URL that needs to be stored in the application 
 AFTER the user chooses an organization.
