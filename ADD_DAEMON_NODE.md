@@ -59,16 +59,8 @@ certificates.
 Generate the CA and certificates:
 
     $ vpn-ca -init
-    $ vpn-ca -server vpn-daemon
-
-Determine when the CA expires exactly:
-
-    $ openssl x509 -in ca.crt -noout -text | grep "Not After"
-           Not After : Mar 12 11:27:54 2025 GMT
-
-Use the expire time also for the client certificate, e.g.:
-
-    $ vpn-ca -client vpn-daemon-client -not-after 2025-03-12T11:27:54+00:00
+    $ vpn-ca -server vpn-daemon -not-after CA
+    $ vpn-ca -client vpn-daemon-client -not-after CA
 
 Now you have to copy the `ca.crt`, `vpn-daemon-client.crt` and 
 `vpn-daemon-client.key` to `/etc/vpn-server-api/vpn-daemon` and make sure the 
