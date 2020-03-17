@@ -57,23 +57,27 @@ project and can now be used.
 4. Store the `server_info_url` associated with the user's choice from 
    `organization_list.json` in the app's internal storage;
 5. Download the URL mentioned in `server_info_url`;
-   * If the HTTP response is HTTP 410 (Gone) delete the `server_info_url` and 
-     go to step 2;
-6. Add all servers that are found in the `server_info_url` document to the list 
-   of (pre)configured VPN servers in the application if they are not yet there;
+  * Add all (new) servers that are found in the `server_info_url` document to 
+    the list of (pre)configured VPN servers in the application, if they are not 
+    yet there;
+  * Visually mark servers previously configured using the `server_info_url` 
+    which are no longer listed in the `server_info_url` document, e.g. by 
+    "graying" them out, but still allow the user to use them (and/or hide 
+    them);
   * Also download the `server_group_url` if any of the listed servers has this 
     key. Those servers will become available once the user authorized at the 
-    server that has this key set.
-7. Visually mark servers previously configured using the `server_info_url` 
-   which are no longer listed in the `server_info_url` document, i.e. by 
-   "graying" them out, but still allow the user to use them (and/or hide them);
+    server that has this key set. They SHOULD be listed using a "drop down" 
+    under the entry from `server_info_url` that has the `server_group_url`.
 
-**FIXME**: the sub item under 5 shows a way how the user's selection can be 
-cancelled by the server... Seems quite complicated though, what if the domain 
-is no longer there?! Maybe we should just inform the user the file could not be
-downloaded, and allow them to choose to select an new organization again? But 
-NOT if the network is down? Maybe the 410 (or maybe also 404?) thing is really 
-the best? 
+## Error Handling
+
+* If any of the discovery files, i.e. `organization_list.json`, 
+  `server_info_url` or `server_group_url` can't be retrieved use their cached 
+  version (if available, never for `organization_list.json`), but visually 
+  indicate this to the user with the exact error message, e.g 404, 410, 
+  timeout, ...;
+* If the signature(s) do not validate, keep using the cached version, but
+  visually indicate this to the user;
 
 # Discovery Files
 
@@ -133,28 +137,19 @@ Example Content:
                     "nl-NL": "Nederland"
                 },
                 "base_url": "https://nl.eduvpn.org/",
-                "logo_uri": {
-                    "en": "https://static.eduvpn.nl/disco/img/nl.png"
-                },
                 "server_group_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/secure_internet.json"
             },
             {
                 "display_name": {
                     "en-US": "Demo"
                 },
-                "base_url": "https://demo.eduvpn.nl/",
-                "logo_uri": {
-                    "en": "https://static.eduvpn.nl/disco/img/demo.png"
-                }
+                "base_url": "https://demo.eduvpn.nl/"
             },
             {
                 "display_name": {
                     "en": "SURFnet"
                 },
-                "base_url": "https://surfnet.eduvpn.nl/",
-                "logo_uri": {
-                    "en": "https://static.eduvpn.nl/disco/img/surfnet.png"
-                }
+                "base_url": "https://surfnet.eduvpn.nl/"
             }
         ]
     }
@@ -182,10 +177,7 @@ Example Content:
                 "public_key_list": [
                     "qOLCcqXWZm9nmjsrwiJQxxWD606vDEJ2MIcc85oJmnE"
                 ],
-                "base_url": "https://guest.eduvpn.no/",
-                "logo_uri": {
-                    "en-US": "https://static.eduvpn.nl/disco/img/no.png"
-                }
+                "base_url": "https://guest.eduvpn.no/"
             },
             {
                 "display_name": {
@@ -197,10 +189,7 @@ Example Content:
                 "public_key_list": [
                     "O53DTgB956magGaWpVCKtdKIMYqywS3FMAC5fHXdFNg"
                 ],
-                "base_url": "https://nl.eduvpn.org/",
-                "logo_uri": {
-                    "en-US": "https://static.eduvpn.nl/disco/img/nl.png"
-                }
+                "base_url": "https://nl.eduvpn.org/"
             }
         ]
     }
@@ -286,14 +275,16 @@ the app data model?
   connect to them, never before. The only connection the app makes by itself 
   is fetching the `server_info_url` file and the `server_group_url` if 
   applicable;
-* The contents of `server_info_url` (JSON), `server_group_url` (JSON) and 
-  `logo_uri` (Image Data) MUST be cached;
-* The cached JSON documents SHOULD be refreshed periodically;
+* The contents of `server_info_url` (JSON), `server_group_url` (JSON) MUST be 
+  cached;
+* The cached JSON documents SHOULD be refreshed periodically, e.g. once per 
+  day if the application keeps running;
 * The cached JSON documents MUST be refreshed at application start;
 * If refreshing the cache fails, the cached version SHOULD be used;
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
-  choose their organization, so typically only once and then never again;
-* `display_name`, `keyword_list` and `logo_uri` ALWAYS contain a map with a 
+  choose their organization, so typically only once and then never again, it
+  is NOT cached;
+* `display_name`, `keyword_list` and ALWAYS contain a map with a 
   language code according to [BCP 47](https://tools.ietf.org/html/rfc5646) and
   their respective value. See the examples below. It is up to the application 
   to pick the best "translation" for the current application language settings. 
@@ -306,9 +297,6 @@ the app data model?
 * If a VPN server that was previously configured *through* the 
   `server_info_url` is no longer listed there, it MUST be marked as "no longer
   available". NOTE: they MAY come back at some point!
-  
-**FIXME**: how to do cache busting for `logo_uri` URLs? Just use a different 
-name when the logo changes?
 
 # Signatures
 
