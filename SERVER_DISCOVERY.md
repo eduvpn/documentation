@@ -65,9 +65,10 @@ project and can now be used.
     them).
 
 **NOTE**: the server info URL can be constructed as follows: take the discovery
-base URL, e.g. `https://disco.example.org/` and append the `server_info` to it. 
-For example, in case the `server_info` is `XYZ.json` the server info URL 
-becomes `https://disco.example.org/XYZ.json`.
+base URL, e.g. `https://disco.eduvpn.org/` and append the `server_info` to it. 
+For example, in case the `server_info` is `aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json` 
+the server info URL becomes 
+`https://disco.eduvpn.org/organization_list.json/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
 
 ## Error Handling
 
@@ -84,7 +85,7 @@ becomes `https://disco.example.org/XYZ.json`.
 
 Example URL:
 
-    https://disco.example.org/organization_list.json
+    https://disco.eduvpn.org/organization_list.json
 
 Example Content:
     
@@ -114,7 +115,7 @@ and `keyword_list` keys.
 
 The `server_info` field can be used to obtain VPN server list available to that 
 organization. Using the example URL above, the server information can be 
-obtained at `https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
+obtained at `https://disco.eduvpn.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
 
 ## Server Info URL
 
@@ -194,7 +195,7 @@ This first thing to store is the server info URL. Linked to this are all
 servers (`server_list`) that were retrieved from server info URL.
 
     {
-        "https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": {
+        "https://disco.eduvpn.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": {
             "https://nl.eduvpn.org/": {
                 "access_token": "${ACCESS_TOKEN}",
                 "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
