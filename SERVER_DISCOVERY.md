@@ -1,7 +1,7 @@
 # Introduction
 
 This document proposes a new way for eduVPN applications to discover VPN 
-servers. 
+servers.
 
 This document will replace "[Instance Discovery](INSTANCE_DISCOVERY.md)".
 
@@ -9,8 +9,8 @@ In the current server discovery we ask users first to choose their use-case,
 i.e. "Institute Access" or "Secure Internet". As that may be confusing to (new)
 users, we decided to switch to the more common flow where the user is asked for 
 their own institute first, e.g. the university they study at. This matches the 
-behavior the user is already familiar with from other federated (web) 
-services that offer "where are you from" (WAYF).
+behavior the user is already familiar with from other federated (web) services 
+that offer "where are you from" (WAYF).
 
 In this new proposal the users choose their organization, and then a list of 
 VPN servers they have access to is shown to them.
@@ -25,7 +25,7 @@ VPN servers they have access to is shown to them.
 3. There can be no confusion by getting stuck at a login screen where the 
    user can not go any further as they do not have an account at the server;
   * For example, when starting the VPN client first, users could choose any 
-    country, but they did only get access once they authorized to their "home" 
+    country, but they only get access once they authorized to their "home" 
     server...
 
 # User Flow
@@ -48,34 +48,33 @@ project and can now be used.
 # App Flow
 
 0. Application Starts;
-1. Do we have a configured `server_info_url` in the app? Yes: go to 5, No: go 
+1. Do we have a configured server info URL in the app? Yes: go to 5, No: go 
    to 2;
 2. Download `organization_list.json`;
 3. Show a list of all organizations from the `organization_list.json` and 
    allow the user to browse and search based on `display_name` and 
    `keyword_list`;
-4. Store the `server_info_url` associated with the user's choice from 
-   `organization_list.json` in the app's internal storage;
-5. Download the URL mentioned in `server_info_url`;
-  * Add all (new) servers that are found in the `server_info_url` document to 
+4. Determine the server info URL from the `org_id` associated with the user's 
+   choice from `organization_list.json`. Store it in the app.
+  * Add all (new) servers that are found in the server info URL document to 
     the list of (pre)configured VPN servers in the application, if they are not 
     yet there;
-  * Visually mark servers previously configured using the `server_info_url` 
-    which are no longer listed in the `server_info_url` document, e.g. by 
+  * Visually mark servers previously configured using the server info URL
+    which are no longer listed in the server info URL document, e.g. by 
     "graying" them out, but still allow the user to use them (and/or hide 
-    them);
-  * Also download the `server_group_url` if any of the listed servers has this 
-    key. Those servers will become available once the user authorized at the 
-    server that has this key set. They SHOULD be listed using a "drop down" 
-    under the entry from `server_info_url` that has the `server_group_url`.
+    them).
+
+**NOTE**: the server info URL can be constructed as follows: take the discovery
+base URL, e.g. `https://disco.example.org/` and append the `org_id` to it and 
+post fix it with `.json`. For example, in case the `org_id` is `XYZ` the server
+info URL becomes `https://disco.example.org/XYZ.json`.
 
 ## Error Handling
 
 * If any of the discovery files, i.e. `organization_list.json`, 
-  `server_info_url` or `server_group_url` can't be retrieved use their cached 
-  version (if available, never for `organization_list.json`), but visually 
-  indicate this to the user with the exact error message, e.g 404, 410, 
-  timeout, ...;
+  or the server info URL can't be retrieved use their cached version (if 
+  available, never for `organization_list.json`), but visually indicate this to 
+  the user with the exact error message, e.g 404, 410, timeout, ...;
 * If the signature(s) do not validate, keep using the cached version, but
   visually indicate this to the user;
 
@@ -85,124 +84,102 @@ project and can now be used.
 
 Example URL:
 
-    https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/organization_list.json
+    https://disco.example.org/organization_list.json
 
 Example Content:
-
+    
     {
-        "organization_list": [
-            {
-                "display_name": {
-                    "nl": "SURFnet bv",
-                    "en": "SURFnet bv"
-                },
-                "keyword_list": {
-                    "en": "SURFnet bv SURF konijn surf surfnet powered by",
-                    "nl": "SURFnet bv SURF konijn powered by"
-                },
-                "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json"
-            },
-            {
-                "display_name": {
-                    "da": "Danmarks Tekniske Universitet",
-                    "en": "Technical University of Denmark (DTU)"
-                },
-                "server_info_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cDovL2Jpcmsud2F5Zi5kay9iaXJrLnBocC9zdHMuYWl0LmR0dS5kay9hZGZzL3NlcnZpY2VzL3RydXN0.json"
-            }
-        ]
+      "organization_list": [
+        {
+          "display_name": {
+            "nl": "SURFnet bv",
+            "en": "SURFnet bv"
+          },
+          "org_id": "aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA",
+          "keyword_list": {
+            "en": "SURFnet bv SURF konijn surf surfnet powered by",
+            "nl": "SURFnet bv SURF konijn powered by"
+          }
+        },
+      ]
     }
 
-The `display_name` is shown to the user in the preferred locale. The 
-`display_name` (REQUIRED) and `keyword_list` (OPTIONAL) are used to allow the 
-application to provide an interface where the user can search for an 
-organization without needing to browse through the whole list.
+The `display_name` is shown to the user in the application in their preferred 
+locale. The `display_name` (REQUIRED) and `keyword_list` (OPTIONAL) are used 
+to allow the application to provide an interface where the user can search for 
+an organization without needing to browse through the whole list. It is 
+preferred that applications perform a sub-string match on the `display_name` 
+and `keyword_list` keys.
 
-The `server_info_url` is the URL that needs to be stored in the application 
-AFTER the user chooses an organization.
+The `org_id` field can be used to obtain VPN server list available to that 
+organization. The `org_id` is used to construct the URL. Using the example URL 
+above, the server information can be obtained at 
+`https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
 
 ## Server Info URL
 
-Obtain the available servers for an organization by fetching the URL specified
-in `server_info_url`, see the previous section.
-
 Example Content:
 
     {
-        "server_list": [
+      "server_list": [
+        {
+          "display_name": {
+            "da-DK": "Holland",
+            "en-US": "The Netherlands",
+            "nb-NO": "Nederland",
+            "nl-NL": "Nederland"
+          },
+          "base_url": "https://nl.eduvpn.org/",
+          "peer_list": [
             {
-                "display_name": {
-                    "da-DK": "Holland",
-                    "en-US": "The Netherlands",
-                    "nb-NO": "Nederland",
-                    "nl-NL": "Nederland"
-                },
-                "base_url": "https://nl.eduvpn.org/",
-                "server_group_url": "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/secure_internet.json"
+              "base_url": "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
+              "display_name": {
+                "da-DK": "Australien",
+                "en-US": "Australia",
+                "nb-NO": "Australia",
+                "nl-NL": "Australië"
+              }
             },
             {
-                "display_name": {
-                    "en-US": "Demo"
-                },
-                "base_url": "https://demo.eduvpn.nl/"
+              "base_url": "https://eduvpn.deic.dk/",
+              "display_name": {
+                "da-DK": "Danmark",
+                "en-US": "Denmark",
+                "nb-NO": "Danmark",
+                "nl-NL": "Denemarken"
+              }
             },
             {
-                "display_name": {
-                    "en": "SURFnet"
-                },
-                "base_url": "https://surfnet.eduvpn.nl/"
+                // ...
             }
-        ]
+          ]
+        },
+        {
+          "display_name": {
+            "en": "Demo"
+          },
+          "base_url": "https://demo.eduvpn.nl/"
+        },
+        {
+          "display_name": {
+            "en": "SURFnet"
+          },
+          "base_url": "https://surfnet.eduvpn.nl/"
+        }
+      ]
     }
 
-The `server_group_url` points to a list of servers that can be used with an 
-access token obtained from this server. This is the "Secure Internet" use case 
-where users can use VPN servers hosted by other NRENs. For "Institute Access"
-servers this key does NOT exist.
+Here `peer_list` contains the list of servers that can be used with the token
+obtained of for its parent. So in the example above, the OAuth access token 
+obtained for `https://nl.eduvpn.org/` can be used at ALL the `peer_list` 
+entries. 
 
-## Server Group URL
+**NOTE**: only the access token can be used at servers in `peer_list`, the 
+refresh token can only be used at `https://nl.eduvpn.org/`.
 
-This URL is obtained from the `server_group_url` key, see previous section.
-
-Example Content:
-
-    {
-        "server_list": [
-            {
-                "display_name": {
-                    "da-DK": "Norge",
-                    "en-US": "Norway",
-                    "nb-NO": "Norge",
-                    "nl-NL": "Noorwegen"
-                },
-                "public_key_list": [
-                    "qOLCcqXWZm9nmjsrwiJQxxWD606vDEJ2MIcc85oJmnE"
-                ],
-                "base_url": "https://guest.eduvpn.no/"
-            },
-            {
-                "display_name": {
-                    "da-DK": "Holland",
-                    "en-US": "The Netherlands",
-                    "nb-NO": "Nederland",
-                    "nl-NL": "Nederland"
-                },
-                "public_key_list": [
-                    "O53DTgB956magGaWpVCKtdKIMYqywS3FMAC5fHXdFNg"
-                ],
-                "base_url": "https://nl.eduvpn.org/"
-            }
-        ]
-    }
-
-The `public_key_list` is NOT used by the applications, but only by other 
-VPN servers belonging to the same server group.
-
-**FIXME**: maybe we should have a different file for servers... and not mix 
-this with client discovery info. There is not really a need to expose all this
-info to all servers...
-
-**FIXME**: the key should probably by `server_group_list`, and not 
-`server_list`.
+**NOTE**: the `peer_list` key ALSO contains the parent entry as well! So be 
+careful when rendering the UI to not duplicate them. This may change in the 
+future!
 
 # Application Data Model
 
@@ -213,17 +190,16 @@ functionality when the discovery files are (temporary) not available.
 This data model supports multiple "home" organizations by having multiple 
 objects in `app_data`.
 
-This first thing to store is the `server_info_url`. Linked to this are all 
-servers (`server_list`) that were retrieved from `server_info_url` and possibly 
-from one or more `server_group_url` entries.
+This first thing to store is the server info URL. Linked to this are all 
+servers (`server_list`) that were retrieved from server info URL.
 
     {
-        "https://argon.tuxed.net/fkooman/eduVPN/discovery/v2/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": {
+        "https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json": {
             "https://nl.eduvpn.org/": {
                 "access_token": "${ACCESS_TOKEN}",
                 "access_token_expires_at": "2020-03-05T08:00:00+00:00:00",
                 "refresh_token": "${REFRESH_TOKEN}",
-                "server_group_list": [
+                "peer_list": [
                     "https://gdpt-eduvpndev1.tnd.aarnet.edu.au/",
                     "https://eduvpn.deic.dk/",
                     "https://eduvpn1.funet.fi/",
@@ -262,21 +238,16 @@ The `access_token`, `access_token_expires_at` and `refresh_token` will only
 be added after the user selected this particular server and successfully 
 completed the authorization phase.
 
-**FIXME**: should we instead actually "merge" the retrieved JSON documents in 
-the app data model?
-
 # Notes
 
 * The app MUST allow for forgetting the chosen organization, which then deletes 
-  the `server_info_url` from the app's internal storage;
+  the server info URL from the app's storage;
 * The application sorts VPN servers in descending order of use. Servers never
   or infrequently used drop to the bottom of the list;
 * The VPN servers themselves are ONLY contacted AFTER the user decides to 
   connect to them, never before. The only connection the app makes by itself 
-  is fetching the `server_info_url` file and the `server_group_url` if 
-  applicable;
-* The contents of `server_info_url` (JSON), `server_group_url` (JSON) MUST be 
-  cached;
+  is fetching the server info URL file;
+* The contents of server info URL (JSON) MUST be cached;
 * The cached JSON documents SHOULD be refreshed periodically, e.g. once per 
   day if the application keeps running;
 * The cached JSON documents MUST be refreshed at application start;
@@ -284,9 +255,9 @@ the app data model?
 * The file `organization_list.json` is ONLY retrieved when the user needs to 
   choose their organization, so typically only once and then never again, it
   is NOT cached;
-* `display_name`, `keyword_list` and ALWAYS contain a map with a 
+* `display_name`, `keyword_list` ALWAYS contain a map with a 
   language code according to [BCP 47](https://tools.ietf.org/html/rfc5646) and
-  their respective value. See the examples below. It is up to the application 
+  their respective value. See the examples above. It is up to the application 
   to pick the best "translation" for the current application language settings. 
   There is no guarantee that any language (always) exists!
 * When retrieving URLs, *always* follow HTTP redirects, maximum depth 5, if 
@@ -295,7 +266,7 @@ the app data model?
   path! You MUST reject any HTTP URL or redirects to a HTTP URL! The easiest is
   to white list only HTTPS protocol.
 * If a VPN server that was previously configured *through* the 
-  `server_info_url` is no longer listed there, it MUST be marked as "no longer
+  server info URL is no longer listed there, it MUST be marked as "no longer
   available". NOTE: they MAY come back at some point!
 
 # Signatures
@@ -303,26 +274,16 @@ the app data model?
 We need signatures over the JSON files. We use 
 [minisign](https://jedisct1.github.io/minisign/) and 
 [signify](https://man.openbsd.org/signify) compatible signatures. This way we 
-can use standard tooling to generate the signatures.
+can use standard tooling to generate the signatures. Note, only the first two
+lines of the signature file are used, and is fully compatible with signify.
 
 The signature of `organization_list.json` is hosted on 
-`organization_list.json.sig`. This public key to verify this signature will be 
-hard coded in the application doing the verification.
-
-The individual `server_info_url` URLs, as pointed to from 
-`organization_list.json`, also host an `${server_info_url}.sig` file that is 
-used to verify the signatures. The public key for this signature is available
-in the `server_info_url_public_key` field.
-
-The same holds for the `server_group_url`. It also has a 
-`server_group_url_public_key` field containing the public key to verify 
-`${server_group_url}.sig`.
+`organization_list.json.sig`. This public key to verify this signature will 
+be hard coded in the application doing the verification. This is similar for 
+the server info URL. A signature file is also available.
 
 The application MUST verify ALL signatures over ALL files when retrieving them
 BEFORE using them.
 
-**FIXME**: apps MUST also store the public key for the `server_info_url` 
-entries, maybe "encode" it as part of the fragment?
-
 **FIXME** we need to record the time stamp (or sequence) to make sure it is not 
-possible to do rollback.
+possible to do a rollback.
