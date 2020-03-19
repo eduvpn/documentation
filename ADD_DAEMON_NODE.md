@@ -42,7 +42,8 @@ OpenVPN processes. This is rather simple:
     $ sudo systemctl enable --now vpn-daemon
 
 Modify `/etc/vpn-server-api/config.php` and add the configuration key 
-`useVpnDaemon` and set its value to `true`.
+`useVpnDaemon` and set its value to `true` in the "root", i.e. on the same 
+level as `vpnProfiles`.
 
 Make sure everything still works, i.e. you can see connected clients when 
 visiting the "Connections" tab in the portal.
