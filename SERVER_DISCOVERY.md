@@ -54,8 +54,8 @@ project and can now be used.
 3. Show a list of all organizations from the `organization_list.json` and 
    allow the user to browse and search based on `display_name` and 
    `keyword_list`;
-4. Determine the server info URL from the `org_id` associated with the user's 
-   choice from `organization_list.json`. Store it in the app.
+4. Determine the server info URL from the `server_info` key associated with the 
+   user's choice from `organization_list.json`. Store it in the app.
   * Add all (new) servers that are found in the server info URL document to 
     the list of (pre)configured VPN servers in the application, if they are not 
     yet there;
@@ -65,9 +65,9 @@ project and can now be used.
     them).
 
 **NOTE**: the server info URL can be constructed as follows: take the discovery
-base URL, e.g. `https://disco.example.org/` and append the `org_id` to it and 
-post fix it with `.json`. For example, in case the `org_id` is `XYZ` the server
-info URL becomes `https://disco.example.org/XYZ.json`.
+base URL, e.g. `https://disco.example.org/` and append the `server_info` to it. 
+For example, in case the `server_info` is `XYZ.json` the server info URL 
+becomes `https://disco.example.org/XYZ.json`.
 
 ## Error Handling
 
@@ -95,7 +95,8 @@ Example Content:
             "nl": "SURFnet bv",
             "en": "SURFnet bv"
           },
-          "org_id": "aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA",
+          "org_id": "https://idp.surfnet.nl",
+          "server_info": "aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json",
           "keyword_list": {
             "en": "SURFnet bv SURF konijn surf surfnet powered by",
             "nl": "SURFnet bv SURF konijn powered by"
@@ -111,10 +112,9 @@ an organization without needing to browse through the whole list. It is
 preferred that applications perform a sub-string match on the `display_name` 
 and `keyword_list` keys.
 
-The `org_id` field can be used to obtain VPN server list available to that 
-organization. The `org_id` is used to construct the URL. Using the example URL 
-above, the server information can be obtained at 
-`https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
+The `server_info` field can be used to obtain VPN server list available to that 
+organization. Using the example URL above, the server information can be 
+obtained at `https://disco.example.org/aHR0cHM6Ly9pZHAuc3VyZm5ldC5ubA.json`.
 
 ## Server Info URL
 
