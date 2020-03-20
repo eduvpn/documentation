@@ -139,7 +139,7 @@ the `php7.0-fpm` service to activate the changes:
 
 ### Let's Encrypt
 
-Run the script (as root):
+Run the script (as root) from the documentation folder:
 
     $ sudo -s
     # ./lets_encrypt_debian.sh
