@@ -28,10 +28,14 @@ this:
     $ sudo vpn-server-api-status | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
 
 Furthermore, there is a special `--alert` flag that only shows lines where the 
-percentage of IP space being used is above 90%. You can use that from `cron` to 
+percentage of IP space being used is > 90%. You can use that from `cron` to 
 send out alerts when the IP space is about to be depleted.
 
     MAILTO=admin@example.org
     */5 * * * * /usr/bin/vpn-server-api-status --alert
 
 Assuming `cron` is able to mail reports this should work!
+
+**NOTE**: from vpn-server-api >= 2.1.5 (unreleased as of 2020-03-24) you can 
+specify the "alert percentage", i.e. `--alert 75` will (only) output profiles 
+where the IP space is used >= 75%.
