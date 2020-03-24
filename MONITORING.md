@@ -22,9 +22,14 @@ used.
 **NOTE** this format is NOT stable and SHOULD NOT be relied on for further 
 scripting!
 
-There is a special `--alert` flag that only shows lines where the percentage
-of IP space being used is above 90%. You can use that from `cron` to send out
-alerts when the IP space is about to be depleted.
+If you want to see an aggregate of the number of connected clients, you can use
+this:
+
+    $ sudo vpn-server-api-status | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
+
+Furthermore, there is a special `--alert` flag that only shows lines where the 
+percentage of IP space being used is above 90%. You can use that from `cron` to 
+send out alerts when the IP space is about to be depleted.
 
     MAILTO=admin@example.org
     */5 * * * * /usr/bin/vpn-server-api-status --alert
