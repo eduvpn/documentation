@@ -8,20 +8,45 @@ category: howto
 
 There are a number of situations to do _source routing_ or _policy routing_.
 
-1. You have an external NAT box, i.e. CGNAT ("Carrier Grade NAT");
-2. You have a layer 2 connection to another location from your VPN box where 
-   the VPN traffic needs to be sent over;
+1. You already have a dedicated NAT router, i.e. CGNAT ("Carrier Grade NAT");
+2. You have a (layer 2) connection to the target location from your VPN box 
+   where the VPN traffic needs to be sent over, i.e. when the VPN server is
+   located outside the network where the traffic needs to go.
 
 These require that you do not send the traffic from the VPN clients over the 
 VPN server's default gateway.
 
-Luckily, it is easy to fix. We document this for CentOS (and Fedora). We'll 
-describe situation 1, but it applies just as well for situation 2.
+Luckily, it is relatively easy to fix. We document this for CentOS (and 
+Fedora). We created a physical test setup similar to what you see below.
+
+```
+                           Internet
+                               ^
+                               |
+                          .--------.
+                          | Router |
+                          '--------'
+                               ^ 192.168.178.1
+                               |
+     192.168.178.10            |
+      .--------.          .--------.
+      | Client |--------->| Switch |<-------------------------.
+      '--------'          '--------'                          |
+  VPN IP: 10.10.10.2           ^                              |
+                               |                              |
+                               |                              |
+                 192.168.178.2 |                192.168.178.3 |
+                        .------------.                     .-----.
+                        | VPN Server |-------------------->| NAT |
+                        '------------'                     '-----'
+                                 192.168.1.100      192.168.1.1
+```
 
 ## Assumptions
 
 1. Your VPN clients get IP addresses assigned from the `10.10.10.0/24` and 
-   `fd00:4242:4242:4242::/64` pools;
+   `fd00:4242:4242:4242::/64` pools, the VPN server has `10.10.10.1` and
+   `fd00:4242:4242:4242::1` on the `tun0` device;
 2. A network connection between the VPN box and the NAT router exists through
    another interface, e.g. `eth1`:
   - the VPN box has the IP addresses `192.168.1.100` and 
@@ -43,7 +68,7 @@ We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 
 ### Rules
 
-First we test it manually before making these rules permanent:
+First we test it manually, before making these rules permanent:
 
     $ sudo ip -4 rule add from 10.10.10.0/24 lookup vpn
     $ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
@@ -98,7 +123,12 @@ flush the NAT table. Just to make sure:
     $ sudo systemctl start iptables
     $ sudo systemctl start ip6tables
 
-That should be all!
+**NOTE**: this still leaves behind some `FORWARD` filtering. Unfortunately the
+firewall tool is not able to generate files without `FORWARD` filtering. Feel 
+free to stop using the tool and directly modify the firewall files in 
+`/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables`. Of course you can
+also fully remove the firewall by removing the `iptables-services` package and
+rebooting.
 
 ## Issues
 
