@@ -60,9 +60,8 @@ this:
         }
     ]
 
-When using the 
-[vpn-daemon](https://github.com/eduvpn/documentation/blob/v2/ADD_DAEMON_NODE.md) 
-you can also list the currently connected clients:
+When using the [vpn-daemon](VPN_DAEMON.md) you can also list the currently 
+connected clients:
 
     $ sudo vpn-server-api-status --json --connections
     [
@@ -110,7 +109,7 @@ you can also list the currently connected clients:
         }
     ]
 
-## Alert
+## Alerting
 
 There is an `--alert` flag, with optional percentage parameter, which only
 lists entries for which the IP space has higher usage than the parameter. The 
