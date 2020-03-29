@@ -6,6 +6,10 @@ category: howto
 
 **NOTE**: the daemon is currently only supported on CentOS and Fedora!
 
+**NOTE**: if you have only 1 VPN server and do not want to deploy additional
+servers, check the documentation on how to switch to the daemon on one server 
+[here](VPN_DAEMON.md).
+
 This document describes how to add new VPN servers to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh` and have 
 everything on one machine.
