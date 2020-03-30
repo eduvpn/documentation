@@ -28,6 +28,11 @@ working in case configuration updates are required for connecting to the VPN.
 The other applications may require manual configuration downloads through the 
 user portal to be able to keep using the VPN.
 
+A full list of official applications is available, including the changelogs: 
+
+* [eduVPN](https://app.eduvpn.org/)
+* [Let's Connect!](https://app.letsconnect-vpn.org/)
+
 ## Windows
 
 * [eduVPN](https://app.eduvpn.org/windows/eduVPNClient_latest.exe)
@@ -139,7 +144,7 @@ See the instructions below on how to get the VPN working manually.
 | Ubuntu 18.10            | yes            | yes    | -                                                                                                             | 
 | Ubuntu 19.04            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
-| Fedora 29, 30           | yes            | yes    | -                                                                                                             |
+| Fedora 30, 31           | yes            | yes    | -                                                                                                             |
 
 For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)
