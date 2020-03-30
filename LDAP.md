@@ -37,6 +37,8 @@ Then you can configure the LDAP server:
         'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
         //'permissionAttribute' => 'eduPersonEntitlement',
         //'permissionAttribute' => 'memberOf',
+        //'userIdAttribute' => 'uid',
+        //'addRealm' => 'example.org',
 
         // *** Active Directory ***
         //'ldapUri' => 'ldap://ad.example.org',
@@ -44,6 +46,9 @@ Then you can configure the LDAP server:
         //'baseDn' => 'dc=example,dc=org',
         //'userFilterTemplate' => '(sAMAccountName={{UID}})',
         //'permissionAttribute' => 'memberOf',
+        //'userIdAttribute' => 'sAMAccountName',
+        //'addRealm' => 'example.org',
+
     ],
 
 Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
@@ -57,6 +62,21 @@ LDAP server. This example is for [FreeIPA](https://www.freeipa.org/).
 For your LDAP server it may be different. The `{{UID}}` is replaced by what the 
 user provides in the `Username` field when trying to authenticate to the 
 portal(s).
+
+The `userIdAttribute` field can be used to "normalize" the identity of the user 
+in the service. As LDAP is case-insensitive both `FOO` and `foo` are the same 
+user for LDAP, but not for the VPN service. By asking the LDAP server how the 
+identifier is capitalized we avoid this problem. You can also use another 
+attribute from LDAP altogether, i.e. allow the user to login with `uid`, but 
+use `mail` as the identifier in the service.
+
+The `addRealm` field can be used to add a "realm" or "domain" to the provided
+user ID when the user wants to login. If you want to "bind" with e.g. the 
+`UserPrincipalName` in case of Active Directory, you can configure the "realm"
+to add if the user didn't. For example, if the user tries to login with `foo`, 
+and `addRealm` is set to `example.org`, the user ID will be modified to 
+`foo@example.org` before attempting an LDAP bind. If the user already provided
+the realm, or another realm it will not be modified.
 
 For Active Directory you can use the following `bindDnTemplate`, where `DOMAIN`
 is the name of your domain:
