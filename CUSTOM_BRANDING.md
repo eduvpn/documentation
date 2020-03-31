@@ -7,6 +7,23 @@ category: howto
 This document describes how to apply your own branding (style and e.g. logo) to
 the portal.
 
+# Custom Portal Footer
+
+If all you want is to add a simple text at the bottom of (all) pages, you can
+use the "custom footer" functionality.
+
+Create a file in `/etc/vpn-user-portal/views/customFooter.php` with e.g. the 
+following content:
+
+    <p class="plain">
+        If you need help, contact us on 
+        <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail 
+        <a href="mailto:support@example.org">us</a>!
+    </p>
+
+**NOTE**: this footer is *always* visible, also when VPN apps are being 
+authorized.
+
 # Template Overriding
 
 The portals use templates, located in the following folders:
@@ -28,11 +45,11 @@ default CSS line:
 
 # CSS
 
-Place, the CSS file, in this case `eduvpn.css`, and assuming your hostname is 
-`vpn.example`, in `/var/www/vpn.example/css/eduvpn.css`.
+Place, the CSS file, in this case `eduvpn.css`, in 
+`/var/www/html/css/eduvpn.css`.
 
 For eduVPN we show a logo that is placed in 
-`/var/www/vpn.example/img/eduvpn.png` that is linked to from the CSS file, 
+`/var/www/html/img/eduvpn.png` that is linked to from the CSS file, 
 for example:
 
     /** 
@@ -58,7 +75,7 @@ for example:
             color: transparent; /* hide header text */
             width: 300px;
             height: 120px;
-            background-image: url("../../img/eduVPN/eduVPN.png");
+            background-image: url("/img/eduVPN/eduVPN.png");
             background-repeat: no-repeat;
             background-position: 100% 0%;
         }
