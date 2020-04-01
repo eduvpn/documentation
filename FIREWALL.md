@@ -83,8 +83,9 @@ script from this repository on your VPN server.
 
 ## Custom Firewall
 
-If you want something more complicated, you can still use the generated 
-firewall as a base to start from.
+If you need something more complicated than the included firewall scripts can
+accomplish, you can still use the generated firewall as a base or start from
+scratch, depending exactly on your use case.
 
 **NOTE**: if you go down this path, make sure you remove 
 `vpn-server-node-generate-firewall --install` from your copy of 
@@ -122,4 +123,4 @@ You can replace the two `POSTROUTING` rules by these:
     -A POSTROUTING -s 10.0.2.0/24 --jumo SNAT --to-source 1.2.3.5
 
 Where `1.2.3.4` is the first public IPv4 address, and `1.2.3.5` is the second
-one. Don't forget to start the firewall as mentioned above.
+one. Don't forget to restart the firewall as mentioned above.
