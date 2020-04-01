@@ -16,14 +16,36 @@ Create a file in `/etc/vpn-user-portal/views/customFooter.php` with e.g. the
 following content:
 
     <p class="plain">
-        If you need help, contact us on 
-        <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail 
-        <a href="mailto:support@example.org">us</a>!
+        If you need help, contact us on <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail <a href="mailto:support@example.org">us</a>!
     </p>
 
 **NOTE**: this footer is *always* visible, also when VPN apps are being 
 authorized.
 
+## Translations
+
+You can also use multi language custom footers. You can use the 
+`<?=$this->t('Text To Translate');?>` format to make text translatable and 
+provide additional translation files. We modify the example above in 
+`/etc/vpn-user-portal/views/customFooter.php`:
+
+    <p class="plain">
+        <?=$this->t('If you need help, contact us on <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail <a href="mailto:support@example.org">us</a>!'); ?>
+    </p>
+
+Now for the translation file, you can create a file, e.g `nl_NL.php` for a 
+Dutch translation in `/etc/vpn-user-portal/locale/nl_NL.php` with the following
+content:
+
+    <?php
+
+    return [
+        'If you need help, contact us on <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail <a href="mailto:support@example.org">us</a>!' => 'Als je hulp nodig hebt, neem telefonisch contact met ons op via <a href="tel:+1234567890">+(1) (234) 567890</a>, of per <a href="mailto:support@example.org">mail</a>!',
+    ];
+
+Now when you switch languages in the portal, the translation should match when
+they exist.
+ 
 # Template Overriding
 
 The portals use templates, located in the following folders:
