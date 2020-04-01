@@ -80,3 +80,46 @@ this is a different story.
 
 To apply the changes you make to the firewall, run the `apply_changes.sh` 
 script from this repository on your VPN server.
+
+## Custom Firewall
+
+If you want something more complicated, you can still use the generated 
+firewall as a base to start from.
+
+**NOTE**: if you go down this path, make sure you remove 
+`vpn-server-node-generate-firewall --install` from your copy of 
+`apply_changes.sh`!
+
+You can modify `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` 
+manually and restart the firewall:
+
+    $ sudo systemctl restart iptables
+    $ sudo systemctl restart ip6tables
+
+### Different Public IP for Different Profile
+
+Assume you have two VPN profiles, one for `employees` and one for 
+`admin` and they both use NAT. But now you want to use a different public IP 
+address for traffic coming from each of these profiles. If you so far used the 
+generated firewall, you'd have something like this in 
+`/etc/sysconfig/iptables`:
+
+    *nat
+    :PREROUTING ACCEPT [0:0]
+    :INPUT ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :POSTROUTING ACCEPT [0:0]
+    -A POSTROUTING --source 10.0.1.0/24 --jump MASQUERADE
+    -A POSTROUTING --source 10.0.2.0/24 --jump MASQUERADE
+    COMMIT
+
+Here `10.0.1.0/24` is the `employees` profile, and `10.0.2.0/24` is the `admin` 
+profile.
+
+You can replace the two `POSTROUTING` rules by these:
+
+    -A POSTROUTING -s 10.0.1.0/24 --jump SNAT --to-source 1.2.3.4
+    -A POSTROUTING -s 10.0.2.0/24 --jumo SNAT --to-source 1.2.3.5
+
+Where `1.2.3.4` is the first public IPv4 address, and `1.2.3.5` is the second
+one. Don't forget to start the firewall as mentioned above.
