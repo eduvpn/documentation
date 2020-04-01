@@ -46,6 +46,10 @@ content:
 Now when you switch languages in the portal, the translation should match when
 they exist.
  
+**NOTE**: if you want to use single quotes (`'`) in your texts, make sure to
+escape them by adding a backslash (`\`) in front of them, e.g. 
+`'Don\'t click here!'`.
+
 # Template Overriding
 
 The portals use templates, located in the following folders:
