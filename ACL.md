@@ -7,7 +7,8 @@ category: howto
 The VPN service supports access control. This allows configuring that users 
 require certain "permissions" to access a particular VPN profile. This is 
 useful if you have multiple types of users. For example, only employees get 
-access to the "Employees" profile, but students do not.
+access to the "Employees" profile, but students do not. You can also require 
+certain permissions to be able to use the Portal/API at all.
 
 Currently, the following access control mechanisms are supported:
 
@@ -136,6 +137,21 @@ permission. Note that the user `foobar` has two permissions.
 **NOTE**: if you are using the `FormLdapAuthentication` authentication backend, 
 the static permissions are _added_ to the ones that may have been retrieved 
 through LDAP.
+
+## Portal/API Access
+
+You can restrict access to the Portal/API to certain permissions. For example,
+if you only went `employees` to be able to access the VPN service and not 
+`students`, you can. in addition to profile restrictions (see next section) 
+prevent them from accessing the service at all.
+
+In `/etc/vpn-user-portal/config.php` you can configure it like this:
+
+    'accessPermissionList' => ['employees'],
+
+This requires everyone to have the permission `employees`. If you specify more
+than one "permission", the user needs to be member of only one. The permissions
+are thus "OR".
 
 ## Profile Mapping
 
