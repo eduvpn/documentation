@@ -4,6 +4,9 @@ description: Add a VPN node for handling OpenVPN connections
 category: howto
 ---
 
+**NOTE**: this is LEGACY. Do not use on new deployments. Use 
+[ADD_DAEMON_NODE](ADD_DAEMON_NODE.md) instead!
+
 This document describes how to add a new VPN server to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh`.
 
