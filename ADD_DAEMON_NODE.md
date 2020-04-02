@@ -57,7 +57,9 @@ visiting the "Connections" tab in the portal.
 As the daemon will use TLS with client certificates when talking to remote 
 daemons, and **only** when talking to remote daemons, we have to set up a 
 (new) PKI with our own root certificate and generate server & client 
-certificates.
+certificates. These certificates will be valid for 5 years, the default of the
+CA. The `--no-after CA` flag means the certificates will expire at the exact 
+same moment as the CA.
 
     $ sudo yum -y install vpn-ca
 
