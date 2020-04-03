@@ -27,6 +27,15 @@ Install the required software (dependencies):
         php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
         php-curl php-gd
 
+# Ubuntu
+
+**NOTE**: tested on Ubuntu 20.04 LTS (Beta) on 2020-04-03:
+
+Install the required software (dependencies): 
+ 
+    $ sudo apt-get install curl git build-essential golang-go php7.4-sqlite3 \ 
+        composer php7.4-curl php7.4-dom php7.4-cli
+
 # macOS
 
 We assume a clean macOS 10.14 (Mojave) installation. There is no need to install 
