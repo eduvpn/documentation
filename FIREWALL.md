@@ -134,3 +134,20 @@ sufficient. You can solve this like this:
 
 This will use the IP addresses `1.2.3.4` up to including `1.2.3.8` to share
 the load over the IPs.
+
+### Reject IPv6 Client Traffic
+
+You cannot fully disable IPv6 in the VPN server, but you can drop all IPv6 
+traffic coming from the clients wanting to go out to the Internet.
+
+Modify `/etc/sysconfig/ip6tables` and remove the `*nat` line up to the
+first `COMMIT` line before `*filter`. 
+
+Remove all `-A FORWARD` lines in the `*filter` section, except:
+
+    -A FORWARD --jump REJECT --reject-with icmp6-adm-prohibited
+
+To apply:
+
+    $ sudo ip6tables -F -t nat
+    $ sudo systemctl restart ip6tables
