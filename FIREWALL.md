@@ -87,10 +87,10 @@ If you need something more complicated than the included firewall scripts can
 accomplish, you can still use the generated firewall as a base or start from
 scratch, depending exactly on your use case.
 
-**NOTE**: if you go down this path, make sure you remove 
-`vpn-server-node-generate-firewall --install` from your copy of 
-`apply_changes.sh`!
-
+**NOTE**: if you go down this path, make sure you update the configuration file
+`/etc/vpn-server-node/config.php` and add/set the option `manageFirewall` to 
+`false`!
+ 
 You can modify `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` 
 manually and restart the firewall:
 
