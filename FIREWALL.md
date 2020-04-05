@@ -120,7 +120,17 @@ profile.
 You can replace the two `POSTROUTING` rules by these:
 
     -A POSTROUTING -s 10.0.1.0/24 --jump SNAT --to-source 1.2.3.4
-    -A POSTROUTING -s 10.0.2.0/24 --jumo SNAT --to-source 1.2.3.5
+    -A POSTROUTING -s 10.0.2.0/24 --jump SNAT --to-source 1.2.3.5
 
 Where `1.2.3.4` is the first public IPv4 address, and `1.2.3.5` is the second
 one. Don't forget to restart the firewall as mentioned above.
+
+### NAT to Multiple IP Addresses
+
+If you have many clients, using NAT with a single IP address may not be 
+sufficient. You can solve this like this:
+
+    -A POSTROUTING -s 10.0.2.0/24 --jump SNAT --to-source 1.2.3.4-1.2.3.8
+
+This will use the IP addresses `1.2.3.4` up to including `1.2.3.8` to share
+the load.
