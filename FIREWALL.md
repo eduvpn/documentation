@@ -130,7 +130,7 @@ one. Don't forget to restart the firewall as mentioned above.
 If you have many clients, using NAT with a single IP address may not be 
 sufficient. You can solve this like this:
 
-    -A POSTROUTING -s 10.0.2.0/24 --jump SNAT --to-source 1.2.3.4-1.2.3.8
+    -A POSTROUTING -s 10.0.1.0/24 --jump SNAT --to-source 1.2.3.4-1.2.3.8
 
 This will use the IP addresses `1.2.3.4` up to including `1.2.3.8` to share
-the load.
+the load over the IPs.
