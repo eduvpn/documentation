@@ -4,7 +4,7 @@
 # Convert a full VPN install to just a controller
 #
 
-yum remove vpn-server-node
+yum remove -y vpn-server-node
 rm -rf /etc/vpn-server-node
 
 semanage port -d -t openvpn_port_t -p tcp 11940-16036
@@ -19,6 +19,8 @@ do
     systemctl disable --now "${i}"
 done
 rm -rf /etc/openvpn/server/*
+
+yum remove -y openvpn
 
 cp resources/centos/iptables /etc/sysconfig/iptables
 cp resources/centos/ip6tables /etc/sysconfig/ip6tables
