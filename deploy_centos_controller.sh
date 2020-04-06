@@ -47,7 +47,7 @@ PACKAGE_MANAGER=/usr/bin/yum
 
 # disable and stop existing firewalling
 systemctl disable --now firewalld >/dev/null 2>/dev/null || true
-systemctl disable - -now iptables >/dev/null 2>/dev/null || true
+systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
 if grep -q "Red Hat" /etc/redhat-release
