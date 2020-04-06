@@ -250,3 +250,38 @@ Login to the admin portal using the `admin` user and password you noted at the
 end of the controller install and make sure you see your client(s) under 
 "Connections" in the portal when connected to either "Node A" or "Node B" 
 profile with your VPN client.
+
+## Load Balancing
+
+Now that everything works, we can _merge_ the profiles to setup a round-robin
+DNS based load balancing over the nodes.
+
+On the controller you need to modify `/etc/vpn-server-api/config.php` again.
+
+For the `node-b` profile set `hideProfile` to `true`. The `hostName` key in 
+both profiles gets the value `nodes.frkovpn.tuxed.net`. Update the 
+`displayName` of `node-a` to something generic, e.g. `Secure Internet`.
+
+As, by default, each profile uses its own "TLS Crypt" key, we need to make sure
+both of them use to same key now that the profiles are "merged":
+
+    $ sudo cp /var/lib/vpn-server-api/tls-crypt-node-a.key /var/lib/vpn-server-api/ta.key
+
+The `ta.key` is the fallback "TLS Crypt" key. If that file exists, the profile 
+specific keys are ignored.
+
+On the nodes, apply the changes again:
+
+    $ sudo documentation-2/apply_changes.sh
+
+As for DNS, you can use the following configuration:
+
+    nodes.frkovpn   IN  A       145.0.6.72
+                    IN  A       145.0.6.73
+                    IN  AAAA    2001:610:188:418:145:0:6:72
+                    IN  AAAA    2001:610:188:418:145:0:6:73
+
+From now on, the load should be distributed over the VPN nodes once you 
+download a new configuration. You can monitor this through the portal on the
+"Connections" page. By connecting multiple devices you should see them connect 
+to the different nodes instead of all to one node.
