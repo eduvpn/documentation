@@ -64,7 +64,7 @@ e.g. `userPrincipalName`:
             -H ldap://ad.example.org \
             -D "fkooman@example.org" \
             -b "dc=example,dc=org" \
-            "(userPrincipalName=fkooman)"
+            "(userPrincipalName=fkooman@example.org)"
 
 # Configuration
 
@@ -119,7 +119,7 @@ the exact same format as used in the LDAP server.
         'addRealm' => 'example.org',
         // -b "dc=example,dc=org" \
         'baseDn' => 'dc=example,dc=org',
-        // "(userPrincipalName=fkooman)"
+        // "(userPrincipalName=fkooman@example.org)"
         'userFilterTemplate' => '(userPrincipalName={{UID}})',
         // to normalize the entered user ID, specify the attribute you want to
         // use to identify the user in the VPN server
