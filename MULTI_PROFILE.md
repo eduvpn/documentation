@@ -66,12 +66,6 @@ just use different ports.
 **NOTE**: if you add/modify UDP and TCP ports you may also need to update the 
 [firewall](FIREWALL.md)!
 
-# Additional Configuration
-
-It is e.g. possible to activate [Two-factor Authentication](2FA.md) for the 
-`admin` profile, or see [Profile Configuration](PROFILE_CONFIG.md) for more
-configuration options.
-
 ## Apply Changes
 
 To apply the changes run the `apply_changes.sh` script from this repository 
