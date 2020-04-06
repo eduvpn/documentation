@@ -89,18 +89,13 @@ and set the `permissionAttribute` to the name of the attribute:
 
     // LDAP
     'FormLdapAuthentication' => [
-        // *** OpenLDAP / FreeIPA ***
-        'ldapUri' => 'ldaps://ipa.example.org',
-        'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        //'permissionAttribute' => 'eduPersonEntitlement',
-        //'permissionAttribute' => 'memberOf',
+        // LDAP configuration
 
-        // *** Active Directory ***
-        //'ldapUri' => 'ldap://ad.example.org',
-        //'bindDnTemplate' => 'DOMAIN\{{UID}}',
-        //'baseDn' => 'dc=example,dc=org',
-        //'userFilterTemplate' => '(sAMAccountName={{UID}})',
-        //'permissionAttribute' => 'memberOf',
+        // ...
+
+        // ...
+
+        'permissionAttribute' => 'memberOf',
     ],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
