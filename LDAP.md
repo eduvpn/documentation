@@ -4,21 +4,67 @@ description: Enable LDAP Authentication
 category: howto
 ---
 
-This document describes how to configure LDAP for deployed systems. We assume 
-you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 
-you use `vpn.example`, but modify this domain to your own domain name!
+This document describes how to configure LDAP. We assume you used the 
+`deploy_${DIST}.sh` script to deploy the software.
 
-LDAP integration is used for two aspects:
+The LDAP integration can be used both for user authentication and for 
+authorization, i.e. who will be considered an _administrator_ and which 
+profiles will be available for a particular user.
 
-1. LDAP user authentication
-2. LDAP group membership retrieval to restrict access to the "Admin" and/or 
-   profiles
+For more information about authorization, after getting authentication to work, 
+you can look [here](PORTAL_ADMIN.md) for determining admin portal access, and 
+[here](ACL.md) for determining who can access which profiles.
 
-The first one is what we focus on here, the second one is documented in the 
-[ACL](ACL.md) document.
+# Introduction
 
-In order to make a particular user an "administrator" in the portal, see 
-[PORTAL_ADMIN](PORTAL_ADMIN.md).
+It is a good idea to try with `ldapsearch` if you are not absolutely sure what
+to configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
+module.
+
+First, install `ldapsearch`:
+
+    $ sudo yum -y install openldap-clients
+
+You need a couple of details first, you can obtain those from your LDAP 
+administrator, you need _at least_:
+
+* LDAP host;
+* How to _bind_ to the LDAP server, i.e. which DN to use to bind;
+
+For simple [FreeIPA](https://www.freeipa.org/page/Main_Page) setups these are
+sufficient:
+
+    $ ldapsearch \
+        -W \
+        -H ldap://ipa.tuxed.example \
+        -D "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example" \
+        -b "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example"
+
+After providing the user's password, you should see all the LDAP attributes 
+associated with that user account, e.g. `memberOf`, `mail`, `uid`.
+
+If you are using 
+[Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
+slightly different:
+
+    $ ldapsearch \
+            -W \
+            -H ldap://ad.example.org \
+            -D "DOMAIN\fkooman" \
+            -b "dc=example,dc=org" \
+            "(sAMAccountName=fkooman)"
+
+You can use the old "NetBIOS domain name" as in the example above, _or_ some 
+other 
+[options](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/6a5891b8-928e-4b75-a4a5-0e3b77eaca52), 
+e.g. `userPrincipalName`:
+
+    $ ldapsearch \
+            -W \
+            -H ldap://ad.example.org \
+            -D "fkooman@example.org" \
+            -b "dc=example,dc=org" \
+            "(userPrincipalName=fkooman)"
 
 # Configuration
 
@@ -29,59 +75,58 @@ You have to set `authMethod` first:
 
     'authMethod' => 'FormLdapAuthentication',
 
-Then you can configure the LDAP server:
+Next is configuring the LDAP server in the `FormLdapAuthentication` section. 
+Note that in the examples below, `{{UID}}` is replaced by what the user 
+specifies in the "User Name" box when logging in to the portal. The 
+`userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
+`fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
+the exact same format as used in the LDAP server.
 
     'FormLdapAuthentication' => [
-        // *** OpenLDAP / FreeIPA ***
-        'ldapUri' => 'ldaps://ipa.example.org',
-        'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=example,dc=org',
-        //'permissionAttribute' => 'eduPersonEntitlement',
-        //'permissionAttribute' => 'memberOf',
-        //'userIdAttribute' => 'uid',
-        //'addRealm' => 'example.org',
+        // *** FreeIPA ***
+        // -H ldap://ipa.tuxed.example
+        'ldapUri' => 'ldap://ipa.tuxed.example',
+        // -D "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example"
+        'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=tuxed,dc=example',
+        // (if -b is the same -D we do NOT specify baseDn...)
+        // to normalize the entered user ID, specify the attribute you want to
+        // use to identify the user in the VPN server
+        'userIdAttribute' => 'uid',
 
-        // *** Active Directory ***
-        //'ldapUri' => 'ldap://ad.example.org',
-        //'bindDnTemplate' => 'DOMAIN\{{UID}}',
-        //'baseDn' => 'dc=example,dc=org',
-        //'userFilterTemplate' => '(sAMAccountName={{UID}})',
-        //'permissionAttribute' => 'memberOf',
-        //'userIdAttribute' => 'sAMAccountName',
-        //'addRealm' => 'example.org',
+        // *** AD (NetBIOS domain name) ***
+        // -H ldap://ad.example.org \
+        'ldapUri' => 'ldap://ad.example.org',
+        // -D "DOMAIN\fkooman" \
+        'bindDnTemplate' => 'DOMAIN\{{UID}}',
+        // -b "dc=example,dc=org" \
+        'baseDn' => 'dc=example,dc=org',
+        // "(sAMAccountName=fkooman)"
+        'userFilterTemplate' => '(sAMAccountName={{UID}})',
+        // to normalize the entered user ID, specify the attribute you want to
+        // use to identify the user in the VPN server
+        'userIdAttribute' => 'sAMAccountName',
 
+        // *** AD (userPrincipalName) ***
+        // -H ldap://ad.example.org \
+        'ldapUri' => 'ldap://ad.example.org',
+        // -D "fkooman@example.org" \
+        'bindDnTemplate' => '{{UID}}',
+
+        // when the user does NOT specify the realm, e.g. only "fkooman", this
+        // option will add "@example.org" to the "User Name" as specified on 
+        // the login page. If and only if there is no "@" in the provided 
+        // "User Name".!
+        'addRealm' => 'example.org',
+        // -b "dc=example,dc=org" \
+        'baseDn' => 'dc=example,dc=org',
+        // "(userPrincipalName=fkooman)"
+        'userFilterTemplate' => '(userPrincipalName={{UID}})',
+        // to normalize the entered user ID, specify the attribute you want to
+        // use to identify the user in the VPN server
+        'userIdAttribute' => 'userPrincipalName',
     ],
 
-Set the `ldapUri` to the URI of your LDAP server. If you are using LDAPS, you 
-may need to obtain the CA certificate of the LDAP server and store it 
-locally so it can be used to verify the LDAP server certificate. See the
-CA section below.
-
-The `bindDnTemplate` will be used to "generate" a DN to use to bind to the 
-LDAP server. This example is for [FreeIPA](https://www.freeipa.org/).
-
-For your LDAP server it may be different. The `{{UID}}` is replaced by what the 
-user provides in the `Username` field when trying to authenticate to the 
-portal(s).
-
-The `userIdAttribute` field can be used to "normalize" the identity of the user 
-in the service. As LDAP is case-insensitive both `FOO` and `foo` are the same 
-user for LDAP, but not for the VPN service. By asking the LDAP server how the 
-identifier is capitalized we avoid this problem. You can also use another 
-attribute from LDAP altogether, i.e. allow the user to login with `uid`, but 
-use `mail` as the identifier in the service.
-
-The `addRealm` field can be used to add a "realm" or "domain" to the provided
-user ID when the user wants to login. If you want to "bind" with e.g. the 
-`UserPrincipalName` in case of Active Directory, you can configure the "realm"
-to add if the user didn't. For example, if the user tries to login with `foo`, 
-and `addRealm` is set to `example.org`, the user ID will be modified to 
-`foo@example.org` before attempting an LDAP bind. If the user already provided
-the realm, or another realm it will not be modified.
-
-For Active Directory you can use the following `bindDnTemplate`, where `DOMAIN`
-is the name of your domain:
-
-    'bindDnTemplate' => 'DOMAIN\{{UID}}'
+This should be all to configure your LDAP!
 
 # CA
 
@@ -113,7 +158,7 @@ After this:
 This will add the CA certificate  to the system wide database in such a way
 that it will remain there, even when the `ca-certificates` package updates.
 
-You will have to restart `php-fpm` to pick up the changes:
+You **MUST** restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php-fpm
 
@@ -131,36 +176,6 @@ Put the self signed certificate file in
 This will add the CA certificate  to the system wide database in such a way
 that it will remain there, even when the `ca-certificate` package updates.
 
-You will have to restart `php-fpm` to pick up the changes:
+You **MUST** restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php7.0-fpm
-
-# Testing
-
-To make sure everything works as expected, install `ldapsearch`:
-
-    $ sudo yum -y install openldap-clients
-
-Try with your configured DN:
-
-    $ ldapsearch -H ldaps://ipa.example.org -D 'uid=johndoe,cn=users,cn=accounts,dc=example,dc=org' -W
-
-Replace `johndoe` with an user ID at your LDAP server and provide the password
-for that account when it asks. This should return something like this, not an 
-error:
-
-    # extended LDIF
-    #
-    # LDAPv3
-    # base <> (default) with scope subtree
-    # filter: (objectclass=*)
-    # requesting: ALL
-    #
-
-    # search result
-    search: 2
-    result: 32 No such object
-
-    # numResponses: 1
-
-Now you should be able to login to the VPN portal(s).
