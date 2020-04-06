@@ -112,9 +112,9 @@ By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
 one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
 the total number of them must be either 1, 2, 4, 8, 16, 32 or 64. This is 
 because the total available IP range will be split among them. Depending on 
-your address space the ideal number of simultaneous clients per process is at 
-most 64. So if you have a `/24` network, you'd probably want to run 4 OpenVPN 
-processes, e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
+your address space the ideal number of simultaneous clients per process is 
+around 64. So if you have a `/24` network, you'd probably want to run 4 
+OpenVPN processes, e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
 
 You can also specify ports like `udp/53` and `tcp/443`, but then those ports
 need to be available to be claimed by OpenVPN and can't be shared by a DNS 
