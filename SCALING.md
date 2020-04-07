@@ -121,13 +121,10 @@ TCP port is picked at random from the special ports, that way at most 4
 
 # Multiple Servers
 
-It is also possible to deploy extra servers with OpenVPN processes. This can
-currently be configured in two ways:
+On CentOS it is possible to deploy extra servers with OpenVPN processes.
 
-1. Over a private (V)LAN between the controller (portal) and additional 
-   node(s). Documented [here](ADD_NODE.md) (**NOT RECOMMENDED**).
-2. Over a TLS connection between the controller (portal) and additional 
-   node(s). Documented [here](ADD_DAEMON_NODE.md).
+To set up a single (separate) controller and multiple nodes, go 
+[here](MULTI_NODE.md).
 
-The first one has been supported since 2.x of eduVPN / Let's Connect!. The 
-second one is supported in vpn-server-api >= 2.1.0.
+To add an additional node, or additional nodes to your exsting single server
+setup, go [here](ADD_DAEMON_NODE.md).
