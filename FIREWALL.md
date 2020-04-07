@@ -89,7 +89,7 @@ scratch, depending exactly on your use case.
 
 **NOTE**: if you go down this path, make sure you update the configuration file
 `/etc/vpn-server-node/config.php` and add/set the option `manageFirewall` to 
-`false`!
+`false`! This option is available since vpn-server-node >= 2.1.4 (2020-04-05).
  
 You can modify `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` 
 manually and restart the firewall:
