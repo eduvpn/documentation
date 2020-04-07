@@ -3,12 +3,14 @@ title: Shibboleth SP (CentOS)
 description: SAML Authentication using Shibboleth
 ---
 
+**NOTE** NOT UP TO DATE FOR SHIB3!
+
 On CentOS you have to install Shibboleth using the 
 [packages](https://wiki.shibboleth.net/confluence/display/SP3/RPMInstall) 
 provided by the Shibboleth project. Folow the instructions there for 
 "CentOS 7" to add the repository and install the packages.
 
-**NOTE** NOT UP TO DATE FOR SHIB3!
+    $ sudo yum install shibboleth.x86_64
 
 ## Configuration
 
