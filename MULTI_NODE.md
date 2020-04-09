@@ -285,3 +285,74 @@ From now on, the load should be distributed over the VPN nodes once you
 download a new configuration. You can monitor this through the portal on the
 "Connections" page. By connecting multiple devices you should see them connect 
 to the different nodes instead of all to one node.
+
+## Firewall
+
+The default firewall is nice to get going quickly. But we can do a little 
+better than that on the nodes and tightening it some more. This is because we 
+know the specific environment we run in.
+
+First, we disable the firewall regeneration in 
+`/etc/vpn-server-node/config.php` by adding adding `manageFirewall` and setting
+it to `false`. This prevents the `apply_changes.sh` script from overwriting 
+our custom firewall.
+
+In the example below, `ens160` is the external interface that links the 
+machine(s) to the Internet.
+
+`/etc/sysconfig/iptables`:
+
+```
+*nat
+-P PREROUTING ACCEPT
+-P INPUT ACCEPT
+-P OUTPUT ACCEPT
+-P POSTROUTING ACCEPT
+-A POSTROUTING -s 10.1.0.0/25 -j SNAT --to-source 145.0.6.72
+COMMIT
+*filter
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -s 145.0.6.71/32 -p tcp -m tcp --dport 41194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -i tun+ -o ens160 -j ACCEPT
+-A FORWARD -i ens160 -o tun+ -j ACCEPT
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+COMMIT
+```
+
+`/etc/sysconfig/ip6tables`:
+
+```
+*nat
+-P PREROUTING ACCEPT
+-P INPUT ACCEPT
+-P OUTPUT ACCEPT
+-P POSTROUTING ACCEPT
+-A POSTROUTING -s fd00:1:1:1::/64 -j SNAT --to-source 2001:610:188:418:145:0:6:72
+*filter
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p ipv6-icmp -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -s 2001:610:188:418:145:0:6:71/128 -p tcp -m tcp --dport 41194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -j REJECT --reject-with icmp6-adm-prohibited
+-A FORWARD -i tun+ -o ens160 -j ACCEPT
+-A FORWARD -i ens160 -o tun+ -j ACCEPT
+-A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+COMMIT
+```
