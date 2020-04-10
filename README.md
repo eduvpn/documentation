@@ -79,6 +79,9 @@ in the future.
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
 
+**NOTE**: if you want to deploy on multiple machines for load balancing, please 
+follow [these](MULTI_NODE.md) instructions!
+
 ## Experimental
 
 * [Debian 9](DEPLOY_DEBIAN.md) (`x86_64`) 
