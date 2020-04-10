@@ -36,9 +36,14 @@ updates and enable (remote) SSH login if you prefer. It is a little bit easier
 and you don't need a keyboard/mouse attached to your Pi anymore. If you want to 
 use WiFi, it DOES work out of the box on Fedora 31, but you need to configure
 it through the CLI as mentioned on the Wiki. The "installer" does not support 
-it.
+it. First walk through the setup "wizard". Make sure you either create an 
+account with "Administrator" permissions, or set a root password.
 
-To install all updates:
+To configure WiFi:
+
+    $ sudo nmcli device wifi connect "Your SSID" --ask
+
+After connectin to the network, install all updates:
     
     $ sudo dnf -y --refresh update
 
@@ -47,7 +52,7 @@ Set the hostname to the name you want to give your VPN server:
     $ sudo hostnamectl set-hostname vpn.example.org
 
 This concludes setting up Fedora on your Pi. Make sure everything works as 
-expected and reboot before attempting to install the VPN software.
+expected and **reboot** before attempting to install the VPN software.
 
 # Installing the VPN server
 
