@@ -290,6 +290,22 @@ download a new configuration. You can monitor this through the portal on the
 "Connections" page. By connecting multiple devices you should see them connect 
 to the different nodes instead of all to one node.
 
+## Maintenance
+
+The way the software is currently set up requires some care when e.g. updating
+the various machines. The steps to follow:
+
+1. Stop all OpenVPN processes on the node(s) (`stop_node.sh`);
+2. Update the controller (`update_controller.sh`) and reboot if necessary;
+3. Update the node(s) (`update_node.sh`);
+4. Reboot, if necessary, *or* start the node(s) (`start_node.sh`).
+
+Stopping the node(s) first is required to make sure all clients are cleanly 
+disconnected and the disconnect event is logged at the controller.
+
+You can find these scripts in the `multi_node` folder of the documentation
+repository.
+
 ## Firewall
 
 The default firewall is nice to get going quickly. But we can do a little 
