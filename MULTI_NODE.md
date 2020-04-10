@@ -306,6 +306,9 @@ disconnected and the disconnect event is logged at the controller.
 You can find these scripts in the `multi_node` folder of the documentation
 repository.
 
+**NOTE**: make sure you ran `apply_changes.sh` on all nodes before using the
+update scripts.
+
 ## Firewall
 
 The default firewall is nice to get going quickly. But we can do a little 
