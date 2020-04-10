@@ -43,7 +43,7 @@ To configure WiFi:
 
     $ sudo nmcli device wifi connect "Your SSID" --ask
 
-After connectin to the network, install all updates:
+After connecting to the network, install all updates:
     
     $ sudo dnf -y --refresh update
 
