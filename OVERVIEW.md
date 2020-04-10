@@ -16,7 +16,7 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [LDAP](LDAP.md)                                       | Enable LDAP Authentication |
 | [RADIUS](RADIUS.md)                                   | Enable RADIUS Authentication |
 | [SAML](SAML.md)                                       | Enable SAML Authentication |
-| [2FA](2FA.md)                                         | Configure 2FA (Two Factor Authentication) |
+| [2FA](2FA.md)                                         | Configure 2FA (Two Factor Authentication) (**DEPRECATED**) |
 | [ACL](ACL.md)                                         | Configure ACL (Access Control Lists) to manage access to VPN profiles |
 | [BRANDING](BRANDING.md)                               | Configure Branding/Themes (eduVPN/Let's Connect!) |
 | [CUSTOM_BRANDING](CUSTOM_BRANDING.md)                 | Apply your own Branding/Themes |
@@ -25,12 +25,18 @@ List of documents in order to configure the VPN server or perform common tasks.
 | [ADD_NODE](ADD_NODE.md)                               | Add a VPN node for handling OpenVPN connections |
 | [DNS_FILTERING](DNS_FILTERING.md)                     | Block malware/tracking/advertisement domains with Local DNS Resolver |
 | [MULTI_PROFILE](MULTI_PROFILE.md)                     | Configure VPN Profiles on VPN Server|
+| [MULTI_NODE](MULTI_NODE.md)                           | Set up a controller with two nodes |
+| [ADD_DAEMON_NODE](ADD_DAEMON_NODE.md)                 | Add additional VPN nodes for handling OpenVPN connections |
 | [PUBLIC_ADDR](PUBLIC_ADDR.md)                         | Use Public IP Addresses for VPN Clients |
 | [PORT_SHARING](PORT_SHARING.md)                       | Use common ports for your VPN server that enable its use in many restricted networks |
 | [USER_DELETE](USER_DELETE.md)                         | Manually fully Delete a User | 
 | [CONTRIBUTE_TRANSLATIONS](CONTRIBUTE_TRANSLATIONS.md) | Contribute Translations for the User and Admin portal(s) |
 | [BGP](BGP.md)                                         | Use BGP announcements |
 | [PORTAL_ADMIN](PORTAL_ADMIN.md)                       | How to configure admin users for the portal |
+| [VPN_DAEMON](VPN_DAEMON.md)                           | Use VPN Daemon for OpenVPN Management |
+| [SOURCE_ROUTING](SOURCE_ROUTING.md)                   | Setup Source/Policy Routing |
+| [RASPBERRY_PI](RASPBERRY_PI.md)                       | Setup a VPN server on a Raspberry Pi |
+| [MONITORING](MONITORING.md)                           | VPN Server Monitoring |
 
 ## Documentation
 
@@ -54,7 +60,8 @@ Documentation specific for developers.
 | Document                                              | Description                      |
 | ----------------------------------------------------- | -------------------------------- |
 | [API](API.md)                                         | API Documentation for (Native) Application Developers |
-| [INSTANCE_DISCOVERY](INSTANCE_DISCOVERY.md)           | Obtain a list of VPN server Instances |
+| [SERVER_DISCOVERY](SERVER_DISCOVERY)                  | Obtain a list of VPN server Instances (**NEW**)  |
+| [INSTANCE_DISCOVERY](INSTANCE_DISCOVERY.md)           | Obtain a list of VPN server Instances (**CURRENT**) |
 | [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md)             | Setup a Developer Environment |
 | [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md)     | Developer Guidelines |
 | [ROADMAP](ROADMAP.md)                                 | Development of Let's Connect! / eduVPN 3.0 |
