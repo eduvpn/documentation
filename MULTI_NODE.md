@@ -12,6 +12,10 @@ with one controller, this document is for you!
 This document will show how to set up multiple nodes. The OpenVPN clients will
 be distributed over the nodes using DNS round-robin.
 
+If you already installed the software on one machine already, and want to 
+convert your current installation into a controller you can use the 
+`convert_to_controller.sh` script.
+
 ## Requirements
 
 At least 3 machines (or VMs) running CentOS 7. The two machines that will be
