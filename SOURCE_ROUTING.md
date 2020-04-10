@@ -101,37 +101,76 @@ It is smart to reboot your system to see if all comes up as expected:
     $ ip -6 ro show table vpn
     default via fd00:1010:1010:1010::1 dev eth1 metric 1024 pref medium
 
-## Disable NAT
+## Firewall
 
-In order to disable NAT on the VPN box, you can modify the included firewall 
-by editing `/etc/vpn-server-node/firewall.php` and removing the content of 
-`natRules`.
+At this point it makes sense to create your own firewall. See 
+[FIREWALL](FIREWALL.md#custom-firewall) for inspiration and on how to disable
+firewall management. For example, for our setup we use this 
+in `/etc/sysconfig/iptables`:
 
-Install the new firewall rules:
+```
+*filter
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 80 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+COMMIT
+```
 
-    $ sudo vpn-server-node-generate-firewall --install
+And in `/etc/sysconfig/ip6tables`:
 
-It turns out that a "restart" of `iptables` and `ip6tables` does not (always?) 
-flush the NAT table. Just to make sure:
+```
+*filter
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p ipv6-icmp -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 80 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -j REJECT --reject-with icmp6-adm-prohibited
+COMMIT
+```
 
-    $ sudo systemctl stop iptables
-    $ sudo systemctl stop ip6tables
-    $ sudo iptables -F 
+No need for `FORWARD` and NAT rules anymore! This makes it a lot easier, and 
+better performing.
+
+To apply:
+
     $ sudo iptables -F -t nat
-    $ sudo ip6tables -F 
     $ sudo ip6tables -F -t nat
-    $ sudo systemctl start iptables
-    $ sudo systemctl start ip6tables
+    $ sudo systemctl restart iptables
+    $ sudo systemctl restart ip6tables
 
-**NOTE**: this still leaves behind some `FORWARD` filtering. Unfortunately the
-firewall tool is not able to generate files without `FORWARD` filtering. Feel 
-free to stop using the tool and directly modify the firewall files in 
-`/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables`. Of course you can
-also fully remove the firewall by removing the `iptables-services` package and
-rebooting.
+## Hacks
 
-## Issues
+**TO BE CLEANED UP**
 
-It is impossible to `ping` the OpenVPN gateway address from a VPN client, the 
-routing will actually work. In the example above it is impossible to ping
-`10.10.10.1` from the VPN client. I don't know how to fix this at this time...
+    #!/bin/sh
+    NETWORK4=$(/usr/bin/ipcalc -n $ifconfig_local $ifconfig_netmask | cut -d '=' -f 2)
+    PREFIX4=$(/usr/bin/ipcalc -p $4 $5 | cut -d '=' -f 2)
+    NETWORK6=$(/usr/bin/ipcalc -n $ifconfig_ipv6_local/$ifconfig_ipv6_netbits | cut -d '=' -f 2)
+    PREFIX6=$ifconfig_ipv6_netbits
+
+    echo /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
+    echo /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
+
+    /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
+    /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
+
+By adding this as `--up` command in the OpenVPN server config we can also 
+add the `tun` devices automatically to the `vpn` table.
