@@ -286,5 +286,9 @@ the server info URL. A signature file is also available.
 The application MUST verify ALL signatures over ALL files when retrieving them
 BEFORE using them.
 
-**FIXME** we need to record the time stamp (or sequence) to make sure it is not 
-possible to do a rollback.
+All discovery files contain the `"v"` key in the root. It is in the format 
+`YYYYMMDDXX` where `XX` indicates the version of the day. The first version
+of the day is for example `2020041100`. The next version is `2020041101`. When 
+downloading a JSON discovery file it MUST be made sure the `"v"` of the new 
+file is >= `"v"` of the previous obtained file. The application MUST NOT parse
+the `"v"` field, but simply perform a string compare.
