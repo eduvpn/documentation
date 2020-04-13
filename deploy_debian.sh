@@ -92,10 +92,6 @@ a2ensite localhost
 cp resources/70-timezone.ini /etc/php/7.0/mods-available/lc-timezone.ini
 phpenmod -v 7.0 -s ALL lc-timezone
 
-# session hardening
-cp resources/75-session.debian.ini /etc/php/7.0/mods-available/lc-session.ini
-phpenmod -v 7.0 -s ALL lc-session
-
 # restart php-fpm to read the new configuration
 systemctl restart php7.0-fpm
 

@@ -127,8 +127,6 @@ sed -i "s|;listen.group = nobody|listen.group = apache|" /etc/php-fpm.d/www.conf
 
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
-# session hardening
-cp resources/75-session.centos.ini /etc/php.d/75-session.ini
 
 # work around to create the session directory, otherwise we have to install
 # the PHP package, this is only on CentOS
