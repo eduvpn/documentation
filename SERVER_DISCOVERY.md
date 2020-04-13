@@ -286,9 +286,10 @@ the server info URL. A signature file is also available.
 The application MUST verify ALL signatures over ALL files when retrieving them
 BEFORE using them.
 
-All discovery files contain the `"v"` key in the root. It is in the format 
-`YYYYMMDDXX` where `XX` indicates the version of the day. The first version
-of the day is for example `2020041100`. The next version is `2020041101`. When 
-downloading a JSON discovery file it MUST be made sure the `"v"` of the new 
-file is >= `"v"` of the previous obtained file. The application MUST NOT parse
-the `"v"` field, but simply perform a string compare.
+## Version
+
+All discovery files contain the `"v"` key in the root. It is in the "ATOM" 
+format, e.g. `2020-04-13T09:17:51+00:00`. When downloading a JSON discovery 
+file it MUST be made sure the `"v"` of the new 
+file is > `"v"` of the previous obtained (cached) file. The application MUST 
+NOT parse the `"v"` field, but simply perform a string compare.
