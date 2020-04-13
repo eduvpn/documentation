@@ -188,8 +188,8 @@ systemctl enable --now httpd
 ###############################################################################
 
 # install (modified) default firewall to also allow HTTP and HTTPS
-cp resources/centos/iptables /etc/sysconfig/iptables
-cp resources/centos/ip6tables /etc/sysconfig/ip6tables
+cp resources/firewall/controller/iptables /etc/sysconfig/iptables
+cp resources/firewall/controller/ip6tables /etc/sysconfig/ip6tables
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables
