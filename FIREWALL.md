@@ -18,17 +18,17 @@ of scope of this document. We only collected some common situations below.
 The _annotated_ default firewall configuration files as installed on new 
 deployments can be found here:
 
-* [Single Server](#)
+* [Single Server](README.md#deployment)
   * [IPv4](resources/firewall/iptables)
   * [IPv6](resources/firewall/ip6tables)
 
-* [Multi Node Server](#)
+* [Multi Node Server](MULTI_NODE.md)
   * Controller
-    * [IPv4](#)
-    * [IPv6](#)
+    * [IPv4](resources/firewall/controller/iptables)
+    * [IPv6](resources/firewall/controller/ip6tables)
   * Node
-    * [IPv4](#)
-    * [IPv6](#)
+    * [IPv4](resources/firewall/node/iptables)
+    * [IPv6](resources/firewall/node/ip6tables)
 
 You can of course also use the firewall software of your choice, or fully 
 disable the firewall! As our goal was to keep things as simple and easy as 
@@ -102,8 +102,8 @@ interface you can use that instead. For example, if your external interface is
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 This allows all traffic to and from the VPN clients. This is fine in case NAT
-is used. For [Public IP Addresses](#) we will explain how to restrict this 
-further.
+is used. For [Public IP Addresses](PUBLIC_ADDR.md) we will explain how to 
+restrict this further.
 
 ## Using SNAT
 
@@ -144,8 +144,8 @@ and address(es).
 
 # Use Different Public IP Address per VPN Profile
 
-When using [Multiple Profiles](), you may want to use a different public IP 
-address.
+When using [Multiple Profiles](MULTI_PROFILE.md), you may want to use a 
+different public IP address.
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
