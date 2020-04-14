@@ -47,6 +47,22 @@ You can fully disable the firewall if you want to use your own firewall:
 
     $ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
 
+## IPv4 vs IPv6
+
+The configuration of IPv4 and IPv6 firewalls is _almost_ identical. When 
+modifying the configuration files you, obviously, have to use the IPv4 style
+addresses in the IPv4 firewall, and the IPv6 style addresses in the IPv6 
+firewall. In addition, the ICMP types are slightly different:
+
+             | IPv4                   | IPv6
+------------ | ---------------------- | ----------------------
+Protocol     | `icmp`                 | `ipv6-icmp`
+Error Packet | `icmp-host-prohibited` | `icmp6-adm-prohibited`
+
+So when modifying the firewall files, make sure you use the correct protocol
+and error packet description. You can see this in the default firewall as 
+listed above.
+
 ## Debian
 
 You can find the firewall rules in `/etc/iptables/rules.v4` (IPv4) 
@@ -103,8 +119,8 @@ i.e.:
 Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
 `192.0.2.1` with your public IP address.
 
-**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
-range and address.
+**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
+and address(es).
 
 # NAT to Multiple Public IP Addresses
 
@@ -123,8 +139,8 @@ Make sure you replace `10.0.0.0/8` with your VPN client IP range and
 `192.0.2.1-192.0.2.8` with your public IP addresses. All IP addresses in the 
 specified `--to-source` range will be used, specified IPs included.
 
-**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
-range and addresses.
+**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
+and address(es).
 
 # Use Different Public IP Address per VPN Profile
 
@@ -145,8 +161,8 @@ Make sure you replace the IP ranges specified in `-s` with your VPN client IP
 ranges assigned to the profiles, and the `--to-source` address with your public
 IP addresses.
 
-**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
-ranges and addresses.
+**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
+and address(es).
 
 # Reject IPv6 Client Traffic
 
@@ -171,10 +187,37 @@ IPv4 only.
 
 # Public IP Addresses
 
-TBD.
-You can disable NAT, for example when you are using 
-[Public Addresses](PUBLIC_ADDR.md).
-Remove the line:
-    -A POSTROUTING -j MASQUERADE
-From the `*nat` section.
-Block Incoming Traffic To Clients
+If you want to use [Public Addresses](PUBLIC_ADDR.md), this has some 
+implications for the firewall:
+
+1. NAT needs to be disabled;
+2. Incoming traffic for VPN clients may need to be blocked.
+
+**NOTE**: it is possible to use NAT with IPv4 and public IP addresses for IPv6,
+actually this is recommended!
+
+## Disabling NAT
+
+By removing all `POSTROUTING` rules from the "NAT" table takes care of 
+disabling NAT.
+
+## Restricting Incoming Traffic
+
+The default `FORWARD` rules used are:
+
+    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
+    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+When using public IP addresses this allows traffic from the outside to reach 
+the VPN clients. This may not be wanted. Restricting this is easy:
+
+    -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -i tun+ -o eth0 -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+Assuming `eth0` is your external network interface, this allows VPN clients to 
+initiate connections and to receive responses, but outside systems cannot 
+initiate a connection to the VPN clients.
+
+**NOTE**: for IPv6 the situation is similar.
