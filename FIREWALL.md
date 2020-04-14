@@ -47,6 +47,19 @@ You can fully disable the firewall if you want to use your own firewall:
 
     $ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
 
+## Debian
+
+You can find the firewall rules in `/etc/iptables/rules.v4` (IPv4) 
+and `/etc/iptables/rules.v6` (IPv6). 
+
+After making changes, you can restart the firewall using:
+
+    $ sudo systemctl restart netfilter-persistent
+
+You can fully disable the firewall if you want to use your own firewall:
+
+    $ sudo systemctl disable --now netfilter-persistent
+
 ## IPv4 vs IPv6
 
 The configuration of IPv4 and IPv6 firewalls is _almost_ identical. When 
@@ -62,19 +75,6 @@ firewall. In addition, the ICMP types are slightly different:
 So when modifying the firewall files, make sure you use the correct protocol
 and error packet description. You can see this in the default firewall as 
 listed above.
-
-## Debian
-
-You can find the firewall rules in `/etc/iptables/rules.v4` (IPv4) 
-and `/etc/iptables/rules.v6` (IPv6). 
-
-After making changes, you can restart the firewall using:
-
-    $ sudo systemctl restart netfilter-persistent
-
-You can fully disable the firewall if you want to use your own firewall:
-
-    $ sudo systemctl disable --now netfilter-persistent
 
 # Improving the Defaults
 
