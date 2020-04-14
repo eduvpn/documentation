@@ -29,7 +29,6 @@ echo "${TMP_DIR}/backup-${DATETIME}.tar.xz"
 #
 # cd / && tar --selinux -xJf <file.tar.xz>
 # vpn-server-node-server-config
-# vpn-server-node-generate-firewall --install
-# 
+#
 # enable all the OpenVPN processes (systemctl) if necessary and start them!
 # reboot server to make sure everything comes up as expected!

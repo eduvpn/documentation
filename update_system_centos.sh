@@ -25,13 +25,6 @@ sudo systemctl start httpd
 # regenerate OpenVPN config
 sudo vpn-server-node-server-config
 
-# regenerate firewall
-sudo vpn-server-node-generate-firewall --install
-
-# restart firewall
-sudo systemctl restart iptables
-sudo systemctl restart ip6tables
-
 # start OpenVPN processes
 for OPENVPN_PROCESS in ${OPENVPN_PROCESS_LIST}
 do

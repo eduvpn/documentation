@@ -157,7 +157,9 @@ systemctl enable --now openvpn-server@internet-1
 # FIREWALL
 ###############################################################################
 
-vpn-server-node-generate-firewall --install
+cp resources/firewall/iptables  /etc/iptables/rules.v4
+cp resources/firewall/ip6tables /etc/iptables/rules.v6
+
 systemctl enable netfilter-persistent
 systemctl restart netfilter-persistent
 

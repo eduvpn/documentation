@@ -31,11 +31,6 @@ vpn-server-api-update-api-secrets
 systemctl start php-fpm
 systemctl start httpd
 
-# regenerate/restart firewall
-vpn-server-node-generate-firewall --install     
-systemctl restart iptables
-systemctl restart ip6tables
-
 (
     "$(dirname "$0")/openvpn_generate_enable_start.sh"
 )

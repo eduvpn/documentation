@@ -187,8 +187,8 @@ systemctl enable --now openvpn-server@internet-1
 # FIREWALL
 ###############################################################################
 
-# generate and install the firewall
-vpn-server-node-generate-firewall --install
+cp resources/firewall/iptables  /etc/sysconfig/iptables
+cp resources/firewall/ip6tables /etc/sysconfig/ip6tables
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables

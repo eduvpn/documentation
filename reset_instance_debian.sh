@@ -31,10 +31,6 @@ vpn-server-api-update-api-secrets
 systemctl start php7.0-fpm
 systemctl start apache2
 
-# regenerate/restart firewall
-vpn-server-node-generate-firewall --install     
-systemctl restart netfilter-persistent
-
 (
     "$(dirname "$0")/openvpn_generate_enable_start.sh"
 )

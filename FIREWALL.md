@@ -4,150 +4,177 @@ description: Configure the VPN Firewall
 category: documentation
 ---
 
-A simple firewall is included that only allows connections to the VPN, SSH, 
-HTTP and HTTPS ports. It also prevents external
-systems from contacting your VPN clients.
+# Introduction
 
-The firewall is configured through `/etc/vpn-server-node/firewall.php`.
+A very simple static firewall based on `iptables` is installed when running the 
+deploy scripts. It allows connections to the VPN, SSH, HTTP and HTTPS ports. In 
+addition it uses NAT for both IPv4 and IPv6 client traffic.
 
-## Host Firewall
+This document explains how to modify the firewall for common scenarios that
+deviate from the default and on how to tailor the VPN configuration for your 
+particular set-up. Much more is possible with `iptables` that is out
+of scope of this document. We only collected some common situations below.
 
-SSH access is not strictly needed, but it is useful to be able to manage your 
-VPN server :-) 
+The _annotated_ default firewall configuration files as installed on new 
+deployments can be found here:
 
-It is smart however to limit the connections to SSH to a list of trusted hosts,
-and not have it open for the entire Internet *OR* your VPN users.
+* [Single Server](#)
+  * [IPv4](#)
+  * [IPv6](#)
 
-If your network already filters incoming SSH traffic, a VPN user MAY still be 
-able to connect to SSH!
+* [Multi Node Server](#)
+  * Controller
+    * [IPv4](#)
+    * [IPv6](#)
+  * Node
+    * [IPv4](#)
+    * [IPv6](#)
 
-If you want to avoid this, you need to make some modifications:
+You can of course also use the firewall software of your choice, or fully 
+disable the firewall! As our goal was to keep things as simple and easy as 
+possible by default.
 
-	// Only allow SSH access from 10.0.0.0/8 & fd00::/8
-	// Make sure to remove 22 from "dst_port" in above rule
-	[
-	    'proto' => ['tcp'],
-	    'src_net' => [
-	        '10.0.0.0/8',
-	        'fd00::/8',
-	    ],
-	    'dst_port' => [
-	        22,     // SSH
-	    ],
-	],
+## CentOS, Red Hat Enterprise Linux and Fedora
 
-### Open a Port 
+You can find the firewall rules in `/etc/sysconfig/iptables` (IPv4) and 
+`/etc/sysconfig/ip6tables` (IPv6). 
 
-To simply open a port, in this case `12345` for both TCP and UDP, add this:
+After making changes, you can restart the firewall using:
 
-	[
-		'proto' => ['tcp', 'udp'],
-		'dst_port' => [12345]
-	]
+    $ sudo systemctl restart iptables && sudo systemctl restart ip6tables
 
-To open a port only for certain IP ranges:
+You can fully disable the firewall if you want to use your own firewall:
 
-    [
-        'proto' => ['tcp', 'udp'],
-        'src_net' => ['10.0.0.0/8', 'fd00::/8'],
-        'dst_port' => [53],
-    ],	
+    $ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
 
-### NAT
+## Debian
 
-You can enable/disable NAT for certain profiles:
+You can find the firewall rules in `/etc/iptables/rules.v4` (IPv4) 
+and `/etc/iptables/rules.v6` (IPv6). 
 
-    // NAT
-    'natRules' => [
-        // profile "internet"
-        'internet' => [
-            'enableNat' => ['IPv4', 'IPv6']
-        ],
-    ],
-	
-This enables NAT for the `internet` profile for both IPv4 and IPv6. You can 
-modify this if you switch to [Public Addresses](PUBLIC_ADDR.md).
+After making changes, you can restart the firewall using:
 
-## VPN Client Firewall
+    $ sudo systemctl restart netfilter-persistent
 
-The VPN client firewall simply prevents any connection *initiation* from the 
-Internet preventing clients that have open services to have them exposed to 
-the Internet. Of course, when NAT is used (the default) there is already *some* 
-protection against it. But when switching to [Public Addresses](PUBLIC_ADDR.md) 
-this is a different story.
+You can fully disable the firewall if you want to use your own firewall:
 
-## Apply Firewall
+    $ sudo systemctl disable --now netfilter-persistent
 
-To apply the changes you make to the firewall, run the `apply_changes.sh` 
-script from this repository on your VPN server.
+# Improving the Defaults
 
-## Custom Firewall
+The default firewall works well, but can be improved upon by matching it more
+with your system. Two steps I always take:
 
-If you need something more complicated than the included firewall scripts can
-accomplish, you can still use the generated firewall as a base or start from
-scratch, depending exactly on your use case.
+1. Specifying the exact network interfaces for which to allow "forwarding"
+2. Switch to `SNAT` for IPv4 and IPv6 NAT
 
-**NOTE**: if you go down this path, make sure you update the configuration file
-`/etc/vpn-server-node/config.php` and add/set the option `manageFirewall` to 
-`false`! This option is available since vpn-server-node >= 2.1.4 (2020-04-05).
- 
-You can modify `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` 
-manually and restart the firewall:
+## Specifying Interfaces
 
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
+The default `FORWARD` rules used are:
 
-### Different Public IP for Different Profile
+    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
+    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
-Assume you have two VPN profiles, one for `employees` and one for 
-`admin` and they both use NAT. But now you want to use a different public IP 
-address for traffic coming from each of these profiles. If you so far used the 
-generated firewall, you'd have something like this in 
-`/etc/sysconfig/iptables`:
+This allows all traffic coming from the OpenVPN `tun` devices to all other 
+devices that are not also OpenVPN `tun` devices. If you know the external 
+interface you can use that instead. For example, if your external interface is
+`eth0`, the rules would look like this:
 
-    *nat
-    :PREROUTING ACCEPT [0:0]
-    :INPUT ACCEPT [0:0]
-    :OUTPUT ACCEPT [0:0]
-    :POSTROUTING ACCEPT [0:0]
-    -A POSTROUTING --source 10.0.1.0/24 --jump MASQUERADE
-    -A POSTROUTING --source 10.0.2.0/24 --jump MASQUERADE
-    COMMIT
+    -A FORWARD -i tun+ -o eth0 -j ACCEPT
+    -A FORWARD -i eth0 -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
-Here `10.0.1.0/24` is the `employees` profile, and `10.0.2.0/24` is the `admin` 
-profile.
+This allows all traffic to and from the VPN clients. This is fine in case NAT
+is used. For [Public IP Addresses](#) we will explain how to restrict this 
+further.
 
-You can replace the two `POSTROUTING` rules by these:
+## Using SNAT
 
-    -A POSTROUTING -s 10.0.1.0/24 --jump SNAT --to-source 1.2.3.4
-    -A POSTROUTING -s 10.0.2.0/24 --jump SNAT --to-source 1.2.3.5
+The default `POSTROUTING` rule in the "NAT" table is:
 
-Where `1.2.3.4` is the first public IPv4 address, and `1.2.3.5` is the second
-one. Don't forget to restart the firewall as mentioned above.
+    -A POSTROUTING -j MASQUERADE
 
-### NAT to Multiple IP Addresses
+It is recommended to use `SNAT` and be explicit about the IP address to NAT to,
+i.e.:
 
-If you have many clients, using NAT with a single IP address may not be 
-sufficient. You can solve this like this:
+    -A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1
 
-    -A POSTROUTING -s 10.0.1.0/24 --jump SNAT --to-source 1.2.3.4-1.2.3.8
+Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
+`192.0.2.1` with your public IP address.
 
-This will use the IP addresses `1.2.3.4` up to including `1.2.3.8` to share
-the load over the IPs.
+**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
+range and address.
 
-### Reject IPv6 Client Traffic
+# NAT to Multiple Public IP Addresses
 
-You cannot fully disable IPv6 in the VPN server, but you can drop all IPv6 
-traffic coming from the clients wanting to go out to the Internet.
+When using NAT with many clients, it makes sense to "share" the traffic over
+multiple public IP addresses.
 
-Modify `/etc/sysconfig/ip6tables` and remove the `*nat` line up to the
-first `COMMIT` line before `*filter`. 
+The default `POSTROUTING` rule in the "NAT" table is:
 
-Remove all `-A FORWARD` lines in the `*filter` section, except:
+    -A POSTROUTING -j MASQUERADE
 
-    -A FORWARD --jump REJECT --reject-with icmp6-adm-prohibited
+You can replace this by:
 
-To apply:
+    -A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1-192.0.2.8
 
-    $ sudo ip6tables -F -t nat
-    $ sudo systemctl restart ip6tables
+Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
+`192.0.2.1-192.0.2.8` with your public IP addresses. All IP addresses in the 
+specified `--to-source` range will be used, specified IPs included.
+
+**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
+range and addresses.
+
+# Use Different Public IP Address per VPN Profile
+
+When using [Multiple Profiles](), you may want to use a different public IP 
+address.
+
+The default `POSTROUTING` rule in the "NAT" table is:
+
+    -A POSTROUTING -j MASQUERADE
+
+You can replace this by:
+
+    -A POSTROUTING -s 10.0.1.0/24 -j SNAT --to-source 192.0.2.1
+    -A POSTROUTING -s 10.0.2.0/24 -j SNAT --to-source 192.0.2.2
+    -A POSTROUTING -s 10.0.3.0/24 -j SNAT --to-source 192.0.2.3
+
+Make sure you replace the IP ranges specified in `-s` with your VPN client IP 
+ranges assigned to the profiles, and the `--to-source` address with your public
+IP addresses.
+
+**NOTE** for IPv6 the situation is exactly the same, except you'd use the IPv6 
+ranges and addresses.
+
+# Reject IPv6 Client Traffic
+
+As the VPN server is "dual stack" throughout, it is not possible to "disable" 
+IPv6. However, one can easily modify the firewall to prevent all IPv6 traffic
+over the VPN to be rejected. By _rejecting_ instead of _dropping_, clients will
+quickly fall back to IPv4, there will not be any delays in establishing 
+connections.
+
+The default `FORWARD` rules used are:
+
+    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
+    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+
+You can simply remove all of them except the last one:
+
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+
+This will cause all IPv6 to be rejected. The VPN becomes thus effectively 
+IPv4 only.
+
+# Public IP Addresses
+
+TBD.
+You can disable NAT, for example when you are using 
+[Public Addresses](PUBLIC_ADDR.md).
+Remove the line:
+    -A POSTROUTING -j MASQUERADE
+From the `*nat` section.
+Block Incoming Traffic To Clients

@@ -25,12 +25,6 @@ sudo systemctl start apache2
 # regenerate OpenVPN config
 sudo vpn-server-node-server-config
 
-# regenerate firewall
-sudo vpn-server-node-generate-firewall --install
-
-# restart firewall
-sudo systemctl restart netfilter-persistent
-
 # start OpenVPN processes
 for OPENVPN_PROCESS in ${OPENVPN_PROCESS_LIST}
 do
