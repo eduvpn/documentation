@@ -54,7 +54,7 @@ modifying the configuration files you, obviously, have to use the IPv4 style
 addresses in the IPv4 firewall, and the IPv6 style addresses in the IPv6 
 firewall. In addition, the ICMP types are slightly different:
 
-             | IPv4                   | IPv6
+    X        | IPv4                   | IPv6
 ------------ | ---------------------- | ----------------------
 Protocol     | `icmp`                 | `ipv6-icmp`
 Error Packet | `icmp-host-prohibited` | `icmp6-adm-prohibited`
