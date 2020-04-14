@@ -19,8 +19,8 @@ The _annotated_ default firewall configuration files as installed on new
 deployments can be found here:
 
 * [Single Server](#)
-  * [IPv4](#)
-  * [IPv6](#)
+  * [IPv4](resources/firewall/iptables)
+  * [IPv6](resources/firewall/ip6tables)
 
 * [Multi Node Server](#)
   * Controller
