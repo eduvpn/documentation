@@ -102,8 +102,8 @@ interface you can use that instead. For example, if your external interface is
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 This allows all traffic to and from the VPN clients. This is fine in case NAT
-is used. For [Public IP Addresses](PUBLIC_ADDR.md) we will explain how to 
-restrict this further.
+is used. When issuing [Public IP Addresses](#public-ip-addresses) to VPN 
+clients, see below.
 
 ## Using SNAT
 
@@ -173,10 +173,10 @@ specified `--to-source` range will be used, specified IPs included.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# Use Different Public IP Address per VPN Profile
+# NAT to Different Public IP Addresses per Profile
 
-When using [Multiple Profiles](MULTI_PROFILE.md), you may want to use a 
-different public IP address.
+When using [Multiple Profiles](MULTI_PROFILE.md), you may want to NAT to 
+different public IP addresses.
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
@@ -216,16 +216,16 @@ You can simply remove all of them except the last one:
 This will cause all IPv6 to be rejected. The VPN becomes thus effectively 
 IPv4 only.
 
-# Public IP Addresses
+# Public IP Addresses for VPN Clients
 
-If you want to use [Public Addresses](PUBLIC_ADDR.md), this has some 
-implications for the firewall:
+If you want to use [Public Addresses](PUBLIC_ADDR.md) for the VPN clients, this 
+has some implications for the firewall:
 
 1. NAT needs to be disabled;
 2. Incoming traffic for VPN clients may need to be blocked.
 
-**NOTE**: it is possible to use NAT with IPv4 and public IP addresses for IPv6,
-actually this is recommended!
+**NOTE**: it is possible to use NAT for IPv4 and public IP addresses for IPv6,
+actually this is recommended over using IPv6 NAT!
 
 ## Disabling NAT
 
