@@ -116,7 +116,6 @@ php bin/init.php
 cd "${BASE_DIR}/vpn-server-node" || exit
 mkdir -p data openvpn-config
 composer update
-cp config/firewall.php.example config/firewall.php
 cat << 'EOF' > config/config.php
 <?php
 $baseConfig = include __DIR__.'/config.php.example';

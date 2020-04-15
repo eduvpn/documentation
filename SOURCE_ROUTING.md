@@ -103,58 +103,8 @@ It is smart to reboot your system to see if all comes up as expected:
 
 ## Firewall
 
-At this point it makes sense to create your own firewall. See 
-[FIREWALL](FIREWALL.md#custom-firewall) for inspiration and on how to disable
-firewall management. For example, for our setup we use this 
-in `/etc/sysconfig/iptables`:
-
-```
-*filter
--P INPUT ACCEPT
--P FORWARD ACCEPT
--P OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -p icmp -j ACCEPT
--A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 80 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -m conntrack --ctstate INVALID -j DROP
--A INPUT -j REJECT --reject-with icmp-host-prohibited
-COMMIT
-```
-
-And in `/etc/sysconfig/ip6tables`:
-
-```
-*filter
--P INPUT ACCEPT
--P FORWARD ACCEPT
--P OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -p ipv6-icmp -j ACCEPT
--A INPUT -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 80 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p udp -m udp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 1194 -m conntrack --ctstate NEW,UNTRACKED -j ACCEPT
--A INPUT -m conntrack --ctstate INVALID -j DROP
--A INPUT -j REJECT --reject-with icmp6-adm-prohibited
-COMMIT
-```
-
-No need for `FORWARD` and NAT rules anymore! This makes it a lot easier, and 
-better performing.
-
-To apply:
-
-    $ sudo iptables -F -t nat
-    $ sudo ip6tables -F -t nat
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
+See the [firewall](FIREWALL.md) documentation on how to update your firewall
+if needed.
 
 ## Hacks
 

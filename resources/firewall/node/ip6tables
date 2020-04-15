@@ -22,6 +22,9 @@
 #-A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
 #-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
 
+# VPN Daemon
+#-A INPUT -s 2001:db8::99/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+
 -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
 
 ###########

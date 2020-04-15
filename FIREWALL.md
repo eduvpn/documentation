@@ -195,6 +195,14 @@ IP addresses.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
+# Local DNS
+
+TBD.
+
+# VPN Daemon
+
+TBD.
+
 # Reject IPv6 Client Traffic
 
 As the VPN server is "dual stack" throughout, it is not possible to "disable" 

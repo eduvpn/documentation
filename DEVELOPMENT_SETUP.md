@@ -98,11 +98,6 @@ You can login with the users `foo` and password `bar` or `admin` with password
 
 # VPN Configuration
 
-To generate the firewall and output the data to `stdout`:
-    
-    $ cd ${HOME}/Projects/LC-v2/vpn-server-node 
-    $ php bin/generate-firewall.php
-
 To generate the OpenVPN server configuration files:
 
     $ cd ${HOME}/Projects/LC-v2/vpn-server-node

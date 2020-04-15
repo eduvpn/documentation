@@ -34,8 +34,7 @@ is called the "Public API".
 
 ### Server Node
 
-This component is used to generate OpenVPN server configurations and generate
-the firewall rules.
+This component is used to generate OpenVPN server configurations.
 
 ## IPC
 

@@ -144,24 +144,10 @@ profiles to deploy on this particular node. The default, when the option is
 missing, is to deploy _all_ profiles on this node. Example:
 
     'profileList' => ['internet-far-away'],
-
-Next, you have to modify the firewall configuration in 
-`/etc/vpn-server-node/firewall.php` to allow access to the daemon from your 
-controller:
-
-    [
-        'proto' => ['tcp'],
-        'src_net' => ['x.y.z.a/32'],
-        'dst_port' => [41194],
-    ],
-
-Here `x.y.z.a` is the IP address of your controller. If you are using NAT on
-your node, make sure to also update `natRules` in the firewall config.
-
-Tell the node to use the daemon by adding this to 
-`/etc/vpn-server-node/config.php`:
-
     'useVpnDaemon' => true,
+
+Update your [firewall](FIREWALL.md#vpn-daemon) to allow access from the 
+controller to the VPN daemon.
 
 To apply the changes run the `apply_changes.sh` script from this repository 
 on your VPN server.
@@ -187,9 +173,8 @@ IP address of the node.
 **NOTE** we have some problems with automatically starting `vpn-daemon` on boot
 when you specify an IP address. The IP won't be assigned to the interface 
 before `vpn-daemon` tries to start and thus fail to start. The (dirty) solution 
-is to use `LISTEN=:41194` so it listens on ALL IPs and interfaces. It is VERY
-important then to firewall this port appropriately. See above where this is 
-done.
+is to use `LISTEN=:41194` so it listens on ALL IPs and interfaces. It is 
+important to firewall this port appropriately. See above where this is done.
 
 Copy the certificates you generated on the controller to the right place on the
 node:

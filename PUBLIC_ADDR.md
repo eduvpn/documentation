@@ -14,33 +14,8 @@ appropriate range(s) to your VPN server's IP address(es).
 First edit `/etc/vpn-server-api/config.php` and set the `range` and/or `range6` 
 addresses as appropriate.
 
-Next, modify `/etc/vpn-server-node/firewall.php` to disable NAT for the 
-profile(s) where NAT will no longer be required. The default is:
-
-    'natRules' => [
-        'internet' => [
-            'enableNat' => ['IPv4', 'IPv6']
-        ],
-    ],
-
-If you want to only keep NAT for IPv4 you can modify it such that NAT is not
-enabled for IPv6 any longer:
-
-    'natRules' => [
-        'internet' => [
-            'enableNat' => ['IPv4']
-        ],
-    ],
-
-If you want to not have any NAT any longer, you can just empty the `enableNat` 
-array like this:
-
-    // NAT
-    'natRules' => [
-        'internet' => [
-            'enableNat' => []
-        ],
-    ],
+Next, modify the firewall according to 
+[these](FIREWALL.md#public-ip-addresses-for-vpn-clients) instructions.
 
 To apply the changes run the `apply_changes.sh` script from this repository 
 on your VPN server.

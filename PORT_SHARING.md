@@ -136,34 +136,9 @@ On CentOS/Fedora you need to modify SELinux to allow OpenVPN to listen on
 
 ## Firewall
 
-By default the firewall only allows connections to `udp/1194` and `tcp/1194` 
-for OpenVPN, we need to modify this in `/etc/vpn-server-node/firewall.php`:
+You need to update the firewall to allow access to `udp/443`. Look 
+[here](FIREWALL.md#opening-additional-vpn-ports).
 
-The `inputRules` section should look something like this:
-
-    'inputRules' => [
-        [
-            'proto' => ['tcp'],
-            'dst_port' => [
-                22,     // SSH
-                80,     // HTTP
-                443,    // HTTPS / OPENVPN
-            ],
-        ],
-        [
-            'proto' => ['udp', 'tcp'],
-            'dst_port' => [
-                1194,    // OPENVPN
-            ],
-        ],
-        [
-            'proto' => ['udp'],
-            'dst_port' => [
-                443,    // OPENVPN
-            ],
-        ],
-    ],
-	
 ## Applying
 
 ### CentOS/Fedora
