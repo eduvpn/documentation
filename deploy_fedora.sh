@@ -14,12 +14,6 @@ MACHINE_HOSTNAME=$(hostname -f)
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
-# DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
-# use different name if you want to allow moving the OpenVPN processes to 
-# another machine in the future without breaking client configuration files
-printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
-VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
-
 VPN_STABLE_REPO=1
 VPN_DEV_REPO=${VPN_DEV_REPO:-0}
 if [ "${VPN_DEV_REPO}" = 1 ]
@@ -115,7 +109,7 @@ cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
 ###############################################################################
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges
-vpn-server-api-update-ip --profile internet --host "${VPN_FQDN}"
+vpn-server-api-update-ip --profile internet --host "${WEB_FQDN}"
 
 # initialize the CA
 sudo -u apache vpn-server-api-init

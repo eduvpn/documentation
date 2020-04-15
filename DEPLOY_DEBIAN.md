@@ -48,8 +48,9 @@ this:
     $ sudo -s
     # ./deploy_debian.sh
 
-Specify the hostname you want to use for your VPN server. Both the "Web" and 
-"OpenVPN" DNS names can be identical for simple 1 machine setups.
+Specify the hostname you want to use for your VPN server. The recommended 
+hostname SHOULD already be the one you want to use... If not, set the hostname
+correctly first.
 
 **NOTE**: you can NOT use `localhost` as a hostname, nor an IP address!
 

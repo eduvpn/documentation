@@ -14,12 +14,6 @@ MACHINE_HOSTNAME=$(hostname -f)
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
-# DNS name of the OpenVPN Server (defaults to DNS name of the Web Server
-# use different name if you want to allow moving the OpenVPN processes to 
-# another machine in the future without breaking client configuration files
-printf "DNS name of the OpenVPN Server [%s]: " "${WEB_FQDN}"; read -r VPN_FQDN
-VPN_FQDN=${VPN_FQDN:-${WEB_FQDN}}
-
 ###############################################################################
 # SOFTWARE
 ###############################################################################
@@ -100,7 +94,7 @@ systemctl restart php7.0-fpm
 ###############################################################################
 
 # update the IPv4 CIDR and IPv6 prefix to random IP ranges
-vpn-server-api-update-ip --profile internet --host "${VPN_FQDN}"
+vpn-server-api-update-ip --profile internet --host "${WEB_FQDN}"
 
 # initialize the CA
 sudo -u www-data vpn-server-api-init
