@@ -83,7 +83,10 @@ Show also connected VPN client information:
                         "192.0.2.45",
                         "2001:db8::45"
                     ]
-                }
+                },
+
+                ...
+
             ]
         }
     ]
