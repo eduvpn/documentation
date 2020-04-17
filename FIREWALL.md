@@ -43,7 +43,7 @@ After making changes, you can restart the firewall using:
 
     $ sudo systemctl restart iptables && sudo systemctl restart ip6tables
 
-You can fully disable the firewall if you want to use your own firewall:
+You can fully disable the firewall as well:
 
     $ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
 
@@ -56,7 +56,7 @@ After making changes, you can restart the firewall using:
 
     $ sudo systemctl restart netfilter-persistent
 
-You can fully disable the firewall if you want to use your own firewall:
+You can fully disable the firewall as well:
 
     $ sudo systemctl disable --now netfilter-persistent
 
