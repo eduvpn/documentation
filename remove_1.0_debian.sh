@@ -12,10 +12,14 @@
 # CONFIGURATION
 ###############################################################################
 
-# Stop and disable all OpenVPN services
-(
-    "$(dirname "$0")/openvpn_disable_stop_remove.sh"
-)
+# Stop and Disable OpenVPN Server Process(es)
+for CONFIG_NAME in $(systemctl list-units "openvpn-server@*" --no-legend | cut -d ' ' -f 1)
+do
+    systemctl disable --now "${CONFIG_NAME}"
+done
+
+# Remove all OpenVPN Server Configuration(s) and Certificate(s)
+rm -rf /etc/openvpn/server/*
 
 systemctl stop apache2
 systemctl stop php7.0-fpm

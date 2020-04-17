@@ -5,11 +5,15 @@
 #
 # NOTE: *ALL* VPN configuration will stop working, all users need to obtain
 # a new configuration! All OAuth access tokens will become invalid!
-#
 
-(
-    "$(dirname "$0")/openvpn_disable_stop_remove.sh"
-)
+# Stop and Disable OpenVPN Server Process(es)
+for CONFIG_NAME in $(systemctl list-units "openvpn-server@*" --no-legend | cut -d ' ' -f 1)
+do
+    systemctl disable --now "${CONFIG_NAME}"
+done
+
+# Remove all OpenVPN Server Configuration(s) and Certificate(s)
+rm -rf /etc/openvpn/server/*
 
 systemctl stop httpd
 systemctl stop php-fpm
@@ -31,6 +35,12 @@ vpn-server-api-update-api-secrets
 systemctl start php-fpm
 systemctl start httpd
 
-(
-    "$(dirname "$0")/openvpn_generate_enable_start.sh"
-)
+# (Re)generate OpenVPN Server Configuration(s) and Certificate(s)
+vpn-server-node-server-config || exit
+
+# Enable and Start OpenVPN Server Process(es)
+for CONFIG_NAME in /etc/openvpn/server/*.conf
+do
+    CONFIG_NAME=$(basename "${CONFIG_NAME}" .conf)
+    systemctl enable --now "openvpn-server@${CONFIG_NAME}"
+done
