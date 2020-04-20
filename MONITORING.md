@@ -104,3 +104,10 @@ is about to be depleted, e.g.:
     */5 * * * * /usr/bin/vpn-server-api-status --alert 75
 
 Assuming `cron` is able to mail reports this should work!
+
+# App Usage
+
+SQL query you can run on `/var/lib/vpn-server-api/db.sqlite` to see which VPN
+applications are used by your users:
+
+    SELECT client_id, COUNT(DISTINCT user_id) AS client_count FROM certificates WHERE client_id IS NOT NULL GROUP BY client_id ORDER BY client_count DESC;
