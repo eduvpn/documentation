@@ -4,7 +4,9 @@ description: Performance/Scaling Notes
 ---
 
 **NOTE**: as of today (2020-03-12) we only support using multiple servers on 
-CentOS or Fedora as some packages are missing on Debian to facilitate this!
+CentOS or Fedora as some packages are 
+[missing](https://github.com/eduvpn/eduvpn-debian/issues) on Debian to 
+facilitate this!
 
 Most organizations start by deploying a single server, which can scale quite 
 well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
@@ -40,11 +42,17 @@ two.
 ## Server Configuration
 
 Gathering information from other VPN operators resulted in estimating that one 
-needs one CPU core for ~64 concurrent client connections. As the OpenVPN 
-software is not multi threaded, client connections will not automatically be 
-"distributed" over CPU cores. So in order to use multiple cores, we need 
-multiple OpenVPN server processes on one server. The approach we took is to 
-start multiple OpenVPN server processes and distribute clients over them.
+needs one CPU core for ~64 concurrent client connections. As of now 
+(2020-04-20) it seems this was a bit conservative when dealing with "normal" 
+users working from home and having all traffic routed over the VPN. It may
+be possible to service ~128 concurrent clients per CPU core. The example below 
+will use ~64 concurrent client connections.
+
+As the OpenVPN software is not multi threaded, client connections will not 
+automatically be "distributed" over CPU cores. So in order to use multiple 
+cores, we need multiple OpenVPN server processes on one server. The approach we 
+took is to start multiple OpenVPN server processes and distribute clients over 
+them.
 
 The server software is currently limited to 64 OpenVPN processes per VPN 
 profile. This means that for single server deploys, the software scales 
@@ -59,27 +67,38 @@ As for IPv6, at least an `/100` is required in the `range6` option. Each
 OpenVPN process will get a `/112`, the smallest block currently supported by 
 OpenVPN.
 
-Additional UDP/TCP ports (up to 64) can be configured with `vpnProtoPorts`. For 
-example:
+Additional UDP/TCP ports (up to 64) can be configured with `vpnProtoPorts` in 
+`/etc/vpn-server-api/config.php`. For example to run 16 OpenVPN processes you
+can use this:
 
     'vpnProtoPorts' => [
-        'udp/1194',
-        'tcp/1194',
-        'udp/1195',
-        'tcp/1195',
-        'udp/1196',
-        'tcp/1196',
-        'udp/1197',
-        'tcp/1197',
-        'udp/1198',
-        'tcp/1198',
-        'udp/1199',
-        'tcp/1199',
-        'udp/1200',
-        'tcp/1200',
+        'udp/1200', // 75% UDP ports
         'udp/1201',
+        'udp/1202',
+        'udp/1203',
+        'udp/1204',
+        'udp/1205',
+        'udp/1206',
+        'udp/1207',
+        'udp/1208',
+        'udp/1209',
+        'udp/1210',
+        'udp/1211',
+        'tcp/1200', // 25% TCP ports
         'tcp/1201',
+        'tcp/1202',
+        'tcp/1203',
     ],
+
+As to determine how many ports should be UDP and how many should be TCP, we 
+have some information from one of our servers:
+
+![Proto/Port Usage](img/port_usage_nl.eduvpn.org_20200420.png)
+
+As you can see on that server we have a bit too many TCP ports available to 
+connect to, and it would be better to allocate 3/4 to UDP and 1/4 to TCP as is 
+done in the example above. Look [here](MONITORING.md) on how to check the load 
+distribution on your server.
 
 See [OpenVPN Processes](PROFILE_CONFIG.md#openvpn-processes) for more 
 information.
