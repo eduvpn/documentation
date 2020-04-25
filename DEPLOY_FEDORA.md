@@ -65,7 +65,8 @@ will be able to connect to it when you don't take additional steps! Look
 
 ## Update
 
-Periodically install [updates](update_system_fedora.sh)!
+Periodically install updates! We have a script you can find 
+[here](update_system_fedora.sh) that takes care of everything.
 
 ## Configuration
 

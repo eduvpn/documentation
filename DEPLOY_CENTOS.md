@@ -67,7 +67,8 @@ will be able to connect to it when you don't take additional steps! Look
 
 ## Update
 
-Periodically install [updates](update_system_centos.sh)!
+Periodically install updates! We have a script you can find 
+[here](update_system_centos.sh) that takes care of everything.
 
 ## Configuration
 
