@@ -229,6 +229,8 @@ your VPN clients, you can use the following:
     -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
     -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
 
+**NOTE**: for IPv6 the situation is similar.
+
 # Reject IPv6 Client Traffic
 
 As the VPN server is "dual stack" throughout, it is not possible to "disable" 
@@ -284,6 +286,14 @@ the VPN clients. This may not be wanted. Restricting this is easy:
 Assuming `eth0` is your external network interface, this allows VPN clients to 
 initiate connections and to receive responses, but outside systems cannot 
 initiate a connection to the VPN clients.
+
+If you want to allow traffic from a designated host to the clients, e.g. for 
+remote management, you can use the following:
+
+    -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -i tun+ -o eth0 -j ACCEPT
+    -A FORWARD -i eth0 -o tun+ -s 192.168.11.22/32 -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 **NOTE**: for IPv6 the situation is similar.
 
