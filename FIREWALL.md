@@ -203,6 +203,32 @@ TBD.
 
 TBD.
 
+# Reject Forwarding Traffic
+
+Sometimes you want to prevent VPN clients from reaching certain network, or 
+allow them to reach only certain networks. For example in the "split tunnel" 
+scenario. By default, the firewall will allow all traffic and just route 
+traffic as long as the routing for it is configured.
+
+If you use split tunnel, it could make sense to only allow traffic for the 
+ranges you also push to the client. As the client can always (manually) 
+override the configuration and try to send all traffic over the VPN, this may
+need to be restricted.
+
+The default `FORWARD` rules used are:
+
+    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
+    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+
+If you want to only only traffic to `10.1.1.0/24` and `192.168.1.0/24` from 
+your VPN clients, you can use the following:
+
+    -A FORWARD -i tun+ ! -o tun+ -d 10.1.1.0/24 -j ACCEPT
+    -A FORWARD -i tun+ ! -o tun+ -d 192.168.1.0/24 -j ACCEPT
+    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
+    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+
 # Reject IPv6 Client Traffic
 
 As the VPN server is "dual stack" throughout, it is not possible to "disable" 
