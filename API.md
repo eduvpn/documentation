@@ -73,7 +73,8 @@ following query parameters MUST be specified on the authorization request:
 * `redirect_uri`; the URL that was registered, see below;
 * `response_type`: always `code`;
 * `scope`: this is always `config`;
-* `state`: a cryptographically secure random string, to avoid CSRF;
+* `state`: a secure random string suitable for cryptography purposes, to avoid 
+  CSRF;
 * `code_challenge_method`: always `S256`; 
 * `code_challenge`: the code challenge (see RFC 7636).
 
@@ -128,8 +129,8 @@ All error conditions MUST be handled according to the OAuth specification(s).
 For the calls listed below, applications MUST check if the mentioned value is 
 a string, or an object. In case of an object, the language best matching
 the application language SHOULD be chosen. If that language is not available, 
-the application SHOULD fallback to `en-US`. If `en-US` is not available, it is
-up to the application to pick one it deems best.
+the application SHOULD fallback to `en` or `en-US`. If neither of those is 
+available, it is up to the application to pick one it deems best.
 
 - `/profile_list`, the `display_name` field;
 - `/system_messages`, the `message` field.
@@ -137,13 +138,13 @@ up to the application to pick one it deems best.
 An example:
 
     "display_name": {
-        "nl-NL": "Internettoegang",
+        "nl": "Internettoegang",
         "en-US": "Internet Access"
     }
 
 ### Date / Time Formats
 
-Any occurence of data and/or time has the 
+Any occurrence of data and/or time has the 
 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)
 format. It is used by the following API calls:
 
@@ -173,8 +174,8 @@ The response looks like this:
 
 ### Create a Key Pair 
 
-**NOTE**: an obtained keypair is valid for ALL _profiles_ of a particular 
-_instance_, so if an instance has multiple profiles, only one keypair is 
+**NOTE**: an obtained key pair is valid for ALL _profiles_ of a particular 
+_instance_, so if an instance has multiple profiles, only one key pair is 
 needed.
 
 **NOTE**: on old(er) servers the `display_name` POST parameter is required, on 
@@ -240,7 +241,7 @@ API call:
         "https://demo.eduvpn.nl/portal/api.php/check_certificate?common_name=fd2c32de88c87d38df8547c54ac6c30e"
 
 The `common_name` is the value of the X.509 certificate's common name (CN) 
-already in possesion of the client.
+already in possession of the client.
 
 The response looks like this:
 
