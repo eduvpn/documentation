@@ -3,11 +3,7 @@ title: Shibboleth SP
 description: SAML Authentication using Shibboleth
 ---
 
-This document only describes installing Shibboleth on Debian 9 as there it is
-part of the default package repository. On CentOS you'd have to install it 
-for example using the 
-[packages](https://www.switch.ch/aai/guides/sp/installation/) provided by 
-SWITCH. The configuration will be mostly the same.
+This document describes installing Shibboleth on Debian 9.
 
 ### Shibboleth
 

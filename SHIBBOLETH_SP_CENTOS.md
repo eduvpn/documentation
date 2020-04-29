@@ -1,21 +1,14 @@
 ---
 title: Shibboleth SP (CentOS)
-description: SAML Authentication using Shibboleth
+description: SAML Authentication using Shibboleth on CentOS
 ---
 
-UP TO DATE FOR SHIB3!
+This document describes installing Shibboleth on CentOS 7. On CentOS you have 
+to install Shibboleth V3 packages provided by the Shibboleth project. 
 
-Shibboleth runs within a web server, that’s why you need 
-to check that Apache is already installed, if not :
-
-    $ sudo yum install httpd
-
-On CentOS you have to install Shibboleth V3 packages provided by the Shibboleth project. 
-Folow the instructions there for "CentOS 7" to add the repository and install the packages.
-
-To configure a repository for CentOS 7.x, you must create a file
-in the /etc/yum.repos.d/ directory, for example /etc/yum.repos.d/shibboleth.repo, 
-with the following content:
+To configure a repository for CentOS 7, you must create a file
+in the `/etc/yum.repos.d/` directory, for example 
+`/etc/yum.repos.d/shibboleth.repo`, with the following content:
 
     [shibboleth]
     name=Shibboleth (CentOS_7)
@@ -25,37 +18,28 @@ with the following content:
     gpgcheck=1
     gpgkey=https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key
     enabled=1
-    
-You need to download and install the GPG key used to sign these packages :
-
-    $ wget https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key
-    $ sudo rpm --import repomd.xml.key
 
 Install Shibboleth :
 
     $ sudo yum install shibboleth
     
-Then configure the shibd daemon to run automatically at startup:
+Then configure the `shibd` daemon to run automatically at start-up:
 
     $ sudo systemctl enable shibd
 
 ## Certificates
 
-The installation generates two certificates (more precisely: two key pairs 
-/ certificates) 
-for two different uses:
-1- signature of SAML messages sent
-2- used for encryption by the sender of received messages
-Most service providers use a single certificate to sign and to encrypt.
+The installation generates two certificates (more precisely: two key pairs / 
+certificates) for two different purposes:
+
+1. Signing of SAML messages (`AuthnRequest`, `LogoutRequest`) sent to the IdP;
+2. Used for encryption by the IdP
 
 ## Apache configuration
 
-The installation of Shibboleth will install an Apache module name mod_shib, 
+The installation of Shibboleth will install an Apache module name `mod_shib`, 
 this module has the ability to process both a variety of Apache commands 
 and rules specified in the SP configuration and make sense of both.
-
-By default the configuration of mod_shib is installed 
-in a repository named `/etc/httpd/conf.d` under shib.conf.
 
 In `/etc/httpd/conf.d/shib.conf` add the following:
 
@@ -80,13 +64,13 @@ In `/etc/httpd/conf.d/shib.conf` add the following:
     </Location> 
 
 The first location directive within Apache's configuration file specify
-to the module to protect by Shibboleth the access to the vpn user portal. 
+to the module to protect by Shibboleth the access to the VPN Portal.
 
 Make sure you restart Apache after changing the configuration:
 
     $ sudo systemctl restart httpd
     
-Then configure the Apache daemon to run automatically at startup:
+Then configure the Apache daemon to run automatically at start-up:
 
     $ sudo systemctl enable httpd
 
@@ -94,7 +78,7 @@ Then configure the Apache daemon to run automatically at startup:
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
-* Set entityID to `https://vpn.example.org/shibboleth` in the 
+* Set `entityID` to `https://vpn.example.org/shibboleth` in the 
   `<ApplicationDefaults>` element.
 * Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>` 
   element
@@ -103,12 +87,13 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
   `discoveryURL` in the `<SSO>` element
 * Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
   1.0 support
-* Set the `file` in the `<MetadataProvider>` element to load your federation metadata
+* Set the `file` in the `<MetadataProvider>` element to load your federation 
+  metadata
 
 Configuring automatic metadata refresh is outside the scope of this document,
 refer to your identity federation documentation.
 
-Example: 
+Example:
 
     <SPConfig ...>
       ...
@@ -157,9 +142,6 @@ Example:
       </ApplicationDefaults>
       ...
     </SPConfig>
-
-Configuring automatic metadata refresh is outside the scope of this document,
-refer to your identity federation documentation.
 
 Verify the Shibboleth configuration:
 
