@@ -61,8 +61,13 @@ will be able to connect to it when you don't take additional steps! Look
 
 ## Update
 
-Periodically install updates! We have a script you can find 
-[here](update_system_debian.sh) that takes care of everything.
+Periodically install updates! Run the following command periodically, e.g. 
+every week during the maintenance window. Reboot your server as required for 
+kernel / system library updates.
+
+    $ sudo vpn-maint-update-system
+
+If the command is not available, install the `vpn-maint-scripts` package first.
 
 ## Configuration
 
