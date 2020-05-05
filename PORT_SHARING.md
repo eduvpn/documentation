@@ -146,10 +146,12 @@ You need to update the firewall to allow access to `udp/443`. Look
     $ sudo systemctl restart httpd
     $ sudo systemctl enable --now sslh
 	
-To apply the changes run the `apply_changes.sh` script from this repository 
-on your VPN server.
-	
-    
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.
+
 ### Debian
 
 On Debian, make sure to disable `mod_status`, otherwise `/server-status` will 
@@ -160,6 +162,9 @@ using `sslh`.
     $ sudo a2dismod status
     $ sudo systemctl restart apache2
     $ sudo systemctl restart sslh
-	
-To apply the changes run the `apply_changes.sh` script from this repository 
-on your VPN server.
+
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.

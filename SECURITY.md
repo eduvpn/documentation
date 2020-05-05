@@ -38,10 +38,17 @@ installations will use a `tls-crypt` key per profile.
 **NOTE**: if you already installed your VPN server before the release of 
 vpn-server-api 2.1.1 you will continue to use the same `tls-crypt` key for all
 profiles. If you want to switch to using one key per profile you need to 
-delete `/var/lib/vpn-server-api/ta.key` and run the `apply_changes.sh` script 
-from this repository on your VPN server(s). Please be aware that existing 
-clients will need to fetch a new configuration, unless the eduVPN or Let's 
-Connect! apps are used where that will happen automatically.
+delete `/var/lib/vpn-server-api/ta.key`.
+
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.
+
+Please be aware that existing clients will need to fetch a new configuration, 
+unless the eduVPN or Let's Connect! apps are used where that will happen 
+automatically.
 
 ## PHP
 

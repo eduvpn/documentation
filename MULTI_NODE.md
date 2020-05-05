@@ -235,7 +235,7 @@ In `/etc/sysconfig/ip6tables`:
 
 Now you are ready to apply the changes and it should work without error:
 
-    $ sudo documentation-2/apply_changes.sh
+    $ sudo vpn-maint-apply-changes
 
 Restart the firewall:
 
@@ -273,7 +273,7 @@ specific keys are ignored.
 
 On the nodes, apply the changes again:
 
-    $ sudo documentation-2/apply_changes.sh
+    $ sudo vpn-maint-apply-changes
 
 As for DNS, you can use the following configuration:
 
@@ -289,19 +289,6 @@ to the different nodes instead of all to one node.
 
 ## Maintenance
 
-The way the software is currently set up requires some care when e.g. updating
-the various machines. The steps to follow:
-
-1. Stop all OpenVPN processes on the node(s) (`stop_node.sh`);
-2. Update the controller (`update_controller.sh`) and reboot if necessary;
-3. Update the node(s) (`update_node.sh`);
-4. Reboot, if necessary, *or* start the node(s) (`start_node.sh`).
-
-Stopping the node(s) first is required to make sure all clients are cleanly 
-disconnected and the disconnect event is logged at the controller.
-
-You can find these scripts in the `multi_node` folder of the documentation
-repository.
-
-**NOTE**: make sure you ran `apply_changes.sh` on all nodes before using the
-update scripts.
+The `vpn-maint-scripts` package has instructions for maintaining a multi node
+setup. Please refer to those instructions 
+[here](https://github.com/letsconnectvpn/vpn-maint-scripts).

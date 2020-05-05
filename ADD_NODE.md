@@ -88,5 +88,8 @@ missing, is to deploy _all_ profiles on this node. Example:
 
     'profileList' => ['office', 'sysadm'],
 
-To apply the changes run the `apply_changes.sh` script from this repository 
-on your VPN node.
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.

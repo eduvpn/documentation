@@ -149,10 +149,11 @@ missing, is to deploy _all_ profiles on this node. Example:
 Update your [firewall](FIREWALL.md#vpn-daemon) to allow access from the 
 controller to the VPN daemon.
 
-To apply the changes run the `apply_changes.sh` script from this repository 
-on your VPN server.
+To apply the configuration changes:
 
-Now, we are ready to configure the daemon.
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.
 
 ### Daemon 
 

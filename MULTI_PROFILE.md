@@ -68,5 +68,8 @@ just use different ports.
 
 ## Apply Changes
 
-To apply the changes run the `apply_changes.sh` script from this repository 
-on your VPN server.
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.
