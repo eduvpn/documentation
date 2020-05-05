@@ -68,7 +68,8 @@ ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal \
+    vpn-maint-scripts
 
 ###############################################################################
 # SELINUX

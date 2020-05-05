@@ -29,7 +29,7 @@ apt update
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
-    vpn-user-portal
+    vpn-user-portal vpn-maint-scripts
 
 ###############################################################################
 # LOCALES
