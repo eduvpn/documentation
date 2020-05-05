@@ -32,3 +32,6 @@ In order to install OS updates and VPN server updates, run the following
 command periodically, e.g. every week during a maintainance windows:
 
     $ sudo vpn-maint-update-system
+
+**NOTE**: you may also need to reboot your server in case the kernel or system
+libraries were updated!
