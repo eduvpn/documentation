@@ -9,6 +9,12 @@ files are stored in e.g. `/var/lib/vpn-server-api/stats.json`.
 The statistics only store information about the last 30 days, information older
 than that is automatically removed.
 
+**NOTE**: if you have many users (connections) it may be that PHP runs out of 
+memory when running the stats script. You can manually update the available 
+memory in `/etc/php.ini`, by increasing `memory_limit = 128M` to something 
+higher, e.g. `512M`. To see whether this is fixed already, follow 
+[this](https://github.com/eduvpn/vpn-server-api/issues/73) issue.
+
 ## Format
 
 This is the format of the statistics file. This data can be used for further
