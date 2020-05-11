@@ -16,7 +16,6 @@ in Q4-2020.
 
 - merge `vpn-server-api` and `vpn-lib-common` in `vpn-user-portal`;
   - remove internal API, only keep API needed for `vpn-server-node`.
-- drop easy-rsa CA backend support, switch to vpn-ca written in Go;
 - implement Go daemon for running on `vpn-server-node` dropping the 
   requirement of having a private network between Portal and Node, we aim for
   [Version 1](https://github.com/letsconnectvpn/lc-daemon/blob/master/ROADMAP.md#version-1);
