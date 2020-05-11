@@ -18,8 +18,9 @@ connection is rejected. You can use `journalctl` to "follow" the log:
 ## VPN Client Connection Logging
 
 VPN Client connection logging is enabled by default. You can access the log 
-(indirectly) through the [portal](PORTAL_ADMIN.md) based on VPN client IP 
-address and timestamp. This only works if you have "admin" permissions.
+(indirectly) through the portal given a VPN client IP address and timestamp. 
+
+This only works if you are [admin](PORTAL_ADMIN.md).
 
 ## Web Server Logging
 
