@@ -219,7 +219,7 @@ The default `FORWARD` rules used are:
 
     -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
     -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 If you want to only only traffic to `10.1.1.0/24` and `192.168.1.0/24` from 
 your VPN clients, you can use the following:
@@ -227,7 +227,7 @@ your VPN clients, you can use the following:
     -A FORWARD -i tun+ ! -o tun+ -d 10.1.1.0/24 -j ACCEPT
     -A FORWARD -i tun+ ! -o tun+ -d 192.168.1.0/24 -j ACCEPT
     -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 **NOTE**: for IPv6 the situation is similar.
 
