@@ -1,10 +1,8 @@
-# Introduction
-
 This document describes the discovery of VPN servers.
 
 **WORK IN PROGRESS**
 
-Two files are relevant:
+Two URLs are relevant:
 
 - Server List: `https://disco.eduvpn.org/server_list.json`
 - Organization List: `https://disco.eduvpn.org/organization_list.json`
@@ -73,12 +71,11 @@ The "Organization List" file contains a mapping between "Organization" and
       ]
     }
 
-The key `secure_internet_home` is important for the mapping to a 
-"Secure Internet" server. When the user chooses an organization it indicates
-which "Secure Internet" server to authorize at. The value of 
-`secure_internet_home` matches with a `base_url` in "Server List". The 
-`base_url` can only point to servers with `server_type` value equal to 
-`secure_internet`.
+The key `secure_internet_home` is used to map to a "Secure Internet" server. 
+When the user chooses an organization it indicates which "Secure Internet" 
+server to authorize at. The value of `secure_internet_home` matches with a 
+`base_url` in "Server List". The `base_url` can only point to servers with 
+`server_type` value equal to `secure_internet`.
 
 The app shows:
 
@@ -109,6 +106,7 @@ example:
       "en": "SURFnet bv SURF konijn surf surfnet powered by",
       "nl": "SURFnet bv SURF konijn powered by"
     }
+
 They can also be used in "Institute Access" and "Secure Internet" discovery 
 files!
 
@@ -142,7 +140,7 @@ languages are always available!
 ### Storage Data Model
 
 It is recommended to store all OAuth information, among others, access token 
-and refresh     token _per server_ in your data model, no matter whether it is a 
+and refresh token _per server_ in your data model, no matter whether it is a 
 "Secure Internet" or "Institute Access". This 
 makes it easy for "Institute Access" and "Alien" servers as each server has 
 their own OAuth information. For "Secure Internet" it is a bit more 
