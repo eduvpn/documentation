@@ -179,3 +179,7 @@ As of 2020-05-19 the public key used to verify the signatures is this one:
 **NOTE**: we only use the minisign signatures in 
 [signify](https://man.openbsd.org/signify) compatible mode, so only the second 
 line of the signature file is used for the verification.
+
+**NOTE**: allow your application to contain _multiple_ public keys for 
+verification where all of them are used to verify the signature. A signature
+is valid if and only if one of them verifies the signature correctly.
