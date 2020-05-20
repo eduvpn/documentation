@@ -4,6 +4,9 @@ description: Obtain a list of VPN server Instances
 category: dev
 ---
 
+**NOTE**: this is legacy. See [SERVER_DISCOVERY](SERVER_DISCOVERY.md) for the 
+new server discovery we are implementing in Q1-2020.
+
 Applications can use "Instance Discovery" to obtain a list of known servers to
 show in the application instead of asking the user to provide the FQDN of the
 VPN server they want to connect to.

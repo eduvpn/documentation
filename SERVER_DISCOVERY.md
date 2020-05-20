@@ -1,17 +1,29 @@
-This document describes the discovery of VPN servers.
+# Server Discovery
 
 **WORK IN PROGRESS**
 
-Two URLs are relevant:
+This document describes how eduVPN applications find out about eduVPN servers.
 
+Two JSON documents are available to facilitate eduVPN server discovery:
+ 
 - Server List: `https://disco.eduvpn.org/server_list.json`
 - Organization List: `https://disco.eduvpn.org/organization_list.json`
 
-The "Server List" file contains a list of _all_ known VPN servers, both 
-"Secure Internet" and "Institute Access".
+## Server List
+
+The "Server List" contains a list of _all_ eduVPN servers. In this list we 
+distinguish between two _types_ of servers (`server_type`):
+
+- Secure Internet: in case a user has access to _any_ one of the 
+  "Secure Internet" servers, the user can use _all_ of them;
+- Institute Access: for exclusive use by users belonging to the organization 
+  running the service and that can log in to this service.
+
+The "Secure Internet" servers are named after the country they are in, e.g. 
+"The Netherlands". The "Institute Access" servers are named after the institute
+they belong to, e.g. "Radboud University".
 
     {
-      "v": "2020-05-04T12:04:29+00:00",
       "server_list": [
         {
           "server_type": "institute_access",
@@ -28,9 +40,6 @@ The "Server List" file contains a list of _all_ known VPN servers, both
             "en-US": "Albania",
             "sq-AL": "Shqiperi"
           },
-          "public_key_list": [
-            "Xv3l24gbMX8NtTnFQbWO2fGKPwKuc6EbjQDv8qw2GVk"
-          ],
           "support_contact": [
             "mailto:helpdesk@rash.al"
           ]
@@ -43,13 +52,18 @@ The "Server List" file contains a list of _all_ known VPN servers, both
       ]
     }
 
-**NOTE**: `public_key_list` is NOT used by applications.
+## Organization List
 
-The "Organization List" file contains a mapping between "Organization" and
-"Secure Internet" servers, e.g.:
+The "Organization List" contains a list of all known organizations and their
+mapping to the "Secure Internet" servers. In order to be able to use all 
+"Secure Internet" servers, the user needs to know _which_ of the 
+"Secure Internet" servers they have access to based on their 
+"Home Organization". The "Organization List" contains a mapping between 
+organization and "Secure Internet" server through the `secure_internet_home` 
+key that points to a `base_uri` of a server entry in the "Server List" of the
+key `server_type` with value `secure_internet`:
 
     {
-      "v": "2020-04-30T07:25:42+00:00",
       "organization_list": [
         {
           "display_name": {
@@ -71,24 +85,7 @@ The "Organization List" file contains a mapping between "Organization" and
       ]
     }
 
-The key `secure_internet_home` is used to map to a "Secure Internet" server. 
-When the user chooses an organization it indicates which "Secure Internet" 
-server to authorize at. The value of `secure_internet_home` matches with a 
-`base_url` in "Server List". The `base_url` can only point to servers with 
-`server_type` value equal to `secure_internet`.
-
-The app shows:
-
-1. a list of "Institute Access" servers the user can choose directly
-2. a list of "Organizations" that will *link* to a server using the 
-   `secure_internet_home` key.
-
-In the UI the user can choose a *server* (Institute Access) and and 
-*organization* (Secure Internet). The reason for doing this is that we don't
-want to user to choose a VPN country server first where as they can get stuck 
-if their organization can't be used to login there. 
-
-### Support Contact
+## Support Contact
 
 The key `support_contact` contains a list of possible contact options to be 
 displayed in the application.
@@ -97,7 +94,7 @@ displayed in the application.
 - `https://X`
 - `tel:X`
 
-### Keywords
+## Keywords
 
 The key `keyword_list` contains a string, or object containing keywords, 
 example:
@@ -110,7 +107,7 @@ example:
 They can also be used in "Institute Access" and "Secure Internet" discovery 
 files!
 
-### Language Matching
+## Language Matching
 
 We assume the OS the user is using has some kind of locale set up. For example
 the OS is set to `en-US`, `nl-NL` or `de-DE`. 
@@ -137,28 +134,7 @@ Start from the OS language setting, i.e. `de-DE`.
 4. Pick one that is deemed best, e.g. `en-US` or `en`, but note that not all 
 languages are always available!
 
-### Storage Data Model
-
-It is recommended to store all OAuth information, among others, access token 
-and refresh token _per server_ in your data model, no matter whether it is a 
-"Secure Internet" or "Institute Access". This 
-makes it easy for "Institute Access" and "Alien" servers as each server has 
-their own OAuth information. For "Secure Internet" it is a bit more 
-complicated.
-
-Based on the discovery using `organization_list.json` you can find out what 
-the `secure_internet_home` is for a particular organization. This field 
-contains the `base_url` of the "Home" server that will be used for obtaining 
-OAuth information.
-
-When the user chooses their organization, the OAuth flow is started with the 
-`secure_internet_home` server and stored in the data model. When the 
-user wants to use _another_ "Secure Internet" server, the OAuth access token 
-already obtained is used at this _other_ "Secure Internet" server. Note that
-the refresh token is _always_ used at the `secure_internet_home` server only! 
-So whenever a refresh is needed, the home server is used to accomplish this.
-
-### Signatures
+## Signatures
 
 The signatures are generated with 
 [minisign](https://jedisct1.github.io/minisign/). All JSON discovery files have
@@ -175,10 +151,6 @@ As of 2020-05-19 the public key used to verify the signatures is this one:
     RWSC3Lwn4f9mhG3XIwRUTEIqf7Ucu9+7/Rq+scUMxrjg5/kjskXKOJY/
 
 **NOTE**: this key will change before we go to "production"!
-
-**NOTE**: we only use the minisign signatures in 
-[signify](https://man.openbsd.org/signify) compatible mode, so only the second 
-line of the signature file is used for the verification.
 
 **NOTE**: allow your application to contain _multiple_ public keys for 
 verification where all of them are used to verify the signature. A signature
