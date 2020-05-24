@@ -60,3 +60,41 @@ Example:
         }
     }
 
+## SAML SPs
+
+### Mellon
+
+[Documentation](https://github.com/latchset/mod_auth_mellon#manual-login)
+
+- `ReturnTo`
+- `IdP`
+
+URL format: `/mellon/login?ReturnTo=X&IdP=Y`
+
+### Shibboleth
+
+[Documentation](https://wiki.shibboleth.net/confluence/display/SP3/SessionInitiator#SessionInitiator-InitiatorProtocol)
+
+- `target`
+- `entityID`
+
+URL format: `https://sp.example.org/Shibboleth.sso/Login?target=https%3A%2F%2Fsp.example.org%2Fresource.asp&entityID=https%3A%2F%2Fidp.example.org%2Fidp%2Fshibboleth`
+
+### simpleSAMLphp
+
+See [this](https://github.com/simplesamlphp/simplesamlphp/blob/master/modules/core/www/as_login.php). Seems `saml:idp` is not documented...
+
+- `ReturnTo`
+- `AuthId`
+- `saml:idp`
+
+URL format: `/simplesaml/module.php/core/as_login.php?AuthId=<authentication source>&ReturnTo=<return URL>`
+
+### php-saml-sp
+
+- `ReturnTo`
+- `IdP`
+
+URL format: `/php-saml-sp/wayf?ReturnTo=X&IdP=Y`
+
+Currently, `ReturnTo` as a query parameter is NOT yet implemented.
