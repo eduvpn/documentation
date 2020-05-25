@@ -145,13 +145,11 @@ a signature file as well:
 
 The minisign documentation shows the format of the signatures and public keys.
 
-As of 2020-05-19 the public key used to verify the signatures is this one:
+As of 2020-05-25 the public key used to verify the signatures is this one:
 
-    untrusted comment: minisign public key 8466FFE127BCDC82
-    RWSC3Lwn4f9mhG3XIwRUTEIqf7Ucu9+7/Rq+scUMxrjg5/kjskXKOJY/
+    untrusted comment: minisign public key 19725C6AF525056D
+    RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF
 
-**NOTE**: this key will change before we go to "production"!
-
-**NOTE**: allow your application to contain _multiple_ public keys for 
+**NOTE**: you MUST allow your application to contain _multiple_ public keys for 
 verification where all of them are used to verify the signature. A signature
 is valid if and only if one of them verifies the signature correctly.
