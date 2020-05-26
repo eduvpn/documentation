@@ -16,7 +16,7 @@ and where to go _after_ authentication.
 As OAuth is used by the VPN application, the OAuth "authorization URL" needs to
 be placed in the `ReturnTo` query parameter instead of opening it directly. The
 IdP we the user chose we already know from the organization the user chose in 
-the appplication by `org_id`. This `org_id` is typically the entity ID of the
+the application by `org_id`. This `org_id` is typically the entity ID of the
 IdP and can thus be used as the `IdP` query parameter value.
 
 Unfortunately, there are (at least) three types of SAML federations:
@@ -56,7 +56,7 @@ Example:
 
 The full URL after using the template thus becomes: `https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=https%3A%2F%2Fnl.eduvpn.org%2Fportal%2F_oauth%2Fauthorize%3Fclient_id%3Dnet.tuxed.vpn-for-web%26redirect_uri%3Dhttps%253A%252F%252Fvpn.tuxed.net%252Fvpn-for-web%252Fcallback%26scope%3Dconfig%26state%3DGZ885EVj8rZrjfp589Euyusppz1UhdUovGgpEZJi3Q0%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DlViGPZrGwiV4-dDI2KL-UpbQ-jSwHHeUU4HhfmZTBF0&IdP=https%3A%2F%2Fidp.surfnet.nl`.
 
-When opening the brower with this, the authentication is performed using the 
+When opening the browser with this, the authentication is performed using the 
 specified IdP and after authentication the OAuth authorization is started thus
 skipping the "WAYF" in the browser.
 
