@@ -1,71 +1,89 @@
-# Skip SAML WAYF
+# Skipping the SAML WAYF
 
 This builds on [SERVER_DISCOVERY](SERVER_DISCOVERY.md).
 
-**NOTE**: this is currently only relevant for SAML, we use IdP here instead of
-organization.
+Most "Secure Internet" servers have their own WAYF to redirect users to the 
+relevant IdP for the actual authentication. As we already have a "WAYF" in the
+eduVPN application, there is no need to have the user select their institute
+again in the browser.
 
-Many (all?) servers that want to provide "Guest Usage" are linked to SAML 
-federations. If the discovery of the user's IdP is moved to the application 
-itself, opening the OAuth authorization URL may trigger another "WAYF" from 
-the identify federation. 
+This document talks about how to "Skip" the WAYF in the browser.
 
-In order to avoid the user having to choose their IdP twice, it makes sense to
-be able to provide an IdP hint to the VPN server and avoid the WAYF.
+Most SAML SPs have some means to trigger authentication directly by going to a
+URL and provide the `IdP` and `ReturnTo` parameters indicating which IdP to use
+and where to go _after_ authentication.
 
-OAuth does not provide a mechanism for this directly, OIDC would, but we do not
-exclusively use OIDC, so we need something "vendor independent" to open the 
-correct URL.
+As OAuth is used by the VPN application, the OAuth "authorization URL" needs to
+be placed in the `ReturnTo` query parameter instead of opening it directly. The
+IdP we the user chose we already know from the organization the user chose in 
+the appplication by `org_id`. This `org_id` is typically the entity ID of the
+IdP and can thus be used as the `IdP` query parameter value.
 
-How to this exactly depends on the SAML implementation chosen by the VPN 
-server. As the VPN app has no knowledge of the used authentication mechanism, 
-we can provide some kind of "authentication hint".
+Unfortunately, there are (at least) three types of SAML federations:
 
-For example, for `vpn.tuxed.net` the following URL can be used to trigger a 
-login using the IdP `https://idp.tuxed.net/metadata` and `ReturnTo` the OAuth 
-authorization URL, skipping the VPN server WAYF:
+1. Full mesh federation: all IdPs know about all SPs and the other way around;
+2. Hub/proxy federation: all IdPs are behind a SAML proxy and every IdP and SP
+   only talk to the proxy;
+3. One IdP scenario: there is one IdP that is used by all organizations, 
+   only [Feide](https://www.feide.no/) is of this type as far as I know.
 
-    https://vpn.tuxed.net/php-saml-sp/login?ReturnTo=https%3A%2F%2Fvpn.tuxed.net%2Fvpn-user-portal%2F_oauth%2Fauthorize%3Fclient_id%3Dorg.eduvpn.app.windows%26redirect_uri%3Dhttp%3A%2F%2F127.0.0.1%3A12345%2Fcallback%26response_type%3Dcode%26scope%3Dconfig%26state%3D12345%26code_challenge_method%3DS256%26code_challenge%3DE9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&IdP=https%3A%2F%2Fidp.tuxed.net%2Fmetadata
+So depending on the type of federation and/or SAML SP software that is used by
+the VPN server we need to approach things differently.
 
-A mechanism exist to tell the app about server specific configurations, i.e. 
-the `/info.json` file. We can add a special key there that provides a template 
-for the application to use. For example, the template for the above URL could
-be:
+The following servers are supported for "skipping the WAYF":
 
-    https://vpn.tuxed.net/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@
+| `baseUrl`                    | Authentication URL Template                                                 |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| `https://nl.eduvpn.org/`     | `https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@` |
+| `https://eduvpn1.eduvpn.de/` | `https://eduvpn1.eduvpn.de/saml/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@`    |
 
-This template URL will depend on the SAML software used at the SP, and 
-also on the host name of the VPN server. 
+When the user chooses an organization that has a `secure_internet_home` 
+pointing to one of these servers the `org_id` of the chosen organization is 
+remembered. Together with this `org_id` and the constructed OAuth 
+authorization URL the template URL is used to construct a URL that will be 
+opened in the browser.
 
-**NOTE**: the values assigned to `@RETURN_TO@` and `@ORG_ID@` MUST be URL 
-encoded before being used as a replacement!
+The string `@RETURN_TO@` is replaced by the URL encoded value of the OAuth 
+authorization URL. The string `@ORG_ID@` is replaced by the URL encoded value
+of `org_id`.
 
-Example `/info.json`:
+Example:
 
-    {
-        "api": {
-            "http://eduvpn.org/api#2": {
-                "api_base_uri": "https://vpn.tuxed.net/vpn-user-portal/api.php",
-                "authorization_endpoint": "https://vpn.tuxed.net/vpn-user-portal/_oauth/authorize",
-                "token_endpoint": "https://vpn.tuxed.net/vpn-user-portal/oauth.php/token"
-            }
-        },
-        "v": "2.2.8-dev",
-        "authentication_url_template": "https://vpn.tuxed.net/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@"
-    }
+| Query Parameter | Value
+| --------------- | ----
+| `IdP`           | `https://idp.surfnet.nl`
+| `ReturnTo`      | `https://nl.eduvpn.org/portal/_oauth/authorize?client_id=net.tuxed.vpn-for-web&redirect_uri=https%3A%2F%2Fvpn.tuxed.net%2Fvpn-for-web%2Fcallback&scope=config&state=GZ885EVj8rZrjfp589Euyusppz1UhdUovGgpEZJi3Q0&response_type=code&code_challenge_method=S256&code_challenge=lViGPZrGwiV4-dDI2KL-UpbQ-jSwHHeUU4HhfmZTBF0`
 
-## SAML SPs
+The full URL after using the template thus becomes: `https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=https%3A%2F%2Fnl.eduvpn.org%2Fportal%2F_oauth%2Fauthorize%3Fclient_id%3Dnet.tuxed.vpn-for-web%26redirect_uri%3Dhttps%253A%252F%252Fvpn.tuxed.net%252Fvpn-for-web%252Fcallback%26scope%3Dconfig%26state%3DGZ885EVj8rZrjfp589Euyusppz1UhdUovGgpEZJi3Q0%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DlViGPZrGwiV4-dDI2KL-UpbQ-jSwHHeUU4HhfmZTBF0&IdP=https%3A%2F%2Fidp.surfnet.nl`.
 
-### Mellon
+When opening the brower with this, the authentication is performed using the 
+specified IdP and after authentication the OAuth authorization is started thus
+skipping the "WAYF" in the browser.
+
+# Open Issues
+
+With SAML proxies we somehow need to indicate which IdP is to be used. This can
+typically be done using `AuthnRequest` "scoping". The SP needs to support this
+through a query parameter.
+
+It _may_ work through clever `ReturnTo` (double) encoding.
+
+With Feide we need to be even more clever as `AuthnRequest` "scoping" may not 
+be supported (unconfirmed as of 2020-05-26). There we may not have any other 
+choice than be clever `ReturnTo` (double) encoding.
+
+# Triggering SAML Login through URL
+
+## Mellon
 
 [Documentation](https://github.com/latchset/mod_auth_mellon#manual-login)
 
 - `ReturnTo`
 - `IdP`
 
-URL format: `/mellon/login?ReturnTo=X&IdP=Y`
+URL format: `/saml/login?ReturnTo=X&IdP=Y`
 
-### Shibboleth
+## Shibboleth
 
 [Documentation](https://wiki.shibboleth.net/confluence/display/SP3/SessionInitiator#SessionInitiator-InitiatorProtocol)
 
@@ -74,7 +92,7 @@ URL format: `/mellon/login?ReturnTo=X&IdP=Y`
 
 URL format: `https://sp.example.org/Shibboleth.sso/Login?target=https%3A%2F%2Fsp.example.org%2Fresource.asp&entityID=https%3A%2F%2Fidp.example.org%2Fidp%2Fshibboleth`
 
-### simpleSAMLphp
+## simpleSAMLphp
 
 See [this](https://github.com/simplesamlphp/simplesamlphp/blob/master/modules/core/www/as_login.php). Seems `saml:idp` is not documented...
 
@@ -84,11 +102,9 @@ See [this](https://github.com/simplesamlphp/simplesamlphp/blob/master/modules/co
 
 URL format: `/simplesaml/module.php/core/as_login.php?AuthId=<authentication source>&ReturnTo=<return URL>`
 
-### php-saml-sp
+## php-saml-sp
 
 - `ReturnTo`
 - `IdP`
 
-URL format: `/php-saml-sp/wayf?ReturnTo=X&IdP=Y`
-
-Currently, `ReturnTo` as a query parameter is NOT yet implemented.
+URL format: `/php-saml-sp/login?ReturnTo=X&IdP=Y`
