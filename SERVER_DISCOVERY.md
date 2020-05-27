@@ -52,6 +52,10 @@ they belong to, e.g. "Radboud University".
       ]
     }
 
+The application MUST always fetch the `server_list.json` at application start. 
+The application MAY refresh the `server_list.json` periodically, e.g. once 
+every hour. The reason for this is that the list of servers changes regularly.
+ 
 ## Organization List
 
 The "Organization List" contains a list of all known organizations and their
@@ -84,6 +88,18 @@ key `server_type` with value `secure_internet`:
 
       ]
     }
+
+The application MUST only download the `organization_list.json` when it is 
+needed. It is only needed:
+
+- on "first launch" when offering the search for "Institute Access" and 
+  "Organizations";
+- as long as the user did not yet choose an organization for "Secure Internet", 
+  but ONLY when the user is in the process of adding a "Secure Internet"
+  server and the list of organizations is required.
+
+The reason for this is that the list can get quit big. We expect it can be up
+to 1MB in the future.
 
 ## Support Contact
 
