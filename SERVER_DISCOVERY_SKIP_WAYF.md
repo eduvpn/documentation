@@ -32,10 +32,11 @@ the VPN server we need to approach things differently.
 
 The following servers are supported for "skipping the WAYF":
 
-| `baseUrl`                    | Authentication URL Template                                                 |
-| ---------------------------- | --------------------------------------------------------------------------- |
-| `https://nl.eduvpn.org/`     | `https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@` |
-| `https://eduvpn1.eduvpn.de/` | `https://eduvpn1.eduvpn.de/saml/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@`    |
+| `baseUrl`                    | Authentication URL Template                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| `https://nl.eduvpn.org/`     | `https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@`          |
+| `https://eduvpn1.eduvpn.de/` | `https://eduvpn1.eduvpn.de/saml/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@`             |
+| `https://eduvpn1.funet.fi/`  | `https://eduvpn1.funet.fi/Shibboleth.sso/Login?entityID=@ORG_ID@&target=@RETURN_TO@` |
 
 When the user chooses an organization that has a `secure_internet_home` 
 pointing to one of these servers the `org_id` of the chosen organization is 
