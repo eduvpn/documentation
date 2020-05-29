@@ -36,10 +36,7 @@ they belong to, e.g. "Radboud University".
         {
           "server_type": "secure_internet",
           "base_url": "https://eduvpn.rash.al/",
-          "display_name": {
-            "en-US": "Albania",
-            "sq-AL": "Shqiperi"
-          },
+          "country_code": "AL",
           "support_contact": [
             "mailto:helpdesk@rash.al"
           ]
@@ -120,8 +117,8 @@ example:
       "nl": "SURFnet bv SURF konijn powered by"
     }
 
-They can also be used in "Institute Access" and "Secure Internet" discovery 
-files!
+**NOTE**: the `keyword_list` MUST also be supported in the `server_list.json` 
+files for "Institute Access" servers!
 
 ## Language Matching
 
@@ -149,6 +146,21 @@ Start from the OS language setting, i.e. `de-DE`.
 `de-`;
 4. Pick one that is deemed best, e.g. `en-US` or `en`, but note that not all 
 languages are always available!
+
+## Country Code
+
+The "Secure Internet" servers from `server_list.json` have a `country_code` 
+field. This field MUST be used to find an appropriate translation of the 
+country name and flag for display in the UI. If the OS you are writing an 
+application for allows you to "internationalize" country codes (or country 
+names) this SHOULD be used.
+
+If such functionality is lacking you can use the file 
+[here](https://github.com/eduvpn/artwork/blob/master/country_code_to_country_mapping.json).
+
+**NOTE**: if you use this file, it MUST be included in your application. It 
+MUST NOT be fetched at application run time! There is no guarantee this file 
+will remain available.
 
 ## Signatures
 
