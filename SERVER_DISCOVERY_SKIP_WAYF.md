@@ -30,16 +30,20 @@ Unfortunately, there are (at least) three types of SAML federations:
 So depending on the type of federation and/or SAML SP software that is used by
 the VPN server we need to approach things differently.
 
-See 
-[this](https://github.com/eduvpn/discovery/blob/new-disco/README.md#secure-internet) 
-list for the up to date mapping from `baseUrl` to 
-"Authentication URL Template".
+The `server_list.json` file contains a key `authentication_url_template` that
+contains a specific URL template for the server involved in order to properly 
+"skip the WAYF".
 
 When the user chooses an organization that has a `secure_internet_home` 
 pointing to one of these servers the `org_id` of the chosen organization is 
 remembered. Together with this `org_id` and the constructed OAuth 
-authorization URL the template URL is used to construct a URL that will be 
-opened in the browser.
+authorization URL, the `authentication_url_template` is used to construct a URL 
+that will be opened in the browser.
+
+For example, the `https://nl.eduvpn.org/` server has the following 
+`authentication_url_template`:
+
+    https://nl.eduvpn.org/php-saml-sp/login?ReturnTo=@RETURN_TO@&IdP=@ORG_ID@
 
 The string `@RETURN_TO@` is replaced by the URL encoded value of the OAuth 
 authorization URL. The string `@ORG_ID@` is replaced by the URL encoded value
@@ -57,10 +61,6 @@ The full URL after using the template thus becomes: `https://nl.eduvpn.org/php-s
 When opening the browser with this, the authentication is performed using the 
 specified IdP and after authentication the OAuth authorization is started thus
 skipping the "WAYF" in the browser.
-
-**NOTE**: these authentication URL templates can currently be hard coded in
-the application, but will most likely move to the `server_list.json` file in
-the (near) future!
 
 # Open Issues
 
