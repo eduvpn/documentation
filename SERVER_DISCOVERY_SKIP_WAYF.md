@@ -2,22 +2,28 @@
 
 This builds on [SERVER_DISCOVERY](SERVER_DISCOVERY.md).
 
-Most "Secure Internet" servers have their own WAYF to redirect users to the 
-relevant IdP for the actual authentication. As we already have a "WAYF" in the
-eduVPN application, there is no need to have the user select their institute
-again in the browser.
+Most "Secure Internet" servers use SAML to authenticate the users and have a 
+WAYF (Where Are You From) to redirect users to the IdP chosen by the user for 
+the actual authentication. As we already have a "WAYF" in the eduVPN 
+application, there is no need to have the user select their institute again in 
+the browser.
 
-This document talks about how to "Skip" the WAYF in the browser.
+**NOTE**: this ONLY applies to "Secure Internet" servers!
 
-Most SAML SPs have some means to trigger authentication directly by going to a
-URL and provide the `IdP` and `ReturnTo` parameters indicating which IdP to use
-and where to go _after_ authentication.
+This document explains how to have the WAYF skipped during the SAML 
+authentication. This is possible because the user _already_ selected their 
+organization in the application. There is no need to ask for it again.
+
+Most SAML SPs have some means to trigger authentication directly by going to
+some URL and provide the `IdP` and `ReturnTo` parameters indicating which IdP 
+to use and where to go _after_ authentication.
 
 As OAuth is used by the VPN application, the OAuth "authorization URL" needs to
 be placed in the `ReturnTo` query parameter instead of opening it directly. The
-IdP we the user chose we already know from the organization the user chose in 
-the application by `org_id`. This `org_id` is typically the entity ID of the
-IdP and can thus be used as the `IdP` query parameter value.
+`organization_list.json` contains a list of organizations and the `org_id` key
+that is the hint for skipping the WAYF. When SAML is used, the `org_id` is 
+typically the "entityID" of the SAML IdP and can be used as the `IdP` query
+parameter.
 
 Unfortunately, there are (at least) three types of SAML federations:
 
@@ -30,9 +36,9 @@ Unfortunately, there are (at least) three types of SAML federations:
 So depending on the type of federation and/or SAML SP software that is used by
 the VPN server we need to approach things differently.
 
-The `server_list.json` file contains a key `authentication_url_template` that
-contains a specific URL template for the server involved in order to properly 
-"skip the WAYF".
+The `server_list.json` file MAY contain a key `authentication_url_template` for
+"Secure Internet" servers that contains a specific URL template for the server 
+involved in order to properly "skip the WAYF".
 
 When the user chooses an organization that has a `secure_internet_home` 
 pointing to one of these servers the `org_id` of the chosen organization is 
@@ -61,52 +67,3 @@ The full URL after using the template thus becomes: `https://nl.eduvpn.org/php-s
 When opening the browser with this, the authentication is performed using the 
 specified IdP and after authentication the OAuth authorization is started thus
 skipping the "WAYF" in the browser.
-
-# Open Issues
-
-With SAML proxies we somehow need to indicate which IdP is to be used. This can
-typically be done using `AuthnRequest` "scoping". The SP needs to support this
-through a query parameter.
-
-It _may_ work through clever `ReturnTo` (double) encoding.
-
-With Feide we need to be even more clever as `AuthnRequest` "scoping" may not 
-be supported (unconfirmed as of 2020-05-26). There we may not have any other 
-choice than be clever `ReturnTo` (double) encoding.
-
-# Triggering SAML Login through URL
-
-## Mellon
-
-[Documentation](https://github.com/latchset/mod_auth_mellon#manual-login)
-
-- `ReturnTo`
-- `IdP`
-
-URL format: `/saml/login?ReturnTo=X&IdP=Y`
-
-## Shibboleth
-
-[Documentation](https://wiki.shibboleth.net/confluence/display/SP3/SessionInitiator#SessionInitiator-InitiatorProtocol)
-
-- `target`
-- `entityID`
-
-URL format: `https://sp.example.org/Shibboleth.sso/Login?target=https%3A%2F%2Fsp.example.org%2Fresource.asp&entityID=https%3A%2F%2Fidp.example.org%2Fidp%2Fshibboleth`
-
-## simpleSAMLphp
-
-See [this](https://github.com/simplesamlphp/simplesamlphp/blob/master/modules/core/www/as_login.php). Seems `saml:idp` is not documented...
-
-- `ReturnTo`
-- `AuthId`
-- `saml:idp`
-
-URL format: `/simplesaml/module.php/core/as_login.php?AuthId=<authentication source>&ReturnTo=<return URL>`
-
-## php-saml-sp
-
-- `ReturnTo`
-- `IdP`
-
-URL format: `/php-saml-sp/login?ReturnTo=X&IdP=Y`

@@ -137,7 +137,7 @@ comprehensive "mapping" rules are discussed in
 OS or the standard library of the OS provides support for this use it. If not,
 you can implement a subset of this matching yourself.
 
-Start from the OS language setting, i.e. `de-DE`.
+Start from the OS language setting, e.g. `de-DE`.
 
 1. Try to find the exact match, so search for `de-DE` in this case;
 2. Try to find a key that *starts* with the OS language setting, e.g. 
@@ -164,9 +164,8 @@ will remain available.
 
 ## Signatures
 
-The signatures are generated with 
-[minisign](https://jedisct1.github.io/minisign/). All JSON discovery files have
-a signature file as well:
+All JSON discovery files have a signature. The signatures are generated with 
+[minisign](https://jedisct1.github.io/minisign/):
 
 - Server List: `https://disco.eduvpn.org/server_list.json.minisig`
 - Organization List: `https://disco.eduvpn.org/organization_list.json.minisig`
@@ -179,5 +178,8 @@ As of 2020-05-25 the public key used to verify the signatures is this one:
     RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF
 
 **NOTE**: you MUST allow your application to contain _multiple_ public keys for 
-verification where all of them are used to verify the signature. A signature
-is valid if and only if one of them verifies the signature correctly.
+verification. A signatures is considered valid if any one of the public keys
+verifies the signature. So your verification algorithm MUST loop over the 
+known public keys until one returns a valid match. If none of the public keys
+successfully verify the signature, an error MUST shown to the user of the 
+application.
