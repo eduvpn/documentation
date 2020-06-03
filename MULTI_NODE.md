@@ -200,10 +200,6 @@ Modify `/etc/sysconfig/vpn-daemon`:
     ENABLE_TLS=-enable-tls
     LISTEN=:41194
 
-**NOTE**: when specifying the IP address to listen on, vpn-daemon sometimes
-fails to start at boot... so we listen on everything here. If anyone knows a
-fix, please let us know!
-
 Now copy the certificates/keys you copied to the node already before to the 
 right place:
 
@@ -229,7 +225,7 @@ In `/etc/sysconfig/iptables`:
 
     -A INPUT -s 145.0.6.71/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
-In `/etc/sysconfig/ip6tables`:
+In `/etc/sysconfig/ip6tables`, if you prefer using IPv6:
 
     -A INPUT -s 2001:610:188:418:145:0:6:71/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
