@@ -5,10 +5,8 @@ control!
 This is currently only supported on Fedora and Debian. CentOS 8 also supports 
 it, but we do not yet support CentOS 8.
 
-To enable make sure you put the following in 
-`/etc/sysctl.d/71-congestion.conf`:
+Create the file `/etc/sysctl.d/71-congestion.conf` and put these lines in it:
 
-    $ cat /etc/sysctl.d/71-congestion.conf 
     net.core.default_qdisc=fq
     net.ipv4.tcp_congestion_control=bbr
 
