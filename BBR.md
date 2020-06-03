@@ -1,6 +1,8 @@
-There's this new fancy 
+There's this shiny 
 [BBR](https://en.wikipedia.org/wiki/TCP_congestion_control#TCP_BBR) congestion 
-control!
+control! It is not universally accepted as a good solution according to 
+Wikipedia, but it is an option to improve TCP throughput in some cases it 
+seems.
 
 This is currently only supported on Fedora and Debian. CentOS 8 also supports 
 it, but we do not yet support CentOS 8.
