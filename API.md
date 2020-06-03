@@ -165,12 +165,17 @@ The response looks like this:
             "data": [
                 {
                     "display_name": "Internet Access",
-                    "profile_id": "internet"
+                    "profile_id": "internet",
+                    "default_gateway": true,
                 }
             ],
             "ok": true
         }
     }
+
+**NOTE**: `default_gateway` is available since vpn-user-portal >= 
+[2.2.9](https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md) and 
+indicates whether the profile expects all client traffic to go over the VPN.
 
 ### Create a Key Pair 
 
