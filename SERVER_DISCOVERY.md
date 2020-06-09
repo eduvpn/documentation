@@ -183,3 +183,9 @@ verifies the signature. So your verification algorithm MUST loop over the
 known public keys until one returns a valid match. If none of the public keys
 successfully verify the signature, an error MUST shown to the user of the 
 application.
+
+## Authorization
+
+See [API](API.md) for the actual OAuth flow. For "Secure Internet" servers you
+also MUST implement 
+[SERVER_DISCOVERY_SKIP_WAYF](SERVER_DISCOVERY_SKIP_WAYF.md).
