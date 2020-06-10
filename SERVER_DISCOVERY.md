@@ -157,9 +157,13 @@ names) this SHOULD be used.
 If such functionality is lacking you can use the file 
 [here](https://github.com/eduvpn/artwork/blob/master/country_code_to_country_mapping.json).
 
-**NOTE**: if you use this file, it MUST be included in your application. It 
-MUST NOT be fetched at application run time! There is no guarantee this file 
-will remain available.
+You can find many country flags for use by your application 
+[here](https://github.com/eduvpn/artwork/tree/master/App/Flags). Copy those in
+your assets folder, do not fetch them dynamically!
+
+**NOTE**: if you use these assets, they MUST be included in your application. 
+It MUST NOT be fetched at application run time! There is no guarantee these
+files will remain available at this exact location!
 
 ## Signatures
 
