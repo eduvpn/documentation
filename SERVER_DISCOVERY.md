@@ -91,9 +91,8 @@ needed. It is only needed:
 
 - on "first launch" when offering the search for "Institute Access" and 
   "Organizations";
-- as long as the user did not yet choose an organization for "Secure Internet", 
-  but ONLY when the user is in the process of adding a "Secure Internet"
-  server and the list of organizations is required.
+- when the user tries to add new server AND the user did NOT yet choose an 
+  organization before.
 
 The reason for this is that the list can get quit big. We expect it can be up
 to 1MB in the future.
