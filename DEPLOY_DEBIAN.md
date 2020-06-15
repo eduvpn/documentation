@@ -147,8 +147,9 @@ the `php7.0-fpm` service to activate the changes:
 ### Web Server Certificates
 
 By default a self-signed certificate is used for the web server. You can 
-install your own certificates, and tweak `/etc/apache2/mods-available/ssl.conf` 
-to point to them, or use Let's Encrypt using the script mentioned below.
+install your own certificates, and tweak 
+`/etc/apache2/sites-available/vpn.example.org.conf` to point to them, or use 
+Let's Encrypt using the script mentioned below.
 
 #### Let's Encrypt
 
