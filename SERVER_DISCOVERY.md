@@ -52,7 +52,7 @@ they belong to, e.g. "Radboud University".
 The application MUST always fetch the `server_list.json` at application start. 
 The application MAY refresh the `server_list.json` periodically, e.g. once 
 every hour. The reason for this is that the list of servers changes regularly.
- 
+
 ## Organization List
 
 The "Organization List" contains a list of all known organizations and their
@@ -99,8 +99,8 @@ to 1MB in the future.
 
 ## Support Contact
 
-The key `support_contact` contains a list of possible contact options to be 
-displayed in the application.
+The OPTIONAL key `support_contact` contains a list of possible contact options 
+to be displayed in the application.
 
 - `mailto:X`
 - `https://X`
@@ -108,26 +108,26 @@ displayed in the application.
 
 ## Keywords
 
-The key `keyword_list` contains a string, or object containing keywords, 
-example:
+The OPTIONAL key `keyword_list` contains a string, or object containing 
+keywords, example:
 
     "keyword_list": {
       "en": "SURFnet bv SURF konijn surf surfnet powered by",
       "nl": "SURFnet bv SURF konijn powered by"
     }
 
-**NOTE**: the `keyword_list` MUST also be supported in the `server_list.json` 
-files for "Institute Access" servers!
+**NOTE**: the `keyword_list` MUST be supported in `server_list.json` for 
+"Institute Access" servers!
 
 ## Language Matching
 
 We assume the OS the user is using has some kind of locale set up. For example
 the OS is set to `en-US`, `nl-NL` or `de-DE`. 
 
-The fields `display_name` and `keyword_list` are either of type `string` or of
-type `object`. If they are of type `string` the value is used/displayed as-is. 
-If they are of type `object` a match is made to pick the "best" translation 
-based on the OS language setting.
+The REQUIRED field `display_name` and OPTIONAL field `keyword_list` are either 
+of type `string` or of type `object`. If they are of type `string` the value is 
+used/displayed as-is. If they are of type `object` a match is made to pick the 
+"best" translation based on the OS language setting.
 
 We use the 
 [IETF BCP 47 language tag](https://en.wikipedia.org/wiki/IETF_language_tag). A 
