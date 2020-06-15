@@ -53,6 +53,10 @@ The application MUST always fetch the `server_list.json` at application start.
 The application MAY refresh the `server_list.json` periodically, e.g. once 
 every hour. The reason for this is that the list of servers changes regularly.
 
+The keys `server_type`, `base_url` are required for all server types. The 
+`display_name` key is required for the `institute_access` server type. The 
+`country_code` key is required for the `secure_internet` server type.
+
 ## Organization List
 
 The "Organization List" contains a list of all known organizations and their
@@ -97,6 +101,9 @@ needed. It is only needed:
 The reason for this is that the list can get quit big. We expect it can be up
 to 1MB in the future.
 
+The keys `display_name`, `org_id`, `secure_internet_home` are required keys. 
+The `keyword_list` is optional.
+
 ## Support Contact
 
 The OPTIONAL key `support_contact` contains a list of possible contact options 
@@ -124,10 +131,11 @@ keywords, example:
 We assume the OS the user is using has some kind of locale set up. For example
 the OS is set to `en-US`, `nl-NL` or `de-DE`. 
 
-The REQUIRED field `display_name` and OPTIONAL field `keyword_list` are either 
-of type `string` or of type `object`. If they are of type `string` the value is 
-used/displayed as-is. If they are of type `object` a match is made to pick the 
-"best" translation based on the OS language setting.
+The field `keyword_list` (and `display_name` for the organization list and 
+server list for server type `institute_access`) are either of type `string` or 
+of type `object`. If they are of type `string` the value is used/displayed 
+as-is. If they are of type `object` a match is made to pick the "best" 
+translation based on the OS language setting.
 
 We use the 
 [IETF BCP 47 language tag](https://en.wikipedia.org/wiki/IETF_language_tag). A 
