@@ -84,7 +84,7 @@ settings.
 
 #### Username & Password
 
-By default there is a user `me` and `admin` with a generated password for 
+By default there is a user `demo` and `admin` with a generated password for 
 portal access. Those are printed at the end of the deploy script.
 
 If you want to update/add users you can use the `vpn-user-portal-add-user`. 
