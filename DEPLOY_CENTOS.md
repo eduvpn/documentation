@@ -130,7 +130,13 @@ users, see [ACL](ACL.md).
 
 ## Optional
 
-### Let's Encrypt
+### Web Server Certificates
+
+By default a self-signed certificate is used for the web server. You can 
+install your own certificates, and tweak `/etc/httpd/conf.d/ssl.conf` to point
+to them, or use Let's Encrypt using the script mentioned below.
+
+#### Let's Encrypt
 
 Run the script (as root) from the documentation folder:
 
