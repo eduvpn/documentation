@@ -66,3 +66,5 @@ interface connecting to your local network from your VPN server:
     -A FORWARD -i tun+ -o eth0 -d 10.1.1.1/32 -j ACCEPT
     -A FORWARD -i eth0 -o tun+ -j ACCEPT
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+**NOTE**: for IPv6 routes it works exactly the same.
