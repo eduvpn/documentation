@@ -47,11 +47,13 @@ REPO_URL_LIST=(\
     https://git.tuxed.net/rpm/php-fkooman-sqlite-migrate \
     https://git.tuxed.net/rpm/php-fkooman-secookie \
     https://git.tuxed.net/rpm/php-LC-openvpn-connection-manager \
-    https://git.tuxed.net/rpm/php-fkooman-saml-sp \
+    https://git.tuxed.net/rpm/php-saml-sp \
     https://git.tuxed.net/rpm/php-fkooman-otp-verifier \
     https://git.tuxed.net/rpm/php-fkooman-oauth2-server \
     https://git.tuxed.net/rpm/php-fkooman-jwt \
     https://git.tuxed.net/rpm/php-LC-common \
+    https://git.tuxed.net/rpm/vpn-maint-scripts \
+    https://git.tuxed.net/rpm/php-saml-sp-artwork-eduVPN \
 
     # Extras
     https://github.com/fkooman/php-json-signer \
