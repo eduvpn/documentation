@@ -54,17 +54,25 @@ Take special note of the `routes`, `dns` and `dnsSuffix` options. See
 [PROFILE_CONFIG](PROFILE_CONFIG.md) for other configuration options that may be
 relevant for your situation.
 
+To apply the configuration changes:
+
+    $ sudo vpn-maint-apply-changes
+
+If the command is not available, install the `vpn-maint-scripts` package first.
+
 # Firewall Configuration
 
 Restricting network access for VPN clients is already documented in 
 [FIREWALL.md](FIREWALL.md#reject-forwarding-traffic), but just to be complete,
-the configuration of the firewall would be like this, assuming `eth0` is the 
-interface connecting to your local network from your VPN server:
+the (FORWARD) configuration of the firewall would be like this, assuming `eth0` 
+is the interface connecting to your local network from your VPN server:
 
     -A FORWARD -i tun+ -o eth0 -d 10.42.42.0/24 -j ACCEPT
     -A FORWARD -i tun+ -o eth0 -d 10.43.43.0/24 -j ACCEPT
     -A FORWARD -i tun+ -o eth0 -d 10.1.1.1/32 -j ACCEPT
     -A FORWARD -i eth0 -o tun+ -j ACCEPT
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+**NOTE**: restart the firewall after making modifications!
 
 **NOTE**: for IPv6 routes it works exactly the same.
