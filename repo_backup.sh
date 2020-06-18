@@ -8,6 +8,7 @@
 #
 
 BACKUP_ROOT=${HOME}
+GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
     # Website
@@ -101,10 +102,10 @@ cd "${BACKUP_ROOT}/repoBackup-${DATE_TIME}" || exit 1
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
-	ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
+    ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
     (
         mkdir -p "${ENCODED_URL}" || exit 1
         cd "${ENCODED_URL}" || exit 1
-        git clone --bare "${REPO_URL}" || exit 1
+        ${GIT_PATH} clone --bare "${REPO_URL}"
     )
 done
