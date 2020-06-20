@@ -25,7 +25,7 @@ Install the required software (dependencies):
 
     $ sudo dnf -y install golang php-cli git composer php-date php-filter \
         php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
-        php-curl php-gd
+        php-curl php-gd unzip
 
 # Ubuntu
 
@@ -34,7 +34,7 @@ Install the required software (dependencies):
 Install the required software (dependencies): 
  
     $ sudo apt-get install curl git build-essential golang-go php7.4-sqlite3 \ 
-        composer php7.4-curl php7.4-dom php7.4-cli
+        composer php7.4-curl php7.4-dom php7.4-cli unzip
 
 # macOS
 
