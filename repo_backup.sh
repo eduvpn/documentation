@@ -28,6 +28,7 @@ REPO_URL_LIST=(\
     https://github.com/eduvpn/status \
     https://github.com/eduvpn/artwork \
     https://github.com/eduvpn/vpn-for-web \
+    https://github.com/letsconnectvpn/vpn-maint-scripts \
 
     # Server Debian Packages \
     https://github.com/eduvpn/eduvpn-debian

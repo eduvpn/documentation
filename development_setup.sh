@@ -16,6 +16,7 @@ git clone -b master       https://github.com/eduvpn/vpn-portal-artwork.git vpn-p
 git clone -b master       https://github.com/letsconnectvpn/vpn-portal-artwork.git vpn-portal-artwork-LC
 git clone -b master       https://github.com/letsconnectvpn/vpn-ca.git
 git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
+git clone -b master       https://github.com/letsconnectvpn/vpn-maint-scripts.git
 
 ## clone all repositories (read/write, my own "forks")
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-lib-common.git
@@ -36,10 +37,12 @@ git clone -b master       https://github.com/letsconnectvpn/vpn-daemon.git
 #(cd vpn-ca && git remote add github git@github.com:letsconnectvpn/vpn-ca.git)
 #git clone -b master       git@git.tuxed.net:LC/vpn-daemon.git
 #(cd vpn-daemon && git remote add github git@github.com:letsconnectvpn/vpn-daemon.git)
+#git clone -b master       git@git.tuxed.net:LC/vpn-maint-scripts.git
+#(cd vpn-daemon && git remote add github git@github.com:letsconnectvpn/vpn-maint-scripts.git)
 
 # clone all RPM packages
 mkdir -p rpm
-for PACKAGE_NAME in vpn-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-fkooman-saml-sp php-fkooman-secookie php-fkooman-sqlite-migrate php-json-signer vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal
+for PACKAGE_NAME in vpn-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-saml-sp php-saml-sp-artwork-eduVPN php-fkooman-secookie php-fkooman-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts
 do
 	git clone -b master https://git.tuxed.net/rpm/"${PACKAGE_NAME}" rpm/"${PACKAGE_NAME}"
 	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
@@ -71,7 +74,7 @@ php bin/add-user.php --user admin --pass secret
 
 # symlink to the official templates we have so we can easily modify and test
 # them
-mkdir -p web/css web/img
+mkdir -p web/css web/img web/fonts
 for TPL in eduVPN LC
 do
     ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/views"  "views/${TPL}"
