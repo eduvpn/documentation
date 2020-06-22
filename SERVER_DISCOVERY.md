@@ -154,6 +154,11 @@ Start from the OS language setting, e.g. `de-DE`.
 4. Pick one that is deemed best, e.g. `en-US` or `en`, but note that not all 
 languages are always available!
 
+### Search
+
+When searching for organizations (and servers) the device locale should not be
+used to restrict searches to that particular locale, but search in all locales.
+
 ## Country Code
 
 The "Secure Internet" servers from `server_list.json` have a `country_code` 
