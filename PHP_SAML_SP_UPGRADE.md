@@ -23,6 +23,15 @@ Make sure your system is fully up to date by installing and applying all
 updates and reboot. When updating to 2.2.0 everything will keep working as-is, 
 don't worry.
 
+On Debian, make sure you enable the configuration:
+
+    $ sudo a2enconf php-saml-sp
+    $ sudo systemctl restart apache2
+
+On CentOS/Fedora you'd only need to restart Apache to enable it, which would
+also be accomplished by installing all updates as above and rebooting the 
+system.
+
 Figure out which IdP is currently supported by looking for `idpEntityId` in 
 `/etc/vpn-user-portal/config.php` configure that as an entry in 
 `/etc/php-saml-sp/config.php` under `idpList`. In case you were using a 
