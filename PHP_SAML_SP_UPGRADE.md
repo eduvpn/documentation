@@ -20,23 +20,8 @@ you the option and time to switch back if necessary and complain to us.
 # How?
 
 Make sure your system is fully up to date by installing and applying all 
-updates and rebooting if necessary. When updating to 2.2.0 everything will keep
-working, don't worry.
-
-Switch from `php-fkooman-saml-sp` to `php-saml-sp`. This will also NOT yet 
-break the SAML authentication you have currently configured:
-
-On CentOS:
-
-	$ sudo yum swap php-fkooman-saml-sp php-saml-sp
-
-On Fedora:
-
-	$ sudo dnf swap php-fkooman-saml-sp php-saml-sp
-	
-Make sure you restart Apache at this point:
-
-	$ sudo systemctl restart httpd
+updates and reboot. When updating to 2.2.0 everything will keep working as-is, 
+don't worry.
 
 Figure out which IdP is currently supported by looking for `idpEntityId` in 
 `/etc/vpn-user-portal/config.php` configure that as an entry in 
@@ -62,7 +47,9 @@ to talk to your IdP(s) to reimport the metadata from
 run an authentication test from `https://vpn.example.org/php-saml-sp/`. If it 
 doesn't work, review your `/etc/php-saml-sp/config.php` file and make sure 
 the metadata is correctly made available under `/etc/php-saml-sp/metadata` as 
-XML files, e.g. `idp-1.xml`, `idp-2.xml`, ..., `idp-n.xml`.
+XML files, e.g. `idp-1.xml`, `idp-2.xml`, ..., `idp-n.xml`. However, feel free
+to name them any way you like, as long as they end in `.xml` it is fine. 
+Typically you want to indicate in the name for which IdP it is, though :-)
 
 Once everything works, you can switch `vpn-user-portal` to use `php-saml-sp` 
 instead of `php-fkooman-saml-sp`:
