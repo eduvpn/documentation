@@ -122,7 +122,7 @@ understood convention of `tun` device numbering.
 
 In order to fix this, a script can be run on OpenVPN server process start. In 
 vpn-server-node >= 2.2.2 the `--up` command is automatically added to 
-server configuration when a script with the name `/etc/openvpn/server/up` 
+server configuration when a script with the name `/etc/openvpn/up` 
 exists. There is no need for a `--down` script as the routing table is 
 automatically cleaned up when the `tun` devices disappear.
 
@@ -142,5 +142,5 @@ the script as necessary for your platform:
     /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
     /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
 
-**NOTE**: make sure the `/etc/openvpn/server/up` script is made executable, 
-i.e. don't forget to do a `chmod 0755 /etc/openvpn/server/up`!
+**NOTE**: make sure the `/etc/openvpn/up` script is made executable, 
+i.e. don't forget to do a `chmod 0755 /etc/openvpn/up`!
