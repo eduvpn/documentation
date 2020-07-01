@@ -49,16 +49,16 @@ Fedora). We created a physical test setup similar to what you see below.
    `fd00:4242:4242:4242::1` on the `tun0` device;
 2. A network connection between the VPN box and the NAT router exists through
    another interface, e.g. `eth1`:
-  - the VPN box has the IP addresses `192.168.1.100` and 
-    `fd00:1010:1010:1010::100` on this network;
-  - the remote NAT router has the IP addresses `192.168.1.1` and 
-    `fd00:1010:1010:1010::1` on this network;
+    - the VPN box has the IP addresses `192.168.1.100` and 
+      `fd00:1010:1010:1010::100` on this network;
+    - the remote NAT router has the IP addresses `192.168.1.1` and 
+      `fd00:1010:1010:1010::1` on this network;
 3. You installed the VPN server using `deploy_centos.sh` or `deploy_fedora.sh`.
 4. The network where you route your client traffic over has _static routes_ 
    back to your VPN server:
-  - There is an IPv4 static route for `10.10.10.0/24` via `192.168.1.100`;
-  - There is an IPv6 static route for `fd00:4242:4242:4242::/64` via 
-    `fd00:1010:1010:1010::100`;
+    - There is an IPv4 static route for `10.10.10.0/24` via `192.168.1.100`;
+    - There is an IPv6 static route for `fd00:4242:4242:4242::/64` via 
+      `fd00:1010:1010:1010::100`;
 
 ## Source Routing
 
@@ -104,11 +104,31 @@ It is smart to reboot your system to see if all comes up as expected:
 ## Firewall
 
 See the [firewall](FIREWALL.md) documentation on how to update your firewall
-if needed.
+as needed.
 
-## Hacks
+## Finishing Touches
 
-**TO BE CLEANED UP**
+There are two problems still left to be resolved with the above solution:
+
+1. Traffic *between* the OpenVPN processes is also sent to the default gateway
+   of the `vpn` table, this prevents "client to client" traffic, even if they 
+   firewall would allow it;
+2. It is not possible to ping the gateway, i.e. the IP address assign to the 
+   VPN server `tun` interfaces, as all traffic is sent to the default gateway.
+
+We cannot do this "statically" as the `tun` interfaces do not yet exist when 
+the network is brought up. It is also tricky as there is not a really easily 
+understood convention of `tun` device numbering.
+
+In order to fix this, a script can be run on OpenVPN server process start. In 
+vpn-server-node >= 2.2.2 the `--up` command is automatically added to 
+server configuration when a script with the name `/etc/openvpn/server/up.sh` 
+exists. There is no need for a `--down` script as the routing table is 
+automatically cleaned up when the `tun` devices disappear.
+
+An possible example script that solves the above two issues is shown below. It
+depends on `/usr/bin/ipcalc` and `/usr/sbin/ip` commands. Make sure you modify
+the script as necessary for your platform:
 
     #!/bin/sh
     NETWORK4=$(/usr/bin/ipcalc -n $ifconfig_local $ifconfig_netmask | cut -d '=' -f 2)
@@ -121,6 +141,3 @@ if needed.
 
     /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
     /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
-
-By adding this as `--up` command in the OpenVPN server config we can also 
-add the `tun` devices automatically to the `vpn` table.
