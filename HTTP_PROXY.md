@@ -22,7 +22,7 @@ Put the following configuration snippet in `/etc/httpd/conf.d/proxy.conf`:
 
 Add user `foo` with password `bar` to the `proxy-users` file:
 
-    $ htpasswd -2 -b -c /etc/httpd/proxy-users foo bar
+    $ htpasswd -B -b -c /etc/httpd/proxy-users foo bar
 
 Make sure you allow Apache to connect to the network:
 
