@@ -36,17 +36,24 @@ That's all!
 
 ## Client
 
+**NOTE** this will all be over **HTTP**, so the password will be sent in 
+plain text!
+
 In your OpenVPN client configuration you can enable the `http-proxy` option. 
 Make sure you only list "remotes" with the TCP protocol.
 
 For example:
 
     remote vpn.tuxed.net 1194 tcp
-    http-proxy proxy.tuxed.net 80 proxy-pass basic
 
-Put the username and password in the `proxy-pass` file:
+    # ...
 
-    $ echo -e "foo\nbar" > proxy-pass
+    http-proxy proxy.tuxed.net 80 basic
+
+    <http-proxy-user-pass>
+    foo
+    bar
+    </http-proxy-user-pass>
 
 You can also use IP addresses. Currently the hostname do not work as IPv6 is 
 again broken on the VM platform hosting `proxy.tuxed.net`.
