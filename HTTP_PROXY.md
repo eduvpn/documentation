@@ -13,12 +13,16 @@ Put the following configuration snippet in `/etc/httpd/conf.d/proxy.conf`:
     AllowConnect 1194
 
     <Proxy "*">
-      Require ip 145.90.228.0/23
-      Require ip 2001:610:450:40::/60
+        Require valid-user
+        AuthType Basic
+        AuthBasicProvider file
+        AuthUserFile "/etc/httpd/proxy-users"
+        AuthName "Proxy"
     </Proxy>
 
-The `Require ip` lines restrict access to the proxy somewhat to prevent being 
-an open proxy until such time authentication is implemented properly.
+Add user `foo` with password `bar` to the `proxy-users` file:
+
+    $ htpasswd -b -c /etc/httpd/proxy-users foo bar
 
 Make sure you allow Apache to connect to the network:
 
@@ -38,7 +42,20 @@ Make sure you only list "remotes" with the TCP protocol.
 For example:
 
     remote vpn.tuxed.net 1194 tcp
-    http-proxy proxy.tuxed.net 80
+    http-proxy proxy.tuxed.net 80 proxy-pass basic
+
+Put the username and password in the `proxy-pass` file:
+
+    $ echo -e "foo\nbar" > proxy-pass
 
 You can also use IP addresses. Currently the hostname do not work as IPv6 is 
-again broken on the VM platform hosting proxy.tuxed.net.
+again broken on the VM platform hosting `proxy.tuxed.net`.
+
+Client log output when connecting using a proxy:
+
+    Thu Jul  2 23:37:28 2020 Attempting to establish TCP connection with [AF_INET]145.100.181.81:80 [nonblock]
+    Thu Jul  2 23:37:29 2020 TCP connection established with [AF_INET]145.100.181.81:80
+    Thu Jul  2 23:37:29 2020 Send to HTTP proxy: 'CONNECT 116.203.195.80:1194 HTTP/1.0'
+    Thu Jul  2 23:37:29 2020 Send to HTTP proxy: 'Host: 116.203.195.80'
+    Thu Jul  2 23:37:29 2020 Attempting Basic Proxy-Authorization
+    Thu Jul  2 23:37:30 2020 HTTP proxy returned: 'HTTP/1.0 200 Connection Established'
