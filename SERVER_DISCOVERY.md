@@ -200,6 +200,24 @@ known public keys until one returns a valid match. If none of the public keys
 successfully verify the signature, an error MUST shown to the user of the 
 application.
 
+### Rollback Prevention
+
+The JSON files contain a `v` key to contains the 
+[Unix time](https://en.wikipedia.org/wiki/Unix_time). The field MUST be used to
+prevent "rollback" to older versions.
+
+When downloading a new version, it MUST be ensured that the `v` field of the
+new file is `>` the `v` field of the old version. As an example:
+
+    {
+      "v": 1594022992,
+      "server_list": [
+        {
+            // ...
+        }
+      ]
+    }
+
 ## Authorization
 
 See [API](API.md) for the actual OAuth flow. For "Secure Internet" servers you
