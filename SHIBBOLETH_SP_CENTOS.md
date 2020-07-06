@@ -152,7 +152,8 @@ Restart Shibboleth:
 
     $ sudo systemctl restart shibd
 
-Next: register your SP in your identity federation, or in your IdP.
+Next: register your SP in your identity federation, or in your IdP. The 
+metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
 
 ### Portal
 
