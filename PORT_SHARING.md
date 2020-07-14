@@ -1,6 +1,7 @@
 ---
 title: Use Common Ports
 description: Add additional ports for your VPN server to listen on
+category: howto
 ---
 
 This document describes how to configure your VPN server in such a way as to

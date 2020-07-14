@@ -1,3 +1,9 @@
+---
+title: Raspberry Pi
+description: Run a VPN server on your Raspberry Pi
+category: howto
+---
+
 # VPN Server on your Raspberry Pi
 
 Because, why not. When developing technology, what use is it when you can't 

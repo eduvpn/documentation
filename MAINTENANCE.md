@@ -1,3 +1,9 @@
+---
+title: Maintenance
+description: Maintain your VPN server
+category: howto
+---
+
 # Introduction
 
 Since 2020-05-05 the package `vpn-maint-scripts` is available in the package

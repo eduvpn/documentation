@@ -1,3 +1,9 @@
+---
+title: Split Tunnel
+description: Configure Split Tunnel
+category: howto
+---
+
 # Split Tunnel
 
 Configuring "split tunnel", i.e. only routing _certain_ traffic over the VPN 

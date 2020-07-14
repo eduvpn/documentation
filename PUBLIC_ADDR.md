@@ -1,6 +1,7 @@
 ---
 title: Public Addresses
 description: Use Public IP Addresses for VPN Clients
+category: howto
 ---
 
 By default, NAT is used and [RFC 1918](https://tools.ietf.org/html/rfc1918) 

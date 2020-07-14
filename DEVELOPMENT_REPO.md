@@ -1,3 +1,9 @@
+---
+title: Development Repository
+description: Use the Development Repository on your VPN server
+category: howto
+---
+
 # Development Repository
 
 **NOTE**: run this ONLY on your testing machines!

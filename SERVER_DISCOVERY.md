@@ -1,3 +1,9 @@
+---
+title: Server Discovery
+description: Server Discovery for VPN Applications
+category: dev
+---
+
 # Server Discovery
 
 **WORK IN PROGRESS**

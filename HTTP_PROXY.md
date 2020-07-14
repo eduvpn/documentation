@@ -1,3 +1,9 @@
+---
+title: HTTP Proxy
+description: Redirect VPN traffic over a HTTP proxy
+category: howto
+---
+
 Today we will setup a HTTP proxy to tunnel OpenVPN client traffic over. We only
 care about CentOS 7 at this stage.
 

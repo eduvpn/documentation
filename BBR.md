@@ -1,3 +1,9 @@
+---
+title: Bottleneck Bandwidth and Round-trip propagation time (BBR)
+description: Changing Congestion Control Algorithm
+category: howto
+---
+
 There's this shiny 
 [BBR](https://en.wikipedia.org/wiki/TCP_congestion_control#TCP_BBR) congestion 
 control! It is not universally accepted as a good solution according to 
