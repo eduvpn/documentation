@@ -1,7 +1,7 @@
 ---
 title: Mellon
 description: SAML Authentication using mod_auth_mellon
-category: howto
+category: authentication
 ---
 
 Below we assume you use `vpn.example`, but modify this domain to your own 

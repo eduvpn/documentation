@@ -1,7 +1,7 @@
 ---
 title: Add Node(s)
 description: Add additional VPN nodes for handling OpenVPN connections
-category: howto
+category: advanced
 ---
 
 **NOTE**: the daemon is currently only supported on CentOS and Fedora!

@@ -1,6 +1,7 @@
 ---
 title: Scaling
 description: Performance/Scaling Notes
+category: documentation
 ---
 
 **NOTE**: as of today (2020-03-12) we only support using multiple servers on 

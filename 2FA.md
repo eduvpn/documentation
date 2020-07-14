@@ -1,7 +1,7 @@
 ---
 title: Two-factor Authentication
 description: Configure 2FA (Two Factor Authentication)
-category: howto
+category: advanced
 ---
 
 The VPN service supports 2FA for which the user can self-enroll. This can be

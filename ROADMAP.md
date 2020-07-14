@@ -1,8 +1,3 @@
----
-title: Roadmap
-description: Development of Let's Connect! / eduVPN 3.0
----
-
 Let's Connect! / eduVPN 3.0 will target CentOS >= 8. We are waiting for 
 [this](https://pagure.io/epel/issue/75) issue to be resolved before we can 
 consider moving to CentOS 8.

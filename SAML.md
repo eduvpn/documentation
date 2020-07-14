@@ -1,7 +1,7 @@
 ---
 title: SAML
 description: Enable SAML Authentication
-category: howto
+category: authentication
 ---
 
 This document describes how to configure SAML authentication for deployed

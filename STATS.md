@@ -1,6 +1,7 @@
 ---
 title: Stats
 description: Statistics Notes
+category: documentation
 ---
 
 Some very basic anonymous statistics are recorded regarding VPN usage. The 

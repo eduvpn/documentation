@@ -1,7 +1,7 @@
 ---
 title: VPN Daemon
 description: Use VPN Daemon for OpenVPN Management
-category: howto
+category: advanced
 ---
 
 **NOTE**: the daemon is currently only supported on CentOS and Fedora!

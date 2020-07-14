@@ -1,7 +1,7 @@
 ---
 title: Monitoring
 description: Server Monitoring
-category: howto
+category: documentation
 ---
 
 We have very minimal monitoring capability in the VPN software as of now. This 

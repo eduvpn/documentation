@@ -1,6 +1,7 @@
 ---
 title: SELinux
 description: SELinux Notes
+category: advanced
 ---
 
 If you used the `deploy_${DIST}.sh` script on CentOS, Red Hat Enterprise Linux 

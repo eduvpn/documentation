@@ -1,7 +1,7 @@
 ---
 title: RADIUS
 description: Enable RADIUS Authentication
-category: howto
+category: authentication
 ---
 
 This document describes how to configure RADIUS for deployed systems. We assume 

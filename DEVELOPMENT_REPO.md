@@ -1,7 +1,7 @@
 ---
 title: Development Repository
 description: Use the Development Repository on your VPN server
-category: howto
+category: dev
 ---
 
 # Development Repository

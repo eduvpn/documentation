@@ -1,7 +1,7 @@
 ---
 title: Custom Branding
 description: Apply your own Branding/Themes
-category: howto
+category: customization
 ---
 
 This document describes how to apply your own branding (style and e.g. logo) to

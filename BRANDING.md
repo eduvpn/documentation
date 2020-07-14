@@ -1,7 +1,7 @@
 ---
 title: Branding
 description: Configure Branding/Themes (eduVPN/Let's Connect!)
-category: howto
+category: customization
 ---
 
 This document describes how to add the Let's Connect! or eduVPN branding to 

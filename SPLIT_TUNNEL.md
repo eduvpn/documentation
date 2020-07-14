@@ -1,7 +1,7 @@
 ---
 title: Split Tunnel
 description: Configure Split Tunnel
-category: howto
+category: configuration
 ---
 
 # Split Tunnel

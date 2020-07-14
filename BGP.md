@@ -1,7 +1,7 @@
 ---
 title: BGP
 description: Use BGP announcements
-category: howto
+category: advanced
 author: Jørn Åne (Uninett)
 ---
 

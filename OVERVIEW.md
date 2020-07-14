@@ -1,7 +1,3 @@
----
-title: Overview
----
-
 This document lists all available documentation with a description.
 
 ## How To

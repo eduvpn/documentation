@@ -1,6 +1,7 @@
 ---
 title: Security
 description: Security Notes
+category: documentation
 ---
 
 This document contains some information about the security of the software, 

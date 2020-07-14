@@ -1,7 +1,7 @@
 ---
 title: Multi Profile
 description: Configure VPN Profiles on VPN Server
-category: howto
+category: configuration
 ---
 
 It is possible to add additional "profiles" to a VPN service. This is useful 

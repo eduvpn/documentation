@@ -1,6 +1,7 @@
 ---
 title: Client Compatibility
 description: List of Supported VPN Clients
+category: documentation
 ---
 
 This document describes a number of VPN clients that can be used to connect to 

@@ -1,7 +1,7 @@
 ---
 title: Raspberry Pi
 description: Run a VPN server on your Raspberry Pi
-category: howto
+category: advanced
 ---
 
 # VPN Server on your Raspberry Pi

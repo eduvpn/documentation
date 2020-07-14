@@ -1,7 +1,7 @@
 ---
 title: Portal Administrators
 description: How to configure admin users for the portal
-category: howto
+category: configuration
 ---
 
 Certain users can be "promoted" to admin in the VPN portal. This can be done in

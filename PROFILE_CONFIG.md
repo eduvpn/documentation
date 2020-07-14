@@ -1,7 +1,7 @@
 ---
 title: Profile Configuration
 description: List of all VPN Server Configuration Options
-category: documentation
+category: configuration
 ---
 
 For this document we assume you used the included `deploy_${DIST}.sh` script.

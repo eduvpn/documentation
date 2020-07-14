@@ -1,7 +1,7 @@
 ---
 title: Maintenance
 description: Maintain your VPN server
-category: howto
+category: documentation
 ---
 
 # Introduction

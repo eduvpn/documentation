@@ -1,7 +1,7 @@
 ---
 title: LDAP
 description: Enable LDAP Authentication
-category: howto
+category: authentication
 ---
 
 This document describes how to configure LDAP. We assume you used the 

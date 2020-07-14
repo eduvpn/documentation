@@ -1,7 +1,7 @@
 ---
 title: PHP-SAML-SP
 description: SAML Authentication using php-saml-sp
-category: howto
+category: authentication
 ---
 
 ## Introduction

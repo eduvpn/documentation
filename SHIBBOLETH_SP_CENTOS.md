@@ -1,6 +1,7 @@
 ---
 title: Shibboleth SP (CentOS)
 description: SAML Authentication using Shibboleth on CentOS
+category: authentication
 ---
 
 This document describes installing Shibboleth on CentOS 7. On CentOS you have 

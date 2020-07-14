@@ -1,7 +1,7 @@
 ---
 title: Configuring the Firewall
 description: Configure the VPN Firewall
-category: documentation
+category: configuration
 ---
 
 # Introduction

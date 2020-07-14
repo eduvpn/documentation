@@ -1,7 +1,7 @@
 ---
 title: Guest Usage
 description: Setup and Enable Guest Usage (VPN Federation)
-category: howto
+category: advanced
 ---
 
 The VPN server software implements "Guest Usage". This means that users of one

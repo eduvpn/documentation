@@ -1,7 +1,7 @@
 ---
 title: Add Node
 description: Add a VPN node for handling OpenVPN connections
-category: howto
+category: advanced
 ---
 
 **NOTE**: this is LEGACY. Do not use on new deployments. Use 

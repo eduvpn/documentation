@@ -1,7 +1,7 @@
 ---
 title: User Delete
 description: Manually fully Delete a User
-category: howto
+category: advanced
 ---
 
 This document describes how to delete a user from the VPN server. Note: 

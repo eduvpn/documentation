@@ -1,7 +1,7 @@
 ---
 title: Local DNS
 description: Run Local DNS Resolver on VPN server
-category: howto
+category: advanced
 ---
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 

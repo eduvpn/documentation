@@ -1,7 +1,7 @@
 ---
 title: Access Control
 description: Configure ACL (Access Control Lists) to manage access to VPN profiles
-category: howto
+category: configuration
 ---
 
 The VPN service supports access control. This allows configuring that users 

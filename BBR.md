@@ -1,7 +1,7 @@
 ---
 title: Bottleneck Bandwidth and Round-trip propagation time (BBR)
 description: Changing Congestion Control Algorithm
-category: howto
+category: advanced
 ---
 
 There's this shiny 

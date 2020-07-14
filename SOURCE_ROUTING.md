@@ -1,7 +1,7 @@
 ---
 title: Source Routing
 description: Setup Source/Policy Routing
-category: howto
+category: advanced
 ---
 
 **NOTE**: this is a WORK IN PROGRESS!
