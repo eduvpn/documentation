@@ -41,8 +41,8 @@ and directories that may help in debugging and configuring shibboleth.
     `/etc/shibboleth` Log directory. The main log file is shibd.log.
     For example to watch a file in real time you can use the following command.
     tail -f /etc/shibboleth/shibd.log
-    For more info please refer to the following tutorial about
-    [tail command](https://shapeshed.com/unix-tail/).
+For more info please refer to the following
+tutorial about [tail command](https://shapeshed.com/unix-tail/) command.
 
 Verify Installation
 
