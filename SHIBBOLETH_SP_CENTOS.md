@@ -29,14 +29,20 @@ Then configure the `shibd` daemon to run automatically at start-up:
     $ sudo systemctl start shibd.service
     $ sudo systemctl enable shibd.service
 
-The service provider should now be installed. Here are some important files and directories that may help in debugging and configuring shibboleth.
+The service provider should now be installed. Here are some important files
+and directories that may help in debugging and configuring shibboleth.
 
-    /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml
-    /run/shibboleth Run time directory where process ID and socket files are stored.
-    /var/cache/shibboleth Cache directory where metadata backup and CRL files are stored.
-    /etc/shibboleth Log directory. The main log file is shibd.log. For example to watch a file in real time you can use the following command.
+    `/etc/shibboleth` Configuration directory. The main configuration file
+    is shibboleth.xml
+    `/run/shibboleth` Run time directory where process ID and socket files
+    are stored.
+    `/var/cache/shibboleth` Cache directory where metadata backup and CRL
+    files are stored.
+    `/etc/shibboleth` Log directory. The main log file is shibd.log.
+    For example to watch a file in real time you can use the following command.
     tail -f /etc/shibboleth/shibd.log
-    For more info please refer to the following tutorial about [tail command](https://shapeshed.com/unix-tail/).
+    For more info please refer to the following tutorial about
+    [tail command](https://shapeshed.com/unix-tail/).
 
 Verify Installation
 

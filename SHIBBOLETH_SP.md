@@ -11,14 +11,20 @@ This document describes installing Shibboleth on Debian 9.
     $ sudo apt-get install libapache2-mod-shib2
     $ sudo shib-keygen
 
-The service provider should now be installed. Here are some important files and directories that may help in debugging and configuring shibboleth.
+The service provider should now be installed. Here are some important files
+and directories that may help in debugging and configuring shibboleth.
 
-    /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml.
-    /run/shibboleth Run time directory where process ID and socket files are stored.
-    /var/cache/shibboleth Cache directory where metadata backup and CRL files are stored.
-    /var/log/shibboleth Log directory. The main log file is shibd.log. For example to watch a file in real time you can use the following command.
-    tail -f /etc/shibboleth/shibd.log
-    For more info please refer to the following tutorial about [tail command](https://shapeshed.com/unix-tail/).
+    `/etc/shibboleth` Configuration directory. The main configuration file
+    is shibboleth.xml.
+    `/run/shibboleth` Run time directory where process ID and socket files
+    are stored.
+    `/var/cache/shibboleth` Cache directory where metadata backup and CRL
+    files are stored.
+    `/var/log/shibboleth` Log directory. The main log file is shibd.log.
+    For example to watch a file in real time you can use the following command.
+    tail -f /var/log/shibboleth/shibd.log
+    For more info please refer to the following tutorial about
+    [tail command](https://shapeshed.com/unix-tail/).
 
 ## Shibboleth Configuration
 
