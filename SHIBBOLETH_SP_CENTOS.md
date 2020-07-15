@@ -4,11 +4,21 @@ description: SAML Authentication using Shibboleth on CentOS
 category: authentication
 ---
 
-This document describes installing Shibboleth on CentOS 7. On CentOS you have 
-to install Shibboleth V3 packages provided by the Shibboleth project. 
+This document describes installing Shibboleth on CentOS 7. On CentOS you have
+to install Shibboleth V3 packages provided by the Shibboleth project.
+
+## Requirements
+
+1. Apache
+
+        Apache webserver is required for Shibboleth SP.
+
+2. Root Access
+
+        It should be possible to execute commands as a root user. Please ensure you have root privileges on the system.
 
 To configure a repository for CentOS 7, you must create a file
-in the `/etc/yum.repos.d/` directory, for example 
+in the `/etc/yum.repos.d/` directory, for example
 `/etc/yum.repos.d/shibboleth.repo`, with the following content:
 
     [shibboleth]
@@ -20,17 +30,43 @@ in the `/etc/yum.repos.d/` directory, for example
     gpgkey=https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key
     enabled=1
 
-Install Shibboleth :
+## Shibboleth Installation
 
     $ sudo yum install shibboleth
-    
+
 Then configure the `shibd` daemon to run automatically at start-up:
 
-    $ sudo systemctl enable shibd
+    $ sudo systemctl start shibd.service
+    $ sudo systemctl enable shibd.service
+
+The service provider should now be installed. Here are some important files and directories that may help in debugging and configuring shibboleth.
+
+    /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml
+    /etc/shibboleth Log directory. The main log file is shibd.log
+    /run/shibboleth Run time directory where process ID and socket files are stored.
+    /var/cache/shibboleth Cache directory where metadata backup and CRL files are stored.
+
+Verify Installation
+
+    sudo shibd -t
+    overall configuration is loadable, check console for non-fatal problems
+
+Verify Shibboleth
+
+1. Access the following URL from browser
+
+        https://yourdomain/Shibboleth.sso/Sessions
+
+2. WebServer should return a page with following message
+
+        A valid session was not found
+
+
+## Service Provider Configuration
 
 ## Certificates
 
-The installation generates two certificates (more precisely: two key pairs / 
+The installation generates two certificates (more precisely: two key pairs /
 certificates) for two different purposes:
 
 1. Signing of SAML messages (`AuthnRequest`, `LogoutRequest`) sent to the IdP;
@@ -38,8 +74,8 @@ certificates) for two different purposes:
 
 ## Apache configuration
 
-The installation of Shibboleth will install an Apache module name `mod_shib`, 
-this module has the ability to process both a variety of Apache commands 
+The installation of Shibboleth will install an Apache module name `mod_shib`,
+this module has the ability to process both a variety of Apache commands
 and rules specified in the SP configuration and make sense of both.
 
 In `/etc/httpd/conf.d/shib.conf` add the following:
@@ -62,7 +98,7 @@ In `/etc/httpd/conf.d/shib.conf` add the following:
     # disable Shibboleth for the OAuth Token Endpoint
     <Location /vpn-user-portal/oauth.php>
         ShibRequireSession Off
-    </Location> 
+    </Location>
 
 The first location directive within Apache's configuration file specify
 to the module to protect by Shibboleth the access to the VPN Portal.
@@ -70,7 +106,7 @@ to the module to protect by Shibboleth the access to the VPN Portal.
 Make sure you restart Apache after changing the configuration:
 
     $ sudo systemctl restart httpd
-    
+
 Then configure the Apache daemon to run automatically at start-up:
 
     $ sudo systemctl enable httpd
@@ -79,16 +115,16 @@ Then configure the Apache daemon to run automatically at start-up:
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
-* Set `entityID` to `https://vpn.example.org/shibboleth` in the 
+* Set `entityID` to `https://vpn.example.org/shibboleth` in the
   `<ApplicationDefaults>` element.
-* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>` 
+* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>`
   element
 * Add in the `Sessions` element `handlerURL=”/Shibboleth.sso”`
-* Set the `entityID` to the entity ID of your IdP, or configure the 
+* Set the `entityID` to the entity ID of your IdP, or configure the
   `discoveryURL` in the `<SSO>` element
-* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
+* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
   1.0 support
-* Set the `file` in the `<MetadataProvider>` element to load your federation 
+* Set the `file` in the `<MetadataProvider>` element to load your federation
   metadata
 
 Configuring automatic metadata refresh is outside the scope of this document,
@@ -153,12 +189,9 @@ Restart Shibboleth:
 
     $ sudo systemctl restart shibd
 
-Next: register your SP in your identity federation, or in your IdP. The 
-metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
+### Activate SAML Authentification on VPN Portal
 
-### Portal
-
-In order to configure the VPN portal, modify `/etc/vpn-user-portal/config.php`
+In order to activate saml authentification on VPN portal, modify `/etc/vpn-user-portal/config.php`
 and set the `authMethod` and `ShibAuthentication` options:
 
     ...
@@ -174,7 +207,20 @@ and set the `authMethod` and `ShibAuthentication` options:
 
     ...
 
-The mentioned attributes `persistent-id` and `entitlement` are configured in 
-the Shibboleth configuration. Modify/add others as required in 
+## Attributes
+
+The mentioned attributes `persistent-id` and `entitlement` are configured in
+the Shibboleth configuration. Modify/add others as required in
 `/etc/shibboleth/attribute-map.xml`. Do not forget to restart Shibboleth if
 you make any changes to its configuration.
+
+Restart Shibboleth:
+
+    $ sudo systemctl restart shibd
+
+## Service Provider Registration in Identity Federation
+
+Register your SP in your identity federation, or in your IdP. The
+metadata URL is typically `https://yourdomain/Shibboleth.sso/Metadata`.
+
+
