@@ -7,16 +7,6 @@ category: authentication
 This document describes installing Shibboleth on CentOS 7. On CentOS you have
 to install Shibboleth V3 packages provided by the Shibboleth project.
 
-## Requirements
-
-1. Apache
-
-        Apache webserver is required for Shibboleth SP.
-
-2. Root Access
-
-        It should be possible to execute commands as a root user. Please ensure you have root privileges on the system.
-
 To configure a repository for CentOS 7, you must create a file
 in the `/etc/yum.repos.d/` directory, for example
 `/etc/yum.repos.d/shibboleth.repo`, with the following content:
@@ -42,9 +32,11 @@ Then configure the `shibd` daemon to run automatically at start-up:
 The service provider should now be installed. Here are some important files and directories that may help in debugging and configuring shibboleth.
 
     /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml
-    /etc/shibboleth Log directory. The main log file is shibd.log
     /run/shibboleth Run time directory where process ID and socket files are stored.
     /var/cache/shibboleth Cache directory where metadata backup and CRL files are stored.
+    /etc/shibboleth Log directory. The main log file is shibd.log. For example to watch a file in real time you can use the following command.
+    tail -f /etc/shibboleth/shibd.log
+    For more info please refer to the following tutorial about [tail command](https://shapeshed.com/unix-tail/).
 
 Verify Installation
 
@@ -60,7 +52,6 @@ Verify Shibboleth
 2. WebServer should return a page with following message
 
         A valid session was not found
-
 
 ## Service Provider Configuration
 
@@ -222,5 +213,3 @@ Restart Shibboleth:
 
 Register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://yourdomain/Shibboleth.sso/Metadata`.
-
-

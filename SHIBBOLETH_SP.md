@@ -6,16 +6,6 @@ category: authentication
 
 This document describes installing Shibboleth on Debian 9.
 
-## Requirements
-
-1. Apache
-
-        Apache webserver is required for Shibboleth SP.
-
-2. Root Access
-
-        It should be possible to execute commands as a root user. Please ensure you have root privileges on the system.
-
 ### Shibboleth
 
     $ sudo apt-get install libapache2-mod-shib2
@@ -23,10 +13,14 @@ This document describes installing Shibboleth on Debian 9.
 
 The service provider should now be installed. Here are some important files and directories that may help in debugging and configuring shibboleth.
 
-    /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml
-    /var/log/shibboleth Log directory. The main log file is shibd.log
+    /etc/shibboleth Configuration directory. The main configuration file is shibboleth.xml.
     /run/shibboleth Run time directory where process ID and socket files are stored.
     /var/cache/shibboleth Cache directory where metadata backup and CRL files are stored.
+    /var/log/shibboleth Log directory. The main log file is shibd.log. For example to watch a file in real time you can use the following command.
+    tail -f /etc/shibboleth/shibd.log
+    For more info please refer to the following tutorial about [tail command](https://shapeshed.com/unix-tail/).
+
+## Shibboleth Configuration
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
@@ -44,7 +38,6 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
 Configuring automatic metadata refresh is outside the scope of this document,
 refer to your identity federation documentation.
 
-
 Verify the Shibboleth configuration:
 
     $ sudo shibd -t
@@ -53,7 +46,6 @@ Verify the Shibboleth configuration:
 Restart Shibboleth:
 
     $ sudo systemctl restart shibd
-
 
 ### Apache
 
