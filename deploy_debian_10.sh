@@ -22,11 +22,15 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 apt update
 
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    apache2 php-fpm pwgen iptables-persistent sudo locales-all
+    apache2 php-fpm pwgen iptables-persistent sudo locales-all gnupg
 
 curl https://debian-vpn-builder.tuxed.net/repo/buster.key | apt-key add
 echo "deb https://debian-vpn-builder.tuxed.net/repo/buster ./" > /etc/apt/sources.list.d/LC.list
 apt update
+
+# until composer.json of the sqlite using packages have "ext-sqlite3" we'll 
+# install it manually here...
+DEBIAN_FRONTEND=noninteractive apt install -y php-sqlite3
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
@@ -84,7 +88,7 @@ a2ensite localhost
 ###############################################################################
 
 # set timezone to UTC
-cp resources/70-timezone.ini /etc/php/7.0/mods-available/lc-timezone.ini
+cp resources/70-timezone.ini /etc/php/7.3/mods-available/lc-timezone.ini
 phpenmod -v 7.0 -s ALL lc-timezone
 
 # restart php-fpm to read the new configuration
