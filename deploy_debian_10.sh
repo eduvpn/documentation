@@ -30,7 +30,9 @@ apt update
 
 # until composer.json of the sqlite using packages have "ext-sqlite3" we'll 
 # install it manually here...
-DEBIAN_FRONTEND=noninteractive apt install -y php-sqlite3
+# also vpn-ca is a dependency of vpn-server-api, but the latest available 
+# build doesn't have this yet... will be fixed in next build
+DEBIAN_FRONTEND=noninteractive apt install -y php-sqlite3 vpn-ca
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
