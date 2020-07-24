@@ -57,7 +57,7 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
 
--A POSTROUTING -j MASQUERADE
+-A POSTROUTING -s 10.0.0.0/8 -j MASQUERADE
 #-A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1
 # Distribute NAT over IPs between 192.0.2.1 and 192.0.2.8 (inclusive)
 #-A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1-192.0.2.8
