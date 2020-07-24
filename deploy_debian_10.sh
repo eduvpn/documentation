@@ -85,7 +85,7 @@ a2ensite localhost
 
 # set timezone to UTC
 cp resources/70-timezone.ini /etc/php/7.0/mods-available/lc-timezone.ini
-phpenmod -v 7.3 -s ALL lc-timezone
+phpenmod -v 7.0 -s ALL lc-timezone
 
 # restart php-fpm to read the new configuration
 systemctl restart php7.3-fpm
@@ -113,7 +113,7 @@ sudo -u www-data vpn-user-portal-init
 
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
+#net.ipv6.conf.all.forwarding = 1
 # allow RA for IPv6 on external interface, NOT for static IPv6!
 #net.ipv6.conf.eth0.accept_ra = 2
 EOF
