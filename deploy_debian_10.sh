@@ -22,7 +22,7 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 apt update
 
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    apache2 php-fpm pwgen iptables-persistent sudo locales-all gnupg
+    apache2 php-fpm pwgen iptables-persistent sudo gnupg
 
 curl https://debian-vpn-builder.tuxed.net/repo/buster.key | apt-key add
 echo "deb https://debian-vpn-builder.tuxed.net/repo/buster ./" > /etc/apt/sources.list.d/LC.list
@@ -37,16 +37,6 @@ DEBIAN_FRONTEND=noninteractive apt install -y php-sqlite3 vpn-ca
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
     vpn-user-portal
-
-###############################################################################
-# LOCALES
-###############################################################################
-
-# enable the NL locales
-sed -i 's/^# nl_NL/nl_NL/' /etc/locale.gen
-
-# Generate the enabled locales
-locale-gen
 
 ###############################################################################
 # CERTIFICATE
