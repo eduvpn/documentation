@@ -24,8 +24,8 @@ apt update
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
     apache2 php-fpm pwgen iptables-persistent sudo gnupg
 
-curl https://debian-vpn-builder.tuxed.net/repo/buster.key | apt-key add
-echo "deb https://debian-vpn-builder.tuxed.net/repo/buster ./" > /etc/apt/sources.list.d/LC.list
+curl https://debian-vpn-builder.tuxed.net/repo/debian.key | apt-key add
+echo "deb https://debian-vpn-builder.tuxed.net/repo buster main" > /etc/apt/sources.list.d/LC.list
 apt update
 
 # until composer.json of the sqlite using packages have "ext-sqlite3" we'll 
