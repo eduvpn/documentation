@@ -130,7 +130,8 @@ keywords, example:
     }
 
 **NOTE**: the `keyword_list` MUST be supported in `server_list.json` for 
-"Institute Access" servers!
+"Institute Access" servers! Currently it is not used, but will be used in the 
+near future.
 
 ## Language Matching
 
