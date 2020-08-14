@@ -201,11 +201,11 @@ As of 2020-05-25 the public key used to verify the signatures is this one:
     RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF
 
 **NOTE**: you MUST allow your application to contain _multiple_ public keys for 
-verification. A signatures is considered valid if any one of the public keys
-verifies the signature. So your verification algorithm MUST loop over the 
-known public keys until one returns a valid match. If none of the public keys
-successfully verify the signature, an error MUST shown to the user of the 
-application.
+verification. A signature is considered valid if it is correctly signed by one
+of the public keys. So your verification algorithm MUST perform proper
+signature's public key identification, matching against the list of trusted
+public keys and finally validating content integrity. Any error in the process
+MUST be shown to the user of the application.
 
 ### Rollback Prevention
 
