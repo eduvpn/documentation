@@ -112,7 +112,7 @@ The configuration will be stored in the `openvpn-config` folder.
     #!/bin/sh
     PROJECT_NAME=$(basename "${PWD}")
     PROJECT_VERSION=${1}
-    RELEASE_DIR="${PWD}/output/files"
+    RELEASE_DIR="${PWD}/release"
 
     if [ -z "${1}" ]
     then
@@ -132,23 +132,22 @@ The configuration will be stored in the `openvpn-config` folder.
     gpg2 --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
     minisign -Sm "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
 
-`${HOME}/.local/bin/upload_site`:
+`${HOME}/.local/bin/upload_release`:
 
     #!/bin/sh
     REMOTE_HOST=argon.tuxed.net
     PROJECT_NAME=$(basename "${PWD}")
-    OUTPUT_DIR="${PWD}/output"
+    RELEASE_DIR=${PWD}/release
 
-    rsync -avz -e ssh "${OUTPUT_DIR}/" "${REMOTE_HOST}:/var/www/software.tuxed.net/${PROJECT_NAME}"
+    rsync -avz -e ssh "${RELEASE_DIR}/" "${REMOTE_HOST}:/var/www/src.tuxed.net/${PROJECT_NAME}"
 
 Make the scripts executable:
 
-    $ chmod +x ${HOME}/.local/bin/upload_site
-    $ chmod +x ${HOME}/.local/bin/make_release
+    $ chmod +x ${HOME}/.local/bin/make_release ${HOME}/.local/bin/upload_release
 
 # Updating RPM Packages
 
-The `${HOME}/Projects/LC-v2/rpm` folder has RPM package descriptions, "SPEC" 
+The `${HOME}/Projects/LC-v2/rpm` folder has RPM package descriptions, "spec" 
 files. These can be used to build RPM packages (on Fedora).
 
 Assuming you are developing on component and want to create a new (test) 
@@ -157,7 +156,7 @@ package. Do the following:
 1. Determine the last "commit" hash of the component you are building. E.g. 
    with `git log -1`;
 2. Go to the `rpm` folder of the component, e.g. `rpm/vpn-user-portal`;
-3. Make sure you are on the `master` branch: `git checkout master`;
+3. Make sure you are on the correct branch, e.g. `master`, `main`, or `v2`;
 4. "Bump" the SPEC file, e.g. `rpmdev-bumpspec SPECS/vpn-user-portal.spec`;
 5. Put the hash in the top as `%global git <HASH>`;
 6. Optionally update other parts of the SPEC file;
@@ -200,7 +199,8 @@ your new spec file.
 
 * One has to setup their own builder
 * There are multiple branches for the RPM packages depending on the version of
-  the software, i.e. there is a `v2` and a `master` branch. We need to explain 
+  the software, i.e. there is a `v2` and a `main` branch. We need to explain 
   that the `v2` branch is for production packages of LC/eduVPN 2.x.
 * We still have to explain how to make a production release, i.e. explain 
   minisign, tags, etc.
+* talk about a proper release with signed release tars, i.e. `#global git...`
