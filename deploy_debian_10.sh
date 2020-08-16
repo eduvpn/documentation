@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# *** VERY EXPERIMENTAL (2020-07-24) *** 
+# *** VERY EXPERIMENTAL (2020-08-16) *** 
 # 
 # Deploy a single VPN machine
 #
@@ -21,18 +21,16 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 apt update
 
+# until ALL composer.json of the packages using sqlite have "ext-sqlite3" we'll 
+# install it manually here...
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    apache2 php-fpm pwgen iptables-persistent sudo gnupg
+    apache2 php-fpm pwgen iptables-persistent sudo gnupg php-sqlite3
+
+PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 curl https://debian-vpn-builder.tuxed.net/repo/debian.key | apt-key add
 echo "deb https://debian-vpn-builder.tuxed.net/repo buster main" > /etc/apt/sources.list.d/LC.list
 apt update
-
-# until composer.json of the sqlite using packages have "ext-sqlite3" we'll 
-# install it manually here...
-# also vpn-ca is a dependency of vpn-server-api, but the latest available 
-# build doesn't have this yet... will be fixed in next build
-DEBIAN_FRONTEND=noninteractive apt install -y php-sqlite3 vpn-ca
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
@@ -59,32 +57,19 @@ openssl req \
 
 a2enmod ssl headers rewrite proxy_fcgi setenvif 
 a2dismod status
-a2enconf php7.3-fpm
+a2enconf php${PHP_VERSION}-fpm
 
 # VirtualHost
-cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf 
+#cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf 
 cp resources/vpn.example.debian.conf "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 
 # update hostname
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
-a2enconf vpn-server-api
-a2enconf vpn-user-portal
+a2enconf vpn-server-api vpn-user-portal
+a2ensite "${WEB_FQDN}" localhost
 a2dissite 000-default
-a2ensite "${WEB_FQDN}"
-a2ensite localhost
-
-###############################################################################
-# PHP
-###############################################################################
-
-# set timezone to UTC
-cp resources/70-timezone.ini /etc/php/7.3/mods-available/lc-timezone.ini
-phpenmod -v 7.0 -s ALL lc-timezone
-
-# restart php-fpm to read the new configuration
-systemctl restart php7.3-fpm
 
 ###############################################################################
 # VPN-SERVER-API
@@ -127,7 +112,7 @@ vpn-server-api-update-api-secrets
 # DAEMONS
 ###############################################################################
 
-systemctl enable --now php7.3-fpm
+systemctl enable --now php${PHP_VERSION}-fpm
 systemctl restart apache2
 
 ###############################################################################
