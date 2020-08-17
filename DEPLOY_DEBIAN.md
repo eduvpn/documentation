@@ -5,8 +5,8 @@ category: installation
 ---
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Debian 9 installation. It will configure all components 
-and will be ready for use after running!
+you can run on a fresh Debian 9 or 10 installation. It will configure all 
+components and will be ready for use after running!
 
 Additional scripts are available after deployment:
 
@@ -15,7 +15,7 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Debian 9 installation with all updates installed;
+* Clean Debian 9 or 10 installation with all updates installed;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
@@ -86,7 +86,7 @@ portal access. Those are printed at the end of the deploy script.
 If you want to update/add users you can use the `vpn-user-portal-add-user`. 
 Provide an existing account to _update_ the password:
 
-    $ sudo vpn-user-portal-add-user
+    $ sudo -u www-data vpn-user-portal-add-user
     User ID: foo
     Setting password for user "foo"
     Password: 
@@ -124,12 +124,13 @@ users, see [ACL](ACL.md).
 
 ## PHP 
 
-Debian's `php7.0-fpm` package has some unfortunate defaults that only work for 
+Debian's PHP package has some unfortunate defaults that only work for 
 very light usage and in no way for deploys where you expect more than a few 
 users to use the service.
 
-Modify `/etc/php/7.0/fpm/pool.d/www.conf` and change the following settings. 
-We'll use the CentOS/Fedora defaults here as well:
+Modify `/etc/php/7.0/fpm/pool.d/www.conf` (Debian 9), or 
+`/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10) and change the following 
+settings. We'll use the CentOS/Fedora defaults here as well:
 
     pm = dynamic
     pm.max_children = 50
@@ -138,9 +139,9 @@ We'll use the CentOS/Fedora defaults here as well:
     pm.max_spare_servers = 35
  
 You can tweak those further if needed, but they'll do for some time! Restart 
-the `php7.0-fpm` service to activate the changes:
+the PHP service to activate the changes:
 
-    $ sudo systemctl restart php7.0-fpm
+    $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 
 ## Optional
 
@@ -165,10 +166,7 @@ After completing the script, the certificate will be installed. After that, it
 is advisable to set up automatic
 [certificate renewal](https://certbot.eff.org/docs/using.html#renewing-certificates).
 
-
 ### Port Sharing
 
 If you also want to allow clients to connect with the VPN over `tcp/443`, see 
 [Port Sharing](PORT_SHARING.md).
-
-
