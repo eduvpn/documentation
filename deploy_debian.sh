@@ -20,26 +20,22 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 apt update
 
+# until ALL composer.json of the packages using sqlite have "ext-sqlite3" we'll 
+# install it manually here...
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    apache2 php-fpm pwgen iptables-persistent sudo locales-all
+    apache2 php-fpm pwgen iptables-persistent sudo gnupg php-sqlite3 \
+    lsb-release
 
-curl -L https://repo.letsconnect-vpn.org/2/deb/release/stretch/LC.key | apt-key add -
-echo "deb https://repo.letsconnect-vpn.org/2/deb/release/stretch stretch main" > /etc/apt/sources.list.d/LC.list
+DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
+PHP_VERSION=$(/usr/sbin/phpquery -V)
+
+curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | apt-key add
+echo "deb https://repo.eduvpn.org/v2/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN.list
 apt update
 
 # install software (VPN packages)
 DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
-    vpn-user-portal vpn-maint-scripts
-
-###############################################################################
-# LOCALES
-###############################################################################
-
-# enable the NL locales
-sed -i 's/^# nl_NL/nl_NL/' /etc/locale.gen
-
-# Generate the enabled locales
-locale-gen
+    vpn-user-portal
 
 ###############################################################################
 # CERTIFICATE
@@ -62,32 +58,19 @@ openssl req \
 
 a2enmod ssl headers rewrite proxy_fcgi setenvif 
 a2dismod status
-a2enconf php7.0-fpm
+a2enconf php${PHP_VERSION}-fpm
 
 # VirtualHost
-cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf 
+cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf
 cp resources/vpn.example.debian.conf "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 
 # update hostname
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
-a2enconf vpn-server-api
-a2enconf vpn-user-portal
+a2enconf vpn-server-api vpn-user-portal
+a2ensite "${WEB_FQDN}" localhost
 a2dissite 000-default
-a2ensite "${WEB_FQDN}"
-a2ensite localhost
-
-###############################################################################
-# PHP
-###############################################################################
-
-# set timezone to UTC
-cp resources/70-timezone.ini /etc/php/7.0/mods-available/lc-timezone.ini
-phpenmod -v 7.0 -s ALL lc-timezone
-
-# restart php-fpm to read the new configuration
-systemctl restart php7.0-fpm
 
 ###############################################################################
 # VPN-SERVER-API
@@ -112,7 +95,7 @@ sudo -u www-data vpn-user-portal-init
 
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
+#net.ipv6.conf.all.forwarding = 1
 # allow RA for IPv6 on external interface, NOT for static IPv6!
 #net.ipv6.conf.eth0.accept_ra = 2
 EOF
@@ -130,7 +113,7 @@ vpn-server-api-update-api-secrets
 # DAEMONS
 ###############################################################################
 
-systemctl enable --now php7.0-fpm
+systemctl enable --now php${PHP_VERSION}-fpm
 systemctl restart apache2
 
 ###############################################################################
