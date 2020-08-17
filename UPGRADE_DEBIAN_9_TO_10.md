@@ -5,22 +5,28 @@ We split the migration from Debian 9 to Debian 10 in two parts:
 1. Switch to new package repository;
 2. Upgrade to Debian 10
 
-We split this procedure in two parts as it becomes much easier and you are not
-fighting two battles at the same time.
+We split the upgrade to Debian 10 procedure in two parts that can be scheduled 
+at different moments. It is important to FIRST switch to the new repository 
+before attempting to upgrade to Debian 10!
+
+The reason for splitting this up in two parts is to avoid having to fight two
+battles at the same time, i.e. both potential VPN package upgrade problems AND 
+Debian upgrade troubles.
 
 The new repository contains packages for both Debian 9 and Debian 10, they are 
-based on the same package descriptions. A little care has to be taken when 
-upgrading to the new repository as they use the proper Debian way to handle 
-configuration files and various other aspects that were hacked around in the
-old (Debian 9 only) packages.
+based on the same package descriptions and are officially supported! A little 
+care has to be taken when upgrading to the new repository as they use the 
+proper Debian way to handle configuration files and various other aspects that 
+were hacked around in the old (Debian 9 only) packages.
 
 ## To New Package Repository
 
 You can very easily upgrade your existing Debian 9 server to use the new 
-repository, but care has to be taken.
+repository, but pay attention to the instructions below!
 
 **NOTE**: if you have `vpn-daemon` installed, you can check that with 
-`dpkg -l vpn-daemon`, check the "VPN Daemon" section below first!
+`dpkg -l vpn-daemon`, check the "VPN Daemon" section below first and then 
+come back here!
 
 Let's get started! Switch to the new repository. Remove the file 
 `/etc/apt/sources.list.d/LC.list`:
@@ -66,10 +72,11 @@ Remove it and clean up the user that was created by the old package install:
     $ sudo apt remove vpn-daemon
     $ sudo userdel vpn-daemon
 
-After completing the upgrade to the new packages in Debian 9, AND you had 
-vpn-daemon installed, continue below here.
+Now continue with the upgrade to the new packages above. After completing that 
+upgrade to the new packages in Debian 9, AND you had vpn-daemon installed, 
+continue below here again.
 
-You can now reinstall `vpn-daemon` again:
+You can now install `vpn-daemon` again:
 
     $ sudo apt install vpn-daemon
 
