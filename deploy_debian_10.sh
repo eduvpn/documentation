@@ -28,8 +28,8 @@ DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
 
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
-curl https://debian-vpn-builder.tuxed.net/repo/debian.key | apt-key add
-echo "deb https://debian-vpn-builder.tuxed.net/repo buster main" > /etc/apt/sources.list.d/LC.list
+curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | apt-key add
+echo "deb https://repo.eduvpn.org/v2/deb buster main" > /etc/apt/sources.list.d/eduVPN.list
 apt update
 
 # install software (VPN packages)
