@@ -114,6 +114,9 @@ vpn-server-api-update-api-secrets
 ###############################################################################
 
 systemctl enable --now php${PHP_VERSION}-fpm
+# on Debian 9 we must restart php-fpm because php-libsodium gets installed as a 
+# dependency which requires a restart...
+systemctl restart php${PHP_VERSION}-fpm 
 systemctl restart apache2
 
 ###############################################################################
