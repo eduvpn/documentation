@@ -84,4 +84,13 @@ That should fix it right up!
 
 ## To Debian 10
 
-This is a little more complicated.
+Follow the instructions 
+[here](https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html). 
+These are the official upgrade instructions. You can follow that document. When
+updating the repositories (section 4.3) also make sure you update 
+`/etc/apt/sources.list.d/eduVPN.list` and replace `stretch` with `buster`, 
+i.e.:
+
+    $ echo "deb https://repo.eduvpn.org/v2/deb buster main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
+
+After this, the upgrade should go as smooth as it can go...
