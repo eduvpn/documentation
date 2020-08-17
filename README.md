@@ -70,7 +70,7 @@ channel `#eduvpn`.
 
 * [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
 * [Fedora](DEPLOY_FEDORA.md) 31, 32 (`x86_64`)
-* [Debian 9, 10](DEPLOY_DEBIAN.md) (`x86_64`) 
+* [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
 for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
