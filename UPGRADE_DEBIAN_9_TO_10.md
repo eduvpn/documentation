@@ -59,8 +59,28 @@ Now you can clean up some old dependencies that are no longer necessary:
 
     $ sudo apt autoremove
 
-All done, migrating to the new packages! In case you are ready to migrate to
-Debian 10, which is a bit more involved, see the next section.
+Make sure you have `vpn-maint-scripts` installed:
+
+    $ sudo apt install vpn-maint-scripts
+
+Run the following scripts to make sure all is in order:
+
+    $ sudo vpn-maint-apply-changes
+    $ sudo vpn-maint-update-system
+
+This should all run without any or without asking any questions! Reboot your 
+server after this and make sure everything still works. Try logging in to the 
+portal, connect with a VPN client.
+
+Now you are all done regarding upgrading to the new packages. You can keep 
+using Debian 9 until it is officially [EOL](https://wiki.debian.org/LTS), which 
+at the very latest is June 30, 2022. We **MAY** discontinue Debian 9 support 
+BEFORE this date, please keep a close eye on the 
+[mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy) and 
+subscribe if you haven't done that yet!
+
+In case you are ready to migrate to Debian 10, which is a bit more involved, 
+see the next section.
 
 ### VPN Daemon
 
