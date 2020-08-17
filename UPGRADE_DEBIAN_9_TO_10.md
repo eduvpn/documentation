@@ -19,18 +19,11 @@ old (Debian 9 only) packages.
 You can very easily upgrade your existing Debian 9 server to use the new 
 repository, but care has to be taken.
 
-First you have to remove `vpn-daemon` if it was installed on your Debian 9 
-system, to check whether it was installed:
+**NOTE**: if you have `vpn-daemon` installed, you can check that with 
+`dpkg -l vpn-daemon`, check the "VPN Daemon" section below first!
 
-    $ dpkg -l vpn-daemon
-
-If it shows that the package is installed, remove it and clean up the user that
-was created by the old package install:
-
-    $ sudo apt remove vpn-daemon
-    $ sudo userdel vpn-daemon
-
-Now you can switch to the new repository. Remove the file `/etc/apt/sources.list.d/LC.list`:
+Let's get started! Switch to the new repository. Remove the file 
+`/etc/apt/sources.list.d/LC.list`:
 
     $ sudo rm /etc/apt/sources.list.d/LC.list
 
@@ -60,7 +53,23 @@ Now you can clean up some old dependencies that are no longer necessary:
 
     $ sudo apt autoremove
 
-In case `vpn-daemon` was installed before, you can now reinstall it again:
+All done, migrating to the new packages! In case you are ready to migrate to
+Debian 10, which is a bit more involved, see the next section.
+
+### VPN Daemon
+
+First you have to remove `vpn-daemon` if it is installed on your Debian 9 
+system. If it is not, just ignore this section!
+
+Remove it and clean up the user that was created by the old package install:
+
+    $ sudo apt remove vpn-daemon
+    $ sudo userdel vpn-daemon
+
+After completing the upgrade to the new packages in Debian 9, AND you had 
+vpn-daemon installed, continue below here.
+
+You can now reinstall `vpn-daemon` again:
 
     $ sudo apt install vpn-daemon
 
