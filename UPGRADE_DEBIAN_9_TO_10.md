@@ -46,8 +46,19 @@ Now you can update your system. All eduVPN packages will be replaced by the
 version from the new Debian 9 repository:
 
     $ sudo apt update
-    $ sudo -s
-    # DEBIAN_FRONTEND=noninteractive apt dist-upgrade
+    $ sudo apt dist-upgrade
+
+The upgrade WILL ask if you want to keep your existing configuration files for
+some packages. Make sure you do, i.e. choose **N** on the prompt. 
+
+The `dist-upgrade` will also complain about `postrm` scripts not running 
+correctly. It is safe to ignore this. This is all fixed in the new packages, 
+but the old packages are still in the way during the upgrade to the new 
+repository.
+
+Now you can clean up some old dependencies that are no longer necessary:
+
+    $ sudo apt autoremove
 
 In case `vpn-daemon` was installed before, you can now reinstall it again:
 
@@ -56,6 +67,20 @@ In case `vpn-daemon` was installed before, you can now reinstall it again:
 And optional enable it one boot and start it immediately:
 
     $ sudo systemctl enable --now vpn-daemon
+
+**NOTE**: it may complain about it being masked, am I not sure why/how that 
+happens... probably something in the old package that is in the way... In order
+to "fix" this uninstall the package again, and install it again. You may need
+to reconfigure it, in case you modified the default configuration. Probably 
+only in "multi node" setups. You may want to make a copy of 
+`/etc/default/vpn-daemon` first and your private key/certificates in 
+`/etc/ssl/vpn-daemon` in case you had those.
+
+    $ sudo apt remove --purge vpn-daemon
+    $ sudo apt install vpn-daemon
+    $ sudo systemctl enable --now vpn-daemon
+
+That should fix it right up!
 
 ## To Debian 10
 
