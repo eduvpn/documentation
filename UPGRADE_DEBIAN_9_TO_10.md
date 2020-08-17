@@ -69,9 +69,9 @@ Run the following scripts to make sure all is in order:
     $ sudo vpn-maint-apply-changes
     $ sudo vpn-maint-update-system
 
-This should all run without any or without asking any questions! Reboot your 
-server after this and make sure everything still works. Try logging in to the 
-portal, connect with a VPN client.
+This should all run without any error and without asking any questions! Reboot 
+your server after this and make sure everything still works. Try logging in to 
+the portal, connect with a VPN client.
 
 Now you are all done regarding upgrading to the new packages. You can keep 
 using Debian 9 until it is officially [EOL](https://wiki.debian.org/LTS), which 
@@ -147,6 +147,6 @@ Run the following scripts to make sure all is in order:
     $ sudo vpn-maint-apply-changes
     $ sudo vpn-maint-update-system
 
-This should all run without any or without asking any questions! Reboot your 
-server after this and make sure everything still works. Try logging in to the 
-portal, connect with a VPN client.
+This should all run without any error and without asking any questions! Reboot 
+your server after this and make sure everything still works. Try logging in to 
+the portal, connect with a VPN client.
