@@ -14,10 +14,11 @@ battles at the same time, i.e. both potential VPN package upgrade problems AND
 Debian upgrade troubles.
 
 The new repository contains packages for both Debian 9 and Debian 10, they are 
-based on the same package descriptions and are officially supported! A little 
-care has to be taken when upgrading to the new repository as they use the 
-proper Debian way to handle configuration files and various other aspects that 
-were hacked around in the old (Debian 9 only) packages.
+based on the same package descriptions and are officially supported by the 
+eduVPN / Let's Connect! project! A little care has to be taken when upgrading 
+to the new repository as they use the proper Debian way to handle configuration 
+files and various other aspects that were hacked around in the old (Debian 9 
+only) packages.
 
 ## To New Package Repository
 
