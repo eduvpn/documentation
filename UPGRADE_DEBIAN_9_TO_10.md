@@ -40,7 +40,7 @@ Add the new repository file:
     
 Add the new PGP key:
 
-    $ curl https://repo.eduvpn.org/v2/deb/debian.key | sudo apt-key add
+    $ curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | sudo apt-key add
 
 Now you can update your system. All eduVPN packages will be replaced by the 
 version from the new Debian 9 repository:
