@@ -123,11 +123,30 @@ That should fix it right up!
 
 Follow the instructions 
 [here](https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html). 
-These are the official upgrade instructions. You can follow that document. When
-updating the repositories (section 4.3) also make sure you update 
+These are the official Debian upgrade instructions. You can and SHOULD follow 
+that document and read all sections and perform the steps when necessary. Pay 
+attention the the cleanup as well (sections 4.7, 4.8). When updating the 
+repositories (section 4.3) also make sure you update 
 `/etc/apt/sources.list.d/eduVPN.list` and replace `stretch` with `buster`, 
 i.e.:
 
     $ echo "deb https://repo.eduvpn.org/v2/deb buster main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
 
-After this, the upgrade should go as smooth as it can go...
+After the update is complete, PHP will not be properly configured yet, this is 
+because the verion changed from 7.0 to 7.3 and is part of a different Apache
+configuration. You have to manually re-enable PHP:
+
+    $ sudo a2enconf php7.3-fpm
+
+Restart Apache:
+
+    $ sudo systemctl restart apache2
+
+Run the following scripts to make sure all is in order:
+
+    $ sudo vpn-maint-apply-changes
+    $ sudo vpn-maint-update-system
+
+This should all run without any or without asking any questions! Reboot your 
+server after this and make sure everything still works. Try logging in to the 
+portal, connect with a VPN client.
