@@ -48,7 +48,7 @@ Setting a local recursive DNS server takes a few steps:
 
 ### Debian 
 
-    $ sudo apt-get -y install unbound
+    $ sudo apt -y install unbound
 
 ## Configure Unbound
 

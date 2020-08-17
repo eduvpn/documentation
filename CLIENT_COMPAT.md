@@ -160,8 +160,8 @@ On Debian 9, a _backport_ of `network-manager-openvpn` exists to make
 
 Then install/update the relevant package:
 
-    $ sudo apt-get update
-    $ sudo apt-get -t stretch-backports install network-manager-openvpn-gnome
+    $ sudo apt update
+    $ sudo apt -t stretch-backports install network-manager-openvpn-gnome
 
 This will upgrade all required packages as well. You may need to reboot or 
 restart NetworkManager.
@@ -192,7 +192,7 @@ instructions below for dealing with this automatically.
 
 Install the OpenVPN package:
 
-    $ sudo apt-get install openvpn resolvconf
+    $ sudo apt install openvpn resolvconf
 
 Copy your configuration file to `/etc/openvpn/client`. Make sure you give it 
 the extension `.conf`! 

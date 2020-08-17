@@ -8,7 +8,7 @@ This document describes installing Shibboleth on Debian 9.
 
 ### Shibboleth
 
-    $ sudo apt-get install libapache2-mod-shib2
+    $ sudo apt install libapache2-mod-shib2
     $ sudo shib-keygen
 
 Modify `/etc/shibboleth/shibboleth2.xml`:

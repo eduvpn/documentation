@@ -37,7 +37,7 @@ It is easy to install and enable php-saml-sp.
 
 ### Debian
 
-    $ sudo apt-get -y install php-saml-sp
+    $ sudo apt -y install php-saml-sp
     $ sudo a2enconf php-saml-sp
     $ sudo systemctl restart apache2
 

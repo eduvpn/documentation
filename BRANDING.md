@@ -21,8 +21,8 @@ your server installation. By default a simple "plain" branding is used.
 
 ## Debian
 
-    $ sudo apt-get -y install vpn-portal-artwork-lc
-    $ sudo apt-get -y install vpn-portal-artwork-eduvpn
+    $ sudo apt -y install vpn-portal-artwork-lc
+    $ sudo apt -y install vpn-portal-artwork-eduvpn
 
 # Configuration
 

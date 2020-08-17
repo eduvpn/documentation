@@ -25,7 +25,7 @@ systemctl stop apache2
 systemctl stop php7.0-fpm
 
 # remove the 1.0 software...
-apt-get -y remove \
+apt -y remove \
     php-fkooman-otp-verifier \
     php-fkooman-oauth2-client \
     php-fkooman-oauth2-server \
