@@ -133,7 +133,7 @@ i.e.:
     $ echo "deb https://repo.eduvpn.org/v2/deb buster main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
 
 After the update is complete, PHP will not be properly configured yet, this is 
-because the verion changed from 7.0 to 7.3 and is part of a different Apache
+because the version changed from 7.0 to 7.3 and is part of a different Apache
 configuration. You have to manually re-enable PHP:
 
     $ sudo a2enconf php7.3-fpm
