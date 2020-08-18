@@ -43,15 +43,16 @@ Add the new PGP key:
     $ curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | sudo apt-key add
 
 Now you can update your system. All eduVPN packages will be replaced by the 
-version from the new Debian 9 repository:
+version from the new Debian 9 repository. **NOTE**: the upgrade WILL ask if 
+you want to keep your existing configuration files for some packages. Make sure 
+you do, i.e. choose **N** on the prompt!
+
+To install the updates:
 
     $ sudo apt update
     $ sudo apt dist-upgrade
 
-The upgrade WILL ask if you want to keep your existing configuration files for
-some packages. Make sure you do, i.e. choose **N** on the prompt. 
-
-The `dist-upgrade` will also complain about `postrm` scripts not running 
+The `dist-upgrade` command will complain about `postrm` scripts not running 
 correctly. It is safe to ignore this. This is all fixed in the new packages, 
 but the old packages are still in the way during the upgrade to the new 
 repository.
