@@ -3,6 +3,9 @@
 #
 # Use Let's Encrypt to obtain certificates for the Web Server
 #
+# **NOTE** we assume you successfully performed deploy_debian.sh on your 
+# server!
+#
 
 ###############################################################################
 # VARIABLES
@@ -18,18 +21,13 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 # SYSTEM
 ###############################################################################
 
-PACKAGE_MANAGER=/usr/bin/apt
-
-${PACKAGE_MANAGER} install -y certbot
-
-# stop Apache
-systemctl stop apache2
+apt install -y certbot
 
 ###############################################################################
 # CERTBOT
 ###############################################################################
 
-certbot certonly --standalone -d "${WEB_FQDN}"
+certbot certonly -d "${WEB_FQDN}" --webroot --webroot-path /var/www/html
 
 ###############################################################################
 # APACHE
@@ -42,11 +40,4 @@ sed -i "s|#SSLCertificateFile /etc/letsencrypt/live/${WEB_FQDN}/cert.pem|SSLCert
 sed -i "s|#SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 sed -i "s|#SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
-###############################################################################
-# CLEANUP
-###############################################################################
-
-# start Apache
-systemctl start apache2
-
-# ALL DONE!
+systemctl restart apache2
