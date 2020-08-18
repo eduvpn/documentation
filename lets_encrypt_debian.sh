@@ -40,4 +40,17 @@ sed -i "s|#SSLCertificateFile /etc/letsencrypt/live/${WEB_FQDN}/cert.pem|SSLCert
 sed -i "s|#SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|SSLCertificateKeyFile /etc/letsencrypt/live/${WEB_FQDN}/privkey.pem|" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 sed -i "s|#SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|SSLCertificateChainFile /etc/letsencrypt/live/${WEB_FQDN}/chain.pem|" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
-systemctl restart apache2
+systemctl reload apache2
+
+###############################################################################
+# HOOK
+###############################################################################
+
+# make sure to gracefully restart Apache after a certificate has been
+# renewed...
+cat << EOF > /etc/letsencrypt/renewal-hooks/post/restart_apache.sh
+#!/bin/sh
+systemctl reload apache2
+EOF
+
+chmod +x /etc/letsencrypt/renewal-hooks/post/restart_apache.sh
