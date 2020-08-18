@@ -162,9 +162,9 @@ Run the script (as root) from the documentation folder:
 Make sure you use the exact same DNS name you used when running 
 `deploy_debian.sh`! 
 
-After completing the script, the certificate will be installed. After that, it
-is advisable to set up automatic
-[certificate renewal](https://certbot.eff.org/docs/using.html#renewing-certificates).
+After completing the script, the certificate will be installed. It is set to
+automatically renew when necessary and gracefully reload Apache after the 
+certificate has been replaced.
 
 ### Port Sharing
 
