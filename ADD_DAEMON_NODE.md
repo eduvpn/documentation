@@ -4,14 +4,16 @@ description: Add additional VPN nodes for handling OpenVPN connections
 category: advanced
 ---
 
-**NOTE**: the daemon is currently only supported on CentOS and Fedora!
-
 **NOTE**: if you have only 1 VPN server and do not want to deploy additional
 servers, check the documentation on how to switch to the daemon on one server 
 [here](VPN_DAEMON.md).
 
 **NOTE**: if you want to deploy a controller with node(s) we recommend you
 look at [this](MULTI_NODE.md) documentation!
+
+**NOTE**: if you run on Debian, replace `yum` with `apt`, 
+`/etc/pki/vpn-daemon` with `/etc/ssl/vpn-daemon` and 
+`/etc/sysconfig/vpn-daemon` with `/etc/default/vpn-daemon`.
 
 This document describes how to add new VPN servers to your VPN setup. We 
 assume you setup your current VPN server using `deploy_${DIST}.sh` and have 
