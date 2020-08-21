@@ -4,7 +4,7 @@ description: Use VPN Daemon for OpenVPN Management
 category: advanced
 ---
 
-**NOTE**: the daemon is currently only supported on CentOS and Fedora!
+**NOTE**: if you run on Debian, replace `yum` with `apt`.
 
 This document describes how to switch to using the VPN daemon to control 
 OpenVPN processes. 
