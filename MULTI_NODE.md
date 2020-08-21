@@ -263,7 +263,8 @@ As, by default, each profile uses its own "TLS Crypt" key, we need to make sure
 both of them use to same key now that the profiles are "merged":
 
     $ sudo cp /var/lib/vpn-server-api/tls-crypt-node-a.key /var/lib/vpn-server-api/ta.key
-
+    $ sudo chown apache.apache /var/lib/vpn-server-api/ta.key
+    
 The `ta.key` is the fallback "TLS Crypt" key. If that file exists, the profile 
 specific keys are ignored.
 
