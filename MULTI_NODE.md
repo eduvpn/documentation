@@ -117,6 +117,9 @@ b       | range6        | fd00:2:2:2::/64
 You can of course choose your own `range` and `range6`, but make sure they are 
 not the same for both profiles.
 
+The `managementIp` value MUST contain the IP address of the node(s) at which
+it can be reached from the controller.
+
 Next, modify the `RequireAny` section in 
 `/etc/httpd/conf.d/vpn-server-api.conf` by adding the IP addresses of the 
 nodes:
