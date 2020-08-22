@@ -4,7 +4,7 @@ description: Set up a controller with two nodes
 category: advanced
 ---
 
-**WORK IN PROGRESS (2020-04-06)**
+**WORK IN PROGRESS (2020-08-22)**
 
 When you want to scale up your deployment, i.e. have multiple nodes connect 
 with one controller, this document is for you!
@@ -160,7 +160,7 @@ Now install the `vpn-daemon-client` certificate:
 Copy the `ca.crt`, `vpn-daemon-node-a.*` to Node A and `ca.crt`, 
 `vpn-daemon-node-b.*` to Node B for later use.
 
-Before moving on to the nodes, make not of the `vpn-server-node` secret under
+Before moving on to the nodes, make note of the `vpn-server-node` secret under
 the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
 next!
 
