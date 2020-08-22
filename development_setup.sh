@@ -43,15 +43,15 @@ git clone https://git.tuxed.net/LC/vpn-maint-scripts.git
 # clone all RPM packages
 mkdir -p rpm
 for PACKAGE_NAME in vpn-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-saml-sp php-saml-sp-artwork-eduVPN php-fkooman-secookie php-fkooman-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
-	git clone -b master https://git.tuxed.net/rpm/"${PACKAGE_NAME}" rpm/"${PACKAGE_NAME}"
-	#git clone -b master git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
+	git clone https://git.tuxed.net/rpm/"${PACKAGE_NAME}" rpm/"${PACKAGE_NAME}"
+	#git clone git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
 done
 
 # clone all DEB packages
 mkdir -p deb
 for PACKAGE_NAME in php-jwt vpn-user-portal vpn-server-api php-saml-sp vpn-maint-scripts vpn-lib-common php-oauth2-server vpn-server-node php-otp-verifier php-sqlite-migrate vpn-daemon vpn-ca php-secookie vpn-portal-artwork-eduvpn php-openvpn-connection-manager php-saml-sp-artwork-eduvpn vpn-portal-artwork-lc; do
-	git clone -b master https://git.tuxed.net/deb/"${PACKAGE_NAME}" deb/"${PACKAGE_NAME}"
-	#git clone -b master git@git.tuxed.net:deb/${PACKAGE_NAME}.git deb/${PACKAGE_NAME}
+	git clone https://git.tuxed.net/deb/"${PACKAGE_NAME}" deb/"${PACKAGE_NAME}"
+	#git clone git@git.tuxed.net:deb/${PACKAGE_NAME}.git deb/${PACKAGE_NAME}
 done
 
 ######################################
