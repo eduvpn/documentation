@@ -12,8 +12,8 @@ This document describes how eduVPN applications find out about eduVPN servers.
 
 Two JSON documents are available to facilitate eduVPN server discovery:
  
-- Server List: `https://disco.eduvpn.org/server_list.json`
-- Organization List: `https://disco.eduvpn.org/organization_list.json`
+- Server List: `https://disco.eduvpn.org/v2/server_list.json`
+- Organization List: `https://disco.eduvpn.org/v2/organization_list.json`
 
 ## Server List
 
@@ -190,8 +190,8 @@ files will remain available at this exact location!
 All JSON discovery files have a signature. The signatures are generated with 
 [minisign](https://jedisct1.github.io/minisign/):
 
-- Server List: `https://disco.eduvpn.org/server_list.json.minisig`
-- Organization List: `https://disco.eduvpn.org/organization_list.json.minisig`
+- Server List: `https://disco.eduvpn.org/v2/server_list.json.minisig`
+- Organization List: `https://disco.eduvpn.org/v2/organization_list.json.minisig`
 
 The minisign documentation shows the format of the signatures and public keys.
 
