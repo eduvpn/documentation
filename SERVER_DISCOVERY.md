@@ -6,7 +6,8 @@ category: dev
 
 # Server Discovery
 
-**WORK IN PROGRESS**
+**NOTE**: the format of `v2` is stable as of 2020-08-26. Format changes will
+only occur in a different directory, e.g. `v3` if necessary in the future.
 
 This document describes how eduVPN applications find out about eduVPN servers.
 
