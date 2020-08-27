@@ -22,8 +22,8 @@ rm -rf /etc/openvpn/server/*
 
 yum remove -y openvpn
 
-cp resources/centos/iptables /etc/sysconfig/iptables
-cp resources/centos/ip6tables /etc/sysconfig/ip6tables
+cp resources/firewall/controller/iptables /etc/sysconfig/iptables
+cp resources/firewall/controller/ip6tables /etc/sysconfig/ip6tables
 
 systemctl restart iptables
 systemctl restart ip6tables
