@@ -32,7 +32,7 @@ Controller | frkovpn.tuxed.net        | 145.0.6.71 | 2001:610:188:418:145:0:6:71
 Node A     | node-a.frkovpn.tuxed.net | 145.0.6.72 | 2001:610:188:418:145:0:6:72
 Node B     | node-b.frkovpn.tuxed.net | 145.0.6.73 | 2001:610:188:418:145:0:6:73
 
-We will use NAT for IPv4 and IPv6 client traffic.
+We will use NAT for IPv4 and public IP addresses for IPv6.
 
 Perform these steps on the hosts:
 
@@ -138,10 +138,9 @@ Restart Apache:
 
 Finally, we need to create a CA to secure the connection between the controller
 and nodes. You can do this on the controller, or on your own system. We use 
-[vpn-ca](https://github.com/letsconnectvpn/vpn-ca) for this. You can easily
-install it on the controller:
+[vpn-ca](https://github.com/letsconnectvpn/vpn-ca) for this. It is already 
+installed on your controller:
 
-    $ sudo yum -y install vpn-ca
     $ mkdir -p ${HOME}/ca
     $ cd ${HOME}/ca
     $ vpn-ca -init
@@ -292,3 +291,12 @@ to the different nodes instead of all to one node.
 The `vpn-maint-scripts` package has instructions for maintaining a multi node
 setup. Please refer to those instructions 
 [here](https://github.com/letsconnectvpn/vpn-maint-scripts).
+
+## FAQ
+
+**Can I also have multiple profiles on the nodes?**
+
+This document only talks about one profile per VPN node. In case you have 
+multiple profiles, you also need to read [MULTI_PROFILE](MULTI_PROFILE.md). 
+Make sure you use different `vpnProtoPorts` for your different profiles. You 
+can have two profiles on the same node claim `udp/1194` for example.
