@@ -299,7 +299,7 @@ setup. Please refer to those instructions
 This document only talks about one profile per VPN node. In case you have 
 multiple profiles, you also need to read [MULTI_PROFILE](MULTI_PROFILE.md). 
 Make sure you use different `vpnProtoPorts` for your different profiles. You 
-can have two profiles on the same node claim `udp/1194` for example.
+can't have two profiles on the same node claim `udp/1194` for example.
 
 **What if I want to use public IPv6 addresses for my VPN clients?**
 
