@@ -32,7 +32,7 @@ Controller | frkovpn.tuxed.net        | 145.0.6.71 | 2001:610:188:418:145:0:6:71
 Node A     | node-a.frkovpn.tuxed.net | 145.0.6.72 | 2001:610:188:418:145:0:6:72
 Node B     | node-b.frkovpn.tuxed.net | 145.0.6.73 | 2001:610:188:418:145:0:6:73
 
-We will use NAT for IPv4 and public IP addresses for IPv6.
+We will use NAT for IPv4 and IPv6 client traffic.
 
 Perform these steps on the hosts:
 
@@ -300,3 +300,8 @@ This document only talks about one profile per VPN node. In case you have
 multiple profiles, you also need to read [MULTI_PROFILE](MULTI_PROFILE.md). 
 Make sure you use different `vpnProtoPorts` for your different profiles. You 
 can have two profiles on the same node claim `udp/1194` for example.
+
+**What if I want to use public IPv6 addresses for my VPN clients?**
+
+Check [PUBLIC_ADDR](PUBLIC_ADDR.md) in order to deal with this. Make sure you
+also update the (IPv6) firewall to remove the NAT section.
