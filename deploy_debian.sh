@@ -126,12 +126,8 @@ systemctl restart apache2
 # NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
 # by default! 
 
-# generate the OpenVPN server configuration files and certificates
-vpn-server-node-server-config
-
-# enable and start OpenVPN
-systemctl enable --now openvpn-server@internet-0
-systemctl enable --now openvpn-server@internet-1
+# generate (new) OpenVPN server configuration files and start OpenVPN
+vpn-maint-apply-changes
 
 ###############################################################################
 # FIREWALL
