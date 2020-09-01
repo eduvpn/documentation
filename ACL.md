@@ -162,5 +162,5 @@ of the profiles where you want to restrict access, for example:
     // true
     // DEFAULT  = []
     'aclPermissionList' => [
-        'urn:example:LC-admin',
+        'http://eduvpn.org/role/admin',
     ],

@@ -88,7 +88,7 @@ Now the `PhpSamlSpAuthentication` specific options can be set as well:
         // AuthnContexts. If they currently don't, a new authentication is
         // triggered to obtain it
         //'permissionAuthnContext' => [
-        //    'urn:example:LC-admin' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
+        //    'http://eduvpn.org/role/admin' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
         //],
     ],
 

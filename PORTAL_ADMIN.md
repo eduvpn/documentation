@@ -68,7 +68,7 @@ For example on [Shibboleth](SHIBBOLETH_SP.md):
 Then you have to configure _which_ entitlement will grant administrator access
 using the `adminPermissionList` option, for example:
 
-    'adminPermissionList' => ['http://eduvpn.org/permission/admin'],
+    'adminPermissionList' => ['http://eduvpn.org/role/admin'],
 
 This should make all users that have that particular entitlement value an 
 administrator in the portal.
