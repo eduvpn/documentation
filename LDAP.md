@@ -81,8 +81,8 @@ Next is configuring the LDAP server in the `FormLdapAuthentication` section.
 **NOTE**: `{{UID}}` is a special template variable that is replaced by what the 
 user specifies in the "User Name" box at login in the portal. If you specify 
 `DOMAIN\{{UID}}` as `bindDnTemplate` in the configuration, the actual "bind DN" 
-will become `DOMAIN\fkooman` assuming the user specified `fkooman` as 
-"User Name".
+will become `DOMAIN\fkooman` assuming the user entered `fkooman` as 
+"User Name" in the portal.
 
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
