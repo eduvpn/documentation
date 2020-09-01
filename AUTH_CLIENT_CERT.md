@@ -49,7 +49,8 @@ Variables", so we can use this here as well.
 
 ## Generating Client Certificates
 
-**NOTE**: this is only for experimentation, mostly a "note to self" :-)
+**NOTE**: this section is only for experimentation, mostly a "note to self" 
+:-)
 
 Of course, you could use the X.509 certificates issued for use with OpenVPN 
 *also* for authenticating to the portal. But that is a bit of a 🐔🥚 problem 
