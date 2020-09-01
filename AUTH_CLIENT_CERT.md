@@ -22,7 +22,10 @@ Point `SSLCACertificateFile` to your client certificate validating CA. The
 `SSLUserName` variable is set to the SSL variable you want to use as the user's 
 User ID. See 
 [Environment Variables](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#envvars) 
-for more options.
+for more options. The `SSLVerifyDepth` depends on your PKI. If you don't know 
+what it should be, i.e. you don't know how many intermediates there are, you 
+can find it out by checking your client certificate, or start with 1 and try to 
+increment it until it works ;-)
 
 Restart the web server:
 
