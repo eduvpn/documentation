@@ -4,6 +4,12 @@ It is rather easy to enable X.509 client certificate authentication for the
 portal. No need for complicated user authentication scenarios if you client
 devices already have access to an organization issued client certificate.
 
+**NOTE**: this misuses `ShibAuthentication` at the moment, this is not a final
+solution. We need a special one with e.g. `REMOTE_USER` only.
+
+**NOTE**: with client certificate authentication, Logout is not possible so 
+we should hide the Logout button in the portal as to not confuse the user.
+
 ## Web Server
 
 **NOTE**: configuring client certificate authentication is **separate** from 
@@ -34,9 +40,9 @@ Restart the web server:
 
 ## Portal
 
-Modify `/etc/vpn-user-portal/config.php` and (mis)use the `ShibAuthentication` 
-authentication. This authentication module has access to Apache's "Environment 
-Variables", so we can use this here as well.
+Modify `/etc/vpn-user-portal/config.php` and for now misuse the 
+`ShibAuthentication` authentication. This authentication module has access to 
+Apache's "Environment Variables", so we can use this here as well.
 
     'authMethod' => 'ShibAuthentication',
     
