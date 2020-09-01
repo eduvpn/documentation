@@ -11,8 +11,11 @@ run it on the smallest and cheapest of devices? Why do we always need the
 latest and greatest to run anything? If you write software and it does NOT 
 run on a Raspberry Pi with ease, you are doing something wrong ;-)
 
-I tested this on a Raspberry Pi 3B+ and Fedora 31 (aarch64) on 2019-11-25 and
-all works fine.
+I tested this last on a Raspberry Pi 3B+ and Fedora 32 (aarch64) on 2020-09-01 
+and all works fine.
+
+**NOTE** the Raspberry Pi 4 does **NOT** work yet as of this time (2020-09-01),
+wait for upstream Fedora to support it first!
 
 # Getting Started
 
@@ -21,7 +24,8 @@ steps here are not specific to the VPN server, but just getting Fedora up and
 running, and up to date! 
 
 Download the latest "Fedora Minimal" image from 
-[here](https://alt.fedoraproject.org/alt/). It will be a `raw.xz` file.
+[here](https://alt.fedoraproject.org/alt/) make sure you look under the 
+"ARM **aarch64** Architecture" section. The download will be a `raw.xz` file.
 
 Full instructions for installing Fedora on the Pi can be found 
 [here](https://fedoraproject.org/wiki/Architectures/ARM/Raspberry_Pi). I'll 
@@ -30,7 +34,7 @@ repeat the important steps below.
 I used this command to create the SD card for the Pi on my laptop running 
 Fedora:
 
-    $ sudo arm-image-installer --image=Fedora-Minimal-31-1.9.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
+    $ sudo arm-image-installer --image=Fedora-Minimal-32-1.6.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
 
 Make sure you specify the `--resizefs` option to "grow" the file system to fill
 your SD card.
@@ -40,7 +44,7 @@ The Wiki linked to above has instructions for other platforms as well.
 You need to boot this image, configure the network, install all software 
 updates and enable (remote) SSH login if you prefer. It is a little bit easier 
 and you don't need a keyboard/mouse attached to your Pi anymore. If you want to 
-use WiFi, it DOES work out of the box on Fedora 31, but you need to configure
+use WiFi, it DOES work out of the box on Fedora 32, but you need to configure
 it through the CLI as mentioned on the Wiki. The "installer" does not support 
 it. First walk through the setup "wizard". Make sure you either create an 
 account with "Administrator" permissions, or set a root password.
@@ -58,7 +62,8 @@ Set the hostname to the name you want to give your VPN server:
     $ sudo hostnamectl set-hostname vpn.example.org
 
 This concludes setting up Fedora on your Pi. Make sure everything works as 
-expected and **reboot** before attempting to install the VPN software.
+expected and **reboot** before attempting to install the VPN software. Make 
+sure your network connection is still working before continuing.
 
 # Installing the VPN server
 
