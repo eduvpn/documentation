@@ -45,7 +45,8 @@ associated with that user account, e.g. `memberOf`, `mail`, `uid`.
 
 If you are using 
 [Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
-slightly different:
+slightly different, replace `DOMAIN` with the name of your domain and `fkooman` 
+with a valid user in your AD:
 
     $ ldapsearch \
             -W \
