@@ -1,24 +1,20 @@
 # Client Certificate Authentication
 
+**NOTE**: only supported in vpn-user-portal >= 2.3.4
+
 It is rather easy to enable X.509 client certificate authentication for the 
 portal. No need for complicated user authentication scenarios if you client
 devices already have access to an organization issued client certificate.
 
-**NOTE**: this misuses `ShibAuthentication` at the moment, this is not a final
-solution. We need a special one with e.g. `REMOTE_USER` only.
-
-**NOTE**: with client certificate authentication, Logout is not possible so 
-we should hide the Logout button in the portal as to not confuse the user.
-
 ## Web Server
 
-**NOTE**: configuring client certificate authentication is **separate** from 
-the server certificate you MUST configure on your VPN server!
+**NOTE**: configuring client certificate authentication is separate from 
+the server certificate you configure for your web server!
 
 In `/etc/httpd/conf.d/vpn.example.conf` inside the `<VirtualHost *:443>` 
 section you can add the following lines:
 
-    SSLVerifyClient require
+    SSLVerifyClient optional
     SSLVerifyDepth 1
     SSLCACertificateFile /etc/pki/tls/certs/ca.crt   # CentOS/RHEL/Fedora
     #SSLCACertificateFile /etc/ssl/certs/ca.crt      # Debian/Ubuntu
@@ -30,8 +26,13 @@ User ID. See
 [Environment Variables](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#envvars) 
 for more options. The `SSLVerifyDepth` depends on your PKI. If you don't know 
 what it should be, i.e. you don't know how many intermediates there are, you 
-can find it out by checking your client certificate, or start with 1 and try to 
-increment it until it works ;-)
+can find it out by checking your client certificate, or start with 1, which is
+also the default if not set, and try to increment it until it works ;-)
+
+We set the `SSLVerifyClient` to `optional`, as not all locations require a 
+certificate. Locations that *do* require user authentication will enforce it 
+anyway. An error will be shown when the user did not proceed with certificate 
+authentication.
 
 Restart the web server:
 
@@ -40,21 +41,8 @@ Restart the web server:
 
 ## Portal
 
-Modify `/etc/vpn-user-portal/config.php` and for now misuse the 
-`ShibAuthentication` authentication. This authentication module has access to 
-Apache's "Environment Variables", so we can use this here as well.
-
-    'authMethod' => 'ShibAuthentication',
-    
-    // ...
-    
-    'ShibAuthentication' => [
-        'userIdAttribute' => 'REMOTE_USER',
-    ]
-    
-    // ...
-    
-`REMOTE_USER` is set by the `SSLUserName` option in the Apache configuration.
+Modify `/etc/vpn-user-portal/config.php` and set `authMethod` to 
+`ClientCertAuthentication`.
 
 ## Generating Client Certificates
 
