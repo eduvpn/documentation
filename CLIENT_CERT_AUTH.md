@@ -6,6 +6,13 @@ It is rather easy to enable X.509 client certificate authentication for the
 portal. No need for complicated user authentication scenarios if you client
 devices already have access to an organization issued client certificate.
 
+**NOTE**: there won't be any "Logout" option as browsers do not offer support
+for "Logout" when using client certificate authentication. The only way to 
+"Logout" is to close your browser. Depending on the OS/browser you use you'll
+always be authenticated when visiting the portal, possibly even without 
+confirmation popup. This is great, but something you need to be aware of, you
+can basically have "the Kerberos experience", which may confuse users.
+
 ## Web Server
 
 **NOTE**: configuring client certificate authentication is separate from 
