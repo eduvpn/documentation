@@ -69,15 +69,6 @@ The application MUST always fetch the `server_list.json` at application start.
 The application MAY refresh the `server_list.json` periodically, e.g. once 
 every hour. The reason for this is that the list of servers changes regularly.
 
-The application MUST keep working when the discovery file(s) can not be 
-downloaded and/or verified for whatever reason, e.g. DNS does not resolve, 
-traffic to the discovery server is blocked, server return unexpected error 
-code. In this case an error MUST be shown, but it MUST NOT block the 
-application from working with the old data already available to the app. 
-Application releases SHOULD include the latest version from the discovery 
-server before publishing the binary. This in case the discovery server is down 
-on the application's first launch.
-
 The keys `server_type`, `base_url` are required for all server types. The 
 `display_name` key is required for the `institute_access` server type. The 
 `country_code` key is required for the `secure_internet` server type.
