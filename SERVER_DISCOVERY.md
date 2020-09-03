@@ -19,11 +19,11 @@ Two JSON documents are available to facilitate eduVPN server discovery:
 The application MUST keep working when the discovery file(s) can not be 
 downloaded and/or verified for whatever reason, including, but not limit to 
 DNS does not resolve, traffic to the discovery server is blocked, server 
-returns unexpected error code. In this case an error MUST be shown, but it 
-MUST NOT block the application from working with the old data already available 
-to the app. Application releases SHOULD include the latest version from the 
-discovery server before publishing the binary. This in case the discovery 
-server is down on the application's first launch.
+returns unexpected error code. In this case an user dismissable error MUST be 
+shown, but it MUST NOT block the application from working with the old data 
+already available to the app. Application releases SHOULD include the latest 
+version from the discovery server before publishing the binary, if practical. 
+This in case the discovery server is down on the application's first launch.
 
 ## Server List
 
