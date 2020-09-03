@@ -7,16 +7,16 @@ mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-lib-common.git
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-user-portal.git
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-api.git
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-node.git
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/documentation.git
-git clone https://git.tuxed.net/LC/vpn-portal-artwork.git vpn-portal-artwork-eduVPN
-git clone https://git.tuxed.net/LC/vpn-portal-artwork.git vpn-portal-artwork-LC
-git clone https://git.tuxed.net/LC/vpn-ca.git
-git clone https://git.tuxed.net/LC/vpn-daemon.git
-git clone https://git.tuxed.net/LC/vpn-maint-scripts.git
+git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-lib-common
+git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-user-portal
+git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-api
+git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-node
+git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/documentation
+git clone https://git.tuxed.net/LC/vpn-portal-artwork-eduVPN
+git clone https://git.tuxed.net/LC/vpn-portal-artwork-LC
+git clone https://git.tuxed.net/LC/vpn-ca
+git clone https://git.tuxed.net/LC/vpn-daemon
+git clone https://git.tuxed.net/LC/vpn-maint-scripts
 
 ## clone all repositories (read/write, my own "forks")
 #git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-lib-common.git
