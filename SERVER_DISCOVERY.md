@@ -16,6 +16,15 @@ Two JSON documents are available to facilitate eduVPN server discovery:
 - Server List: `https://disco.eduvpn.org/v2/server_list.json`
 - Organization List: `https://disco.eduvpn.org/v2/organization_list.json`
 
+The application MUST keep working when the discovery file(s) can not be 
+downloaded and/or verified for whatever reason, including, but not limit to 
+DNS does not resolve, traffic to the discovery server is blocked, server 
+returns unexpected error code. In this case an error MUST be shown, but it 
+MUST NOT block the application from working with the old data already available 
+to the app. Application releases SHOULD include the latest version from the 
+discovery server before publishing the binary. This in case the discovery 
+server is down on the application's first launch.
+
 ## Server List
 
 The "Server List" contains a list of _all_ eduVPN servers. In this list we 
@@ -59,6 +68,15 @@ they belong to, e.g. "Radboud University".
 The application MUST always fetch the `server_list.json` at application start. 
 The application MAY refresh the `server_list.json` periodically, e.g. once 
 every hour. The reason for this is that the list of servers changes regularly.
+
+The application MUST keep working when the discovery file(s) can not be 
+downloaded and/or verified for whatever reason, e.g. DNS does not resolve, 
+traffic to the discovery server is blocked, server return unexpected error 
+code. In this case an error MUST be shown, but it MUST NOT block the 
+application from working with the old data already available to the app. 
+Application releases SHOULD include the latest version from the discovery 
+server before publishing the binary. This in case the discovery server is down 
+on the application's first launch.
 
 The keys `server_type`, `base_url` are required for all server types. The 
 `display_name` key is required for the `institute_access` server type. The 
