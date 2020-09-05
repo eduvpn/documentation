@@ -4,12 +4,23 @@ description: SAML Authentication using Shibboleth
 category: authentication
 ---
 
-This document describes installing Shibboleth on Debian 9.
+This document describes installing Shibboleth on Debian 9 and 10. Some things
+are different between Debian 10 and 9, check the comment behind the commands!
 
-### Shibboleth
+# Installation
+
+## Debian 9
 
     $ sudo apt install libapache2-mod-shib2
     $ sudo shib-keygen
+
+## Debian 10
+
+    $ sudo apt install libapache2-mod-shib
+    $ sudo shib-keygen -n sp-encrypt
+    $ sudo shib-keygen -n sp-signing
+
+# Configuration
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
@@ -20,7 +31,7 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
 * Set the `entityID` to the entity ID of your IdP, or configure the 
   `discoveryURL` in the `<SSO>` element
 * Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
-  1.0 support
+  1.0 support (only on Debian 9)
 * Set the `file` in the `<MetadataProvider>` element for a simple static 
   metadata file
 
