@@ -14,7 +14,7 @@ more specifically: the configuration choices that were made.
 The basic OpenVPN server (and client) crypto configuration:
 
     tls-version-min 1.2
-    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384
     dh none
     ncp-ciphers AES-256-GCM
     cipher AES-256-GCM
@@ -29,6 +29,15 @@ For the data channel we chose to use `AES-256-GCM`.
 
 We do _not_ specify the `auth` OpenVPN configuration option as it is no longer 
 used when using an AEAD cipher like `AES-256-GCM` and `tls-crypt`.
+
+**NOTE**: the `tls-cipher` option is only used with TLSv1.2. When a TLSv1.3 
+connection is established it is ignored. TLSv1.3 has a limited selection of 
+algorithms that are all secure, no need to put any restriction on it.
+
+**NOTE**: vpn-user-portal >= 2.3.4 and vpn-server-node >= 2.2.4 add support for 
+the `ECDSA` TLS cipher `TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384` to support 
+ECDSA certificates on TLSv1.2 connections. It was already supported when a 
+TLSv1.3 connection was used.
 
 ### TLS Crypt
 
