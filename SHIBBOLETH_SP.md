@@ -4,8 +4,7 @@ description: SAML Authentication using Shibboleth
 category: authentication
 ---
 
-This document describes installing Shibboleth on Debian 9 and 10. Some things
-are different between Debian 10 and 9, check the comment behind the commands!
+This document describes installing Shibboleth on Debian 9 and 10.
 
 # Installation
 
