@@ -91,4 +91,52 @@ The CA of the VPN service is "online" as it needs to generate valid
 certificates on the fly. The [vpn-ca](https://github.com/letsconnectvpn/vpn-ca) 
 software is used as CA.
 
-The CA uses keys of length 3072 bits, and signs using RSA-SHA256.
+By default the CA uses `RSA` with keys of length 3072 bits, and signs using 
+`RSA-SHA256`.
+
+The CA also supports `ECDSA` with the NIST P-256 curve, also known as 
+secp256r1 or prime256v1, and `EdDSA` with `Ed25519`. Refer to the next section
+to see what is possible.
+
+Currently, RSA is the default. Future versions of the VPN software will switch
+to `EdDSA` and drop TLSv1.2 support.
+
+### TLS Algorithm Support
+
+From the point of view of the VPN server the following tables can help to 
+figure out which algorithms are supported.
+
+| OS        | TLS              |
+| --------- | ---------------- |
+| CentOS 7  | TLSv1.2          |
+| Fedora    | TLSv1.2, TLSv1.3 |
+| Debian 9  | TLSv1.2          | 
+| Debian 10 | TLSv1.2, TLSv1.3 |
+
+Whenever possible, the client/server will use the highest TLS version. As for 
+which types of keys are supported by the VPN server:
+
+| CA    | CentOS 7 | Fedora | Debian 9 | Debian 10 |
+|-------|--------- | ------ | -------- | --------- |
+| RSA   | Y        | Y      | Y        | Y         |
+| ECDSA | Y        | Y      | Y        | Y         |
+| EdDSA | N        | Y      | N        | Y         |
+
+The client plays an important role here. In order to support `EdDSA` the client 
+MUST support TLSv1.3, *and* support storing `EdDSA` keys in its key store.
+
+When using TLSv1.2, the server *and* client `tls-cipher` option are consulted,
+this option is ignored when using TLSv1.3. When introducing `ECDSA` support, we 
+had to add an additional `tls-cipher` just for the TLSv1.2 case to both the 
+client and server OpenVPN configuration, otherwise only `RSA` was allowed. As 
+only TLSv1.3 supports `EdDSA`, we did not need to modify anything for this 
+scenario, but using `EdDSA` is restricted to "modern" VPN servers. Only servers
+(and clients) using OpenSSL >= 1.1.1 support TLSv1.3 (and `EdDSA`).
+
+**NOTE** in order to support `ECDSA` on CentOS 7 and Debian 9 you need to run
+vpn-user-portal >= 2.3.4 and vpn-server-node >= 2.2.4 on your server.
+
+**NOTE** as of today (2020-09-06) the Let's Connect! and eduVPN client for 
+Windows only support RSA. In addition, Windows clients >= 1.0.28 will use 
+TLSv1.3 when the server supports it, but won't be able to connect due to a bug
+in the client. We hope to fix this in version 1.0.30 of the Windows app.
