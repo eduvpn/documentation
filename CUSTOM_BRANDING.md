@@ -15,7 +15,7 @@ use the "custom footer" functionality.
 Create a file in `/etc/vpn-user-portal/views/customFooter.php` with e.g. the 
 following content:
 
-    <p class="plain">
+    <p>
         If you need help, contact us on <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail <a href="mailto:support@example.org">us</a>!
     </p>
 
@@ -29,7 +29,7 @@ You can also use multi language custom footers. You can use the
 provide additional translation files. We modify the example above in 
 `/etc/vpn-user-portal/views/customFooter.php`:
 
-    <p class="plain">
+    <p>
         <?=$this->t('If you need help, contact us on <a href="tel:+1234567890">+(1) (234) 567890</a>, or mail <a href="mailto:support@example.org">us</a>!'); ?>
     </p>
 
