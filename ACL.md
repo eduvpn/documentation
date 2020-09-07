@@ -71,7 +71,7 @@ and set the `permissionAttribute` to the name of the attribute:
         //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
         // OID for eduPersonAffiliation
         //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_1',
-],
+    ],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
 `https://vpn.example/vpn-user-portal/account`, you should see the 
