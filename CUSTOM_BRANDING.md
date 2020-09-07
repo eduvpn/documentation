@@ -64,15 +64,15 @@ for example.
 they MAY break future software updates. We do NOT guarantee template 
 compatibility!
 
-After copying, modify `/etc/vpn-user-portal/views/base.php` own CSS line in 
-addition to the default one:
+After copying, add a new CSS line in `/etc/vpn-user-portal/views/base.php`
+after the existing one:
 
     <link href="<?=$this->getAssetUrl($requestRoot, 'css/screen.css'); ?>" media="screen" rel="stylesheet">
     <link href="/css/my-screen.css" media="screen" rel="stylesheet">
 
-This will then try to find the CSS file on 
+This will then try to find the CSS file at 
 `https://vpn.example.org/css/my-screen.css`. You can look in 
-`/usr/share/vpn-user-portal/web/css/screen.css` what you can override.
+`/usr/share/vpn-user-portal/web/css/screen.css` for the default template CSS.
 
 We have two officially supported themes, you can find the relevant files here 
 and get inspiration:
