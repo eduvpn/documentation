@@ -52,63 +52,33 @@ escape them by adding a backslash (`\`) in front of them, e.g.
 
 # Template Overriding
 
-The portals use templates, located in the following folders:
+The portal uses templates, located in the following folder:
 
     /usr/share/vpn-user-portal/views
 
 You can copy the `base.php` from this folder to 
-`/etc/vpn-user-portal/views/base.php` and modify it to override the defaults. 
-For instance by adding an extra line pointing to an additional CSS file.
+`/etc/vpn-user-portal/views/base.php` and modify it to override the default CSS
+for example.
 
 **NOTE**: It is NOT recommended to update other templates than `base.php` as 
 they MAY break future software updates. We do NOT guarantee template 
 compatibility!
 
-For example, for eduVPN we use this addition to the `base.php` file under the
-default CSS line:
+After copying, modify `/etc/vpn-user-portal/views/base.php` own CSS line in 
+addition to the default one:
 
-    <link href="/css/eduvpn.css" media="screen" rel="stylesheet">
+    <link href="<?=$this->getAssetUrl($requestRoot, 'css/screen.css'); ?>" media="screen" rel="stylesheet">
+    <link href="/css/my-screen.css" media="screen" rel="stylesheet">
 
-# CSS
+This will then try to find the CSS file on 
+`https://vpn.example.org/css/my-screen.css`. You can look in 
+`/usr/share/vpn-user-portal/web/css/screen.css` what you can override.
 
-Place, the CSS file, in this case `eduvpn.css`, in 
-`/var/www/html/css/eduvpn.css`.
+We have two officially supported themes, you can find the relevant files here 
+and get inspiration:
 
-For eduVPN we show a logo that is placed in 
-`/var/www/html/img/eduvpn.png` that is linked to from the CSS file, 
-for example:
+* [eduVPN](https://github.com/eduvpn/vpn-portal-artwork)
+* [Let's Connect!](https://github.com/letsconnectvpn/vpn-portal-artwork/)
 
-    /** 
-     * eduvpn custom style
-     */
-    h1, h2, h3, h4 {
-        font-weight: 500;
-    }
-
-    a {
-        color: #ed6b06;
-    }
-
-    ul.menu li.active a, ul.menu li.active span {
-        background-color: #ed6b06;
-    }
-
-    /* only show the logo when width is >= 800px */
-    @media (min-width: 800px) {
-        h1 {
-            display: block;
-            float: right;
-            color: transparent; /* hide header text */
-            width: 300px;
-            height: 120px;
-            background-image: url("/img/eduVPN/eduVPN.png");
-            background-repeat: no-repeat;
-            background-position: 100% 0%;
-        }
-
-        ul.menu {
-            /* leave enough room for the background logo */
-            margin-right: 325px;
-            min-height: 120px;
-        }
-    }
+See [BRANDING](BRANDING.md) if you want to use those instead of creating your
+own.
