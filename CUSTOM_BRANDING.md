@@ -77,7 +77,7 @@ This will then try to find the CSS file at
 We have two officially supported themes, you can find the relevant files here 
 and get inspiration:
 
-* [eduVPN](https://github.com/eduvpn/vpn-portal-artwork)
+* [eduVPN](https://github.com/eduvpn/vpn-portal-artwork/)
 * [Let's Connect!](https://github.com/letsconnectvpn/vpn-portal-artwork/)
 
 See [BRANDING](BRANDING.md) if you want to use those instead of creating your
