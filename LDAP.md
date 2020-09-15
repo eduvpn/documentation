@@ -21,10 +21,16 @@ It is a good idea to try with `ldapsearch` if you are not absolutely sure what
 to configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
 module.
 
-First, install `ldapsearch`:
+First, install `ldapsearch` and the PHP module for LDAP:
 
-    $ sudo yum -y install openldap-clients
+    $ sudo yum install openldap-clients php-ldap  # CentOS/Fedora
+    $ sudo apt install ldap-utils php-ldap        # Debian
 
+Restart PHP to activate the LDAP module:
+
+    $ sudo systemctl restart php-fpm                            # CentOS/Fedora
+    $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm    # Debian
+ 
 You need a couple of details first, you can obtain those from your LDAP 
 administrator, you need _at least_:
 
@@ -184,4 +190,4 @@ that it will remain there, even when the `ca-certificate` package updates.
 
 You **MUST** restart `php-fpm` to pick up the changes:
 
-    $ sudo systemctl restart php7.0-fpm
+    $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
