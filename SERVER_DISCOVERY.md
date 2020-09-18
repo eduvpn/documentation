@@ -205,17 +205,22 @@ All JSON discovery files have a signature. The signatures are generated with
 
 The minisign documentation shows the format of the signatures and public keys.
 
-As of 2020-05-25 the public key used to verify the signatures is this one:
+As of 2020-09-18 the public keys that are to be trusted for signing the 
+discovery files are:
 
-    untrusted comment: minisign public key 19725C6AF525056D
-    RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF
+| Owner                | Public Key                                                 |
+| -------------------- | ---------------------------------------------------------- |
+| `fkooman@deic.dk`    | `RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF` |
+| `jornane@uninett.no` | `RWQ68Y5/b8DED0TJ41B1LE7yAvkmavZWjDwCBUuC+Z2pP9HaSawzpEDA` |
+| RoSp                 | `RWQKqtqvd0R7rUDp0rWzbtYPA3towPWcLDCl7eY9pBMMI/ohCmrS0WiM` |
 
 **NOTE**: you MUST allow your application to contain _multiple_ public keys for 
 verification. A signature is considered valid if it is correctly signed by one
 of the public keys. So your verification algorithm MUST perform proper
 signature's public key identification, matching against the list of trusted
 public keys and finally validating content integrity. Any error in the process
-MUST be shown to the user of the application.
+MUST be shown to the user of the application. Failing to update the discovery
+files results in the old one remaining valid.
 
 ### Rollback Prevention
 
