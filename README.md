@@ -34,7 +34,7 @@ This is an (incomplete) list of features of the VPN software:
 - Admin Portal to manage users, configurations and connections;
 - Multi Language support in User Portal and Admin Portal;
 - Authentication to portals using "static" username and password, 
-  [LDAP](LDAP.md), [RADIUS](RADIUS.md) and [SAML](SAML.md), 
+  [LDAP](LDAP.md), [RADIUS](RADIUS.md), [SAML](SAML.md) and
   [Client Certificates](CLIENT_CERT_AUTH.md);
 - OAuth 2.0 [API](API.md) for integration with applications;
 - [Two-factor authentication](2FA.md) TOTP support with user self-enrollment;
