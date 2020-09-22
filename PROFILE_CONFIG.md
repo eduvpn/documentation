@@ -134,6 +134,10 @@ You can manually work around providing both IPv4+IPv6 for profiles where you
 specify a `listen` address by using a proxy like 
 [socat](http://www.dest-unreach.org/socat/).
 
+If you are planning to run many OpenVPN server processes, i.e. >= 10, make sure
+to read [this](LIMIT_N_PROC.md) as you may need to increase the limit of the 
+number of OpenVPN processes that can be started by the OpenVPN systemd service.
+
 ### Logging
 
 Once logging is enabled and changes applied, you can follow the log like this:
