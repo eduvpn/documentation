@@ -81,7 +81,7 @@ mapping to the "Secure Internet" servers. In order to be able to use all
 "Secure Internet" servers they have access to based on their 
 "Home Organization". The "Organization List" contains a mapping between 
 organization and "Secure Internet" server through the `secure_internet_home` 
-key that points to a `base_uri` of a server entry in the "Server List" of the
+key that points to a `base_url` of a server entry in the "Server List" of the
 key `server_type` with value `secure_internet`:
 
     {
