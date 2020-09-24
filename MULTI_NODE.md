@@ -4,7 +4,7 @@ description: Set up a controller with two nodes
 category: advanced
 ---
 
-**WORK IN PROGRESS (2020-08-22)**
+**WORK IN PROGRESS (2020-09-24)**
 
 When you want to scale up your deployment, i.e. have multiple nodes connect 
 with one controller, this document is for you!
@@ -80,10 +80,13 @@ like this:
     );
 
 Now copy the `internet` section below it and rename `internet` to `node-a` and
-the duplicate to `node-b`. Also add the `useVpnDaemon` option:
+the duplicate to `node-b`. Also add the `useVpnDaemon` option and the 
+`vpnDaemonTls` option. Initially we disable TLS between the controller and the
+nodes(s):
 
     <?php return array (
       'useVpnDaemon' => true,
+      'vpnDaemonTls' => false,
       'vpnProfiles' =>
       array (
         'node-a' =>
@@ -115,7 +118,7 @@ b       | range         | 10.2.0.0/25
 b       | range6        | fd00:2:2:2::/64
 
 You can of course choose your own `range` and `range6`, but make sure they are 
-not the same for both profiles.
+NOT the same for both profiles and do not overlap.
 
 The `managementIp` value MUST contain the IP address of the node(s) at which
 it can be reached from the controller.
@@ -135,33 +138,6 @@ nodes:
 Restart Apache:
 
     $ sudo systemctl restart httpd
-
-Finally, we need to create a CA to secure the connection between the controller
-and nodes. You can do this on the controller, or on your own system. We use 
-[vpn-ca](https://github.com/letsconnectvpn/vpn-ca) for this. It is already 
-installed on your controller:
-
-    $ mkdir -p ${HOME}/ca
-    $ cd ${HOME}/ca
-    $ vpn-ca -init
-    $ vpn-ca -client vpn-daemon-client -not-after CA
-    $ vpn-ca -server vpn-daemon-node-a -not-after CA
-    $ vpn-ca -server vpn-daemon-node-b -not-after CA
-    $ chmod 0640 *.crt *.key
-
-Now install the `vpn-daemon-client` certificate:
-
-    $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
-    $ sudo chmod 0710 /etc/vpn-server-api/vpn-daemon
-    $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
-    $ sudo chgrp -R apache /etc/vpn-server-api/vpn-daemon
-
-Copy the `ca.crt`, `vpn-daemon-node-a.*` to Node A and `ca.crt`, 
-`vpn-daemon-node-b.*` to Node B for later use.
-
-Before moving on to the nodes, make note of the `vpn-server-node` secret under
-the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
-next!
 
 ## Nodes
 
@@ -197,18 +173,9 @@ First we install the [vpn-daemon](https://github.com/letsconnectvpn/vpn-daemon):
 
     $ sudo yum -y install vpn-daemon
 
-Modify `/etc/sysconfig/vpn-daemon`:
+Modify `/etc/sysconfig/vpn-daemon` (on Debian: `/etc/default/vpn-daemon`):
 
-    ENABLE_TLS=-enable-tls
     LISTEN=:41194
-
-Now copy the certificates/keys you copied to the node already before to the 
-right place:
-
-    $ sudo cp ca.crt                /etc/pki/vpn-daemon/
-    $ sudo cp vpn-daemon-node-a.crt /etc/pki/vpn-daemon/server.crt
-    $ sudo cp vpn-daemon-node-a.key /etc/pki/vpn-daemon/private/server.key
-    $ sudo chgrp -R vpn-daemon      /etc/pki/vpn-daemon
 
 Start/enable the daemon:
 
@@ -291,6 +258,50 @@ to the different nodes instead of all to one node.
 The `vpn-maint-scripts` package has instructions for maintaining a multi node
 setup. Please refer to those instructions 
 [here](https://github.com/letsconnectvpn/vpn-maint-scripts).
+
+## TLS between Controller and Node(s)
+
+### Controller
+
+Finally, we need to create a CA to secure the connection between the controller
+and nodes. You can do this on the controller, or on your own system. We use 
+[vpn-ca](https://github.com/letsconnectvpn/vpn-ca) for this. It is already 
+installed on your controller:
+
+    $ mkdir -p ${HOME}/ca
+    $ cd ${HOME}/ca
+    $ vpn-ca -init-ca -name "VPN Service CA"
+    $ vpn-ca -client -name vpn-daemon-client -not-after CA
+    $ vpn-ca -server -name vpn-daemon-node-a -not-after CA
+    $ vpn-ca -server -name vpn-daemon-node-b -not-after CA
+    $ chmod 0640 *.crt *.key
+
+Now install the `vpn-daemon-client` certificate:
+
+    $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
+    $ sudo chmod 0710 /etc/vpn-server-api/vpn-daemon
+    $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
+    $ sudo chgrp -R apache /etc/vpn-server-api/vpn-daemon
+
+Finally, remove the `vpnDaemonTls` option from 
+`/etc/vpn-server-api/config.php` to force using TLS.
+
+### Node 
+
+Copy the `ca.crt`, `vpn-daemon-node-a.*` to Node A and `ca.crt`, 
+`vpn-daemon-node-b.*` to Node B for later use.
+
+Before moving on to the nodes, make note of the `vpn-server-node` secret under
+the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
+next!
+
+Now copy the certificates/keys you copied to the node already before to the 
+right place:
+
+    $ sudo cp ca.crt                /etc/pki/vpn-daemon/
+    $ sudo cp vpn-daemon-node-a.crt /etc/pki/vpn-daemon/server.crt
+    $ sudo cp vpn-daemon-node-a.key /etc/pki/vpn-daemon/private/server.key
+    $ sudo chgrp -R vpn-daemon      /etc/pki/vpn-daemon
 
 ## FAQ
 
