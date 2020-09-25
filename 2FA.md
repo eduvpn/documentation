@@ -70,10 +70,12 @@ If a user lost their second factor credentials, 2FA can be removed through
 the admin portal for that particular user.
 
 If access to the admin portal is not available (anymore), the 2FA enrollment
-can also be removed manually. 
+can also be removed manually. The example below will remove the OTP for the 
+user `foo`:
 
     $ sudo sqlite3 /var/lib/vpn-server-api/db.sqlite
-
-Perform the following query to remove the OTP secret for the user `foo`:
-
-    DELETE FROM otp WHERE user_id='foo';
+    SQLite version 3.7.17 2013-05-20 00:56:22
+    Enter ".help" for instructions
+    Enter SQL statements terminated with a ";"
+    sqlite> DELETE FROM otp WHERE user_id='foo';
+    sqlite> .q
