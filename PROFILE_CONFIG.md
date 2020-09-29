@@ -55,14 +55,16 @@ deployments.
 | `blockLan`             | Block traffic to local LAN when VPN is active                                                                                                                               | no       | `false`                    | `true`                     |
 | `routes`               | IPv4 and IPv6 routes to push to the client. Also when `defaultGateway` is `true`! Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                           | no       | `[]`                       | `[]`                       |
 | `dns`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | from `/etc/resolv.conf`    |
+| `dnsDomain`            | Specify the "Connection-specific DNS Suffix" (requires vpn-server-node >= 2.2.5)                                                                                            | no       | `null`                     | `null`                     |
+| `dnsDomainSearch`      | Specify the "Connection-specific DNS Suffix Search List" (requires vpn-server-node >= 2.2.5)                                                                                | no       | `[]`                       | `[]`                       |
 | `clientToClient`       | Whether or not to allow client-to-client traffic                                                                                                                            | no       | `false`                    | `false`                    |
-| `enableLog`            | Whether or not to enable OpenVPN [logging](#logging)                                                                                                                                    | no       | `false`                    | `false`                    |
+| `enableLog`            | Whether or not to enable OpenVPN [logging](#logging)                                                                                                                        | no       | `false`                    | `false`                    |
 | `enableAcl`            | Whether or not to enable [ACL](ACL.md)s for controlling who can connect                                                                                                     | no       | `false`                    | `false`                    |
-| `aclPermissionList`    | List of acceptable permissions (OR) for access to this profile. Requires `enableAcl` to be `true`, see [ACL](ACL.md)                                                                                    | no       | `[]`                       | `[]`                       |
-| `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8, 16, 32 or 64 entries. See [OpenVPN Processes](#openvpn-processes)                                                      | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
+| `aclPermissionList`    | List of acceptable permissions (OR) for access to this profile. Requires `enableAcl` to be `true`, see [ACL](ACL.md)                                                        | no       | `[]`                       | `[]`                       |
+| `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8, 16, 32 or 64 entries. See [OpenVPN Processes](#openvpn-processes)                                              | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443`           | no       | `[]`                       | `[]`                       |
 | `hideProfile`          | Hide the profile from the user portal, i.e. do not allow the user to choose it                                                                                              | no       | `false`                    | `false`                    |
-| `tlsProtection`        | TLS control channel protection. Supported values are `tls-crypt` and `false`                                                                                                | no       | `tls-crypt`                 | `tls-crypt`                |
+| `tlsProtection`        | TLS control channel protection. Supported values are `tls-crypt` and `false`                                                                                                | no       | `tls-crypt`                | `tls-crypt`                |
 
 Changing any of the following options _WILL_ prevent OpenVPN clients from 
 connecting without updating the configuration, unless the eduVPN/Let's Connect! 
@@ -98,6 +100,16 @@ effect on Windows. On Windows, DNS queries go out over all (configured)
 interfaces and the first response is used. This can create a 
 [DNS leak](https://en.wikipedia.org/wiki/DNS_leak). By providing the 
 `block-outside-dns` option, this is prevented.
+
+You can specify the "Connection-specific DNS Suffix" and 
+"Connection-specific DNS Suffix Search List" as well using the `dnsDomain` and
+`dnsDomainSearch` options. The first one takes a `string` the second an array 
+of type `string`, for example:
+
+```
+    'dnsDomain'       => 'clients.example.org',
+    'dnsDomainSearch' => ['example.org', 'example.com'],
+```
 
 ### OpenVPN Processes
 

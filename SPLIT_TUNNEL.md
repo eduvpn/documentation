@@ -60,6 +60,17 @@ Take special note of the `routes`, `dns` and `dnsSuffix` options. See
 [PROFILE_CONFIG](PROFILE_CONFIG.md) for other configuration options that may be
 relevant for your situation.
 
+**NOTE**: In vpn-server-node >= 2.2.5 you SHOULD use the `dnsDomain` and 
+`dnsDomainSearch` options to convey the "Connection-specific DNS Suffix" and
+the "Connection-specific DNS Suffix Search List" instead of `dnsSuffix`. The 
+`dnsDomain` option takes a `string` and the `dnsDomainSearch` option takes an 
+array of `string`, for example:
+
+```
+    'dnsDomain'       => 'example.local',
+    'dnsDomainSearch' => ['example.org', 'example.com'],
+```
+
 To apply the configuration changes:
 
     $ sudo vpn-maint-apply-changes
