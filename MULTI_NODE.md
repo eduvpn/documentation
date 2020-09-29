@@ -139,6 +139,10 @@ Restart Apache:
 
     $ sudo systemctl restart httpd
 
+Before moving on to the nodes, make note of the `vpn-server-node` secret under
+the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
+next!
+
 ## Nodes
 
 The instructions below will be only shown for Node A, but they are identical
@@ -289,19 +293,25 @@ Finally, remove the `vpnDaemonTls` option from
 ### Node 
 
 Copy the `ca.crt`, `vpn-daemon-node-a.*` to Node A and `ca.crt`, 
-`vpn-daemon-node-b.*` to Node B for later use.
-
-Before moving on to the nodes, make note of the `vpn-server-node` secret under
-the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
-next!
-
-Now copy the certificates/keys you copied to the node already before to the 
-right place:
+`vpn-daemon-node-b.*` to Node B. On the node(s) copy the certificates/keys to 
+the right place:
 
     $ sudo cp ca.crt                /etc/pki/vpn-daemon/
     $ sudo cp vpn-daemon-node-a.crt /etc/pki/vpn-daemon/server.crt
     $ sudo cp vpn-daemon-node-a.key /etc/pki/vpn-daemon/private/server.key
     $ sudo chgrp -R vpn-daemon      /etc/pki/vpn-daemon
+
+Modify `/etc/sysconfig/vpn-daemon` (on Debian: `/etc/default/vpn-daemon`):
+
+    ENABLE_TLS=-enable-tls
+    LISTEN=:41194
+
+Restart the daemon:
+
+    $ sudo systemctl restart vpn-daemon
+
+Test everything again as mentioned in the last paragraph of the previous 
+"Nodes" section without TLS.
 
 ## FAQ
 
