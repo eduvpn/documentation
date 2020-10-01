@@ -139,9 +139,8 @@ keywords, example:
       "nl": "SURFnet bv SURF konijn powered by"
     }
 
-**NOTE**: the `keyword_list` MUST be supported in `server_list.json` for 
-"Institute Access" servers! Currently it is not used, but will be used in the 
-near future.
+**NOTE**: the `keyword_list` MUST be supported in both `organization_list.json` 
+and `server_list.json`.
 
 ## Language Matching
 
@@ -175,6 +174,8 @@ languages are always available!
 
 When searching for organizations (and servers) the device locale should not be
 used to restrict searches to that particular locale, but search in all locales.
+
+The search takes place in both `display_name` and `keyword_list`.
 
 ## Country Code
 
