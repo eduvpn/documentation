@@ -37,27 +37,28 @@ distinguish between two _types_ of servers (`server_type`):
 
 The "Secure Internet" servers are named after the country they are in, e.g. 
 "The Netherlands". The "Institute Access" servers are named after the institute
-they belong to, e.g. "Radboud University".
+they belong to, e.g. "Utrecht School of the Arts".
 
     {
       "server_list": [
         {
-          "server_type": "institute_access",
-          "base_url": "https://sunset.nuonet.fr/",
-          "display_name": "CNOUS",
-          "support_contact": [
-            "mailto:support-technique-nuo@listes.nuonet.fr"
-          ]
+            "server_type": "institute_access",
+            "base_url": "https://hku.eduvpn.nl/",
+            "display_name": {
+                "en-US": "Utrecht School of the Arts",
+                "nl-NL": "Hogeschool voor de Kunsten Utrecht"
+            },
+            "keyword_list": "hku"
         },
         {
-          "server_type": "secure_internet",
-          "base_url": "https://eduvpn.rash.al/",
-          "country_code": "AL",
-          "support_contact": [
-            "mailto:helpdesk@rash.al"
-          ]
+            "server_type": "secure_internet",
+            "base_url": "https://eduvpn.rash.al/",
+            "country_code": "AL",
+            "support_contact": [
+                "mailto:helpdesk@rash.al"
+            ]
         },
-
+        
         ...
 
         ...
