@@ -133,7 +133,7 @@ permission. Note that the user `foobar` has two permissions.
 the static permissions are _added_ to the ones that may have been retrieved 
 through LDAP.
 
-## Portal/API Access
+## Admin/Portal/API Access
 
 You can restrict access to the Portal/API to certain permissions. For example,
 if you only went `employees` to be able to access the VPN service and not 
@@ -147,6 +147,9 @@ In `/etc/vpn-user-portal/config.php` you can configure it like this:
 This requires everyone to have the permission `employees`. If you specify more
 than one "permission", the user needs to be member of only one. The permissions
 are thus "OR".
+
+In order to provide access to the "Admin" part of the portal, see 
+[PORTAL_ADMIN](PORTAL_ADMIN.md).
 
 ## Profile Mapping
 
