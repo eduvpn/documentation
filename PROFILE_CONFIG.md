@@ -102,7 +102,7 @@ interfaces and the first response is used. This can create a
 `block-outside-dns` option, this is prevented.
 
 You can specify the "Connection-specific DNS Suffix" and 
-"Connection-specific DNS Suffix Search List" as well using the `dnsDomain` and
+"Connection-specific DNS Suffix Search List" by using the `dnsDomain` and
 `dnsDomainSearch` options. The first one takes a `string` the second an array 
 of type `string`, for example:
 
@@ -110,6 +110,9 @@ of type `string`, for example:
     'dnsDomain'       => 'clients.example.org',
     'dnsDomainSearch' => ['example.org', 'example.com'],
 ```
+
+The `dnsDomain` is NOT used for "searches", so you MAY need to provide it to 
+`dnsDomainSearch` as well if you want that domain to be searched as well.
 
 ### OpenVPN Processes
 
