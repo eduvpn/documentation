@@ -38,10 +38,8 @@ level as `vpnProfiles`, e.g.:
                 // ...
 
 Make sure everything still works, i.e. you can see connected clients when 
-visiting the "Connections" tab in the portal.
-
-An additional benefit of using the daemon is that you can see the "load" of the
-OpenVPN processes for each profile, for example:
+visiting the "Connections" tab in the portal, or use `vpn-server-api-status` to
+check the "load" of the OpenVPN processes for each profile, for example:
 
 ```
 $ sudo vpn-server-api-status --json
