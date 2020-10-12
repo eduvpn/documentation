@@ -90,6 +90,11 @@ Show also connected VPN client information:
             ]
         }
     ]
+    
+To show all users connected to the profile `amsterdam` you can use something
+like this using the [jq](https://stedolan.github.io/jq/) tool:
+
+    $ sudo vpn-server-api-status --json --connections | jq '.[] | select(.profile_id | contains("amsterdam")) | .connection_list | .[] .user_id'
 
 ## Alerting
 
