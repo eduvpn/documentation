@@ -65,7 +65,7 @@ for announcements of updates and discussion about running
 eduVPN/Let's Connect!.
 
 You can also use IRC for support & feedback: [freenode](https://freenode.net/), 
-channel `#eduvpn`.
+channel `#eduvpn`. Please stick around  for a while to wait for a response!
 
 ## Supported Operating Systems
 
