@@ -21,27 +21,8 @@ In the file `/etc/vpn-user-portal/config.php` you need to enable `remoteAccess`
 and the registry:
 
     'Api' => [
-
-        ...
-
         'remoteAccess' => true,
-        'remoteAccessList' => [
-            'production' => [
-                'discovery_url' => 'https://static.eduvpn.nl/disco/secure_internet.json',
-                'public_key' => 'E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=',
-            ],
-            //'development' => [
-            //    'discovery_url' => 'https://static.eduvpn.nl/disco/secure_internet_dev.json',
-            //    'public_key' => 'zzls4TZTXHEyV3yxaxag1DZw3tSpIdBoaaOjUGH/Rwg=',
-            //],
-        ],
-
-        ...
-
     ],
-
-The `production` example above is to allow access from all 
-[eduVPN](https://eduvpn.org/) servers part of the federation. 
 
 If you want to register your server for eduVPN, please contact 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 

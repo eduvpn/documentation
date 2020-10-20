@@ -35,10 +35,14 @@ You need a couple of details first, you can obtain those from your LDAP
 administrator, you need _at least_:
 
 * LDAP host;
-* How to _bind_ to the LDAP server, i.e. which DN to use to bind;
+* The attribute to use for user authentication;
+* Whether or not this attribute is part of the user's DN.
+
+## FreeIPA
 
 For simple [FreeIPA](https://www.freeipa.org/page/Main_Page) setups these are
-sufficient:
+sufficient. Here the `uid` we want to use for users to authenticate is part of 
+the DN:
 
     $ ldapsearch \
         -W \
@@ -49,6 +53,7 @@ sufficient:
 After providing the user's password, you should see all the LDAP attributes 
 associated with that user account, e.g. `memberOf`, `mail`, `uid`.
 
+## Active Directory
 If you are using 
 [Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
 slightly different, replace `DOMAIN` with the name of your domain and `fkooman` 
@@ -72,6 +77,37 @@ e.g. `userPrincipalName`:
             -D "fkooman@example.org" \
             -b "dc=example,dc=org" \
             "(userPrincipalName=fkooman@example.org)"
+
+## Search First
+
+If you want to use an attribute that is NOT part of the DN, you first need to 
+perform a search for the user's DN, based on the attribute + value you 
+want. For example we want the users to login with the `uidNumber` attribute and
+my `uidNumber` happens to be `572600001`:
+
+For this we do an _anonymous bind_ to figure out my DN in the LDAP:
+
+    $ ldapsearch \
+        -LLL \
+        -x \
+        -H ldap://server.ipa.test \
+        -b "cn=users,cn=accounts,dc=ipa,dc=test" \
+        "(uidNumber=572600001)" \
+        dn
+
+This returns my DN, in this case 
+`dn: uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test` which we can now use to
+bind now to the server to verify the password:
+
+    $ ldapsearch \
+        -LLL \
+        -W \
+        -H ldap://server.ipa.test \
+        -D "uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test" \
+        -b "uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test"
+
+If this works, we can use this information as explained below in the 
+configuration examples.
 
 # Configuration
 
@@ -136,6 +172,17 @@ the exact same format as used in the LDAP server.
         // to normalize the entered user ID, specify the attribute you want to
         // use to identify the user in the VPN server
         'userIdAttribute' => 'userPrincipalName',
+        
+        // *** Search First ***
+        // -H ldap://server.ipa.test \
+        'ldapUri' => 'ldap://server.ipa.test',
+        // -b "cn=users,cn=accounts,dc=ipa,dc=test" \
+        'baseDn' => 'cn=users,cn=accounts,dc=ipa,dc=test',
+        // "(uidNumber=572600001)" \
+        'userFilterTemplate' => '(uidNumber={{UID}})',
+        // to normalize the entered user ID, specify the attribute you want to
+        // use to identify the user in the VPN server
+        'userIdAttribute' => 'uidNumber',
     ],
 
 This should be all to configure your LDAP!
