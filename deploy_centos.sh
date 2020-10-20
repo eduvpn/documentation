@@ -60,7 +60,7 @@ rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
 cat << EOF > /etc/yum.repos.d/LC-v2.repo
 [LC-v2]
 name=VPN Stable Packages (EL \$releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-\$releasever-\$basearch
+baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-7-\$basearch
 gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF
@@ -68,7 +68,7 @@ EOF
 cat << EOF > /etc/yum.repos.d/LC-master.repo
 [LC-master]
 name=VPN Development Packages (EL \$releasever)
-baseurl=https://vpn-builder.tuxed.net/repo/master/epel-\$releasever-\$basearch
+baseurl=https://vpn-builder.tuxed.net/repo/master/epel-7-\$basearch
 gpgcheck=1
 gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
 enabled=${VPN_DEV_REPO}

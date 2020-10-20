@@ -13,7 +13,7 @@ category: dev
     $ cat << 'EOF' > /etc/yum.repos.d/LC-master.repo
     [LC-master]
     name=VPN Packages (EL $releasever)
-    baseurl=https://vpn-builder.tuxed.net/repo/master/epel-$releasever-$basearch
+    baseurl=https://vpn-builder.tuxed.net/repo/master/epel-7-$basearch
     gpgcheck=1
     gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
     EOF
