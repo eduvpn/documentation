@@ -276,8 +276,8 @@ installed on your controller:
     $ cd ${HOME}/ca
     $ vpn-ca -init-ca -name "VPN Service CA"
     $ vpn-ca -client -name vpn-daemon-client -not-after CA
-    $ vpn-ca -server -name vpn-daemon-node-a -not-after CA
-    $ vpn-ca -server -name vpn-daemon-node-b -not-after CA
+    $ vpn-ca -server -name vpn-daemon -not-after CA
+    $ vpn-ca -server -name vpn-daemon -not-after CA
     $ chmod 0640 *.crt *.key
 
 Now install the `vpn-daemon-client` certificate:
@@ -292,13 +292,12 @@ Finally, remove the `vpnDaemonTls` option from
 
 ### Node 
 
-Copy the `ca.crt`, `vpn-daemon-node-a.*` to Node A and `ca.crt`, 
-`vpn-daemon-node-b.*` to Node B. On the node(s) copy the certificates/keys to 
-the right place:
+Copy the `ca.crt`, `vpn-daemon.crt`, `vpn-daemon.key` to Node A and Node B. On 
+the node(s) copy the certificates/keys to the right place:
 
     $ sudo cp ca.crt                /etc/pki/vpn-daemon/
-    $ sudo cp vpn-daemon-node-a.crt /etc/pki/vpn-daemon/server.crt
-    $ sudo cp vpn-daemon-node-a.key /etc/pki/vpn-daemon/private/server.key
+    $ sudo cp vpn-daemon.crt /etc/pki/vpn-daemon/server.crt
+    $ sudo cp vpn-daemon.key /etc/pki/vpn-daemon/private/server.key
     $ sudo chgrp -R vpn-daemon      /etc/pki/vpn-daemon
 
 Modify `/etc/sysconfig/vpn-daemon` (on Debian: `/etc/default/vpn-daemon`):
