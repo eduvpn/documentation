@@ -70,7 +70,7 @@ channel `#eduvpn`. Please stick around  for a while to wait for a response!
 ## Supported Operating Systems
 
 * [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-* [Fedora](DEPLOY_FEDORA.md) 31, 32 (`x86_64`)
+* [Fedora](DEPLOY_FEDORA.md) 32, 33 (`x86_64`)
 * [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
@@ -86,7 +86,7 @@ follow [these](MULTI_NODE.md) instructions!
 
 ## Experimental
 
-* [Fedora](DEPLOY_FEDORA.md) 31, 32 (`aarch64`)
+* [Fedora](DEPLOY_FEDORA.md) 32, 33 (`aarch64`)
   (Only available through the "development" repository)
 
 You can use the `aarch64` packages on e.g. the [Raspberry Pi](RASPBERRY_PI.md).
