@@ -1,12 +1,6 @@
----
-title: Development Repository
-description: Use the Development Repository on your VPN server
-category: dev
----
+# Development Repositories
 
-# Development Repository
-
-**NOTE**: run this ONLY on your testing machines!
+**NOTE**: do this ONLY on your testing machines!
 
 ## CentOS
 
@@ -27,3 +21,14 @@ category: dev
     gpgcheck=1
     gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
     EOF
+    
+## Debian
+
+On your Debian server:
+
+    $ curl https://debian-vpn-builder.tuxed.net/repo/debian.key | sudo apt-key add
+
+Replace `buster` with your version, can also be `stretch` (Debian 9) or 
+`bullseye` (Debian 11).
+
+    $ echo 'deb https://debian-vpn-builder.tuxed.net/repo buster main' | sudo tee -a /etc/apt/sources.list.d/eduVPN.list
