@@ -135,8 +135,3 @@ scenario, but using `EdDSA` is restricted to "modern" VPN servers. Only servers
 
 **NOTE** in order to support `ECDSA` on CentOS 7 and Debian 9 you need to run
 vpn-user-portal >= 2.3.4 and vpn-server-node >= 2.2.4 on your server.
-
-**NOTE** as of today (2020-09-06) the Let's Connect! and eduVPN client for 
-Windows only support RSA. In addition, Windows clients >= 1.0.28 will use 
-TLSv1.3 when the server supports it, but won't be able to connect due to a bug
-in the client. We hope to fix this in version 1.0.30 of the Windows app.
