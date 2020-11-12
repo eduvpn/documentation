@@ -27,9 +27,9 @@ section you can add the following lines:
     #SSLCACertificateFile /etc/ssl/certs/ca.crt      # Debian/Ubuntu
     SSLUserName SSL_CLIENT_S_DN_CN
     
-Point `SSLCACertificateFile` to your client certificate validating CA. The 
-`SSLUserName` variable is set to the SSL variable you want to use as the user's 
-User ID. See 
+Point `SSLCACertificateFile` to the CA under which your client certificate was
+issued. The `SSLUserName` variable is set to the SSL variable you want to use 
+as the user's User ID. See 
 [Environment Variables](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#envvars) 
 for more options. The `SSLVerifyDepth` depends on your PKI. If you don't know 
 what it should be, i.e. you don't know how many intermediates there are, you 
