@@ -166,6 +166,18 @@ Then install/update the relevant package:
 This will upgrade all required packages as well. You may need to reboot or 
 restart NetworkManager.
 
+### Configuration
+
+Find your country in the [list of eduVPN servers](https://status.eduvpn.org/)
+and download a configuration file from the server. If you want to use an
+eduVPN server in a different country, you have to use the official
+[eduvpn-client](https://python-eduvpn-client.readthedocs.io/en/master/) as
+international authentication is currently only available through the API.
+
+To import the resulting ovpn file into NetworkManager, use the `nmcli` command:
+
+    $ nmcli conn import type openvpn file eduVPN_institute.ovpn
+
 ### Split Tunnel
 
 If you do _not_ want to route all traffic over the VPN, you need to manually
