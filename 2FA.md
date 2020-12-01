@@ -7,6 +7,10 @@ category: advanced
 The VPN service supports 2FA for which the user can self-enroll. This can be
 either voluntary, or enforced by the administrator.
 
+**NOTE**: make sure the clock of your server is synchronized using NTP, 
+otherwise TOTP will not work properly or stop working when then server time 
+deviates too much!
+
 ## Threat Model
 
 The way 2FA is implemented, together with the native apps, protects explicitly 
