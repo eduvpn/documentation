@@ -67,6 +67,10 @@ eduVPN/Let's Connect!.
 You can also use IRC for support & feedback: [freenode](https://freenode.net/), 
 channel `#eduvpn`. Please stick around  for a while to wait for a response!
 
+**Instruction videos**
+* [basic eduVPN server installation](https://www.youtube.com/embed/yBItHovq4AU?autoplay=1&auto_play=true)
+* [integrate your Active Directory via LDAP with eduVPN](https://www.youtube.com/embed/qwf0RZ8YK9A?autoplay=1&auto_play=true)
+
 ## Supported Operating Systems
 
 * [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
