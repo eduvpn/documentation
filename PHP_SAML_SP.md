@@ -6,13 +6,7 @@ category: authentication
 
 ## Introduction
 
-**NOTE**: the php-saml-sp authentication method is **EXPERIMENTAL**. It is 
-**NOT** supported!
-
-Do **NOT** use unless you know what you are doing. Use 
-[mod_auth_mellon](MOD_AUTH_MELLON.md) if you are connecting to only 1 IdP or 
-a "hub & spoke" federation, and [Shibboleth](SHIBBOLETH_SP.md) in all other 
-cases.
+Very simple, secure SAML SP written in PHP.
 
 ## Why
 
