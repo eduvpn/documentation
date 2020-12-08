@@ -153,9 +153,9 @@ sudo -u apache vpn-user-portal-init
 # update internal API secrets from the defaults to something secure
 SECRET_PORTAL_API=$(pwgen -s 32 -n 1)
 SECRET_NODE_API=$(pwgen -s 32 -n 1)
-sed -i "s/XXX-vpn-user-portal/vpn-server-api-XXX/${SECRET_PORTAL_API}/" "/etc/vpn-user-portal/config.php"
-sed -i "s/XXX-vpn-user-portal/vpn-server-api-XXX/${SECRET_PORTAL_API}/" "/etc/vpn-server-api/config.php"
-sed -i "s/XXX-vpn-server-node/vpn-server-api-XXX/${SECRET_NODE_API}/" "/etc/vpn-server-api/config.php"
+sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-user-portal/config.php"
+sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-server-api/config.php"
+sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${SECRET_NODE_API}|" "/etc/vpn-server-api/config.php"
 
 ###############################################################################
 # CERTIFICATE
