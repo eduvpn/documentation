@@ -76,8 +76,8 @@ a2dissite 000-default
 # VPN-SERVER-API
 ###############################################################################
 
-# update the IPv4 CIDR and IPv6 prefix to random IP ranges
-vpn-server-api-update-ip --profile internet --host "${WEB_FQDN}"
+# update hostname of VPN server
+sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-server-api/config.php"
 
 # initialize the CA
 sudo -u www-data vpn-server-api-init
@@ -106,8 +106,13 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
-# update API secret
-vpn-server-api-update-api-secrets
+# update internal API secrets from the defaults to something secure
+SECRET_PORTAL_API=$(pwgen -s 32 -n 1)
+SECRET_NODE_API=$(pwgen -s 32 -n 1)
+sed -i "s/XXX-vpn-user-portal/vpn-server-api-XXX/${SECRET_PORTAL_API}/" "/etc/vpn-user-portal/config.php"
+sed -i "s/XXX-vpn-server-node/vpn-server-api-XXX/${SECRET_NODE_API}/" "/etc/vpn-server-node/config.php"
+sed -i "s/XXX-vpn-user-portal/vpn-server-api-XXX/${SECRET_PORTAL_API}/" "/etc/vpn-server-api/config.php"
+sed -i "s/XXX-vpn-server-node/vpn-server-api-XXX/${SECRET_NODE_API}/" "/etc/vpn-server-api/config.php"
 
 ###############################################################################
 # DAEMONS
