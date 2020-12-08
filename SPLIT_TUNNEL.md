@@ -50,26 +50,17 @@ Configure an `office` profile in `/etc/vpn-server-api/config.php`, e.g.:
             // push the local DNS to the clients as well
             'dns' => ['10.1.1.1'],
 
-            // when clients try to resolve "foo", the OS will try 
-            // "foo.example.local" as well as a "search domain"
-            'dnsSuffix' => ['example.local'],
+            // Connection-specific DNS Suffix
+            'dnsDomain' => 'example.local',
+            
+            // Connection-specific DNS Suffix Search List
+            'dnsDomainSearch' => ['example.local', 'foo.example.local', 'bar.example.local'],
         ],
     ],
 
-Take special note of the `routes`, `dns` and `dnsSuffix` options. See 
-[PROFILE_CONFIG](PROFILE_CONFIG.md) for other configuration options that may be
-relevant for your situation.
-
-**NOTE**: In vpn-server-node >= 2.2.5 you SHOULD use the `dnsDomain` and 
-`dnsDomainSearch` options to convey the "Connection-specific DNS Suffix" and
-the "Connection-specific DNS Suffix Search List" instead of `dnsSuffix`. The 
-`dnsDomain` option takes a `string` and the `dnsDomainSearch` option takes an 
-array of `string`, for example:
-
-```
-    'dnsDomain'       => 'example.local',
-    'dnsDomainSearch' => ['example.org', 'example.com'],
-```
+Take special note of the `routes`, `dns`, `dnsDomain` and `dnsDomainSearch` 
+options. See [PROFILE_CONFIG](PROFILE_CONFIG.md) for other configuration 
+options that may be relevant for your situation.
 
 To apply the configuration changes:
 
