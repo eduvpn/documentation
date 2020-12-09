@@ -80,10 +80,10 @@ a2dissite 000-default
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-server-api/config.php"
 
 # update the default IP ranges
-#IP_FOUR=$(vpn-server-api-suggest-ip -4)
-#IP_SIX=$(vpn-server-api-suggest-ip -6)
-#sed -i "s|10.0.0.0/25|${IP_FOUR}|" "/etc/vpn-server-api/config.php"
-#sed -i "s|fd00:4242:4242:4242::/64|${IP_SIX}|" "/etc/vpn-server-api/config.php"
+IP_FOUR=$(vpn-server-api-suggest-ip -4)
+IP_SIX=$(vpn-server-api-suggest-ip -6)
+sed -i "s|10.0.0.0/25|${IP_FOUR}|" "/etc/vpn-server-api/config.php"
+sed -i "s|fd00:4242:4242:4242::/64|${IP_SIX}|" "/etc/vpn-server-api/config.php"
 
 # initialize the CA
 sudo -u www-data vpn-server-api-init
