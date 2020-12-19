@@ -37,7 +37,7 @@ about modifying the PHP configuration.
 
 Perform these steps on the host where you want to deploy:
 
-    $ sudo apt -y install ca-certificates
+    $ sudo apt -y install ca-certificates wget
     $ wget https://github.com/eduvpn/documentation/archive/v2.tar.gz
     $ tar -xzf v2.tar.gz
     $ cd documentation-2
