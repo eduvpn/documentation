@@ -12,7 +12,7 @@ There are three, yeah I know, options for configuring SAML for your VPN server:
 
 1. Shibboleth on [Debian](SHIBBOLETH_SP.md), [CentOS](SHIBBOLETH_SP_CENTOS.md)
 2. [php-saml-sp](PHP_SAML_SP.md)
-3. [mod_auth_mellon](MOD_AUTH_MELLON.md)
+3. [mod_auth_mellon](MOD_AUTH_MELLON.md) (*NOT RECOMMENDED*)
 
 They are listed here in order of preference.
 
