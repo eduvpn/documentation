@@ -46,10 +46,12 @@ neutral in case you want to switch later. Choosing something stable here is
 important when you use for example `eduPersonTargetedID` as that identifier
 is typically bound to the SP entityID.
 
-Copy the IdP(s) metadata to `/etc/php-saml-sp/metadata`.
+Copy the IdP(s) metadata to `/etc/php-saml-sp/metadata`. Make sure the metadata
+files have the `.xml` extension and are valid XML.
 
 Make sure you at least configure `idpList` in `/etc/php-saml-sp/config.php` 
-with the list of IdPs that have access to this SP.
+with the list of IdPs that have access to this SP. If you don't do this, all 
+IdPs found in the metadata will be allowed access.
 
 To test your SP/IdP configuration, go to `https://vpn.example.org/php-saml-sp/` 
 and use the "Test" button.
