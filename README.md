@@ -99,6 +99,13 @@ You can use the `aarch64` packages on e.g. the [Raspberry Pi](RASPBERRY_PI.md).
 
 See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
 
+# License 
+
+This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 
+International License.
+
+See [LICENSE].
+
 # Security Contact
 
 If you find a security problem in the code, the deployed service(s) and want to
