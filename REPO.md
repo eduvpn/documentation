@@ -31,24 +31,6 @@ deb https://repo.eduvpn.org/v2/deb stretch main
 deb https://repo.eduvpn.org/v2/deb buster main
 ```
 
-# Fedora
-
-## Keys
-
-Owner   | Fingerprint                                          | Expires
-------- | ---------------------------------------------------- | ----------
-fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
-
-## Config
-
-```
-[LC-v2]
-name=VPN Stable Packages (Fedora $releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-$releasever-$basearch
-gpgcheck=1
-enabled=1
-```
-
 # CentOS
 
 ## Keys
@@ -59,10 +41,32 @@ fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
 
 ## Config
 
+`/etc/yum.repos.d/eduVPN.repo`
+
 ```
-[LC-v2]
-name=VPN Stable Packages (EL $releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-7-$basearch
+[eduVPN]
+name=eduVPN (EL)
+baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-$basearch
+gpgcheck=1
+enabled=1
+```
+
+# Fedora
+
+## Keys
+
+Owner   | Fingerprint                                          | Expires
+------- | ---------------------------------------------------- | ----------
+fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
+
+## Config
+
+`/etc/yum.repos.d/eduVPN.repo`
+
+```
+[eduVPN]
+name=eduVPN (Fedora)
+baseurl=https://repo.eduvpn.org/v2/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 enabled=1
 ```
