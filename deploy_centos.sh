@@ -65,12 +65,12 @@ gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF
 
-cat << EOF > /etc/yum.repos.d/LC-master.repo
-[LC-master]
+cat << EOF > /etc/yum.repos.d/LC-development.repo
+[LC-development]
 name=VPN Development Packages (EL \$releasever)
-baseurl=https://vpn-builder.tuxed.net/repo/master/epel-7-\$basearch
+baseurl=https://repo.tuxed.net/eduVPN/rpm/epel-7-\$basearch
 gpgcheck=1
-gpgkey=https://vpn-builder.tuxed.net/repo/master/RPM-GPG-KEY-LC
+gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 enabled=${VPN_DEV_REPO}
 EOF
 
