@@ -65,8 +65,8 @@ gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF
 
-cat << EOF > /etc/yum.repos.d/LC-development.repo
-[LC-development]
+cat << EOF > /etc/yum.repos.d/eduVPN-development.repo
+[eduVPN-development]
 name=VPN Development Packages (EL \$releasever)
 baseurl=https://repo.tuxed.net/eduVPN/rpm/epel-7-\$basearch
 gpgcheck=1
