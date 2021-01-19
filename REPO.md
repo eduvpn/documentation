@@ -44,7 +44,7 @@ fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
 `/etc/yum.repos.d/eduVPN.repo`
 
 ```
-[eduVPN]
+[eduVPN-v2]
 name=eduVPN (EL)
 baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-$basearch
 gpgcheck=1
@@ -64,7 +64,7 @@ fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
 `/etc/yum.repos.d/eduVPN.repo`
 
 ```
-[eduVPN]
+[eduVPN-v2]
 name=eduVPN (Fedora)
 baseurl=https://repo.eduvpn.org/v2/rpm/fedora-$releasever-$basearch
 gpgcheck=1

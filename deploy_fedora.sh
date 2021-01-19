@@ -56,7 +56,7 @@ EOF
 
 cat << EOF > /etc/yum.repos.d/eduVPN-development.repo
 [eduVPN-development]
-name=VPN Development Packages (Fedora \$releasever)
+name=eduVPN Development Packages (Fedora \$releasever)
 baseurl=https://repo.tuxed.net/eduVPN/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
