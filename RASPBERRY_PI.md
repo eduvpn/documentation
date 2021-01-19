@@ -34,7 +34,7 @@ repeat the important steps below.
 I used this command to create the SD card for the Pi on my laptop running 
 Fedora:
 
-    $ sudo arm-image-installer --image=Fedora-Minimal-32-1.6.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
+    $ sudo arm-image-installer --image=Fedora-Minimal-33-1.3.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
 
 Make sure you specify the `--resizefs` option to "grow" the file system to fill
 your SD card.
