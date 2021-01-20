@@ -90,7 +90,7 @@ follow [these](MULTI_NODE.md) instructions!
 
 ## Experimental
 
-* [Fedora](DEPLOY_FEDORA.md) 32, 33 (`aarch64`)
+* [Fedora](DEPLOY_FEDORA.md) 33 (`aarch64`)
   (Only available through the "development" repository)
 
 You can use the `aarch64` packages on e.g. the [Raspberry Pi](RASPBERRY_PI.md).

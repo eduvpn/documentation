@@ -12,7 +12,7 @@ latest and greatest to run anything? If you write software and it does NOT
 run on a Raspberry Pi with ease, you are doing something wrong ;-)
 
 I tested this last on a Raspberry Pi 3B+ and Fedora 32 (aarch64) on 2020-09-01 
-and all works fine.
+and all works fine. Currently only packages for Fedora 33 are available.
 
 **NOTE** the Raspberry Pi 4 does **NOT** work yet as of this time (2020-09-01),
 wait for upstream Fedora to support it first!
