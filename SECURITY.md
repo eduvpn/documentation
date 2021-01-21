@@ -163,8 +163,7 @@ remove all data, but not the configuration.
 
 **NOTE**: if you are using the default username/password authentication module, 
 all users will be lost on "reset" and you need to add them again using 
-`vpn-user-portal-add-user`. Use `apache` on Fedora/CentOS and `www-data` on 
-Debian to run the command as the specified user with `sudo`, e.g.:
+`vpn-user-portal-add-user`, e.g.:
 
 ```
 $ sudo vpn-user-portal-add-user
