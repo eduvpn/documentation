@@ -135,3 +135,37 @@ scenario, but using `EdDSA` is restricted to "modern" VPN servers. Only servers
 
 **NOTE** in order to support `ECDSA` on CentOS 7 and Debian 9 you need to run
 vpn-user-portal >= 2.3.4 and vpn-server-node >= 2.2.4 on your server.
+
+### Switching Key Type
+
+Switching to another key type from RSA is easy. Modify 
+`/etc/vpn-server-api/config.php` and set the `vpnCaKeyType` option, as an 
+example we switch to ECDSA:
+
+```
+<?php
+
+return [
+    //'vpnCaKeyType' => 'RSA',
+    'vpnCaKeyType' => 'ECDSA',
+    //'vpnCaKeyType' => 'EdDSA',
+    
+    'vpnProfiles' => [
+        // ...
+```
+
+Now, you need to "reset" your VPN server, which is easy:
+
+	$ sudo vpn-maint-reset-system
+
+This will re-initialize the VPN server and bring it back to "defaults", it will
+remove all data, but not the configuration. 
+
+**NOTE**: if you are using the default username/password authentication module, 
+all users will be lost on "reset" and you need to add them again using 
+`vpn-user-portal-add-user`. Use `apache` on Fedora/CentOS and `www-data` on 
+Debian to run the command as the specified user with `sudo`, e.g.:
+
+```
+$ sudo vpn-user-portal-add-user
+```
