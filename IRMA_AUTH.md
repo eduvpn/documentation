@@ -18,7 +18,7 @@ IRMA configuration file as follows:
 ```
 port: 8088
 url: "https://{your_host_name}/irma/irma"
-email: "{your email address}"
+no_email: true
 
 requestors:
   myapp:
@@ -33,9 +33,6 @@ The variables mean the following:
 
 * `port`: The port on which the server can be found
 * `url`: The URL on which the server can be found
-* `email`: If the email address is specified, you will be subscribed to 
-  receives updates about any IRMA software or ecosystem changes. If you do not 
-  want the updates, change the line to `no_email: true`
 * `disclose_perms`: The attributes the application that uses the specified 
   `key` are allowed to disclose
 * `auth_method`: Specifies the authentication method
@@ -124,3 +121,4 @@ $ sudo systemctl restart httpd
   a Gitlab server
 * Is the proxy configuration actually safe? Do we need to restrict access in 
   some way? All endpoints are allowed now...
+* Why `url: "https://{your_host_name}/irma/irma"`?
