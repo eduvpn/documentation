@@ -104,7 +104,6 @@ lines to the HTTPS `VirtualHost`:
 
 ```
 ProxyPass 	 "/irma/" "http://localhost:8088/"
-ProxyPassReverse "/irma/" "http://localhost:8088/"
 ```
 
 At last run the following command:
@@ -115,7 +114,6 @@ $ sudo systemctl restart httpd
 
 ## Open Issues / TODO
 
-* Do we need `ProxyPassReverse` as well? Or is `ProxyPass` enough?
 * Properly package the IRMA server for Debian/Fedora
 * Build the `irma.js` file from source, this is simply a "binary" taken from 
   a Gitlab server
