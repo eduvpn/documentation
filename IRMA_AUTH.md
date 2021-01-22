@@ -3,10 +3,11 @@
 **NOTE**: IRMA authentication is NOT supported, you are on your own!
 
 **NOTE**: The IRMA server is NOT part of the VPN software packages. **YOU** 
- are responsible for its installation, configuration, installing updates, 
- keep it secure and in general keep it running!
+are responsible for its installation, configuration, installing updates, 
+keep it secure and in general keep it running!
 
-**NOTE**: IRMA authentication is NOT production ready!
+**NOTE**: IRMA authentication is NOT production ready! Check the bottom of this
+document for open issues.
 
 ## IRMA Server Configuration
 
@@ -114,3 +115,12 @@ At last run the following command:
 ```
 $ sudo systemctl restart httpd
 ```
+
+## Open Issues / TODO
+
+* Do we need `ProxyPassReverse` as well? Or is `ProxyPass` enough?
+* Properly package the IRMA server for Debian/Fedora
+* Build the `irma.js` file from source, this is simply a "binary" taken from 
+  a Gitlab server
+* Is the proxy configuration actually safe? Do we need to restrict access in 
+  some way? All endpoints are allowed now...
