@@ -1,5 +1,11 @@
 # IRMA Authentication
 
+**NOTE**: the IRMA server is NOT part of the VPN installation and you are 
+responsible yourself to set it up, keep it secure and install updates for it.
+
+IRMA authentication is **NOT** supported by the eduVPN project and is **NOT** 
+considered production ready!
+
 ## IRMA Server Configuration
 
 First, download the IRMA server according to the documentation from the 
