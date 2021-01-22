@@ -76,5 +76,10 @@ sure you enable the development repository when you call `deploy_fedora.sh`:
 After you are done with this, all should be fine as if you performed the 
 installation on any other Fedora server.
 
-After installation, you MAY want to switch away from using RSA for your VPN 
-client and certificates for performance reasons, look [here](SECURITY.md#ca).
+## CA 
+
+After installation, you probably want to switch away from using RSA for your 
+VPN client and certificates for performance reasons, look 
+[here](SECURITY.md#ca) on how do that, and 
+[here](https://www.tuxed.net/fkooman/blog/openvpn_modern_crypto_part_ii.html) 
+for why :)
