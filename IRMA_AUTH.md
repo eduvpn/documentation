@@ -1,4 +1,6 @@
-## IRMA Authentication
+# IRMA Authentication
+
+## IRMA Server Configuration
 
 First, download the IRMA server according to the documentation from the 
 [IRMA documentation](https://irma.app/docs/getting-started/). Then create the 
