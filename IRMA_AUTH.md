@@ -114,6 +114,9 @@ $ sudo systemctl restart httpd
 
 ## Open Issues / TODO
 
+* Can we implement IRMA authentication without using any JS in the browser? 
+  That seems doable: the only issue might be that the server doesn't know when 
+  the app completes and thus has to do some kind of polling...
 * Properly package the IRMA server for Debian/Fedora
 * Build the `irma.js` file from source, this is simply a "binary" taken from 
   a Gitlab server
