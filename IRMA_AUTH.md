@@ -119,7 +119,9 @@ $ sudo systemctl restart httpd
   That seems doable: the only issue might be that the server doesn't know when 
   the app completes and thus has to do some kind of polling, or ask the user
   to click a button when they are finished with the app...
-* Bug in `irma.js` that uses inline CSS to style stuff, bad JS!
+* Bug in `irma.js` that uses inline CSS to style stuff, bad JS! So you need to
+  modify `/etc/httpd/conf.d/vpn-user-portal.conf`: 
+  `Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"`
 * Properly package the IRMA server for Debian/Fedora
 * Build the `irma.js` file from source, this is simply a "binary" taken from 
   a Gitlab server
