@@ -16,15 +16,16 @@ First, download the IRMA server according to the documentation from the
 IRMA configuration file as follows:
 
 ```
+# this is the URL used by the app to connect to the IRMA-go server through the
+# (reverse) proxy
+url: "https://vpn.example/irma"
 port: 8088
-url: "https://{your_host_name}/irma/irma"
 no_email: true
-
 requestors:
-  myapp:
-    disclose_perms: [ "pbdf.sidn-pbdf.email.email" ]
-    auth_method: "token"
-    key: "mysecrettoken"
+    myapp:
+        disclose_perms: ["pbdf.sidn-pbdf.email.email"]
+        auth_method: "token"
+        key: "mysecrettoken"
 ```
 
 The file can be named as one pleases but has to have the `.yml` extension.
@@ -81,7 +82,7 @@ add the following lines:
 ```
 'authMethod' => 'IrmaAuthentication',
 'IrmaAuthentication' => [
-    'irmaServerUrl' => 'https://{your_host_name}/irma/',
+    'irmaServerUrl' => 'http://localhost:8088',
     'userIdAttribute' => 'pbdf.sidn-pbdf.email.email',
     'secretToken' => 'mysecrettoken',
 ],
@@ -103,7 +104,7 @@ reverse proxy. Change the following file:
 lines to the HTTPS `VirtualHost`: 
 
 ```
-ProxyPass 	 "/irma/" "http://localhost:8088/"
+ProxyPass   "/irma/"   "http://localhost:8088/irma/"
 ```
 
 At last run the following command:
@@ -118,9 +119,10 @@ $ sudo systemctl restart httpd
   That seems doable: the only issue might be that the server doesn't know when 
   the app completes and thus has to do some kind of polling, or ask the user
   to click a button when they are finished with the app...
+* Bug in `irma.js` that uses inline CSS to style stuff, bad JS!
 * Properly package the IRMA server for Debian/Fedora
 * Build the `irma.js` file from source, this is simply a "binary" taken from 
   a Gitlab server
-* Is the proxy configuration actually safe? Do we need to restrict access in 
-  some way? All endpoints are allowed now...
-* Why `url: "https://{your_host_name}/irma/irma"`?
+* Is the proxy configuration safe like this? Is really only `/irma` accessible
+  on the irma-go server? Or can you use `../../` trickery? If this is safe 
+  we can remove the token authentication!
