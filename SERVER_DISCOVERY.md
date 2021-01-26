@@ -167,7 +167,7 @@ Start from the OS language setting, e.g. `de-DE`.
 2. Try to find a key that *starts* with the OS language setting, e.g. 
 `de-DE-x-foo`;
 3. Try to find a key that *starts* with the first part of the OS language, e.g. 
-`de-`;
+`de-`, if not available search for just the language, e.g. `de`;
 4. Pick one that is deemed best, e.g. `en-US` or `en`, but note that not all 
 languages are always available!
 
