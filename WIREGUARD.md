@@ -71,3 +71,21 @@ You need to enable WireGuard in the portal configuration by modifying
     'dns' => ['9.9.9.9', '2620:fe::fe'],
 ],
 ```
+
+### Firewall
+
+We assume you are using the default firewall, some rules need to be added, 
+both in the `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` files:
+
+```
+-A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
+-A FORWARD -i wg+ ! -o wg+ -j ACCEPT
+-A FORWARD ! -i wg+ -o wg+ -j ACCEPT
+```
+
+After modifying the firewall, restart it:
+
+```
+$ sudo systemctl restart iptables
+$ sudo systemctl restart ip6tables
+```
