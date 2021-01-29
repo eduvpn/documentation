@@ -59,8 +59,15 @@ You need to enable WireGuard in the portal configuration by modifying
 `/etc/vpn-user-portal/config.php`, you can also configure WireGuard:
 
 ```
+// DEFAULT: false
 'enableWg' => true,
 'WgConfig' => [
+    // where to reach "wg-daemon"
+    // DEFAULT: http://localhost:8080
+    'wgDaemonUrl' => 'http://localhost:8080',
+
+    // the DNS to put in the configuration you send to the clients
+    // DEFAULT: 9.9.9.9, 2620:fe::fe
     'dns' => ['9.9.9.9', '2620:fe::fe'],
 ],
 ```
