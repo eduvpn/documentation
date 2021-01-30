@@ -1,9 +1,9 @@
-### Introduction
+## Introduction
 
 **NOTE**: WireGuard functionality is **EXPERIMENTAL** and not available in 
 any official VPN packages yet! Do NOT use in production!
 
-### Requirements
+## Requirements
 
 WireGuard will only be supported on servers running Debian >= 11 and 
 Fedora >= 33. Currently only Fedora works.
@@ -12,7 +12,7 @@ Fedora >= 33. Currently only Fedora works.
 $ sudo dnf -y install wireguard-tools
 ```
 
-### WireGuard Configuration
+## WireGuard Configuration
 
 ```
 $ sudo cat /etc/wireguard/wg0.conf
@@ -36,7 +36,7 @@ This should be enough to get going. Still need to figure out the best way to
 make this persistent. Either through NetworkManager, networkd or simply using
 the `wg-quick` systemd service file.
 
-### Daemon
+## Daemon
 
 ```
 $ sudo dnf -y install wg-daemon
@@ -53,7 +53,7 @@ $ curl -s http://localhost:8080/info | jq
 }
 ```
 
-### Portal
+## Portal
 
 You need to enable WireGuard in the portal configuration by modifying 
 `/etc/vpn-user-portal/config.php`, you can also configure WireGuard:
@@ -72,7 +72,7 @@ You need to enable WireGuard in the portal configuration by modifying
 ],
 ```
 
-### Firewall
+## Firewall
 
 We assume you are using the default firewall, some rules need to be added, 
 both in the `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` files:
@@ -88,4 +88,69 @@ After modifying the firewall, restart it:
 ```
 $ sudo systemctl restart iptables
 $ sudo systemctl restart ip6tables
+```
+
+## API
+
+The WireGuard integration also exposes an API for use by apps. It works the 
+same way as the existing API, protected using OAuth. This API is in a state of 
+flux and will defintely change before being rolled out in production!
+
+The API endpoint discovery is exactly the same as documented [here](API.md). 
+This documentation will eventually be merged there.
+
+The `$(BEARER_TOKEN}` referenced below is obtained through the OAuth flow.
+
+### Available
+
+**NOTE**: this call will most likely be removed as there will be another 
+indicator, for example in the `info.json` that indicated WireGuard support.
+
+As WireGuard integration is currently optional, the client can determine 
+whether WireGuard support is enabled on the server by requesting 
+`/wg/available`, e.g.:
+
+```
+$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
+    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/available
+HTTP/1.1 200 OK
+Date: Sat, 30 Jan 2021 09:43:28 GMT
+Content-Type: text/plain;charset=UTF-8
+
+y
+```
+
+### Connect
+
+**NOTE**: this call will probably be renamed to `/wg/connect` or something 
+similar.
+
+```
+$ PUBLIC_KEY=$(wg genkey | wg pubkey)
+$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
+    --data-urlencode "publicKey=${PUBLIC_KEY}" \
+    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/create_config
+HTTP/1.1 200 OK
+Date: Sat, 30 Jan 2021 09:45:19 GMT
+Content-Type: text/plain;charset=UTF-8
+
+[Peer]
+PublicKey = 2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = fedora-vpn.tuxed.net:51820
+
+[Interface]
+Address = 10.10.10.5/24, fd00:1234:1234:1234::5/64
+DNS = 9.9.9.9, 2620:fe::fe    
+```
+
+### Disconnect
+
+```
+$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
+    --data-urlencode "publicKey=${PUBLIC_KEY}" \
+    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/disconnect
+HTTP/1.1 204 No Content
+Date: Sat, 30 Jan 2021 09:46:02 GMT
+    
 ```
