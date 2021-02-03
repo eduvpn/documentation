@@ -61,7 +61,12 @@ You need to enable WireGuard in the portal configuration by modifying
 ```
 // DEFAULT: false
 'enableWg' => true,
+
 'WgConfig' => [
+    // the WireGuard interface
+    // REQUIRED
+    'wgDevice' => 'wg0',
+
     // where to reach "wg-daemon"
     // DEFAULT: http://localhost:8080
     'wgDaemonUrl' => 'http://localhost:8080',
@@ -69,6 +74,18 @@ You need to enable WireGuard in the portal configuration by modifying
     // the DNS to put in the configuration you send to the clients
     // DEFAULT: 9.9.9.9, 2620:fe::fe
     'dns' => ['9.9.9.9', '2620:fe::fe'],
+    
+    // the host name WireGuard clients will connect to
+    // REQUIRED
+    'hostName' => 'vpn.example.org',
+
+    // The IPv4 range issued to WireGuard clients
+    // REQUIRED
+    'rangeFour' => '10.145.101.0/24',
+
+    // The IPv6 range issued to WireGuard clients
+    // REQUIRED
+    'rangeSix' => 'fd04:b3ac:674d:b32b::/64',
 ],
 ```
 
