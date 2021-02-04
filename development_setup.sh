@@ -7,52 +7,42 @@ mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-lib-common
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-user-portal
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-api
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/vpn-server-node
-git clone -b "${LC_BRANCH}" https://git.tuxed.net/LC/documentation
-git clone https://git.tuxed.net/LC/vpn-portal-artwork-eduVPN
-git clone https://git.tuxed.net/LC/vpn-portal-artwork-LC
-git clone https://git.tuxed.net/LC/vpn-ca
-git clone https://git.tuxed.net/LC/vpn-daemon
-git clone https://git.tuxed.net/LC/vpn-maint-scripts
+git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-lib-common
+git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-user-portal
+git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-api
+git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-node
+git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
+git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
+git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
+git clone https://git.sr.ht/~fkooman/vpn-ca
+git clone https://git.sr.ht/~fkooman/vpn-daemon
+git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
 
-## clone all repositories (read/write, my own "forks")
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-lib-common.git
-#(cd vpn-lib-common && git remote add github git@github.com:eduvpn/vpn-lib-common.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-user-portal.git
-#(cd vpn-user-portal && git remote add github git@github.com:eduvpn/vpn-user-portal.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-server-api.git
-#(cd vpn-server-api && git remote add github git@github.com:eduvpn/vpn-server-api.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/vpn-server-node.git
-#(cd vpn-server-node && git remote add github git@github.com:eduvpn/vpn-server-node.git)
-#git clone -b ${LC_BRANCH} git@git.tuxed.net:LC/documentation.git
-#(cd documentation && git remote add github git@github.com:eduvpn/documentation.git)
-#git clone git@git.tuxed.net:LC/vpn-portal-artwork-eduVPN.git
-#(cd vpn-portal-artwork-eduVPN && git remote add github git@github.com:eduvpn/vpn-portal-artwork.git)
-#git clone git@git.tuxed.net:LC/vpn-portal-artwork-LC.git
-#(cd vpn-portal-artwork-LC && git remote add github git@github.com:letsconnectvpn/vpn-portal-artwork.git)
-#git clone git@git.tuxed.net:LC/vpn-ca.git
-#(cd vpn-ca && git remote add github git@github.com:letsconnectvpn/vpn-ca.git)
-#git clone git@git.tuxed.net:LC/vpn-daemon.git
-#(cd vpn-daemon && git remote add github git@github.com:letsconnectvpn/vpn-daemon.git)
-#git clone git@git.tuxed.net:LC/vpn-maint-scripts.git
-#(cd vpn-daemon && git remote add github git@github.com:letsconnectvpn/vpn-maint-scripts.git)
+## clone all repositories (read/write)
+#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-lib-common.git
+#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal.git
+#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-server-api.git
+#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node.git
+#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-documentation.git
+#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN.git
+#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC.git
+#git clone git@git.sr.ht:~fkooman/vpn-ca.git
+#git clone git@git.sr.ht:~fkooman/vpn-daemon.git
+#git clone git@git.sr.ht:~fkooman/vpn-maint-scripts.git
 
 # clone all RPM packages
 mkdir -p rpm
-for PACKAGE_NAME in vpn-daemon php-LC-common php-LC-openvpn-connection-manager php-fkooman-jwt php-fkooman-oauth2-server php-fkooman-otp-verifier php-saml-sp php-saml-sp-artwork-eduVPN php-fkooman-secookie php-fkooman-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
-	git clone https://git.tuxed.net/rpm/"${PACKAGE_NAME}" rpm/"${PACKAGE_NAME}"
-	#git clone git@git.tuxed.net:rpm/${PACKAGE_NAME}.git rpm/${PACKAGE_NAME}
+for PACKAGE_NAME in vpn-daemon vpn-lib-common php-openvpn-connection-manager php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
+	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
+	#git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
 done
 
 # clone all DEB packages
-mkdir -p deb
-for PACKAGE_NAME in php-jwt vpn-user-portal vpn-server-api php-saml-sp vpn-maint-scripts vpn-lib-common php-oauth2-server vpn-server-node php-otp-verifier php-sqlite-migrate vpn-daemon vpn-ca php-secookie vpn-portal-artwork-eduvpn php-openvpn-connection-manager php-saml-sp-artwork-eduvpn vpn-portal-artwork-lc; do
-	git clone https://git.tuxed.net/deb/"${PACKAGE_NAME}" deb/"${PACKAGE_NAME}"
-	#git clone git@git.tuxed.net:deb/${PACKAGE_NAME}.git deb/${PACKAGE_NAME}
-done
+#mkdir -p deb
+#for PACKAGE_NAME in php-jwt vpn-user-portal vpn-server-api php-saml-sp vpn-maint-scripts vpn-lib-common php-oauth2-server vpn-server-node php-otp-verifier php-sqlite-migrate vpn-daemon vpn-ca php-secookie vpn-portal-artwork-eduvpn php-openvpn-connection-manager php-saml-sp-artwork-eduvpn vpn-portal-artwork-lc; do
+#	git clone https://git.tuxed.net/deb/"${PACKAGE_NAME}" deb/"${PACKAGE_NAME}"
+#	#git clone git@git.tuxed.net:deb/${PACKAGE_NAME}.git deb/${PACKAGE_NAME}
+#done
 
 ######################################
 # vpn-user-portal                    #
