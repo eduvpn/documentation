@@ -1,17 +1,17 @@
 #!/bin/sh
 
-LC_BRANCH=v2
-BASE_DIR=${HOME}/Projects/LC-${LC_BRANCH}
+REPO_BRANCH=v2
+BASE_DIR=${HOME}/Projects/eduVPN-${REPO_BRANCH}
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-lib-common
-git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-user-portal
-git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-api
-git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-node
-git clone -b "${LC_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-lib-common
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-user-portal
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-api
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-node
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
@@ -19,11 +19,11 @@ git clone https://git.sr.ht/~fkooman/vpn-daemon
 git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
 
 ## clone all repositories (read/write)
-#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-lib-common.git
-#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal.git
-#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-server-api.git
-#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node.git
-#git clone -b ${LC_BRANCH} git@git.sr.ht:~fkooman/vpn-documentation.git
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-lib-common.git
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal.git
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-api.git
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node.git
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-documentation.git
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN.git
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC.git
 #git clone git@git.sr.ht:~fkooman/vpn-ca.git
