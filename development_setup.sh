@@ -17,32 +17,31 @@ git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
 git clone https://git.sr.ht/~fkooman/vpn-daemon
 git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
+git clone https://git.sr.ht/~fkooman/builder.rpm
+git clone https://git.sr.ht/~fkooman/builder.deb
 
-## clone all repositories (read/write)
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-lib-common.git
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal.git
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-api.git
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node.git
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-documentation.git
-#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN.git
-#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC.git
-#git clone git@git.sr.ht:~fkooman/vpn-ca.git
-#git clone git@git.sr.ht:~fkooman/vpn-daemon.git
-#git clone git@git.sr.ht:~fkooman/vpn-maint-scripts.git
+# clone all repositories (read/write)
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-lib-common
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-api
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node
+#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-documentation
+#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN
+#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
+#git clone git@git.sr.ht:~fkooman/vpn-ca
+#git clone git@git.sr.ht:~fkooman/vpn-daemon
+#git clone git@git.sr.ht:~fkooman/vpn-maint-scripts
+#git clone git@git.sr.ht:~fkooman/builder.rpm
+#git clone git@git.sr.ht:~fkooman/builder.deb
 
-# clone all RPM packages
-mkdir -p rpm
+# clone all RPM/DEB packages
+mkdir -p rpm deb
 for PACKAGE_NAME in vpn-daemon vpn-lib-common php-openvpn-connection-manager php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
-	#git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
+	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
+#	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
+#	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.deb deb/${PACKAGE_NAME}.deb
 done
-
-# clone all DEB packages
-#mkdir -p deb
-#for PACKAGE_NAME in php-jwt vpn-user-portal vpn-server-api php-saml-sp vpn-maint-scripts vpn-lib-common php-oauth2-server vpn-server-node php-otp-verifier php-sqlite-migrate vpn-daemon vpn-ca php-secookie vpn-portal-artwork-eduvpn php-openvpn-connection-manager php-saml-sp-artwork-eduvpn vpn-portal-artwork-lc; do
-#	git clone https://git.tuxed.net/deb/"${PACKAGE_NAME}" deb/"${PACKAGE_NAME}"
-#	#git clone git@git.tuxed.net:deb/${PACKAGE_NAME}.git deb/${PACKAGE_NAME}
-#done
 
 ######################################
 # vpn-user-portal                    #
