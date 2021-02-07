@@ -174,7 +174,7 @@ The response looks like this:
     }
 
 **NOTE**: `default_gateway` is available since vpn-user-portal >= 
-[2.2.9](https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md) and 
+[2.3.0](https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md) and 
 indicates whether the profile expects all client traffic to go over the VPN.
 
 ### Create a Key Pair 
