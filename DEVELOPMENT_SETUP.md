@@ -11,75 +11,60 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either macOS >= 10.14 (Mojave) or Fedora >= 30 for 
-development work, but other distributions will of course also work, but some 
-minor details, regarding installation of the required software, will be 
-different.
+We assume you will be using either Fedora >= 33, or Debian >= 10. Other 
+distributions will also work, but some minor details, regarding installation of 
+the required software, will be different.
 
-See [DEVELOPMENT_PRACTICES](DEVELOPMENT_PRACTICES.md) for more information
-about guidelines to follow.
+**NOTE**: if you try to build a package repository you need to be on the 
+respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
+packages you need to be on Fedora.
 
-# Fedora
+# Fedora >= 33
 
-Install the required software (dependencies):
+When you are not running Fedora as your desktop OS, it is easiest to install a
+VM with a desktop. In addition, install the required software (dependencies):
 
-    $ sudo dnf -y install golang php-cli git composer php-date php-filter \
-        php-hash php-json php-mbstring php-pcre php-pdo php-spl php-sodium \
-        php-curl php-gd unzip
+```
+$ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
+    php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-curl php-gd \
+    unzip
+```
 
-# Ubuntu
+# Debian >= 10
 
-**NOTE**: tested on Ubuntu 20.04 LTS (Beta) on 2020-04-03:
+When you are not running Debian as your desktop OS, it is easiest to install a
+VM with a desktop. In addition, install the required software (dependencies):
 
-Install the required software (dependencies): 
- 
-    $ sudo apt install curl git build-essential golang-go php7.4-sqlite3 \ 
-        composer php7.4-curl php7.4-dom php7.4-cli unzip
+```
+$ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
+    php-xml php-cli unzip
+```
 
-# macOS
+You also need to install a newer version of Go on Debian 10 from 
+`buster-backports`:
 
-We assume a clean macOS 10.14 (Mojave) installation. There is no need to install 
-[MacPorts](https://www.macports.org/) or [Homebrew](https://brew.sh/), we 
-explain how to get going without using them, but feel free to use them, for 
-example to install Composer.
-
-1. install Xcode command line tools, if not already done
-2. install [Go](https://golang.org/dl/)
-3. install [Composer](https://getcomposer.org/download/)
-
-The easiest way to install the command line tools is simply open the terminal 
-on macOS and type `xcode-select --install`. This will ask if you want to 
-install the tools. Agree to it.
-
-Make sure you install the Go package for "Apple macOS", e.g. 
-`go1.12.9.darwin-amd64.pkg`.
-
-As for Composer, what I did is download the "Latest Snapshot" at the bottom 
-of the page, make sure it is downloaded to your "Downloads" folder, otherwise
-change the command below, then:
-
-    $ mkdir -p ${HOME}/.local/bin
-    $ cp ${HOME}/Downloads/composer.phar ${HOME}/.local/bin/composer
-    $ chmod +x ${HOME}/.local/bin/composer
-    $ echo 'export PATH=${PATH}:${HOME}/.local/bin' >> ~/.bash_profile
-
-Then restart the terminal and you should be good to go!
+```
+$ echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list
+$ sudo apt install golang-go/buster-backports golang-src/buster-backports
+```
 
 # Installation
 
 Download the `development_setup.sh` script from this repository and run it. It
-will by default create a directory `${HOME}/Project/LC-v2` under which 
+will by default create a directory `${HOME}/Project/eduVPN-v2` under which 
 everything will be installed. No `root` is required!
 
-    $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup.sh
-    $ sh ./development_setup.sh
+```
+$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup.sh
+$ sh ./development_setup.sh
+```
 
 # Testing
 
 All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
-    $ cd ${HOME}/Projects/LC-v2/vpn-user-portal
+    $ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
     $ vendor/bin/phpunit
 
 # Using
@@ -87,7 +72,7 @@ e.g.:
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
 
-    $ cd ${HOME}/Projects/LC-v2
+    $ cd ${HOME}/Projects/eduVPN-v2
     $ sh ./launch.sh
 
 Now with your browser you can connect to the user portal on 
@@ -100,107 +85,196 @@ You can login with the users `foo` and password `bar` or `admin` with password
 
 To generate the OpenVPN server configuration files:
 
-    $ cd ${HOME}/Projects/LC-v2/vpn-server-node
+    $ cd ${HOME}/Projects/eduVPN-v2/vpn-server-node
     $ php bin/server-config.php
 
 The configuration will be stored in the `openvpn-config` folder.
 
+# Modifying Code
+
+If you want to modify any of your code, it makes sense to switch to using your
+own "fork". We'll only consider the eduVPN/LC components here and not the 
+underlying dependencies.
+
+For example if you want to modify `vpn-user-portal` you can do the following, 
+we assume you already have an empty `vpn-user-portal` repository created on 
+GitHub:
+
+```
+$ mkdir ${HOME}/tmp && cd ${HOME}/tmp
+$ git clone --bare https://git.sr.ht/~fkooman/vpn-user-portal
+$ cd vpn-user-portal
+$ git push --mirror git@github.com/fkooman/vpn-user-portal
+```
+
+You can add GitHub as a remote now to your project checkout of 
+`vpn-user-portal`:
+
+```
+$ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
+$ git remote add github git@github.com/fkooman/vpn-user-portal
+```
+
+Now when you make changes to the code you can push them to your own repository
+"fork"
+
+```
+$ git branch my-feature-branch
+$ git checkout my-feature-branch
+...
+$ git commit -a -m 'implement feature X'
+$ git push github my-feature-branch
+```
+
+If this works properly locally, you can send a "pull request" or 
+"merge request" to the upstream project, or even create a package repository
+containing your own version of `vpn-user-portal` if necessary! 
+
+When working with RPM packages for CentOS/Fedora you can easily create a 
+package from a commit. For DEB packages you need to make a release first. What
+I am doing is developing on CentOS/Fedora and only when considered stable I'll
+make a release after which I also create Debian packages.
+
+# Creating RPM packages
+
+First install all requirements on your Fedora system as described 
+[here](https://git.sr.ht/~fkooman/builder.rpm).
+
+So we assume you have your own fork of `vpn-user-portal` as shown above. Now 
+how to create an RPM package for it in your own development repository?
+
+The `vpn-user-portal` package also has an RPM package repository, we assume you 
+already have an empty `vpn-user-portal.rpm` repository created on GitHub::
+
+```
+$ mkdir ${HOME}/tmp && cd ${HOME}/tmp
+$ git clone --bare https://git.sr.ht/~fkooman/vpn-user-portal.rpm
+$ cd vpn-user-portal.rpm
+$ git push --mirror git@github.com/fkooman/vpn-user-portal.rpm
+```
+
+Add the new remote to `rpm/vpn-user-portal.rpm`:
+
+```
+$ cd ${HOME}/Projects/eduVPN-v2/rpm/vpn-user-portal.rpm
+$ git remote add github git@github.com/fkooman/vpn-user-portal.rpm
+```
+
+Now you can modify the SPEC file under 
+`vpn-user-portal.rpm/SPECS/vpn-user-portal.spec` to point to your Git 
+repository and commit. 
+
+Modify the following lines, point `%global git` to your Git commit:
+
+```
+%global git 925933279f8f4b99e242d4c154be7c6c55aa91e6
+
+Version:    2.4.8
+Release:    0.1%{?dist}
+
+...
+
+Source0: https://github.com/fkooman/vpn-user-portal/archive/%{git}.tar.gz
+
+...
+
+%changelog
+* Tue Feb 09 2021 François Kooman <fkooman@tuxed.net> - 2.4.8-0.1
+- update to development package
+```
+
+Set `Version` to one higher than the current version.
+The `0.1` in the `Release` field indicates it is a pre-release version. Also 
+update the `%changelog` entry.
+
+You can try to build this package locally:
+
+```
+$ rpmdev-setuptree
+$ cd ${HOME}/Projects/eduVPN-v2/rpm/vpn-user-portal.rpm
+$ spectool -g -R SPECS/vpn-user-portal.spec
+$ cp SOURCES/* ${HOME}/rpmbuild/SOURCES
+$ rpmbuild -bs SPECS/vpn-user-portal.spec
+$ rpmbuild -bb SPECS/vpn-user-portal.spec
+```
+
+Then you can commit your changes:
+
+```
+$ git commit -a -m 'update to development package'
+$ git push github
+```
+
+Once this is complete, you can continue and create your own package repository 
+by following the instructions [here](https://git.sr.ht/~fkooman/builder.rpm). 
+Make sure you update `REPO_URL_BRANCH_LIST` and point it to your fork of the 
+`vpn-user-portal.rpm` package.
+
+If all goes well, you'll end up with your own RPM repository with your fork
+of the package in it!
+
 # Software Releases
+
+The following script is used to make official releases of the components as 
+`tar.xz`. It signs the source code with both PGP (for the Debian packages) and
+with [Minisign](https://jedisct1.github.io/minisign/) for Fedora/CentOS. 
+Please setup your own PGP and Minisign keys before running this script.
 
 `${HOME}/.local/bin/make_release`:
 
-    #!/bin/sh
-    PROJECT_NAME=$(basename "${PWD}")
-    PROJECT_VERSION=${1}
-    RELEASE_DIR="${PWD}/release"
+```
+#!/bin/sh
+PROJECT_NAME=$(basename "${PWD}")
+PROJECT_VERSION=${1}
+RELEASE_DIR="${PWD}/release"
 
-    if [ -z "${1}" ]
-    then
-        # we take the last "tag" of the Git repository as version
-        PROJECT_VERSION=$(git describe --abbrev=0 --tags)
-        echo Version: "${PROJECT_VERSION}"
-    fi
+if [ -z "${1}" ]
+then
+    # we take the last "tag" of the Git repository as version
+    PROJECT_VERSION=$(git describe --abbrev=0 --tags)
+    echo Version: "${PROJECT_VERSION}"
+fi
 
-    mkdir -p "${RELEASE_DIR}"
-    if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]
-    then
-        echo "Version ${PROJECT_VERSION} already has a release!"
-        exit 1
-    fi
+mkdir -p "${RELEASE_DIR}"
+if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]
+then
+    echo "Version ${PROJECT_VERSION} already has a release!"
+    exit 1
+fi
 
-    git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
-    gpg2 --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
-    minisign -Sm "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+gpg2 --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+minisign -Sm "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+```
 
-`${HOME}/.local/bin/upload_release`:
+Make the script executable:
 
-    #!/bin/sh
-    REMOTE_HOST=argon.tuxed.net
-    PROJECT_NAME=$(basename "${PWD}")
-    RELEASE_DIR=${PWD}/release
+    $ chmod +x ${HOME}/.local/bin/make_release
 
-    rsync -avz -e ssh "${RELEASE_DIR}/" "${REMOTE_HOST}:/var/www/src.tuxed.net/${PROJECT_NAME}"
+In order to upload the release, I'm using the `sr.ht` API. I am storing this
+file under `${HOME}/.local/bin/sr.ht_upload_release`. You'll need to update the
+locations. For other source hosting platforms it will be different.
 
-Make the scripts executable:
+```
+#!/bin/sh
+#POST /api/:username/repos/:name/artifacts/:ref
+#
+#Attaches a file artifact to the specified ref.
+#
+#Note: this endpoint does not accept JSON. Submit your request as multipart/form-data, with a single field: "file".
 
-    $ chmod +x ${HOME}/.local/bin/make_release ${HOME}/.local/bin/upload_release
+V=$(git describe --abbrev=0 --tags)
+B=$(cat ${HOME}/.config/sr.ht/api.key)
+R=$(basename $(pwd))
 
-# Updating RPM Packages
+for F in release/*${V}*; do
+	curl -H "Authorization: Bearer ${B}" -F "file=@${F}" "https://git.sr.ht/api/~fkooman/repos/${R}/artifacts/${V}"
+done
+```
 
-The `${HOME}/Projects/LC-v2/rpm` folder has RPM package descriptions, "spec" 
-files. These can be used to build RPM packages (on Fedora).
+# Creating DEB packages
 
-Assuming you are developing on component and want to create a new (test) 
-package. Do the following:
-
-1. Determine the last "commit" hash of the component you are building. E.g. 
-   with `git log -1`;
-2. Go to the `rpm` folder of the component, e.g. `rpm/vpn-user-portal`;
-3. Make sure you are on the correct branch, e.g. `master`, `main`, or `v2`;
-4. "Bump" the SPEC file, e.g. `rpmdev-bumpspec SPECS/vpn-user-portal.spec`;
-5. Put the hash in the top as `%global git <HASH>`;
-6. Optionally update other parts of the SPEC file;
-7. Run `local_build` in order to trigger a local build, to make sure the 
-   package is correct and the unit tests properly run.
-
-The `local_build` script looks like this:
-
-    #!/bin/sh
-    if [ -d SPECS ]
-    then
-        # we are in the package root
-        spectool -g -R SPECS/*.spec
-        cp SOURCES/* "${HOME}/rpmbuild/SOURCES"
-        rpmbuild -bs SPECS/*.spec
-        rpmbuild -bb SPECS/*.spec    
-    elif [ -d ../SPECS ]
-    then
-        # we are in the SPECS directory already
-        spectool -g -R ./*.spec
-        cp ../SOURCES/* "${HOME}/rpmbuild/SOURCES"
-        rpmbuild -bs ./*.spec
-        rpmbuild -bb ./*.spec    
-    else 
-        echo "ERROR: cannot find SPEC file"
-        exit 1
-    fi
-
-You can save it under `${HOME}/.local/bin/local_build`. Make sure it is 
-executable: `chmod 0755 ${HOME}/.local/bin/local_build`. Run this from the 
-package directory, e.g `rpm/vpn-user-portal`.
-
-If you want to have your own builder, please set it up using the "builder" 
-project, look [here](https://git.tuxed.net/rpm/builder/about/).
-
-Commit the package changes to master, and run the builder. It should pick up 
-your new spec file.
-
-## Issues
-
-* One has to setup their own builder
-* There are multiple branches for the RPM packages depending on the version of
-  the software, i.e. there is a `v2` and a `main` branch. We need to explain 
-  that the `v2` branch is for production packages of LC/eduVPN 2.x.
-* We still have to explain how to make a production release, i.e. explain 
-  minisign, tags, etc.
-* talk about a proper release with signed release tars, i.e. `#global git...`
+Debian packages currently only work from proper releases. Updating the Debian 
+packages is described [here](https://git.sr.ht/~fkooman/builder.deb). You can
+also use your own `vpn-user-portal.deb` fork to get going. Follow the 
+instructions there.
