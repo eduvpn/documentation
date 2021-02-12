@@ -191,3 +191,6 @@ Date: Sat, 30 Jan 2021 09:46:02 GMT
 - prevent 1 user claiming all IPs in 2 seconds through API or web, limit to 
   maximum number of configs (also for OpenVPN perhaps...)
 - clean up "dead" connections from the daemon (make the sync a *real* sync)
+- show WG connections on "Connections" page
+- make disable user remove/disable? WG connections
+- show WG info on "Info" page
