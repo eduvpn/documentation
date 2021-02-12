@@ -175,3 +175,19 @@ HTTP/1.1 204 No Content
 Date: Sat, 30 Jan 2021 09:46:02 GMT
     
 ```
+
+## TODO
+
+- we currently have a "sync" that adds all peers to WG from DB that were 
+  manually created, i.e. not through the API. This needs to be done better, 
+  every 2 minutes a partial sync, only peers get added, never removed, is 
+  not great... it *does* work, for now... at least we need a call for multi 
+  peer add
+- implement multi-profile
+- implement wg-server-config.php to write `/etc/wireguard/wg*.conf` files in 
+  vpn-server-node package
+- add entries to `connection_log` table when peer is added/removed so we know
+  who had an IP at a certain time
+- prevent 1 user claiming all IPs in 2 seconds through API or web, limit to 
+  maximum number of configs (also for OpenVPN perhaps...)
+- clean up "dead" connections from the daemon (make the sync a *real* sync)
