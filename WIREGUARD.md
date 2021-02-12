@@ -24,17 +24,18 @@ PrivateKey = (hidden)
 ```
 
 To generate a private key you can use `wg genkey`. Put that in the place above
-where it says `(hidden)`.
+where it says `(hidden)`. In order to generate "random" IPv4 and IPv6 prefixes
+to use in your configuration you can use the `vpn-server-api-suggest-ip` 
+command.
 
-To start it:
+To start the WireGuard interface and enable it to start on boot:
 
 ```
-$ sudo wg-quick up wg0
+$ sudo systemctl enable --now wg-quick@wg0
 ```
 
-This should be enough to get going. Still need to figure out the best way to 
-make this persistent. Either through NetworkManager, networkd or simply using
-the `wg-quick` systemd service file.
+Still need to figure out whether this is best way to make this persistent. 
+Maybe through NetworkManager or `systemd-networkd` would be better.
 
 ## Daemon
 
@@ -43,7 +44,7 @@ $ sudo dnf -y install wg-daemon
 $ sudo systemctl enable --now wg-daemon
 ```
 
-You can test it out:
+You can test the interface with WireGuard out now:
 
 ```
 $ curl -s http://localhost:8080/info | jq
@@ -139,8 +140,8 @@ y
 
 ### Connect
 
-**NOTE**: this call will probably be renamed to `/wg/connect` or something 
-similar.
+**NOTE**: this call will probably be renamed to `/wg/connect`, `/wg/add_peer`, 
+`/wg/add_client` or something similar.
 
 ```
 $ PUBLIC_KEY=$(wg genkey | wg pubkey)
@@ -162,6 +163,9 @@ DNS = 9.9.9.9, 2620:fe::fe
 ```
 
 ### Disconnect
+
+**NOTE**: this call will probably be renamed to `/wg/remove_peer`, 
+`/wg/remove_client`, or something similar.
 
 ```
 $ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
