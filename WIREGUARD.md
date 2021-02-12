@@ -17,8 +17,7 @@ $ sudo dnf -y install wireguard-tools
 ```
 $ sudo cat /etc/wireguard/wg0.conf
 [Interface]
-Address = 10.10.10.1/24
-Address = fd00:1234:1234:1234::1/64
+Address = 10.145.101.0/24,fd04:b3ac:674d:b32b::/64
 ListenPort = 51820
 PrivateKey = (hidden)
 ```
@@ -26,7 +25,8 @@ PrivateKey = (hidden)
 To generate a private key you can use `wg genkey`. Put that in the place above
 where it says `(hidden)`. In order to generate "random" IPv4 and IPv6 prefixes
 to use in your configuration you can use the `vpn-server-api-suggest-ip` 
-command.
+command. Make sure they match with the `rangeFour` and `rangeSix` parameters
+in the portal configuration below.
 
 To start the WireGuard interface and enable it to start on boot:
 
