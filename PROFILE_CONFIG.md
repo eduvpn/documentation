@@ -13,14 +13,16 @@ described in the table below.
 To modify any of the options, modify the file mentioned above and look for the
 `vpnProfiles` section, e.g:
 
-    'vpnProfiles' => [
-        'internet' => [
-            'profileNumber' => 1,
-            'displayName' => 'Internet Access',
-            ...
-            ...
-        ],
+```
+'vpnProfiles' => [
+    'internet' => [
+        'profileNumber' => 1,
+        'displayName' => 'Internet Access',
+        ...
+        ...
     ],
+],
+```
 
 Every profile has an identifier (`profileId`) in this case `internet` and a 
 number (`profileNumber`), in this case `1`. They must be unique. The counting 
@@ -100,8 +102,8 @@ You can specify the "Connection-specific DNS Suffix" and
 of type `string`, for example:
 
 ```
-    'dnsDomain'       => 'clients.example.org',
-    'dnsDomainSearch' => ['example.org', 'example.com'],
+'dnsDomain'       => 'clients.example.org',
+'dnsDomainSearch' => ['example.org', 'example.com'],
 ```
 
 The `dnsDomain` is NOT used for "searches", so you MAY need to provide it to 
@@ -150,12 +152,16 @@ number of OpenVPN processes that can be started by the OpenVPN systemd service.
 
 Once logging is enabled and changes applied, you can follow the log like this:
 
-	$ sudo journalctl -f -t openvpn
+```bash
+$ sudo journalctl -f -t openvpn
+```
 	
 ## Apply Changes
 
 To apply the configuration changes:
 
-    $ sudo vpn-maint-apply-changes
+```bash
+$ sudo vpn-maint-apply-changes
+```
 
 If the command is not available, install the `vpn-maint-scripts` package first.
