@@ -155,7 +155,7 @@ Once logging is enabled and changes applied, you can follow the log like this:
 ```bash
 $ sudo journalctl -f -t openvpn
 ```
-	
+
 ## Apply Changes
 
 To apply the configuration changes:
