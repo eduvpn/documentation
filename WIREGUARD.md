@@ -6,10 +6,21 @@ any official VPN packages yet! Do NOT use in production!
 ## Requirements
 
 WireGuard will only be supported on servers running Debian >= 11 and 
-Fedora >= 33. Currently only Fedora works.
+Fedora >= 33. Currently only Fedora 33 (x86_64, aarch64) works.
 
 ```
 $ sudo dnf -y install wireguard-tools
+```
+
+Use the following repository configuration in 
+`/etc/yum.repos.d/eduVPN-wg.repo`: 
+
+```
+[eduVPN-wg]
+name=eduVPN with WireGuard Packages (Fedora $releasever)
+baseurl=https://repo.tuxed.net/eduVPN/wg/rpm/fedora-$releasever-$basearch
+gpgcheck=1
+gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 ```
 
 ## WireGuard Configuration
