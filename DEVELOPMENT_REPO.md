@@ -26,9 +26,7 @@
 
 On your Debian server:
 
-    $ curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | sudo apt-key add
-
-Replace `buster` with your version, can also be `stretch` (Debian 9) or 
-`bullseye` (Debian 11).
-
-    $ echo 'deb https://repo.tuxed.net/eduVPN/v2/deb buster main' | sudo tee -a /etc/apt/sources.list.d/eduVPN.list
+```
+$ curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | sudo apt-key add
+$ echo 'deb https://repo.tuxed.net/eduVPN/v2/deb $(/usr/bin/lsb_release -cs) main' | sudo tee -a /etc/apt/sources.list.d/eduVPN.list
+```
