@@ -31,6 +31,13 @@ PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | apt-key add
 echo "deb https://repo.eduvpn.org/v2/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN.list
+
+# enable dev repo if requested
+if [ "${VPN_DEV_REPO}" = 1 ]
+    curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | apt-key add
+    echo "deb https://repo.tuxed.net/eduVPN/v2/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN.list
+fi
+
 apt update
 
 # install software (VPN packages)
