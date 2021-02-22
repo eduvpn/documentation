@@ -188,6 +188,17 @@ Date: Sat, 30 Jan 2021 09:46:02 GMT
     
 ```
 
+## App
+
+We have an experimental Android app available for testing WireGuard. You can
+download it 
+[here](https://argon.tuxed.net/fkooman/eduVPN/LetsConnect-wireguard.apk).
+
+Make sure you first connect to the server you want to use with OpenVPN and make
+sure it works. Then go in the "App Settings" and enable the WireGuard" 
+checkbox. Trying to reconnect at this point will use WireGuard if all goes 
+well.
+
 ## TODO
 
 - we currently have a "sync" that adds all peers to WG from DB that were 
