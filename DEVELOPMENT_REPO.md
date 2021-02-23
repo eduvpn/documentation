@@ -5,7 +5,7 @@
 ## CentOS
 
     $ cat << 'EOF' > /etc/yum.repos.d/eduVPN-development.repo
-    [eduVPN-development]
+    [eduVPN-dev]
     name=eduVPN Development Packages (EL 7)
     baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/epel-7-$basearch
     gpgcheck=1
@@ -15,7 +15,7 @@
 ## Fedora
 
     $ cat << 'EOF' > /etc/yum.repos.d/eduVPN-development.repo
-    [eduVPN-development]
+    [eduVPN-dev]
     name=eduVPN Development Packages (Fedora $releasever)
     baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/fedora-$releasever-$basearch
     gpgcheck=1
