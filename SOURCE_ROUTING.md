@@ -73,9 +73,15 @@ We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 First we test it manually, before making these rules permanent:
 
 ```
+$ sudo ip -4 rule add to 10.10.10.0/24 lookup main
 $ sudo ip -4 rule add from 10.10.10.0/24 lookup vpn
+$ sudo ip -6 rule add to fd00:4242:4242:4242::/64 lookup main
 $ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
 ```
+
+The `to` rules are needed to make sure traffic between VPN clients uses the 
+`main` table so traffic between VPN clients remains possible (if allowed by
+the firewall).
 
 ### Routes
 
@@ -89,7 +95,9 @@ $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
 ### Making it permanent
 
 ```
+# echo 'to 10.10.10.0/24 lookup main' >/etc/sysconfig/network-scripts/rule-eth1
 # echo 'from 10.10.10.0/24 lookup vpn' >/etc/sysconfig/network-scripts/rule-eth1
+# echo 'to fd00:4242:4242:4242::/64 lookup main' >/etc/sysconfig/network-scripts/rule6-eth1
 # echo 'from fd00:4242:4242:4242::/64 lookup vpn' >/etc/sysconfig/network-scripts/rule6-eth1
 # echo 'default via 192.168.1.1 table vpn' > /etc/sysconfig/network-scripts/route-eth1
 # echo 'default via fd00:1010:1010:1010::1 table vpn' > /etc/sysconfig/network-scripts/route6-eth1
@@ -117,6 +125,10 @@ See the [firewall](FIREWALL.md) documentation on how to update your firewall
 as needed.
 
 ## Finishing Touches
+
+**NOTE**: this section is probably made obsolete by the above `to` routes 
+where traffic *to* the VPN client IP range was made to use the `main` table
+(again).
 
 There are two problems still left to be resolved with the above solution:
 
