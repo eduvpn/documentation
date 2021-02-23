@@ -65,10 +65,10 @@ gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF
 
-cat << EOF > /etc/yum.repos.d/eduVPN-development.repo
-[eduVPN-development]
+cat << EOF > /etc/yum.repos.d/eduVPN-dev.repo
+[eduVPN-dev]
 name=eduVPN Development Packages (EL 7)
-baseurl=https://repo.tuxed.net/eduVPN/v2/rpm/epel-7-\$basearch
+baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/epel-7-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 enabled=${VPN_DEV_REPO}
