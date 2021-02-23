@@ -64,42 +64,52 @@ Fedora). We created a physical test setup similar to what you see below.
 
 We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 
-    200     vpn
+```
+200     vpn
+```
 
 ### Rules
 
 First we test it manually, before making these rules permanent:
 
-    $ sudo ip -4 rule add from 10.10.10.0/24 lookup vpn
-    $ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
+```
+$ sudo ip -4 rule add from 10.10.10.0/24 lookup vpn
+$ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
+```
 
 ### Routes
 
 First we test it manually before making these routes permanent:
 
-    $ sudo ip -4 ro add default via 192.168.1.1 table vpn
-    $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
+```
+$ sudo ip -4 ro add default via 192.168.1.1 table vpn
+$ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
+```
 
 ### Making it permanent
 
-    # echo 'from 10.10.10.0/24 lookup vpn' >/etc/sysconfig/network-scripts/rule-eth1
-    # echo 'from fd00:4242:4242:4242::/64 lookup vpn' >/etc/sysconfig/network-scripts/rule6-eth1
-    # echo 'default via 192.168.1.1 table vpn' > /etc/sysconfig/network-scripts/route-eth1
-    # echo 'default via fd00:1010:1010:1010::1 table vpn' > /etc/sysconfig/network-scripts/route6-eth1
+```
+# echo 'from 10.10.10.0/24 lookup vpn' >/etc/sysconfig/network-scripts/rule-eth1
+# echo 'from fd00:4242:4242:4242::/64 lookup vpn' >/etc/sysconfig/network-scripts/rule6-eth1
+# echo 'default via 192.168.1.1 table vpn' > /etc/sysconfig/network-scripts/route-eth1
+# echo 'default via fd00:1010:1010:1010::1 table vpn' > /etc/sysconfig/network-scripts/route6-eth1
+```
 
 When you use NetworkManager you need to install the package 
 `NetworkManager-dispatcher-routing-rules.noarch`.
 
 It is smart to reboot your system to see if all comes up as expected:
 
-    $ ip -4 rule show table vpn
-    32765:	from 10.10.10.0/24 lookup vpn 
-    $ ip -4 ro show table vpn
-    default via 192.168.1.1 dev eth1 
-    $ ip -6 rule show table vpn
-    32765:	from fd00:4242:4242:4242::/64 lookup vpn 
-    $ ip -6 ro show table vpn
-    default via fd00:1010:1010:1010::1 dev eth1 metric 1024 pref medium
+```
+$ ip -4 rule show table vpn
+32765:	from 10.10.10.0/24 lookup vpn 
+$ ip -4 ro show table vpn
+default via 192.168.1.1 dev eth1 
+$ ip -6 rule show table vpn
+32765:	from fd00:4242:4242:4242::/64 lookup vpn 
+$ ip -6 ro show table vpn
+default via fd00:1010:1010:1010::1 dev eth1 metric 1024 pref medium
+```
 
 ## Firewall
 
@@ -130,17 +140,25 @@ An possible example script that solves the above two issues is shown below. It
 depends on `/usr/bin/ipcalc` and `/usr/sbin/ip` commands. Make sure you modify
 the script as necessary for your platform:
 
-    #!/bin/sh
-    NETWORK4=$(/usr/bin/ipcalc -n $ifconfig_local $ifconfig_netmask | cut -d '=' -f 2)
-    PREFIX4=$(/usr/bin/ipcalc -p $4 $5 | cut -d '=' -f 2)
-    NETWORK6=$(/usr/bin/ipcalc -n $ifconfig_ipv6_local/$ifconfig_ipv6_netbits | cut -d '=' -f 2)
-    PREFIX6=$ifconfig_ipv6_netbits
+```
+#!/bin/sh
+NETWORK4=$(/usr/bin/ipcalc -n $ifconfig_local $ifconfig_netmask | cut -d '=' -f 2)
+PREFIX4=$(/usr/bin/ipcalc -p $4 $5 | cut -d '=' -f 2)
+NETWORK6=$(/usr/bin/ipcalc -n $ifconfig_ipv6_local/$ifconfig_ipv6_netbits | cut -d '=' -f 2)
+PREFIX6=$ifconfig_ipv6_netbits
 
-    echo /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
-    echo /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
+echo /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
+echo /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
 
-    /usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
-    /usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
+/usr/sbin/ip -4 ro add $NETWORK4/$PREFIX4 dev $dev table vpn
+/usr/sbin/ip -6 ro add $NETWORK6/$PREFIX6 dev $dev table vpn
+```
 
 **NOTE**: make sure the `/etc/openvpn/up` script is made executable, 
 i.e. don't forget to do a `chmod 0755 /etc/openvpn/up`!
+
+Also, do not forget to apply changes:
+
+```
+$ sudo vpn-maint-apply-changes
+```
