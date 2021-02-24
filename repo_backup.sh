@@ -6,6 +6,10 @@
 # The goal is that if everyting is lost, e.g. all Git hosting servers are gone,
 # we can recreate everything, except private keys, from a backup.
 #
+# You can add this to your personal crontab for example (crontab -e)
+#
+# @daily (cd /home/fkooman/eduVPN && ./repo_backup.sh)
+#
 
 GIT_PATH=/usr/bin/git
 
