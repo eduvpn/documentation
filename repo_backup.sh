@@ -7,7 +7,6 @@
 # we can recreate everything, except private keys, from a backup.
 #
 
-BACKUP_ROOT=${HOME}
 GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
@@ -99,16 +98,28 @@ REPO_URL_LIST=(\
     https://github.com/Amebis/eduEd25519 \
 )
 
-DATE_TIME=$(date +%Y%m%d%H%M%S)
-mkdir -p "${BACKUP_ROOT}/repoBackup-${DATE_TIME}" || exit 1
-cd "${BACKUP_ROOT}/repoBackup-${DATE_TIME}" || exit 1
+REPO_URL_LIST=(\
+    https://git.sr.ht/~fkooman/builder.deb \
+    https://git.sr.ht/~fkooman/builder.rpm \
+)
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
     ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
     (
-        mkdir -p "${ENCODED_URL}" || exit 1
-        cd "${ENCODED_URL}" || exit 1
-        ${GIT_PATH} clone --mirror "${REPO_URL}"
+        mkdir -p repos
+        if [ -d "repos/${ENCODED_URL}" ]; then
+            # already exists
+            cd "repos/${ENCODED_URL}" || exit 1
+            git remote update
+        else
+            # does not yet exist
+            ${GIT_PATH} clone --mirror "${REPO_URL}" "repos/${ENCODED_URL}" || exit 1
+        fi
     )
 done
+
+DATE_TIME=$(date +%Y%m%d%H%M%S)
+echo "Creating archive..."
+mkdir -p archives || exit 1
+tar -cJf "archives/repoBackup-${DATE_TIME}".tar.xz repos || exit 1
