@@ -28,5 +28,5 @@ On your Debian server:
 
 ```
 $ curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | sudo apt-key add
-$ echo "deb https://repo.tuxed.net/eduVPN/v2/deb $(/usr/bin/lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/eduVPN.list
+$ echo "deb https://repo.tuxed.net/eduVPN/dev/deb $(/usr/bin/lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/eduVPN.list
 ```

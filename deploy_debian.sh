@@ -35,7 +35,7 @@ echo "deb https://repo.eduvpn.org/v2/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/so
 # enable dev repo if requested
 if [ "${VPN_DEV_REPO}" = 1 ]; then
     curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | apt-key add
-    echo "deb https://repo.tuxed.net/eduVPN/v2/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN.list
+    echo "deb https://repo.tuxed.net/eduVPN/dev/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN.list
 fi
 
 apt update
