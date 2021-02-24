@@ -98,11 +98,6 @@ REPO_URL_LIST=(\
     https://github.com/Amebis/eduEd25519 \
 )
 
-REPO_URL_LIST=(\
-    https://git.sr.ht/~fkooman/builder.deb \
-    https://git.sr.ht/~fkooman/builder.rpm \
-)
-
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
     ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
