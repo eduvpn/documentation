@@ -109,6 +109,6 @@ do
     (
         mkdir -p "${ENCODED_URL}" || exit 1
         cd "${ENCODED_URL}" || exit 1
-        ${GIT_PATH} clone --bare "${REPO_URL}"
+        ${GIT_PATH} clone --mirror "${REPO_URL}"
     )
 done
