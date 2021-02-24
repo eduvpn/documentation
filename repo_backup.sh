@@ -11,69 +11,71 @@ BACKUP_ROOT=${HOME}
 GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
-    # Website
-    https://github.com/eduvpn/eduvpn.org \
-    https://github.com/eduvpn/discovery \
+    # Misc
+    https://git.sr.ht/~eduvpn/disco.eduvpn.org
+    https://git.sr.ht/~eduvpn/app.eduvpn.org
+    https://git.sr.ht/~eduvpn/status.eduvpn.org
 
-    # Server Components
-    https://github.com/eduvpn/vpn-lib-common \
-    https://github.com/eduvpn/vpn-server-api \
-    https://github.com/eduvpn/vpn-user-portal \
-    https://github.com/eduvpn/vpn-server-node \
-    https://github.com/eduvpn/vpn-admin-portal \
-    https://github.com/eduvpn/documentation \
-    https://github.com/eduvpn/vpn-portal-artwork \
-    https://github.com/eduvpn/php-saml-sp-artwork \
-    https://github.com/letsconnectvpn/vpn-portal-artwork \
-    https://github.com/eduvpn/status \
-    https://github.com/eduvpn/artwork \
-    https://github.com/eduvpn/vpn-for-web \
-    https://github.com/letsconnectvpn/vpn-maint-scripts \
-
-    # Server Debian Packages \
-    https://github.com/eduvpn/eduvpn-debian
-
-    # Server RPM Builder 
-    https://github.com/eduvpn/builder \
-
-    # Server RPM Packages \
-    https://git.tuxed.net/rpm/vpn-server-node \
-    https://git.tuxed.net/rpm/vpn-server-api \
-    https://git.tuxed.net/rpm/vpn-user-portal \
-    https://git.tuxed.net/rpm/vpn-daemon \
-    https://git.tuxed.net/rpm/vpn-ca \
-    https://git.tuxed.net/rpm/vpn-portal-artwork-LC \
-    https://git.tuxed.net/rpm/vpn-portal-artwork-eduVPN \
-    https://git.tuxed.net/rpm/builder \
-    https://git.tuxed.net/rpm/php-json-signer \
-    https://git.tuxed.net/rpm/php-fkooman-sqlite-migrate \
-    https://git.tuxed.net/rpm/php-fkooman-secookie \
-    https://git.tuxed.net/rpm/php-LC-openvpn-connection-manager \
-    https://git.tuxed.net/rpm/php-saml-sp \
-    https://git.tuxed.net/rpm/php-fkooman-otp-verifier \
-    https://git.tuxed.net/rpm/php-fkooman-oauth2-server \
-    https://git.tuxed.net/rpm/php-fkooman-jwt \
-    https://git.tuxed.net/rpm/php-LC-common \
-    https://git.tuxed.net/rpm/vpn-maint-scripts \
-    https://git.tuxed.net/rpm/php-saml-sp-artwork-eduVPN \
-
-    # Extras
-    https://github.com/fkooman/php-json-signer \
-
-    # Server Dependencies
-    https://github.com/fkooman/php-otp-verifier \
-    https://github.com/fkooman/php-saml-sp \
-    https://github.com/fkooman/php-jwt \
-    https://github.com/fkooman/php-oauth2-server \
-    https://github.com/fkooman/php-secookie \
-    https://github.com/fkooman/php-sqlite-migrate \
-    https://github.com/fkooman/php-oauth2-client \
-    https://github.com/letsconnectvpn/vpn-ca \
-    https://github.com/letsconnectvpn/vpn-daemon \
-    https://github.com/letsconnectvpn/php-openvpn-connection-manager \
-
-    # Apps
-    https://github.com/eduvpn/app-update \
+    # Server Repositories
+    https://git.sr.ht/~fkooman/builder.deb \
+    https://git.sr.ht/~fkooman/builder.rpm \
+    https://git.sr.ht/~fkooman/php-constant-time.deb \
+    https://git.sr.ht/~fkooman/php-jwt \
+    https://git.sr.ht/~fkooman/php-jwt.deb \
+    https://git.sr.ht/~fkooman/php-jwt.rpm \
+    https://git.sr.ht/~fkooman/php-oauth2-client \
+    https://git.sr.ht/~fkooman/php-oauth2-server \
+    https://git.sr.ht/~fkooman/php-oauth2-server.deb \
+    https://git.sr.ht/~fkooman/php-oauth2-server.rpm \
+    https://git.sr.ht/~fkooman/php-openvpn-connection-manager \
+    https://git.sr.ht/~fkooman/php-openvpn-connection-manager.deb \
+    https://git.sr.ht/~fkooman/php-openvpn-connection-manager.rpm \
+    https://git.sr.ht/~fkooman/php-otp-verifier \
+    https://git.sr.ht/~fkooman/php-otp-verifier.deb \
+    https://git.sr.ht/~fkooman/php-otp-verifier.rpm \
+    https://git.sr.ht/~fkooman/php-saml-sp \
+    https://git.sr.ht/~fkooman/php-saml-sp-artwork-eduVPN \
+    https://git.sr.ht/~fkooman/php-saml-sp-artwork-eduVPN.deb \
+    https://git.sr.ht/~fkooman/php-saml-sp-artwork-eduVPN.rpm \
+    https://git.sr.ht/~fkooman/php-saml-sp.deb \
+    https://git.sr.ht/~fkooman/php-saml-sp.rpm \
+    https://git.sr.ht/~fkooman/php-secookie \
+    https://git.sr.ht/~fkooman/php-secookie.deb \
+    https://git.sr.ht/~fkooman/php-secookie.rpm \
+    https://git.sr.ht/~fkooman/php-sqlite-migrate \
+    https://git.sr.ht/~fkooman/php-sqlite-migrate.deb \
+    https://git.sr.ht/~fkooman/php-sqlite-migrate.rpm \
+    https://git.sr.ht/~fkooman/php-yubitwee \
+    https://git.sr.ht/~fkooman/vpn-ca \
+    https://git.sr.ht/~fkooman/vpn-ca.deb \
+    https://git.sr.ht/~fkooman/vpn-ca.rpm \
+    https://git.sr.ht/~fkooman/vpn-daemon \
+    https://git.sr.ht/~fkooman/vpn-daemon.deb \
+    https://git.sr.ht/~fkooman/vpn-daemon.rpm \
+    https://git.sr.ht/~fkooman/vpn-documentation \
+    https://git.sr.ht/~fkooman/vpn-lib-common \
+    https://git.sr.ht/~fkooman/vpn-lib-common.deb \
+    https://git.sr.ht/~fkooman/vpn-lib-common.rpm \
+    https://git.sr.ht/~fkooman/vpn-maint-scripts \
+    https://git.sr.ht/~fkooman/vpn-maint-scripts.deb \
+    https://git.sr.ht/~fkooman/vpn-maint-scripts.rpm \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN.deb \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN.rpm \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-LC \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-LC.deb \
+    https://git.sr.ht/~fkooman/vpn-portal-artwork-LC.rpm \
+    https://git.sr.ht/~fkooman/vpn-server-api \
+    https://git.sr.ht/~fkooman/vpn-server-api.deb \
+    https://git.sr.ht/~fkooman/vpn-server-api.rpm \
+    https://git.sr.ht/~fkooman/vpn-server-node \
+    https://git.sr.ht/~fkooman/vpn-server-node.deb \
+    https://git.sr.ht/~fkooman/vpn-server-node.rpm \
+    https://git.sr.ht/~fkooman/vpn-user-portal \
+    https://git.sr.ht/~fkooman/vpn-user-portal.deb \
+    https://git.sr.ht/~fkooman/vpn-user-portal.rpm \
+    https://git.sr.ht/~fkooman/wg-daemon \
+    https://git.sr.ht/~fkooman/wg-daemon.rpm \
 
     # Linux App
     https://github.com/eduvpn/python-eduvpn-client \
