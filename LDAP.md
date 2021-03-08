@@ -183,6 +183,12 @@ the exact same format as used in the LDAP server.
         // to normalize the entered user ID, specify the attribute you want to
         // use to identify the user in the VPN server
         'userIdAttribute' => 'uidNumber',
+        // in vpn-user-portal >= 2.3.8 you can also perform a bind before 
+        // searching as not all LDAP servers allow anonymous bind to search the
+        // directory. If at all possible, allow anonymous bind on your LDAP 
+        // server from the VPN server. NEVER USE THE LDAP ADMIN ACCOUNT HERE!
+        //'searchBindDn' => 'cn=Anonymous Search User,dc=example,dc=org',
+        //'searchBindPass' => 's3r3t',
     ],
 
 This should be all to configure your LDAP!
