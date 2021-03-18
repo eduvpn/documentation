@@ -52,7 +52,7 @@ ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
-    vpn-maint-scripts
+    vpn-maint-scripts vpn-daemon
 
 ###############################################################################
 # SELINUX
@@ -139,6 +139,7 @@ openssl req \
 
 systemctl enable --now php-fpm
 systemctl enable --now httpd
+systemctl enable --now vpn-daemon
 
 ###############################################################################
 # OPENVPN SERVER CONFIG
