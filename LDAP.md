@@ -193,7 +193,12 @@ the exact same format as used in the LDAP server.
 
 This should be all to configure your LDAP!
 
-# CA
+# LDAPS
+
+In order to use LDAPS, you can use the LDAPS scheme in the `baseUri`
+configuration option, e.g.:
+
+    'ldapUri' => 'ldaps://ldap.example.org',
 
 If you use LDAPS and your LDAP server has a self signed certificate you may
 need to make the CA certificate available on the VPN machine.
