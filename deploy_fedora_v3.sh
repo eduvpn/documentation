@@ -82,13 +82,6 @@ cp resources/vpn.example.centos.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################
-# PHP
-###############################################################################
-
-# set timezone to UTC
-cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
-
-###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
