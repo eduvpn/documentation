@@ -5,11 +5,16 @@ extensively tested. There may be mistakes in it, please let us know!
 
 In vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions at night 
 instead of exactly after the duration specified in `sessionExpiry`. The goal
-is to make it less likely that the user will be disconnected during working 
+is to prevent that the user will be disconnected from the VPN during working 
 hours.
 
-The idea is to expire sessions at 04:00 in the morning, according to the 
-timezone set in the PHP configuration of the server.
+By VPN session expiry we mean the moment at which the VPN session won't work 
+anymore without the user authenticating/authorizing again. The default after 
+which a session expires is 90 days, but can be modified by the administrator.
+
+The idea is to expire sessions always at 04:00 in the morning on the day before
+the actual expiry as determined by `sessionExpiry`. The expiry will consider 
+the timezone set in the PHP configuration of the VPN server.
 
 ## Preparation
 
