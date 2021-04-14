@@ -16,6 +16,10 @@ The idea is to expire sessions always at 04:00 in the morning on the day before
 the actual expiry as determined by `sessionExpiry`. The expiry will consider 
 the timezone set in the PHP configuration of the VPN server.
 
+**NOTE**: currently the nightly expiry ONLY works when the `sessionExpiry` is
+`P7D` (7 days) or longer. We may implement this also for sessions that expire
+sooner.
+
 ## Preparation
 
 We recommend to set/leave your server's timezone set to UTC in all 
