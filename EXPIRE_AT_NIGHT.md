@@ -1,9 +1,13 @@
+**WORK IN PROGRESS** 
+
+Please provide feedback if you have any!
+
+**NOTE**: this is only implemented in vpn-user-portal >= 2.3.10 which has not
+beend released yet.
+
 # Expire At Night
 
-**NOTE**: this document is work in progress and not everything has been 
-extensively tested. There may be mistakes in it, please let us know!
-
-In vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions at night 
+In vpn=user-portal >= 2.3.10 it is possible to expire VPN sessions at night 
 instead of exactly after the duration specified in `sessionExpiry`. The goal
 is to prevent that the user will be disconnected from the VPN during working 
 hours.
@@ -20,70 +24,54 @@ the timezone set in the PHP configuration of the VPN server.
 `P7D` (7 days) or longer. We may implement this also for sessions that expire
 sooner.
 
-## Preparation
+## System Configuration
 
-We recommend to set/leave your server's timezone set to UTC in all 
-circumstances.
-
-```
-$ timedatectl
-      Local time: Mi 2021-04-14 13:02:35 UTC
-  Universal time: Mi 2021-04-14 13:02:35 UTC
-        RTC time: Mi 2021-04-14 13:02:35
-       Time zone: UTC (UTC, +0000)
-     NTP enabled: yes
-NTP synchronized: yes
- RTC in local TZ: no
-      DST active: n/a
-```
-
-If it is not currently set to UTC, you can use the following:
+Check your system's timezone:
 
 ```
-$ sudo timedatectl set-timezone UTC
+$ timedatectl 
+               Local time: Mi 2021-04-14 21:27:24 CEST
+           Universal time: Mi 2021-04-14 19:27:24 UTC
+                 RTC time: Mi 2021-04-14 19:27:23
+                Time zone: Europe/Berlin (CEST, +0200)
+System clock synchronized: no
+              NTP service: active
+          RTC in local TZ: no
 ```
 
-It can't hurt to restart your system at this point.
+Here the system is set to `Europe/Berlin` timezone. It could also be `UTC`, 
+which is also fine.
 
-## PHP Configuration
+Verify what PHP thinks of this:
 
-Now you can modify PHP and set the `date.timezone` parameter to your local 
-timezone.
+```
+$ php -r 'echo ini_get("date.timezone");'
+$ php -r 'echo date_default_timezone_get();'
+Europe/Berlin
+```
 
-Valid timezone definitions can be found 
-[here](https://www.php.net/manual/en/timezones.php).
+All good! 
 
 ### CentOS / Fedora
 
-You can modify `/etc/php.ini`, search for the line with `date.timezone` and 
-set it to your local timezone, e.g.:
+The system timezone is _not_ picked up by PHP on Fedora/CentOS, you need to 
+manually set it. The default is UTC otherwise, independent of what your 
+system's timezone is. On CentOS it is even slightly worse, if you don't set 
+the `date.timezone` field PHP will complain (because PHP is so old on CentOS). 
+That's why the `deploy_centos.sh` script configures `UTC` for you by default in 
+the file `/etc/php.d/70-timezone.ini`. You can modify this and set it to your 
+local timezone. Use [these](https://www.php.net/manual/en/timezones.php) values.
 
-```
-date.timezone = Europe/Berlin
-```
+On Fedora you can directly edit `/etc/php.ini` and set the `date.timezone` 
+field there.
 
-Now, restart `php-fpm`:
+Don't forget to restart php-fpm after making changes:
 
 ```
 $ sudo systemctl restart php-fpm
 ```
 
-### Debian
-
-On Debian you can modify `/etc/php/7.3/fpm/php.ini` and 
-`/etc/php/7.3/cli/php.ini`, where 7.3 is the version of PHP. On Debian 10 it is 
-7.3, on Debian 9 it is 7.0. Search for the line with `date.timezone` and 
-set it to your local timezone, e.g.:
-
-```
-date.timezone = Europe/Berlin
-```
-
-Now, restart `php-fpm`:
-
-```
-$ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
-```
+Now you should be good to go.
 
 ## Portal Configuration
 
