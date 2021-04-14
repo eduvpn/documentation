@@ -3,7 +3,7 @@
 Please provide feedback if you have any!
 
 **NOTE**: this is only implemented in vpn-user-portal >= 2.3.10 which has not
-beend released yet.
+been released yet.
 
 # Expire At Night
 
