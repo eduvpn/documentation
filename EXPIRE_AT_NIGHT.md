@@ -41,8 +41,8 @@ System clock synchronized: no
           RTC in local TZ: no
 ```
 
-In the example above it set to the `Europe/Berlin` timezone. It could be your 
-local time zone, or `UTC` which is also fine.
+In the example above it is set to the `Europe/Berlin` timezone. It could be 
+your local time zone, or `UTC` which is also fine.
 
 Verify what PHP thinks of this:
 
