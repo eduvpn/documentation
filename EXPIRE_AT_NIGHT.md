@@ -26,9 +26,9 @@ could be the same day, or the previous day if the time is currently between
 `P7D` (7 days) or longer. We may implement this also for sessions that expire
 sooner.
 
-## System Configuration
+## Server Configuration
 
-Check your system's timezone:
+To check the timezone your server is set to:
 
 ```
 $ timedatectl 
@@ -41,8 +41,8 @@ System clock synchronized: no
           RTC in local TZ: no
 ```
 
-Here the system is set to `Europe/Berlin` timezone. It could also be `UTC`, 
-which is also fine.
+In the example above it set to the `Europe/Berlin` timezone. It could be your 
+local time zone, or `UTC` which is also fine.
 
 Verify what PHP thinks of this:
 
