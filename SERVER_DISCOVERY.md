@@ -242,6 +242,14 @@ new file is `>` the `v` field of the old version. As an example:
       ]
     }
 
+In case the newly retrieved file contains a `v` that is _lower_ than the one 
+the application currently has it MUST NOT be used. If the `v` is identical, the
+file can be considered unchanged and the old version MUST be used.
+
+The user SHOULD be notified if the server contains an older version of the file
+the app currently has, but the user MUST be allowed to continue, where the app
+will use the copy of the file it already had.
+
 ## Authorization
 
 See [API](API.md) for the actual OAuth flow. For "Secure Internet" servers you
