@@ -104,7 +104,7 @@ cat << 'EOF' > config/config.php
 <?php
 $baseConfig = include __DIR__.'/config.php.example';
 $localConfig = [
-    'apiUri' => 'http://localhost:8082/node-api.php',
+    'apiUrl' => 'http://localhost:8082/node-api.php',
 ];
 return array_merge($baseConfig, $localConfig);
 EOF
