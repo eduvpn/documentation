@@ -1,14 +1,10 @@
 # Introduction
 
-**NOTE**: this is documentation for Let's Connect!/eduVPN 2.0. Click 
-[here](https://github.com/eduvpn/documentation/tree/v1) for the 1.0 
-documentation.
-
 This is the eduVPN/Let's Connect! documentation repository. This repository 
 targets administrators and developers. It contains information on how to deploy 
-the VPN software, but also (technical) details about the implementation needed 
-to (better) integrate it in existing infrastructure, and how to modify the 
-software for one's own needs.
+the VPN software on a server, but also (technical) details about the 
+implementation needed to (better) integrate it in existing infrastructure, and 
+how to modify the software for one's own needs.
 
 For more information see:
 
@@ -16,7 +12,10 @@ For more information see:
 - https://letsconnect-vpn.org
 
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
-contact [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
+try to find the contact information of your organization 
+[here](https://status.eduvpn.org/). If you don't know where to go, then simply
+contact us at 
+[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
 # Features
 
@@ -29,14 +28,14 @@ This is an (incomplete) list of features of the VPN software:
 - Support both NAT and publically routable IP addresses;
 - CA for managing client certificates;
 - [Secure](SECURITY.md) server and client configuration out of the box;
-- User Portal to allow users to manage their configurations for their 
-  devices;
-- Admin Portal to manage users, configurations and connections;
-- Multi Language support in User Portal and Admin Portal;
-- Authentication to portals using "static" username and password, 
-  [LDAP](LDAP.md), [RADIUS](RADIUS.md), [SAML](SAML.md) and
+- Portal to allow users to manage their configurations for their 
+  devices and admins to manage users, configurations and connections;
+- Multi Language support;
+- Authentication to portals using local user database (default), 
+  [LDAP](LDAP.md), [RADIUS](RADIUS.md), [SAML](SAML.md) and 
   [Client Certificates](CLIENT_CERT_AUTH.md);
-- OAuth 2.0 [API](API.md) for integration with applications;
+- OAuth 2.0 [API](API.md) for integration with native eduVPN/Let's Connect! 
+  applications;
 - [Two-factor authentication](2FA.md) TOTP support with user self-enrollment;
 - [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
@@ -47,8 +46,9 @@ This is an (incomplete) list of features of the VPN software:
 - Group [ACL](ACL.md) support with SAML and LDAP;
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
-- [SELinux](SELINUX.md) fully enabled;
-- [Guest Usage](GUEST_USAGE.md) scenario;
+- [SELinux](SELINUX.md) fully enabled (on CentOS and Fedora);
+- [Guest Usage](GUEST_USAGE.md) scenario for allow users of one server to use 
+  other designated servers (optional);
 - Native [applications](CLIENT_COMPAT.md) available for most common platforms.
 
 # Client Support
@@ -58,24 +58,26 @@ supported OpenVPN clients.
 
 # Deployment
 
-**NOTE**: if you plan to run eduVPN/Let's Connect! please consider subscribing 
-to the mailing list 
+**NOTE**: if you plan to install and run a eduVPN/Let's Connect! server please 
+subscribe to the "deployers" mailing list 
 [here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It will be used 
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
-You can also use IRC for support & feedback: [freenode](https://freenode.net/), 
-channel `#eduvpn`. Please stick around  for a while to wait for a response!
+You can also join IRC for questions & feedback on 
+[freenode](https://freenode.net/), channel `#eduvpn`. Please stick around for 
+a while to wait for a response!
 
-**Instruction videos**
-* [basic eduVPN server installation](https://www.youtube.com/embed/yBItHovq4AU?autoplay=1&auto_play=true)
-* [integrate your Active Directory via LDAP with eduVPN](https://www.youtube.com/embed/qwf0RZ8YK9A?autoplay=1&auto_play=true)
+## Instruction Videos
+
+- [Basic eduVPN/Let's Connect! Server Installation]https://www.youtube.com/watch?v=yBItHovq4AU)
+- [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
 
 ## Supported Operating Systems
 
-* [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-* [Fedora](DEPLOY_FEDORA.md) 32, 33 (`x86_64`)
-* [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
+- [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 32, 33 (`x86_64`)
+- [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
 for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
@@ -90,19 +92,20 @@ follow [these](MULTI_NODE.md) instructions!
 
 ## Experimental
 
-* [Fedora](DEPLOY_FEDORA.md) 33 (`aarch64`)
+- [Fedora](DEPLOY_FEDORA.md) 33 (`aarch64`) 
   (Only available through the "development" repository)
 
 You can use the `aarch64` packages on e.g. the [Raspberry Pi](RASPBERRY_PI.md).
 
 # Development
 
-See [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
+If you want to set up your own server development environment see 
+[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
 
 # License 
 
-This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 
-International License.
+This work (this documentation repository) is licensed under a Creative Commons 
+Attribution-ShareAlike 4.0 International License.
 
 See [LICENSE].
 
