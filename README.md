@@ -70,7 +70,7 @@ a while to wait for a response!
 
 ## Instruction Videos
 
-- [Basic eduVPN/Let's Connect! Server Installation]https://www.youtube.com/watch?v=yBItHovq4AU)
+- [Basic eduVPN/Let's Connect! Server Installation](https://www.youtube.com/watch?v=yBItHovq4AU)
 - [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
 
 ## Supported Operating Systems
