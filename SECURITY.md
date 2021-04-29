@@ -70,14 +70,14 @@ See the `resources/` directory for PHP setting changes.
 
 ### Sessions
 
-We use [fkooman/secookie](https://git.tuxed.net/fkooman/php-secookie), a 
+We use [fkooman/secookie](https://git.sr.ht/~fkooman/php-secookie), a 
 library to implement secure PHP sessions (and cookies).
 
 ## OAuth
 
-The built-in [OAuth server](https://git.tuxed.net/fkooman/php-oauth2-server) 
+The built-in [OAuth server](https://git.sr.ht/~fkooman/php-oauth2-server) 
 uses public key cryptography signed JWT Bearer tokens of the type `EdDSA` 
-implemented in [php-jwt](https://git.tuxed.net/fkooman/php-jwt). The `EdDSA` 
+implemented in [php-jwt](https://git.sr.ht/~fkooman/php-jwt). The `EdDSA` 
 JWT token in specified in [RFC 8037](https://tools.ietf.org/html/rfc8037).
 
 The reason we are using public key cryptography for the Bearer tokens is that 
