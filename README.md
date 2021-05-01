@@ -76,7 +76,7 @@ a while to wait for a response!
 ## Supported Operating Systems
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) 32, 33 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 32, 33, 34 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 

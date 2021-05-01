@@ -56,7 +56,7 @@ else
 fi
 
 # import PGP key and add repository
-rpm --import https://repo.letsconnect-vpn.org/2/rpm/RPM-GPG-KEY-LC
+rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
 cat << EOF > /etc/yum.repos.d/LC-v2.repo
 [LC-v2]
 name=VPN Stable Packages (EL \$releasever)

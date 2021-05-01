@@ -37,7 +37,7 @@ deb https://repo.eduvpn.org/v2/deb buster main
 
 Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
-fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
+fkooman | `99AF 412F BBA0 BF17 92EE  1F41 BAC1 8982 20FB 8A35` | 2026-04-18
 
 ## Config
 
@@ -57,7 +57,7 @@ enabled=1
 
 Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
-fkooman | `1B50 FE64 0B1A 36AC F8F9  3117 1ACB 2EDE AA79 31B2` | 2021-05-01
+fkooman | `99AF 412F BBA0 BF17 92EE  1F41 BAC1 8982 20FB 8A35` | 2026-04-18
 
 ## Config
 
