@@ -16,6 +16,16 @@ In order to make a particular user an "administrator" in the portal, see
 
 # Configuration
 
+First install the PHP module for RADIUS:
+
+    $ sudo yum install php-pecl-radius # CentOS/Fedora
+    $ sudo apt install php-radius      # Debian
+
+Restart PHP to activate the RADIUS module:
+
+    $ sudo systemctl restart php-fpm                            # CentOS/Fedora
+    $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm    # Debian
+
 You can configure the portal to use RADIUS. This is configured in the file 
 `/etc/vpn-user-portal/config.php`.
 
