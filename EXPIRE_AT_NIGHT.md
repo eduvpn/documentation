@@ -1,11 +1,7 @@
-**WORK IN PROGRESS** 
-
-Please provide feedback if you have any!
+# Expire At Night
 
 **NOTE**: this is only implemented in vpn-user-portal >= 2.3.10 which has not
 been released yet.
-
-# Expire At Night
 
 In vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions at night 
 instead of exactly after the duration specified in `sessionExpiry`. The goal
@@ -17,14 +13,19 @@ anymore without the user authenticating/authorizing again. The default after
 which a session expires is 90 days, but this can be modified by the 
 administrator.
 
-The `sessionExpiry` becomes the upper bound of when the session will expire. 
-The new expiry is moved back in time until the first 04:00 is reached. This 
+The `sessionExpiry` becomes the _upper bound_ of when the session will expire. 
+The new expiry is rolled back in time until the previous 04:00 is reached. This 
 could be the same day, or the previous day if the time is currently between 
 00:00 and 04:00.
 
+For example if it is currently Monday 10:00 and the `sessionExpiry` is set to 
+`P7D`, i.e. 7 days, the session will expire at 04:00 on the Monday after and 
+not at 10:00 as it might interfere with the VPN use during working hours.
+
 **NOTE**: currently the nightly expiry ONLY works when the `sessionExpiry` is
 `P7D` (7 days) or longer. We may implement this also for sessions that expire
-sooner.
+sooner, please let us know if you have any ideas on this. For example, how 
+would that work when the expiry is say `PT12H`, i.e. 12 hours?
 
 ## Server Configuration
 
@@ -72,8 +73,6 @@ Don't forget to restart php-fpm after making changes:
 ```
 $ sudo systemctl restart php-fpm
 ```
-
-Now you should be good to go.
 
 ## Portal Configuration
 
