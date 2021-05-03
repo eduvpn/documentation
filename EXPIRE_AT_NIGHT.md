@@ -24,6 +24,10 @@ not at 10:00 as it might interfere with the VPN use during working hours.
 sooner, please let us know if you have any ideas on this. For example, how 
 would that work when the expiry is say `PT12H`, i.e. 12 hours?
 
+**NOTE**: the new expiry will only work form the next time the user 
+authenticates to the portal (or authorizes the app), not for current VPN 
+sessions.
+
 ## Server Configuration
 
 To check the timezone your server is set to:
