@@ -1,12 +1,9 @@
 # Expire At Night
 
-**NOTE**: this is only implemented in vpn-user-portal >= 2.3.10 which has not
-been released yet.
-
-In vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions at night 
-instead of exactly after the duration specified in `sessionExpiry`. The goal
-is to prevent that the user will be disconnected from the VPN during working 
-hours.
+Starting from vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions 
+at night instead of exactly after the duration specified in `sessionExpiry`. 
+The goal is to prevent that the user will be disconnected from the VPN during
+working hours.
 
 By VPN session expiry we mean the moment at which the VPN session won't work 
 anymore without the user authenticating/authorizing again. The default after 
