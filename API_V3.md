@@ -250,6 +250,8 @@ the `<cert>` and `<key>` fields.
 ${OPENVPN CLIENT CONFIG FILE}
 ```
 
+In case of WireGuard, the response will be a WireGuard configuration file.
+
 ### Disconnect
 
     $ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
