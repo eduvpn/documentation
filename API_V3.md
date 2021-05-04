@@ -159,8 +159,10 @@ An example:
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available.
 
-    $ curl -H "Authorization: Bearer abcdefgh" \
-        https://vpn-next.tuxed.net/vpn-user-portal/api/v3/info
+```bash
+$ curl -H "Authorization: Bearer abcdefgh" \
+    https://vpn-next.tuxed.net/vpn-user-portal/api/v3/info
+```
 
 The response looks like this:
 
@@ -173,8 +175,7 @@ The response looks like this:
                 "en-US": "Employees"
             },
             "profile_id": "employees",
-            "vpn_type": "openvpn",
-            "default_gateway": true,
+            "vpn_type": "openvpn"
         },
         {
             "display_name": {
@@ -182,8 +183,7 @@ The response looks like this:
                 "en-US": "Administrators"
             },
             "profile_id": "admins",
-            "vpn_type": "wireguard",
-            "default_gateway": false,
+            "vpn_type": "wireguard"
         }            
     ]
 }
@@ -252,9 +252,13 @@ ${OPENVPN CLIENT CONFIG FILE}
 
 In case of WireGuard, the response will be a WireGuard configuration file.
 
+**TODO**: also expose whether or not the VPN is default gateway for OpenVPN + Linux?
+
 ### Disconnect
 
-    $ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
-        "https://vpn-next.tuxed.net/vpn-user-portal/api/v3/disconnect"
+```bash
+$ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
+    "https://vpn-next.tuxed.net/vpn-user-portal/api/v3/disconnect"
+```
 
 The response will be `204 No Content` if all goes well.
