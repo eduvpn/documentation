@@ -130,7 +130,7 @@ $ curl -H "Authorization: Bearer abcdefgh" \
                 "vpn_type": "openvpn"
             },
             {
-                "display_name": "Administrators"
+                "display_name": "Administrators",
                 "profile_id": "admins",
                 "vpn_type": "wireguard"
             }
