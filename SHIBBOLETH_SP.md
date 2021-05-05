@@ -31,8 +31,12 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
   `discoveryURL` in the `<SSO>` element
 * Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
   1.0 support (only on Debian 9)
-* Set the `file` in the `<MetadataProvider>` element for a simple static 
-  metadata file
+* Set the `path` (or file on Debian 9) in the `<MetadataProvider>` element for 
+  a simple static metadata file, e.g.: 
+  `<MetadataProvider type="XML" validate="false" path="idp.tuxed.net.xml"/>` and 
+  put the `idp.tuxed.net.xml` file in `/etc/shibboleth`. Set `validate` to 
+  `false` to keep the IdP working in case it has `validUntil` specified in the
+  XML
 
 Configuring automatic metadata refresh is outside the scope of this document,
 refer to your identity federation documentation.
@@ -59,18 +63,22 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
 
         <Location /vpn-user-portal>
             AuthType shibboleth
-            ShibRequestSetting requireSession true
-            Require shibboleth
+            ShibRequestSetting requireSession 1
+            <RequireAll>
+                Require shib-session
+                #Require shib-attr entitlement "http://eduvpn.org/role/admin"
+                #Require shib-attr unscoped-affiliation staff
+            </RequireAll>
         </Location>
 
-        # disable Shibboleth for the API
+        # do not secure API endpoint
         <Location /vpn-user-portal/api.php>
-            ShibRequireSession Off
+            Require all granted
         </Location>
 
-        # disable Shibboleth for the OAuth Token Endpoint
+        # do not secure OAuth endpoint
         <Location /vpn-user-portal/oauth.php>
-            ShibRequireSession Off
+            Require all granted
         </Location> 
 
         ...
@@ -80,6 +88,10 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
 Make sure you restart Apache after changing the configuration:
 
     $ sudo systemctl restart apache2
+
+**NOTE** if you are using IDs such as `entitlement` and `unscoped-affiliation` 
+make sure they are correctly enabled/set in 
+`/etc/shibboleth/attribute-map.xml`.
 
 ### Portal
 
