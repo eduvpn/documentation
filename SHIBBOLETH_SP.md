@@ -85,8 +85,9 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
 
     </VirtualHost>
 
-If you have a case where only one attribute needs to match, you can use <RequireAny>
-instead of <RequireAll>. You will also need to remove the Require shib-session. 
+If you have a case where only one attribute needs to match, you can use 
+`<RequireAny>`instead of `<RequireAll>`. You will also need to remove the 
+`Require shib-session`. 
 
 Make sure you restart Apache after changing the configuration:
 

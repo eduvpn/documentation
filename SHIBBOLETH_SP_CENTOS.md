@@ -64,8 +64,9 @@ In `/etc/httpd/conf.d/shib.conf` add the following:
         Require all granted
     </Location> 
 
-If you have a case where only one attribute needs to match, you can use <RequireAny>
-instead of <RequireAll>. You will also need to remove the Require shib-session.
+If you have a case where only one attribute needs to match, you can use 
+`<RequireAny>` instead of `<RequireAll>`. You will also need to remove the 
+`Require shib-session`.
 
 The first location directive within Apache's configuration file specify
 to the module to protect by Shibboleth the access to the VPN Portal.
