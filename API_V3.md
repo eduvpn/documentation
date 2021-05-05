@@ -36,9 +36,9 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 {
   "api": {
     "http://eduvpn.org/api#3": {
-      "api_endpoint": "https://vpn.example.org/vpn-user-portal/api/v3",
-      "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/authorize",
-      "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/token"
+      "api_endpoint": "https://vpn.example.org/vpn-user-portal/api.php/v3",
+      "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/_oauth/authorize",
+      "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth.php/token"
     }
   },
   "v": "3.0.0-1.fc34"
@@ -113,7 +113,7 @@ allow the application to show the user which profiles are available.
 
 ```bash
 $ curl -H "Authorization: Bearer abcdefgh" \
-    https://vpn.example.org/vpn-user-portal/api/v3/info
+    https://vpn.example.org/vpn-user-portal/api.php/v3/info
 ```
 
 ### Response
@@ -155,7 +155,7 @@ Get the profile configuration for the profile you want to connect to.
 
 ```bash
 $ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/api/v3/connect"
+    "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
 ```
 
 ### Response
@@ -209,19 +209,19 @@ fcd6332bb26eeb83744a2aa90c7e2127
 </tls-crypt>
 <cert>
 -----BEGIN CERTIFICATE-----
-MIIBUDCCAQKgAwIBAgIQci4N0pS9xjEc+0bdQtKN0DAFBgMrZXAwETEPMA0GA1UE
-AxMGVlBOIENBMB4XDTIxMDUwNDE3NTkyOFoXDTIxMDgwMjAyMDAwMFowKzEpMCcG
-A1UEAxMgYjAxYTkxMjA1MTQzZjY3Mzk3ZTQxMjJiMzYyYTI0MjMwKjAFBgMrZXAD
-IQDXbjUnU4QAtbOTzr4q9c1x193pxkN0RKcU3ObxowrycaNWMFQwDgYDVR0PAQH/
+MIIBUDCCAQKgAwIBAgIQIKpqzC8atu6Ligr8rNaC0zAFBgMrZXAwETEPMA0GA1UE
+AxMGVlBOIENBMB4XDTIxMDUwNTIyMDY0NloXDTIxMDgwMzAxNTk1OVowKzEpMCcG
+A1UEAxMgM2FhMjgzYjQ3N2JhYTJmNTFmNTdmNDllZjVlZTU3NjYwKjAFBgMrZXAD
+IQDK1vqBpDGrlmtqVP7eeF1zFgzkOOwOJrHLBNZM3nGwo6NWMFQwDgYDVR0PAQH/
 BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHwYDVR0j
-BBgwFoAUDJSRwh1Q1b5rvp6ikk7DzCy4zp0wBQYDK2VwA0EAUDxGrjIDVAN/vJLB
-qQKYY23ss1/DzX++yNKZ9aLgdocTnUoTnKRbB122qLIZ7efuW1WPCWWKGRgesp6X
-0NTLAw==
+BBgwFoAUDJSRwh1Q1b5rvp6ikk7DzCy4zp0wBQYDK2VwA0EAB2XXnXJftAr12qRq
+wUU4LzRio6aC1LJPvqv4lX5fu3ejAVOiR1hwBwkhmi+n4u/K5NVmNJkywaQ8+1Q1
+utX/Bw==
 -----END CERTIFICATE-----
 </cert>
 <key>
 -----BEGIN PRIVATE KEY-----
-MC4CAQAwBQYDK2VwBCIEIJYfYOeDrJ46U2Q4uZQ9NUUymTqYrZfc1FRYabQUDx1x
+MC4CAQAwBQYDK2VwBCIEIFYHOY8Aw9gjH/7JzhJelBxxR8LXYXuUjhppfJ5+5eou
 -----END PRIVATE KEY-----
 </key>
 remote vpn.example.org 1194 udp
@@ -232,15 +232,16 @@ If the profile is an WireGuard profile you'll get the complete WireGuard client
 configuration with `Content-Type: application/x-wireguard-profile`, e.g.:
 
 ```
+[Interface]
+PrivateKey = CFiA13l2dvPTvg5jso7SipKdo+MoJqiBzi1hlhE8vF8=
+Address = 10.85.134.3/24, fd8e:5472:d976:ce6a::a55:8603/64
+DNS = 9.9.9.9, 2620:fe::fe
+
 [Peer]
-PublicKey = 2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=
+PublicKey = mMtArSl4WPKRhiJo0Wr5D5CEBCA6BXMATBAo8kzXeRg=
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = vpn.example.org:51820
-
-[Interface]
-Address = 10.10.10.5/24, fd00:1234:1234:1234::5/64
-DNS = 9.9.9.9, 2620:fe::fe    
-PrivateKey = IE5RrlVJSN+/soFhmd/hZDST/bVu8voNk9mq1u6IQWI=
+PersistentKeepalive = 25
 ```
 
 ## Disconnect
@@ -249,7 +250,7 @@ PrivateKey = IE5RrlVJSN+/soFhmd/hZDST/bVu8voNk9mq1u6IQWI=
 
 ```bash
 $ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/api/v3/disconnect"
+    "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
 ```
 
 ### Response
