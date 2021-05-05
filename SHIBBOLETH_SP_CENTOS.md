@@ -4,11 +4,11 @@ description: SAML Authentication using Shibboleth on CentOS
 category: authentication
 ---
 
-This document describes installing Shibboleth on CentOS 7. On CentOS you have 
-to install Shibboleth V3 packages provided by the Shibboleth project. 
+This document describes installing Shibboleth on CentOS 7. On CentOS you have
+to install Shibboleth V3 packages provided by the Shibboleth project.
 
 To configure a repository for CentOS 7, you must create a file
-in the `/etc/yum.repos.d/` directory, for example 
+in the `/etc/yum.repos.d/` directory, for example
 `/etc/yum.repos.d/shibboleth.repo`, with the following content:
 
     [shibboleth]
@@ -23,14 +23,14 @@ in the `/etc/yum.repos.d/` directory, for example
 Install Shibboleth :
 
     $ sudo yum install shibboleth
-    
+
 Then configure the `shibd` daemon to run automatically at start-up:
 
     $ sudo systemctl enable shibd
 
 ## Certificates
 
-The installation generates two certificates (more precisely: two key pairs / 
+The installation generates two certificates (more precisely: two key pairs /
 certificates) for two different purposes:
 
 1. Signing of SAML messages (`AuthnRequest`, `LogoutRequest`) sent to the IdP;
@@ -38,31 +38,34 @@ certificates) for two different purposes:
 
 ## Apache configuration
 
-The installation of Shibboleth will install an Apache module name `mod_shib`, 
-this module has the ability to process both a variety of Apache commands 
+The installation of Shibboleth will install an Apache module name `mod_shib`,
+this module has the ability to process both a variety of Apache commands
 and rules specified in the SP configuration and make sense of both.
 
 In `/etc/httpd/conf.d/shib.conf` add the following:
 
     <Location /vpn-user-portal>
         AuthType shibboleth
-        ShibRequestSetting requireSession true
-        Require shibboleth
+        ShibRequestSetting requireSession 1
+        <RequireAll>
+            Require shib-session
+            #Require shib-attr entitlement "http://eduvpn.org/role/admin"
+            #Require shib-attr unscoped-affiliation staff
+        </RequireAll>
     </Location>
 
-    <Location /Shibboleth.sso>
-        SetHandler shib
-    </Location>
-
-    # disable Shibboleth for the API
+    # do not secure API endpoint
     <Location /vpn-user-portal/api.php>
-        ShibRequireSession Off
+        Require all granted
     </Location>
 
-    # disable Shibboleth for the OAuth Token Endpoint
+    # do not secure OAuth endpoint
     <Location /vpn-user-portal/oauth.php>
-        ShibRequireSession Off
+        Require all granted
     </Location> 
+
+If you have a case where only one attribute needs to match, you can use <RequireAny>
+instead of <RequireAll>. You will also need to remove the Require shib-session.
 
 The first location directive within Apache's configuration file specify
 to the module to protect by Shibboleth the access to the VPN Portal.
@@ -70,26 +73,35 @@ to the module to protect by Shibboleth the access to the VPN Portal.
 Make sure you restart Apache after changing the configuration:
 
     $ sudo systemctl restart httpd
-    
+
 Then configure the Apache daemon to run automatically at start-up:
 
     $ sudo systemctl enable httpd
+
+**NOTE** if you are using IDs such as `entitlement` and `unscoped-affiliation` 
+make sure they are correctly enabled/set in 
+`/etc/shibboleth/attribute-map.xml`.
 
 ## Shibboleth Configuration
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
-* Set `entityID` to `https://vpn.example.org/shibboleth` in the 
+* Set `entityID` to `https://vpn.example.org/shibboleth` in the
   `<ApplicationDefaults>` element.
-* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>` 
+* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>`
   element
 * Add in the `Sessions` element `handlerURL=”/Shibboleth.sso”`
-* Set the `entityID` to the entity ID of your IdP, or configure the 
+* Set the `entityID` to the entity ID of your IdP, or configure the
   `discoveryURL` in the `<SSO>` element
-* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
+* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
   1.0 support
-* Set the `file` in the `<MetadataProvider>` element to load your federation 
-  metadata
+* Set the `path` in the `<MetadataProvider>` element for 
+  a simple static metadata file, e.g.: 
+  `<MetadataProvider type="XML" validate="false" path="idp.tuxed.net.xml"/>` and 
+  put the `idp.tuxed.net.xml` file in `/etc/shibboleth`. Set `validate` to 
+  `false` to keep the IdP working in case it has `validUntil` specified in the
+  XML
+
 
 Configuring automatic metadata refresh is outside the scope of this document,
 refer to your identity federation documentation.
@@ -153,7 +165,7 @@ Restart Shibboleth:
 
     $ sudo systemctl restart shibd
 
-Next: register your SP in your identity federation, or in your IdP. The 
+Next: register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
 
 ### Portal
@@ -174,7 +186,7 @@ and set the `authMethod` and `ShibAuthentication` options:
 
     ...
 
-The mentioned attributes `persistent-id` and `entitlement` are configured in 
-the Shibboleth configuration. Modify/add others as required in 
+The mentioned attributes `persistent-id` and `entitlement` are configured in
+the Shibboleth configuration. Modify/add others as required in
 `/etc/shibboleth/attribute-map.xml`. Do not forget to restart Shibboleth if
 you make any changes to its configuration.
