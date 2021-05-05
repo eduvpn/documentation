@@ -29,9 +29,8 @@ work with APIv3.
 
 # Endpoint Discovery
 
-A "well-known" URL is provided to figure out the OAuth and API endpoint one 
-has to use. The document can be retrieved from `/.well-known/vpn-user-portal`, 
-e.g.:
+A "well-known" URL is provided to figure out the OAuth and API endpoint one
+has to use. The document can be retrieved from `/info.json`, e.g.:
 
 ```json
 {
@@ -49,8 +48,10 @@ e.g.:
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
 followed.
 
-**NOTE**: this used to be the `/info` endpoint. We MAY still change the 
-endpoint to something like `/.well-known/org.eduvpn.api`.
+## Endpoint Location
+
+Currently we support both `/info.json` and `/.well-known/vpn-user-portal` in 
+eduVPN/Let's Connect! 2.x. It would be nice to phase out `/info.json`.
 
 # Authorization Endpoint
 
@@ -67,7 +68,7 @@ specification are required, even optional ones:
 - `code_challenge`.
 
 Please follow the OAuth specification, or use a library for your platform that
-implements OAuth 2.1. 
+implements OAuth 2.1.
 
 The `authorization_endpoint` with its parameters set MUST be opened in the 
 platform's default browser. The `redirect_uri` parameter MUST point back to 
@@ -126,13 +127,11 @@ $ curl -H "Authorization: Bearer abcdefgh" \
                     "en": "Employees",
                     "nl": "Medewerkers"
                 },
-                "profile_id": "employees",
-                "vpn_type": "openvpn"
+                "profile_id": "employees"
             },
             {
                 "display_name": "Administrators",
-                "profile_id": "admins",
-                "vpn_type": "wireguard"
+                "profile_id": "admins"
             }
         ]
     }
