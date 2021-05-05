@@ -41,7 +41,7 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
       "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/token"
     }
   },
-  "v": "3.0.0-0.75.fc34"
+  "v": "3.0.0-1.fc34"
 }
 ```
 
@@ -137,6 +137,12 @@ $ curl -H "Authorization: Bearer abcdefgh" \
     }
 }
 ```
+
+**TODO**: we probably have to indicate the `sessionExpiry` also through the 
+API so the client knows when the VPN session will end
+
+**TODO**: we need VPN type again in order to be able for the client to know 
+whether they can provide `public_key` as well. Maybe something for APIv3.1?
 
 **TODO**: mention the `display_name` field can be either a string, or an object
 with BCP47 language codes as key.
@@ -257,11 +263,14 @@ The response will be `204 No Content` if all goes well.
 - i am not sure it is good idea to generate new keys on every call to 
   `/connect`, that seems inefficient, BUT it is very cheap when using Ed25519 
   which we do for eduVPN 3.x
-- we MAY supprot a `public_key` field on `/connect` for WireGuard profiles to 
+- we MAY support a `public_key` field on `/connect` for WireGuard profiles to 
   allow the client to use a locally generated key. This may actually be a good
-  idea!
+  idea! Then we have to reintroduce `vpn_type` again I guess so the client 
+  knows it is a WireGuard profile... APIv3.1?
 - As long as you don't call `/disconnect` the obtained configuration will 
   remain valid as long as it doesn't expire (sessionExpiry)
+- The certificate will expire exactly at the moment the OAuth refresh and 
+  access token no longer work
 - when the computer goes to sleep you can just try to reconnect with the 
   previously obtained configuration, no need to use the API, BUT if connecting
   doesn't work go back to the API
