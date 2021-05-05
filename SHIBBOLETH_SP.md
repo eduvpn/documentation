@@ -23,13 +23,13 @@ This document describes installing Shibboleth on Debian 9 and 10.
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
-* Set entityID to `https://vpn.example.org/shibboleth` in the 
+* Set entityID to `https://vpn.example.org/shibboleth` in the
   `<ApplicationDefaults>` element.
-* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>` 
+* Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>`
   element
-* Set the `entityID` to the entity ID of your IdP, or configure the 
+* Set the `entityID` to the entity ID of your IdP, or configure the
   `discoveryURL` in the `<SSO>` element
-* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML 
+* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
   1.0 support (only on Debian 9)
 * Set the `path` (or file on Debian 9) in the `<MetadataProvider>` element for 
   a simple static metadata file, e.g.: 
@@ -50,7 +50,7 @@ Restart Shibboleth:
 
     $ sudo systemctl restart shibd
 
-Next: register your SP in your identity federation, or in your IdP. The 
+Next: register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
 
 ### Apache
@@ -85,6 +85,9 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
 
     </VirtualHost>
 
+If you have a case where only one attribute needs to match, you can use <RequireAny>
+instead of <RequireAll>. You will also need to remove the Require shib-session. 
+
 Make sure you restart Apache after changing the configuration:
 
     $ sudo systemctl restart apache2
@@ -111,7 +114,7 @@ and set the `authMethod` and `ShibAuthentication` options:
 
     ...
 
-The mentioned attributes `persistent-id` and `entitlement` are configured in 
-the Shibboleth configuration. Modify/add others as required in 
+The mentioned attributes `persistent-id` and `entitlement` are configured in
+the Shibboleth configuration. Modify/add others as required in
 `/etc/shibboleth/attribute-map.xml`. Do not forget to restart Shibboleth if
 you make any changes to its configuration.
