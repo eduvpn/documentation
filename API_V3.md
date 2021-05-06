@@ -45,6 +45,9 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 }
 ```
 
+Servers that provide the `http://eduvpn.org/api#3` key under `api`, support
+this API (and WireGuard).
+
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
 followed.
 
