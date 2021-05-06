@@ -3,39 +3,30 @@
 **NOTE**: WireGuard functionality is **EXPERIMENTAL** and not available in 
 any official VPN packages yet! Do NOT use in production!
 
+It is available in the eduVPN/Let's Connect! 3.x development release.
+
 ## Requirements
 
 WireGuard will only be supported on servers running Debian >= 11 and 
-Fedora >= 33. Currently only Fedora 33 (x86_64, aarch64) works.
+Fedora >= 34. Currently only Fedora 34 (x86_64) is tested.
 
-```
-$ sudo dnf -y install wireguard-tools
-```
-
-Use the following repository configuration in 
-`/etc/yum.repos.d/eduVPN-wg.repo`: 
-
-```
-[eduVPN-wg]
-name=eduVPN with WireGuard Packages (Fedora $releasever)
-baseurl=https://repo.tuxed.net/eduVPN/wg/rpm/fedora-$releasever-$basearch
-gpgcheck=1
-gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
-```
+You can install the eduVPN 3.x development release on Fedora 34 using the 
+`deploy_fedora_v3.sh` script instead of the `deploy_fedora.sh` script. That 
+should set up a lot for you already.
 
 ## WireGuard Configuration
 
 ```
-$ sudo cat /etc/wireguard/wg0.conf
+# cat /etc/wireguard/wg1.conf 
 [Interface]
-Address = 10.145.101.1/24,fd04:b3ac:674d:b32b::1/64
+Address = 10.85.134.1/24,fd8e:5472:d976:ce6a::1/64
 ListenPort = 51820
-PrivateKey = (hidden)
+PrivateKey = QFqtgK09YJ9onVLNNAunZawHojHK+j8SROfHU/NNQ3E=
 ```
 
-To generate a private key you can use `wg genkey`. Put that in the place above
-where it says `(hidden)`. In order to generate "random" IPv4 and IPv6 prefixes
-to use in your configuration you can use the `vpn-server-api-suggest-ip` 
+To generate a private key you can use `wg genkey`. Replace the `PrivateKey` 
+value with your own value. In order to generate "random" IPv4 and IPv6 prefixes
+to use in your configuration you can use the `vpn-user-portal-suggest-ip` 
 command. Make sure they match with the `rangeFour` and `rangeSix` parameters
 in the portal configuration below. **NOTE**: use `.1` and `::1` in `Address` 
 above and use `.0` and `::` in `rangeFour` and `rangeSix`.
@@ -43,7 +34,7 @@ above and use `.0` and `::` in `rangeFour` and `rangeSix`.
 To start the WireGuard interface and enable it to start on boot:
 
 ```
-$ sudo systemctl enable --now wg-quick@wg0
+$ sudo systemctl enable --now wg-quick@wg1
 ```
 
 Still need to figure out whether this is best way to make this persistent. 
@@ -59,7 +50,7 @@ $ sudo systemctl enable --now wg-daemon
 You can test the interface with WireGuard out now:
 
 ```
-$ curl -s http://localhost:8080/info | jq
+$ curl -s http://localhost:8080/info?Device=wg1 | jq
 {
   "PublicKey": "2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=",
   "ListenPort": 51820,
@@ -69,36 +60,29 @@ $ curl -s http://localhost:8080/info | jq
 ## Portal
 
 You need to enable WireGuard in the portal configuration by modifying 
-`/etc/vpn-user-portal/config.php`, you can also configure WireGuard:
+`/etc/vpn-user-portal/config.php`. You can add a WireGuard profile:
 
 ```
-// DEFAULT: false
-'enableWg' => true,
+'vpnProfiles' => [
+    // OpenVPN Profile
+    'default' => [ 
+        'vpnType' => 'openvpn',
+        'profileNumber' => 1,
 
-'WgConfig' => [
-    // the WireGuard interface
-    // REQUIRED
-    'wgDevice' => 'wg0',
-
-    // where to reach "wg-daemon"
-    // DEFAULT: http://localhost:8080
-    'wgDaemonUrl' => 'http://localhost:8080',
-
-    // the DNS to put in the configuration you send to the clients
-    // DEFAULT: 9.9.9.9, 2620:fe::fe
-    'dns' => ['9.9.9.9', '2620:fe::fe'],
-    
-    // the host name WireGuard clients will connect to
-    // REQUIRED
-    'hostName' => 'vpn.example.org',
-
-    // The IPv4 range issued to WireGuard clients
-    // REQUIRED
-    'rangeFour' => '10.145.101.0/24',
-
-    // The IPv6 range issued to WireGuard clients
-    // REQUIRED
-    'rangeSix' => 'fd04:b3ac:674d:b32b::/64',
+        // ...
+        
+    ],
+        
+    // WireGuard Profile
+    'default-wg' => [
+        'vpnType' => 'wireguard',
+        'profileNumber' => 2,
+        'displayName' => 'Default WireGuard',
+        'range' => '10.85.134.0/24',
+        'range6' => 'fd8e:5472:d976:ce6a::/64',
+        'hostName' => 'vpn.example.org',
+        'dns' => ['9.9.9.9', '2620:fe::fe'],
+    ],
 ],
 ```
 
@@ -126,78 +110,7 @@ The WireGuard integration also exposes an API for use by apps. It works the
 same way as the existing API, protected using OAuth. This API is in a state of 
 flux and will defintely change before being rolled out in production!
 
-The API endpoint discovery is exactly the same as documented [here](API.md). 
-This documentation will eventually be merged there.
-
-The `$(BEARER_TOKEN}` referenced below is obtained through the OAuth flow.
-
-### Available
-
-**NOTE**: this call will most likely be removed as there will be another 
-indicator, for example in the `info.json` that indicated WireGuard support.
-
-As WireGuard integration is currently optional, the client can determine 
-whether WireGuard support is enabled on the server by requesting 
-`/wg/available`, e.g.:
-
-```
-$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
-    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/available
-HTTP/1.1 200 OK
-Date: Sat, 30 Jan 2021 09:43:28 GMT
-Content-Type: text/plain;charset=UTF-8
-
-y
-```
-
-### Connect
-
-**NOTE**: this call will probably be renamed to `/wg/connect`, `/wg/add_peer`, 
-`/wg/add_client` or something similar.
-
-```
-$ PUBLIC_KEY=$(wg genkey | wg pubkey)
-$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
-    --data-urlencode "publicKey=${PUBLIC_KEY}" \
-    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/create_config
-HTTP/1.1 200 OK
-Date: Sat, 30 Jan 2021 09:45:19 GMT
-Content-Type: text/plain;charset=UTF-8
-
-[Peer]
-PublicKey = 2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=
-AllowedIPs = 0.0.0.0/0, ::/0
-Endpoint = fedora-vpn.tuxed.net:51820
-
-[Interface]
-Address = 10.10.10.5/24, fd00:1234:1234:1234::5/64
-DNS = 9.9.9.9, 2620:fe::fe    
-```
-
-### Disconnect
-
-**NOTE**: this call will probably be renamed to `/wg/remove_peer`, 
-`/wg/remove_client`, or something similar.
-
-```
-$ curl -i -H "Authorization: Bearer ${BEARER_TOKEN}" \
-    --data-urlencode "publicKey=${PUBLIC_KEY}" \
-    https://fedora-vpn.tuxed.net/vpn-user-portal/api.php/wg/disconnect
-HTTP/1.1 204 No Content
-Date: Sat, 30 Jan 2021 09:46:02 GMT
-    
-```
-
-## App
-
-We have an experimental Android app available for testing WireGuard. You can
-download it 
-[here](https://argon.tuxed.net/fkooman/eduVPN/LetsConnect-wireguard.apk).
-
-Make sure you first connect to the server you want to use with OpenVPN and make
-sure it works. Then go in the "App Settings" and enable the WireGuard" 
-checkbox. Trying to reconnect at this point will use WireGuard if all goes 
-well.
+Check our [APIv3](API_V3.md) document on how to use it for WireGuard profiles.
 
 ## TODO
 
@@ -206,7 +119,6 @@ well.
   every 2 minutes a partial sync, only peers get added, never removed, is 
   not great... it *does* work, for now... at least we need a call for multi 
   peer add
-- implement multi-profile
 - implement wg-server-config.php to write `/etc/wireguard/wg*.conf` files in 
   vpn-server-node package
 - add entries to `connection_log` table when peer is added/removed so we know
