@@ -42,15 +42,10 @@ Maybe through NetworkManager or `systemd-networkd` would be better.
 
 ## Daemon
 
-```
-$ sudo dnf -y install wg-daemon
-$ sudo systemctl enable --now wg-daemon
-```
-
-You can test the interface with WireGuard out now:
+You can test the interface with WireGuard:
 
 ```
-$ curl -s http://localhost:8080/info?Device=wg1 | jq
+$ curl -s http://localhost:8080/info?Device=wg1
 {
   "PublicKey": "2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=",
   "ListenPort": 51820,
@@ -82,6 +77,8 @@ You need to enable WireGuard in the portal configuration by modifying
         'range6' => 'fd8e:5472:d976:ce6a::/64',
         'hostName' => 'vpn.example.org',
         'dns' => ['9.9.9.9', '2620:fe::fe'],
+        
+        // not all other options are supported yet...
     ],
 ],
 ```
@@ -104,16 +101,21 @@ $ sudo systemctl restart iptables
 $ sudo systemctl restart ip6tables
 ```
 
+**NOTE**: restarting `iptables` and `ip6tables` doesn't (always?) seem to 
+work (anymore) on Fedora 34. You may need to reboot your system.
+
 ## API
 
 The WireGuard integration also exposes an API for use by apps. It works the 
 same way as the existing API, protected using OAuth. This API is in a state of 
 flux and will defintely change before being rolled out in production!
 
-Check our [APIv3](API_V3.md) document on how to use it for WireGuard profiles.
+Check our [APIv3](API_V3.md) document on how to use it for obtaining WireGuard 
+client configurations.
 
 ## TODO
 
+- (re)implement portal support for manual configuration downloads
 - we currently have a "sync" that adds all peers to WG from DB that were 
   manually created, i.e. not through the API. This needs to be done better, 
   every 2 minutes a partial sync, only peers get added, never removed, is 
