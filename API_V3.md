@@ -24,8 +24,13 @@ branded application [here](SERVER_DISCOVERY.md).
 
 The VPN servers provide an API protected with 
 [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/), currently 
-in draft. If the application implemented [APIv2](API.md) it will also
-work with APIv3.
+in draft. If the application implemented OAuth for [APIv2](API.md) it will also
+work as-is with APIv3. 
+
+The _only_ difference is that refresh tokens are renewed when a refresh token 
+is being used, and before the same refresh token could be used multiple times,
+but rudimentary tests with existing eduVPN/Let's Connect! applications showed 
+that all of them properly support this. It can't hurt to make 100% sure though.
 
 # Endpoint Discovery
 
