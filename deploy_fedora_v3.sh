@@ -92,6 +92,12 @@ sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-user-portal/config.php"
 # XXX would be nice if we could avoid this
 sudo -u apache /usr/libexec/vpn-user-portal/init
 
+# update the default IP ranges for the profiles
+sed -i "s|10.42.42.0/24|$(vpn-user-portal-suggest-ip -4)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd42::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|10.43.43.0/24|$(vpn-user-portal-suggest-ip -4)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd43::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/config.php"
+
 ###############################################################################
 # NETWORK
 ###############################################################################
