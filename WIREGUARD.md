@@ -16,6 +16,9 @@ should set up a lot for you already.
 
 ## WireGuard Configuration
 
+**TODO**: make server-config.php do this based on `config.php` and 
+`vpn-maint-apply-changes` enable the service(s)
+
 ```
 # cat /etc/wireguard/wg1.conf 
 [Interface]
@@ -51,58 +54,6 @@ $ curl -s http://localhost:8080/info?Device=wg1
   "ListenPort": 51820,
 }
 ```
-
-## Portal
-
-You need to enable WireGuard in the portal configuration by modifying 
-`/etc/vpn-user-portal/config.php`. You can add a WireGuard profile:
-
-```
-'vpnProfiles' => [
-    // OpenVPN Profile
-    'default' => [ 
-        'vpnType' => 'openvpn',
-        'profileNumber' => 1,
-
-        // ...
-        
-    ],
-        
-    // WireGuard Profile
-    'default-wg' => [
-        'vpnType' => 'wireguard',
-        'profileNumber' => 2,
-        'displayName' => 'Default WireGuard',
-        'range' => '10.85.134.0/24',
-        'range6' => 'fd8e:5472:d976:ce6a::/64',
-        'hostName' => 'vpn.example.org',
-        'dns' => ['9.9.9.9', '2620:fe::fe'],
-        
-        // not all other options are supported yet...
-    ],
-],
-```
-
-## Firewall
-
-We assume you are using the default firewall, some rules need to be added, 
-both in the `/etc/sysconfig/iptables` and `/etc/sysconfig/ip6tables` files:
-
-```
--A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
--A FORWARD -i wg+ ! -o wg+ -j ACCEPT
--A FORWARD ! -i wg+ -o wg+ -j ACCEPT
-```
-
-After modifying the firewall, restart it:
-
-```
-$ sudo systemctl restart iptables
-$ sudo systemctl restart ip6tables
-```
-
-**NOTE**: restarting `iptables` and `ip6tables` doesn't (always?) seem to 
-work (anymore) on Fedora 34. You may need to reboot your system.
 
 ## API
 
