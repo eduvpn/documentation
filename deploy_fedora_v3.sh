@@ -155,8 +155,8 @@ vpn-maint-apply-changes
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/iptables  /etc/sysconfig/iptables
-cp resources/firewall/ip6tables /etc/sysconfig/ip6tables
+cp resources/firewall/iptables.v3  /etc/sysconfig/iptables
+cp resources/firewall/ip6tables.v3 /etc/sysconfig/ip6tables
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables
