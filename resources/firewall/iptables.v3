@@ -23,8 +23,8 @@
 -A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
 
-# WireGuard
--A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
+# WireGuard (wg1)
+-A INPUT -p udp -m state --state NEW -m udp --dport 51821 -j ACCEPT
 
 # More OpenVPN ports
 #-A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
