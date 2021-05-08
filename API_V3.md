@@ -4,7 +4,7 @@ description: API Documentation for (Native) Application Developers
 category: dev
 ---
 
-**NOTE**: WORK IN PROGRESS AS OF 2021-05-04
+**NOTE**: WORK IN PROGRESS AS OF 2021-05-08
 
 This document describes the API provided by all eduVPN/Let's Connect! servers.
 The API is intended to be used by the eduVPN and Let's Connect! applications.
@@ -293,6 +293,9 @@ The response will be `204 No Content` if all goes well.
 
 # Notes
 
+- we should probably rename the `/connect` and `/disconnect` calls to `/setup` 
+  and `/teardown` or `/register` / `/unregister` or something like this, as 
+  there is no actual connection taking place...
 - as long as the OAuth token works, the client configuration works, there is no
   need to ask the server whether a certificate is (still) valid
 - i am not sure it is good idea to generate new keys on every call to 
