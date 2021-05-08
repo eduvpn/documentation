@@ -149,12 +149,6 @@ $ curl -H "Authorization: Bearer abcdefgh" \
 }
 ```
 
-**TODO**: we probably have to indicate the `sessionExpiry` also through the 
-API so the client knows when the VPN session will end
-
-**TODO**: we need VPN type again in order to be able for the client to know 
-whether they can provide `public_key` as well. Maybe something for APIv3.1?
-
 **TODO**: mention the `display_name` field can be either a string, or an object
 with BCP47 language codes as key.
 
@@ -268,7 +262,8 @@ You can use the `Expires` response header value to figure out how long the VPN
 session will be valid without calling `/disconnect`.
 
 The `X-Vpn-Connection-Id` header value MUST be used when calling `/disconnect`,
-see below. This in order to make sure the correct connection is stopped.
+see below. This in order to make sure the correct connection is cleaned up 
+properly.
  
 ## Disconnect
 
@@ -309,8 +304,8 @@ The response will be `204 No Content` if all goes well.
   knows it is a WireGuard profile... APIv3.1?
 - As long as you don't call `/disconnect` the obtained configuration will 
   remain valid as long as it doesn't expire (sessionExpiry)
-- The certificate will expire exactly at the moment the OAuth refresh and 
-  access token no longer work
+- The certificate/public key will expire exactly at the moment the OAuth 
+  refresh and access token no longer work
 - when the computer goes to sleep you can just try to reconnect with the 
   previously obtained configuration, no need to use the API, BUT if connecting
   doesn't work go back to the API
