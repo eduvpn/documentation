@@ -175,6 +175,11 @@ If the profile is an OpenVPN profile you'll get the complete OpenVPN client
 configuration with `Content-Type: application/x-openvpn-profile`, e.g.:
 
 ```
+X-Vpn-Connection-Id: 54251e7c9601f38fab88744f4786b76f
+Expires: Fri, 06 Aug 2021 03:59:59 GMT
+Content-Type: application/x-openvpn-profile
+
+# OpenVPN Client Configuration
 dev tun
 client
 nobind
@@ -186,13 +191,13 @@ data-ciphers AES-256-GCM
 reneg-sec 0
 <ca>
 -----BEGIN CERTIFICATE-----
-MIIBRDCB96ADAgECAhEAj8Qvi/o+rgDsjHFbFsgWSjAFBgMrZXAwETEPMA0GA1UE
-AxMGVlBOIENBMB4XDTIxMDQyOTA5MzkzNVoXDTMxMDQyOTA5NDQzNVowETEPMA0G
-A1UEAxMGVlBOIENBMCowBQYDK2VwAyEAszmmBhVeMVEhu5ZodvhcfyMbF2IRQ3zI
-FNCLzKDcljWjZDBiMA4GA1UdDwEB/wQEAwIChDAdBgNVHSUEFjAUBggrBgEFBQcD
-AQYIKwYBBQUHAwIwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUDJSRwh1Q
-1b5rvp6ikk7DzCy4zp0wBQYDK2VwA0EAu28CZxjoGeVX+xLiWwkGMW4QqPI5GkTG
-HLR87eg7lHRBEX2C2qYQ00Ssd9pIdL4x5fOb2Z7APRQV7REyjb04Aw==
+MIIBQzCB9qADAgECAhBo5To7i6Tlbak616ixNkNjMAUGAytlcDARMQ8wDQYDVQQD
+EwZWUE4gQ0EwHhcNMjEwNDI5MDk1MDAyWhcNMzEwNDI5MDk1NTAyWjARMQ8wDQYD
+VQQDEwZWUE4gQ0EwKjAFBgMrZXADIQBONDYoafRXDO01zL9vUjbj46g1+5FXh8uX
+rMZvX3MCIKNkMGIwDgYDVR0PAQH/BAQDAgKEMB0GA1UdJQQWMBQGCCsGAQUFBwMB
+BggrBgEFBQcDAjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBTUyHw5S0sG
+boplw33QDLaLf66gBDAFBgMrZXADQQCfvYY9CYKxMYC6ujoZrysLWVeG5Ay9ZD2o
+RJ1hHQHVU3rq/ATpiMOKRmbGy+u+TJH5DFMywJ8D8SEqSrI8+rkN
 -----END CERTIFICATE-----
 </ca>
 <tls-crypt>
@@ -200,67 +205,90 @@ HLR87eg7lHRBEX2C2qYQ00Ssd9pIdL4x5fOb2Z7APRQV7REyjb04Aw==
 # 2048 bit OpenVPN static key
 #
 -----BEGIN OpenVPN Static key V1-----
-93552466d1be60184adc39647b3d6bdf
-a8a09702dfc85da97af6c1880b473397
-22ba7e85774bf1fa4297611e3a45d603
-82f4134e5868cf9c14c109cc24379c99
-4f097a48211f8a7366270c90ab6f7b03
-987b89b533551d4cc2a47196846489ad
-20d9e9c231476f6e7daeee2695a362eb
-c02a8dfae60e6ba886151b280242a599
-fcd6332bb26eeb83744a2aa90c7e2127
-944615855494b706d71c68241349c404
-8bde489886c56894c321371c16dd0b7e
-342f17f8307d21b48f3e9df96f53ff62
-9d21d5b3af73273a7af5bdc4ff712333
-6f4f67fd7b9da44539f3229d067405ae
-7acbebbf91d9982ae9130d5cc5598072
-569b6637f7984e378358fe80fd1b313f
+696fec0fef444105a153448d00f28dce
+243928a480cbac07e98c36398c980d13
+bbfd600e91fdcd8cfb416baf2a357a7b
+b73d5d6595e84d29a55045a4d4d84714
+c6a40d7b5a646557a927c6058b17a272
+77f111f602aa29933cdba70a59cc9759
+0eb851c8f1dcc25807a2251a0546aff5
+6eef04dc804243d5790d9b23a79b20a9
+b01faa33c0f03953ee6cb418c545bacf
+1b8af0c6b49d4bf1b4bcc0a0db5fc3cd
+f4d9675ff7a9fefa1e9e25e992b7d66a
+ff6d903a9e426ded4b8ce5a3a530e483
+f9ee774f99216d0201240f238561ebe2
+47cd388a5d1e589945628e0abcf26a1e
+c0be30f0f2cfc480f9b55ce670231db9
+c90a590cde36ef810a228a192386658d
 -----END OpenVPN Static key V1-----
 </tls-crypt>
 <cert>
 -----BEGIN CERTIFICATE-----
-MIIBUDCCAQKgAwIBAgIQIKpqzC8atu6Ligr8rNaC0zAFBgMrZXAwETEPMA0GA1UE
-AxMGVlBOIENBMB4XDTIxMDUwNTIyMDY0NloXDTIxMDgwMzAxNTk1OVowKzEpMCcG
-A1UEAxMgM2FhMjgzYjQ3N2JhYTJmNTFmNTdmNDllZjVlZTU3NjYwKjAFBgMrZXAD
-IQDK1vqBpDGrlmtqVP7eeF1zFgzkOOwOJrHLBNZM3nGwo6NWMFQwDgYDVR0PAQH/
-BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHwYDVR0j
-BBgwFoAUDJSRwh1Q1b5rvp6ikk7DzCy4zp0wBQYDK2VwA0EAB2XXnXJftAr12qRq
-wUU4LzRio6aC1LJPvqv4lX5fu3ejAVOiR1hwBwkhmi+n4u/K5NVmNJkywaQ8+1Q1
-utX/Bw==
+MIIBYzCCARWgAwIBAgIRAJe+VDNu0cWrvYqvpi3S1pwwBQYDK2VwMBExDzANBgNV
+BAMTBlZQTiBDQTAeFw0yMTA1MDgwOTQwNDBaFw0yMTA4MDYwMTU5NTlaMD0xEDAO
+BgNVBAsTB2RlZmF1bHQxKTAnBgNVBAMTIDU0MjUxZTdjOTYwMWYzOGZhYjg4NzQ0
+ZjQ3ODZiNzZmMCowBQYDK2VwAyEANtm0hHuT97mwe/VELSB3G+0145ZZhHw/g+Af
+OlxJz9ujVjBUMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDAjAM
+BgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFNTIfDlLSwZuimXDfdAMtot/rqAEMAUG
+AytlcANBAA6tQFgH4NLkgD7SCa3gttpLB7HAKpTZFZwduLw+tOxR1b4jdUY9Caai
+8brsE/LqFzafeCw+kgQyGX2Hnd+jWw0=
 -----END CERTIFICATE-----
 </cert>
 <key>
 -----BEGIN PRIVATE KEY-----
-MC4CAQAwBQYDK2VwBCIEIFYHOY8Aw9gjH/7JzhJelBxxR8LXYXuUjhppfJ5+5eou
+MC4CAQAwBQYDK2VwBCIEIBh7ZHKGCSVnJne7BTaiB8YSUQXhHcAAR80zJm+zXVlT
 -----END PRIVATE KEY-----
 </key>
-remote vpn.example.org 1194 udp
-remote vpn.example.org 1194 tcp
+remote vpn.example 1194 udp
+remote vpn.example 1194 tcp
 ```
 
 If the profile is an WireGuard profile you'll get the complete WireGuard client
 configuration with `Content-Type: application/x-wireguard-profile`, e.g.:
 
 ```
+X-Vpn-Connection-Id: KgW+5T/6dwH24VYmOVvvlYLOTjWXijWzm+RXKjKdrGU=
+Expires: Fri, 06 Aug 2021 03:59:59 GMT
+Content-Type: application/x-wireguard-profile
+
 [Interface]
-PrivateKey = CFiA13l2dvPTvg5jso7SipKdo+MoJqiBzi1hlhE8vF8=
-Address = 10.85.134.3/24, fd8e:5472:d976:ce6a::a55:8603/64
+PrivateKey = +BaCmdzp/55FXY3XrZ2jGL6E1ihHM0vwJiD6XyHKPk4=
+Address = 10.10.10.12/24, fd00:1234:1234:1234::a0a:a0c/64
 DNS = 9.9.9.9, 2620:fe::fe
 
 [Peer]
-PublicKey = mMtArSl4WPKRhiJo0Wr5D5CEBCA6BXMATBAo8kzXeRg=
+PublicKey = Gwcpqv5WeCI3XotETskDXQLfYQk0fi8gEpuCQVIoKGc=
 AllowedIPs = 0.0.0.0/0, ::/0
-Endpoint = vpn.example.org:51820
+Endpoint = vpn.example:51820
 PersistentKeepalive = 25
 ```
 
+You can use the `Expires` response header value to figure out how long the VPN 
+session will be valid without calling `/disconnect`.
+
+The `X-Vpn-Connection-Id` header value MUST be used when calling `/disconnect`,
+see below. This in order to make sure the correct connection is stopped.
+ 
 ## Disconnect
+
+The `/disconnect` call is necessary in order to free up resources on the 
+server. This is mainly the case with WireGuard where there is no concept of IP 
+management in WireGuard itself, so we have to do this ourselves in order to 
+work with limited IP space when e.g. using public IPv4 addresses.
+
+**NOTE**: this would be completely irrelevant when only using private IP space,
+e.g. RFC 1918. In that case we would simply bind a public key to an IP address
+in the `10/8` prefix and never change it. But because we do not have this 
+luxury (yet?) this is not possible...
 
 ### Request
 
+The `connection_id` is the value obtained from the `/connect` call response 
+header `X-Vpn-Connection-Id`.
+
 ```bash
-$ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
+$ curl --data-urlencode "connection_id=KgW+5T/6dwH24VYmOVvvlYLOTjWXijWzm+RXKjKdrGU=" -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
 ```
 
