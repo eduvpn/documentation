@@ -4,7 +4,7 @@ description: API Documentation for (Native) Application Developers
 category: dev
 ---
 
-**NOTE**: WORK IN PROGRESS AS OF 2021-05-08
+**NOTE**: WORK IN PROGRESS AS OF 2021-05-11
 
 This document describes the API provided by all eduVPN/Let's Connect! servers.
 The API is intended to be used by the eduVPN and Let's Connect! applications.
@@ -110,8 +110,7 @@ documented above. The following API calls are available:
 
 - Get "Info" from the VPN server, including a list of available profiles 
   (`/info`);
-- "Connect" to a VPN profile (`/connect`);
-- "Disconnect" from a VPN profile (`/disconnect`);
+- "Connect" to a VPN profile (`/connect`)
 
 # API Calls
 
@@ -169,7 +168,6 @@ If the profile is an OpenVPN profile you'll get the complete OpenVPN client
 configuration with `Content-Type: application/x-openvpn-profile`, e.g.:
 
 ```
-X-Vpn-Connection-Id: 54251e7c9601f38fab88744f4786b76f
 Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-openvpn-profile
 
@@ -242,7 +240,6 @@ If the profile is an WireGuard profile you'll get the complete WireGuard client
 configuration with `Content-Type: application/x-wireguard-profile`, e.g.:
 
 ```
-X-Vpn-Connection-Id: KgW+5T/6dwH24VYmOVvvlYLOTjWXijWzm+RXKjKdrGU=
 Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-wireguard-profile
 
@@ -259,43 +256,12 @@ PersistentKeepalive = 25
 ```
 
 You can use the `Expires` response header value to figure out how long the VPN 
-session will be valid without calling `/disconnect`.
-
-The `X-Vpn-Connection-Id` header value MUST be used when calling `/disconnect`,
-see below. This in order to make sure the correct connection is cleaned up 
-properly.
- 
-## Disconnect
-
-The `/disconnect` call is necessary in order to free up resources on the 
-server. This is mainly the case with WireGuard where there is no concept of IP 
-management in WireGuard itself, so we have to do this ourselves in order to 
-work with limited IP space when e.g. using public IPv4 addresses.
-
-**NOTE**: this would be completely irrelevant when only using private IP space,
-e.g. RFC 1918. In that case we would simply bind a public key to an IP address
-in the `10/8` prefix and never change it. But because we do not have this 
-luxury (yet?) this is not possible...
-
-### Request
-
-The `connection_id` is the value obtained from the `/connect` call response 
-header `X-Vpn-Connection-Id`.
-
-```bash
-$ curl --data-urlencode "connection_id=KgW+5T/6dwH24VYmOVvvlYLOTjWXijWzm+RXKjKdrGU=" -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
-```
-
-### Response
-
-The response will be `204 No Content` if all goes well.
+session will be valid.
 
 # Notes
 
-- we should probably rename the `/connect` and `/disconnect` calls to `/setup` 
-  and `/teardown` or `/register` / `/unregister` or something like this, as 
-  there is no actual connection taking place...
+- we should probably rename the `/connect` call to `/setup` or `/register`, or 
+  something like this, as there is no actual connection taking place...
 - as long as the OAuth token works, the client configuration works, there is no
   need to ask the server whether a certificate is (still) valid
 - i am not sure it is good idea to generate new keys on every call to 
@@ -305,8 +271,17 @@ The response will be `204 No Content` if all goes well.
   allow the client to use a locally generated key. This may actually be a good
   idea! Then we have to reintroduce `vpn_type` again I guess so the client 
   knows it is a WireGuard profile... APIv3.1?
-- As long as you don't call `/disconnect` the obtained configuration will 
-  remain valid as long as it doesn't expire (sessionExpiry)
+- Clients will have to deal with the scenario that no IP address is available 
+  anymore for them, i.e. the `/connect` call fails
+- It *is* possible the client has a non-expired valid configuration that does
+  not work because the IP addess assigned to it is used by a new client...
+  - we COULD prevent releasing assigned IPs until they expire, but that would 
+    increase the required the number of IP addresses
+  - it is not cool to take away an IP address from a client when it potentially 
+    can still be used... but we would need to do that _anyway_, even with a 
+    `/disconnect` in case the client never calls disconnect...
+- Clients will really need a check to verify the VPN connection is up, e.g. 
+  ping the remote peer address (gateway?)
 - The certificate/public key will expire exactly at the moment the OAuth 
   refresh and access token no longer work
 - when the computer goes to sleep you can just try to reconnect with the 
