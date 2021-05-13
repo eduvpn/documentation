@@ -64,6 +64,19 @@ flux and will defintely change before being rolled out in production!
 Check our [APIv3](API_V3.md) document on how to use it for obtaining WireGuard 
 client configurations.
 
+## Client
+
+In the portal you can see the WireGuard client configuration file after 
+selecting a WireGuard profile. You can copy/paste this in the WireGuard 
+client on Windows and macOS. On Android and iOS you can scan the QR code. On
+Linux you can import the configuration file like this. For example, save the
+configuration snippet from the portal in a file called `wg3.conf` and do this:
+
+    $ nmcli connection import type wireguard file wg3.conf
+
+That should immediately make the VPN over WireGuard work. Test with for example
+`http://v6.de`.
+
 ## TODO
 
 - (re)implement portal support for manual configuration downloads
