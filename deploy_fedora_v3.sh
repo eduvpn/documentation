@@ -82,6 +82,22 @@ cp resources/vpn.example.centos.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################
+# PHP
+###############################################################################
+
+cat << EOF > /etc/php.d/70-vpn.ini
+# @see https://www.php.net/manual/en/session.security.ini.php
+# NOTE: we set the cookie parameters ourselves in PHP code
+session.cookie_lifetime=0
+session.use_cookies=On
+session.use_only_cookies=On
+session.use_strict_mode=On
+session.use_trans_sid=Off
+session.sid_length=48
+session.sid_bits_per_character=6
+EOF
+
+###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
