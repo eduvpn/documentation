@@ -4,7 +4,7 @@ description: API Documentation for (Native) Application Developers
 category: dev
 ---
 
-**NOTE**: WORK IN PROGRESS AS OF 2021-05-11
+**NOTE**: WORK IN PROGRESS AS OF 2021-05-18
 
 This document describes the API provided by all eduVPN/Let's Connect! servers.
 The API is intended to be used by the eduVPN and Let's Connect! applications.
@@ -27,10 +27,10 @@ The VPN servers provide an API protected with
 in draft. If the application implemented OAuth for [APIv2](API.md) it will also
 work as-is with APIv3. 
 
-The _only_ difference is that refresh tokens are now single use. When using a
-refresh token, the response includes also a _new_ refresh token. Should a 
-refresh token be used multiple times, the whole authorization is revoked and
-the client will need to reauthorize.
+The _only_ difference between 2.x and 3.x is that refresh tokens are now single 
+use. When using a refresh token, the response includes also a _new_ refresh 
+token. Should a refresh token be used multiple times, the whole authorization 
+is revoked and the client will need to reauthorize.
 
 From my rudimentary tests, it seems all existing eduVPN/Let's Connect! clients 
 are handling this properly, but it can't hurt to make sure...
@@ -56,13 +56,16 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 Servers that provide the `http://eduvpn.org/api#3` key under `api`, support
 this API (and WireGuard).
 
-When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
-followed.
-
 ## Endpoint Location
 
 Currently we support both `/info.json` and `/.well-known/vpn-user-portal` in 
 eduVPN/Let's Connect! 2.x. It would be nice to phase out `/info.json`.
+
+When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
+followed.
+
+**TODO**: it MUST follow the redirects, but *only* for `/info.json` and 
+`/.well-known/vpn-user-portal`, not for the endpoints found through it.
 
 # Authorization Endpoint
 
