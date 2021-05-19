@@ -65,7 +65,7 @@ for announcements of updates and discussion about running
 eduVPN/Let's Connect!.
 
 You can also join IRC for questions & feedback on 
-[freenode](https://freenode.net/), channel `#eduvpn`. Please stick around for 
+[Libera.Chat]https://libera.chat/), channel `#eduvpn`. Please stick around for 
 a while to wait for a response!
 
 ## Instruction Videos
