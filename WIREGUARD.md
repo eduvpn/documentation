@@ -14,34 +14,13 @@ You can install the eduVPN 3.x development release on Fedora 34 using the
 `deploy_fedora_v3.sh` script instead of the `deploy_fedora.sh` script. That 
 should set up a lot for you already.
 
-## WireGuard Configuration
+## Configuration
 
-**TODO**: make server-config.php do this based on `config.php` and 
-`vpn-maint-apply-changes` enable the service(s)
+You can add a profile to `/etc/vpn-user-portal/config.php` with the `vpnType` 
+set to `wireguard`. Most options apply both to OpenVPN and WireGuard.
 
-```
-# cat /etc/wireguard/wg1.conf 
-[Interface]
-Address = 10.85.134.1/24,fd8e:5472:d976:ce6a::1/64
-ListenPort = 51820
-PrivateKey = QFqtgK09YJ9onVLNNAunZawHojHK+j8SROfHU/NNQ3E=
-```
-
-To generate a private key you can use `wg genkey`. Replace the `PrivateKey` 
-value with your own value. In order to generate "random" IPv4 and IPv6 prefixes
-to use in your configuration you can use the `vpn-user-portal-suggest-ip` 
-command. Make sure they match with the `rangeFour` and `rangeSix` parameters
-in the portal configuration below. **NOTE**: use `.1` and `::1` in `Address` 
-above and use `.0` and `::` in `rangeFour` and `rangeSix`.
-
-To start the WireGuard interface and enable it to start on boot:
-
-```
-$ sudo systemctl enable --now wg-quick@wg1
-```
-
-Still need to figure out whether this is best way to make this persistent. 
-Maybe through NetworkManager or `systemd-networkd` would be better.
+The `wg` device and `ListenPort` are determined based on the `profileNumber`: 
+`profileNumber - 1`
 
 ## Daemon
 
@@ -79,19 +58,15 @@ That should immediately make the VPN over WireGuard work. Test with for example
 
 ## TODO
 
-- (re)implement portal support for manual configuration downloads
 - we currently have a "sync" that adds all peers to WG from DB that were 
   manually created, i.e. not through the API. This needs to be done better, 
   every 2 minutes a partial sync, only peers get added, never removed, is 
   not great... it *does* work, for now... at least we need a call for multi 
   peer add
-- implement wg-server-config.php to write `/etc/wireguard/wg*.conf` files in 
-  vpn-server-node package
 - add entries to `connection_log` table when peer is added/removed so we know
   who had an IP at a certain time
 - prevent 1 user claiming all IPs in 2 seconds through API or web, limit to 
   maximum number of configs (also for OpenVPN perhaps...)
 - clean up "dead" connections from the daemon (make the sync a *real* sync)
 - show WG connections on "Connections" page
-- make disable user remove/disable? WG connections
-- show WG info on "Info" page
+- make sure disable user removes/disables? WG connections  
