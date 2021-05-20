@@ -14,8 +14,10 @@ authorization/ACL purposes.
 In order to make a particular user an "administrator" in the portal, see 
 [PORTAL_ADMIN](PORTAL_ADMIN.md).
 
-**NOTE**: RADIUS integration does NOT work the same way as "eduroam" 
-authentication. The VPN portal handles the user's credentials in plain text!
+**NOTE**: RADIUS integration does NOT support PEAP/TTLS, plaintext 
+authentication ONLY!, RADIUS servers used for eduroam authentication will 
+typically be configured with PEAP/TTLS, as plaintext authentication is not 
+supported for 802.1X.
 
 # Configuration
 
