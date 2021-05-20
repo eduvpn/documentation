@@ -14,6 +14,9 @@ authorization/ACL purposes.
 In order to make a particular user an "administrator" in the portal, see 
 [PORTAL_ADMIN](PORTAL_ADMIN.md).
 
+**NOTE**: RADIUS integration does NOT work the same as "eduroam" 
+authentication. The VPN portal handles the user's credentials in plain text!
+
 # Configuration
 
 First install the PHP module for RADIUS:
