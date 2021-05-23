@@ -4,13 +4,14 @@ description: API Documentation for (Native) Application Developers
 category: dev
 ---
 
-**NOTE**: WORK IN PROGRESS AS OF 2021-05-18
+**NOTE**: WORK IN PROGRESS AS OF 2021-05-23
 
 This document describes the API provided by all eduVPN/Let's Connect! servers.
 The API is intended to be used by the eduVPN and Let's Connect! applications.
 
-The API can be used to obtain a list of supported VPN _profiles_ on the server,
-and download a VPN client configuration for a particular profile.
+The API can be used to obtain a list of available VPN _profiles_ on the server, 
+download a VPN client configuration for a particular profile and clean up the
+connection.
 
 # Instance Discovery
 
@@ -24,16 +25,16 @@ branded application [here](SERVER_DISCOVERY.md).
 
 The VPN servers provide an API protected with 
 [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/), currently 
-in draft. If the application implemented OAuth for [APIv2](API.md) it will also
+in draft. If the application implemented the [APIv2](API.md), it will also
 work as-is with APIv3. 
 
-The _only_ difference between 2.x and 3.x is that refresh tokens are now single 
-use. When using a refresh token, the response includes also a _new_ refresh 
-token. Should a refresh token be used multiple times, the whole authorization 
-is revoked and the client will need to reauthorize.
+The _only_ difference between APIv2 and APIv3 is that refresh tokens are now 
+single use. When using a refresh token, the response includes also a _new_ 
+refresh token. Should a refresh token be used multiple times, the whole 
+authorization is revoked and the client will need to reauthorize.
 
-From my rudimentary tests, it seems all existing eduVPN/Let's Connect! clients 
-are handling this properly, but it can't hurt to make sure...
+After some rudimentary tests, it seems all existing eduVPN/Let's Connect! 
+clients are handling this properly.
 
 # Endpoint Discovery
 
@@ -67,6 +68,9 @@ followed.
 **TODO**: it MUST follow the redirects, but *only* for `/info.json` and 
 `/.well-known/vpn-user-portal`, not for the endpoints found through it.
 
+**TODO**: maybe we can "hard code" the list of endpoints as well, so there is
+no need to advertise them in the `/info.json`.
+
 # Authorization Endpoint
 
 The `authorization_endpoint` is used to obtain an authorization code through an
@@ -74,7 +78,8 @@ The `authorization_endpoint` is used to obtain an authorization code through an
 specification are required, even optional ones: 
 
 - `client_id`;
-- `redirect_uri`;
+- `redirect_uri` MUST be a support URL as found 
+  [here](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/src/OAuth/ClientDb.php);
 - `response_type`: MUST be `code`;
 - `scope`: MUST be `config`;
 - `state`;
@@ -85,10 +90,12 @@ Please follow the OAuth specification, or use a library for your platform that
 implements OAuth 2.1.
 
 The `authorization_endpoint` with its parameters set MUST be opened in the 
-platform's default browser. The `redirect_uri` parameter MUST point back to 
+platform's default browser or follow the platform's best practice dealing with
+application authorization(s). The `redirect_uri` parameter MUST point back to 
 a location the application can intercept.
 
-All error conditions MUST be handled according to the OAuth specification(s).
+All error conditions, both during the authorization phase AND when talking 
+to the API endpoint MUST be handled according to the OAuth specification(s).
 
 # Token Endpoint
 
@@ -101,9 +108,9 @@ All error conditions MUST be handled according to the OAuth specification(s).
 
 # Using the API
 
-The API is kept as simple as possible, and a considerable simplication from
-the [APIv2](API.md). Every API call below will include a cURL example, and the
-response that can be expected.
+The API is kept as simple as possible, and a considerable simplification of
+the [APIv2](API.md). Every API call below will include a cURL example, and an
+example response that can be expected.
 
 All `POST` requests MUST be sent encoded as 
 `application/x-www-form-urlencoded`.
@@ -113,7 +120,8 @@ documented above. The following API calls are available:
 
 - Get "Info" from the VPN server, including a list of available profiles 
   (`/info`);
-- "Connect" to a VPN profile (`/connect`)
+- "Connect" to a VPN profile (`/connect`);
+- "Disconnect" from a VPN profile (`/disconnect`)
 
 # API Calls
 
@@ -129,9 +137,14 @@ $ curl -H "Authorization: Bearer abcdefgh" \
     https://vpn.example.org/vpn-user-portal/api.php/v3/info
 ```
 
+This `GET` call has no parameters.
+
 ### Response
 
-```json
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
 {
     "info": {
         "profile_list": [
@@ -151,8 +164,9 @@ $ curl -H "Authorization: Bearer abcdefgh" \
 }
 ```
 
-**TODO**: mention the `display_name` field can be either a string, or an object
-with BCP47 language codes as key.
+The `display_name` field can be either of type `string` or `object`. When the
+field is an object, the keys are 
+[BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag).
 
 ## Connect
 
@@ -165,12 +179,16 @@ $ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
 ```
 
+This `POST` call has 1 parameter, `profile_id`. Its value MUST be of one of the 
+profiles returned by the `/info` call.
+
 ### Response
 
 If the profile is an OpenVPN profile you'll get the complete OpenVPN client
 configuration with `Content-Type: application/x-openvpn-profile`, e.g.:
 
 ```
+HTTP/1.1 201 Created
 Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-openvpn-profile
 
@@ -258,31 +276,101 @@ Endpoint = vpn.example:51820
 PersistentKeepalive = 25
 ```
 
-You can use the `Expires` response header value to figure out how long the VPN 
-session will be valid.
+You MUST use the `Expires` response header value to figure out how long the VPN 
+session will be valid for. When implementing the client, make sure you never
+connect to the VPN server with an expired VPN configuration.
+
+## Disconnect
+
+This call is to indicate to the server that the VPN session can be terminated.
+This MUST ONLY be called when the _user_ decides to stop the VPN connection.
+
+The purpose of this call is to "release" the IP address reserved for the 
+client to make it available for other clients connecting. This is especially
+important when using a limited IP range for VPN clients.
+
+This call is "best effort", i.e. it is not a big deal when the call fails. No 
+special care has to be taken when this call fails, e.g. the connection is dead,
+or the application crashes. However, it MUST be called on "application exit" 
+when the user closes the VPN application without disconnecting first, unless 
+the VPN connection can also be managed outside the VPN.
+
+This call MUST be executed *after* the VPN connection itself has been 
+terminated by the application.
+
+### Request
+
+```bash
+$ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
+    "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
+```
+
+This `POST` call has 1 parameter, `profile_id`. Its value MUST be the same as 
+used for the `/connect` call.
+
+### Response
+
+```
+HTTP/1.1 204 No Content
+
+```
+
+# Flow
+
+Below we describe how the application MUST interact with the API. It does NOT
+include information on how to handle OAuth. The application MUST properly 
+handle OAuth, including error cases both during the authorization, refreshing
+tokens and during the use of the API.
+
+1. Call `/info` to retrieve a list of available VPN profiles for the user;
+2. Show the available profiles to the user when there is > 1 profile and allow
+   the user to choose;
+3. After the user chose (or there was only 1 profile) perform the `/connect` 
+   call;
+4. Store the configuration file from the response. Make note of the value of
+   the `Expires` response header to be able to figure out how long your are 
+   able to use the VPN configuration;
+5. Connect to the VPN;
+6. Wait for the user to disconnect the VPN...;
+7. Disconnect the VPN;
+8. Call `/disconnect`.
+
+As long as the configuration is not "expired", according to the `Expires` 
+response header the same configuration SHOULD be used until the user manually
+decides to disconnect. This means that during suspend, or temporary unavailable 
+network, the same configuration SHOULD be used. The application SHOULD 
+implement "online detection" to be able to figure out whether the VPN allows 
+any traffic over it or not.
+
+The basic rules: 
+
+1. `/connect` (and `/disconnect`) ONLY need to be called when the user decides 
+   to connect/disconnect, not when this happens automatically for whatever 
+   reason, e.g. suspending the device, network not available;
+2. There are no API calls as long as the VPN is (supposed to be) up.
+
+**NOTE** if the application implements some kind of "auto connect" on 
+(device or application) start-up that of course MUST call `/info` and 
+`/connect` as well! The `/info` call to be sure the profile is still available 
+(for the user) and the `/connect` to obtain a configuration.
+
+It can of course happen that the VPN is not working when using the VPN 
+configuration that is not yet expired. In that case the client SHOULD inform
+the user about this, e.g. through a notification that possibly opens the 
+application if not yet open. This allows the user to (manually) 
+disconnect/connect again restoring the VPN and possibly renewing the 
+authorization when e.g. the authorization was revoked.
 
 # Notes
 
 - we should probably rename the `/connect` call to `/setup` or `/register`, or 
   something like this, as there is no actual connection taking place...
-- as long as the OAuth token works, the client configuration works, there is no
-  need to ask the server whether a certificate is (still) valid
-- i am not sure it is good idea to generate new keys on every call to 
-  `/connect`, that seems inefficient, BUT it is very cheap when using Ed25519 
-  which we do for eduVPN 3.x
 - we MAY support a `public_key` field on `/connect` for WireGuard profiles to 
   allow the client to use a locally generated key. This may actually be a good
   idea! Then we have to reintroduce `vpn_type` again I guess so the client 
-  knows it is a WireGuard profile... APIv3.1?
+  knows it is a WireGuard profile...
 - Clients will have to deal with the scenario that no IP address is available 
   anymore for them, i.e. the `/connect` call fails
-- It *is* possible the client has a non-expired valid configuration that does
-  not work because the IP addess assigned to it is used by a new client...
-  - we COULD prevent releasing assigned IPs until they expire, but that would 
-    increase the required the number of IP addresses
-  - it is not cool to take away an IP address from a client when it potentially 
-    can still be used... but we would need to do that _anyway_, even with a 
-    `/disconnect` in case the client never calls disconnect...
 - Clients will really need a check to verify the VPN connection is up, e.g. 
   ping the remote peer address (gateway?)
 - The certificate/public key will expire exactly at the moment the OAuth 
