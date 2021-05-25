@@ -15,6 +15,9 @@ For more information about authorization, after getting authentication to work,
 you can look [here](PORTAL_ADMIN.md) for determining admin portal access, and 
 [here](ACL.md) for determining who can access which profiles.
 
+**NOTE**: we have an instruction video on how to configure Active Directory 
+via LDAP [here](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
+
 # Introduction
 
 It is a good idea to try with `ldapsearch` if you are not absolutely sure what

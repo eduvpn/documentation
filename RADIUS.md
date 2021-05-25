@@ -14,10 +14,14 @@ authorization/ACL purposes.
 In order to make a particular user an "administrator" in the portal, see 
 [PORTAL_ADMIN](PORTAL_ADMIN.md).
 
-**NOTE**: RADIUS integration does NOT support PEAP/TTLS, plaintext 
-authentication ONLY!, RADIUS servers used for eduroam authentication will 
-typically be configured with PEAP/TTLS, as plaintext authentication is not 
+**NOTE**: RADIUS integration does NOT support PEAP/TTLS, plain text 
+authentication ONLY!, RADIUS servers used for _eduroam_ authentication will 
+typically be configured with PEAP/TTLS, as plain text authentication is not 
 supported for 802.1X.
+
+**NOTE**: If you have the choice between LDAP and RADIUS, always choose LDAP! 
+LDAP is supported by all common IdMs, even Active Directory. Go [here](LDAP.md)
+for instructions on how to configure LDAP.
 
 # Configuration
 
