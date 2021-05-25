@@ -212,8 +212,8 @@ discovery files are:
 
 | Owner                | Public Key                                                 |
 | -------------------- | ---------------------------------------------------------- |
-| `fkooman@deic.dk`    | `RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF` |
-| `jornane@uninett.no` | `RWQ68Y5/b8DED0TJ41B1LE7yAvkmavZWjDwCBUuC+Z2pP9HaSawzpEDA` |
+| `fkooman@deic.dk`, `kolla@uninett.no ` | `RWRtBSX1alxyGX+Xn3LuZnWUT0w//B6EmTJvgaAxBMYzlQeI+jdrO6KF` |
+| ~~`jornane@uninett.no`~~ | ~~`RWQ68Y5/b8DED0TJ41B1LE7yAvkmavZWjDwCBUuC+Z2pP9HaSawzpEDA`~~ |
 | RoSp                 | `RWQKqtqvd0R7rUDp0rWzbtYPA3towPWcLDCl7eY9pBMMI/ohCmrS0WiM` |
 
 **NOTE**: you MUST allow your application to contain _multiple_ public keys for 
