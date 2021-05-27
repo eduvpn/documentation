@@ -1,7 +1,9 @@
 # Introduction
 
 This document will show you how to update OpenVPN on your Debian 10 server
-to the version from the `buster-backports` repository. It contains 
+to the version from the 
+[buster-backports](https://packages.debian.org/buster-backports/openvpn) 
+repository. It contains 
 [OpenVPN 2.5](https://github.com/OpenVPN/openvpn/blob/release/2.5/Changes.rst#overview-of-changes-in-250) 
 instead of OpenVPN 2.4, which is part of `buster`.
 
