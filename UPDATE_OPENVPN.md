@@ -25,7 +25,10 @@ Run:
 Install OpenVPN from backports:
 
     $ sudo apt install openvpn/buster-backports
-    
-Apply changes
+
+We need to restart OpenVPN as the package update will not do that. The easiest
+way to do this is to "apply changes":
 
     $ sudo vpn-maint-apply-changes
+    
+Now you should be running OpenVPN 2.5.
