@@ -4,6 +4,9 @@ description: Setup and Enable Guest Usage (VPN Federation)
 category: advanced
 ---
 
+**NOTE**: "Guest Usage" is only relevant is you are part of the eduVPN 
+community, i.e. an NREN.
+
 The VPN server software implements "Guest Usage". This means that users of one
 VPN server deployment, e.g operated by organization A, can use another 
 deployment, say operated by organization B, and vice versa.
