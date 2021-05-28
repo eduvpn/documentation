@@ -64,9 +64,14 @@ subscribe to the "deployers" mailing list
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
-You can also join IRC for questions & feedback on 
+# IRC Contact
+
+You can also join IRC for _technical_ questions/discussions/feedback on 
 [Libera.Chat](https://libera.chat/), channel `#eduvpn`. Please stick around for 
 a while to wait for a response!
+
+You can also easily use the [Web Chat](https://web.libera.chat/#eduvpn) if you 
+can't be bothered to setup an IRC client. See you there!
 
 ## Instruction Videos
 
