@@ -15,22 +15,78 @@ as well.
 
 This "Guest Usage" scenario is OPTIONAL and **DISABLED** by default.
 
-# Deployment
+# Configuration
 
-In the file `/etc/vpn-user-portal/config.php` you need to enable `remoteAccess` 
-and the registry:
+In the file `/etc/vpn-user-portal/config.php` you need to enable 
+`remoteAccess`:
 
-    'Api' => [
-        'remoteAccess' => true,
-    ],
+```
+// ...
+
+'Api' => [
+    'remoteAccess' => true,
+],
+
+// ...
+```
+
+# Registration
 
 If you want to register your server for eduVPN, please contact 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 
-provide your server's public key, for example:
+provide the following information:
 
-```bash
-$ sudo vpn-user-portal-show-oauth-key 
-OAuth Key
-    Public Key: o4KD2G_-t1fHVyB8VNpD3DbGEOsWvX6EmuPddJCWCPA
-    Key ID    : eia8y1dTfbTIj_6W4fadk6OZPb2jRULclVh69b0ZS20
+The following information needs to be provided in order to be added:
+
+* A *generic* contact email address to be contacted for general inquiries, to 
+  be listed on the [Contact](contact.html#server-operators) page;
+* An *abuse* contact email address to be contacted in case of abuse (preferably 
+  a role-based mail address);
+* A *technical* contact email address to be contacted in case of technical 
+  problems (preferably a role-based mail address);
+* End-user support contact(s), at least one of: mail, URL, phone number.
+  **NOTE** these will become public;
+* A web site we can refer end-users to for this particular _Secure Internet_ 
+  server (Optional);
+* The full hostname (FQDN) of your VPN server;
+* Make sure TLS is configured properly! Use e.g. 
+  [SSL Server Test](https://www.ssllabs.com/ssltest/);
+* The name of the country / region your VPN server is located in (English);
+* Full information on any filtering/blocking of traffic by your VPN server or 
+  upstream network(s), either because of legal reasons or local policy;
+* The public key of your server (`sudo vpn-user-portal-show-oauth-key`), make
+  sure to enable 
+  [guest access](https://github.com/eduvpn/documentation/blob/v2/GUEST_USAGE.md)!;
+* A signed copy of the 
+  [policy](download/eduVPN_Compliance_Statement_1.0.pdf) document by a 
+  person authorized to do so at your organization;
+* Send your request to 
+  [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org), use
+  "_Add [${FQDN}] to Secure Internet eduVPN_" as title.
+  
+#### Template
+
+Use the following example template in your mail to 
+[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org), please
+update all values for your situation:
+
+Subject: `Add [vpn.example.org] to Secure Internet eduVPN`
+
+Body:
 ```
+Generic Contact: admin@example.org
+Abuse Contact: abuse@example.org
+Technical Contact: eduvpn@example.org
+End-user Support Contact: 
+  - support@example.org
+  - +1234567890
+  - https://support.example.org/
+Information Website: https://www.example.org/services/eduvpn
+FQDN: vpn.example.org
+Country / Region: The Netherlands
+Restrictions: 
+  - in/outbound tcp/25 blocked
+Public Key: O53DTgB956magGaWpVCKtdKIMYqywS3FMAC5fHXdFNg
+```
+
+Do **NOT** forget to attach the signed copy of the policy document!
