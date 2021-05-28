@@ -48,6 +48,8 @@ The following information needs to be provided in order to be added:
   **NOTE** these will become public;
 * A web site we can refer end-users to for this particular _Secure Internet_ 
   server (Optional);
+* The SAML metadata URL that contains all the organizations that have access 
+  to your server which will be used to populate the eduVPN applications;
 * The full hostname (FQDN) of your VPN server;
 * Make sure TLS is configured properly! Use e.g. 
   [SSL Server Test](https://www.ssllabs.com/ssltest/);
@@ -80,6 +82,7 @@ End-user Support Contact:
   - +1234567890
   - https://support.example.org/
 Information Website: https://www.example.org/services/eduvpn
+SAML Metadata: https://federation.example.org/metadata.xml
 FQDN: vpn.example.org
 Country / Region: The Netherlands
 Restrictions: 
