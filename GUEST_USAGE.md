@@ -39,7 +39,7 @@ provide the following information:
 The following information needs to be provided in order to be added:
 
 * A *generic* contact email address to be contacted for general inquiries, to 
-  be listed on the [Contact](contact.html#server-operators) page;
+  be listed on the [Participants](https://www.eduvpn.org/countries/) page;
 * An *abuse* contact email address to be contacted in case of abuse (preferably 
   a role-based mail address);
 * A *technical* contact email address to be contacted in case of technical 
@@ -54,17 +54,15 @@ The following information needs to be provided in order to be added:
 * The name of the country / region your VPN server is located in (English);
 * Full information on any filtering/blocking of traffic by your VPN server or 
   upstream network(s), either because of legal reasons or local policy;
-* The public key of your server (`sudo vpn-user-portal-show-oauth-key`), make
-  sure to enable 
-  [guest access](https://github.com/eduvpn/documentation/blob/v2/GUEST_USAGE.md)!;
+* The public key of your server (`sudo vpn-user-portal-show-oauth-key`);
 * A signed copy of the 
-  [policy](download/eduVPN_Compliance_Statement_1.0.pdf) document by a 
-  person authorized to do so at your organization;
+  [policy](https://eduvpn.org/wp-content/uploads/2019/11/eduVPN_Compliance_Statement_1.0-1.pdf)
+  document by a person authorized to do so at your organization;
 * Send your request to 
   [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org), use
   "_Add [${FQDN}] to Secure Internet eduVPN_" as title.
   
-#### Template
+## Template
 
 Use the following example template in your mail to 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org), please
