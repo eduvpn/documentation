@@ -273,7 +273,6 @@ DNS = 9.9.9.9, 2620:fe::fe
 PublicKey = Gwcpqv5WeCI3XotETskDXQLfYQk0fi8gEpuCQVIoKGc=
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = vpn.example:51820
-PersistentKeepalive = 25
 ```
 
 You MUST use the `Expires` response header value to figure out how long the VPN 
