@@ -379,3 +379,7 @@ authorization when e.g. the authorization was revoked.
   previously obtained configuration, no need to use the API, BUT if connecting
   doesn't work go back to the API
 - we need a flow diagram...
+- the application can offer a "Renew" button when the current VPN session is 
+  nearing its end. This button would throw away the OAuth tokens and restart 
+  the authorization before (automatically) reconnecting to the same 
+  server/profile if still available;
