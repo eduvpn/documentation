@@ -360,6 +360,15 @@ application if not yet open. This allows the user to (manually)
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
 
+# TODO
+
+- make `public_key` parameter MUST for `/connect`, irrespective of whether 
+  the profile is OpenVPN or WireGuard, just won't be used in case of OpenVPN;
+- talk about limits for the API, for example 1 user can only be online _n_ 
+  times;
+- API returns *same* configuration when client calls `/connect` multiple times
+  all other things being equal (only WireGuard);
+
 # Notes
 
 - we should probably rename the `/connect` call to `/setup` or `/register`, or 
