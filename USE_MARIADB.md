@@ -44,17 +44,13 @@ $ mysql -u root -p
 Provide the `root` password, and run the following commands. Replace the name 
 of the database and user if you want. Make sure you choose your own password.
 
+## Local Access
+
 ```
 MariaDB [(none)]> CREATE DATABASE vpn;
 MariaDB [(none)]> GRANT ALL PRIVILEGES ON vpn.* to vpn@localhost IDENTIFIED BY 's3cr3t';
 MariaDB [(none)]> FLUSH PRIVILEGES;
 MariaDB [(none)]> QUIT
-```
-
-If you want to allow remote connections, you can use the following `GRANT`:
-
-```
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON vpn.* to vpn@'%' IDENTIFIED BY 's3cr3t';
 ```
 
 Now you should be able to connect to the database using your newly created 
@@ -64,18 +60,33 @@ account:
 $ mysql vpn -u vpn -p
 ```
 
-Or when connecting to a remote server:
+## Remote Access
+
+```
+MariaDB [(none)]> CREATE DATABASE vpn;
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON vpn.* to vpn@'%' IDENTIFIED BY 's3cr3t';
+MariaDB [(none)]> FLUSH PRIVILEGES;
+MariaDB [(none)]> QUIT
+```
+
+Now you should be able to connect to your database server from your VPN portal
+using your newly created account:
 
 ```
 $ mysql vpn -h db.example.org -u vpn -p
 ```
+
+**NOTE**: you MUST make sure only your VPN portals can reach MariaDB and not
+the complete Internet! It seems by default MariaDB listens in `:::3306` which
+means all interfaces (both IPv4 and IPv6). You MUST firewall this port and 
+restrict access to your VPN portals only!
 
 # Portal Configuration
 
 Make sure you have the required PHP module installed for MariaDB/MySQL:
 
 ```
-$ sudo dnf -y install php-mysqlnd
+$ sudo dnf -y install php-mysqlnd mariadb
 ```
 
 Restart PHP:
