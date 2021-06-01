@@ -3,13 +3,13 @@
 This instruction tells you how to store the VPN database inside MariaDB instead
 of the default SQLite.
 
-**NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
-**NOTE**: do this ONLY for new servers, there is NO migration from SQLite to
+* **NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
+* **NOTE**: do this ONLY for new servers, there is NO migration from SQLite to
 MariaDB!
-**NOTE**: ONLY use MariaDB as a backend if you have a "high available" 
+* **NOTE**: ONLY use MariaDB as a backend if you have a "high available" 
 MariaDB/MySQL cluster that is redundant. There is no point in switching to 
 MariaDB/MySQL on a single server, it will actually be slower!
-**NOTE**: these instructions are only for TESTING by installing a MariaDB 
+* **NOTE**: these instructions are only for TESTING by installing a MariaDB 
 server on your VPN server. You do NOT want this in production, but instead you
 want a high available remote MariaDB/MySQL cluster!
 
