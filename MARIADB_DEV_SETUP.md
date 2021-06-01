@@ -22,7 +22,7 @@ Follow the instructions below to configure your MariaDB server:
 
 ```
 $ sudo dnf -y install mariadb-server
-$ sudo systemctl start mariadb
+$ sudo systemctl enable --now mariadb
 $ sudo mysql_secure_installation
 ```
 
