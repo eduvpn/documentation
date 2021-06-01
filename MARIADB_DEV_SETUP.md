@@ -13,8 +13,11 @@ MariaDB/MySQL on a single server, it will actually be slower!
 server on your VPN server. You do NOT want this in production, but instead you
 want a high available remote MariaDB/MySQL cluster!
 
-If you take all this in consideration, see [#portal-configuration] on how to
-connect to your cluster. For testing you can continue in the next paragraph.
+If you take all this in consideration, see 
+[Portal Configuration](#portal-configuration) on how to connect to your 
+cluster. Make sure you replace the server location and credentials. 
+
+For testing you can continue in the next paragraph.
 
 # Installation
 
