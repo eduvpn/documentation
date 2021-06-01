@@ -95,7 +95,7 @@ and set the `permissionAttribute` to the name of the attribute:
 
         // ...
 
-        'permissionAttribute' => 'memberOf',
+        'permissionAttribute' => ['memberOf'],
     ],
 
 Once you authenticate to the portal, on the "Account" page, i.e. 
