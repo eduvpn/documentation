@@ -157,6 +157,12 @@ Modify `/etc/vpn-server-api/config.php`, and set the `enableAcl` to
 `true` and add the authorized attribute values to `aclPermissionList` for each 
 of the profiles where you want to restrict access, for example:
 
+The values of `aclPermissionList` come from the `permissionAttribute` as 
+configured in your authentication module. You can verify which values are 
+available for your account by going to the "Account" page in your portal. It 
+will be listed under your "User ID". If nothing is shown there, you need to 
+either make sure your account has any permissions, or logout and login again.
+
     // Whether or not to enable ACLs for controlling who can connect
     // DEFAULT = false
     'enableAcl' => true,
