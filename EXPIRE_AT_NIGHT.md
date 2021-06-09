@@ -7,28 +7,31 @@ working hours.
 
 By VPN session expiry we mean the moment at which the VPN session won't work 
 anymore without the user authenticating/authorizing again. The default after 
-which a session expires is 90 days, but this can be modified by the 
+which a session expires is 90 days (`P90D`), but this can be modified by the 
 administrator.
 
 The `sessionExpiry` becomes the _upper bound_ of when the session will expire. 
 The new expiry is rolled back in time until the previous 04:00 is reached. This 
 could be the same day, or the previous day if the time is currently between 
-00:00 and 04:00.
+00:00 and 04:00. The timezone to which the server is set is used to determine
+"when" 04:00 is. In the future we may allow the client to specify the local 
+timezone and use that in the calcuation of when 04:00 is, locally for the user.
 
 For example if it is currently Monday 10:00 and the `sessionExpiry` is set to 
 `P7D`, i.e. 7 days, the session will expire at 04:00 on the Monday after and 
 not at 10:00 as it might interfere with the VPN use during working hours.
 
-**NOTE**: currently the nightly expiry ONLY works when the `sessionExpiry` is
-`P7D` (7 days) or longer. We may implement this also for sessions that expire
-sooner, please let us know if you have any ideas on this. For example, how 
-would that work when the expiry is say `PT12H`, i.e. 12 hours?
+**NOTE**: nightly expiry ONLY works when the `sessionExpiry` is `P1D` (1 day) 
+or longer! 
 
 **NOTE**: the new expiry will only work form the next time the user 
 authenticates to the portal (or authorizes the app), not for current VPN 
-sessions.
+sessions!
 
 ## Server Configuration
+
+Please set your server's timezone to the timezone where (most of) your users 
+are located. That way, the nightly expiry makes the most sense.
 
 To check the timezone your server is set to:
 
