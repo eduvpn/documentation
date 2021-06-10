@@ -79,10 +79,10 @@ This configuration file can then be used in the applications listed below.
 
 ## Windows 
 
-* [OpenVPN Community client](https://openvpn.net/index.php/open-source/downloads.html)
-  * Choose "Installer, Windows Vista and later";
-  * Make sure you have the installer from the 2.4 release, e.g. 
-    `openvpn-install-2.4.6-I602.exe`;
+* [OpenVPN Community client](https://openvpn.net/community-downloads/)
+  * Choose "Windows 64-bit MSI installer";
+  * Make sure you have the installer from the 2.5 release, e.g. 
+    `OpenVPN-2.5.2-I601-amd64.msi`;
   * Keep your version updated, there may be (security) releases from time to time!
 
 1. Install the OpenVPN Community client
@@ -110,19 +110,16 @@ also available via
 The proprietary 
 [OpenVPN Connect](https://play.google.com/store/apps/details?id=net.openvpn.openvpn) 
 can also be used. See the OpenVPN Connect 
-[FAQ](https://docs.openvpn.net/docs/openvpn-connect/openvpn-connect-android-faq.html).
+[FAQ](https://openvpn.net/vpn-server-resources/faq-regarding-openvpn-connect-android/).
 
 ## iOS
 
 Install 
-[OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981). 
-A 
-[FAQ](https://docs.openvpn.net/docs/openvpn-connect/openvpn-connect-ios-faq.html) 
-is available.
-
+[OpenVPN Connect](https://apps.apple.com/app/openvpn-connect/id590379981).
 You may want to enable `Seamless tunnel (iOS8+)` in the OpenVPN Settings. It 
-will try to keep the VPN tunnel active as much as possible. See the FAQ for 
-more details.
+will try to keep the VPN tunnel active as much as possible. See the 
+[FAQ](https://openvpn.net/vpn-server-resources/faq-regarding-openvpn-connect-ios/) 
+for more details.
      
 ## Linux
 
