@@ -175,12 +175,23 @@ Get the profile configuration for the profile you want to connect to.
 ### Request
 
 ```bash
-$ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
+$ curl -d "profile_id=employees" --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
 ```
 
-This `POST` call has 1 parameter, `profile_id`. Its value MUST be of one of the 
-profiles returned by the `/info` call.
+This `POST` call has 2 parameters, `profile_id` and `public_key`. The value of 
+`profile_id` MUST be of one of the profiles returned by the `/info` call. The 
+value of `public_key` MUST be a WireGuard public key. It has this format:
+
+```
+$ wg genkey | wg pubkey
+e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
+```
+
+**NOTE**: in case your application supports WireGuard, it MUST provide the
+`public_key` in all situations as the client has no idea whether the profile 
+is a WireGuard or OpenVPN profile. Currently, the server only enforces the 
+`public_key` parameter when the profile turns out to be a WireGuard profile.
 
 ### Response
 
@@ -265,7 +276,6 @@ Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-wireguard-profile
 
 [Interface]
-PrivateKey = +BaCmdzp/55FXY3XrZ2jGL6E1ihHM0vwJiD6XyHKPk4=
 Address = 10.10.10.12/24, fd00:1234:1234:1234::a0a:a0c/64
 DNS = 9.9.9.9, 2620:fe::fe
 
@@ -278,6 +288,16 @@ Endpoint = vpn.example:51820
 You MUST use the `Expires` response header value to figure out how long the VPN 
 session will be valid for. When implementing the client, make sure you never
 connect to the VPN server with an expired VPN configuration.
+
+Before using this configuration, your locally generated private key needs to 
+be added under the `[Interface]` section, e.g.:
+
+```
+[Interface]
+PrivateKey = AJmdZTXhNRwMT1CEvXys2T9SNYnXUG2niJVT4biXaX0=
+
+...
+```
 
 ## Disconnect
 
@@ -362,25 +382,21 @@ authorization when e.g. the authorization was revoked.
 
 # TODO
 
-- make `public_key` parameter MUST for `/connect`, irrespective of whether 
-  the profile is OpenVPN or WireGuard, just won't be used in case of OpenVPN;
 - talk about limits for the API, for example 1 user can only be online _n_ 
   times;
 - API returns *same* configuration when client calls `/connect` multiple times
-  all other things being equal (only WireGuard);
+  all other things being equal (only WireGuard)?;
+- Give some error responses as examples
 
 # Notes
 
 - we should probably rename the `/connect` call to `/setup` or `/register`, or 
   something like this, as there is no actual connection taking place...
-- we MAY support a `public_key` field on `/connect` for WireGuard profiles to 
-  allow the client to use a locally generated key. This may actually be a good
-  idea! Then we have to reintroduce `vpn_type` again I guess so the client 
-  knows it is a WireGuard profile...
 - Clients will have to deal with the scenario that no IP address is available 
   anymore for them, i.e. the `/connect` call fails
 - Clients will really need a check to verify the VPN connection is up, e.g. 
-  ping the remote peer address (gateway?)
+  ping the remote peer address (gateway?) or simply by checking when the last
+  handshake took place?
 - The certificate/public key will expire exactly at the moment the OAuth 
   refresh and access token no longer work
 - when the computer goes to sleep you can just try to reconnect with the 
