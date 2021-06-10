@@ -72,6 +72,11 @@ will be discussed below.
 As long as as the VPN client is based on OpenVPN >= 2.4 or OpenVPN 3 it should
 be possible to make it work.
 
+In case you are using eduVPN, you can find your organization in 
+[this](https://status.eduvpn.org/) list. It will link to the server URL where
+you need to authenticate before being able to download a configuration file. 
+This configuration file can then be used in the applications listed below.
+
 ## Windows 
 
 * [OpenVPN Community client](https://openvpn.net/index.php/open-source/downloads.html)
@@ -168,18 +173,6 @@ Then install/update the relevant package:
 This will upgrade all required packages as well. You may need to reboot or 
 restart NetworkManager.
 
-### Configuration
-
-Find your country in the [list of eduVPN servers](https://status.eduvpn.org/)
-and download a configuration file from the server. If you want to use an
-eduVPN server in a different country, you have to use the official
-[eduvpn-client](https://python-eduvpn-client.readthedocs.io/en/master/) as
-international authentication is currently only available through the API.
-
-To import the resulting ovpn file into NetworkManager, use the `nmcli` command:
-
-    $ nmcli conn import type openvpn file eduVPN_institute.ovpn
-
 ### Split Tunnel
 
 If you do _not_ want to route all traffic over the VPN, you need to manually
@@ -190,6 +183,15 @@ not be used as a default gateway.
 When editing the VPN configuration, under the IPv4 and IPv6 tabs you can 
 select "Use this connection only for resources on its network", this way it
 will honor the pushed routes.
+
+### CLI
+
+You can import the VPN configuration through the UI (GNOME), or using the 
+command line:
+
+```
+$ nmcli connection import type openvpn file <file.ovpn>
+```
 
 ### Manual
 
