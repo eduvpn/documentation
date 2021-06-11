@@ -1,5 +1,9 @@
 # Expire At Night
 
+**NOTE**: there is currently a bug in "expiry at night"! Do **NOT** use!
+
+**NOTE**: only enable this on NEW installations, and NEVER on existing ones!
+
 Starting from vpn-user-portal >= 2.3.10 it is possible to expire VPN sessions 
 at night instead of exactly after the duration specified in `sessionExpiry`. 
 The goal is to prevent that the user will be disconnected from the VPN during
