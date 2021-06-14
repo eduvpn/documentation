@@ -39,7 +39,7 @@ Fedora). We created a physical test setup similar to what you see below.
                         .------------.                     .-----.
                         | VPN Server |-------------------->| NAT |
                         '------------'                     '-----'
-                                 192.168.1.100      192.168.1.1
+                10.10.10.1     192.168.1.100      192.168.1.1
 ```
 
 ## Assumptions
