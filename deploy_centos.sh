@@ -165,8 +165,9 @@ sudo -u apache vpn-user-portal-init
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 on external interface, NOT for static IPv6!
-#net.ipv6.conf.eth0.accept_ra = 2
+# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
+# **REMOVE** for static IPv6 configurations!
+net.ipv6.conf.all.accept_ra = 2
 EOF
 
 sysctl --system

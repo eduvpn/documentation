@@ -121,7 +121,8 @@ sed -i "s|fd43::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/con
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 on external interface, DO NOT SET for static IPv6!
+# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
+# **REMOVE** for static IPv6 configurations!
 net.ipv6.conf.all.accept_ra = 2
 EOF
 
