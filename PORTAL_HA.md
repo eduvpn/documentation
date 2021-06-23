@@ -122,6 +122,21 @@ Restart Memcached:
 $ sudo systemctl restart memcached
 ```
 
+**NOTE** when specifying other IP addresses, Memcached MAY fail to start 
+because the network is not "up" yet when trying to bind to the specified IP
+addresses. In order to fix this:
+
+```
+$ sudo systemctl edit --full memcached.service
+```
+
+Change `After=network.target` to `After=network-online.target`. Then restart
+Memcache again:
+
+```
+$ sudo systemctl restart memcached
+```
+
 # Portal Configuration
 
 Make sure you have the required PHP module installed for MariaDB/MySQL:
