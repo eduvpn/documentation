@@ -19,15 +19,12 @@ should set up a lot for you already.
 You can add a profile to `/etc/vpn-user-portal/config.php` with the `vpnType` 
 set to `wireguard`. Most options apply both to OpenVPN and WireGuard.
 
-The `wg` device and `ListenPort` are determined based on the `profileNumber`: 
-`profileNumber - 1`
-
 ## Daemon
 
 You can test the interface with WireGuard:
 
 ```
-$ curl -s http://localhost:8080/info?Device=wg1
+$ curl -s http://localhost:8080/info
 {
   "PublicKey": "2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=",
   "ListenPort": 51820,
@@ -69,4 +66,4 @@ That should immediately make the VPN over WireGuard work. Test with for example
   maximum number of configs (also for OpenVPN perhaps...)
 - clean up "dead" connections from the daemon (make the sync a *real* sync)
 - show WG connections on "Connections" page
-- make sure disable user removes/disables? WG connections  
+- make sure disable user removes/disables? WG connections

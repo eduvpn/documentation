@@ -188,9 +188,11 @@ $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
+**NOTE**: do NOT use the same WireGuard key for different servers, generate 
+on *per server*.
 **NOTE**: in case your application supports WireGuard, it MUST provide the
-`public_key` in all situations as the client has no idea whether the profile 
-is a WireGuard or OpenVPN profile. Currently, the server only enforces the 
+`public_key` in all situations as the client has no idea whether the profile.
+will be a WireGuard or OpenVPN profile. Currently, the server only enforces the 
 `public_key` parameter when the profile turns out to be a WireGuard profile.
 
 ### Response
