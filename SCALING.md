@@ -99,6 +99,15 @@ distribution on your server.
 See [OpenVPN Processes](PROFILE_CONFIG.md#openvpn-processes) for more 
 information.
 
+### Certificates / Keys
+
+As all keys/certificates are generated on the server, it may make sense to
+switch to EC certificates instead of RSA. Generating RSA private keys can take
+[a long time](https://www.tuxed.net/fkooman/blog/openvpn_modern_crypto_part_ii.html).
+
+See the CA section of the [security document](SCALING.md#ca) for more
+information on this.
+
 ## Client
 
 In order to distribute client connections over the various ports, the client

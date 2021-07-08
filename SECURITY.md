@@ -88,7 +88,7 @@ issuing the token. This is especially helpful in the case of
 ## CA
 
 The CA of the VPN service is "online" as it needs to generate valid 
-certificates on the fly. The [vpn-ca](https://github.com/letsconnectvpn/vpn-ca) 
+certificates on the fly. The [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) 
 software is used as CA.
 
 By default the CA uses `RSA` with keys of length 3072 bits, and signs using 
