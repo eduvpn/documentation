@@ -105,7 +105,7 @@ As all keys/certificates are generated on the server, it may make sense to
 switch to EC certificates instead of RSA. Generating RSA private keys can take
 [a long time](https://www.tuxed.net/fkooman/blog/openvpn_modern_crypto_part_ii.html).
 
-See the CA section of the [security document](SCALING.md#ca) for more
+See the CA section of the [security document](SECURITY.md#ca) for more
 information on this.
 
 ## Client
