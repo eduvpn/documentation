@@ -13,7 +13,7 @@ Very simple, secure SAML SP written in PHP.
 This application was written to be (a lot) simpler to use and configure than 
 simpleSAMLphp and only work as a SAML SP supporting only secure cryptographic 
 algorithms, see the project 
-[site](https://github.com/fkooman/php-saml-sp/) for more information.
+[site](https://php-saml-sp.eu/) for more information.
 
 ## Installation
 
