@@ -12,7 +12,7 @@ There are three places where you can have VPN server logging:
 * VPN client connection logging
 * Web server logging
 
-## OpenVPN Logging
+## OpenVPN Log
 
 The OpenVPN logging can be enabled in the 
 profile [configuration](PROFILE_CONFIG.md) with the `enableLog` option. This is 
@@ -21,14 +21,31 @@ connection is rejected. You can use `journalctl` to "follow" the log:
 
     $ sudo journalctl -f -t openvpn
 
-## VPN Client Connection Logging
+## VPN Connection Log
 
-VPN Client connection logging is enabled by default. You can access the log 
-(indirectly) through the portal given a VPN client IP address and timestamp. 
+### Portal
 
-This only works if you are [admin](PORTAL_ADMIN.md).
+Finding out which user had a particular IP address at a specified moment can
+be done through the portal as an [admin](PORTAL_ADMIN.md). 
 
-## Web Server Logging
+### Syslog
+
+**NOTE**: this is only available in vpn-server-api >= 2.2.11.
+
+In addition to writing connection information to the database, this information
+is also written to _syslog_. 
+
+An example of these log entries:
+
+```
+Jul 12 16:48:43 vpn.tuxed.net vpn-server-api[8643]: CONNECT fkooman (default) [10.202.56.2,fd5e:eccc:d4b:783f::1000]
+Jul 12 16:48:46 vpn.tuxed.net vpn-server-api[8642]: DISCONNECT fkooman (default) [10.202.56.2,fd5e:eccc:d4b:783f::1000]
+```
+
+The format is 
+`{CONNECT,DISCONNECT} ${USER_ID} (${PROFILE_ID}) [${IPv4},${IPv6}]`.
+
+## Web Server Log
 
 The Web server request logging you can enable as well by modifying the virtual 
 host configuration, on CentOS in `/etc/httpd/conf.d/vpn.example.org.conf` where 
