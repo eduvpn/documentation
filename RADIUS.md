@@ -55,8 +55,8 @@ Then you can configure the RADIUS server:
         ],
         //'addRealm' => 'example.org',
         //'nasIdentifier' => 'vpn.example.org',
-        //'authorizationAttribute' => RADIUS_REPLY_MESSAGE,
-        //'authorizationAttribute' => 16,
+        //'permissionAttribute' => RADIUS_REPLY_MESSAGE,
+        //'permissionAttribute' => 16,
     ],
 
 Here `serverList` is an array of server configurations where you can add 
@@ -72,7 +72,7 @@ user provides. If for example the user provides `foo` as a user ID, the
 The `host` and `secret` options are REQUIRED, the others are optional.
 
 In vpn-user-portal >= 2.3.13 it is also possible to specify an attribute for
-user authorization using the `authorizationAttribute` configuration option. For
+user authorization using the `permissionAttribute` configuration option. For
 now only officially registered attributes are supported, so NO vendor specific
 attributes. See the list 
 [here](https://www.iana.org/assignments/radius-types/radius-types.xhtml) for a 
