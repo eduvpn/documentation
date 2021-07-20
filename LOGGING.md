@@ -45,6 +45,19 @@ Jul 12 16:48:46 vpn.tuxed.net vpn-server-api[8642]: DISCONNECT fkooman (default)
 The format is 
 `{CONNECT,DISCONNECT} ${USER_ID} (${PROFILE_ID}) [${IPv4},${IPv6}]`.
 
+**NOTE**: in vpn-server-api >= 2.2.12 the format changes slightly and also 
+includes the "originating" client IP, e.g.:
+
+```
+Jul 20 17:04:04 vpn.tuxed.net vpn-server-api[1811]: CONNECT fkooman (default) [46.X.Y.Z => 10.202.56.2,fd5e:eccc:d4b:783f::1000]
+Jul 20 17:04:19 vpn.tuxed.net vpn-server-api[1813]: DISCONNECT fkooman (default) [46.X.Y.Z => 10.202.56.2,fd5e:eccc:d4b:783f::1000]
+```
+
+The format is 
+`{CONNECT,DISCONNECT} ${USER_ID} (${PROFILE_ID}) [${ORIGINATING_IP} => ${IPv4},${IPv6}]` 
+where the `${ORIGINATING_IP}` can be an IPv4 or IPv6 address, depending on 
+which protocol the client used to connect to the VPN server.
+
 ## Web Server Log
 
 The Web server request logging you can enable as well by modifying the virtual 
