@@ -51,6 +51,24 @@ That's all!  If you have any procedure where you run `vpn-server-node-server-con
 you might consider running `vpn-generate-natfw` at the same time.  Never run `vpn-generate-natfw` with `-f` (force) from cron/systemd timers!
 
 
+## "Ephemeral Ports"
+
+```
+$ sysctl net.ipv4.ip_local_port_range
+net.ipv4.ip_local_port_range = 32768	60999
+```
+
+These are the ports used by the OS itself to give to services that open 
+connections. So you want your VPN client port range to stay out of this range.
+
+There's also `net.ipv4.ip_local_reserved_ports` which won't be used.
+
+These options also apply to IPv6.
+
+Sources: 
+* https://superuser.com/questions/1118735/how-are-source-ports-determined-and-how-can-i-force-it-to-use-a-specific-port
+* https://unix.stackexchange.com/questions/279157/ipv6-ephemeral-port-range
+
 ## Tracing an incident
 
 In order to trace a user, you need three bits of information
