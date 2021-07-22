@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Deploy a single VPN machine on Fedora
+# Deploy a single VPN machine on EL 8
 #
 
 ###############################################################################
@@ -51,7 +51,7 @@ systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
 cat << EOF > /etc/yum.repos.d/LC-v2.repo
 [LC-v2]
-name=VPN Stable Packages (Fedora \$releasever)
+name=VPN Stable Packages (EL \$releasever)
 baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
 enabled=${VPN_STABLE_REPO}
@@ -59,7 +59,7 @@ EOF
 
 cat << EOF > /etc/yum.repos.d/eduVPN-dev.repo
 [eduVPN-dev]
-name=eduVPN Development Packages (Fedora \$releasever)
+name=eduVPN Development Packages (EL \$releasever)
 baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/remi-8-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
@@ -75,6 +75,8 @@ ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
 ${PACKAGE_MANAGER} -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 ${PACKAGE_MANAGER} -y module reset php
 ${PACKAGE_MANAGER} -y module install php:remi-7.4
+# enable "remi" repo for dependencies
+yum-config-manager --set-enabled remi
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal \
