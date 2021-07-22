@@ -67,8 +67,14 @@ enabled=${VPN_DEV_REPO}
 EOF
 
 # install software (dependencies)
+${PACKAGE_MANAGER} -y install epel-release
+
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony
+
+${PACKAGE_MANAGER} -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+${PACKAGE_MANAGER} -y module reset php
+${PACKAGE_MANAGER} -y module install php:remi-7.4
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal \
