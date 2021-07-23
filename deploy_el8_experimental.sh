@@ -60,7 +60,7 @@ EOF
 cat << EOF > /etc/yum.repos.d/eduVPN-dev.repo
 [eduVPN-dev]
 name=eduVPN Development Packages (EL \$releasever)
-baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/remi-8-\$basearch
+baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/epel-8-remi-php74-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 enabled=${VPN_DEV_REPO}
