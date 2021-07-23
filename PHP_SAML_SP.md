@@ -69,6 +69,7 @@ Now the `PhpSamlSpAuthentication` specific options can be set as well:
     'PhpSamlSpAuthentication' => [
         'userIdAttribute' => 'eduPersonTargetedID',
         //'userIdAttribute' => 'eduPersonPrincipalName',
+        //'userIdAttribute' => 'uid',
 
         // ** AUTHORIZATION | PERMISSIONS **
         //'permissionAttribute' => [
@@ -83,6 +84,7 @@ Now the `PhpSamlSpAuthentication` specific options can be set as well:
         // "permissionAttribute" MUST also have ANY of the listed
         // AuthnContexts. If they currently don't, a new authentication is
         // triggered to obtain it
+        // **NOTE**: DO NOT USE ON NEW INSTALLATIONS! (see below)
         //'permissionAuthnContext' => [
         //    'http://eduvpn.org/role/admin' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
         //],
@@ -96,6 +98,9 @@ to trigger for example MFA/2FA. It integrates with
 Setting `authnContext` means this context will be required for ALL users.
 
 ### AuthnContext for Permissions
+
+**NOTE**: use of this option is DEPRECATED! It will be removed in the next
+(major) version of eduVPN/Let's Connect!
 
 The `permissionAuthnContext` is a mapping between "permission" and required 
 `authnContext`. This can be used to e.g. force MFA/2FA only for a subset of
