@@ -27,6 +27,15 @@ users that are no longer eligible to use the VPN from the portal.
 It is a bit of a judgment call. We know of organizations that set it to 12 
 hours, and also organizations that set it to 3 years.
 
+**NOTE**: if you choose to for example 1 day, this will mean that if a user
+authenticates at 09:30, the next day at 09:30 their session will expire, 
+meaning the may have to authorize/authenticate during a video call. Not great.
+
+**NOTE**: in a future server (or client) version we aim to implement a 
+mechanism that either expires the VPN session at night, or update the client 
+to warn the session is about to expire during working hours and offer to renew
+it.
+
 ## Changing Session Expiry
 
 You can change the session expiry by modifying 
