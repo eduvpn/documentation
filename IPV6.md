@@ -4,16 +4,16 @@
 
 The VPN server software supports both IPv4 and IPv6. We've reached a point 
 in the "evolution" of the Internet that IPv4 NAT is unavoidable, but for IPv6
-there is no excuse to issue proper public IPv6 addresses to the VPN clients.
+there is no excuse to not issue proper public IPv6 addresses to the VPN 
+clients.
 
 By default the VPN server installation will *also* perform NAT for IPv6 
-traffic and set some less than optimal configuration parameters. 
-
-This is only meant for *testing*. For production you SHOULD switch to public 
-IPv6 addresses for your VPN clients!
+traffic and set some less than optimal configuration parameters. This is only 
+meant for *testing*. For production you SHOULD switch to public IPv6 addresses 
+for your VPN clients!
 
 As already mentioned in other places in the documentation, your VPN server 
-MUST have static IPv4 and IPv6 address configurations.
+MUST have static IPv4 and IPv6 address configurations!
 
 ## IPv6 Routing
 
@@ -35,6 +35,9 @@ MUST be:
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 ```
+
+When making changes here, reboot your server to make sure the changes are
+properly propagated. Test your IPv6 connectivity after reboot.
 
 ## Routed IPv6 Prefix
 
