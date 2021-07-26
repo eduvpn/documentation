@@ -114,6 +114,9 @@ Attribution-ShareAlike 4.0 International License.
 
 See [LICENSE](LICENSE).
 
+The VPN server software is licensed under the 
+[AGPLv3+](https://www.gnu.org/licenses/agpl-3.0.en.html).
+
 # Security Contact
 
 If you find a security problem in the code, the deployed service(s) and want to
