@@ -14,6 +14,10 @@ MACHINE_HOSTNAME=$(hostname -f)
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
+# external "Default Gateway" Address 
+EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
+printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXTERNAL_IF
+
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -121,9 +125,9 @@ sed -i "s|fd43::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/con
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
-# **REMOVE** for static IPv6 configurations!
-net.ipv6.conf.all.accept_ra = 2
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production as that requires STATIC IP addressess!
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
 EOF
 
 sysctl --system
