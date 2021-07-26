@@ -112,7 +112,7 @@ If you want to set up your own server development environment see
 This work (this documentation repository) is licensed under a Creative Commons 
 Attribution-ShareAlike 4.0 International License.
 
-See [LICENSE].
+See [LICENSE](LICENSE).
 
 # Security Contact
 
