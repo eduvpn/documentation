@@ -32,21 +32,6 @@ The configuration is done in two locations:
 - `/etc/vpn-server-api/config.php`: configure which profiles are 
   restricted by access control.
 
-## Cache
-
-The permission cache is configured in `/etc/vpn-user-portal/config.php`
-using the `sessionExpiry` option. The default is 90 days, `P90D`. The following
-is a list of common values you can use:
-
-- `PT8H` (8 hours)
-- `PT12H` (12 hours)
-- `P1D` (1 day)
-- `P7D` (7 days)
-- `P1Y` (1 year)
-
-If you modify this value, it will only take effect the next time the user is 
-forced to authenticate/authorize.
-
 ## SAML
 
 We assume [SAML](SAML.md) is already configured and working.
