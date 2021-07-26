@@ -39,6 +39,10 @@ net.ipv6.conf.all.forwarding = 1
 When making changes here, reboot your server to make sure the changes are
 properly propagated. Test your IPv6 connectivity after reboot.
 
+**NOTE**: do NOT remove the `net.ipv6.conf.all.forwarding = 1` in an attempt
+to try and disable IPv6. This will lead to (long) timeouts when clients attempt
+to connect to services that support native IPv6.
+
 ## Routed IPv6 Prefix
 
 The easiest, and best way is to have a public IPv6 prefix routed to the public
