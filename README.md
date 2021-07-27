@@ -81,7 +81,7 @@ can't be bothered to setup an IRC client. See you there!
 ## Supported Operating Systems
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) 32, 33, 34 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 33, 34 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
@@ -99,8 +99,15 @@ follow [these](MULTI_NODE.md) instructions!
 
 - [Fedora](DEPLOY_FEDORA.md) 33, 34 (`aarch64`) 
   (Only available through the "development" repository)
+- [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`)
 
-You can use the `aarch64` packages on e.g. the [Raspberry Pi](RASPBERRY_PI.md).
+You can use the Fedora `aarch64` packages on e.g. the 
+[Raspberry Pi](RASPBERRY_PI.md).
+
+We also have **EXPERIMENTAL** support for "EL8", i.e. CentOS 8, Rocky Linux 8
+and Red Hat Enterprise Linux. See 
+[this](https://list.surfnet.nl/pipermail/eduvpn-deploy/2021-July/000343.html) 
+mailinglist post.
 
 # Development
 
