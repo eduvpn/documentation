@@ -28,10 +28,11 @@ The VPN servers provide an API protected with
 in draft. If the application implemented the [APIv2](API.md), it will also
 work as-is with APIv3. 
 
-The _only_ difference between APIv2 and APIv3 is that refresh tokens are now 
-single use. When using a refresh token, the response includes also a _new_ 
-refresh token. Should a refresh token be used multiple times, the whole 
-authorization is revoked and the client will need to reauthorize.
+The _only_ difference in the OAuth implementation between APIv2 and APIv3 is 
+that refresh tokens are now single use. When using a refresh token, the 
+response includes also a _new_ refresh token. Should a refresh token be used 
+multiple times, the whole authorization is revoked and the client will need to 
+reauthorize.
 
 After some rudimentary tests, it seems all existing eduVPN/Let's Connect! 
 clients are handling this properly.
