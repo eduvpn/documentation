@@ -30,7 +30,7 @@ be done through the portal as an [admin](PORTAL_ADMIN.md).
 
 ### Syslog
 
-**NOTE**: this is only available in vpn-server-api >= 2.2.11.
+**NOTE**: this is only available in vpn-server-api >= 2.2.11
 
 In addition to writing connection information to the database, this information
 is also written to _syslog_. 
@@ -45,18 +45,27 @@ Jul 12 16:48:46 vpn.tuxed.net vpn-server-api[8642]: DISCONNECT fkooman (default)
 The format is 
 `{CONNECT,DISCONNECT} ${USER_ID} (${PROFILE_ID}) [${IPv4},${IPv6}]`.
 
-**NOTE**: in vpn-server-api >= 2.2.12 the format changes slightly and also 
-includes the "originating" client IP, e.g.:
+**NOTE**: starting from vpn-server-api >= 2.2.12 there is flexibility in the 
+way the log is written. A template can be configured. The default is format 
+shown above. This version also adds the ability to log the "originating IP" of
+the VPN client.
 
-```
-Jul 20 17:04:04 vpn.tuxed.net vpn-server-api[1811]: CONNECT fkooman (default) [46.X.Y.Z => 10.202.56.2,fd5e:eccc:d4b:783f::1000]
-Jul 20 17:04:19 vpn.tuxed.net vpn-server-api[1813]: DISCONNECT fkooman (default) [46.X.Y.Z => 10.202.56.2,fd5e:eccc:d4b:783f::1000]
-```
+You can set the `connectionLogFormat` in `/etc/vpn-server-api/config.php` to 
+a string that is used as a template for generating the log lines. The default 
+is `{{EVENT_TYPE}} {{USER_ID}} ({{PROFILE_ID}}) [{{IP_FOUR}},{{IP_SIX}}]`. You 
+can customize this and use the following "variables" that are replaced before 
+writing the log line:
 
-The format is 
-`{CONNECT,DISCONNECT} ${USER_ID} (${PROFILE_ID}) [${ORIGINATING_IP} => ${IPv4},${IPv6}]` 
-where the `${ORIGINATING_IP}` can be an IPv4 or IPv6 address, depending on 
-which protocol the client used to connect to the VPN server.
+* `EVENT_TYPE`: either `CONNECT` or `DISCONNECT`;
+* `USER_ID`: the user ID;
+* `PROFILE_ID`: the profile that is being connected to;
+* `IP_FOUR`: the IPv4 addresses provided to the VPN client;
+* `IP_SIX`: the IPv6 addresses provided to the VPN client;
+* `ORIGINATING_IP`: the IP address (either IPv4 or IPv6) the VPN client is 
+  connecting _from_.
+
+Make sure you "wrap" the variable in `{{` and `}}` as shown in the example 
+above when using them in `connectionLogFormat`.
 
 ## Web Server Log
 
