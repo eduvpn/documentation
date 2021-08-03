@@ -131,14 +131,42 @@ documented above. The following API calls are available:
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available.
 
+Optionally you can filter the VPN profile list based on the VPN protocol used. 
+If you client does not support WireGuard or OpenVPN, you can indicate this by
+sending the `X-Proto-Support` request header with a comma separated list of
+supported protocols. If you do not send this header, you are implicitly 
+claiming to support all protocols.
+
+This `GET` call has no parameters.
+
 ### Request
 
+Request all profiles, irrespective of the protocol:
+
 ```bash
-$ curl -H "Authorization: Bearer abcdefgh" \
+$ curl \
+    -H "Authorization: Bearer abcdefgh" \
     https://vpn.example.org/vpn-user-portal/api.php/v3/info
 ```
 
-This `GET` call has no parameters.
+When you only want to get back the OpenVPN profiles:
+
+```bash
+$ curl \
+    -H "X-Proto-Support: openvpn" \
+    -H "Authorization: Bearer abcdefgh" \
+    https://vpn.example.org/vpn-user-portal/api.php/v3/info
+```
+
+If you want to explicitly indicate support for both OpenVPN and WireGuard can 
+use:
+
+```bash
+$ curl \
+    -H "X-Proto-Support: openvpn,wireguard" \
+    -H "Authorization: Bearer abcdefgh" \
+    https://vpn.example.org/vpn-user-portal/api.php/v3/info
+```
 
 ### Response
 
@@ -176,7 +204,10 @@ Get the profile configuration for the profile you want to connect to.
 ### Request
 
 ```bash
-$ curl -d "profile_id=employees" --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" -H "Authorization: Bearer abcdefgh" \
+$ curl \
+    -d "profile_id=employees" \
+    --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" \
+    -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
 ```
 
@@ -323,7 +354,9 @@ terminated by the application.
 ### Request
 
 ```bash
-$ curl -d "profile_id=employees" -H "Authorization: Bearer abcdefgh" \
+$ curl \
+    -d "profile_id=employees" \
+    -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
 ```
 
