@@ -155,6 +155,7 @@ If your application does not support a particular VPN protocol you can filter
 the list by using the `X-Proto-Support` HTTP request header:
 
 | Header                               | VPN Protocol Support in Client |
+| ------------------------------------ | ------------------------------ |
 | _no header_                          | Both OpenVPN and WireGuard     |
 | `X-Proto-Support: openvpn,wireguard` | Both OpenVPN and WireGuard     |
 | `X-Proto-Support: openvpn`           | Only OpenVPN                   |
