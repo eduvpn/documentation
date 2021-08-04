@@ -1,17 +1,19 @@
----
-title: APIv3
-description: API Documentation for (Native) Application Developers
-category: dev
----
+# Introduction
 
-**NOTE**: WORK IN PROGRESS AS OF 2021-05-23
+This document describes the version 3 API provided by a future version of the 
+eduVPN/Let's Connect! servers. The API is intended to be used by the eduVPN and 
+Let's Connect! applications and uses OAuth 2 for authorization.
 
-This document describes the API provided by all eduVPN/Let's Connect! servers.
-The API is intended to be used by the eduVPN and Let's Connect! applications.
+The API can be used to obtain server information, prepare for a connection and 
+clean up a connection. 
 
-The API can be used to obtain a list of available VPN _profiles_ on the server, 
-download a VPN client configuration for a particular profile and clean up the
-connection.
+# Changes
+
+The changes made to the API documentation before it is final.
+
+| Date       | Change                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------- |
+| 2021-08-04 | Allow client to specify supported VPN protocols on `/info` call using the `X-Proto-Support` HTTP request header |
 
 # Instance Discovery
 
@@ -141,7 +143,7 @@ This `GET` call has no parameters.
 
 ### Request
 
-Request all profiles, irrespective of the protocol:
+Request all available VPN profiles:
 
 ```bash
 $ curl \
@@ -149,24 +151,14 @@ $ curl \
     https://vpn.example.org/vpn-user-portal/api.php/v3/info
 ```
 
-When you only want to get back the OpenVPN profiles:
+If your application does not support a particular VPN protocol you can filter
+the list by using the `X-Proto-Support` HTTP request header:
 
-```bash
-$ curl \
-    -H "X-Proto-Support: openvpn" \
-    -H "Authorization: Bearer abcdefgh" \
-    https://vpn.example.org/vpn-user-portal/api.php/v3/info
-```
-
-If you want to explicitly indicate support for both OpenVPN and WireGuard can 
-use:
-
-```bash
-$ curl \
-    -H "X-Proto-Support: openvpn,wireguard" \
-    -H "Authorization: Bearer abcdefgh" \
-    https://vpn.example.org/vpn-user-portal/api.php/v3/info
-```
+| Header                               | VPN Protocol Support in Client |
+| _no header_                          | Both OpenVPN and WireGuard     |
+| `X-Proto-Support: openvpn,wireguard` | Both OpenVPN and WireGuard     |
+| `X-Proto-Support: openvpn`           | Only OpenVPN                   |
+| `X-Proto-Support: wireguard`         | Only WireGuard                 |
 
 ### Response
 
