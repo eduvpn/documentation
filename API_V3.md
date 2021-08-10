@@ -156,10 +156,19 @@ the list by using the `X-Proto-Support` HTTP request header:
 
 | Header                               | VPN Protocol Support in Client |
 | ------------------------------------ | ------------------------------ |
-| _no header_                          | Both OpenVPN and WireGuard     |
+| _no header_                          | All VPN protocols              |
 | `X-Proto-Support: openvpn,wireguard` | Both OpenVPN and WireGuard     |
 | `X-Proto-Support: openvpn`           | Only OpenVPN                   |
 | `X-Proto-Support: wireguard`         | Only WireGuard                 |
+
+If your application only supports OpenVPN you would use this:
+
+```bash
+$ curl \
+    -H "Authorization: Bearer abcdefgh" \
+    -H "X-Proto-Support: openvpn" \
+    https://vpn.example.org/vpn-user-portal/api.php/v3/info
+```
 
 ### Response
 
