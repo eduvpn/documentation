@@ -14,7 +14,7 @@ MACHINE_HOSTNAME=$(hostname -f)
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
-# external "Default Gateway" Address 
+# Try to detect external "Default Gateway" Interface, but allow admin override
 EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
 printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXTERNAL_IF
 
