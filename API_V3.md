@@ -223,7 +223,7 @@ e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
 **NOTE**: do NOT use the same WireGuard key for different servers, generate 
-on *per server*.
+one *per server*.
 **NOTE**: in case your application supports WireGuard, it MUST provide the
 `public_key` in all situations as the client has no idea whether the profile.
 will be a WireGuard or OpenVPN profile. Currently, the server only enforces the 
@@ -399,12 +399,12 @@ network, the same configuration SHOULD be used. The application SHOULD
 implement "online detection" to be able to figure out whether the VPN allows 
 any traffic over it or not.
 
-The basic rules: 
+The basic rules:
 
 1. `/connect` (and `/disconnect`) ONLY need to be called when the user decides 
    to connect/disconnect, not when this happens automatically for whatever 
-   reason, e.g. suspending the device, network not available;
-2. There are no API calls as long as the VPN is (supposed to be) up.
+   reason, e.g. suspending the device, network not available, ...;
+2. There are no API calls as long as the VPN is (supposed to be) up (or down).
 
 **NOTE** if the application implements some kind of "auto connect" on 
 (device or application) start-up that of course MUST call `/info` and 
