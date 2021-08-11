@@ -239,7 +239,9 @@ both of them use to same key now that the profiles are "merged":
     $ sudo chown apache.apache /var/lib/vpn-server-api/ta.key
     
 The `ta.key` is the fallback "TLS Crypt" key. If that file exists, the profile 
-specific keys are ignored.
+specific keys are ignored. Keep in mind to restore the `ta.key` file in case 
+you do a `vpn-maint-reset-controller` as all files in `/var/lib/vpn-server-api`
+will be wiped.
 
 On the nodes, apply the changes again:
 
