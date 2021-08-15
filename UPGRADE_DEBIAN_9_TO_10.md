@@ -123,7 +123,7 @@ That should fix it right up!
 ## To Debian 10
 
 Follow the instructions 
-[here](https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html). 
+[here](https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading.en.html). 
 These are the official Debian upgrade instructions. You can and SHOULD follow 
 that document and read all sections and perform the steps when necessary. Pay 
 attention the the cleanup as well (sections 4.7, 4.8). When updating the 
