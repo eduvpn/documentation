@@ -1,5 +1,8 @@
 # Introduction
 
+**NOTE**: we recommend to upgrade to Debian 11 instead of using the OpenVPN 
+backport!
+
 This document will show you how to update OpenVPN on your Debian 10 server
 to the version from the 
 [buster-backports](https://packages.debian.org/buster-backports/openvpn) 

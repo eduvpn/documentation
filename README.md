@@ -82,7 +82,7 @@ can't be bothered to setup an IRC client. See you there!
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
 - [Fedora](DEPLOY_FEDORA.md) 33, 34 (`x86_64`)
-- [Debian](DEPLOY_DEBIAN.md) 9, 10 (`x86_64`) 
+- [Debian](DEPLOY_DEBIAN.md) 9, 10, 11 (`x86_64`) 
 
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
 for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
@@ -99,7 +99,6 @@ follow [these](MULTI_NODE.md) instructions!
 
 - [Fedora](DEPLOY_FEDORA.md) 33, 34 (`aarch64`) 
   (Only available through the "development" repository)
-- [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`)
 
 You can use the Fedora `aarch64` packages on e.g. the 
 [Raspberry Pi](RASPBERRY_PI.md).

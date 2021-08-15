@@ -106,21 +106,21 @@ to `EdDSA` and drop TLSv1.2 support.
 From the point of view of the VPN server the following tables can help to 
 figure out which algorithms are supported.
 
-| OS        | TLS              |
-| --------- | ---------------- |
-| CentOS 7  | TLSv1.2          |
-| Fedora    | TLSv1.2, TLSv1.3 |
-| Debian 9  | TLSv1.2          | 
-| Debian 10 | TLSv1.2, TLSv1.3 |
+| OS            | TLS              |
+| ------------- | ---------------- |
+| CentOS 7      | TLSv1.2          |
+| Fedora        | TLSv1.2, TLSv1.3 |
+| Debian 9      | TLSv1.2          | 
+| Debian 10, 11 | TLSv1.2, TLSv1.3 |
 
 Whenever possible, the client/server will use the highest TLS version. As for 
 which types of keys are supported by the VPN server:
 
-| CA    | CentOS 7 | Fedora | Debian 9 | Debian 10 |
-|-------|--------- | ------ | -------- | --------- |
-| RSA   | Y        | Y      | Y        | Y         |
-| ECDSA | Y        | Y      | Y        | Y         |
-| EdDSA | N        | Y      | N        | Y         |
+| CA    | CentOS 7 | Fedora | Debian 9 | Debian 10, 11 |
+|-------|--------- | ------ | -------- | ------------- |
+| RSA   | Y        | Y      | Y        | Y             |
+| ECDSA | Y        | Y      | Y        | Y             |
+| EdDSA | N        | Y      | N        | Y             |
 
 The client plays an important role here. In order to support `EdDSA` the client 
 MUST support TLSv1.3, *and* support storing `EdDSA` keys in its key store.

@@ -41,6 +41,12 @@ deb https://repo.eduvpn.org/v2/deb stretch main
 deb https://repo.eduvpn.org/v2/deb buster main
 ```
 
+### Debian 11
+
+```
+deb https://repo.eduvpn.org/v2/deb bullseye main
+```
+
 # CentOS
 
 ## Keys
