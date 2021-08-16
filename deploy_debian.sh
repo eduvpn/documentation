@@ -29,12 +29,12 @@ DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
-curl https://repo.eduvpn.org/v2/deb/debian-20200817.key | apt-key add
+curl -o /etc/apt/trusted.gpg.d/eduVPN.asc https://repo.eduvpn.org/v2/deb/debian-20200817.key
 echo "deb https://repo.eduvpn.org/v2/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN.list
 
 # enable dev repo if requested
 if [ "${VPN_DEV_REPO}" = 1 ]; then
-    curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | apt-key add
+    curl -o /etc/apt/trusted.gpg.d/fkooman.asc https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
     echo "deb https://repo.tuxed.net/eduVPN/dev/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN.list
 fi
 
