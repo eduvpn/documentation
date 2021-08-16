@@ -23,6 +23,12 @@ configuration. You have to manually re-enable PHP:
 
     $ sudo a2enconf php7.4-fpm
 
+In case you also modified the PHP configuration options, as suggested e.g. 
+[here](DEPLOY_DEBIAN.md#php), you need to reapply those as well and restart 
+PHP, to restart PHP:
+
+    $ sudo systemctl restart php7.4-fpm
+
 Restart Apache:
 
     $ sudo systemctl restart apache2
