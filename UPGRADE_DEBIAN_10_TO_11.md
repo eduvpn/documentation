@@ -1,5 +1,13 @@
 ## Upgrading from Debian 10 to Debian 11
 
+First, make sure your Debian 10 system is fully up to date:
+
+```
+$ sudo vpn-maint-update-system
+```
+    
+Reboot after this to make sure all is still well.
+    
 Follow the instructions 
 [here](https://www.debian.org/releases/bullseye/amd64/release-notes/ch-upgrading.en.html). 
 
@@ -15,28 +23,38 @@ repositories (section 4.3) also make sure you update
 `/etc/apt/sources.list.d/eduVPN.list` and replace `buster` with `bullseye`, 
 i.e.:
 
-    $ echo "deb https://repo.eduvpn.org/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
+```
+$ echo "deb https://repo.eduvpn.org/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
+```
 
 After the update is complete, PHP will not be properly configured yet, this is 
 because the version changed from 7.3 to 7.4 and is part of a different Apache
 configuration. You have to manually re-enable PHP:
 
-    $ sudo a2enconf php7.4-fpm
+```
+$ sudo a2enconf php7.4-fpm
+```
 
 In case you also modified the PHP configuration options, as suggested e.g. 
 [here](DEPLOY_DEBIAN.md#php), you need to reapply those as well and restart 
 PHP, to restart PHP:
 
-    $ sudo systemctl restart php7.4-fpm
+```
+$ sudo systemctl restart php7.4-fpm
+```
 
 Restart Apache:
 
-    $ sudo systemctl restart apache2
+```
+$ sudo systemctl restart apache2
+```
 
 Run the following scripts to make sure all is in order:
 
-    $ sudo vpn-maint-apply-changes
-    $ sudo vpn-maint-update-system
+```
+$ sudo vpn-maint-apply-changes
+$ sudo vpn-maint-update-system
+```
 
 This should all run without any error and without asking any questions! Reboot 
 your server after this and make sure everything still works. Try logging in to 
