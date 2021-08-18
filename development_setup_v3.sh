@@ -34,7 +34,7 @@ git clone https://git.sr.ht/~fkooman/builder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
-for PACKAGE_NAME in vpn-daemon wg-daemon php-jwt php-oauth2-server vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
+for PACKAGE_NAME in vpn-daemon wg-daemon php-oauth2-server vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 #	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
 ##	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
