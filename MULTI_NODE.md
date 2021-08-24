@@ -260,6 +260,9 @@ The `vpn-maint-scripts` package has instructions for maintaining a multi node
 setup. Please refer to those instructions 
 [here](https://github.com/letsconnectvpn/vpn-maint-scripts).
 
+You **MUST** make sure that you always update both controller and node(s) at 
+the same time!
+
 ## TLS between Controller and Node(s)
 
 ### Controller
