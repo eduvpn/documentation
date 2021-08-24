@@ -14,7 +14,6 @@ git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
 git clone https://git.sr.ht/~fkooman/vpn-daemon
-git clone https://git.sr.ht/~fkooman/wg-daemon
 git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
 git clone https://git.sr.ht/~fkooman/builder.rpm
 git clone https://git.sr.ht/~fkooman/builder.deb
@@ -27,14 +26,13 @@ git clone https://git.sr.ht/~fkooman/builder.deb
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
 #git clone git@git.sr.ht:~fkooman/vpn-ca
 #git clone git@git.sr.ht:~fkooman/vpn-daemon
-#git clone git@git.sr.ht:~fkooman/wg-daemon
 #git clone git@git.sr.ht:~fkooman/vpn-maint-scripts
 #git clone git@git.sr.ht:~fkooman/builder.rpm
 #git clone git@git.sr.ht:~fkooman/builder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
-for PACKAGE_NAME in vpn-daemon wg-daemon php-oauth2-server vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
+for PACKAGE_NAME in vpn-daemon php-oauth2-server vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 #	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
 ##	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
@@ -87,13 +85,7 @@ go build -o _bin/vpn-ca vpn-ca/*.go
 # vpn-daemon                         #
 ######################################
 cd "${BASE_DIR}/vpn-daemon" || exit
-go build -o _bin/vpn-daemon vpn-daemon/*.go
-
-######################################
-# wg-daemon                         #
-######################################
-#cd "${BASE_DIR}/vpn-daemon" || exit
-#go build -o _bin/wg-daemon vpn-daemon/*.go
+go build -o vpn-daemon tuxed.net/vpn-daemon/cmd/vpn-daemon/...
 
 ######################################
 # vpn-server-node                    #
@@ -117,6 +109,7 @@ cp "${BASE_DIR}/vpn-user-portal/config/node.key" "${BASE_DIR}/vpn-server-node/co
 ######################################
 cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
 #!/bin/sh
+vpn-daemon/vpn-daemon &
 cd vpn-user-portal || exit
 php -S localhost:8082 -t web
 EOF
