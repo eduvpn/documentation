@@ -4,7 +4,7 @@ description: Set up a controller with two nodes
 category: advanced
 ---
 
-**WORK IN PROGRESS (2020-09-24)**
+**WORK IN PROGRESS (2021-08-24)**
 
 When you want to scale up your deployment, i.e. have multiple nodes connect 
 with one controller, this document is for you!
@@ -12,15 +12,11 @@ with one controller, this document is for you!
 This document will show how to set up multiple nodes. The OpenVPN clients will
 be distributed over the nodes using DNS round-robin.
 
-If you already installed the software on one machine already, and want to 
-convert your current installation into a controller you can use the 
-`convert_to_controller.sh` script.
-
 ## Requirements
 
-At least 3 machines (or VMs) running CentOS 7. The two machines that will be
-the nodes ideally have the same specifications. They also SHOULD have CPU AES 
-acceleration, e.g. AES-NI.
+At least 3 machines (or VMs) running Debian >= 10. We recommend Debian 11 as of
+this moment. The two machines that will be the nodes ideally have the same 
+specifications. They also SHOULD have CPU AES acceleration, e.g. AES-NI.
 
 All three need to be set up with static IP configurations and working DNS. Make 
 sure all works properly before starting the setup. For example, my test 
@@ -52,15 +48,15 @@ This will tell you whether or not the syntax is correct!
 On the controller host:
 
     $ sudo -s
-    # ./deploy_centos_controller.sh
+    # ./deploy_debian_controller.sh
 
 Make note of the credentials that are printed at the end, you can use them to
 test your server!
 
 After the controller is installed, make sure you'll get a valid TLS 
-certificate, for example using the included `lets_encrypt_centos.sh` script:
+certificate, for example using the included `lets_encrypt_debian.sh` script:
 
-    # ./lets_encrypt_centos.sh
+    # ./lets_encrypt_debian.sh
 
 Now visit your site at https://frkovpn.tuxed.net/. Make sure there is no TLS 
 error and you can login with the credentials you noted before.
@@ -124,7 +120,7 @@ The `managementIp` value MUST contain the IP address of the node(s) at which
 it can be reached from the controller.
 
 Next, modify the `RequireAny` section in 
-`/etc/httpd/conf.d/vpn-server-api.conf` by adding the IP addresses of the 
+`/etc/apache2/conf.d/vpn-server-api.conf` by adding the IP addresses of the 
 nodes:
 
     <RequireAny>
@@ -163,7 +159,7 @@ unpacked the archive already, see [Requirements](#Requirements).
 
     $ cd documentation-2
     $ sudo -s
-    # ./deploy_centos_node.sh
+    # ./deploy_debian_node.sh
 
 The script will ask for the API URL and the secret. The API URL is the URL we
 tested above. The secret is the one extracted at the end of the previous 
@@ -175,9 +171,9 @@ fix that shortly!
 
 First we install the [vpn-daemon](https://github.com/letsconnectvpn/vpn-daemon):
 
-    $ sudo yum -y install vpn-daemon
+    $ sudo apt install vpn-daemon
 
-Modify `/etc/sysconfig/vpn-daemon` (on Debian: `/etc/default/vpn-daemon`):
+Modify `/etc/default/vpn-daemon`:
 
     LISTEN=:41194
 
@@ -194,11 +190,11 @@ Next we have to update the node configuration. Edit
 The firewall also requires tweaking, open it to allow traffic from the 
 controller to the node's VPN daemon:
 
-In `/etc/sysconfig/iptables`:
+In `/etc/iptables/rules.v4`:
 
     -A INPUT -s 145.0.6.71/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
-In `/etc/sysconfig/ip6tables`, if you prefer using IPv6:
+In `/etc/iptables/rules.v6`, if you prefer using IPv6:
 
     -A INPUT -s 2001:610:188:418:145:0:6:71/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
@@ -208,8 +204,7 @@ Now you are ready to apply the changes and it should work without error:
 
 Restart the firewall:
 
-    $ sudo systemctl restart iptables
-    $ sudo systemctl restart ip6tables
+    $ sudo systemctl restart netfilter-persistent
 
 Make sure you repeat these steps on Node B as well!
 
@@ -271,14 +266,13 @@ setup. Please refer to those instructions
 
 Finally, we need to create a CA to secure the connection between the controller
 and nodes. You can do this on the controller, or on your own system. We use 
-[vpn-ca](https://github.com/letsconnectvpn/vpn-ca) for this. It is already 
-installed on your controller:
+[vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) for this. It is already installed 
+on your controller:
 
     $ mkdir -p ${HOME}/ca
     $ cd ${HOME}/ca
     $ vpn-ca -init-ca -name "VPN Service CA"
     $ vpn-ca -client -name vpn-daemon-client -not-after CA
-    $ vpn-ca -server -name vpn-daemon -not-after CA
     $ vpn-ca -server -name vpn-daemon -not-after CA
     $ chmod 0640 *.crt *.key
 
@@ -297,12 +291,14 @@ Finally, remove the `vpnDaemonTls` option from
 Copy the `ca.crt`, `vpn-daemon.crt`, `vpn-daemon.key` to Node A and Node B. On 
 the node(s) copy the certificates/keys to the right place:
 
-    $ sudo cp ca.crt                /etc/pki/vpn-daemon/
-    $ sudo cp vpn-daemon.crt /etc/pki/vpn-daemon/server.crt
-    $ sudo cp vpn-daemon.key /etc/pki/vpn-daemon/private/server.key
-    $ sudo chgrp -R vpn-daemon      /etc/pki/vpn-daemon
+    $ sudo mkdir -p            /etc/ssl/vpn-daemon/private
+    $ sudo cp ca.crt           /etc/ssl/vpn-daemon/ca.crt
+    $ sudo cp vpn-daemon.crt   /etc/ssl/vpn-daemon/server.crt
+    $ sudo cp vpn-daemon.key   /etc/ssl/vpn-daemon/private/server.key
+    $ sudo chmod 0750          /etc/ssl/vpn-daemon/private
+    $ sudo chgrp -R vpn-daemon /etc/ssl/vpn-daemon
 
-Modify `/etc/sysconfig/vpn-daemon` (on Debian: `/etc/default/vpn-daemon`):
+Modify `/etc/default/vpn-daemon`:
 
     ENABLE_TLS=-enable-tls
     LISTEN=:41194
