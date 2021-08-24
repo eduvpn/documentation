@@ -133,7 +133,7 @@ nodes:
 
 Restart Apache:
 
-    $ sudo systemctl restart httpd
+    $ sudo systemctl restart apache2
 
 Before moving on to the nodes, make note of the `vpn-server-node` secret under
 the `apiConsumers` section in `/etc/vpn-server-api/config.php`. You'll need it
@@ -231,7 +231,7 @@ As, by default, each profile uses its own "TLS Crypt" key, we need to make sure
 both of them use to same key now that the profiles are "merged":
 
     $ sudo cp /var/lib/vpn-server-api/tls-crypt-node-a.key /var/lib/vpn-server-api/ta.key
-    $ sudo chown apache.apache /var/lib/vpn-server-api/ta.key
+    $ sudo chown www-data.www-data /var/lib/vpn-server-api/ta.key
     
 The `ta.key` is the fallback "TLS Crypt" key. If that file exists, the profile 
 specific keys are ignored. Keep in mind to restore the `ta.key` file in case 
@@ -281,7 +281,7 @@ Now install the `vpn-daemon-client` certificate:
     $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
     $ sudo chmod 0710 /etc/vpn-server-api/vpn-daemon
     $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
-    $ sudo chgrp -R apache /etc/vpn-server-api/vpn-daemon
+    $ sudo chgrp -R www-data /etc/vpn-server-api/vpn-daemon
 
 Finally, remove the `vpnDaemonTls` option from 
 `/etc/vpn-server-api/config.php` to force using TLS.
