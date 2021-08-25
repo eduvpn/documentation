@@ -43,8 +43,8 @@
 -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
 -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
 # WireGuard
--A FORWARD -i wg+ ! -o wg+ -j ACCEPT
--A FORWARD ! -i wg+ -o wg+ -j ACCEPT
+-A FORWARD -i wg0 ! -o wg0 -j ACCEPT
+-A FORWARD ! -i wg0 -o wg0 -j ACCEPT
 
 # Be more specific through which interfaces routing is allowed
 #-A FORWARD -i tun+ -o eth0 -j ACCEPT
