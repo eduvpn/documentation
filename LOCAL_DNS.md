@@ -66,6 +66,11 @@ to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in
         # See: https://use-application-dns.net/
         # See: https://support.mozilla.org/en-US/kb/configuring-networks-disable-dns-over-https
         local-zone: use-application-dns.net refuse
+        
+        # disable iCloud Private Relay
+        # See: https://developer.apple.com/support/prepare-your-network-for-icloud-private-relay
+        local-zone: mask.icloud.com. refuse
+        local-zone: mask-h2.icloud.com. refuse
  
 With these options Unbound listens on all interfaces and the ranges 
 `10.0.0.0/8` and `fd00::/8` are white-listed. These ranges are the defaults for 
