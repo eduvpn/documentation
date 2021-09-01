@@ -441,7 +441,10 @@ authorization when e.g. the authorization was revoked.
   previously obtained configuration, no need to use the API, BUT if connecting
   doesn't work go back to the API
 - we need a flow diagram...
-- the application can offer a "Renew" button when the current VPN session is 
-  nearing its end. This button would throw away the OAuth tokens and restart 
-  the authorization before (automatically) reconnecting to the same 
-  server/profile if still available;
+- the application SHOULD show a "Renew" button, starting from >= 30 minutes after
+  the OAuth authorization (using the browser) took place. The reason for this 
+  30 minutes is that _browser_ sessions in the portal are valid for 30 minutes 
+  in eduVPN/Let's Connect! servers. Renewing before the user is forced to login 
+  again results in getting a session that expires at the exact same time as the 
+  previous one which is confusing to the user when they are trying out the 
+  "Renew" button
