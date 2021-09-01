@@ -17,6 +17,7 @@ The changes made to the API documentation before it is final.
 | 2021-09-01 | The `vpn_proto` field was added to the `/info` response                                                         |
 |            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
 |            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
+|            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
 
 # Instance Discovery
 
@@ -136,12 +137,6 @@ documented above. The following API calls are available:
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available.
 
-Optionally you can filter the VPN profile list based on the VPN protocol used. 
-If you client does not support WireGuard or OpenVPN, you can indicate this by
-sending the `X-Proto-Support` request header with a comma separated list of
-supported protocols. If you do not send this header, you are implicitly 
-claiming to support all protocols.
-
 This `GET` call has no parameters.
 
 ### Request
@@ -151,25 +146,6 @@ Request all available VPN profiles:
 ```bash
 $ curl \
     -H "Authorization: Bearer abcdefgh" \
-    https://vpn.example.org/vpn-user-portal/api.php/v3/info
-```
-
-If your application does not support a particular VPN protocol you can filter
-the list by using the `X-Proto-Support` HTTP request header:
-
-| Header                               | VPN Protocol Support in Client |
-| ------------------------------------ | ------------------------------ |
-| _no header_                          | All VPN protocols              |
-| `X-Proto-Support: openvpn,wireguard` | Both OpenVPN and WireGuard     |
-| `X-Proto-Support: openvpn`           | Only OpenVPN                   |
-| `X-Proto-Support: wireguard`         | Only WireGuard                 |
-
-If your application only supports OpenVPN you would use this:
-
-```bash
-$ curl \
-    -H "Authorization: Bearer abcdefgh" \
-    -H "X-Proto-Support: openvpn" \
     https://vpn.example.org/vpn-user-portal/api.php/v3/info
 ```
 
@@ -193,7 +169,7 @@ Content-Type: application/json
             {
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto": "openvpn"
+                "vpn_proto": "wireguard"
             }
         ]
     }
@@ -202,8 +178,12 @@ Content-Type: application/json
 
 The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
-[BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). The
-`vpn_proto` field indicates whether the VPN profile uses OpenVPN or WireGuard.
+[BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). 
+
+The `vpn_proto` field indicates whether the VPN profile uses OpenVPN or
+WireGuard. If you client does not support OpenVPN (or WireGuard) you can filter
+profiles based on the `vpn_proto` field and either omit them, or mark them as 
+unsupported.
 
 ## Connect
 
@@ -221,11 +201,11 @@ $ curl \
 
 The `POST` request has (optional) parameters:
 
-| Parameter    | Required? | Protocol    |
-| ------------ | --------- | ----------- |
-| `profile_id` | Yes       | _All_       |
-| `public_key` | Yes       | `wireguard` |
-| `tcp_only`   | No        | `openvpn`   |
+| Parameter    | Required? | Protocol    | Value(s)                                               |
+| ------------ | --------- | ----------- | ------------------------------------------------------ |
+| `profile_id` | Yes       | _All_       | The `profile_id` as obtained from the `/info` call     |
+| `public_key` | Yes       | `wireguard` | A WireGuard public key                                 |
+| `tcp_only`   | No        | `openvpn`   | Either `on` or `off` when specified, defaults to `off` |
 
 The value of `profile_id` MUST be of one of the profiles returned by the 
 `/info` call. The value of `public_key` MUST be a valid WireGuard public key. 
@@ -246,8 +226,8 @@ it is considered to be `off`, e.g.:
     -d "tcp_only=on"
 ```
 
-**NOTE**: do NOT use the same WireGuard key for different servers, generate 
-one *per server*.
+**NOTE**: do NOT use the same WireGuard private key for different servers, 
+generate one *per server*.
 
 ### Response
 
