@@ -237,7 +237,13 @@ e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 
 The `tcp_only` parameter is used for OpenVPN. The returned configuration file
 will then only includes `remote` lines with TCP ports and omit the UDP ports, 
-if any. If no TCP ports are available an error will be returned.
+if any. If no TCP ports are available an error will be returned. The accepted
+values of the `tcp_only` parameter are `on` and `off`. If you omit `tcp_only` 
+it is considered to be `off`, e.g.:
+
+```bash
+    -d "tcp_only=on"
+```
 
 **NOTE**: do NOT use the same WireGuard key for different servers, generate 
 one *per server*.
