@@ -16,6 +16,7 @@ The changes made to the API documentation before it is final.
 | 2021-08-04 | Allow client to specify supported VPN protocols on `/info` call using the `X-Proto-Support` HTTP request header |
 | 2021-09-01 | The `vpn_proto` field was added to the `/info` response                                                         |
 |            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
+|            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
 
 # Instance Discovery
 
