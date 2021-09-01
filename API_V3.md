@@ -60,7 +60,7 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 ```
 
 Servers that provide the `http://eduvpn.org/api#3` key under `api`, support
-this API (and WireGuard).
+this API.
 
 ## Endpoint Location
 
@@ -192,7 +192,7 @@ Content-Type: application/json
             {
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto": "wireguard"
+                "vpn_proto": "openvpn"
             }
         ]
     }
@@ -220,11 +220,11 @@ $ curl \
 
 The `POST` request has (optional) parameters:
 
-| Parameter    | Required? | Protocol  |
-| ------------ | --------- | --------- |
-| `profile_id` | Yes       | _All_     |
-| `public_key` | Yes       | WireGuard |
-| `tcp_only`   | No        | OpenVPN   |
+| Parameter    | Required? | Protocol    |
+| ------------ | --------- | ----------- |
+| `profile_id` | Yes       | _All_       |
+| `public_key` | Yes       | `wireguard` |
+| `tcp_only`   | No        | `openvpn`   |
 
 The value of `profile_id` MUST be of one of the profiles returned by the 
 `/info` call. The value of `public_key` MUST be a valid WireGuard public key. 
