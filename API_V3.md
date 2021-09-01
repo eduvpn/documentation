@@ -14,6 +14,8 @@ The changes made to the API documentation before it is final.
 | Date       | Change                                                                                                          |
 | ---------- | --------------------------------------------------------------------------------------------------------------- |
 | 2021-08-04 | Allow client to specify supported VPN protocols on `/info` call using the `X-Proto-Support` HTTP request header |
+| 2021-09-01 | The `vpn_proto` field was added to the `/info` response                                                         |
+|            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
 
 # Instance Discovery
 
@@ -48,9 +50,9 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 {
   "api": {
     "http://eduvpn.org/api#3": {
-      "api_endpoint": "https://vpn.example.org/vpn-user-portal/api.php/v3",
-      "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/_oauth/authorize",
-      "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth.php/token"
+      "api_endpoint": "https://vpn.example.org/vpn-user-portal/api/v3",
+      "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/authorize",
+      "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/token"
     }
   },
   "v": "3.0.0-1.fc34"
@@ -184,11 +186,13 @@ Content-Type: application/json
                     "en": "Employees",
                     "nl": "Medewerkers"
                 },
-                "profile_id": "employees"
+                "profile_id": "employees",
+                "vpn_proto": "openvpn"
             },
             {
                 "display_name": "Administrators",
-                "profile_id": "admins"
+                "profile_id": "admins",
+                "vpn_proto": "wireguard"
             }
         ]
     }
@@ -197,7 +201,8 @@ Content-Type: application/json
 
 The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
-[BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag).
+[BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). The
+`vpn_proto` field indicates whether the VPN profile uses OpenVPN or WireGuard.
 
 ## Connect
 
@@ -213,21 +218,29 @@ $ curl \
     "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
 ```
 
-This `POST` call has 2 parameters, `profile_id` and `public_key`. The value of 
-`profile_id` MUST be of one of the profiles returned by the `/info` call. The 
-value of `public_key` MUST be a WireGuard public key. It has this format:
+The `POST` request has (optional) parameters:
+
+| Parameter    | Required? | Protocol  |
+| ------------ | --------- | --------- |
+| `profile_id` | Yes       | _All_     |
+| `public_key` | Yes       | WireGuard |
+| `tcp_only`   | No        | OpenVPN   |
+
+The value of `profile_id` MUST be of one of the profiles returned by the 
+`/info` call. The value of `public_key` MUST be a valid WireGuard public key. 
+It has this format:
 
 ```
 $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
+The `tcp_only` parameter is used for OpenVPN. The returned configuration file
+will then only includes `remote` lines with TCP ports and omit the UDP ports, 
+if any. If no TCP ports are available an error will be returned.
+
 **NOTE**: do NOT use the same WireGuard key for different servers, generate 
 one *per server*.
-**NOTE**: in case your application supports WireGuard, it MUST provide the
-`public_key` in all situations as the client has no idea whether the profile.
-will be a WireGuard or OpenVPN profile. Currently, the server only enforces the 
-`public_key` parameter when the profile turns out to be a WireGuard profile.
 
 ### Response
 
