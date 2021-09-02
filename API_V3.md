@@ -64,6 +64,9 @@ has to use. The document can be retrieved from `/info.json`, e.g.:
 Servers that provide the `http://eduvpn.org/api#3` key under `api`, support
 this API.
 
+This file MUST be freshly retrieved before all attempts to connect to a server 
+to make sure any updates to this file are discovered.
+
 ## Endpoint Location
 
 Currently we support both `/info.json` and `/.well-known/vpn-user-portal` in 
