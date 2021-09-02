@@ -395,6 +395,16 @@ Content-Type: application/json
 {"error":"profile not available"}
 ```
 
+In addition to these errors, there can also be an error with the server that we
+did not anticipate or is an unusual situation. In that case the response code
+will be 500 and the JSON `error` key will contain more information about the
+error. This is usually not something the user/client can do anything with and 
+it should probably be shown as a "server error" to the user. Possibly with a 
+"Try Again" button. The exact error response MUST be logged and accessible by
+the user if so instructed by the support desk, and MAY be shown to the user in 
+full, however a generic "Server Error" could be considered as well, perhaps 
+with a "Details..." button.
+
 # Flow
 
 Below we describe how the application MUST interact with the API. It does NOT
@@ -447,7 +457,6 @@ authorization when e.g. the authorization was revoked.
   times;
 - API returns *same* configuration when client calls `/connect` multiple times
   all other things being equal (only WireGuard)?;
-- Give some error responses as examples
 
 # Notes
 
