@@ -377,14 +377,14 @@ HTTP/1.1 204 No Content
 
 ## Error Responses
 
-| Call          | Message                      | Code | Description |
-| ------------- | ---------------------------- | ---- | ----------- |
-| `/connect`    | `no TCP connection possible` | 406  | ...         |
-| `/connect`    | `profile not available`      | 400  | ...         |
-| `/connect`    | `invalid "tcp_only"`         | 400  | ...         |
-| `/connect`    | `invalid "profile_id"`       | 400  | ...         |
-| `/disconnect` | `profile not available`      | 400  | ...         |
-| `/disconnect` | `invalid "profile_id"`       | 400  | ...         |
+| Call          | Message                      | Code | Description                                                          |
+| ------------- | ---------------------------- | ---- | -------------------------------------------------------------------- |
+| `/connect`    | `no TCP connection possible` | 406  | When the specified profile has no OpenVPN processes listening on TCP |
+| `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
+| `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are not either `on` or `off`               |
+| `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
+| `/disconnect` | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
+| `/disconnect` | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 
 An example:
 
