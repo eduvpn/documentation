@@ -375,6 +375,26 @@ HTTP/1.1 204 No Content
 
 ```
 
+## Error Responses
+
+| Call          | Message                      | Code | Description |
+| ------------- | ---------------------------- | ---- | ----------- |
+| `/connect`    | `no TCP connection possible` | 406  | ...         |
+| `/connect`    | `profile not available`      | 400  | ...         |
+| `/connect`    | `invalid "tcp_only"`         | 400  | ...         |
+| `/connect`    | `invalid "profile_id"`       | 400  | ...         |
+| `/disconnect` | `profile not available`      | 400  | ...         |
+| `/disconnect` | `invalid "profile_id"`       | 400  | ...         |
+
+An example:
+
+```
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{"error":"profile not available"}
+```
+
 # Flow
 
 Below we describe how the application MUST interact with the API. It does NOT
