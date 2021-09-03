@@ -17,7 +17,7 @@ implement the new [API](API_V3.md).
 ## Implementation Changes
 
 - Require at least OpenVPN 2.5
-- [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/ draft 
+- [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/) draft 
   implementation for API
 - OpenVPN requires now TLS >= 1.3
 - EdDSA (Ed25519) X.509 certificates for OpenVPN
