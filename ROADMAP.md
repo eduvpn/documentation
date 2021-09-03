@@ -47,7 +47,8 @@ make your case!
 - Add public CA and public WireGuard key to the discovery files to have an 
   additional trust channel between app and server in addition to Web TLS
 - Keep aggregate logs longer than 30 days, i.e. usage statistics
-  
+- Allow limiting number of VPN connections per user (and per client).
+
 ## Under Consideration
 
 - Redo internal 2FA, but only per server on/off switch and enrollment only from 
