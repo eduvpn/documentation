@@ -4,6 +4,10 @@ We expect to release eduVPN / Let's Connect! 3.x in **Q4 of 2021**. This will al
 depend on the eduVPN / Let's Connect! client application that will need to 
 implement the new [API](API_V3.md).
 
+If you'd like to have something added, removed, changed: please contact us on 
+[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 
+make your case!
+
 ## High Level Changes
 
 - [WireGuard](https://www.wireguard.com/) Support
