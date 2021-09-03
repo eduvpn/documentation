@@ -150,7 +150,7 @@ Request all available VPN profiles:
 ```bash
 $ curl \
     -H "Authorization: Bearer abcdefgh" \
-    https://vpn.example.org/vpn-user-portal/api.php/v3/info
+    https://vpn.example.org/vpn-user-portal/api/v3/info
 ```
 
 ### Response
@@ -200,7 +200,7 @@ $ curl \
     -d "profile_id=employees" \
     --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" \
     -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/api.php/v3/connect"
+    "https://vpn.example.org/vpn-user-portal/api/v3/connect"
 ```
 
 The `POST` request has (optional) parameters:
@@ -363,7 +363,7 @@ terminated by the application.
 $ curl \
     -d "profile_id=employees" \
     -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/api.php/v3/disconnect"
+    "https://vpn.example.org/vpn-user-portal/api/v3/disconnect"
 ```
 
 This `POST` call has 1 parameter, `profile_id`. Its value MUST be the same as 
