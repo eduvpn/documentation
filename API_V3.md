@@ -18,6 +18,7 @@ The changes made to the API documentation before it is final.
 |            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
 |            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
 |            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
+| 2021-09-02 | Add "Error Responses" section                                                                                   |
 
 # Instance Discovery
 
