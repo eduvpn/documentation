@@ -153,12 +153,17 @@ return [
         // ...
 ```
 
-Now, you need to "reset" your VPN server, which is easy:
+If you want your entire CA, including the Root CA to use the same algorithm, 
+you can "reset" your server's data. Note that this is **OPTIONAL**. It works 
+perfectly fine just switching the `vpnCaKeyType`!
+
+In case you want to continue with the reset, you can run the following command:
 
 	$ sudo vpn-maint-reset-system
 
 This will re-initialize the VPN server and bring it back to "defaults", it will
-remove all data, but not the configuration. 
+remove all data, but not the configuration and recreate the CA with the 
+specified `vpnCaKeyType`. 
 
 **NOTE**: if you are using the default username/password authentication module, 
 all users will be lost on "reset" and you need to add them again using 
