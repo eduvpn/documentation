@@ -94,9 +94,8 @@ software is used as CA.
 By default the CA uses `RSA` with keys of length 3072 bits, and signs using 
 `RSA-SHA256`.
 
-The CA also supports `ECDSA` with the NIST P-256 curve, also known as 
-secp256r1 or prime256v1, and `EdDSA` with `Ed25519`. Refer to the next section
-to see what is possible.
+The CA also supports `ECDSA` with the NIST P-384 (secp384r1) curve, and 
+`EdDSA` with `Ed25519`. Refer to the next section to see what is possible.
 
 Currently, RSA is the default. Future versions of the VPN software will switch
 to `EdDSA` and drop TLSv1.2 support.
