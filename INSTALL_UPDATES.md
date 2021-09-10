@@ -1,7 +1,7 @@
-# Updating
+# Install Updates
 
-This document will explain how to update your VPN server and how to keep it
-up to date.
+This document will explain how to update your VPN server(s) and how to keep 
+them up to date.
 
 # Single Server Setup
 
