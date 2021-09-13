@@ -1,46 +1,68 @@
 # Install Updates
 
-This document will explain how to update your VPN server(s) and how to keep 
-them up to date.
+This document will explain how to update your VPN server(s). This document is 
+split in two parts:
 
-# Single Server Setup
+1. Update your single server/VM installation;
+2. Update your multi server/VM installation, i.e. a controller with one or more
+   nodes.
 
-These instructions are for the case when you have single VPN server that you 
-installed using the `deploy_${DIST}.sh` script.
+These instructions apply to the official installation instructions using the 
+`deploy_${DIST}.sh` scripts. If you installed the servers in a different way 
+then some changes MAY be necessary!
 
-## Manual
+**NOTE**: make sure you installed the `vpn-maint-scripts` package and use the 
+correct [repositories](REPO.md).
 
-Make sure you have the package `vpn-maint-scripts` installed, replace `apt` by 
-`yum` (CentOS) or `dnf` (Fedora):
+# Single Server
 
-```
-$ sudo apt install vpn-maint-scripts
-```
-
-Now run the following script:
+All that is needed is run the following command:
 
 ```
 $ sudo vpn-maint-update-system
 ```
 
-You **MUST** reboot in case system libraries or the kernel are updated. It is
-smart to reboot anyway after some updates were installed to make sure 
-everything comes back properly.
+You SHOULD run this in a `tmux` session in case the SSH connection is lost 
+during the upgrade process.
 
-If this command gives any errors regarding package repositories or keys, look 
-[here](REPO.md) to make sure you have the proper repository and keys 
-configured.
+In case there are updates to system components/libraries or the kernel you MUST 
+reboot the system.
 
-## Automatic
+# Multi Server
 
-TBD.
+We will assume that you have one controller and one node. If you have multiple
+nodes you can modify the instructions accordingly.
 
-# Multi Node Setup
+You SHOULD designate a system as your "management host" from which your run the
+update script. You can use e.g. your own laptop or a VM running on your system.
 
-## Manual
+This device MUST have SSH access (with SSH public key authentication) to the
+controller and node(s).
 
-TBD.
+Make sure you install `tmux` on all machines. This tool is useful when the
+connection to your controller and node(s) is lost, e.g. due to network issues 
+while running the update process.
 
-## Automatic
+On your management host, download the 
+[vpn-maint-update-system-multi](https://git.sr.ht/~fkooman/vpn-maint-scripts/tree/main/item/bin/vpn-maint-update-system-multi) script. We are using a script
+because we want to first stop the nodes, then update the controller, then 
+update the nodes and (re)start the nodes. This in order to make sure all 
+clients are disconnected first before stopping the controller. That way we do 
+not lose any disconnect events in the log.
 
-TBD.
+Create a file `server.list` that contains your controller and node(s) 
+hostname.
+
+```
+CONTROLLER="vpn.example.org"
+NODES="node1.vpn.example.org node2.vpn.example.org"
+```
+
+Now you can run the `vpn-maint-update-system-multi` script:
+
+```
+$ sh vpn-maint-update-system-multi
+```
+
+The script also takes the `--reboot` flag that reboots all node(s) and 
+controller in the right order.
