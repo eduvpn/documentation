@@ -22,11 +22,11 @@ All three need to be set up with static IP configurations and working DNS. Make
 sure all works properly before starting the setup. For example, my test 
 deployment uses:
 
-Role       | DNS Host                 | IPv4       | IPv6
----------- | ------------------------ | ---------- | ---------------------------
-Controller | frkovpn.tuxed.net        | 145.0.6.71 | 2001:610:188:418:145:0:6:71
-Node A     | node-a.frkovpn.tuxed.net | 145.0.6.72 | 2001:610:188:418:145:0:6:72
-Node B     | node-b.frkovpn.tuxed.net | 145.0.6.73 | 2001:610:188:418:145:0:6:73
+Role       | DNS Host               | IPv4       | IPv6         |
+---------- | ---------------------- | ---------- | ------------ |
+Controller | vpn.example.org        | 192.0.2.10 | 2001:db8::10 |
+Node A     | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
+Node B     | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
 
 We will use NAT for IPv4 and IPv6 client traffic.
 
@@ -58,7 +58,7 @@ certificate, for example using the included `lets_encrypt_debian.sh` script:
 
     # ./lets_encrypt_debian.sh
 
-Now visit your site at https://frkovpn.tuxed.net/. Make sure there is no TLS 
+Now visit your site at https://vpn.example.org/. Make sure there is no TLS 
 error and you can login with the credentials you noted before.
 
 By default there is an `internet` profile. We will duplicate this and rename 
@@ -100,15 +100,15 @@ Modify the configuration keys in the respective sections:
 
 Node    | Option        | Value
 ------- | ------------- | -------------
-a       | managementIp  | 145.0.6.72
+a       | managementIp  | 192.0.2.20
 a       | profileNumber | 1
-a       | hostName      | node-a.frkovpn.tuxed.net
+a       | hostName      | node-a.vpn.example.org
 a       | displayName   | Node A
 a       | range         | 10.1.0.0/25
 a       | range6        | fd00:1:1:1::/64
-b       | managementIp  | 145.0.6.73
+b       | managementIp  | 192.0.2.30
 b       | profileNumber | 2
-b       | hostName      | node-b.frkovpn.tuxed.net
+b       | hostName      | node-b.vpn.example.org
 b       | displayName   | Node B
 b       | range         | 10.2.0.0/25
 b       | range6        | fd00:2:2:2::/64
@@ -125,10 +125,10 @@ nodes:
 
     <RequireAny>
         Require local
-        Require ip 145.0.6.72
-        Require ip 2001:610:188:418:145:0:6:72
-        Require ip 145.0.6.73
-        Require ip 2001:610:188:418:145:0:6:73
+        Require ip 192.0.2.20
+        Require ip 2001:db8::20
+        Require ip 192.0.2.30
+        Require ip 2001:db8::30
     </RequireAny>
 
 Restart Apache:
@@ -148,7 +148,7 @@ perform these steps in parallel on both machines.
 
 Make sure you can reach the API endpoint:
 
-    $ curl https://frkovpn.tuxed.net/vpn-server-api/api.php
+    $ curl https://vpn.example.org/vpn-server-api/api.php
     {"error":"missing authentication information"}
 
 This error is expected as no secret was provided. This just makes sure the 
@@ -192,11 +192,11 @@ controller to the node's VPN daemon:
 
 In `/etc/iptables/rules.v4`:
 
-    -A INPUT -s 145.0.6.71/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+    -A INPUT -s 192.0.2.10/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
 In `/etc/iptables/rules.v6`, if you prefer using IPv6:
 
-    -A INPUT -s 2001:610:188:418:145:0:6:71/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+    -A INPUT -s 2001:db8::10/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 
 Now you are ready to apply the changes and it should work without error:
 
@@ -209,7 +209,7 @@ Restart the firewall:
 Make sure you repeat these steps on Node B as well!
 
 Now is the time to test everything. Go to the portal at 
-`https://frkovpn.tuxed.net/`, download a configuration, test it with your 
+`https://vpn.example.org/`, download a configuration, test it with your 
 client. Download a configuration for both profiles and make sure they work. 
 Login to the admin portal using the `admin` user and password you noted at the
 end of the controller install and make sure you see your client(s) under 
@@ -224,7 +224,7 @@ DNS based load balancing over the nodes.
 On the controller you need to modify `/etc/vpn-server-api/config.php` again.
 
 For the `node-b` profile set `hideProfile` to `true`. The `hostName` key in 
-both profiles gets the value `nodes.frkovpn.tuxed.net`. Update the 
+both profiles gets the value `nodes.vpn.example.org`. Update the 
 `displayName` of `node-a` to something generic, e.g. `Secure Internet`.
 
 As, by default, each profile uses its own "TLS Crypt" key, we need to make sure
@@ -244,10 +244,10 @@ On the nodes, apply the changes again:
 
 As for DNS, you can use the following configuration:
 
-    nodes.frkovpn   IN  A       145.0.6.72
-                    IN  A       145.0.6.73
-                    IN  AAAA    2001:610:188:418:145:0:6:72
-                    IN  AAAA    2001:610:188:418:145:0:6:73
+    nodes.vpn   IN  A       192.0.2.20
+                IN  A       192.0.2.30
+                IN  AAAA    2001:db8::20
+                IN  AAAA    2001:db8::30
 
 From now on, the load should be distributed over the VPN nodes once you 
 download a new configuration. You can monitor this through the portal on the
