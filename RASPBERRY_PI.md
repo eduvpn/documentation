@@ -14,15 +14,13 @@ run on a Raspberry Pi with ease, you are doing something wrong ;-)
 I tested this last on a Raspberry Pi 3B+ and Fedora 33 (aarch64) on 2021-01-21 
 and all works fine. Packages for Fedora 33 and 34 are available.
 
-**NOTE**: the Raspberry Pi 4 does **NOT** work yet as of this time 
-(2021-01-21), wait for upstream Fedora to support it first! See 
-[this](https://fedoraproject.org/wiki/Architectures/ARM/Raspberry_Pi#Raspberry_Pi_4).
+**NOTE**: the Raspberry Pi 4 SHOULD work for our purpose.
 
 # Getting Started
 
-So, the first step is to find your Raspberry Pi 3B+ and get ready! Most of the
-steps here are not specific to the VPN server, but just getting Fedora up and 
-running, and up to date! 
+So, the first step is to find your Raspberry Pi 3B+ or 4 and get ready! Most of 
+the steps here are not specific to the VPN server, but just getting Fedora up 
+and running, and up to date! 
 
 Download the latest "Fedora Minimal" image from 
 [here](https://alt.fedoraproject.org/alt/) make sure you look under the 
@@ -33,9 +31,9 @@ Full instructions for installing Fedora on the Pi can be found
 repeat the important steps below.
 
 I used this command to create the SD card for the Pi on my laptop running 
-Fedora:
+Fedora, NOTE on the Raspberry Pi 4 you use `rpi4` as `--target` parameter:
 
-    $ sudo arm-image-installer --image=Fedora-Minimal-33-1.3.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
+    $ sudo arm-image-installer --image=Fedora-Minimal-34-1.2.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
 
 Make sure you specify the `--resizefs` option to "grow" the file system to fill
 your SD card.
@@ -45,10 +43,11 @@ The Wiki linked to above has instructions for other platforms as well.
 You need to boot this image, configure the network, install all software 
 updates and enable (remote) SSH login if you prefer. It is a little bit easier 
 and you don't need a keyboard/mouse attached to your Pi anymore. If you want to 
-use WiFi, it DOES work out of the box on at least Fedora >= 32, but you need to 
-configure it through the CLI as mentioned on the Wiki. The "installer" does not 
-support it. First walk through the setup "wizard". Make sure you either create 
-an account with "Administrator" permissions, or set a root password.
+use WiFi, it DOES work out of the box with the Raspberry Pi 3B+ on at least 
+Fedora >= 32, but you need to configure it through the CLI as mentioned on the 
+Wiki. The "installer" does not support it. First walk through the setup 
+"wizard". Make sure you either create an account with "Administrator" 
+permissions, or set a root password.
 
 To configure WiFi if you don't have an ethernet connection:
 
