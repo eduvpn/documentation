@@ -67,13 +67,7 @@ will be able to connect to it when you don't take additional steps! Look
 
 ## Update
 
-Periodically install updates! Run the following command periodically, e.g. 
-every week during the maintenance window. Reboot your server as required for 
-kernel / system library updates.
-
-    $ sudo vpn-maint-update-system
-
-If the command is not available, install the `vpn-maint-scripts` package first.
+See [INSTALL_UPDATES](INSTALL_UPDATES.md).
 
 ## Configuration
 
