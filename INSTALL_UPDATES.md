@@ -44,12 +44,15 @@ The best is to designate a (separate) system as the "management system" from
 which you will run the update command. This can be your own laptop or a VM on 
 your laptop dedicated to this. This system MUST be able to access the 
 controller and node(s) through SSH without password (public key authentication)
-and have _sudo_ permissions to execute the required scripts.
+and have _sudo_ permissions to execute the required scripts. This is similar to
+the requirement for using e.g. Ansible.
 
-Make sure you also install `tmux` on all machines. This tool is useful when the
-connection to your controller and node(s) is lost, e.g. due to network issues 
-while running the update process. We assume you are familiar with `tmux`, i.e. 
-detach/attach from sessions.
+Make sure you also install `tmux` on all machines. This update commands will be
+run in `tmux` so there is less of a problem when the connection to your 
+controller and node(s) is lost, e.g. due to network issues while running the 
+update process. We assume you are familiar with `tmux`, i.e. detach/attach from 
+sessions. This knowledge is only necessary in case you actually lose the 
+connectivity.
 
 On your management system, download the 
 [vpn-maint-update-system-multi](https://git.sr.ht/~fkooman/vpn-maint-scripts/tree/main/item/bin/vpn-maint-update-system-multi)
@@ -67,6 +70,10 @@ NODES="node-a.vpn.example.org node-b.vpn.example.org"
 ```
 
 Now you can run the `vpn-maint-update-system-multi` script:
+
+**NOTE**: make sure you are NOT connected to the VPN provided by the server 
+you are going to update as you'll lose your connection and the update might not
+complete successfully!
 
 ```
 $ sh vpn-maint-update-system-multi
