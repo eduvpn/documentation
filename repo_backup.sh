@@ -85,6 +85,7 @@ REPO_URL_LIST=(\
     # Android app
     https://github.com/eduvpn/android \
     https://github.com/eduvpn/ics-openvpn \
+    https://github.com/eduvpn/AppAuth-Android \
 
     # iOS/macOS app
     https://github.com/eduvpn/apple \
