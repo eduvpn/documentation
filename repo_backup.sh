@@ -78,8 +78,6 @@ REPO_URL_LIST=(\
     https://git.sr.ht/~fkooman/vpn-user-portal \
     https://git.sr.ht/~fkooman/vpn-user-portal.deb \
     https://git.sr.ht/~fkooman/vpn-user-portal.rpm \
-    https://git.sr.ht/~fkooman/wg-daemon \
-    https://git.sr.ht/~fkooman/wg-daemon.rpm \
 
     # Linux App
     https://github.com/eduvpn/python-eduvpn-client \
