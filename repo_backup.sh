@@ -99,6 +99,8 @@ REPO_URL_LIST=(\
     https://github.com/Amebis/eduOAuth \
     https://github.com/Amebis/eduJSON \
     https://github.com/Amebis/eduEd25519 \
+    https://github.com/Amebis/openvpn \
+    https://github.com/Amebis/eduEx \
 )
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
