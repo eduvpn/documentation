@@ -116,7 +116,9 @@ do
             git remote update
         else
             # does not yet exist
-            ${GIT_PATH} clone --mirror "${REPO_URL}" "repos/${ENCODED_URL}" || exit 1
+            if ! ${GIT_PATH} clone -q --mirror "${REPO_URL}" "repos/${ENCODED_URL}"; then
+                echo "ERROR: failed to clone \"${REPO_URL}\""
+            fi
         fi
     )
 done
