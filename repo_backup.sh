@@ -107,18 +107,17 @@ REPO_URL_LIST=(\
 
 for REPO_URL in "${REPO_URL_LIST[@]}"
 do
+    echo "*** ${REPO_URL}"
     ENCODED_URL=${REPO_URL//[^a-zA-Z0-9]/_}
     (
         mkdir -p repos
         if [ -d "repos/${ENCODED_URL}" ]; then
             # already exists
             cd "repos/${ENCODED_URL}" || exit 1
-            git remote update
+            ${GIT_PATH} remote update
         else
             # does not yet exist
-            if ! ${GIT_PATH} clone -q --mirror "${REPO_URL}" "repos/${ENCODED_URL}"; then
-                echo "ERROR: failed to clone \"${REPO_URL}\""
-            fi
+            ${GIT_PATH} clone -q --mirror "${REPO_URL}" "repos/${ENCODED_URL}"
         fi
     )
 done
