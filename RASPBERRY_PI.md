@@ -33,12 +33,15 @@ repeat the important steps below.
 
 I used this command to create the SD card for the Pi on my laptop running 
 Fedora, NOTE on the Raspberry Pi 4 you use `rpi4` as `--target` parameter and 
-make sure you use a Fedora 35 image:
+make sure you use a Fedora 35 image.
+
+To write to SD-card, for USB disk you would use something like 
+`--media=/dev/sdb`:
 
     $ sudo arm-image-installer --image=Fedora-Minimal-34-1.2.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
 
 Make sure you specify the `--resizefs` option to "grow" the file system to fill
-your SD card.
+your SD card/USB disk.
 
 The Wiki linked to above has instructions for other platforms as well.
 
