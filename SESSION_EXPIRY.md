@@ -42,7 +42,7 @@ You can change the session expiry by modifying
 `/etc/vpn-user-portal/config.php` and set `sessionExpiry` to the value you 
 wish. Some examples:
 
-- `P3Y` (1 year)
+- `P3Y` (3 years)
 - `P1Y` (1 year)
 - `P90D` (90 days)
 - `P1M` (1 month)
