@@ -20,15 +20,12 @@
 # HTTPS
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
 # OpenVPN
--A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
+-A INPUT -p udp -m state --state NEW -m udp --dport 1194:1258 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1258 -j ACCEPT
 
 # WireGuard (wg0)
 -A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
 
-# More OpenVPN ports
-#-A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
-#-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
 # Local DNS for VPN clients
 #-A INPUT -s 10.0.0.0/8 -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
 #-A INPUT -s 10.0.0.0/8 -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT

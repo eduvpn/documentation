@@ -66,8 +66,8 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
 setsebool -P httpd_can_network_connect=1
 
 # allow OpenVPN to bind to additional ports for client connections
-semanage port -a -t openvpn_port_t -p tcp 1195-5290
-semanage port -a -t openvpn_port_t -p udp 1195-5290
+semanage port -a -t openvpn_port_t -p tcp 1195-1258
+semanage port -a -t openvpn_port_t -p udp 1195-1258
 
 ###############################################################################
 # APACHE
