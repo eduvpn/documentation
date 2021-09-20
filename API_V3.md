@@ -19,6 +19,7 @@ The changes made to the API documentation before it is final.
 |            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
 |            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
 | 2021-09-02 | Add "Error Responses" section                                                                                   |
+| 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
 
 # Instance Discovery
 
@@ -163,6 +164,7 @@ Content-Type: application/json
     "info": {
         "profile_list": [
             {
+                "default_gateway": true,
                 "display_name": {
                     "en": "Employees",
                     "nl": "Medewerkers"
@@ -171,6 +173,7 @@ Content-Type: application/json
                 "vpn_proto": "openvpn"
             },
             {
+                "default_gateway": false,
                 "display_name": "Administrators",
                 "profile_id": "admins",
                 "vpn_proto": "wireguard"
@@ -179,6 +182,10 @@ Content-Type: application/json
     }
 }
 ```
+
+The `default_gateway` field indicates whether the client is expected to
+route all traffic over the VPN, or only a subset of it. It is either `true` or
+`false`.
 
 The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
