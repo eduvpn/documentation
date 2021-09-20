@@ -461,6 +461,8 @@ authorization when e.g. the authorization was revoked.
 
 # TODO
 
+- the `default_gateway` (bool) field probably needs to be renamed still, maybe 
+  to `allow_all_traffic` or something.
 - talk about limits for the API, for example 1 user can only be online _n_ 
   times;
 - API returns *same* configuration when client calls `/connect` multiple times
