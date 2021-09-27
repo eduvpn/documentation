@@ -19,6 +19,11 @@ required for your particular setup:
    the pushed routes, the clients should not be able to override the "route" 
    configuration, e.g. by forcing "default gateway".
 
+**NOTE**: if there are no internal-only DNS entries to resolve, you SHOULD NOT 
+push DNS servers to the client. If there are, then make sure to also specify 
+`dnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
+included in the `routes`.
+
 # Example
 
 We have an organization `example.local` that has two IP ranges, `10.42.42.0/24` 
