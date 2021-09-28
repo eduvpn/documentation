@@ -14,8 +14,17 @@ run on a Raspberry Pi with ease, you are doing something wrong ;-)
 I tested this last on a Raspberry Pi 3B+ and Fedora 33 (aarch64) on 2021-01-21 
 and all works fine. Packages for Fedora 33 and 34 are available.
 
-**NOTE**: the Raspberry Pi 4 SHOULD work for our purpose, but only with the 
-Fedora 35 image that hasn't been released yet.
+## Raspberry Pi 4
+
+If you are trying to install on the Raspberry Pi 4 make sure you use the 
+Fedora 35 beta (or later) image for aarch64, at the time of writing that is 
+`Fedora-Minimal-35_Beta-1.2.aarch64.raw.xz`.
+
+You can find it 
+[here](https://download.fedoraproject.org/pub/fedora-secondary/releases/test/35_Beta/Spins/aarch64/images/Fedora-Minimal-35_Beta-1.2.aarch64.raw.xz).
+
+When writing the image using `arm-image-installer` you use `rpi4` as `--target` 
+parameter.
 
 # Getting Started
 
