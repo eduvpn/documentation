@@ -19,7 +19,8 @@ Below, we will end up with two profiles:
 | office    | 1             | Office         |
 | admin     | 2             | Administrators |
 
-You may also need to take a look at the [SELinux](SELINUX.md) instructions.
+You may also need to take a look at the [SELinux](SELINUX.md) instructions when
+running on CentOS or Fedora.
 
 # Configuration
 
@@ -53,6 +54,8 @@ modified, you can remove the `internet` profile that was there by default:
             'vpnProtoPorts' => ['udp/1195', 'tcp/1195'],
         ],
     ],
+
+Look [here](PROFILE_CONFIG.md) for all supported configuration options.
 
 It is best to use different `hostName` values for the profiles as this gives 
 more flexibility to move to a setup with multiple machines in the future.
