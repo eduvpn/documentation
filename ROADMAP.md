@@ -12,7 +12,7 @@ make your case!
 
 - [WireGuard](https://www.wireguard.com/) Support
 - Removal of all internal 2FA, 2FA only supported when using external 
-  authentication sources
+  authentication sources, e.g. in IdP
   
 ## Operator Changes
 
@@ -25,11 +25,13 @@ make your case!
   implementation for API
 - OpenVPN requires now TLS >= 1.3
 - EdDSA (Ed25519) X.509 certificates for OpenVPN
-- New API (v3) for use by eduVPN / Let's Connect! Applications
+- New [API_V3](API_V3.md) for use by eduVPN / Let's Connect! Applications
 - Merge of vpn-user-portal, vpn-server-api and vpn-lib-common in 1 component
-- Switch VPN Daemon to use HTTP(S) instead of TCP socket
-- Support MySQL/MariaDB for portal data storage instead of only 
-  SQLite
+- Switch 
+  [VPN Daemon](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md) to 
+  use HTTP(S) instead of TCP socket
+- Support MySQL/MariaDB (and PostgreSQL?) for portal data storage instead of 
+  only SQLite
 - New OAuth Token format (EdDSA JWT, perhaps switch to something else still?)
 
 ## Work in Progress
@@ -38,24 +40,26 @@ make your case!
   portal, BUT we have to make it work with browser *sessions* as well
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
-- Guest Usage has been completely removed, need to think how to get this back
-  in a clean way *with* pseudonyms, don't leak local user identity to guest 
-  servers! 
+- Guest Usage has been completely removed for now, need to think how and 
+  whether to get this back in a clean way *with* pseudonyms, don't leak local 
+  user identity to guest servers! 
+- Add public CA and public WireGuard key to the discovery files to have an 
+  additional trust channel between app and server in addition to Web TLS, or 
+  perhaps _sign_ the API responses with a public key mentioned in the discovery 
+  files...
+- Keep aggregate logs longer than 30 days, i.e. usage statistics
+- Allow limiting number of VPN connections per user (and per client).
 - Work on implementing 
   [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
   of discovery files
-- Add public CA and public WireGuard key to the discovery files to have an 
-  additional trust channel between app and server in addition to Web TLS
-- Keep aggregate logs longer than 30 days, i.e. usage statistics
-- Allow limiting number of VPN connections per user (and per client).
-
+  
 ## Under Consideration
 
-- Redo internal 2FA, but only per server on/off switch and enrollment only from 
-  admin account for LOCAL accounts
-- Implement Admin API where certain aspects can be configured through API
+- Reimplement 2FA, but only for local user accounts and _maybe_ LDAP
+- Implement Admin API. e.g. for bulk-configuration downloads for managed 
+  clients
 - We removed "conditional 2FA" with the PhpSamlSpAuthentication module, it is 
-  2FA for all, or for no-one
+  2FA for all, or for none
 - IPv4 only, IPv6 only VPN? Probably not!
 - "Expire at night" based on the server's timezone (this is currently 
   implemented, but could be removed if we move this to the client...)
