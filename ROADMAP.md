@@ -10,7 +10,7 @@ make your case!
 
 ## High Level Changes
 
-- [WireGuard](https://www.wireguard.com/) Support
+- [WireGuard](WIREGUARD.md) Support
 - Removal of all internal 2FA, 2FA only supported when using external 
   authentication sources, e.g. in IdP
   
