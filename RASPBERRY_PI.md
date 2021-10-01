@@ -41,8 +41,7 @@ Full instructions for installing Fedora on the Pi can be found
 repeat the important steps below.
 
 I used this command to create the SD card for the Pi on my laptop running 
-Fedora, NOTE on the Raspberry Pi 4 you use `rpi4` as `--target` parameter and 
-make sure you use a Fedora 35 image.
+Fedora.
 
 To write to SD-card, for USB disk you would use something like 
 `--media=/dev/sdb`:

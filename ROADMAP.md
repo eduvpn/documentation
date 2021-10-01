@@ -34,7 +34,7 @@ make your case!
 
 ## Work in Progress
 
-- Support for MySQL/MariaDB + memcached for [HA]((PORTAL_HA.md), works fine for 
+- Support for MySQL/MariaDB + memcached for [HA](PORTAL_HA.md), works fine for 
   portal, BUT we have to make it work with browser *sessions* as well
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
