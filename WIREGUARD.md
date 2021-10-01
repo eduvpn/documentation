@@ -8,7 +8,7 @@ It is available in the eduVPN/Let's Connect! 3.x development release.
 ## Requirements
 
 WireGuard will only be supported on servers running Debian >= 11 and 
-Fedora >= 34. Currently only Fedora 34 (x86_64) is tested.
+Fedora >= 34. Currently only Fedora 34 (x86_64) is being tested.
 
 You can install the eduVPN 3.x development release on Fedora 34 using the 
 `deploy_fedora_v3.sh` script instead of the `deploy_fedora.sh` script. That 
@@ -16,20 +16,8 @@ should set up a lot for you already.
 
 ## Configuration
 
-You can add a profile to `/etc/vpn-user-portal/config.php` with the `vpnType` 
+You can add a profile to `/etc/vpn-user-portal/config.php` with the `vpnProto` 
 set to `wireguard`. Most options apply both to OpenVPN and WireGuard.
-
-## Daemon
-
-You can test the interface with WireGuard:
-
-```
-$ curl -s http://localhost:8080/info
-{
-  "PublicKey": "2obnZaov/Idd1zHFZqziWurRubx98ldKmDH44nB7nF0=",
-  "ListenPort": 51820,
-}
-```
 
 ## API
 
@@ -55,15 +43,5 @@ That should immediately make the VPN over WireGuard work. Test with for example
 
 ## TODO
 
-- we currently have a "sync" that adds all peers to WG from DB that were 
-  manually created, i.e. not through the API. This needs to be done better, 
-  every 2 minutes a partial sync, only peers get added, never removed, is 
-  not great... it *does* work, for now... at least we need a call for multi 
-  peer add
-- add entries to `connection_log` table when peer is added/removed so we know
-  who had an IP at a certain time
-- prevent 1 user claiming all IPs in 2 seconds through API or web, limit to 
-  maximum number of configs (also for OpenVPN perhaps...)
-- clean up "dead" connections from the daemon (make the sync a *real* sync)
-- show WG connections on "Connections" page
-- make sure disable user removes/disables? WG connections
+- finish proper WG connection logging
+- limit the number of configurations per user (also relevant for OpenVPN)
