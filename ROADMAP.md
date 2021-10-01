@@ -13,7 +13,8 @@ make your case!
 - [WireGuard](WIREGUARD.md) Support
 - Removal of all internal 2FA, 2FA only supported when using external 
   authentication sources, e.g. in IdP
-  
+- Guest Usage is gone for now (see below)
+
 ## Operator Changes
 
 - Runs on Debian >= 11, Fedora >= 34
@@ -43,9 +44,6 @@ make your case!
   portal, BUT we have to make it work with browser *sessions* as well
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
-- Guest Usage has been completely removed for now, need to think how and 
-  whether to get this back in a clean way *with* pseudonyms, don't leak local 
-  user identity to guest servers! 
 - Add public CA and public WireGuard key to the discovery files to have an 
   additional trust channel between app and server in addition to Web TLS, or 
   perhaps _sign_ the API responses with a public key mentioned in the discovery 
@@ -66,3 +64,7 @@ make your case!
 - IPv4 only, IPv6 only VPN? Probably not!
 - "Expire at night" based on the server's timezone (this is currently 
   implemented, but could be removed if we move this to the client...)
+- Guest Usage has been completely removed for now, need to think how and 
+  whether to get this back in a clean way *with* pseudonyms, don't leak local 
+  user identity to guest servers! We MAY keep it out of 3.x and require servers
+  to keep running 2.x until we come up with a better approach...
