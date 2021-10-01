@@ -32,8 +32,8 @@ make your case!
 - Merge of vpn-user-portal, vpn-server-api and vpn-lib-common in 1 component
 - Switch 
   [VPN Daemon](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md) to 
-  use HTTP(S) instead of TCP socket
-- Support PostgreSQL,MySQL/MariaDB for portal data storage instead of only 
+  use HTTP(S) instead of TCP socket, implement WireGuard management
+- Support PostgreSQL, MySQL/MariaDB for portal data storage instead of only 
   SQLite
 - New OAuth Token format (EdDSA JWT, perhaps switch to something else still?)
 
@@ -61,7 +61,7 @@ make your case!
 - Reimplement 2FA, but only for local user accounts and _maybe_ LDAP
 - Implement Admin API. e.g. for bulk-configuration downloads for managed 
   clients
-- We removed "conditional 2FA" with the PhpSamlSpAuthentication module, it is 
+- We removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
   2FA for all, or for none
 - IPv4 only, IPv6 only VPN? Probably not!
 - "Expire at night" based on the server's timezone (this is currently 
