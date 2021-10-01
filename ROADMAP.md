@@ -24,14 +24,17 @@ make your case!
 - [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/) draft 
   implementation for API
 - OpenVPN requires now TLS >= 1.3
+- OpenVPN supports now both AES-256-GCM and CHACHA-POLY1305 data cipher. If the
+  server supports hardware accelerated AES, AES is used, otherwise 
+  CHACHA-POLY1305.
 - EdDSA (Ed25519) X.509 certificates for OpenVPN
 - New [API_V3](API_V3.md) for use by eduVPN / Let's Connect! Applications
 - Merge of vpn-user-portal, vpn-server-api and vpn-lib-common in 1 component
 - Switch 
   [VPN Daemon](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md) to 
   use HTTP(S) instead of TCP socket
-- Support MySQL/MariaDB (and PostgreSQL?) for portal data storage instead of 
-  only SQLite
+- Support PostgreSQL,MySQL/MariaDB for portal data storage instead of only 
+  SQLite
 - New OAuth Token format (EdDSA JWT, perhaps switch to something else still?)
 
 ## Work in Progress
