@@ -53,6 +53,7 @@ make your case!
 - Work on implementing 
   [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
   of discovery files
+- Keep the WireGuard private key only on the node(s), not on the portal...
   
 ## Under Consideration
 
