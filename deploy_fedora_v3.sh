@@ -52,7 +52,8 @@ EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables-nft pwgen \
-    iptables-services php-fpm php-cli policycoreutils-python-utils chrony
+    iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
+    wireguard-tools
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
@@ -151,6 +152,14 @@ openssl req \
     -days 90
 
 ###############################################################################
+# WireGuard
+###############################################################################
+
+# generate the private key and store it out of reach of the web server, make
+# the public key available to the portal
+wg genkey | tee /etc/wireguard/private.key | wg pubkey > /etc/vpn-user-portal/wireguard.key
+
+###############################################################################
 # DAEMONS
 ###############################################################################
 
@@ -159,13 +168,9 @@ systemctl enable --now httpd
 systemctl enable --now vpn-daemon
 
 ###############################################################################
-# OPENVPN SERVER CONFIG
+# VPN SERVER CONFIG
 ###############################################################################
 
-# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
-# by default! 
-
-# generate (new) OpenVPN server configuration files and start OpenVPN
 vpn-maint-apply-changes
 
 ###############################################################################
