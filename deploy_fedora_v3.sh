@@ -134,7 +134,12 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
+/usr/libexec/vpn-user-portal/generate-secrets
 cp /etc/vpn-user-portal/node.key /etc/vpn-server-node/node.key
+
+# generate the private key and store it out of reach of the web server, make
+# the public key available to the portal
+wg genkey | tee /etc/wireguard/private.key | wg pubkey > /etc/vpn-user-portal/wireguard.key
 
 ###############################################################################
 # CERTIFICATE
@@ -150,14 +155,6 @@ openssl req \
     -keyout "/etc/pki/tls/private/${WEB_FQDN}.key" \
     -out "/etc/pki/tls/certs/${WEB_FQDN}.crt" \
     -days 90
-
-###############################################################################
-# WireGuard
-###############################################################################
-
-# generate the private key and store it out of reach of the web server, make
-# the public key available to the portal
-wg genkey | tee /etc/wireguard/private.key | wg pubkey > /etc/vpn-user-portal/wireguard.key
 
 ###############################################################################
 # DAEMONS
