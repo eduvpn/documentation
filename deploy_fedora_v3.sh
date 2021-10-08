@@ -121,10 +121,6 @@ sysctl --system
 /usr/libexec/vpn-user-portal/generate-secrets
 cp /etc/vpn-user-portal/node.key /etc/vpn-server-node/node.key
 
-# generate the private key and store it out of reach of the web server, make
-# the public key available to the portal
-wg genkey | tee /etc/wireguard/private.key | wg pubkey > /etc/vpn-user-portal/wireguard.key
-
 ###############################################################################
 # CERTIFICATE
 ###############################################################################
