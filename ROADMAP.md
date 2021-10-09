@@ -11,11 +11,14 @@ make your case!
 ## High Level Changes
 
 - [WireGuard](WIREGUARD.md) Support
+- "High Availability" / Redundancy for the *Portal*
+  - Optional MySQL/MariaDB/PostgreSQL database support for data storage
 - Removal of all internal 2FA, 2FA only supported when using external 
   authentication sources, e.g. in IdP
 - Guest Usage is gone for now (see below)
+- Much simpler configuration, especially for "multi node" setups
 
-## Operator Changes
+## Ops Changes
 
 - Runs on Debian >= 11, Fedora >= 34
 
@@ -26,7 +29,7 @@ make your case!
   implementation for API
 - OpenVPN requires now TLS >= 1.3
 - OpenVPN supports now both AES-256-GCM and CHACHA-POLY1305 data cipher. If the
-  server supports hardware accelerated AES, AES is used, otherwise 
+  server (node) supports hardware accelerated AES, AES is used, otherwise 
   CHACHA-POLY1305.
 - EdDSA (Ed25519) X.509 certificates for OpenVPN
 - New [API_V3](API_V3.md) for use by eduVPN / Let's Connect! Applications
@@ -40,8 +43,9 @@ make your case!
 
 ## Work in Progress
 
-- Support for MySQL/MariaDB + memcached for [HA](PORTAL_HA.md), works fine for 
-  portal, BUT we have to make it work with browser *sessions* as well
+- Support for MySQL/MariaDB for [HA](PORTAL_HA.md), works fine for 
+  portal, BUT we have to make it work with browser *sessions* as well, i.e. 
+  implement memcached support
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
 - Add public CA and public WireGuard key to the discovery files to have an 
@@ -57,7 +61,7 @@ make your case!
   
 ## Under Consideration
 
-- Reimplement 2FA, but only for local user accounts and _maybe_ LDAP
+- Reimplement 2FA, but only for local user accounts
 - Implement Admin API. e.g. for bulk-configuration downloads for managed 
   clients
 - We removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
