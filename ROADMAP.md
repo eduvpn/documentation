@@ -11,13 +11,15 @@ make your case!
 ## High Level Changes
 
 - [WireGuard](WIREGUARD.md) Support
-- "High Availability" / Redundancy for the *Portal*
-  - Optional MySQL/MariaDB/PostgreSQL database support for data storage
+- [HA/Redundancy](PORTAL_HA.md) for the portal;
+- MySQL/MariaDB/PostgreSQL database support for data storage
 - Removal of all internal 2FA, 2FA only supported when using external 
   authentication sources, e.g. in IdP
 - Guest Usage is gone for now (see below)
 - Much simpler configuration, especially for "multi node" setups
-
+- Allow limits on number of active OAuth clients and VPN configuration 
+  downloads per user
+  
 ## Ops Changes
 
 - Runs on Debian >= 11, Fedora >= 34
@@ -43,9 +45,7 @@ make your case!
 
 ## Work in Progress
 
-- Support for MySQL/MariaDB for [HA](PORTAL_HA.md), works fine for 
-  portal, BUT we have to make it work with browser *sessions* as well, i.e. 
-  implement memcached support
+- Implement memcached support for `fkooman/secookie`
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
 - Add public CA and public WireGuard key to the discovery files to have an 
@@ -53,7 +53,6 @@ make your case!
   perhaps _sign_ the API responses with a public key mentioned in the discovery 
   files...
 - Keep aggregate logs longer than 30 days, i.e. usage statistics
-- Allow limiting number of VPN connections per user (and per client).
 - Work on implementing 
   [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
   of discovery files
@@ -66,7 +65,6 @@ make your case!
   clients
 - We removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
   2FA for all, or for none
-- IPv4 only, IPv6 only VPN? Probably not!
 - "Expire at night" based on the server's timezone (this is currently 
   implemented, but could be removed if we move this to the client...)
 - Guest Usage has been completely removed for now, need to think how and 
