@@ -224,6 +224,13 @@ public keys and finally validating content integrity. Any error in the process
 MUST be shown to the user of the application. Failing to update the discovery
 files results in the old one remaining valid.
 
+**NOTE**: versions of minisign >= 0.10 default to using 
+[prehashed](https://jedisct1.github.io/minisign/#signature-format) signatures 
+instead of "legacy" signatures. Make sure your application supports both legacy 
+and prehashed signatures and contains a toggle to be flipped in the future to 
+enforce only prehashed signatures, similar to the `-H` option in 
+minisign >= 0.10.
+
 ### Rollback Prevention
 
 The JSON files contain a `v` key to contains the 
