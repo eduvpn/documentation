@@ -240,6 +240,10 @@ it is considered to be `off`, e.g.:
 **NOTE**: do NOT use the same WireGuard private key for different servers, 
 generate one *per server*.
 
+**NOTE**: a call to `/connect` invalidates any previously obtained VPN 
+configuration files that belong to the authorization the VPN 
+client obtained immediately.
+
 ### Response
 
 If the profile is an OpenVPN profile you'll get the complete OpenVPN client
@@ -362,7 +366,7 @@ when the user closes the VPN application without disconnecting first, unless
 the VPN connection can also be managed outside the VPN.
 
 This call MUST be executed *after* the VPN connection itself has been 
-terminated by the application.
+terminated by the application, if possible.
 
 ### Request
 
@@ -389,7 +393,7 @@ HTTP/1.1 204 No Content
 | ------------- | ---------------------------- | ---- | -------------------------------------------------------------------- |
 | `/connect`    | `no TCP connection possible` | 406  | When the specified profile has no OpenVPN processes listening on TCP |
 | `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
-| `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are not either `on` or `off`               |
+| `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are neither `on` nor `off`                 |
 | `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 | `/disconnect` | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/disconnect` | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
