@@ -2,23 +2,20 @@
 
 **WORK IN PROGRESS**
 
-**TODO**: think about storing keys/CA in the database instead, would make it 
-much easier and no need to keep them manually synchronized...
-
 This document tells you how to store the application database inside 
 [MariaDB](https://mariadb.org/) and the (browser) session information inside 
 [memcached](https://www.memcached.org/) instead of the local file system. This 
 is useful if you want to make the VPN service "high available" or provide load 
 balancing between servers. When we mention MariaDB below, the same should apply 
-to MySQL as well.
+to MySQL as well. Next to MariaDB and MySQL, also PostgreSQL is supported.
  
 * **NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
 * **NOTE**: do this ONLY for new servers, there is NO migration from SQLite to
-  MariaDB!
+  MariaDB/PostgreSQL!
 * **NOTE**: you can use this if you want to deploy multiple portal instances 
   using the same storage backend;
-* **NOTE**: your MariaDB setup should have higher availability than your 
-  individual portal(s) otherwise this setup makes no sense;
+* **NOTE**: your MariaDB/PostgreSQL setup should have higher availability than 
+  your individual portal(s) otherwise this setup makes no sense;
 
 These instructions tell you how to setup a simple MariaDB server. This is by 
 no means complete and MUST NOT be used in production like this. Please talk to
@@ -145,48 +142,57 @@ Make sure you have the required PHP module installed for MariaDB/MySQL:
 $ sudo dnf -y install mariadb php-mysqlnd php-pecl-memcached
 ```
 
-Modify the PHP session configuration in `/etc/php-fpm.d/www.conf`, find the
-lines that refer to PHP sessions:
-
-```
-php_value[session.save_handler] = files
-php_value[session.save_path]    = /var/lib/php/session
-```
-
-Replace them with this:
-
-```
-php_value[session.save_handler]              = memcached
-php_value[session.save_path]                 = "10.5.5.1:11211,10.5.5.2:11211"
-php_value[memcached.sess_number_of_replicas] = 1
-```
-
-Where `10.5.5.1` and `10.5.5.2` are the (private) IP addresses of your VPN 
-portals. The `memcached.sess_number_of_replicas` value is one less than the 
-number of Memcached servers, i.e. portals you setup.
-
-Restart PHP:
+If these modules were not yet installed, restart PHP:
 
 ```
 $ sudo systemctl restart php-fpm
 ```
 
-Now you can configure the portal by modifying 
-`/etc/vpn-user-portal/config.php` and add the following section:
+Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 
 ```
-...
+    ...
+    
+    'Session' => [
+        // Whether to use memcached for sessions
+        // DEFAULT: false
+        'useMemcached' => false,
 
-'Db' => [
-	'dbDsn' => 'mysql:host=localhost;dbname=vpn',
-	'dbUser' => 'vpn',
-	'dbPass' => 's3cr3t',
-],
+        // list of memcached servers host:port
+        // DEFAULT: []
+        'memcachedServerList' => [
+            'localhost:11211',
+        ],
+    ],
 
-...
+    ...
 ```
 
-Now you should be able to "reset" the server and use the MariaDB server:
+Make the following changes:
+
+```
+    'useMemcached' => true,
+    'memcachedServerList' => ['10.5.5.1:11211', '10.5.5.2:11211'],
+```
+
+Where `10.5.5.1` and `10.5.5.2` are the (private) IP addresses of your VPN 
+portals.
+
+You can configure the database in `/etc/vpn-user-portal/config.php` as well:
+
+```
+    ...
+
+    'Db' => [
+	    'dbDsn' => 'mysql:host=localhost;dbname=vpn',
+	    'dbUser' => 'vpn',
+	    'dbPass' => 's3cr3t',
+    ],
+
+    ...
+```
+
+Now you should be able to "reset" the server which will use the MariaDB server:
 
 ```
 $ sudo vpn-maint-reset-system
@@ -206,6 +212,8 @@ $ sudo -u apache vpn-user-portal-add-user
 Some additional files need to be copied from one of the portals to the 
 other(s), e.g. VPN CA, OAuth key, OpenVPN/WireGuard key material and HTTPS 
 certificate.
+
+**TODO**: not all file locations are correct yet!
 
 Copy the following files/folders from one of your portals to the other(s):
 
