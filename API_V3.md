@@ -20,6 +20,7 @@ The changes made to the API documentation before it is final.
 |            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
 | 2021-09-02 | Add "Error Responses" section                                                                                   |
 | 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
+| 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
 
 # Instance Discovery
 
@@ -48,7 +49,8 @@ clients are handling this properly.
 # Endpoint Discovery
 
 A "well-known" URL is provided to figure out the OAuth and API endpoint one
-has to use. The document can be retrieved from `/info.json`, e.g.:
+has to use. The document can be retrieved from `/.well-known/vpn-user-portal`, 
+e.g.:
 
 ```json
 {
@@ -71,17 +73,8 @@ to make sure any updates to this file are discovered.
 
 ## Endpoint Location
 
-Currently we support both `/info.json` and `/.well-known/vpn-user-portal` in 
-eduVPN/Let's Connect! 2.x. It would be nice to phase out `/info.json`.
-
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
 followed.
-
-**TODO**: it MUST follow the redirects, but *only* for `/info.json` and 
-`/.well-known/vpn-user-portal`, not for the endpoints found through it.
-
-**TODO**: maybe we can "hard code" the list of endpoints as well, so there is
-no need to advertise them in the `/info.json`.
 
 # Authorization Endpoint
 
