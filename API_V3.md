@@ -71,6 +71,10 @@ this API.
 This file MUST be freshly retrieved before all attempts to connect to a server 
 to make sure any updates to this file are discovered.
 
+**NOTE**: eduVPN/Let's Connect! 2.x servers also already support the 
+`/.well-known/vpn-user-portal` endpoint, so there is no need to still retrieve
+`/info.json`.
+
 ## Endpoint Location
 
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
