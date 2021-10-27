@@ -21,6 +21,7 @@ The changes made to the API documentation before it is final.
 | 2021-09-02 | Add "Error Responses" section                                                                                   |
 | 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
 | 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
+| 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
 
 # Instance Discovery
 
@@ -78,7 +79,8 @@ to make sure any updates to this file are discovered.
 ## Endpoint Location
 
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
-followed.
+followed, but MUST NOT allow redirect to anything else than other `https://` 
+URLs, e.g. redirects to `http://` MUST be rejected.
 
 # Authorization Endpoint
 
