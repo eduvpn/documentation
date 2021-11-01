@@ -22,7 +22,7 @@ The changes made to the API documentation before it is final.
 | 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
 | 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
 | 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
-| 2021-11-01 | Allow specifying the protocol you want to use on the `/connect` call                                            |
+| 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
 |            | The `vpn_proto` field was renamed to `vpn_proto_support` and now has a string array value                       |
 
 # Instance Discovery
@@ -228,20 +228,18 @@ $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
-The client MUST opt-in to using WireGuard when both OpenVPN and WireGuard are
-supported. The default value, when not provided is shown in the table below:
-
-| Profile Protocol Support | Default     |
-| ------------------------ | ----------- |
-| OpenVPN                  | `openvpn`   |
-| WireGuard                | `wireguard` |
-| OpenVPN & WireGuard      | `openvpn`   |
-
-To specify the `vpn_proto` parameter, you can use this as an example:
+If the server supports both OpenVPN and WireGuard it is up to the server to 
+decide which protocol to use. The client can however override this decision 
+using the `vpn_proto` parameter, e.g.:
 
 ```bash
     -d "vpn_proto=wireguard"
 ```
+
+The client can ONLY specify the protocols part of the `vpn_proto_support` value 
+of the `/info` response for this profile. Specifying the protocol is useful for 
+the situation where WireGuard is preferred, but does not work and OpenVPN 
+might, e.g. over TCP.
 
 The `tcp_only` parameter is used for OpenVPN. The returned configuration file
 will then only includes `remote` lines with TCP ports and omit the UDP ports, 
