@@ -11,6 +11,13 @@ either voluntary, or enforced by the administrator.
 otherwise TOTP will not work properly or stop working when then server time 
 deviates too much!
 
+**NOTE**: it is RECOMMENDED to NOT use this functionality and instead move 2FA 
+to your identity provider, e.g. SAML IdP or LDAP server!
+
+**NOTE**: we currently plan to remove 2FA support from eduVPN / 
+Let's Connect! 3.x! If it remains, then only for local accounts for small 
+deploys where there is no alternative without "enroll on first use".
+
 ## Threat Model
 
 The way 2FA is implemented, together with the native apps, protects explicitly 
