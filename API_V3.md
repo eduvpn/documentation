@@ -22,6 +22,8 @@ The changes made to the API documentation before it is final.
 | 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
 | 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
 | 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
+| 2021-11-01 | Allow specifying the protocol you want to use on the `/connect` call                                            |
+|            | The `vpn_proto` field was renamed to `vpn_proto_support` and now has a string array value                       |
 
 # Instance Discovery
 
@@ -169,13 +171,13 @@ Content-Type: application/json
                     "nl": "Medewerkers"
                 },
                 "profile_id": "employees",
-                "vpn_proto": "openvpn"
+                "vpn_proto_support": ["openvpn", "wireguard"]
             },
             {
                 "default_gateway": false,
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto": "wireguard"
+                "vpn_proto_support": ["wireguard"]
             }
         ]
     }
@@ -190,10 +192,9 @@ The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
 [BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). 
 
-The `vpn_proto` field indicates whether the VPN profile uses OpenVPN or
-WireGuard. If you client does not support OpenVPN (or WireGuard) you can filter
-profiles based on the `vpn_proto` field and either omit them, or mark them as 
-unsupported.
+The `vpn_proto_support` field indicates which VPN protocol(s) are supported. If 
+you client does not any of the listed protocols, you can omit them, or mark 
+them as unsupported. Currently `openvpn` and `wireguard` values are supported.
 
 ## Connect
 
@@ -211,19 +212,35 @@ $ curl \
 
 The `POST` request has (optional) parameters:
 
-| Parameter    | Required? | Protocol    | Value(s)                                               |
-| ------------ | --------- | ----------- | ------------------------------------------------------ |
-| `profile_id` | Yes       | _All_       | The `profile_id` as obtained from the `/info` call     |
-| `public_key` | Yes       | `wireguard` | A WireGuard public key                                 |
-| `tcp_only`   | No        | `openvpn`   | Either `on` or `off` when specified, defaults to `off` |
+| Parameter    | Required? | Protocol    | Value(s)                                                |
+| ------------ | --------- | ----------- | ------------------------------------------------------- |
+| `profile_id` | Yes       | _All_       | The `profile_id` as obtained from the `/info` call      |
+| `vpn_proto`  | No        | _All_       | Either `wireguard` or `openvpn`                         |
+| `public_key` | Yes       | `wireguard` | A WireGuard public key, when `vpn_proto` is `wireguard` |
+| `tcp_only`   | No        | `openvpn`   | Either `on` or `off` when specified, defaults to `off`  |
 
 The value of `profile_id` MUST be of one of the profiles returned by the 
 `/info` call. The value of `public_key` MUST be a valid WireGuard public key. 
 It has this format:
 
-```
+```bash
 $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
+```
+
+The client MUST opt-in to using WireGuard when both OpenVPN and WireGuard are
+supported. The default value, when not provided is shown in the table below:
+
+| Profile Protocol Support | Default     |
+| ------------------------ | ----------- |
+| OpenVPN                  | `openvpn`   |
+| WireGuard                | `wireguard` |
+| OpenVPN & WireGuard      | `openvpn`   |
+
+To specify the `vpn_proto` parameter, you can use this as an example:
+
+```bash
+    -d "vpn_proto=wireguard"
 ```
 
 The `tcp_only` parameter is used for OpenVPN. The returned configuration file
