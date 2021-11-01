@@ -23,7 +23,7 @@ The changes made to the API documentation before it is final.
 | 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
 | 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
 | 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
-|            | The `vpn_proto` field was renamed to `vpn_proto_support` and now has a string array value                       |
+|            | The `vpn_proto` field was renamed to `vpn_proto_support` in the `/info` response and is of type string array    |
 
 # Instance Discovery
 
