@@ -84,6 +84,8 @@ can't be bothered to setup an IRC client. See you there!
 - [Fedora](DEPLOY_FEDORA.md) 33, 34 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) 9, 10, 11 (`x86_64`) 
 
+**Current Recommendation**: install your VPN server on Debian 11.
+
 Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
 for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
 third party PHP repositories to prevent having to support these repositories
