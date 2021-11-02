@@ -478,6 +478,36 @@ application if not yet open. This allows the user to (manually)
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
 
+# VPN Protocol Selection
+
+Profiles are able to support both OpenVPN and WireGuard. The default, when 
+both protocols are supported for a profile, unless the server operator 
+overrides this, is OpenVPN.
+
+The `/info` response shows which protocols are supported by the profile, the 
+`vpn_proto` parameter to `/connect` can be used to influence the protocol that
+will be used by the client.
+
+Current applications already have a toggle for "Force TCP" that requests that 
+the OpenVPN connection will only use TCP and not try UDP.
+
+We can "overload" this toggle also to determine whether to send `vpn_proto` and 
+whether `tcp_only` should be set.
+
+The "Protocol Support" column indicates the protocols supported by the profile
+as returned by the `/info` call. The "Force TCP" column indicates whether the 
+user checked the "Force TCP" setting in the application. The "Parameters" 
+column indicates which parameters should be sent to the `/connect` POST call.
+
+| Protocol Support    | "Force TCP" | Parameters                       |
+| ------------------- | ----------- | -------------------------------- |
+| OpenVPN             | on          | `tcp_only=yes`                   |
+| OpenVPN             | off         | _N/A_                            |
+| WireGuard           | on          | _N/A_                            |
+| WireGuard           | off         | _N/A_                            |
+| OpenVPN & WireGuard | on          | `vpn_proto=openvpn&tcp_only=yes` |
+| OpenVPN & WireGuard | off         | _N/A_                            |
+
 # TODO
 
 - the `default_gateway` (bool) field probably needs to be renamed still, maybe 
