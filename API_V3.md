@@ -24,6 +24,7 @@ The changes made to the API documentation before it is final.
 | 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
 | 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
 |            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
+| 2021-11-02 | Document [VPN Protocol Selection](#vpn-protocol-selection) for clients                                          |
 
 # Instance Discovery
 
@@ -228,18 +229,21 @@ $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
-If the server supports both OpenVPN and WireGuard it is up to the server to 
-decide which protocol to use. The client can however override this decision 
-using the `vpn_proto` parameter, e.g.:
+If the server supports both OpenVPN and WireGuard the server will have a 
+preference for which protocol to use. If nothing was configured in the server, 
+this will be OpenVPN. 
+
+The client can however override this decision using the `vpn_proto` parameter, 
+e.g.:
 
 ```bash
     -d "vpn_proto=wireguard"
 ```
 
 The client MUST NOT specify a protocol not part of the `vpn_proto` 
-value of the `/info` response for this profile. Specifying the protocol is 
-useful for the situation where WireGuard is preferred, but does not work for 
-example where UDP connectivity is broken, but OpenVPN might, e.g. over TCP.
+value of the `/info` response for this profile. See 
+[VPN Protocol Selection](#vpn-protocol-selection) for more information on how 
+to use this and implement in the application.
 
 The `tcp_only` parameter is used for OpenVPN. The returned configuration file
 will then only includes `remote` lines with TCP ports and omit the UDP ports, 
@@ -488,11 +492,17 @@ The `/info` response shows which protocols are supported by the profile, the
 `vpn_proto` parameter to `/connect` can be used to influence the protocol that
 will be used by the client.
 
-Current applications already have a toggle for "Force TCP" that requests that 
-the OpenVPN connection will only use TCP and not try UDP.
+Applications implementing the previous API version also had the option to 
+allow users to choose "Force TCP" in the settings. This resulted in the 
+application scanning the OpenVPN configuration file and removing all "remotes"
+which connected over UDP.
 
-We can "overload" this toggle also to determine whether to send `vpn_proto` and 
-whether `tcp_only` should be set.
+This API now supports a POST parameter for this, i.e. `tcp_only`, that can be 
+used to have the server only provide TCP "remotes", making it no longer 
+required to parse the OpenVPN configuration file.
+
+We can "overload" this "Force TCP" settings toggle to also determine which 
+protocol to request.
 
 The "Protocol Support" column indicates the protocols supported by the profile
 as returned by the `/info` call. The "Force TCP" column indicates whether the 
@@ -501,11 +511,11 @@ column indicates which parameters should be sent to the `/connect` POST call.
 
 | Protocol Support    | "Force TCP" | Parameters                       |
 | ------------------- | ----------- | -------------------------------- |
-| OpenVPN             | on          | `tcp_only=yes`                   |
+| OpenVPN             | on          | `tcp_only=on`                   |
 | OpenVPN             | off         | _N/A_                            |
 | WireGuard           | on          | _N/A_                            |
 | WireGuard           | off         | _N/A_                            |
-| OpenVPN & WireGuard | on          | `vpn_proto=openvpn&tcp_only=yes` |
+| OpenVPN & WireGuard | on          | `vpn_proto=openvpn&tcp_only=on` |
 | OpenVPN & WireGuard | off         | _N/A_                            |
 
 # TODO
