@@ -23,7 +23,7 @@ The changes made to the API documentation before it is final.
 | 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
 | 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
 | 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
-|            | The `vpn_proto` field was renamed to `vpn_proto_support` in the `/info` response and is of type string array    |
+|            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
 
 # Instance Discovery
 
@@ -171,13 +171,13 @@ Content-Type: application/json
                     "nl": "Medewerkers"
                 },
                 "profile_id": "employees",
-                "vpn_proto_support": ["openvpn", "wireguard"]
+                "vpn_proto": ["openvpn", "wireguard"]
             },
             {
                 "default_gateway": false,
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto_support": ["wireguard"]
+                "vpn_proto": ["wireguard"]
             }
         ]
     }
@@ -192,7 +192,7 @@ The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
 [BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). 
 
-The `vpn_proto_support` field indicates which VPN protocol(s) are supported. If 
+The `vpn_proto` field indicates which VPN protocol(s) are supported. If 
 you client does not any of the listed protocols, you can omit them, or mark 
 them as unsupported. Currently `openvpn` and `wireguard` values are supported.
 
@@ -236,7 +236,7 @@ using the `vpn_proto` parameter, e.g.:
     -d "vpn_proto=wireguard"
 ```
 
-The client MUST NOT specify a protocol not part of the `vpn_proto_support` 
+The client MUST NOT specify a protocol not part of the `vpn_proto` 
 value of the `/info` response for this profile. Specifying the protocol is 
 useful for the situation where WireGuard is preferred, but does not work for 
 example where UDP connectivity is broken, but OpenVPN might, e.g. over TCP.
