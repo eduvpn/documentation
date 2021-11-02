@@ -236,10 +236,10 @@ using the `vpn_proto` parameter, e.g.:
     -d "vpn_proto=wireguard"
 ```
 
-The client can ONLY specify the protocols part of the `vpn_proto_support` value 
-of the `/info` response for this profile. Specifying the protocol is useful for 
-the situation where WireGuard is preferred, but does not work and OpenVPN 
-might, e.g. over TCP.
+The client MUST NOT specify a protocol not part of the `vpn_proto_support` 
+value of the `/info` response for this profile. Specifying the protocol is 
+useful for the situation where WireGuard is preferred, but does not work for 
+example where UDP connectivity is broken, but OpenVPN might, e.g. over TCP.
 
 The `tcp_only` parameter is used for OpenVPN. The returned configuration file
 will then only includes `remote` lines with TCP ports and omit the UDP ports, 
@@ -449,7 +449,8 @@ tokens and during the use of the API.
 5. Connect to the VPN;
 6. Wait for the user to disconnect the VPN...;
 7. Disconnect the VPN;
-8. Call `/disconnect`.
+8. Call `/disconnect`;
+9. Delete the stored configuration file and its expiry time.
 
 As long as the configuration is not "expired", according to the `Expires` 
 response header the same configuration SHOULD be used until the user manually
@@ -482,9 +483,7 @@ authorization when e.g. the authorization was revoked.
 - the `default_gateway` (bool) field probably needs to be renamed still, maybe 
   to `allow_all_traffic` or something.
 - talk about limits for the API, for example 1 user can only be online _n_ 
-  times;
-- API returns *same* configuration when client calls `/connect` multiple times
-  all other things being equal (only WireGuard)?;
+  times.
 
 # Notes
 
