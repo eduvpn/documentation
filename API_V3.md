@@ -268,7 +268,6 @@ HTTP/1.1 201 Created
 Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-openvpn-profile
 
-# OpenVPN Client Configuration
 dev tun
 client
 nobind
@@ -276,59 +275,59 @@ remote-cert-tls server
 verb 3
 server-poll-timeout 10
 tls-version-min 1.3
-data-ciphers AES-256-GCM
+data-ciphers AES-256-GCM:CHACHA20-POLY1305
 reneg-sec 0
 <ca>
 -----BEGIN CERTIFICATE-----
-MIIBQzCB9qADAgECAhBo5To7i6Tlbak616ixNkNjMAUGAytlcDARMQ8wDQYDVQQD
-EwZWUE4gQ0EwHhcNMjEwNDI5MDk1MDAyWhcNMzEwNDI5MDk1NTAyWjARMQ8wDQYD
-VQQDEwZWUE4gQ0EwKjAFBgMrZXADIQBONDYoafRXDO01zL9vUjbj46g1+5FXh8uX
-rMZvX3MCIKNkMGIwDgYDVR0PAQH/BAQDAgKEMB0GA1UdJQQWMBQGCCsGAQUFBwMB
-BggrBgEFBQcDAjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBTUyHw5S0sG
-boplw33QDLaLf66gBDAFBgMrZXADQQCfvYY9CYKxMYC6ujoZrysLWVeG5Ay9ZD2o
-RJ1hHQHVU3rq/ATpiMOKRmbGy+u+TJH5DFMywJ8D8SEqSrI8+rkN
+MIIBQzCB9qADAgECAhBiISHrvtMXVOiLSaTsLKTKMAUGAytlcDARMQ8wDQYDVQQD
+EwZWUE4gQ0EwHhcNMjExMDExMTk1MDE0WhcNMzExMDExMTk1NTE0WjARMQ8wDQYD
+VQQDEwZWUE4gQ0EwKjAFBgMrZXADIQBysHsh1pkJpLj6wJVQLGQW1C6cfW74tSZu
+cCUP/wXF86NkMGIwDgYDVR0PAQH/BAQDAgKEMB0GA1UdJQQWMBQGCCsGAQUFBwMB
+BggrBgEFBQcDAjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBQmdLockXn6
+YJFZ/a1X9PvhH2eD+jAFBgMrZXADQQCI2MtG+k3CtCHDM8+4lZG7LXpVLFG4EACJ
+JJlplLlFlLr5qMsNFkf2oTjWccsn9qXmBkfvIcda4BLJF0xRZ08L
 -----END CERTIFICATE-----
 </ca>
+<cert>
+-----BEGIN CERTIFICATE-----
+MIIBbjCCASCgAwIBAgIQTXCf2KpYiGLLFMl3roW7BTAFBgMrZXAwETEPMA0GA1UE
+AxMGVlBOIENBMB4XDTIxMTEwMjA4MjM0MloXDTIyMDEzMTAzNTk1OVowSTEQMA4G
+A1UECxMHZGVmYXVsdDE1MDMGA1UEAxMsanlkUkprdUd1Vk9uL1QzNnR6dEE3aVNq
+KzFTUThtZXZKQlYxZ1hvZ3l0VT0wKjAFBgMrZXADIQADR7x0pbS6C8YxHOW4wXUE
+0wXlez1go0xrhnEXaKjSBqNWMFQwDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoG
+CCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUJnS6HJF5+mCRWf2t
+V/T74R9ng/owBQYDK2VwA0EAY1pNvtE2N11hkyGEFXyTJzYvp/FRnR4AOM1mtxCu
+1cLEt2mZW+lGB/0JOLDyyrYJ/1A+DvYeJhbto30FY50yDA==
+-----END CERTIFICATE-----
+</cert>
+<key>
+-----BEGIN PRIVATE KEY-----
+MC4CAQAwBQYDK2VwBCIEIDtCkdkMVO5IV1HWsGqDSX0sIE0FENW6estLvfDSr4bp
+-----END PRIVATE KEY-----
+</key>
 <tls-crypt>
 #
 # 2048 bit OpenVPN static key
 #
 -----BEGIN OpenVPN Static key V1-----
-696fec0fef444105a153448d00f28dce
-243928a480cbac07e98c36398c980d13
-bbfd600e91fdcd8cfb416baf2a357a7b
-b73d5d6595e84d29a55045a4d4d84714
-c6a40d7b5a646557a927c6058b17a272
-77f111f602aa29933cdba70a59cc9759
-0eb851c8f1dcc25807a2251a0546aff5
-6eef04dc804243d5790d9b23a79b20a9
-b01faa33c0f03953ee6cb418c545bacf
-1b8af0c6b49d4bf1b4bcc0a0db5fc3cd
-f4d9675ff7a9fefa1e9e25e992b7d66a
-ff6d903a9e426ded4b8ce5a3a530e483
-f9ee774f99216d0201240f238561ebe2
-47cd388a5d1e589945628e0abcf26a1e
-c0be30f0f2cfc480f9b55ce670231db9
-c90a590cde36ef810a228a192386658d
+7a086674dc25cf16c609a6cf6b206046
+0592cf3e98dc58262d4c780d9d37ad30
+e726d4d4b4da651ccaa232e84e0eea14
+13870e2cd391057ca402fac3eb3ced8e
+e88c848a785a6878f01ea9f9c8e947d9
+2cede35d0a51a34f6c2e06a6c118e5c2
+267a81a8c69b67d110c264d03bd7e2e9
+a529a7d37828050f1031cc405369903a
+d092231c573794e07333c72b832cddde
+a4f071a90063edf1561b32ab28884a4b
+786abe2438c5e6e312811e3eacf90196
+648a17cc193295e684a475ad5bb6510f
+d4cf0f1061ddb7d69dc4fd355774cf7f
+d904456b668e128a861151ed12da788c
+c34b9a63c3f74fa96a26a61d203a0e85
+fe9edd1611499201429a2f6e91d1e307
 -----END OpenVPN Static key V1-----
 </tls-crypt>
-<cert>
------BEGIN CERTIFICATE-----
-MIIBYzCCARWgAwIBAgIRAJe+VDNu0cWrvYqvpi3S1pwwBQYDK2VwMBExDzANBgNV
-BAMTBlZQTiBDQTAeFw0yMTA1MDgwOTQwNDBaFw0yMTA4MDYwMTU5NTlaMD0xEDAO
-BgNVBAsTB2RlZmF1bHQxKTAnBgNVBAMTIDU0MjUxZTdjOTYwMWYzOGZhYjg4NzQ0
-ZjQ3ODZiNzZmMCowBQYDK2VwAyEANtm0hHuT97mwe/VELSB3G+0145ZZhHw/g+Af
-OlxJz9ujVjBUMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDAjAM
-BgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFNTIfDlLSwZuimXDfdAMtot/rqAEMAUG
-AytlcANBAA6tQFgH4NLkgD7SCa3gttpLB7HAKpTZFZwduLw+tOxR1b4jdUY9Caai
-8brsE/LqFzafeCw+kgQyGX2Hnd+jWw0=
------END CERTIFICATE-----
-</cert>
-<key>
------BEGIN PRIVATE KEY-----
-MC4CAQAwBQYDK2VwBCIEIBh7ZHKGCSVnJne7BTaiB8YSUQXhHcAAR80zJm+zXVlT
------END PRIVATE KEY-----
-</key>
 remote vpn.example 1194 udp
 remote vpn.example 1194 tcp
 ```
@@ -341,11 +340,11 @@ Expires: Fri, 06 Aug 2021 03:59:59 GMT
 Content-Type: application/x-wireguard-profile
 
 [Interface]
-Address = 10.10.10.12/24, fd00:1234:1234:1234::a0a:a0c/64
+Address = 10.43.43.2/24, fd43::2/64
 DNS = 9.9.9.9, 2620:fe::fe
 
 [Peer]
-PublicKey = Gwcpqv5WeCI3XotETskDXQLfYQk0fi8gEpuCQVIoKGc=
+PublicKey = iWAHXts9w9fQVEbA5pVriPlAYMwwEPD5XcVCZDZn1AE=
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = vpn.example:51820
 ```
@@ -409,6 +408,7 @@ HTTP/1.1 204 No Content
 | `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are neither `on` nor `off`                 |
 | `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
+| `/connect`    | `invalid "vpn_proto"`        | 400  | When the specified `vpn_proto` is not supported by the profile       |
 | `/disconnect` | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/disconnect` | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 
