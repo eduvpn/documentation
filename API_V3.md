@@ -203,6 +203,9 @@ Get the profile configuration for the profile you want to connect to.
 
 ### Request
 
+Connect to the "Employees" profile (`employees`) and specify a WireGuard public 
+key for when WireGuard will be used:
+
 ```bash
 $ curl \
     -d "profile_id=employees" \
@@ -228,6 +231,10 @@ It has this format:
 $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
+
+You can also use [libsodium](https://doc.libsodium.org/)'s 
+`crypto_box_keypair()` to generate a keypair and extract the public key using 
+`crypto_box_publickey()`.
 
 If the server supports both OpenVPN and WireGuard the server will have a 
 preference for which protocol to use. If nothing was configured in the server, 
