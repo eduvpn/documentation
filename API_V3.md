@@ -58,14 +58,14 @@ e.g.:
 
 ```json
 {
-  "api": {
-    "http://eduvpn.org/api#3": {
-      "api_endpoint": "https://vpn.example.org/vpn-user-portal/api/v3",
-      "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/authorize",
-      "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/token"
-    }
-  },
-  "v": "3.0.0-1.fc34"
+    "api": {
+        "http://eduvpn.org/api#3": {
+            "api_endpoint": "https://vpn.example.org/vpn-user-portal/api/v3",
+            "authorization_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/authorize",
+            "token_endpoint": "https://vpn.example.org/vpn-user-portal/oauth/token"
+        }
+    },
+    "v": "3.0.0-1.fc34"
 }
 ```
 
@@ -172,13 +172,18 @@ Content-Type: application/json
                     "nl": "Medewerkers"
                 },
                 "profile_id": "employees",
-                "vpn_proto": ["openvpn", "wireguard"]
+                "vpn_proto": [
+                    "openvpn",
+                    "wireguard"
+                ]
             },
             {
                 "default_gateway": false,
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto": ["wireguard"]
+                "vpn_proto": [
+                    "wireguard"
+                ]
             }
         ]
     }
