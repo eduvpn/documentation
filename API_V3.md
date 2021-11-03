@@ -172,18 +172,20 @@ Content-Type: application/json
                     "nl": "Medewerkers"
                 },
                 "profile_id": "employees",
-                "vpn_proto": [
+                "vpn_proto_list": [
                     "openvpn",
                     "wireguard"
-                ]
+                ],
+                "vpn_proto_preferred": "openvpn"
             },
             {
                 "default_gateway": false,
                 "display_name": "Administrators",
                 "profile_id": "admins",
-                "vpn_proto": [
+                "vpn_proto_list": [
                     "wireguard"
-                ]
+                ],
+                "vpn_proto_preferred": "wireguard"
             }
         ]
     }
@@ -198,9 +200,13 @@ The `display_name` field can be either of type `string` or `object`. When the
 field is an object, the keys are 
 [BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). 
 
-The `vpn_proto` field indicates which VPN protocol(s) are supported. If 
+The `vpn_proto_list` field indicates which VPN protocol(s) are supported. If 
 you client does not any of the listed protocols, you can omit them, or mark 
 them as unsupported. Currently `openvpn` and `wireguard` values are supported.
+
+The `vpn_proto_preferred` instructs the clients which protocol to prefer when
+connecting to the server. The client SHOULD follow this, but is allowed to 
+ignore this if needed.
 
 ## Connect
 
@@ -529,6 +535,33 @@ column indicates which parameters should be sent to the `/connect` POST call.
 | WireGuard           | off         | _N/A_                            |
 | OpenVPN & WireGuard | on          | `vpn_proto=openvpn&tcp_only=on` |
 | OpenVPN & WireGuard | off         | _N/A_                            |
+
+
+We assume the VPN client always supports OpenVPN, and MAY support WireGuard.
+
+The following _pseudo code_ can be used to implement the protocol selection.
+
+```
+if Force_TCP {
+    if Profile_Supports_OpenVPN {
+        CONNECT [POST: vpn_proto=openvpn, tcp_only=on]
+
+        return
+    }
+    
+    Error: Profile ${NAME} does not support OpenVPN
+}
+
+if Profile_Default_Proto == WireGuard {
+    if Client_Supports_WireGuard {
+        CONNECT [POST: vpn_proto=wireguard, public_key=${PK}]
+        
+        return
+    }
+}
+
+CONNECT [POST: vpn_proto=openvpn]
+```
 
 # TODO
 
