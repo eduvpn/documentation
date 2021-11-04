@@ -487,18 +487,26 @@ toggle.
 option is ignored and an attempt is made to connect over WireGuard anyway!
 
 We assume the client always supports OpenVPN. In scope of this API version, the 
-following _pseudo code_ can be used to implement the protocol selection:
+following _pseudo code_ can be used to implement the protocol selection.
+
+If you client supports both OpenVPN and WireGuard:
 
 ```
-if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN || !Client_Supports_WireGuard) {
+if Profile_Supports_OpenVPN && (${Force_TCP} == On || Profile_Prefers_OpenVPN) {
     POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
     
     return
 }
 
-if Client_Supports_WireGuard {
-    POST /connect [vpn_proto=wireguard, public_key=${PK}]
+POST /connect [vpn_proto=wireguard, public_key=${PK}]
+```
 
+If your client only supports OpenVPN:
+
+```
+if Profile_Supports_OpenVPN {
+    POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
+    
     return
 }
 
