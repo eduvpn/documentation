@@ -472,9 +472,6 @@ Discovery issues. Eventually applications SHOULD be able to determine
 automatically whether UDP works reliably and we could get rid of this setting 
 toggle.
 
-In scope of this API version, the following _pseudo code_ can be used to 
-implement the protocol selection. We assume the client supports OpenVPN.
-
 | Protocol Support   | Preferred | Force TCP | What Should Happen?                                     |
 | ------------------ | --------- | --------- | ------------------------------------------------------- |
 | OpenVPN, WireGuard | OpenVPN   | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
@@ -486,9 +483,13 @@ implement the protocol selection. We assume the client supports OpenVPN.
 | WireGuard          | WireGuard | On        | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
 | WireGuard          | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
 
+For now, we assume the client always supports OpenVPN. In scope of this API 
+version, the following _pseudo code_ can be used to implement the protocol 
+selection:
+
 ```
-if Protocol_Supports_OpenVPN && (${Force_Tcp} == On || Protocol_Prefers_OpenVPN) {
-    POST /connect [vpn_proto=openvpn, tcp_only=${Force_Tcp}]
+if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN) {
+    POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
     
     return
 }
