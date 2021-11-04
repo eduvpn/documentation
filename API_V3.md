@@ -475,52 +475,26 @@ toggle.
 In scope of this API version, the following _pseudo code_ can be used to 
 implement the protocol selection. We assume the client supports OpenVPN.
 
-| Protocol Support   | Preferred | Force TCP | What Should Happen?                                   |
-| ------------------ | --------- | --------- | ----------------------------------------------------- |
-| OpenVPN, WireGuard | OpenVPN   | Yes       | POST /connect [vpn_proto=openvpn, tcp_only=on]        |
-| OpenVPN, WireGuard | OpenVPN   | No        | POST /connect [vpn_proto=openvpn]                     | 
-| OpenVPN, WireGuard | WireGuard | Yes       | POST /connect [vpn_proto=openvpn, tcp_only=on]        |
-| OpenVPN, WireGuard | WireGuard | No        | POST /connect [vpn_proto=wireguard, public_key=${PK}] |
-| OpenVPN            | OpenVPN   | Yes       | POST /connect [vpn_proto=openvpn, tcp_only=on]        |
-| OpenVPN            | OpenVPN   | No        | POST /connect [vpn_proto=openvpn]                     |
-| WireGuard          | WireGuard | Yes       | POST /connect [vpn_proto=wireguard, public_key=${PK}] |
-| WireGuard          | WireGuard | No        | POST /connect [vpn_proto=wireguard, public_key=${PK}] |
-
-**WIP** flow, it is a bit of a mess, can probably be made simpler.
+| Protocol Support   | Preferred | Force TCP | What Should Happen?                                     |
+| ------------------ | --------- | --------- | ------------------------------------------------------- |
+| OpenVPN, WireGuard | OpenVPN   | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
+| OpenVPN, WireGuard | OpenVPN   | Off       | `POST /connect [vpn_proto=openvpn]`                     |
+| OpenVPN, WireGuard | WireGuard | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
+| OpenVPN, WireGuard | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
+| OpenVPN            | OpenVPN   | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
+| OpenVPN            | OpenVPN   | Off       | `POST /connect [vpn_proto=openvpn]`                     |
+| WireGuard          | WireGuard | On        | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
+| WireGuard          | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
 
 ```
-if Force_TCP {
-    if Profile_Supports_OpenVPN {
-        POST /connect [vpn_proto=openvpn, tcp_only=on]
-
-        return 
-        
-        // in case the VPN Profile does NOT support "tcp_only", a 406 HTTP 
-        // response code is returned, continue with trying WireGuard...
-    }
-
-    // Profile does NOT support OpenVPN, continue with trying WireGuard...
-}
-
-if Client_Supports_WireGuard {
-    if Profile_Prefers_WireGuard {
-        POST /connect [vpn_proto=wireguard, public_key=${PK}]
-        
-        return
-    }
-}
-
-if Profile_Supports_OpenVPN {
-    POST /connect [vpn_proto=openvpn]
+if Protocol_Supports_OpenVPN && (${Force_Tcp} == On || Protocol_Prefers_OpenVPN) {
+    POST /connect [vpn_proto=openvpn, tcp_only=${Force_Tcp}]
     
     return
 }
 
-if Profile_Supports_WireGuard {
-    POST /connect [vpn_proto=wireguard, public_key=${PK}]
-    
-    return
-}
+// if client does NOT support WireGuard, show error...
+POST /connect [vpn_proto=wireguard, public_key=${PK}]
 ```
 
 # Flow
