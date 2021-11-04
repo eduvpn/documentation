@@ -496,7 +496,13 @@ if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN 
     return
 }
 
-POST /connect [vpn_proto=wireguard, public_key=${PK}]
+if Client_Supports_WireGuard {
+    POST /connect [vpn_proto=wireguard, public_key=${PK}]
+
+    return
+}
+
+Error: Client does not support WireGuard, but profile only supports WireGuard
 ```
 
 # Flow
