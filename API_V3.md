@@ -483,9 +483,11 @@ toggle.
 | WireGuard          | WireGuard | On        | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
 | WireGuard          | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
 
-For now, we assume the client always supports OpenVPN. In scope of this API 
-version, the following _pseudo code_ can be used to implement the protocol 
-selection:
+**NOTE**: when only WireGuard is supported on the server, the "Force TCP" 
+option is ignored and an attempt is made to connect over WireGuard anyway!
+
+We assume the client always supports OpenVPN. In scope of this API version, the 
+following _pseudo code_ can be used to implement the protocol selection:
 
 ```
 if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN) {
