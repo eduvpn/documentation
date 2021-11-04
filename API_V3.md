@@ -490,13 +490,12 @@ We assume the client always supports OpenVPN. In scope of this API version, the
 following _pseudo code_ can be used to implement the protocol selection:
 
 ```
-if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN) {
+if Protocol_Supports_OpenVPN && (${Force_TCP} == On || Protocol_Prefers_OpenVPN || !Client_Supports_WireGuard) {
     POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
     
     return
 }
 
-// if client does NOT support WireGuard, show error...
 POST /connect [vpn_proto=wireguard, public_key=${PK}]
 ```
 
