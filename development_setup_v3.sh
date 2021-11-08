@@ -32,12 +32,18 @@ git clone https://git.sr.ht/~fkooman/builder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
-for PACKAGE_NAME in vpn-daemon php-oauth2-server vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
+for PACKAGE_NAME in vpn-daemon php-oauth2-server php-secookie vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 #	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
 ##	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
 ##	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.deb deb/${PACKAGE_NAME}.deb
 done
+
+######################################
+# vpn-ca                             #
+######################################
+cd "${BASE_DIR}/vpn-ca" || exit
+go build -o vpn-ca tuxed.net/vpn-ca/cmd/vpn-ca/...
 
 ######################################
 # vpn-user-portal                    #
@@ -74,12 +80,6 @@ do
     ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/img"    "web/img/${TPL}"
     ln -s "${BASE_DIR}/vpn-portal-artwork-${TPL}/fonts"  "web/fonts/${TPL}"
 done
-
-######################################
-# vpn-ca                             #
-######################################
-cd "${BASE_DIR}/vpn-ca" || exit
-go build -o vpn-ca tuxed.net/vpn-ca/cmd/vpn-ca/...
 
 ######################################
 # vpn-daemon                         #
