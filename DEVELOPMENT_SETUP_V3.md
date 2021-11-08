@@ -30,7 +30,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     php-gd unzip qrencode
 ```
 
-# Debian >= 11
+# Debian >= 11, Ubuntu >= 21.10
 
 When you are not running Debian as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -78,9 +78,33 @@ You can login with the users `foo` and password `bar` or `admin` with password
 To generate the OpenVPN server configuration files:
 
     $ cd ${HOME}/Projects/eduVPN-v3/vpn-server-node
-    $ php bin/server-config.php
+    $ php libexec/server-config.php
 
-The configuration will be stored in the `openvpn-config` folder.
+The OpenVPN server configuration files will be written to `openvpn-config`, the
+WireGuard configuration files will be written to `wg-config`.
+
+## OpenVPN 
+
+You can copy `openvpn-config/*` to `/etc/openvpn/server` on your development 
+machine and start OpenVPN, e.g.:
+
+```
+$ sudo systemctl start openvpn-server@default-{0,1}
+```
+
+Now `vpn-daemon` should be able to query it.
+
+## WireGuard
+
+You can copy `wg-config/wg0.conf` to `/etc/wireguard/wg0.conf` and start 
+WireGuard using this configuration file. This will allow `vpn-daemon` to 
+interact with WireGuard on your development machine.
+
+**NOTE**: in order for `vpn-daemon` to interact with your local WireGuard 
+setup it needs to have the right capabilities, i.e. `CAP_NET_ADMIN`. The 
+easiest is to (re)start vpn-daemon as `root`, or use the `vpn-daemon.service` 
+file as can be found 
+[here](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md#systemd).
 
 # Modifying Code
 
