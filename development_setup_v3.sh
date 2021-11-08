@@ -13,7 +13,7 @@ git clone -b v2 https://git.sr.ht/~fkooman/vpn-documentation
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
-git clone https://git.sr.ht/~fkooman/vpn-daemon
+git clone -b v2 https://git.sr.ht/~fkooman/vpn-daemon
 git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
 git clone https://git.sr.ht/~fkooman/builder.rpm
 git clone https://git.sr.ht/~fkooman/builder.deb
@@ -25,7 +25,7 @@ git clone https://git.sr.ht/~fkooman/builder.deb
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
 #git clone git@git.sr.ht:~fkooman/vpn-ca
-#git clone git@git.sr.ht:~fkooman/vpn-daemon
+#git clone -b v2 git@git.sr.ht:~fkooman/vpn-daemon
 #git clone git@git.sr.ht:~fkooman/vpn-maint-scripts
 #git clone git@git.sr.ht:~fkooman/builder.rpm
 #git clone git@git.sr.ht:~fkooman/builder.deb
@@ -54,7 +54,7 @@ cat << EOF > config/config.php
     //'styleName' => 'LC',
     'secureCookie' => false,
     'adminUserIdList' => ['foo'],
-    'vpnCaPath' => '${BASE_DIR}/vpn-ca/_bin/vpn-ca',
+    'vpnCaPath' => '${BASE_DIR}/vpn-ca/vpn-ca',
 ];
 return array_merge(\$baseConfig, \$localConfig);
 EOF
@@ -79,7 +79,7 @@ done
 # vpn-ca                             #
 ######################################
 cd "${BASE_DIR}/vpn-ca" || exit
-go build -o _bin/vpn-ca vpn-ca/*.go
+go build -o vpn-ca tuxed.net/vpn-ca/cmd/vpn-ca/...
 
 ######################################
 # vpn-daemon                         #
