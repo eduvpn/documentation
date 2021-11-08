@@ -97,7 +97,13 @@ Now `vpn-daemon` should be able to query it.
 ## WireGuard
 
 You can copy `wg-config/wg0.conf` to `/etc/wireguard/wg0.conf` and start 
-WireGuard using this configuration file. This will allow `vpn-daemon` to 
+WireGuard using this configuration file. 
+
+```
+$ sudo systemctl start wg-quick@wg0
+```
+
+This will allow `vpn-daemon` to 
 interact with WireGuard on your development machine.
 
 **NOTE**: in order for `vpn-daemon` to interact with your local WireGuard 
