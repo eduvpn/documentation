@@ -91,7 +91,7 @@ go build -o vpn-daemon tuxed.net/vpn-daemon/cmd/vpn-daemon/...
 # vpn-server-node                    #
 ######################################
 cd "${BASE_DIR}/vpn-server-node" || exit
-mkdir -p data openvpn-config
+mkdir -p openvpn-config wg-config
 composer update
 cat << 'EOF' > config/config.php
 <?php
