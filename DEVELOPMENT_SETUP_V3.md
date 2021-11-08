@@ -110,7 +110,8 @@ interact with WireGuard on your development machine.
 setup it needs to have the right capabilities, i.e. `CAP_NET_ADMIN`. The 
 easiest is to (re)start vpn-daemon as `root`, or use the `vpn-daemon.service` 
 file as can be found 
-[here](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md#systemd).
+[here](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md#systemd),
+but make sure to update the path at `ExecStart=`.
 
 # Modifying Code
 
