@@ -258,9 +258,9 @@ protocol selection.
 
 #### Public Key
 
-When the WireGuard protocol is used, the `public_key` parameter MUST be set. 
-The value of `public_key` MUST be a valid WireGuard public key. It has this 
-format:
+When the WireGuard protocol is expected to be used, the `public_key` parameter 
+MUST be set. The value of `public_key` MUST be a valid WireGuard public key. It 
+has this format:
 
 ```bash
 $ wg genkey | wg pubkey
