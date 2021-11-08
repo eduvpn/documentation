@@ -27,17 +27,19 @@ VM with a desktop. In addition, install the required software (dependencies):
 ```
 $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-gmp php-curl \
-    php-gd unzip qrencode wireguard-tools
+    php-gd unzip qrencode wireguard-tools scdoc
 ```
 
 # Debian >= 11, Ubuntu >= 21.10
 
-When you are not running Debian as your desktop OS, it is easiest to install a
-VM with a desktop. In addition, install the required software (dependencies):
+If you are not running Debian/Ubuntu as your desktop OS, it is easiest to 
+install a VM with a desktop. In addition, install the required software 
+(dependencies):
 
 ```
 $ sudo apt install curl git build-essential php-gmp php-sqlite3 composer \
-    php-curl php-xml php-gmp php-cli unzip golang-go qrencode wireguard-tools
+    php-curl php-xml php-gmp php-cli unzip golang-go qrencode wireguard-tools \
+    scdoc
 ```
 
 # Installation
@@ -73,7 +75,7 @@ Now with your browser you can connect to the user portal on
 You can login with the users `foo` and password `bar` or `admin` with password 
 `secret`.
 
-# VPN Configuration
+# VPN Server Configuration
 
 To generate the OpenVPN server configuration files:
 
@@ -85,14 +87,18 @@ WireGuard configuration files will be written to `wg-config`.
 
 ## OpenVPN 
 
-You can copy `openvpn-config/*` to `/etc/openvpn/server` on your development 
-machine and start OpenVPN, e.g.:
+Unfortunately it is not that easy to start OpenVPN server processes on your 
+development machine as it requires certain "libexec" scripts to be in the 
+right location. It should be possible to do this with symlinks, but that is 
+left as an exercise to the reader. It is typically not necessary to have real
+OpenVPN processes running on your development system.
+
+To start: you can copy `openvpn-config/*` to `/etc/openvpn/server` and start 
+OpenVPN, e.g.:
 
 ```
 $ sudo systemctl start openvpn-server@default-{0,1}
 ```
-
-Now `vpn-daemon` should be able to query it.
 
 ## WireGuard
 
