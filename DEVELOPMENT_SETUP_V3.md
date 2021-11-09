@@ -11,9 +11,9 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either Fedora >= 33, or Debian >= 10. Other 
-distributions will also work, but some minor details, regarding installation of 
-the required software, will be different.
+We assume you will be using either Fedora >= 34, Debian >= 11 or Ubuntu >= 
+21.10. Other distributions MAY also work, but some minor details, regarding 
+installation of the required software, will be different.
 
 **NOTE**: if you try to build a package repository you need to be on the 
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
