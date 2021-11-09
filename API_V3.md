@@ -392,9 +392,12 @@ PrivateKey = AJmdZTXhNRwMT1CEvXys2T9SNYnXUG2niJVT4biXaX0=
 This call is to indicate to the server that the VPN session can be terminated.
 This MUST ONLY be called when the _user_ decides to stop the VPN connection.
 
-The purpose of this call is to "release" the IP address reserved for the 
-client to make it available for other clients connecting. This is especially
-important when using a limited IP range for VPN clients.
+The purpose of this call is to clean up, i.e. release the IP address reserved
+for the client (WireGuard) and delete the certificate from the list of allowed 
+certificates (OpenVPN). 
+
+After calling this method you MUST NOT use the same configuration again to 
+attempt to connect to the VPN server. First call `/connect` again.
 
 This call is "best effort", i.e. it is not a huge deal when the call fails. No 
 special care has to be taken when this call fails, e.g. the connection is dead,
