@@ -492,7 +492,7 @@ option is ignored and an attempt is made to connect over WireGuard anyway!
 We assume the client always supports OpenVPN. In scope of this API version, the 
 following _pseudo code_ can be used to implement the protocol selection.
 
-If you client supports both OpenVPN and WireGuard:
+If the client supports both OpenVPN and WireGuard:
 
 ```
 if Profile_Supports_OpenVPN && (${Force_TCP} == On || Profile_Prefers_OpenVPN) {
