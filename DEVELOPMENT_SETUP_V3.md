@@ -19,9 +19,9 @@ installation of the required software, will be different.
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
-# Fedora >= 33
+# Fedora >= 34
 
-When you are not running Fedora as your desktop OS, it is easiest to install a
+If you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
 
 ```
