@@ -81,7 +81,7 @@ can't be bothered to setup an IRC client. See you there!
 ## Supported Operating Systems
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) 33, 34 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 33, 34, 35 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) 9, 10, 11 (`x86_64`) 
 
 **Current Recommendation**: install your VPN server on Debian 11.
@@ -113,7 +113,8 @@ mailinglist post.
 # Development
 
 If you want to set up your own server development environment see 
-[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
+[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md), or 
+[DEVELOPMENT_SETUP_V3](DEVELOPMENT_SETUP_V3.md) for the upcoming 3.x server.
 
 # License 
 
