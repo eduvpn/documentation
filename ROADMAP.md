@@ -71,3 +71,5 @@ make your case!
   whether to get this back in a clean way *with* pseudonyms, don't leak local 
   user identity to guest servers! We MAY keep it out of 3.x and require servers
   to keep running 2.x until we come up with a better approach...
+- implement PSK per config/user for WireGuard (similar to tls-crypt-v2 with 
+  OpenVPN)
