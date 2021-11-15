@@ -53,7 +53,7 @@ EOF
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables-nft pwgen \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
-    wireguard-tools
+    wireguard-tools ipcalc
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
@@ -95,10 +95,11 @@ sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-user-portal/config.php"
 sudo -u apache /usr/libexec/vpn-user-portal/init
 
 # update the default IP ranges for the profile
-sed -i "s|10.42.42.0/24|$(vpn-user-portal-suggest-ip -4)|" "/etc/vpn-user-portal/config.php"
-sed -i "s|fd42::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/config.php"
-sed -i "s|10.43.43.0/24|$(vpn-user-portal-suggest-ip -4)|" "/etc/vpn-user-portal/config.php"
-sed -i "s|fd43::/64|$(vpn-user-portal-suggest-ip -6)|" "/etc/vpn-user-portal/config.php"
+# on Debian we can use ipcalc-ng
+sed -i "s|10.42.42.0|$(ipcalc -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd42::|$(ipcalc -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|10.43.43.0|$(ipcalc -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd43::|$(ipcalc -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
 
 ###############################################################################
 # NETWORK
