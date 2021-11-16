@@ -461,9 +461,9 @@ with a "Details..." button.
 # VPN Protocol Selection
 
 Profiles are able to support both OpenVPN and WireGuard. It is up to the 
-server administrator to enable particular profiles. Profiles can support either
-OpenVPN, WireGuard, or _both_. Administrators can also configure a _preferred_ 
-protocol per profile if both are supported.
+server administrator to enable particular protocols. Profiles can support 
+either OpenVPN, WireGuard, or _both_. Administrators can also configure a 
+_preferred_ protocol per profile if both are supported.
 
 Clients supporting this version of the API SHOULD support both OpenVPN and 
 WireGuard, but MAY only support OpenVPN (for now).
@@ -504,7 +504,7 @@ if Profile_Supports_OpenVPN && (${Force_TCP} == On || Profile_Prefers_OpenVPN) {
 POST /connect [vpn_proto=wireguard, public_key=${PK}]
 ```
 
-If your client only supports OpenVPN:
+If the client only supports OpenVPN:
 
 ```
 if Profile_Supports_OpenVPN {
