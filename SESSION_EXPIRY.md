@@ -8,7 +8,7 @@ download a new configuration file.
 This will mean that the users have to authenticate as well as part of this 
 authorization, and possibly provide their 2FA credentials/token as well.
 
-The default on installation of the server is 90 days.
+The default is 90 days.
 
 # What to Choose?
 
@@ -34,7 +34,7 @@ meaning the may have to authorize/authenticate during a video call. Not great.
 **NOTE**: in a future server (or client) version we aim to implement a 
 mechanism that either expires the VPN session at night, or update the client 
 to warn the session is about to expire during working hours and offer to renew
-it.
+it instead of silently dropping the VPN connection.
 
 ## Changing Session Expiry
 
@@ -55,9 +55,10 @@ user is forced to authenticate/authorize.
 
 It is *highly* recommended to choose your `sessionExpiry` and then "reset" the
 server in order to make sure that all VPN users/clients will use the same 
-session expiry from then on. **NOTE**: this will delete all _data_, but not the
-configuration. It will force everyone to reauthorize the VPN apps and/or 
-download a new configuration through the portal.
+session expiry from then on. **NOTE**: this will delete all _data_, including
+local user accounts, but not the configuration. It will force everyone to 
+reauthorize the VPN apps and/or download a new configuration through the 
+portal.
 
 ```
 $ sudo vpn-maint-reset-system
