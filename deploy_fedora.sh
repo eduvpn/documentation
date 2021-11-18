@@ -14,12 +14,9 @@ MACHINE_HOSTNAME=$(hostname -f)
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
-VPN_STABLE_REPO=1
-VPN_DEV_REPO=${VPN_DEV_REPO:-0}
-if [ "${VPN_DEV_REPO}" = 1 ]
-then
-    VPN_STABLE_REPO=0
-fi
+# Try to detect external "Default Gateway" Interface, but allow admin override
+EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
+printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXTERNAL_IF
 
 ###############################################################################
 # SYSTEM
@@ -44,32 +41,23 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# import PGP key and add repository
-rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
-cat << EOF > /etc/yum.repos.d/LC-v2.repo
-[LC-v2]
-name=VPN Stable Packages (Fedora \$releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/fedora-\$releasever-\$basearch
-gpgcheck=1
-enabled=${VPN_STABLE_REPO}
-EOF
-
-cat << EOF > /etc/yum.repos.d/eduVPN-dev.repo
-[eduVPN-dev]
+cat << EOF > /etc/yum.repos.d/eduVPN-v3.repo
+[eduVPN-v3]
 name=eduVPN Development Packages (Fedora \$releasever)
-baseurl=https://repo.tuxed.net/eduVPN/dev/rpm/fedora-\$releasever-\$basearch
+baseurl=https://repo.tuxed.net/eduVPN/v3/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
-enabled=${VPN_DEV_REPO}
+enabled=1
 EOF
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables pwgen \
-    iptables-services php-fpm php-cli policycoreutils-python-utils chrony
+${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables-nft pwgen \
+    iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
+    cronie wireguard-tools ipcalc
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal \
-    vpn-maint-scripts
+${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
+    vpn-maint-scripts vpn-daemon
 
 ###############################################################################
 # SELINUX
@@ -78,12 +66,9 @@ ${PACKAGE_MANAGER} -y install vpn-server-node vpn-server-api vpn-user-portal \
 # allow Apache to connect to PHP-FPM
 setsebool -P httpd_can_network_connect=1
 
-# allow OpenVPN to bind to the management ports
-semanage port -a -t openvpn_port_t -p tcp 11940-16036
-
 # allow OpenVPN to bind to additional ports for client connections
-semanage port -a -t openvpn_port_t -p tcp 1195-5290
-semanage port -a -t openvpn_port_t -p udp 1195-5290
+semanage port -a -t openvpn_port_t -p tcp 1195-1258
+semanage port -a -t openvpn_port_t -p udp 1195-1258
 
 ###############################################################################
 # APACHE
@@ -91,7 +76,7 @@ semanage port -a -t openvpn_port_t -p udp 1195-5290
 
 # Use a hardened ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
-cp resources/ssl.fedora.conf /etc/httpd/conf.d/ssl.conf
+cp resources/ssl.fedora.v3.conf /etc/httpd/conf.d/ssl.conf
 cp resources/localhost.centos.conf /etc/httpd/conf.d/localhost.conf
 
 # VirtualHost
@@ -99,32 +84,22 @@ cp resources/vpn.example.centos.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################
-# PHP
-###############################################################################
-
-# set timezone to UTC
-cp resources/70-timezone.ini /etc/php.d/70-timezone.ini
-
-###############################################################################
-# VPN-SERVER-API
-###############################################################################
-
-# update hostname of VPN server
-sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-server-api/config.php"
-
-# update the default IP ranges
-sed -i "s|10.0.0.0/25|$(vpn-server-api-suggest-ip -4)|" "/etc/vpn-server-api/config.php"
-sed -i "s|fd00:4242:4242:4242::/64|$(vpn-server-api-suggest-ip -6)|" "/etc/vpn-server-api/config.php"
-
-# initialize the CA
-sudo -u apache vpn-server-api-init
-
-###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
+# update hostname of VPN server
+sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-user-portal/config.php"
+
 # DB init
-sudo -u apache vpn-user-portal-init
+# XXX would be nice if we could avoid this
+sudo -u apache /usr/libexec/vpn-user-portal/init
+
+# update the default IP ranges for the profile
+# on Debian we can use ipcalc-ng
+sed -i "s|10.42.42.0|$(ipcalc -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd42::|$(ipcalc -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|10.43.43.0|$(ipcalc -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd43::|$(ipcalc -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
 
 ###############################################################################
 # NETWORK
@@ -133,9 +108,9 @@ sudo -u apache vpn-user-portal-init
 cat << EOF > /etc/sysctl.d/70-vpn.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
-# **REMOVE** for static IPv6 configurations!
-net.ipv6.conf.all.accept_ra = 2
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production as that requires STATIC IP addressess!
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
 EOF
 
 sysctl --system
@@ -144,13 +119,8 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
-# update internal API secrets from the defaults to something secure
-SECRET_PORTAL_API=$(pwgen -s 32 -n 1)
-SECRET_NODE_API=$(pwgen -s 32 -n 1)
-sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-user-portal/config.php"
-sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${SECRET_NODE_API}|" "/etc/vpn-server-node/config.php"
-sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-server-api/config.php"
-sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${SECRET_NODE_API}|" "/etc/vpn-server-api/config.php"
+/usr/libexec/vpn-user-portal/generate-secrets
+cp /etc/vpn-user-portal/node.key /etc/vpn-server-node/node.key
 
 ###############################################################################
 # CERTIFICATE
@@ -173,23 +143,21 @@ openssl req \
 
 systemctl enable --now php-fpm
 systemctl enable --now httpd
+systemctl enable --now vpn-daemon
+systemctl enable --now crond
 
 ###############################################################################
-# OPENVPN SERVER CONFIG
+# VPN SERVER CONFIG
 ###############################################################################
 
-# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
-# by default! 
-
-# generate (new) OpenVPN server configuration files and start OpenVPN
 vpn-maint-apply-changes
 
 ###############################################################################
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/iptables  /etc/sysconfig/iptables
-cp resources/firewall/ip6tables /etc/sysconfig/ip6tables
+cp resources/firewall/iptables.v3  /etc/sysconfig/iptables
+cp resources/firewall/ip6tables.v3 /etc/sysconfig/ip6tables
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables
@@ -198,27 +166,20 @@ systemctl enable --now ip6tables
 # USERS
 ###############################################################################
 
-REGULAR_USER="demo"
-REGULAR_USER_PASS=$(pwgen 12 -n 1)
+USER_NAME="vpn"
+USER_PASS=$(pwgen 12 -n 1)
 
-# the "admin" user is a special user, listed by ID to have access to "admin" 
-# functionality in /etc/vpn-user-portal/config.php (adminUserIdList)
-ADMIN_USER="admin"
-ADMIN_USER_PASS=$(pwgen 12 -n 1)
-
-sudo -u apache vpn-user-portal-add-user --user "${REGULAR_USER}" --pass "${REGULAR_USER_PASS}"
-sudo -u apache vpn-user-portal-add-user --user "${ADMIN_USER}" --pass "${ADMIN_USER_PASS}"
-
-###############################################################################
-# SHOW INFO
-###############################################################################
+sudo -u apache vpn-user-portal-add-user --user "${USER_NAME}" --pass "${USER_PASS}"
 
 echo "########################################################################"
 echo "# Portal"
+echo "# ======"
 echo "#     https://${WEB_FQDN}/"
-echo "#         Regular User: ${REGULAR_USER}"
-echo "#         Regular User Pass: ${REGULAR_USER_PASS}"
+echo "#         User Name: ${USER_NAME}"
+echo "#         User Pass: ${USER_PASS}"
 echo "#"
-echo "#         Admin User: ${ADMIN_USER}"
-echo "#         Admin User Pass: ${ADMIN_USER_PASS}"
+echo "# Admin"
+echo "# ====="
+echo "# Add 'vpn' to 'adminUserIdList' in /etc/vpn-user-portal/config.php in"
+echo "# order to make yourself an admin in the portal."
 echo "########################################################################"

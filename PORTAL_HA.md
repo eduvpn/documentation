@@ -1,8 +1,9 @@
 # Introduction
 
-**WORK IN PROGRESS**
+This document explains how to run a "high available" and "redundant" setup.
 
-This document tells you how to store the application database inside 
+
+ store the application database inside 
 [MariaDB](https://mariadb.org/) and the (browser) session information inside 
 [memcached](https://www.memcached.org/) instead of the local file system. This 
 is useful if you want to make the VPN service "high available" or provide load 
@@ -10,8 +11,8 @@ balancing between servers. When we mention MariaDB below, the same should apply
 to MySQL as well. Next to MariaDB and MySQL, also PostgreSQL is supported.
  
 * **NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
-* **NOTE**: do this ONLY for new servers, there is NO migration from SQLite to
-  MariaDB/PostgreSQL!
+* **NOTE**: do this ONLY for new servers, there is NO automatic migration from 
+  SQLite to MariaDB/PostgreSQL!
 * **NOTE**: you can use this if you want to deploy multiple portal instances 
   using the same storage backend;
 * **NOTE**: your MariaDB/PostgreSQL setup should have higher availability than 
@@ -26,9 +27,10 @@ If you take all this in consideration, see
 [Portal Configuration](#portal-configuration) on how to connect to your MariaDB
 server. Make sure you replace the server location and credentials.
 
-We assume you are using `deploy_fedora_v3.sh` on all your portals with the same
-domain name, e.g. `vpn.example.org` and will use "round robin" DNS for HA / 
-load balancing.
+We assume you are using `deploy_fedora_v3_controller.sh` on all your 
+controller(s) with the same domain name, e.g. `vpn.example.org` and will use 
+"round robin" DNS for HA / load balancing. On your node(s) you run 
+`deploy_fedora_v3_node.sh`.
 
 # MariaDB Installation
 
@@ -172,11 +174,8 @@ Make the following changes:
 
 ```
     'useMemcached' => true,
-    'memcachedServerList' => ['10.5.5.1:11211', '10.5.5.2:11211'],
+    'memcachedServerList' => ['p1.home.arpa:11211', 'p2.home.arpa:11211'],
 ```
-
-Where `10.5.5.1` and `10.5.5.2` are the (private) IP addresses of your VPN 
-portals.
 
 You can configure the database in `/etc/vpn-user-portal/config.php` as well:
 
@@ -233,3 +232,154 @@ If you are using
 [Let's Encrypt](https://letsencrypt.org/) you can copy the entire 
 `/etc/letsencrypt` folder to your other portals. Make sure you do this at least
 every 90 days (the expiry of Let's Encrypt certificates)!
+
+
+
+
+
+
+
+
+
+
+
+Fedora 35
+
+p1.home.arpa        Controller/Portal
+p2.home.arpa        Controller/Portal
+n1.home.arpa        OpenVPN/WG node
+n2.home.arpa        OpenVPN/WG node
+db.home.arpa        MariaDB server
+
+# On the Portals
+
+- install all updates
+- reboot
+
+sudo dnf -y install memcached
+sudo systemctl enable --now memcached
+
+hostnamectl set-hostname X.home.arpa
+
+./deploy_fedora_v3_controller.sh
+
+Use p.home.arpa as hostname in deploy script (shared between the portals)
+
+    //    // MariaDB/MySQL
+        'Db' => [
+            'dbDsn' => 'mysql:host=db.home.arpa;port=3306;dbname=vpn',
+            //'dbDsn' => mysql:unix_socket=/var/lib/mysql/mysql.sock;dbname=vpn',
+            'dbUser' => 'vpn',
+            'dbPass' => 's3cr3t',
+        ],
+
+
+        'Session' => [
+    //        // Whether to use memcached for sessions
+    //        // DEFAULT: false
+            'useMemcached' => true,
+
+    //        // list of memcached servers host:port
+    //        // DEFAULT: []
+            'memcachedServerList' => [
+                'p1.home.arpa:11211',
+		'p2.home.arpa:11211',
+            ],
+        ],
+
+
+## CA 
+
+[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -init-ca -domain-constraint .home.arpa
+[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -server -name p.home.arpa
+
+
+httpd
+
+		Require host n1.home.arpa
+		Require host n2.home.arpa
+
+
+
+
+# On the Nodes
+
+
+# DB
+
+- install all updates
+- reboot
+
+sudo dnf -y install mariadb-server
+
+
+
+Fedora 35
+
+p1.home.arpa        Controller/Portal
+p2.home.arpa        Controller/Portal
+n1.home.arpa        OpenVPN/WG node
+n2.home.arpa        OpenVPN/WG node
+db.home.arpa        MariaDB server
+
+# On the Portals
+
+- install all updates
+- reboot
+
+sudo dnf -y install memcached
+sudo systemctl enable --now memcached
+
+hostnamectl set-hostname X.home.arpa
+
+./deploy_fedora_v3_controller.sh
+
+Use p.home.arpa as hostname in deploy script (shared between the portals)
+
+    //    // MariaDB/MySQL
+        'Db' => [
+            'dbDsn' => 'mysql:host=db.home.arpa;port=3306;dbname=vpn',
+            //'dbDsn' => mysql:unix_socket=/var/lib/mysql/mysql.sock;dbname=vpn',
+            'dbUser' => 'vpn',
+            'dbPass' => 's3cr3t',
+        ],
+
+
+        'Session' => [
+    //        // Whether to use memcached for sessions
+    //        // DEFAULT: false
+            'useMemcached' => true,
+
+    //        // list of memcached servers host:port
+    //        // DEFAULT: []
+            'memcachedServerList' => [
+                'p1.home.arpa:11211',
+		'p2.home.arpa:11211',
+            ],
+        ],
+
+
+## CA 
+
+[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -init-ca -domain-constraint .home.arpa
+[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -server -name p.home.arpa
+
+
+httpd
+
+		Require host n1.home.arpa
+		Require host n2.home.arpa
+
+
+
+
+# On the Nodes
+
+
+# DB
+
+- install all updates
+- reboot
+
+sudo dnf -y install mariadb-server
+

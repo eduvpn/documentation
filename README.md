@@ -27,6 +27,7 @@ This is an (incomplete) list of features of the VPN software:
 - Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
 - Support both NAT and publically routable IP addresses;
 - CA for managing client certificates;
+- Support for [WireGuard](https://www.wireguard.com/);
 - [Secure](SECURITY.md) server and client configuration out of the box;
 - Portal to allow users to manage their configurations for their 
   devices and admins to manage users, configurations and connections;
@@ -36,7 +37,6 @@ This is an (incomplete) list of features of the VPN software:
   [Client Certificates](CLIENT_CERT_AUTH.md);
 - OAuth 2.0 [API](API.md) for integration with native eduVPN/Let's Connect! 
   applications;
-- [Two-factor authentication](2FA.md) TOTP support with user self-enrollment;
 - [Deployment scenarios](PROFILE_CONFIG.md):
   - Route all traffic over the VPN (for safer Internet usage on untrusted 
     networks);
@@ -46,15 +46,12 @@ This is an (incomplete) list of features of the VPN software:
 - Group [ACL](ACL.md) support with SAML and LDAP;
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
-- [SELinux](SELINUX.md) fully enabled (on CentOS and Fedora);
-- [Guest Usage](GUEST_USAGE.md) scenario for allow users of one server to use 
-  other designated servers (optional);
-- Native [applications](CLIENT_COMPAT.md) available for most common platforms.
+- [SELinux](SELINUX.md) fully enabled (on Fedora);
 
 # Client Support
 
 See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
-supported OpenVPN clients.
+supported VPN clients.
 
 # Deployment
 
@@ -80,9 +77,8 @@ can't be bothered to setup an IRC client. See you there!
 
 ## Supported Operating Systems
 
-- [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) 33, 34, 35 (`x86_64`)
-- [Debian](DEPLOY_DEBIAN.md) 9, 10, 11 (`x86_64`) 
+- [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
+- [Fedora](DEPLOY_FEDORA.md) 35 (`x86_64`)
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
@@ -99,22 +95,16 @@ follow [these](MULTI_NODE.md) instructions!
 
 ## Experimental
 
-- [Fedora](DEPLOY_FEDORA.md) 33, 34 (`aarch64`) 
+- [Fedora](DEPLOY_FEDORA.md) 35 (`aarch64`) 
   (Only available through the "development" repository)
 
 You can use the Fedora `aarch64` packages on e.g. the 
 [Raspberry Pi](RASPBERRY_PI.md).
 
-We also have **EXPERIMENTAL** support for "EL8", i.e. CentOS 8, Rocky Linux 8
-and Red Hat Enterprise Linux. See 
-[this](https://list.surfnet.nl/pipermail/eduvpn-deploy/2021-July/000343.html) 
-mailinglist post.
-
 # Development
 
 If you want to set up your own server development environment see 
-[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md), or 
-[DEVELOPMENT_SETUP_V3](DEVELOPMENT_SETUP_V3.md) for the upcoming 3.x server.
+[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
 
 # License 
 

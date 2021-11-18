@@ -11,52 +11,46 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either Fedora >= 33, or Debian >= 10. Other 
-distributions will also work, but some minor details, regarding installation of 
-the required software, will be different.
+We assume you will be using either Fedora >= 34, Debian >= 11 or Ubuntu >= 
+21.10. Other distributions MAY also work, but some minor details, regarding 
+installation of the required software, will be different.
 
 **NOTE**: if you try to build a package repository you need to be on the 
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
-# Fedora >= 33
+# Fedora >= 34
 
-When you are not running Fedora as your desktop OS, it is easiest to install a
+If you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
 
 ```
 $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
-    php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-curl php-gd \
-    unzip
+    php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-gmp php-curl \
+    php-gd unzip qrencode wireguard-tools scdoc
 ```
 
-# Debian >= 10
+# Debian >= 11, Ubuntu >= 21.10
 
-When you are not running Debian as your desktop OS, it is easiest to install a
-VM with a desktop. In addition, install the required software (dependencies):
-
-```
-$ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
-    php-xml php-cli unzip
-```
-
-You also need to install a newer version of Go on Debian 10 from 
-`buster-backports`:
+If you are not running Debian/Ubuntu as your desktop OS, it is easiest to 
+install a VM with a desktop. In addition, install the required software 
+(dependencies):
 
 ```
-$ echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list
-$ sudo apt install golang-go/buster-backports golang-src/buster-backports
+$ sudo apt install curl git build-essential php-gmp php-sqlite3 composer \
+    php-curl php-xml php-gmp php-cli unzip golang-go qrencode wireguard-tools \
+    scdoc
 ```
 
 # Installation
 
-Download the `development_setup.sh` script from this repository and run it. It
-will by default create a directory `${HOME}/Project/eduVPN-v2` under which 
+Download the `development_setup_v3.sh` script from this repository and run it. 
+It will by default create a directory `${HOME}/Project/eduVPN-v3` under which 
 everything will be installed. No `root` is required!
 
 ```
-$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup.sh
-$ sh ./development_setup.sh
+$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup_v3.sh
+$ sh ./development_setup_v3.sh
 ```
 
 # Testing
@@ -64,7 +58,7 @@ $ sh ./development_setup.sh
 All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
-    $ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
+    $ cd ${HOME}/Projects/eduVPN-v3/vpn-user-portal
     $ vendor/bin/phpunit
 
 # Using
@@ -72,7 +66,7 @@ e.g.:
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
 
-    $ cd ${HOME}/Projects/eduVPN-v2
+    $ cd ${HOME}/Projects/eduVPN-v3
     $ sh ./launch.sh
 
 Now with your browser you can connect to the user portal on 
@@ -81,14 +75,49 @@ Now with your browser you can connect to the user portal on
 You can login with the users `foo` and password `bar` or `admin` with password 
 `secret`.
 
-# VPN Configuration
+# VPN Server Configuration
 
 To generate the OpenVPN server configuration files:
 
-    $ cd ${HOME}/Projects/eduVPN-v2/vpn-server-node
-    $ php bin/server-config.php
+    $ cd ${HOME}/Projects/eduVPN-v3/vpn-server-node
+    $ php libexec/server-config.php
 
-The configuration will be stored in the `openvpn-config` folder.
+The OpenVPN server configuration files will be written to `openvpn-config`, the
+WireGuard configuration files will be written to `wg-config`.
+
+## OpenVPN 
+
+Unfortunately it is not that easy to start OpenVPN server processes on your 
+development machine as it requires certain "libexec" scripts to be in the 
+right location. It should be possible to do this with symlinks, but that is 
+left as an exercise to the reader. It is typically not necessary to have real
+OpenVPN processes running on your development system.
+
+To start: you can copy `openvpn-config/*` to `/etc/openvpn/server` and start 
+OpenVPN, e.g.:
+
+```
+$ sudo systemctl start openvpn-server@default-{0,1}
+```
+
+## WireGuard
+
+You can copy `wg-config/wg0.conf` to `/etc/wireguard/wg0.conf` and start 
+WireGuard using this configuration file. 
+
+```
+$ sudo systemctl start wg-quick@wg0
+```
+
+This will allow `vpn-daemon` to 
+interact with WireGuard on your development machine.
+
+**NOTE**: in order for `vpn-daemon` to interact with your local WireGuard 
+setup it needs to have the right capabilities, i.e. `CAP_NET_ADMIN`. The 
+easiest is to (re)start vpn-daemon as `root`, or use the `vpn-daemon.service` 
+file as can be found 
+[here](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md#systemd),
+but make sure to update the path at `ExecStart=`.
 
 # Modifying Code
 
@@ -111,7 +140,7 @@ You can add GitHub as a remote now to your project checkout of
 `vpn-user-portal`:
 
 ```
-$ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
+$ cd ${HOME}/Projects/eduVPN-v3/vpn-user-portal
 $ git remote add github git@github.com/fkooman/vpn-user-portal
 ```
 
@@ -156,7 +185,7 @@ $ git push --mirror git@github.com/fkooman/vpn-user-portal.rpm
 Add the new remote to `rpm/vpn-user-portal.rpm`:
 
 ```
-$ cd ${HOME}/Projects/eduVPN-v2/rpm/vpn-user-portal.rpm
+$ cd ${HOME}/Projects/eduVPN-v3/rpm/vpn-user-portal.rpm
 $ git remote add github git@github.com/fkooman/vpn-user-portal.rpm
 ```
 
@@ -191,7 +220,7 @@ You can try to build this package locally:
 
 ```
 $ rpmdev-setuptree
-$ cd ${HOME}/Projects/eduVPN-v2/rpm/vpn-user-portal.rpm
+$ cd ${HOME}/Projects/eduVPN-v3/rpm/vpn-user-portal.rpm
 $ spectool -g -R SPECS/vpn-user-portal.spec
 $ cp SOURCES/* ${HOME}/rpmbuild/SOURCES
 $ rpmbuild -bs SPECS/vpn-user-portal.spec
