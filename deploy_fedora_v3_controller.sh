@@ -48,7 +48,7 @@ EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd pwgen php-fpm php-cli \
-    policycoreutils-python-utils chrony ipcalc
+    policycoreutils-python-utils chrony cronie ipcalc
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-user-portal vpn-maint-scripts
@@ -118,6 +118,7 @@ openssl req \
 
 systemctl enable --now php-fpm
 systemctl enable --now httpd
+systemctl enable --now crond
 
 ###############################################################################
 # USERS
