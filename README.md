@@ -119,8 +119,8 @@ mailinglist post.
 # Development
 
 If you want to set up your own server development environment see 
-[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md), or 
-[DEVELOPMENT_SETUP_V3](DEVELOPMENT_SETUP_V3.md) for the upcoming 3.x server.
+[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md). See the `v3` branch for the 
+upcoming 3.x server.
 
 # License 
 
