@@ -6,7 +6,7 @@ category: configuration
 
 For this document we assume you used the included `deploy_${DIST}.sh` script.
 
-Profiles, are configured in `/etc/vpn-server-api/config.php` and
+Profiles, are configured in `/etc/vpn-user-portal/config.php` and
 can contain many options to support various deployment scenarios. These are 
 described in the table below.
 
@@ -15,48 +15,36 @@ To modify any of the options, modify the file mentioned above and look for the
 
 ```
 'vpnProfiles' => [
-    'internet' => [
-        'profileNumber' => 1,
-        'displayName' => 'Internet Access',
+    'default' => [
+        'displayName' => 'Default',
         ...
         ...
     ],
 ],
 ```
 
-Every profile has an identifier (`profileId`) in this case `internet` and a 
-number (`profileNumber`), in this case `1`. They must be unique. The counting 
-starts at `1`.
+Every profile has an identifier (`profileId`) in this case `internet`. It must 
+be unique.
 
-On CentOS you may also need to take a look at the [SELinux](SELINUX.md) 
+On Fedora you may also need to take a look at the [SELinux](SELINUX.md) 
 instructions.
 
 ## Options
 
-This table describes all available configuration options for a profile. The 
+This table describes all available profile configuration options. The 
 "Default Value" column indicates what the value is if the option is _missing_ 
-from the configuration, not necessarily the value it has after a fresh 
-installations. This is done to allow upgrading old installations without 
-requiring the administrator to modify the configuration file and to keep
-existing clients working. 
-
-New installations using `deploy_${DIST}.sh` override these "defaults", e.g. to 
-improve security, see the "Deploy Value" column for the value for new 
-deployments.
+from the configuration.
 
 | Option                 | Description                                                                                                                                                                 | Required | Default Value              | Deploy Value               |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- | -------------------------- |
-| `profileNumber`        | The number of this profile, every profile per instance has a unique number `1 <= profileNumber <= 64`                                                                       | yes      | _N/A_                      | `1`                        |
-| `displayName`          | The name of the profile as shown in the user and admin portals                                                                                                              | yes      | _N/A_                      | `Internet Access`          |
-| `range`                | The IPv4 range of the network that will be assigned to clients                                                                                                              | yes      | _N/A_                      | Random `10.X.Y.0/25`       |
-| `range6`               | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 112 and divisible by 4 (the "smallest" range an OpenVPN process supports is `::/112`) | yes      | _N/A_                      | Random `fdX:Y:Z:A::/64`    |
+| `displayName`          | The name of the profile as shown in the user and admin portals                                                                                                              | yes      | _N/A_                      | `Default`          |
+| `rangeFour`                | The IPv4 range of the network that will be assigned to clients                                                                                                              | yes      | _N/A_                      | Random `10.X.Y.0/25`       |
+| `rangeSix`               | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 112 and divisible by 4 (the "smallest" range an OpenVPN process supports is `::/112`) | yes      | _N/A_                      | Random `fdX:Y:Z:A::/64`    |
 | `hostName`             | The hostname the VPN client(s) will connect to                                                                                                                              | yes      | _N/A_                      | from `deploy_${DIST}.sh`   |
-| `listen`               | The address the OpenVPN processes will listen on, see [OpenVPN Processes](#openvpn-processes)                                                                               | no       | `::`                       | `::`                       |
-| `managementIp`         | The IP address to use for connecting to OpenVPN processes                                                                                                                   | no       | `127.0.0.1`                | `127.0.0.1`                |
 | `defaultGateway`       | Whether or not to route all traffic from the client over the VPN                                                                                                            | no       | `false`                    | `true`                     |
 | `blockLan`             | Block traffic to local LAN when VPN is active                                                                                                                               | no       | `false`                    | `true`                     |
-| `routes`               | IPv4 and IPv6 routes to push to the client. Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                           | no       | `[]`                       | `[]`                       |
-| `dns`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | `['9.9.9.9', '2620:fe::fe']` (https://www.quad9.net/) |
+| `routeList`               | IPv4 and IPv6 routes to push to the client. Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                           | no       | `[]`                       | `[]`                       |
+| `dnsList`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | `['9.9.9.9', '2620:fe::fe']` (https://www.quad9.net/) |
 | `dnsDomain`            | Specify the "Connection-specific DNS Suffix"                                                                                             | no       | `null`                     | `null`                     |
 | `dnsDomainSearch`      | Specify the "Connection-specific DNS Suffix Search List"                                                                                 | no       | `[]`                       | `[]`                       |
 | `clientToClient`       | Whether or not to allow client-to-client traffic                                                                                                                            | no       | `false`                    | `false`                    |
@@ -65,14 +53,12 @@ deployments.
 | `aclPermissionList`    | List of acceptable permissions (OR) for access to this profile. Requires `enableAcl` to be `true`, see [ACL](ACL.md)                                                        | no       | `[]`                       | `[]`                       |
 | `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8, 16, 32 or 64 entries. See [OpenVPN Processes](#openvpn-processes)                                              | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
 | `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443`           | no       | `[]`                       | `[]`                       |
-| `hideProfile`          | Hide the profile from the user portal, i.e. do not allow the user to choose it                                                                                              | no       | `false`                    | `false`                    |
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
 
 * `hostName`: unless you point the currently used hostName to the new host 
   (using DNS);
-* `listen`: if the IP address changes without updating the DNS
 * `vpnProtoPorts`: if you change to ports not currently used by the 
   client(s);
 * `exposedVpnProtoPorts`: if you change to ports not currently used by the 
