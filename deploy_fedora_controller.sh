@@ -66,11 +66,11 @@ setsebool -P httpd_can_network_connect=1
 
 # Use a hardened ssl.conf instead of the default, gives A+ on
 # https://www.ssllabs.com/ssltest/
-cp resources/ssl.fedora.v3.conf /etc/httpd/conf.d/ssl.conf
-cp resources/localhost.centos.conf /etc/httpd/conf.d/localhost.conf
+cp resources/ssl.fedora.conf /etc/httpd/conf.d/ssl.conf
+cp resources/localhost.fedora.conf /etc/httpd/conf.d/localhost.conf
 
 # VirtualHost
-cp resources/vpn.example.centos.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
+cp resources/vpn.example.fedora.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 
 ###############################################################################

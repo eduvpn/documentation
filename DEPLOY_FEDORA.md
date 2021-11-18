@@ -110,10 +110,6 @@ It is easy to enable RADIUS authentication. This is documented separately. See
 It is easy to enable SAML authentication for identity federations, this is 
 documented separately. See [SAML](SAML.md).
 
-### 2FA
-
-It is possible to enable [2FA](2FA.md) with TOTP.
-
 ### ACLs
 
 If you want to restrict the use of the VPN a bit more than on whether someone
@@ -134,7 +130,7 @@ using the script mentioned below.
 Run the script (as root) from the documentation folder:
 
     $ sudo -s
-    # ./lets_encrypt_centos.sh
+    # ./lets_encrypt_fedora.sh
 
 Make sure you use the exact same DNS name you used when running 
 `deploy_fedora.sh`! 
