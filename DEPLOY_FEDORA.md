@@ -39,9 +39,9 @@ not have `tar`:
 
 Perform these steps on the host where you want to deploy:
 
-    $ curl -L -O https://github.com/eduvpn/documentation/archive/v2.tar.gz
-    $ tar -xzf v2.tar.gz
-    $ cd documentation-2
+    $ curl -L -O https://github.com/eduvpn/documentation/archive/v3.tar.gz
+    $ tar -xzf v3.tar.gz
+    $ cd documentation-3
 
 Run the script (as root):
 
