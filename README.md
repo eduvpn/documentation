@@ -1,5 +1,9 @@
 # Introduction
 
+**NOTE**: for the experimental version 3.x switch to the `v3` branch of this
+repository, it will be updated over the next weeks and become the default after
+release of 3.x!
+
 This is the eduVPN/Let's Connect! documentation repository. This repository 
 targets administrators and developers. It contains information on how to deploy 
 the VPN software on a server, but also (technical) details about the 
