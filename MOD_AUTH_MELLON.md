@@ -117,6 +117,10 @@ If you also want to use authorization based on an attribute, e.g.
         <Location /vpn-user-portal/oauth.php>
             MellonEnable "off"
         </Location>
+        # disable Mellon for the Node-API
+        <Location /vpn-user-portal/node-api.php>
+            MellonEnable "off"
+        </Location>
 
         ...
 
@@ -158,6 +162,10 @@ If you also want to use authorization based on an attribute, e.g.
         </Location>
         # disable Mellon for the OAuth Token Endpoint
         <Location /vpn-user-portal/oauth.php>
+            MellonEnable "off"
+        </Location>
+        # disable Mellon for the Node-API
+        <Location /vpn-user-portal/node-api.php>
             MellonEnable "off"
         </Location>
 
