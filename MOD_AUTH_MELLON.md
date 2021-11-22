@@ -9,11 +9,11 @@ domain name!
 
 # Installation
 
-## CentOS 
+## Fedora 
 
 First install `mod_auth_mellon`:
 
-    $ sudo yum -y install mod_auth_mellon
+    $ sudo dnf -y install mod_auth_mellon
 
 ## Debian
 
@@ -69,8 +69,8 @@ You also need to modify the `vpn-user-portal` configuration to specify the
 attribute that should be used to identify the users.
 
 Edit `/etc/vpn-user-portal/config.php` and set:
-        
-    'authMethod' => 'MellonAuthentication'
+
+    'authModule' => 'MellonAuthModule',
 
 By default the `eduPersonTargetedId` attribute will be used to identify users.
 You can change the `userIdAttribute` value under the `MellonAuthentication` 
