@@ -23,7 +23,7 @@ To modify any of the options, modify the file mentioned above and look for the
 ],
 ```
 
-Every profile has an identifier (`profileId`) in this case `internet`. It must 
+Every profile has an identifier (`profileId`) in this case `default`. It must 
 be unique.
 
 On Fedora you may also need to take a look at the [SELinux](SELINUX.md) 
@@ -35,34 +35,42 @@ This table describes all available profile configuration options. The
 "Default Value" column indicates what the value is if the option is _missing_ 
 from the configuration.
 
-| Option                 | Description                                                                                                                                                                 | Required | Default Value              | Deploy Value               |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- | -------------------------- |
-| `displayName`          | The name of the profile as shown in the user and admin portals                                                                                                              | yes      | _N/A_                      | `Default`          |
-| `rangeFour`                | The IPv4 range of the network that will be assigned to clients                                                                                                              | yes      | _N/A_                      | Random `10.X.Y.0/25`       |
-| `rangeSix`               | The IPv6 range of the network that will be assigned to clients, the prefix MUST be <= 112 and divisible by 4 (the "smallest" range an OpenVPN process supports is `::/112`) | yes      | _N/A_                      | Random `fdX:Y:Z:A::/64`    |
-| `hostName`             | The hostname the VPN client(s) will connect to                                                                                                                              | yes      | _N/A_                      | from `deploy_${DIST}.sh`   |
-| `defaultGateway`       | Whether or not to route all traffic from the client over the VPN                                                                                                            | no       | `false`                    | `true`                     |
-| `blockLan`             | Block traffic to local LAN when VPN is active                                                                                                                               | no       | `false`                    | `true`                     |
-| `routeList`               | IPv4 and IPv6 routes to push to the client. Use "prefix notation", e.g. `192.168.1.0/24`, `fd01:1:1:1::/64`                           | no       | `[]`                       | `[]`                       |
-| `dnsList`                  | IPv4 and IPv6 address of DNS server(s) to push to the clients. See [DNS](#dns)                                                                                              | no       | `[]`                       | `['9.9.9.9', '2620:fe::fe']` (https://www.quad9.net/) |
-| `dnsDomain`            | Specify the "Connection-specific DNS Suffix"                                                                                             | no       | `null`                     | `null`                     |
-| `dnsDomainSearch`      | Specify the "Connection-specific DNS Suffix Search List"                                                                                 | no       | `[]`                       | `[]`                       |
-| `clientToClient`       | Whether or not to allow client-to-client traffic                                                                                                                            | no       | `false`                    | `false`                    |
-| `enableLog`            | Whether or not to enable OpenVPN [logging](#logging)                                                                                                                        | no       | `false`                    | `false`                    |
-| `enableAcl`            | Whether or not to enable [ACL](ACL.md)s for controlling who can connect                                                                                                     | no       | `false`                    | `false`                    |
-| `aclPermissionList`    | List of acceptable permissions (OR) for access to this profile. Requires `enableAcl` to be `true`, see [ACL](ACL.md)                                                        | no       | `[]`                       | `[]`                       |
-| `vpnProtoPorts`        | The protocol and port to listen on. Must contain 1, 2, 4, 8, 16, 32 or 64 entries. See [OpenVPN Processes](#openvpn-processes)                                              | no       | `['udp/1194', 'tcp/1194']` | `['udp/1194', 'tcp/1194']` |
-| `exposedVpnProtoPorts` | Modify the VPN protocols and ports exposed to VPN clients. By default `vpnProtoPorts` is used. Useful for VPN [Port Sharing](PORT_SHARING.md) with e.g. `tcp/443`           | no       | `[]`                       | `[]`                       |
+| Option | Type | Default | Protocol |
+| ------ | -------- | ------- |
+| `protoList` | `array<string>` | `['openvpn', 'wireguard']` | * |
+| `preferredProto` | `string` | `openvpn` if both WireGuard and OpenVPN are enabled | * |
+| `displayName` | `string` | _N/A_ | * |
+| `oRangeFour` | `array<string>|string` | _N/A_ | OpenVPN |
+| `oRangeSix` | `array<string>|string` | _N/A_ | OpenVPN |
+| `wRangeFour` | `array<string>|string` | _N/A_ | WireGuard |
+| `wRangeSix` | `array<string>|string` | _N/A_ | WireGuard |
+| `hostName` | `array<string>|string` | _N/A_ | * |
+| `defaultGateway` | `bool`1 | `true` | * |
+| `routeList` | `array<string>` | `[]` | * |
+| `excludeRouteList` | array<string>` | `[]` | * |
+| `dnsServerList` | `array<string>` | `[]` | * |
+| `nodeUrl` | `array<string>|string` | `http://127.0.0.1:41194` | * |
+| `blockLan` | `bool` | `false` | OpenVPN |
+| `clientToClient` | `bool` | `false` | OpenVPN |
+| `enableLog` | `bool` | `false` | OpenVPN |
+| `enableAcl` | `bool` | `false` | * |
+| `aclPermissionList` | `array<string>` | `[]` | * |
+| `udpPortList` | `array<int>` | `[1194]` | OpenVPN |
+| `tcpPortList` | `array<int>` | `[1194]` | OpenVPN |
+| `exposedUdpPortList` | `array<int>` | `[]` | OpenVPN |
+| `exposedTcpPortList` | `array<int>` | `[]` | OpenVPN |
+| `dnsDomain` | `string` | `null` | * |
+| `dnsDomainSearch` | `array<string>` | `[]` | * |
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
 
 * `hostName`: unless you point the currently used hostName to the new host 
   (using DNS);
-* `vpnProtoPorts`: if you change to ports not currently used by the 
-  client(s);
-* `exposedVpnProtoPorts`: if you change to ports not currently used by the 
-  client(s);
+* `udpPortList`, `tcpPortList`: if you change to ports not currently used by 
+  the client(s);
+* `exposedUdpPortList`, `exposedTcpPortList`: if you change to ports not 
+  currently used by the client(s).
 
 ### DNS
 
