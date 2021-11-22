@@ -46,8 +46,8 @@ from the configuration.
 | `excludeRouteList`   | `string[]`             | `[]`                                                | *         |
 | `dnsServerList`      | `string[]`             | `[]`                                                | *         |
 | `nodeUrl`            | `string[]` or `string` | `http://localhost:41194`                            | *         |
-| `aclPermissionList`  | `string[]` or `null`   | `null`                                              | *         |
-| `dnsDomain`          | `string` or `null`     | `null`                                              | *         |
+| `aclPermissionList`  | `string[]`             | `null`                                              | *         |
+| `dnsDomain`          | `string`               | `null`                                              | *         |
 | `dnsDomainSearch`    | `string[]`             | `[]`                                                | *         |
 | `wRangeFour`         | `string[]` or `string` | _N/A_                                               | WireGuard |
 | `wRangeSix`          | `string[]` or `string` | _N/A_                                               | WireGuard |
