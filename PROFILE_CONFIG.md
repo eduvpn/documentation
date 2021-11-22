@@ -36,7 +36,7 @@ This table describes all available profile configuration options. The
 from the configuration.
 
 | Option | Type | Default | Protocol |
-| ------ | -------- | ------- |
+| ------ | -------- | ------- | ---- |
 | `protoList` | `array<string>` | `['openvpn', 'wireguard']` | * |
 | `preferredProto` | `string` | `openvpn` if both WireGuard and OpenVPN are enabled | * |
 | `displayName` | `string` | _N/A_ | * |
