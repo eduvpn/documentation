@@ -35,32 +35,32 @@ This table describes all available profile configuration options. The
 "Default Value" column indicates what the value is if the option is _missing_ 
 from the configuration.
 
-| Option | Type | Default | Protocol |
-| ------ | -------- | ------- | ---- |
-| `protoList` | `array<string>` | `['openvpn', 'wireguard']` | * |
-| `preferredProto` | `string` | `openvpn` if both WireGuard and OpenVPN are enabled | * |
-| `displayName` | `string` | _N/A_ | * |
-| `oRangeFour` | `array<string>|string` | _N/A_ | OpenVPN |
-| `oRangeSix` | `array<string>|string` | _N/A_ | OpenVPN |
-| `wRangeFour` | `array<string>|string` | _N/A_ | WireGuard |
-| `wRangeSix` | `array<string>|string` | _N/A_ | WireGuard |
-| `hostName` | `array<string>|string` | _N/A_ | * |
-| `defaultGateway` | `bool`1 | `true` | * |
-| `routeList` | `array<string>` | `[]` | * |
-| `excludeRouteList` | array<string>` | `[]` | * |
-| `dnsServerList` | `array<string>` | `[]` | * |
-| `nodeUrl` | `array<string>|string` | `http://127.0.0.1:41194` | * |
-| `blockLan` | `bool` | `false` | OpenVPN |
-| `clientToClient` | `bool` | `false` | OpenVPN |
-| `enableLog` | `bool` | `false` | OpenVPN |
-| `enableAcl` | `bool` | `false` | * |
-| `aclPermissionList` | `array<string>` | `[]` | * |
-| `udpPortList` | `array<int>` | `[1194]` | OpenVPN |
-| `tcpPortList` | `array<int>` | `[1194]` | OpenVPN |
-| `exposedUdpPortList` | `array<int>` | `[]` | OpenVPN |
-| `exposedTcpPortList` | `array<int>` | `[]` | OpenVPN |
-| `dnsDomain` | `string` | `null` | * |
-| `dnsDomainSearch` | `array<string>` | `[]` | * |
+| Option               | Type                   | Default                                             | Protocol  |
+| -------------------- | ---------------------- | --------------------------------------------------- | --------- |
+| `protoList`          | `array<string>`        | `['openvpn', 'wireguard']`                          | *         |
+| `preferredProto`     | `string`               | `openvpn` if both WireGuard and OpenVPN are enabled | *         |
+| `displayName`        | `string`               | _N/A_                                               | *         |
+| `hostName`           | `array<string>|string` | _N/A_                                               | *         |
+| `defaultGateway`     | `bool`                 | `true`                                              | *         |
+| `routeList`          | `array<string>`        | `[]`                                                | *         |
+| `excludeRouteList`   | `array<string>`        | `[]`                                                | *         |
+| `dnsServerList`      | `array<string>`        | `[]`                                                | *         |
+| `nodeUrl`            | `array<string>|string` | `http://127.0.0.1:41194`                            | *         |
+| `enableAcl`          | `bool`                 | `false`                                             | *         |
+| `aclPermissionList`  | `array<string>`        | `[]`                                                | *         |
+| `dnsDomain`          | `string|null`          | `null`                                              | *         |
+| `dnsDomainSearch`    | `array<string>`        | `[]`                                                | *         |
+| `wRangeFour`         | `array<string>|string` | _N/A_                                               | WireGuard |
+| `wRangeSix`          | `array<string>|string` | _N/A_                                               | WireGuard |
+| `oRangeFour`         | `array<string>|string` | _N/A_                                               | OpenVPN   |
+| `oRangeSix`          | `array<string>|string` | _N/A_                                               | OpenVPN   |
+| `blockLan`           | `bool`                 | `false`                                             | OpenVPN   |
+| `clientToClient`     | `bool`                 | `false`                                             | OpenVPN   |
+| `enableLog`          | `bool`                 | `false`                                             | OpenVPN   |
+| `udpPortList`        | `array<int>`           | `[1194]`                                            | OpenVPN   |
+| `tcpPortList`        | `array<int>`           | `[1194]`                                            | OpenVPN   |
+| `exposedUdpPortList` | `array<int>`           | `[]`                                                | OpenVPN   |
+| `exposedTcpPortList` | `array<int>`           | `[]`                                                | OpenVPN   |
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
