@@ -346,8 +346,8 @@ following IP ranges:
 **NOTE**: the provided `oRangeSix` is always split in networks of size `/112`, 
 the "smallest" network supported by OpenVPN.
 
-**NOTE**: the number of ports specified MUST be a power of 2, e.g. 
-1, 2, 4, 8, 16, 32 or 64.
+**NOTE**: the total number of ports combining `oUdpPortList` and `oTcpPortList` 
+specified MUST be a power of 2, e.g. 1, 2, 4, 8, 16, 32 or 64.
 
 **NOTE**: you should aim for around 75% UDP processes, and 25% TCP processes 
 for optimal performance for most clients.
