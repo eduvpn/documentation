@@ -8,63 +8,53 @@ It is possible to add additional "profiles" to a VPN service. This is useful
 when you for example have two categories of users using the same VPN server,
 e.g. "employees" and "administrators". 
 
-Each profile needs to either use different ports, or different IP addresses 
-to listen on. Furthermore, each profile MUST have its own unique 
-`profileNumber` and `profileId`. A maximum of 64 profiles is supported.
+Each profile has their own [Profile Configuration](PROFILE_CONFIG.md).
 
 Below, we will end up with two profiles:
 
-| profileId | profileNumber | displayName    |
-| --------- | ------------- | -------------- |
-| office    | 1             | Office         |
-| admin     | 2             | Administrators |
+| profileId | displayName    |
+| --------- | -------------- |
+| office    | Office         |
+| admin     | Administrators |
 
 You may also need to take a look at the [SELinux](SELINUX.md) instructions when
-running on CentOS or Fedora.
+running on Fedora.
 
 # Configuration
 
-The configuration file `/etc/vpn-server-api/config.php` needs to be 
-modified, you can remove the `internet` profile that was there by default:
+The configuration file `/etc/vpn-user-portal/config.php` needs to be 
+modified, you can remove the `default` profile that was there if you didn't
+modify the default configuration yet.
 
-    'vpnProfiles' => [
-        // Office Employees
-        'office' => [
-            'profileNumber' => 1,
-            'displayName' => 'Office',
-            ...
-            ...
-            'hostName' => 'office.vpn.example',
-            'range' => '10.0.5.0/24',
-            'range6' => 'fd10:0:5::/48',
-            'routes' => ['192.168.0.0/24', '192.168.1.0/24'],
-            'vpnProtoPorts' => ['udp/1194', 'tcp/1194'],
-        ],
-
-        // Administrators
-        'admin' => [
-            'profileNumber' => 2,
-            'displayName' => 'Administrators',
-            ...
-            ...
-            'hostName' => 'admin.vpn.example',
-            'range' => '10.0.10.0/24',
-            'range6' => 'fd10:0:10::/48',
-            'routes' => ['192.168.0.0/24', '192.168.1.0/24', '192.168.5.0/24'],
-            'vpnProtoPorts' => ['udp/1195', 'tcp/1195'],
-        ],
+```
+'vpnProfiles' => [
+    // Office Employees
+    'office' => [
+        'protoList' => ['openvpn'],
+        'displayName' => 'Office',
+        'hostName' => 'office.vpn.example',
+        'oRangeFour' => '172.23.114.0/24',
+        'oRangeSix' => 'fc74:dd8:87c5:a38::/64',
+        'routeList' => ['192.168.0.0/23'],
+        'oUdpPortList => [1194],
+        'oTcpPortList => [1194],
     ],
 
-Look [here](PROFILE_CONFIG.md) for all supported configuration options.
+    // Administrators
+    'admin' => [
+        'protoList' => ['openvpn'],
+        'displayName' => 'Administrators',
+        'hostName' => 'admin.vpn.example',
+        'oRangeFour' => '10.61.60.0/24',
+        'oRangeSix' => 'fd85:f1d9:20b7:b74c::/64',
+        'oUdpPortList => [1195],
+        'oTcpPortList => [1195],
+    ],
+],
+```
 
-It is best to use different `hostName` values for the profiles as this gives 
+It is best to use unique `hostName` values for the profiles as this gives 
 more flexibility to move to a setup with multiple machines in the future.
-
-If you have multiple (public) IP addresses at your disposal for the VPN server, 
-you can use the `listen` key to specify them. This will make you loose the IPv4 
-and IPv6 support though, but you _can_ use the same port numbers for both 
-profiles. In most cases you will want to keep `::` as the value of `listen` and
-just use different ports.
 
 **NOTE**: if you add/modify UDP and TCP ports you may also need to update the 
 [firewall](FIREWALL.md)!
@@ -73,6 +63,6 @@ just use different ports.
 
 To apply the configuration changes:
 
-    $ sudo vpn-maint-apply-changes
-
-If the command is not available, install the `vpn-maint-scripts` package first.
+```
+$ sudo vpn-maint-apply-changes
+```
