@@ -60,19 +60,19 @@ the configuration.
 | [blockLan](#block-lan)         | `bool`                 | `false`                                             | OpenVPN   |
 | [clientToClient](#client-to-client)    | `bool`                 | `false`                                             | OpenVPN   |
 | [enableLog](#enable-log)          | `bool`                 | `false`                                             | OpenVPN   |
-| [udpPortList](#port-list)       | `int[]`                | `[1194]`                                            | OpenVPN   |
-| [tcpPortList](#port-list)        | `int[]`                | `[1194]`                                            | OpenVPN   |
-| [exposedUdpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
-| [exposedTcpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
+| [oUdpPortList](#port-list)       | `int[]`                | `[1194]`                                            | OpenVPN   |
+| [oTcpPortList](#port-list)        | `int[]`                | `[1194]`                                            | OpenVPN   |
+| [oExposedUdpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
+| [oExposedTcpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
 
 * `hostName`: unless you point the currently used hostName to the new host 
   (using DNS);
-* `udpPortList`, `tcpPortList`: if you change to ports not currently used by 
+* `oUdpPortList`, `oTcpPortList`: if you change to ports not currently used by 
   the client(s);
-* `exposedUdpPortList`, `exposedTcpPortList`: if you change to ports not 
+* `oExposedUdpPortList`, `oExposedTcpPortList`: if you change to ports not 
   currently used by the client(s).
 
 ### Profile ID
@@ -325,8 +325,8 @@ List of UDP/TCP ports to be used by the OpenVPN processes. The IP ranges
 [UDP Port List](#udp-port-list) and [TCP Port List](#tcp-port-list).
 
 ```
-'udpPortList' => [1194, 1195, 1196],
-'tcpPortList' => [1194],
+'oUdpPortList' => [1194, 1195, 1196],
+'oTcpPortList' => [1194],
 ```
 
 Assuming your `oRangeFour` is `172.18.131.0/24` and your `oRangeSix` is 
