@@ -87,7 +87,7 @@ This option decides which VPN protocols are enabled for this profile. The
 option is a array of VPN protocols, e.g. only enable OpenVPN:
 
 ```
-    'protoList' => ['openvpn'],
+'protoList' => ['openvpn'],
 ```
 
 ### Preferred Protocol
@@ -130,13 +130,43 @@ VPN clients, but you do not want all of the client's traffic over the VPN.
 Example:
 
 ```
-    `routeList` => ['10.223.140.0/24', 'fc5b:7c64:3001:a95f::/64'],
+'routeList' => ['10.223.140.0/24', 'fc5b:7c64:3001:a95f::/64'],
 ```
 
 ### Exclude Route List
 
-TBD.
+This is the opposite of [Route List](#route-list). Here you list all prefixes
+that are _not_ supposed to go over the VPN. There are two uses cases for this:
 
+1. Route all traffic over VPN, i.e. [Default Gateway](#default-gateway), 
+   _except_ the prefixes listed here. This can be used to e.g. not send traffic
+   to a "cloud" video conferencing solution over the VPN, but send it direct;
+2. Do _not_ send traffic to a subset of the prefixes sent using 
+   [Route List](#route-list) over the VPN.
+   
+Example: send all traffic over the VPN, _except_ traffic to Quad9's DNS:
+
+```
+'defaultGateway' => true,
+'excludeRouteList` => ['9.9.9.9/32', '149.112.112.9/32', '2620:fe::9/128', '2620:fe::fe:9/128'],
+```
+
+As another, somewhat contrived, example that makes clear how it would work:
+
+```
+'defaultGateway' => false,
+'routeList' => ['10.223.140.0/24', 'fc5b:7c64:3001:a95f::/64'],
+'excludeRouteList' => ['10.223.140.5/32', 'fc5b:7c64:3001:a95f::1234/128'],
+```
+
+As of 2021-11-23 this currently does NOT work everywhere. OpenVPN 
+(Windows, Android, Linux) has a 
+[bug](https://community.openvpn.net/openvpn/ticket/1161) regarding IPv6, that 
+is being worked on. TunnelKit (iOS, macOS) does not yet support this 
+[at all](https://github.com/passepartoutvpn/tunnelkit/issues/225).
+
+With WireGuard we have mixed results, it works fine on Windows, but not (yet) 
+on macOS.
 
 ### DNS
 
