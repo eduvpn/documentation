@@ -53,17 +53,17 @@ the configuration.
 | [aclPermissionList](#acl-permission-list)  | `string[]`             | `null`                                              | *         |
 | [dnsDomain](#dns-domain)          | `string`               | `null`                                              | *         |
 | [dnsDomainSearch](#dns-domain-search)    | `string[]`             | `[]`                                                | *         |
-| `wRangeFour`         | `string[]` or `string` | _N/A_                                               | WireGuard |
-| `wRangeSix`          | `string[]` or `string` | _N/A_                                               | WireGuard |
-| `oRangeFour`         | `string[]` or `string` | _N/A_                                               | OpenVPN   |
-| `oRangeSix`          | `string[]` or `string` | _N/A_                                               | OpenVPN   |
-| `blockLan`           | `bool`                 | `false`                                             | OpenVPN   |
-| `clientToClient`     | `bool`                 | `false`                                             | OpenVPN   |
-| `enableLog`          | `bool`                 | `false`                                             | OpenVPN   |
-| `udpPortList`        | `int[]`                | `[1194]`                                            | OpenVPN   |
-| `tcpPortList`        | `int[]`                | `[1194]`                                            | OpenVPN   |
-| `exposedUdpPortList` | `int[]`                | `[]`                                                | OpenVPN   |
-| `exposedTcpPortList` | `int[]`                | `[]`                                                | OpenVPN   |
+| [wRangeFour](#wireguard-range-four)         | `string[]` or `string` | _N/A_                                               | WireGuard |
+| [wRangeSix](#wireguard-range-six)          | `string[]` or `string` | _N/A_                                               | WireGuard |
+| [oRangeFour](#openvpn-range-four)         | `string[]` or `string` | _N/A_                                               | OpenVPN   |
+| [oRangeSix](#openvpn-range-six)          | `string[]` or `string` | _N/A_                                               | OpenVPN   |
+| [blockLan](#block-lan)         | `bool`                 | `false`                                             | OpenVPN   |
+| [clientToClient](#client-to-client)    | `bool`                 | `false`                                             | OpenVPN   |
+| [enableLog](#enable-log)          | `bool`                 | `false`                                             | OpenVPN   |
+| [udpPortList](#port-list)       | `int[]`                | `[1194]`                                            | OpenVPN   |
+| [tcpPortList](#port-list)        | `int[]`                | `[1194]`                                            | OpenVPN   |
+| [exposedUdpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
+| [exposedTcpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
 
 The following options _MAY_ break the client when insuffient care is taken, 
 unless the eduVPN/Let's Connect! applications are used:
@@ -228,52 +228,136 @@ VPN client, e.g.:
 **NOTE**: if the [DNS Domain](#dns-domain) is also specified, it will be 
 automatically added to this list, no need to duplicate it here.
 
-### OpenVPN Processes
+### WireGuard Range Four
 
-You can configure OpenVPN processes using the `listen` and `vpnProtoPorts` 
-configuration fields. 
+Specify the IPv4 range for WireGuard VPN clients. This setting is used when
+`protoList` contains `wireguard`. As an example:
 
-By default, `listen` is `::` which is a special address that allows OpenVPN to
-receive connections both on IPv4 and IPv6. If you manually set `listen`, it 
-will only listen on the specified address, which will be either IPv4 or IPv6,
-but not both.
+```
+'wRangeFour' => '172.24.110.0/24',
+```
 
-By default 2 OpenVPN processes will be started, one listening on `udp/1194` and
-one on `tcp/1194`. You can modify these ports and protocols as you see fit, but
-the total number of them must be either 1, 2, 4, 8, 16, 32 or 64. This is 
-because the total available IP range will be split among them. Depending on 
-your address space the ideal number of simultaneous clients per process is 
-around 64. So if you have a `/24` network, you'd probably want to run 4 
-OpenVPN processes, e.g.: `['udp/1194', 'udp/1195', 'udp/1196', 'tcp/1194']`.
+**NOTE**: make sure the specified range is unique, and not used by any other
+profile/protocol, nor overlap the range specified in another profile/protocol!
 
-You can also specify ports like `udp/53` and `tcp/443`, but then those ports
-need to be available to be claimed by OpenVPN and can't be shared by a DNS 
-server or web server. If you want to use `tcp/443` also to receive OpenVPN 
-connections, see [Port Sharing](PORT_SHARING.md).
+### WireGuard Range Six
 
-If you run [Multi Profile](MULTI_PROFILE.md) you MUST either choose a unique 
-`listen` address per profile if you want to use the same ports, which means you 
-cannot use the special address `::` and thus lose the IPv4+IPv6 connectivity 
-option, or use different ports. 
+Specify the IPv6 range for WireGuard VPN clients. This setting is used when
+`protoList` contains `wireguard`. As an example:
 
-The first profile can use `udp/1194` and `tcp/1194`, the second one can use 
-`udp/1195` and `tcp/1195` for example.
+```
+'wRangeSix' => 'fd99:ede1:b56d:f19e::/64',
+```
 
-You can manually work around providing both IPv4+IPv6 for profiles where you 
-specify a `listen` address by using a proxy like 
-[socat](http://www.dest-unreach.org/socat/).
+**NOTE**: make sure the specified range is unique, and not used by any other
+profile/protocol, nor overlap the range specified in another profile/protocol!
 
-If you are planning to run many OpenVPN server processes, i.e. >= 10, make sure
-to read [this](LIMIT_N_PROC.md) as you may need to increase the limit of the 
-number of OpenVPN processes that can be started by the OpenVPN systemd service.
+### OpenVPN Range Four
 
-### Logging
+Specify the IPv4 range for OpenVPN VPN clients. This setting is used when
+`protoList` contains `openvpn`. As an example:
 
-Once logging is enabled and changes applied, you can follow the log like this:
+```
+'oRangeFour' => '172.18.131.0/24',
+```
+
+**NOTE**: make sure the specified range is unique, and not used by any other
+profile/protocol, nor overlap the range specified in another profile/protocol!
+
+### OpenVPN Range Six
+
+Specify the IPv6 range for OpenVPN VPN clients. This setting is used when
+`protoList` contains `openvpn`. As an example:
+
+```
+'oRangeSix' => 'fdb4:2da1:2f15:a488::/64',
+```
+
+**NOTE**: make sure the specified range is unique, and not used by any other
+profile/protocol, nor overlap the range specified in another profile/protocol!
+
+### Block LAN
+
+This OpenVPN only option prevents the client from accessing devices on the 
+local network. This is especially useful when the client is connected to a 
+network that also contains clients that are not to be trusted, e.g. (semi) 
+public WiFi.
+
+```
+'blockLan' => true,
+```
+,
+### Client To Client
+
+This OpenVPN only option prevents VPN clients from reaching each other. This is
+especially useful when the client is connected to a VPN where not all other VPN
+clients are to be trusted, e.g. a shared VPN service with users from multiple
+organizations.
+
+```
+'clientToClient' => true,
+```
+
+### Enable Log
+
+This OpenVPN only option enables OpenVPN server logging. This can be used to
+debug (some) connection issues with incompatible clients.
+
+```
+'enableLog' => true,
+```
+
+Once logging is enabled (and changes applied), you can follow the log like 
+this:
 
 ```bash
 $ sudo journalctl -f -t openvpn
 ```
+
+**NOTE**: this option should probably only be enabled on test systems and not 
+in production.
+
+### Port List
+
+List of UDP/TCP ports to be used by the OpenVPN processes. The IP ranges 
+[OpenVPN Range Four](#openvpn-range-four) and 
+[OpenVPN Range Six](#openvpn-range-six) will be evenly distributed over both
+[UDP Port List](#udp-port-list) and [TCP Port List](#tcp-port-list).
+
+```
+'udpPortList' => [1194, 1195, 1196],
+'tcpPortList' => [1194],
+```
+
+Assuming your `oRangeFour` is `172.18.131.0/24` and your `oRangeSix` is 
+`fdb4:2da1:2f15:a488::/64`, four processes will be created that with the 
+following IP ranges:
+
+| Process    | Range Four          | Range Six                      | # Clients |
+| ---------- | ------------------- | ------------------------------ | --------- |
+| `udp/1194` | `172.18.131.0/26`   | `fdb4:2da1:2f15:a488::/112`    | 61        |
+| `udp/1195` | `172.18.131.64/26`  | `fdb4:2da1:2f15:a488::1:0/112` | 61        |
+| `udp/1196` | `172.18.131.128/26` | `fdb4:2da1:2f15:a488::2:0/112` | 61        |
+| `tcp/1194` | `172.18.131.192/26` | `fdb4:2da1:2f15:a488::3:0/112` | 61        |
+
+**NOTE**: depending on the expected VPN usage, you should aim for a `/25` or 
+`/26` for every process.
+
+**NOTE**: the provided `oRangeSix` is always split in networks of size `/112`, 
+the "smallest" network supported by OpenVPN.
+
+**NOTE**: the number of ports specified MUST be a power of 2, e.g. 
+1, 2, 4, 8, 16, 32 or 64.
+
+**NOTE**: you should aim for around 75% UDP processes, and 25% TCP processes 
+for optimal performance for most clients.
+
+See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md), 
+[Limits on OpenVPN Process](LIMIT_N_PROC.md)
+
+### Exposed Port List
+
+TBD.
 
 ## Apply Changes
 
