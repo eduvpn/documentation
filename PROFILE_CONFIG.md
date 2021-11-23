@@ -48,11 +48,11 @@ the configuration.
 | [defaultGateway](#default-gateway)     | `bool`                 | `true`                                              | *         |
 | [routeList](#route-list)         | `string[]`             | `[]`                                                | *         |
 | [excludeRouteList](#exclude-route-list)   | `string[]`             | `[]`                                                | *         |
-| `dnsServerList`      | `string[]`             | `[]`                                                | *         |
-| `nodeUrl`            | `string[]` or `string` | `http://localhost:41194`                            | *         |
-| `aclPermissionList`  | `string[]`             | `null`                                              | *         |
-| `dnsDomain`          | `string`               | `null`                                              | *         |
-| `dnsDomainSearch`    | `string[]`             | `[]`                                                | *         |
+| [dnsServerList](#dns-server-list)      | `string[]`             | `[]`                                                | *         |
+| [nodeUrl](#node-url)            | `string[]` or `string` | `http://localhost:41194`                            | *         |
+| [aclPermissionList](#acl-permission-list)  | `string[]`             | `null`                                              | *         |
+| [dnsDomain](#dns-domain)          | `string`               | `null`                                              | *         |
+| [dnsDomainSearch](#dns-domain-search)    | `string[]`             | `[]`                                                | *         |
 | `wRangeFour`         | `string[]` or `string` | _N/A_                                               | WireGuard |
 | `wRangeSix`          | `string[]` or `string` | _N/A_                                               | WireGuard |
 | `oRangeFour`         | `string[]` or `string` | _N/A_                                               | OpenVPN   |
@@ -168,37 +168,65 @@ is being worked on. TunnelKit (iOS, macOS) does not yet support this
 With WireGuard we have mixed results, it works fine on Windows, but not (yet) 
 on macOS.
 
-### DNS
+### DNS Server List
 
-
-To configure the DNS addresses that are pushed to the VPN clients you can use
-the `dns` configuration field. It takes an array of IPv4 and/or IPv6 addresses. 
-If the field is left empty, e.g. `[]` or missing, no DNS servers are pushed to 
-the VPN clients.
-
-Two "special" addresses, `@GW4@` and `@GW6@`, can be used as well that will be 
-replaced by the IPv4 and IPv6 gateway addresses for use with 
-[LOCAL_DNS](LOCAL_DNS.md).
-
-When `defaultGateway` is set to `true`, an additional option is pushed to the
-VPN clients: `block-outside-dns`. This option has, as of this moment, only 
-effect on Windows. On Windows, DNS queries go out over all (configured) 
-interfaces and the first response is used. This can create a 
-[DNS leak](https://en.wikipedia.org/wiki/DNS_leak). By providing the 
-`block-outside-dns` option, this is prevented.
-
-You can specify the "Connection-specific DNS Suffix" and 
-"Connection-specific DNS Suffix Search List" by using the `dnsDomain` and
-`dnsDomainSearch` options. The first one takes a `string` the second an array 
-of type `string`, for example:
+Provide a list of DNS servers to your VPN clients, as an example:
 
 ```
-'dnsDomain'       => 'clients.example.org',
+'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+```
+
+You can use the _magic values_ `@GW4@` and `@GW6@`. These will be replaced by
+the _local_ VPN IP of the server. This is useful when you run your own local
+[resolver](LOCAL_DNS.md) on the VPN server so you don't have to figure out the
+IP addresses manually.
+
+The DNS server list is provided to the VPN clients when either of the following
+conditions hold:
+
+1. [Default Gateway](#default-gateway) is set;
+2. ...?
+3. ...?
+
+**NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
+to DNS servers outside the VPN will be explicitly blocked in order to prevent
+[DNS leaks](https://en.wikipedia.org/wiki/DNS_leak).
+
+**NOTE**: make sure the DNS server(s) you provide are reachable by the clients,
+so you MAY have to add the addresses to [Route List](#route-list) when they are
+not usable from outside the VPN.
+
+### Node URL
+
+TBD.
+
+### ACL Permission List
+
+TBD.
+
+### DNS Domain
+
+Allows you to specify the "Connection-specific DNS Suffix" for the VPN client, 
+e.g.:
+
+```
+'dnsDomain' => 'c.example.org',
+```
+
+This is currently used by OpenVPN. This domain is also automatically added to 
+[DNS Domain Search](#dns-domain-search).
+
+### DNS Domain Search
+
+Allow you to specify the "Connection-specific DNS Suffix Search List" for the
+VPN client, e.g.:
+
+```
 'dnsDomainSearch' => ['example.org', 'example.com'],
 ```
 
-The `dnsDomain` is NOT used for "searches", so you MAY need to provide it to 
-`dnsDomainSearch` as well if you want that domain to be searched as well.
+**NOTE**: if the [DNS Domain](#dns-domain) is also specified, it will be 
+automatically added to this list, no need to duplicate it here.
 
 ### OpenVPN Processes
 
