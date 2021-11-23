@@ -176,17 +176,12 @@ Provide a list of DNS servers to your VPN clients, as an example:
 'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
 ```
 
-You can use the _magic values_ `@GW4@` and `@GW6@`. These will be replaced by
-the _local_ VPN IP of the server. This is useful when you run your own local
-[resolver](LOCAL_DNS.md) on the VPN server so you don't have to figure out the
-IP addresses manually.
-
 The DNS server list is provided to the VPN clients when either of the following
 conditions hold:
 
 1. [Default Gateway](#default-gateway) is set;
-2. ...?
-3. ...?
+2. Default Gateway is _not_ set, but [DNS Domain](#dns-domain) and/or 
+   [DNS Domain Search](#dns-domain-search) _is_.
 
 **NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
 to DNS servers outside the VPN will be explicitly blocked in order to prevent
@@ -198,11 +193,16 @@ not usable from outside the VPN.
 
 ### Node URL
 
-TBD.
+When using a separate system to handle VPN connections, i.e. when using a 
+controller + node(s) setup. See [Multi Node](MULTI_NODE.md) for extensive 
+documentation on the topic.
 
 ### ACL Permission List
 
-TBD.
+Restrict access to VPN profiles based on user permissions. The authentication 
+module can make permissions available either through LDAP or SAML that can be
+used to restrict access to a profile. See [ACL](ACL.md) for extensive 
+documentation on the topic.
 
 ### DNS Domain
 
