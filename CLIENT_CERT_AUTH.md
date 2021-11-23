@@ -1,7 +1,5 @@
 # Client Certificate Authentication
 
-**NOTE**: only supported in vpn-user-portal >= 2.3.4
-
 It is rather easy to enable X.509 client certificate authentication for the 
 portal. No need for complicated user authentication scenarios if you client
 devices already have access to an organization issued client certificate.
@@ -48,8 +46,8 @@ Restart the web server:
 
 ## Portal
 
-Modify `/etc/vpn-user-portal/config.php` and set `authMethod` to 
-`ClientCertAuthentication`.
+Modify `/etc/vpn-user-portal/config.php` and set `authModule` to 
+`ClientCertAuthModule`.
 
 ## Generating Client Certificates
 

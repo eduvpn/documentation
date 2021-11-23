@@ -15,7 +15,7 @@ There are three places where you can have VPN server logging:
 ## OpenVPN Log
 
 The OpenVPN logging can be enabled in the 
-profile [configuration](PROFILE_CONFIG.md) with the `enableLog` option. This is 
+[Profile Configuration](PROFILE_CONFIG.md) with the `enableLog` option. This is 
 mostly useful for debugging connection problems, i.e. figure out why a client 
 connection is rejected. You can use `journalctl` to "follow" the log:
 
@@ -29,8 +29,6 @@ Finding out which user had a particular IP address at a specified moment can
 be done through the portal as an [admin](PORTAL_ADMIN.md). 
 
 ### Syslog
-
-**NOTE**: this is only available in vpn-server-api >= 2.2.11
 
 In addition to writing connection information to the database, this information
 is also written to _syslog_. 
@@ -48,12 +46,11 @@ The default format is:
 {{EVENT_TYPE}} {{USER_ID}} ({{PROFILE_ID}}) [{{IP_FOUR}},{{IP_SIX}}]
 ```
 
-**NOTE**: starting from vpn-server-api >= 2.2.12 there is flexibility in the 
-way the log is written. A template can be configured. The default is the format 
-shown above. This version also adds the ability to log the "originating IP" of
-the VPN client.
+There is flexibility in the way the log is written. A template can be 
+configured. The default is the format shown above. This version also adds the 
+ability to log the "originating IP" of the VPN client.
 
-You can set the `connectionLogFormat` in `/etc/vpn-server-api/config.php` to 
+You can set the `connectionLogFormat` in `/etc/vpn-user-portal/config.php` to 
 a string that is used as a template for generating the log lines. You can 
 customize this and use the following "variables" that are replaced before 
 writing the log line:

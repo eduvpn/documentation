@@ -22,7 +22,8 @@ Running your own DNS resolver can also be a good idea if no upstream DNS server
 is provided by your ISP.
 
 **NOTE**: if your organization has a (trusted) DNS service you SHOULD probably
-use those! See [PROFILE_CONFIG](PROFILE_CONFIG.md), look for the `dns` option.
+use those! See [Profile Config](PROFILE_CONFIG.md), look for the 
+`dnsServerList` option.
 
 # Configuration
 
@@ -38,17 +39,17 @@ Setting a local recursive DNS server takes a few steps:
 
 ## Install Unbound
 
-### CentOS 
-
-    $ sudo yum -y install unbound
-
 ### Fedora
 
-    $ sudo dnf -y install unbound
+```
+$ sudo dnf -y install unbound
+```
 
 ### Debian 
 
-    $ sudo apt -y install unbound
+```
+$ sudo apt -y install unbound
+```
 
 ## Configure Unbound
 
@@ -56,37 +57,43 @@ You need to change the Unbound configuration. You can add the following file
 to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in 
 `/etc/unbound/unbound.conf.d/VPN.conf` on Debian:
 
-    server:
-        interface: 0.0.0.0
-        interface: ::0
-        access-control: 10.0.0.0/8 allow
-        access-control: fd00::/8 allow
+```
+server:
+    interface: 0.0.0.0
+    interface: ::0
+    access-control: 10.0.0.0/8 allow
+    access-control: fd00::/8 allow
 
-        # disable DoH
-        # See: https://use-application-dns.net/
-        # See: https://support.mozilla.org/en-US/kb/configuring-networks-disable-dns-over-https
-        local-zone: use-application-dns.net refuse
-        
-        # disable iCloud Private Relay
-        # See: https://developer.apple.com/support/prepare-your-network-for-icloud-private-relay
-        local-zone: mask.icloud.com. refuse
-        local-zone: mask-h2.icloud.com. refuse
- 
+    # disable DoH
+    # See: https://use-application-dns.net/
+    # See: https://support.mozilla.org/en-US/kb/configuring-networks-disable-dns-over-https
+    local-zone: use-application-dns.net refuse
+    
+    # disable iCloud Private Relay
+    # See: https://developer.apple.com/support/prepare-your-network-for-icloud-private-relay
+    local-zone: mask.icloud.com. refuse
+    local-zone: mask-h2.icloud.com. refuse
+```
+
 With these options Unbound listens on all interfaces and the ranges 
 `10.0.0.0/8` and `fd00::/8` are white-listed. These ranges are the defaults for 
 deploys done by the `deploy_${DIST}.sh` scripts.
 
 Enable Unbound during boot, and (re)start it:
 
-    $ sudo systemctl enable unbound
-    $ sudo systemctl restart unbound
+```
+$ sudo systemctl enable unbound
+$ sudo systemctl restart unbound
+```
 
 ## Profile Configuration
 
-Modify `/etc/vpn-server-api/config.php` for each of the VPN profiles 
-where you want to use "local DNS", set the `dns` entry to:
+Modify `/etc/vpn-user-portal/config.php` for each of the VPN profiles 
+where you want to use "local DNS", set the `dnsServerList` entry to:
 
-    'dns' => ['@GW4@', '@GW6@'],
+```
+'dnsServerList' => ['@GW4@', '@GW6@'],
+```
 
 The `@GW4@` and `@GW6@` strings will be replaced by the IPv4 and IPv6 address 
 of the gateway.
@@ -103,6 +110,6 @@ Follow the instructions [here](FIREWALL.md#local-dns)
 
 To apply the configuration changes:
 
-    $ sudo vpn-maint-apply-changes
-
-If the command is not available, install the `vpn-maint-scripts` package first.
+```
+$ sudo vpn-maint-apply-changes
+```

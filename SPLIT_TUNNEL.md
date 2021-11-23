@@ -22,7 +22,7 @@ required for your particular setup:
 **NOTE**: if there are no internal-only DNS entries to resolve, you SHOULD NOT 
 push DNS servers to the client. If there are, then make sure to also specify 
 `dnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
-included in the `routes`.
+included in the `routeList`.
 
 # Example
 
@@ -34,44 +34,45 @@ should be allowed from the VPN server.
 
 # Profile Configuration
 
-Configure an `office` profile in `/etc/vpn-server-api/config.php`, e.g.:
+Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 
-    'vpnProfiles' => [
-        'office' => [
-            'profileNumber' => 1,
-            'displayName' => 'Office',
-           // issued to VPN clients
-            'range' => '10.0.0.0/24',
-            'range6' => 'fd00::/64',
-            // hostname VPN clients will connect to
-            'hostName' => 'office.example.org',
+```
+'vpnProfiles' => [
+    'office' => [
+        'displayName' => 'Office',
+       // issued to VPN clients
+        'oRangeFour' => '10.0.0.0/24',
+        'oRangeSix' => 'fd00::/64',
+        // hostname VPN clients will connect to
+        'hostName' => 'office.example.org',
 
-            ...
-            ...
+        ...
+        ...
 
-            // push the routes to the client, *including* the DNS IP
-            'routes' => ['10.42.42.0/24', '10.43.43.0/24', '10.1.1.1/32'],
+        // push the routes to the client, *including* the DNS IP
+        'routeList' => ['10.42.42.0/24', '10.43.43.0/24', '10.1.1.1/32'],
 
-            // push the local DNS to the clients as well
-            'dns' => ['10.1.1.1'],
+        // push the local DNS to the clients as well
+        'dnsServerList' => ['10.1.1.1'],
 
-            // Connection-specific DNS Suffix
-            'dnsDomain' => 'example.local',
-            
-            // Connection-specific DNS Suffix Search List
-            'dnsDomainSearch' => ['example.local', 'foo.example.local', 'bar.example.local'],
-        ],
+        // Connection-specific DNS Suffix
+        'dnsDomain' => 'example.local',
+        
+        // Connection-specific DNS Suffix Search List
+        'dnsDomainSearch' => ['example.local', 'foo.example.local', 'bar.example.local'],
     ],
+],
+```
 
-Take special note of the `routes`, `dns`, `dnsDomain` and `dnsDomainSearch` 
-options. See [PROFILE_CONFIG](PROFILE_CONFIG.md) for other configuration 
-options that may be relevant for your situation.
+Take special note of the `routeList`, `dnsServerList`, `dnsDomain` and 
+`dnsDomainSearch` options. See [Profile Config](PROFILE_CONFIG.md) for other 
+configuration options that may be relevant for your situation.
 
 To apply the configuration changes:
 
-    $ sudo vpn-maint-apply-changes
-
-If the command is not available, install the `vpn-maint-scripts` package first.
+```
+$ sudo vpn-maint-apply-changes
+```
 
 # Firewall Configuration
 
@@ -80,11 +81,13 @@ Restricting network access for VPN clients is already documented in
 the (FORWARD) configuration of the firewall would be like this, assuming `eth0` 
 is the interface connecting to your local network from your VPN server:
 
-    -A FORWARD -i tun+ -o eth0 -d 10.42.42.0/24 -j ACCEPT
-    -A FORWARD -i tun+ -o eth0 -d 10.43.43.0/24 -j ACCEPT
-    -A FORWARD -i tun+ -o eth0 -d 10.1.1.1/32 -j ACCEPT
-    -A FORWARD -i eth0 -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+```
+-A FORWARD -i tun+ -o eth0 -d 10.42.42.0/24 -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -d 10.43.43.0/24 -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -d 10.1.1.1/32 -j ACCEPT
+-A FORWARD -i eth0 -o tun+ -j ACCEPT
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+```
 
 **NOTE**: restart the firewall after making modifications!
 

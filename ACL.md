@@ -25,12 +25,7 @@ all authentication backends have a way to validate the permissions
 
 # Configuration
 
-The configuration is done in two locations:
-
-- `/etc/vpn-user-portal/config.php`: configure which access control
-  mechanism is used and the period for which to _cache_ the permissions;
-- `/etc/vpn-server-api/config.php`: configure which profiles are 
-  restricted by access control.
+The configuration is done in `/etc/vpn-user-portal/config.php`.
 
 ## SAML
 
@@ -138,9 +133,8 @@ In order to provide access to the "Admin" part of the portal, see
 
 ## Profile Mapping
 
-Modify `/etc/vpn-server-api/config.php`, and set the `enableAcl` to 
-`true` and add the authorized attribute values to `aclPermissionList` for each 
-of the profiles where you want to restrict access, for example:
+Add the authorized attribute values to `aclPermissionList` for each of the 
+profiles where you want to restrict access, for example:
 
 The values of `aclPermissionList` come from the `permissionAttribute` as 
 configured in your authentication module. You can verify which values are 
@@ -148,13 +142,8 @@ available for your account by going to the "Account" page in your portal. It
 will be listed under your "User ID". If nothing is shown there, you need to 
 either make sure your account has any permissions, or logout and login again.
 
-    // Whether or not to enable ACLs for controlling who can connect
-    // DEFAULT = false
-    'enableAcl' => true,
-
-    // The list of groups to allow access, requires enableAcl to be 
-    // true
-    // DEFAULT  = []
-    'aclPermissionList' => [
-        'http://eduvpn.org/role/admin',
-    ],
+```
+'aclPermissionList' => [
+    'http://eduvpn.org/role/admin',
+],
+```
