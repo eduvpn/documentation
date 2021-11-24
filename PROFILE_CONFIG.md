@@ -41,7 +41,6 @@ the configuration.
 
 | Option               | Type                   | Default                                             | Protocol  |
 | -------------------- | ---------------------- | --------------------------------------------------- | --------- |
-| [protoList](#protocol-list)          | `string[]`             | `['openvpn', 'wireguard']`                          | *         |
 | [preferredProto](#preferred-protocol)     | `string`               | `openvpn` (or `wireguard`)                          | *         |
 | [displayName](#display-name)       | `string`               | _N/A_                                               | *         |
 | [hostName](#host-name)           | `string[]` or `string` | _N/A_                                               | *         |
@@ -81,15 +80,6 @@ The profile ID is used to uniquely identify a profile. It can only contain
 letters, `[a-z]`, numbers `[0-9]` and the dash (`-`). Examples of valid profile 
 IDs identifiers are `employees`, `students`, `admin`.
 
-### Protocol List
-
-This option decides which VPN protocols are enabled for this profile. The 
-option is a array of VPN protocols, e.g. only enable OpenVPN:
-
-```
-'protoList' => ['openvpn'],
-```
-
 ### Preferred Protocol
 
 When your profile supports multiple protocols, this option can be used to set
@@ -97,8 +87,11 @@ the preferred protocol. This allows for example to transitioning (the majority
 of users) from OpenVPN to WireGuard without breaking existing configurations.
 
 The preferred protocol only makes sense when both OpenVPN and WireGuard are
-enabled, see [Protocol List](#protocol-list). If only one protocol is enabled,
-that is automatically the preferred protocol.
+enabled. If only one protocol is enabled, that is automatically the preferred 
+protocol.
+
+OpenVPN is considered enabled when both `oRangeFour` and `oRangeSix` are set. 
+WireGuard is considered enabled when both `wRangeFour` and `wRangeSix` are set.
 
 ### Display Name
 
@@ -230,8 +223,7 @@ automatically added to this list, no need to duplicate it here.
 
 ### WireGuard Range Four
 
-Specify the IPv4 range for WireGuard VPN clients. This setting is used when
-`protoList` contains `wireguard`. As an example:
+Specify the IPv4 range for WireGuard VPN clients. As an example:
 
 ```
 'wRangeFour' => '172.24.110.0/24',
@@ -242,8 +234,7 @@ profile/protocol, nor overlap the range specified in another profile/protocol!
 
 ### WireGuard Range Six
 
-Specify the IPv6 range for WireGuard VPN clients. This setting is used when
-`protoList` contains `wireguard`. As an example:
+Specify the IPv6 range for WireGuard VPN clients. As an example:
 
 ```
 'wRangeSix' => 'fd99:ede1:b56d:f19e::/64',
@@ -254,8 +245,7 @@ profile/protocol, nor overlap the range specified in another profile/protocol!
 
 ### OpenVPN Range Four
 
-Specify the IPv4 range for OpenVPN VPN clients. This setting is used when
-`protoList` contains `openvpn`. As an example:
+Specify the IPv4 range for OpenVPN VPN clients. As an example:
 
 ```
 'oRangeFour' => '172.18.131.0/24',
@@ -266,8 +256,7 @@ profile/protocol, nor overlap the range specified in another profile/protocol!
 
 ### OpenVPN Range Six
 
-Specify the IPv6 range for OpenVPN VPN clients. This setting is used when
-`protoList` contains `openvpn`. As an example:
+Specify the IPv6 range for OpenVPN VPN clients. As an example:
 
 ```
 'oRangeSix' => 'fdb4:2da1:2f15:a488::/64',

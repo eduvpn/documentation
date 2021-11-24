@@ -30,7 +30,6 @@ modify the default configuration yet.
 'vpnProfiles' => [
     // Office Employees
     'office' => [
-        'protoList' => ['openvpn'],
         'displayName' => 'Office',
         'hostName' => 'office.vpn.example',
         'oRangeFour' => '172.23.114.0/24',
@@ -42,7 +41,6 @@ modify the default configuration yet.
 
     // Administrators
     'admin' => [
-        'protoList' => ['openvpn'],
         'displayName' => 'Administrators',
         'hostName' => 'admin.vpn.example',
         'oRangeFour' => '10.61.60.0/24',
