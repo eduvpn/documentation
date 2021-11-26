@@ -48,7 +48,7 @@ EOF
 
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install php-opcache iptables-nft iptables-services \
-    php-cli policycoreutils-python-utils chrony wireguard-tools
+    php-cli policycoreutils-python-utils chrony wireguard-tools tmux
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-maint-scripts vpn-daemon    

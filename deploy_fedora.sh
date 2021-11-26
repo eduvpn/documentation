@@ -53,7 +53,7 @@ EOF
 # install software (dependencies)
 ${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables-nft pwgen \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
-    cronie wireguard-tools ipcalc
+    cronie wireguard-tools ipcalc tmux
 
 # install software (VPN packages)
 ${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
