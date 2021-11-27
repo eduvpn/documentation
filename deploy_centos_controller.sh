@@ -57,10 +57,10 @@ fi
 
 # import PGP key and add repository
 rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
-cat << EOF > /etc/yum.repos.d/LC-v2.repo
-[LC-v2]
-name=VPN Stable Packages (EL \$releasever)
-baseurl=https://repo.letsconnect-vpn.org/2/rpm/epel-7-\$basearch
+cat << EOF > /etc/yum.repos.d/eduVPN_v2.repo
+[eduVPN_v2]
+name=eduVPN 2.x Packages (EL 7)
+baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-\$basearch
 gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF

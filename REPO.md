@@ -21,7 +21,7 @@ install it:
 ```
 $ curl -O https://repo.eduvpn.org/v2/deb/debian-20200817.key
 $ gpg --import-options show-only --import debian-20200817.key
-$ sudo cp debian-20200817.key /etc/apt/trusted.gpg.d/eduVPN.asc
+$ sudo cp debian-20200817.key /etc/apt/trusted.gpg.d/eduVPN_v2.asc
 ```
 
 ## Config
@@ -71,8 +71,8 @@ $ sudo rpm --import centos%2B20210419%40eduvpn.org.asc
 `/etc/yum.repos.d/eduVPN_v2.repo`
 
 ```
-[eduVPN-v2]
-name=eduVPN (EL)
+[eduVPN_v2]
+name=eduVPN 2.x Packages (EL 7)
 baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-$basearch
 gpgcheck=1
 enabled=1
@@ -102,7 +102,7 @@ $ sudo rpm --import centos%2B20210419%40eduvpn.org.asc
 
 ```
 [eduVPN_v2]
-name=eduVPN (Fedora)
+name=eduVPN 2.x Packages (Fedora)
 baseurl=https://repo.eduvpn.org/v2/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 enabled=1
