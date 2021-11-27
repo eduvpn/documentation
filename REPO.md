@@ -26,8 +26,9 @@ $ sudo cp debian-20200817.key /etc/apt/trusted.gpg.d/eduVPN.asc
 
 ## Config
 
-The repository configuration is done in `/etc/apt/sources.list.d/eduVPN.list`,
-add the following line there depending on the version of Debian you are using.
+The repository configuration is done in 
+`/etc/apt/sources.list.d/eduVPN_v2.list`, add the following line there 
+depending on the version of Debian you are using.
 
 ### Debian 9
 
@@ -67,7 +68,7 @@ $ sudo rpm --import centos%2B20210419%40eduvpn.org.asc
 
 ## Config
 
-`/etc/yum.repos.d/eduVPN.repo`
+`/etc/yum.repos.d/eduVPN_v2.repo`
 
 ```
 [eduVPN-v2]
@@ -97,10 +98,10 @@ $ sudo rpm --import centos%2B20210419%40eduvpn.org.asc
 
 ## Config
 
-`/etc/yum.repos.d/eduVPN.repo`
+`/etc/yum.repos.d/eduVPN_v2.repo`
 
 ```
-[eduVPN-v2]
+[eduVPN_v2]
 name=eduVPN (Fedora)
 baseurl=https://repo.eduvpn.org/v2/rpm/fedora-$releasever-$basearch
 gpgcheck=1
