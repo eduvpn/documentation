@@ -12,18 +12,14 @@ Very simple, secure SAML SP written in PHP.
 
 This application was written to be (a lot) simpler to use and configure than 
 simpleSAMLphp and only work as a SAML SP supporting only secure cryptographic 
-algorithms, see the project 
-[site](https://git.sr.ht/~fkooman/php-saml-sp/) for more information.
+algorithms, see the project [site](https://www.php-saml-sp.eu/) for more 
+information.
 
 ## Installation
 
-It is easy to install and enable php-saml-sp.
+Enable the repository for your platform as instructed 
+[here](https://www.php-saml-sp.eu/). Make sure you use the repository for `v2`!
 
-### CentOS
-
-    $ sudo yum -y install php-saml-sp
-    $ sudo systemctl restart httpd
-    
 ### Fedora
 
     $ sudo dnf -y install php-saml-sp
@@ -60,52 +56,34 @@ and use the "Test" button.
 
 The configuration is done through `/etc/vpn-user-portal/config.php`.
 
-Set the `authMethod` option:
+Set the `authModule` option:
 
-    'authMethod' => 'PhpSamlSpAuthentication',
+```
+'authModule' => 'PhpSamlSpAuthModule',
+```
 
-Now the `PhpSamlSpAuthentication` specific options can be set as well:
+Now the `PhpSamlSpAuthModule` specific options can be set as well:
 
-    'PhpSamlSpAuthentication' => [
-        'userIdAttribute' => 'eduPersonTargetedID',
-        //'userIdAttribute' => 'eduPersonPrincipalName',
-        //'userIdAttribute' => 'uid',
+```
+'PhpSamlSpAuthModule' => [
+    'userIdAttribute' => 'eduPersonTargetedID',
+    //'userIdAttribute' => 'eduPersonPrincipalName',
 
-        // ** AUTHORIZATION | PERMISSIONS **
-        //'permissionAttribute' => [
-        //      'eduPersonEntitlement',
-        //      //'eduPersonAffiliation',
-        //],
+    //'permissionAttributeList' => [
+    //      'eduPersonEntitlement',
+    //      'eduPersonAffiliation',
+    //],
 
-        // AuthnContext required for *all* users
-        //'authnContext' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
+    // AuthnContext required for *all* users
+    //'authnContext' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
+],
+```
 
-        // Users with certain permissions obtained through
-        // "permissionAttribute" MUST also have ANY of the listed
-        // AuthnContexts. If they currently don't, a new authentication is
-        // triggered to obtain it
-        // **NOTE**: DO NOT USE ON NEW INSTALLATIONS! (see below)
-        //'permissionAuthnContext' => [
-        //    'http://eduvpn.org/role/admin' => ['urn:oasis:names:tc:SAML:2.0:ac:classes:TimesyncToken'],
-        //],
-    ],
+The `permissionAttributeList` option contains attribute(s) that will be used
+for _authorization_ in the VPN server, see [ACL](ACL.md) for more information.
 
-### AuthnContext
 
 The `authnContext` will request the specified AuthnContext of the IdP, this is 
 to trigger for example MFA/2FA. It integrates with 
 [SURFsecureID](https://wiki.surfnet.nl/display/SsID/SURFsecureID) as well. 
 Setting `authnContext` means this context will be required for ALL users.
-
-### AuthnContext for Permissions
-
-**NOTE**: use of this option is DEPRECATED! It will be removed in the next
-(major) version of eduVPN/Let's Connect!
-
-The `permissionAuthnContext` is a mapping between "permission" and required 
-`authnContext`. This can be used to e.g. force MFA/2FA only for a subset of
-users that have the specified attribute values as obtained through the 
-`permissionAttribute`. Indirectly this can be used to restrict certain VPN 
-profiles to uses that have a certain "permission" and at the same time enforce
-MFA/2FA for those users. Note that an AuthnContext is bound to a _user_, not a
-VPN _profile_.
