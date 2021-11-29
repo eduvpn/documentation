@@ -1,8 +1,4 @@
----
-title: Profile Configuration
-description: List of all VPN Server Configuration Options
-category: configuration
----
+# Profile Configuration
 
 For this document we assume you used the included `deploy_${DIST}.sh` script.
 
@@ -19,7 +15,8 @@ To modify any of the options, modify the file mentioned above and look for the
 
 ```
 'vpnProfiles' => [
-    'default' => [
+    [
+        'profileId' = 'default',
         'displayName' => 'Default',
         ...
         ...
@@ -33,65 +30,40 @@ be unique.
 On Fedora you may also need to take a look at the [SELinux](SELINUX.md) 
 instructions.
 
-## Options
+# Options
 
 This table describes all available profile configuration options. The 
 "Default" column indicates what the value is if the option is _missing_ from 
 the configuration.
 
-| Option               | Type                   | Default                                             | Protocol  |
-| -------------------- | ---------------------- | --------------------------------------------------- | --------- |
-| [preferredProto](#preferred-protocol)     | `string`               | `openvpn` (or `wireguard`)                          | *         |
-| [displayName](#display-name)       | `string`               | _N/A_                                               | *         |
-| [hostName](#host-name)           | `string[]` or `string` | _N/A_                                               | *         |
-| [defaultGateway](#default-gateway)     | `bool`                 | `true`                                              | *         |
-| [routeList](#route-list)         | `string[]`             | `[]`                                                | *         |
-| [excludeRouteList](#exclude-route-list)   | `string[]`             | `[]`                                                | *         |
-| [dnsServerList](#dns-server-list)      | `string[]`             | `[]`                                                | *         |
-| [nodeUrl](#node-url)            | `string[]` or `string` | `http://localhost:41194`                            | *         |
-| [aclPermissionList](#acl-permission-list)  | `string[]`             | `null`                                              | *         |
-| [dnsDomain](#dns-domain)          | `string`               | `null`                                              | *         |
-| [dnsDomainSearch](#dns-domain-search)    | `string[]`             | `[]`                                                | *         |
-| [wRangeFour](#wireguard-range-four)         | `string[]` or `string` | _N/A_                                               | WireGuard |
-| [wRangeSix](#wireguard-range-six)          | `string[]` or `string` | _N/A_                                               | WireGuard |
-| [oRangeFour](#openvpn-range-four)         | `string[]` or `string` | _N/A_                                               | OpenVPN   |
-| [oRangeSix](#openvpn-range-six)          | `string[]` or `string` | _N/A_                                               | OpenVPN   |
-| [blockLan](#block-lan)         | `bool`                 | `false`                                             | OpenVPN   |
-| [clientToClient](#client-to-client)    | `bool`                 | `false`                                             | OpenVPN   |
-| [enableLog](#enable-log)          | `bool`                 | `false`                                             | OpenVPN   |
-| [oUdpPortList](#port-list)       | `int[]`                | `[1194]`                                            | OpenVPN   |
-| [oTcpPortList](#port-list)        | `int[]`                | `[1194]`                                            | OpenVPN   |
-| [oExposedUdpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
-| [oExposedTcpPortList](#exposed-port-list) | `int[]`                | `[]`                                                | OpenVPN   |
+Be careful when changing configuration options. They *MAY* break existing 
+VPN client connections when not using the native eduVPN / Let's Connect! 
+applications.
 
-The following options _MAY_ break the client when insuffient care is taken, 
-unless the eduVPN/Let's Connect! applications are used:
+## Common
 
-* `hostName`: unless you point the currently used hostName to the new host 
-  (using DNS);
-* `oUdpPortList`, `oTcpPortList`: if you change to ports not currently used by 
-  the client(s);
-* `oExposedUdpPortList`, `oExposedTcpPortList`: if you change to ports not 
-  currently used by the client(s).
+Common configuration options, independent of the VPN protocol.
+
+| Option                                         | Type                   | Default                  |
+| ---------------------------------------------- | ---------------------- | ------------------------ |
+| [profileId](#profile-id)                       | `string`               | _N/A_                    |
+| [displayName](#display-name)                   | `string`               | _N/A_                    |
+| [hostName](#host-name)                         | `string[]` or `string` | _N/A_                    |
+| [defaultGateway](#default-gateway)             | `bool`                 | `true`                   |
+| [dnsServerList](#dns-server-list)              | `string[]`             | `[]`                     |
+| [routeList](#route-list)                       | `string[]`             | `[]`                     |
+| [excludeRouteList](#exclude-route-list)        | `string[]`             | `[]`                     |
+| [aclPermissionList](#acl-permission-list)      | `string[]`             | `null`                   |
+| [dnsSearchDomainList](#dns-search-domain-list) | `string[]`             | `[]`                     |
+| [nodeUrl](#node-url)                           | `string[]` or `string` | `http://localhost:41194` |
+| [preferredProto](#preferred-protocol)          | `string`               | `openvpn`                |
 
 ### Profile ID
 
 The profile ID is used to uniquely identify a profile. It can only contain 
 letters, `[a-z]`, numbers `[0-9]` and the dash (`-`). Examples of valid profile 
-IDs identifiers are `employees`, `students`, `admin`.
-
-### Preferred Protocol
-
-When your profile supports multiple protocols, this option can be used to set
-the preferred protocol. This allows for example to transitioning (the majority 
-of users) from OpenVPN to WireGuard without breaking existing configurations.
-
-The preferred protocol only makes sense when both OpenVPN and WireGuard are
-enabled. If only one protocol is enabled, that is automatically the preferred 
-protocol.
-
-OpenVPN is considered enabled when both `oRangeFour` and `oRangeSix` are set. 
-WireGuard is considered enabled when both `wRangeFour` and `wRangeSix` are set.
+IDs identifiers are `employees`, `students`, `admin`. It MUST NOT be numeric,
+e.g. `1`, or `214`.
 
 ### Display Name
 
@@ -112,6 +84,29 @@ could be `employees.vpn.example.org`. Obviously, you can make this a `CNAME` to
 
 This option allows you to indicate to the VPN client that all their traffic
 needs to be sent over the VPN.
+
+### DNS Server List
+
+Provide a list of DNS servers to your VPN clients, as an example:
+
+```
+'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+```
+
+The DNS server list is provided to the VPN clients when either of the following
+conditions hold:
+
+1. [Default Gateway](#default-gateway) is set;
+2. Default Gateway is _not_ set, but [DNS Domain](#dns-domain) and/or 
+   [DNS Domain Search](#dns-domain-search) _is_.
+
+**NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
+to DNS servers outside the VPN will be explicitly blocked in order to prevent
+[DNS leaks](https://en.wikipedia.org/wiki/DNS_leak).
+
+**NOTE**: make sure the DNS server(s) you provide are reachable by the clients,
+so you MAY have to add the addresses to [Route List](#route-list) when they are
+not usable from outside the VPN.
 
 ### Route List
 
@@ -161,35 +156,6 @@ is being worked on. TunnelKit (iOS, macOS) does not yet support this
 With WireGuard we have mixed results, it works fine on Windows, but not (yet) 
 on macOS.
 
-### DNS Server List
-
-Provide a list of DNS servers to your VPN clients, as an example:
-
-```
-'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
-```
-
-The DNS server list is provided to the VPN clients when either of the following
-conditions hold:
-
-1. [Default Gateway](#default-gateway) is set;
-2. Default Gateway is _not_ set, but [DNS Domain](#dns-domain) and/or 
-   [DNS Domain Search](#dns-domain-search) _is_.
-
-**NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
-to DNS servers outside the VPN will be explicitly blocked in order to prevent
-[DNS leaks](https://en.wikipedia.org/wiki/DNS_leak).
-
-**NOTE**: make sure the DNS server(s) you provide are reachable by the clients,
-so you MAY have to add the addresses to [Route List](#route-list) when they are
-not usable from outside the VPN.
-
-### Node URL
-
-When using a separate system to handle VPN connections, i.e. when using a 
-controller + node(s) setup. See [Multi Node](MULTI_NODE.md) for extensive 
-documentation on the topic.
-
 ### ACL Permission List
 
 Restrict access to VPN profiles based on user permissions. The authentication 
@@ -197,29 +163,43 @@ module can make permissions available either through LDAP or SAML that can be
 used to restrict access to a profile. See [ACL](ACL.md) for extensive 
 documentation on the topic.
 
-### DNS Domain
-
-Allows you to specify the "Connection-specific DNS Suffix" for the VPN client, 
-e.g.:
-
-```
-'dnsDomain' => 'c.example.org',
-```
-
-This is currently used by OpenVPN. This domain is also automatically added to 
-[DNS Domain Search](#dns-domain-search).
-
-### DNS Domain Search
+### DNS Search Domain List
 
 Allow you to specify the "Connection-specific DNS Suffix Search List" for the
 VPN client, e.g.:
 
 ```
-'dnsDomainSearch' => ['example.org', 'example.com'],
+'dnsSearchDomainList' => ['example.org', 'example.com'],
 ```
 
-**NOTE**: if the [DNS Domain](#dns-domain) is also specified, it will be 
-automatically added to this list, no need to duplicate it here.
+### Node URL
+
+When using a separate system to handle VPN connections, i.e. when using a 
+controller + node(s) setup. See [Multi Node](MULTI_NODE.md) for extensive 
+documentation on the topic.
+
+### Preferred Protocol
+
+When your profile supports multiple protocols, this option can be used to set
+the preferred protocol. This allows for example to transitioning (the majority 
+of users) from OpenVPN to WireGuard without breaking existing configurations.
+
+The preferred protocol only makes sense when both OpenVPN and WireGuard are
+enabled. If only one protocol is enabled, that is automatically the preferred 
+protocol.
+
+OpenVPN is considered enabled when both `oRangeFour` and `oRangeSix` are set. 
+WireGuard is considered enabled when both `wRangeFour` and `wRangeSix` are set.
+
+
+## WireGuard
+
+WireGuard specific configuration options.
+
+| Option                              | Type                   | Default |
+| ----------------------------------- | ---------------------- | ------- |
+| [wRangeFour](#wireguard-range-four) | `string[]` or `string` | _N/A_   |
+| [wRangeSix](#wireguard-range-six)   | `string[]` or `string` | _N/A_   |
 
 ### WireGuard Range Four
 
@@ -243,6 +223,23 @@ Specify the IPv6 range for WireGuard VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
+## OpenVPN
+
+OpenVPN specific configuration options.
+
+| Option                                            | Type                   | Default  |
+| ------------------------------------------------- | ---------------------- | -------- |
+| [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |
+| [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |
+| [oDnsDomain](#openvpn-dns-domain)                 | `string`               | `null`   |
+| [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |
+| [oClientToClient](#openvpn-client-to-client)      | `bool`                 | `false`  |
+| [oEnableLog](#openpvn-enable-log)                 | `bool`                 | `false`  |
+| [oUdpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
+| [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
+| [oExposedUdpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
+| [oExposedTcpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
+
 ### OpenVPN Range Four
 
 Specify the IPv4 range for OpenVPN VPN clients. As an example:
@@ -265,7 +262,19 @@ Specify the IPv6 range for OpenVPN VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
-### Block LAN
+### OpenVPN DNS Domain
+
+Allows you to specify the "Connection-specific DNS Suffix" for the VPN client, 
+e.g.:
+
+```
+'dnsDomain' => 'c.example.org',
+```
+
+This is currently used by OpenVPN. This domain is also automatically added to 
+[DNS Domain Search](#dns-domain-search).
+
+### OpenVPN Block LAN
 
 This OpenVPN only option prevents the client from accessing devices on the 
 local network. This is especially useful when the client is connected to a 
@@ -273,10 +282,10 @@ network that also contains clients that are not to be trusted, e.g. (semi)
 public WiFi.
 
 ```
-'blockLan' => true,
+'oBlockLan' => true,
 ```
 ,
-### Client To Client
+### OpenVPN Client To Client
 
 This OpenVPN only option prevents VPN clients from reaching each other. This is
 especially useful when the client is connected to a VPN where not all other VPN
@@ -284,16 +293,16 @@ clients are to be trusted, e.g. a shared VPN service with users from multiple
 organizations.
 
 ```
-'clientToClient' => true,
+'oClientToClient' => true,
 ```
 
-### Enable Log
+### OpenVPN Enable Log
 
 This OpenVPN only option enables OpenVPN server logging. This can be used to
 debug (some) connection issues with incompatible clients.
 
 ```
-'enableLog' => true,
+'oEnableLog' => true,
 ```
 
 Once logging is enabled (and changes applied), you can follow the log like 
@@ -306,7 +315,7 @@ $ sudo journalctl -f -t openvpn
 **NOTE**: this option should probably only be enabled on test systems and not 
 in production.
 
-### Port List
+### OpenVPN Port List
 
 List of UDP/TCP ports to be used by the OpenVPN processes. The IP ranges 
 [OpenVPN Range Four](#openvpn-range-four) and 
@@ -344,16 +353,14 @@ for optimal performance for most clients.
 See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md), 
 [Limits on OpenVPN Process](LIMIT_N_PROC.md)
 
-### Exposed Port List
+### OpenVPN Exposed Port List
 
 TBD.
 
-## Apply Changes
+# Apply Changes
 
 To apply the configuration changes:
 
 ```bash
 $ sudo vpn-maint-apply-changes
 ```
-
-If the command is not available, install the `vpn-maint-scripts` package first.
