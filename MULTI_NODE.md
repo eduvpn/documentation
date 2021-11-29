@@ -1,10 +1,10 @@
 # Multi Node Setup
 
-When you want to scale up your deployment, i.e. have multiple nodes connect 
+When you want to scale up your deployment, i.e. have multiple nodes connected 
 with one controller, this document is for you!
 
-This document will show how to set up multiple nodes. The OpenVPN clients will
-be distributed over the nodes using DNS round-robin.
+This document will show how to set up multiple nodes. The VPN clients will 
+automatically be distributed over the nodes.
 
 ## Requirements
 
