@@ -42,7 +42,8 @@ applications.
 
 ## Common
 
-Common configuration options, independent of the VPN protocol.
+Common configuration options, independent of the VPN protocol. See 
+[WireGuard](#wireguard) and [OpenVPN](#openvpn) for protocol specific options.
 
 | Option                                         | Type                   | Default                  |
 | ---------------------------------------------- | ---------------------- | ------------------------ |
