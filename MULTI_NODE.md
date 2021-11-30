@@ -194,6 +194,8 @@ end of the controller install and make sure you see your client(s) under
 
 ## TLS
 
+**NOTE**: these instructions are for Fedora, not yet for Debian!
+
 When everything works properly using HTTP, you SHOULD switch to HTTPS for
 communication between controller and node(s). Without TLS there is no
 encryption and no authentication. Enabling TLS will fix this.
