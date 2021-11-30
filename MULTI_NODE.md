@@ -192,77 +192,75 @@ Login to the admin portal using the `admin` user and password you noted at the
 end of the controller install and make sure you see your client(s) under 
 "Connections" in the portal when connected.
 
-## Load Balancing
+## TLS
 
-By default a connecting VPN client will connect either to "Node A" or "Node B". 
-One is chosen at random.
+When everything works properly using HTTP, you SHOULD switch to HTTPS for
+communication between controller and node(s). Without TLS there is no
+encryption and no authentication. Enabling TLS will fix this.
 
-## Maintenance
+We'll create a tiny CA and issue server certificates for the node(s) and a 
+client certificate for the controller. We use 
+[vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) which is already installed on 
+your controller, but you can also download and install it on your own system.
 
-In order to maintain your multi node setup it is hightly recommended to follow
-the instructions [here](INSTALL_UPDATES.md) under "Multi Server". 
+```
+$ vpn-ca -init-ca -name "Management CA" -domain-constraint .vpn.example.org
+$ vpn-ca -server  -name node-a.vpn.example.org
+$ vpn-ca -server  -name node-b.vpn.example.org
 
-## TLS between Controller and Node(s)
+...
 
-**MUST STILL BE UPDATED!!!**
+$ vpn-ca -client  -name vpn-daemon-client
+```
 
-### Controller
+Copy `ca.crt`, `node-X.vpn.example.org.crt` and `node-X.vpn.example.org.key` to
+the respective node(s). Store them in `/etc/vpn-daemon` as `ca.crt`, 
+`server.crt` and `server.key`. Make sure they can be read by the `vpn-daemon` 
+process:
 
-Finally, we need to create a CA to secure the connection between the controller
-and nodes. You can do this on the controller, or on your own system. We use 
-[vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) for this. This is already installed 
-on your controller:
+```
+$ sudo -s
+$ cd /etc/vpn-daemon
+$ chmod 0640 *
+$ chgrp vpn-daemon *
+```
 
-    $ mkdir -p ${HOME}/multi-node && cd ${HOME}/multi-node
-    $ vpn-ca -init-ca -name "VPN Service CA"
-    $ vpn-ca -client -name vpn-daemon-client -not-after CA
-    $ vpn-ca -server -name vpn-daemon -not-after CA
-    $ chmod 0640 *.crt *.key
+Modify `/etc/sysconfig/vpn-daemon` and enable the `CREDENTIALS_DIRECTORY` 
+option:
 
-Now install the `vpn-daemon-client` certificate:
+```
+CREDENTIALS_DIRECTORY=/etc/vpn-daemon
+```
 
-    $ sudo mkdir -p /etc/vpn-server-api/vpn-daemon
-    $ sudo chmod 0710 /etc/vpn-server-api/vpn-daemon
-    $ sudo cp ca.crt vpn-daemon-client.crt vpn-daemon-client.key /etc/vpn-server-api/vpn-daemon
-    $ sudo chgrp -R www-data /etc/vpn-server-api/vpn-daemon
+Now restart `vpn-daemon`:
 
-Finally, remove the `vpnDaemonTls` option from 
-`/etc/vpn-server-api/config.php` to force using TLS.
+```
+$ sudo systemctl restart vpn-daemon
+```
 
-### Node 
+Repeat this on all your nodes.
 
-Copy the `ca.crt`, `vpn-daemon.crt`, `vpn-daemon.key` to Node A and Node B. On 
-the node(s) copy the certificates/keys to the right place:
+On your controller(s) you copy the `ca.crt`, `vpn-daemon-client.crt` and 
+`vpn-daemon-client.key` to `/etc/vpn-user-portal/vpn-daemon` and modify the
+`nodeUrl` option(s) in the profile configuration in 
+`/etc/vpn-user-portal/config.php` to `https://`.
 
-    $ sudo mkdir -p            /etc/ssl/vpn-daemon/private
-    $ sudo cp ca.crt           /etc/ssl/vpn-daemon/ca.crt
-    $ sudo cp vpn-daemon.crt   /etc/ssl/vpn-daemon/server.crt
-    $ sudo cp vpn-daemon.key   /etc/ssl/vpn-daemon/private/server.key
-    $ sudo chmod 0750          /etc/ssl/vpn-daemon/private
-    $ sudo chgrp -R vpn-daemon /etc/ssl/vpn-daemon
+Viewing the portal "Info" page should show your node(s) as green and have the 
+lock icon visible. Now you are all good!
 
-Modify `/etc/default/vpn-daemon`:
+If there are any problems, review the `vpn-daemon` log on your node(s):
 
-    ENABLE_TLS=-enable-tls
-    LISTEN=:41194
+```
+$ sudo journalctl -t vpn-daemon
+```
 
-Restart the daemon:
+If your daemon is running properly, you can try `curl` from your controller(s) 
+to verify the TLS connection can be established:
 
-    $ sudo systemctl restart vpn-daemon
-
-Test everything again as mentioned in the last paragraph of the previous 
-"Nodes" section without TLS.
-
-## FAQ
-
-**Can I also have multiple profiles on the nodes?**
-
-This document only talks about one profile per VPN node. In case you have 
-multiple profiles, you also need to read [MULTI_PROFILE](MULTI_PROFILE.md). 
-Make sure you use different `vpnProtoPorts` for your different profiles. You 
-can't have two profiles on the same node claim `udp/1194` for example.
-
-**What if I want to use public IPv6 addresses for my VPN clients?**
-
-Check [PUBLIC_ADDR](PUBLIC_ADDR.md) in order to deal with this. Make sure you
-also update the (IPv6) firewall to remove the NAT section.
+```
+$ curl \
+    --cacert /etc/vpn-user-portal/vpn-daemon/ca.crt \
+    --cert /etc/vpn-user-portal/vpn-daemon/vpn-daemon-client.crt \
+    --key /etc/vpn-user-portal/vpn-daemon/vpn-daemon-client.key \
+    https://node-a.vpn.example.org:41194/i/node 
+```
