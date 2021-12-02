@@ -83,7 +83,7 @@ done
 # vpn-ca                             #
 ######################################
 cd "${BASE_DIR}/vpn-ca" || exit
-go build -o _bin/vpn-ca vpn-ca/*.go
+go build -o vpn-ca tuxed.net/vpn-ca/cmd/vpn-ca/...
 
 ######################################
 # vpn-daemon                         #
