@@ -19,6 +19,17 @@ the required software, will be different.
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
+# CentOS 7
+
+When you are not running CentOS as your desktop OS, it is easiest to install a
+VM with a desktop. In addition, install the required software (dependencies):
+
+```
+$ sudo yum -y install golang php-cli git composer php-date php-filter php-hash \
+    php-json php-mbstring php-pcre php-pdo php-spl php-libsodium php-curl \
+    php-gd unzip
+```
+
 # Fedora >= 33
 
 When you are not running Fedora as your desktop OS, it is easiest to install a
