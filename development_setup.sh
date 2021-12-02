@@ -102,7 +102,7 @@ cat << EOF > config/config.php
 <?php
 \$baseConfig = include __DIR__.'/config.php.example';
 \$localConfig = [
-    'vpnCaPath' => '${BASE_DIR}/vpn-ca/_bin/vpn-ca',
+    'vpnCaPath' => '${BASE_DIR}/vpn-ca/vpn-ca',
 ];
 return array_merge(\$baseConfig, \$localConfig);
 EOF
