@@ -141,6 +141,7 @@ See the instructions below on how to get the VPN working manually.
 | Debian 8                | no             | no     | Uses OpenVPN 2.3                                                                                              |
 | Debian 9                | yes*           | yes    | `network-manager-openvpn` >= 1.2.10 required for `tls-crypt` support. A backport MUST be installed, see below |
 | Debian 10               | yes            | yes    | -                                                                                                             |
+| Debian 11               | yes            | yes    | -                                                                                                             |
 | Ubuntu 16.04 LTS        | no             | no     | Uses OpenVPN 2.3                                                                                              |
 | Ubuntu 18.04 LTS        | yes*           | yes    | [DNS leak](https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1796648)                            |
 | Ubuntu 20.04 LTS        | yes            | yes    | -                                                                                                             |
@@ -149,7 +150,7 @@ See the instructions below on how to get the VPN working manually.
 | Ubuntu 19.04            | yes            | yes    | -                                                                                                             | 
 | CentOS 7                | yes            | yes    | -                                                                                                             |
 | CentOS 8                | yes            | yes    | -                                                                                                             |
-| Fedora 33, 34           | yes            | yes    | -                                                                                                             |
+| Fedora 34, 35           | yes            | yes    | -                                                                                                             |
 
 For Debian 8 and Ubuntu 16.04 LTS, an OpenVPN 
 [repository](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos)
