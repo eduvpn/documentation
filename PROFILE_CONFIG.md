@@ -98,8 +98,8 @@ The DNS server list is provided to the VPN clients when either of the following
 conditions hold:
 
 1. [Default Gateway](#default-gateway) is set;
-2. Default Gateway is _not_ set, but [DNS Domain](#dns-domain) and/or 
-   [DNS Domain Search](#dns-domain-search) _is_.
+2. Default Gateway is _not_ set, but [DNS Domain](#openvpn-dns-domain) and/or 
+   [DNS Search Domain List](#dns-search-domain-list) _is_.
 
 **NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
 to DNS servers outside the VPN will be explicitly blocked in order to prevent
@@ -273,7 +273,7 @@ e.g.:
 ```
 
 This is currently used by OpenVPN. This domain is also automatically added to 
-[DNS Domain Search](#dns-domain-search).
+[DNS Search Domain List](#dns-search-domain-list).
 
 ### OpenVPN Block LAN
 
@@ -320,8 +320,8 @@ in production.
 
 List of UDP/TCP ports to be used by the OpenVPN processes. The IP ranges 
 [OpenVPN Range Four](#openvpn-range-four) and 
-[OpenVPN Range Six](#openvpn-range-six) will be evenly distributed over both
-[UDP Port List](#udp-port-list) and [TCP Port List](#tcp-port-list).
+[OpenVPN Range Six](#openvpn-range-six) will be evenly distributed over both 
+UDP Port List and TCP Port List.
 
 ```
 'oUdpPortList' => [1194, 1195, 1196],
