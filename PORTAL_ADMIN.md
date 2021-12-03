@@ -56,7 +56,7 @@ for this. This can be for example the `eduPersonEntitlement` attribute where
 the administrators get the "admin" entitlement. 
 
 One can set the `permissionAttribute` under the various authentication 
-mechanisms, see the configuration [template](https://github.com/eduvpn/vpn-user-portal/blob/v2/config/config.php.example). 
+mechanisms, see the configuration [template](https://github.com/eduvpn/vpn-user-portal/blob/v3/config/config.php.example). 
 
 For example on [Shibboleth](SHIBBOLETH_SP.md):
 

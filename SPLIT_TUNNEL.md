@@ -1,9 +1,3 @@
----
-title: Split Tunnel
-description: Configure Split Tunnel
-category: configuration
----
-
 # Split Tunnel
 
 Configuring "split tunnel", i.e. only routing _certain_ traffic over the VPN 
@@ -21,7 +15,7 @@ required for your particular setup:
 
 **NOTE**: if there are no internal-only DNS entries to resolve, you SHOULD NOT 
 push DNS servers to the client. If there are, then make sure to also specify 
-`dnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
+`oDnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
 included in the `routeList`.
 
 # Example
@@ -56,7 +50,7 @@ Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
         'dnsServerList' => ['10.1.1.1'],
 
         // Connection-specific DNS Suffix
-        'dnsDomain' => 'example.local',
+        'oDnsDomain' => 'example.local',
         
         // Connection-specific DNS Suffix Search List
         'dnsDomainSearch' => ['example.local', 'foo.example.local', 'bar.example.local'],
@@ -64,7 +58,7 @@ Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 ],
 ```
 
-Take special note of the `routeList`, `dnsServerList`, `dnsDomain` and 
+Take special note of the `routeList`, `dnsServerList`, `oDnsDomain` and 
 `dnsDomainSearch` options. See [Profile Config](PROFILE_CONFIG.md) for other 
 configuration options that may be relevant for your situation.
 
