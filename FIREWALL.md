@@ -109,10 +109,12 @@ clients, see below.
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
-    -A POSTROUTING -j MASQUERADE
+    -A POSTROUTING -s 10.0.0.0/8     -j MASQUERADE
+    -A POSTROUTING -s 172.16.0.0/12  -j MASQUERADE
+    -A POSTROUTING -s 192.168.0.0/16 -j MASQUERADE
 
-It is recommended to use `SNAT` and be explicit about the IP address to NAT to,
-i.e.:
+It is recommended to use `SNAT` and be explicit about the IP address(es) to NAT 
+to, i.e.:
 
     -A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1
 
@@ -160,7 +162,9 @@ multiple public IP addresses.
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
-    -A POSTROUTING -j MASQUERADE
+    -A POSTROUTING -s 10.0.0.0/8     -j MASQUERADE
+    -A POSTROUTING -s 172.16.0.0/12  -j MASQUERADE
+    -A POSTROUTING -s 192.168.0.0/16 -j MASQUERADE
 
 You can replace this by:
 

@@ -53,8 +53,8 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
 
--A POSTROUTING -s fd00::/8 -j MASQUERADE
-#-A POSTROUTING -s fd00::/8 -j SNAT --to-source 2001:db8::1
+-A POSTROUTING -s fc00::/7 -j MASQUERADE
+#-A POSTROUTING -s fc00::/7 -j SNAT --to-source 2001:db8::1
 # Distribute NAT over IPs between 2001:db8::1 and 2001:db8::4 (inclusive)
-#-A POSTROUTING -s fd00::/8 -j SNAT --to-source 2001:db8::1-2001:db8::4
+#-A POSTROUTING -s fc00::/7 -j SNAT --to-source 2001:db8::1-2001:db8::4
 COMMIT

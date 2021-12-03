@@ -62,7 +62,9 @@ server:
     interface: 0.0.0.0
     interface: ::0
     access-control: 10.0.0.0/8 allow
-    access-control: fd00::/8 allow
+    access-control: 172.16.0.0/12 allow
+    access-control: 192.168.0.0/16 allow
+    access-control: fc00::/7 allow
 
     # disable DoH
     # See: https://use-application-dns.net/
@@ -75,9 +77,9 @@ server:
     local-zone: mask-h2.icloud.com. refuse
 ```
 
-With these options Unbound listens on all interfaces and the ranges 
-`10.0.0.0/8` and `fd00::/8` are white-listed. These ranges are the defaults for 
-deploys done by the `deploy_${DIST}.sh` scripts.
+With these options Unbound listens on all interfaces and the RFC 1981 and 4193 
+ranges are allowed. These ranges are the defaults for deploys done by the 
+`deploy_${DIST}.sh` scripts.
 
 Enable Unbound during boot, and (re)start it:
 

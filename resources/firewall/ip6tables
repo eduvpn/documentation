@@ -27,8 +27,8 @@
 -A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
 
 # Local DNS for VPN clients
-#-A INPUT -s fd00::/8 -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
-#-A INPUT -s fd00::/8 -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
+#-A INPUT -s fc00::/7 -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
+#-A INPUT -s fc00::/7 -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
 
 -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
 
@@ -62,8 +62,8 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
 
--A POSTROUTING -s fd00::/8 -j MASQUERADE
-#-A POSTROUTING -s fd00::/8 -j SNAT --to-source 2001:db8::1
+-A POSTROUTING -s fc00::/7 -j MASQUERADE
+#-A POSTROUTING -s fc00::/7 -j SNAT --to-source 2001:db8::1
 # Distribute NAT over IPs between 2001:db8::1 and 2001:db8::4 (inclusive)
-#-A POSTROUTING -s fd00::/8 -j SNAT --to-source 2001:db8::1-2001:db8::4
+#-A POSTROUTING -s fc00::/7 -j SNAT --to-source 2001:db8::1-2001:db8::4
 COMMIT
