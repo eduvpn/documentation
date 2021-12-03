@@ -16,7 +16,8 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 
 # Try to detect external "Default Gateway" Interface, but allow admin override
 EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
-printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXTERNAL_IF
+printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
+EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
 
 ###############################################################################
 # SYSTEM
