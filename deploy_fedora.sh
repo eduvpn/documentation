@@ -106,11 +106,13 @@ sed -i "s|fd43::|$(ipcalc -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/con
 ###############################################################################
 
 cat << EOF > /etc/sysctl.d/70-vpn.conf
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production, you SHOULD be using STATIC addresses!
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+
+# enable IPv4 and IPv6 forwarding
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
-# use this in production as that requires STATIC IP addressess!
-net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
 EOF
 
 sysctl --system

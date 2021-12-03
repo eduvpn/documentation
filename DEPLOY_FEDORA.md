@@ -17,7 +17,7 @@ Additional scripts are available after deployment:
 
 * Clean Fedora installation with all updates installed;
 * SELinux MUST be enabled;
-* Have a **STATIC** IPv4 and IPv6 address configured on your external 
+* You SHOULD use static IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
   `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
