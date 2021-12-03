@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Deploy a single VPN machine on Fedora
+# Deploy a VPN server on Fedora
 #
 
 ###############################################################################
@@ -31,7 +31,9 @@ then
     exit 1
 fi
 
-PACKAGE_MANAGER=/usr/bin/dnf
+# allow Apache to connect to PHP-FPM
+# XXX is this still needed?
+setsebool -P httpd_can_network_connect=1
 
 ###############################################################################
 # SOFTWARE
@@ -52,24 +54,12 @@ enabled=1
 EOF
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd iptables-nft pwgen \
+/usr/bin/dnf -y install mod_ssl php-opcache httpd iptables-nft pwgen cronie \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
-    cronie wireguard-tools ipcalc tmux
+    ipcalc tmux
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-server-node vpn-user-portal \
-    vpn-maint-scripts vpn-daemon
-
-###############################################################################
-# SELINUX
-###############################################################################
-
-# allow Apache to connect to PHP-FPM
-setsebool -P httpd_can_network_connect=1
-
-# allow OpenVPN to bind to additional ports for client connections
-semanage port -a -t openvpn_port_t -p tcp 1195-1258
-semanage port -a -t openvpn_port_t -p udp 1195-1258
+/usr/bin/dnf -y install vpn-server-node vpn-user-portal vpn-maint-scripts
 
 ###############################################################################
 # APACHE
@@ -80,7 +70,6 @@ semanage port -a -t openvpn_port_t -p udp 1195-1258
 cp resources/ssl.fedora.conf /etc/httpd/conf.d/ssl.conf
 cp resources/localhost.fedora.conf /etc/httpd/conf.d/localhost.conf
 
-# VirtualHost
 cp resources/vpn.example.fedora.conf "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 

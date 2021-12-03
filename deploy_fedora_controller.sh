@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Deploy a single VPN machine on Fedora
+# Deploy a VPN controller on Fedora
 #
 
 ###############################################################################
@@ -26,7 +26,9 @@ then
     exit 1
 fi
 
-PACKAGE_MANAGER=/usr/bin/dnf
+# allow Apache to connect to PHP-FPM
+# XXX is this still needed?
+setsebool -P httpd_can_network_connect=1
 
 ###############################################################################
 # SOFTWARE
@@ -47,18 +49,11 @@ enabled=1
 EOF
 
 # install software (dependencies)
-${PACKAGE_MANAGER} -y install mod_ssl php-opcache httpd pwgen php-fpm php-cli \
+/usr/bin/dnf -y install mod_ssl php-opcache httpd pwgen php-fpm php-cli \
     policycoreutils-python-utils chrony cronie ipcalc tmux
 
 # install software (VPN packages)
-${PACKAGE_MANAGER} -y install vpn-user-portal vpn-maint-scripts
-
-###############################################################################
-# SELINUX
-###############################################################################
-
-# allow Apache to connect to PHP-FPM
-setsebool -P httpd_can_network_connect=1
+/usr/bin/dnf -y install vpn-user-portal vpn-maint-scripts
 
 ###############################################################################
 # APACHE
