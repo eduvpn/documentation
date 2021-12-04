@@ -49,8 +49,8 @@ It will by default create a directory `${HOME}/Project/eduVPN-v3` under which
 everything will be installed. No `root` is required!
 
 ```
-$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup_v3.sh
-$ sh ./development_setup_v3.sh
+$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v3/development_setup.sh
+$ sh ./development_setup.sh
 ```
 
 # Testing

@@ -35,8 +35,8 @@ mkdir -p rpm deb
 for PACKAGE_NAME in vpn-daemon php-oauth2-server php-secookie vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 #	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
-##	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
-##	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.deb deb/${PACKAGE_NAME}.deb
+	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
+#	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.deb deb/${PACKAGE_NAME}.deb
 done
 
 ######################################
