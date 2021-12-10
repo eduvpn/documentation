@@ -44,6 +44,11 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
+# stop daemons we use (if they are already running)
+systemctl disable --now httpd >/dev/null 2>/dev/null || true
+systemctl disable --now php-fpm >/dev/null 2>/dev/null || true
+systemctl disable --now vpn-daemon >/dev/null 2>/dev/null || true
+
 cat << EOF > /etc/yum.repos.d/eduVPN_v3-dev.repo
 [eduVPN_v3-dev]
 name=eduVPN 3.x Development Packages (Fedora \$releasever)
