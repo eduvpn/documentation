@@ -31,14 +31,16 @@ library to implement secure PHP sessions (and cookies).
 
 ## OAuth
 
-The built-in [OAuth server](https://git.sr.ht/~fkooman/php-oauth2-server) 
-uses public key cryptography signed 
+We use [fkooman/oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server), 
+a library to implement a secure OAuth 2.1 server.
+
+It uses public key signatures to sign/verify the issues OAuth 
 [tokens](https://git.sr.ht/~fkooman/php-oauth2-server/tree/v7/item/TOKEN_FORMAT.md).
 
 ## CA
 
 The CA of the VPN service is "online" as it needs to generate valid 
-certificates on the fly. The [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) 
+keys/certificates on the fly. The [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) 
 software is used as CA.
 
 Only `EdDSA` keys are supported.
