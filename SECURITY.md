@@ -3,6 +3,18 @@
 This document contains some information about the security of the software, 
 more specifically: the configuration choices that were made.
 
+## Web Server
+
+By default [Apache](https://httpd.apache.org/) is used. 
+
+### Debian
+
+TBD.
+
+### Fedora
+
+TBD. Look into "Crypto Policies" on Fedora/CentOS.
+
 ## OpenVPN
 
 The basic OpenVPN server (and client) cryptography configuration:
@@ -44,3 +56,11 @@ keys/certificates on the fly. The [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)
 software is used as CA.
 
 Only `EdDSA` keys are supported.
+
+## SSH
+
+By default we do NOT modify the SSH configuration itself, however we do 
+configure the firewall to allow SSH access from everywhere, including VPN 
+clients.
+
+You SHOULD change/update this! Look [here](FIREWALL.md#restricting-ssh-access).
