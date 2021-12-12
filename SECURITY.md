@@ -9,11 +9,17 @@ By default [Apache](https://httpd.apache.org/) is used.
 
 ### Debian
 
-TBD.
+We use a 
+[template](https://github.com/eduvpn/documentation/blob/v3/resources/ssl.debian.conf) 
+to update the TLS options.
 
 ### Fedora
 
 TBD. Look into "Crypto Policies" on Fedora/CentOS.
+
+We use a 
+[template](https://github.com/eduvpn/documentation/blob/v3/resources/ssl.fedora.conf) 
+to update the TLS options.
 
 ## OpenVPN
 
