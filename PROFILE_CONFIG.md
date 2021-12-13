@@ -98,11 +98,12 @@ The DNS server list is provided to the VPN clients when either of the following
 conditions hold:
 
 1. [Default Gateway](#default-gateway) is set;
-2. Default Gateway is _not_ set, but [DNS Domain](#openvpn-dns-domain) and/or 
+2. Default Gateway is _not_ set, but 
    [DNS Search Domain List](#dns-search-domain-list) _is_.
 
-**NOTE**: when [Default Gateway](#default-gateway) is set, on Windows, traffic
-to DNS servers outside the VPN will be explicitly blocked in order to prevent
+**NOTE**: when [Default Gateway](#default-gateway) is set and DNS servers are 
+configured, on Windows, traffic to DNS servers outside the VPN will be 
+explicitly blocked in order to prevent 
 [DNS leaks](https://en.wikipedia.org/wiki/DNS_leak).
 
 **NOTE**: make sure the DNS server(s) you provide are reachable by the clients,
@@ -172,6 +173,9 @@ VPN client, e.g.:
 ```
 'dnsSearchDomainList' => ['example.org', 'example.com'],
 ```
+
+**NOTE**: the search domains are ONLY used when DNS servers are specified and
+the [Default Gateway](#default-gateway) is _not_ set.
 
 ### Node URL
 
