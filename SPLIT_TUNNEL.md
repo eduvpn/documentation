@@ -15,8 +15,8 @@ required for your particular setup:
 
 **NOTE**: if there are no internal-only DNS entries to resolve, you SHOULD NOT 
 push DNS servers to the client. If there are, then make sure to also specify 
-`oDnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
-included in the `routeList`.
+`dnsSearchDomainList`. In addition, make sure the IP address(es) of the DNS 
+server(s) are also included in the `routeList`.
 
 # Example
 
@@ -48,19 +48,16 @@ Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 
         // push the local DNS to the clients as well
         'dnsServerList' => ['10.1.1.1'],
-
-        // Connection-specific DNS Suffix
-        'oDnsDomain' => 'example.local',
         
         // Connection-specific DNS Suffix Search List
-        'dnsDomainSearch' => ['example.local', 'foo.example.local', 'bar.example.local'],
+        'dnsSearchDomainList' => ['example.local', 'foo.example.local', 'bar.example.local'],
     ],
 ],
 ```
 
-Take special note of the `routeList`, `dnsServerList`, `oDnsDomain` and 
-`dnsDomainSearch` options. See [Profile Config](PROFILE_CONFIG.md) for other 
-configuration options that may be relevant for your situation.
+Take special note of the `routeList`, `dnsServerList` and `dnsSearchDomainList` 
+options. See [Profile Config](PROFILE_CONFIG.md) for other configuration 
+options that may be relevant for your situation.
 
 To apply the configuration changes:
 

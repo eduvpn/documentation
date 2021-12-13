@@ -232,7 +232,6 @@ OpenVPN specific configuration options.
 | ------------------------------------------------- | ---------------------- | -------- |
 | [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |
 | [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |
-| [oDnsDomain](#openvpn-dns-domain)                 | `string`               | `null`   |
 | [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |
 | [oClientToClient](#openvpn-client-to-client)      | `bool`                 | `false`  |
 | [oEnableLog](#openpvn-enable-log)                 | `bool`                 | `false`  |
@@ -262,18 +261,6 @@ Specify the IPv6 range for OpenVPN VPN clients. As an example:
 
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
-
-### OpenVPN DNS Domain
-
-Allows you to specify the "Connection-specific DNS Suffix" for the VPN client, 
-e.g.:
-
-```
-'dnsDomain' => 'c.example.org',
-```
-
-This is currently used by OpenVPN. This domain is also automatically added to 
-[DNS Search Domain List](#dns-search-domain-list).
 
 ### OpenVPN Block LAN
 
