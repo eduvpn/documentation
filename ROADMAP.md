@@ -22,7 +22,7 @@ make your case!
   
 ## Ops Changes
 
-- Runs on Debian >= 11, Fedora >= 34
+- Runs on Debian >= 11, Fedora >= 34, Possibly CentOS/RHEL/Rocky 9
 
 ## Implementation Changes
 
@@ -41,11 +41,12 @@ make your case!
   use HTTP(S) instead of TCP socket, implement WireGuard management
 - Support PostgreSQL, MySQL/MariaDB for portal data storage instead of only 
   SQLite
-- New OAuth Token format (EdDSA JWT, perhaps switch to something else still?)
+- New OAuth 
+  [Token format](https://git.sr.ht/~fkooman/php-oauth2-server/tree/v7/item/TOKEN_FORMAT.md)
+- Implement memcached support for `fkooman/secookie`
 
 ## Work in Progress
 
-- Implement memcached support for `fkooman/secookie`
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
 - Add public CA and public WireGuard key to the discovery files to have an 
@@ -65,8 +66,6 @@ make your case!
   clients
 - We removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
   2FA for all, or for none
-- "Expire at night" based on the server's timezone (this is currently 
-  implemented, but could be removed if we move this to the client...)
 - Guest Usage has been completely removed for now, need to think how and 
   whether to get this back in a clean way *with* pseudonyms, don't leak local 
   user identity to guest servers! We MAY keep it out of 3.x and require servers
