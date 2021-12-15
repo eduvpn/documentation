@@ -155,6 +155,8 @@ vpn-maint-apply-changes
 
 cp resources/firewall/iptables  /etc/sysconfig/iptables
 cp resources/firewall/ip6tables /etc/sysconfig/ip6tables
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/iptables
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/ip6tables
 
 systemctl enable --now iptables
 systemctl enable --now ip6tables
