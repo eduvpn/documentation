@@ -80,5 +80,8 @@ systemctl enable --now crond
 cp resources/firewall/iptables.v3  /etc/sysconfig/iptables
 cp resources/firewall/ip6tables.v3 /etc/sysconfig/ip6tables
 
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/iptables
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/ip6tables
+
 systemctl enable --now iptables
 systemctl enable --now ip6tables
