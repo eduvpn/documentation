@@ -20,12 +20,16 @@ updates will require a different `deb` line in `/etc/apt/sources.list`.
 
 Pay attention the the cleanup as well (sections 4.7, 4.8). When updating the 
 repositories (section 4.3) also make sure you update 
-`/etc/apt/sources.list.d/eduVPN.list` and replace `buster` with `bullseye`, 
+`/etc/apt/sources.list.d/eduVPN_v2.list` and replace `buster` with `bullseye`, 
 i.e.:
 
 ```
-$ echo "deb https://repo.eduvpn.org/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/eduVPN.list
+$ echo "deb https://repo.eduvpn.org/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/eduVPN_v2.list
 ```
+
+**NOTE**: if `/etc/apt/sources.list.d/eduVPN_v2.list` does not yet exist, 
+create it and remove all other files related to "eduVPN" or "LC" from 
+`/etc/apt/sources.list.d` that may have been put there in the past!
 
 After the update is complete, PHP will not be properly configured yet, this is 
 because the version changed from 7.3 to 7.4 and is part of a different Apache

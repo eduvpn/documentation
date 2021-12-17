@@ -58,7 +58,9 @@ make your case!
   [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
   of discovery files
 - Keep the WireGuard private key only on the node(s), not on the portal...
-  
+- Browser generated WireGuard private key (in portal so server never knows it)
+- Generate QR code in browser instead of on the server
+
 ## Under Consideration
 
 - Reimplement 2FA, but only for local user accounts
