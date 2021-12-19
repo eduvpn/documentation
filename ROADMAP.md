@@ -42,7 +42,7 @@ make your case!
 - Support PostgreSQL, MySQL/MariaDB for portal data storage instead of only 
   SQLite
 - New OAuth 
-  [Token format](https://git.sr.ht/~fkooman/php-oauth2-server/tree/v7/item/TOKEN_FORMAT.md)
+  [Token format](https://git.sr.ht/~fkooman/php-oauth2-server/tree/main/item/TOKEN_FORMAT.md)
 - Implement memcached support for `fkooman/secookie`
 
 ## Work in Progress
