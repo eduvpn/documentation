@@ -55,24 +55,21 @@ certificate, for example using the included `lets_encrypt_debian.sh` script:
 Now visit your site at https://vpn.example.org/. Make sure there is no TLS 
 error and you can login with the credentials you noted before.
 
-By default there is a `default` profile. We will duplicate this and rename 
-it. For this, edit `/etc/vpn-user-portal/config.php`. You will find something 
-like this:
+By default there is a `default` profile. We will modify it. For this, edit 
+`/etc/vpn-user-portal/config.php`. You will find something like this if you 
+omit the comments:
 
 ```
 'vpnProfiles' => [
     [
         'profileId' = 'default',
         'displayName' => 'Default',
-        'hostName' => 'vpn.example.org',
         'dnsServerList' => ['9.9.9.9', '2620:fe::fe'],
-        'wRangeFour' => '10.43.43.0/24',
-        'wRangeSix' => 'fd43::/64',
+        'hostName' => 'vpn.example.org',
         'oRangeFour' => '10.42.42.0/24',
         'oRangeSix' => 'fd42::/64',
-
-        ...
-        ...
+        'wRangeFour' => '10.43.43.0/24',
+        'wRangeSix' => 'fd43::/64',
     ],
 ],
 ```
@@ -86,16 +83,31 @@ also take a array if they are _node specific_, see
     [
         'profileId' = 'default',
         'displayName' => 'Default',
-        'hostName' => ['node-a.vpn.example.org', 'node-b.vpn.example.org'],
         'dnsServerList' => ['9.9.9.9', '2620:fe::fe'],
-        'wRangeFour' => ['10.43.43.0/24', '10.45.45.0/24'],
-        'wRangeSix' => ['fd43::/64', 'fd45::/64'],
-        'oRangeFour' => ['10.42.42.0/24', '10.44.44.0/24'],
-        'oRangeSix' => ['fd42::/64', 'fd44::/64'],
-        'nodeUrl' => ['http://node-a.vpn.example.org:41194', 'http://node-b.vpn.example.org:41194'],
-        
-        ...
-        ...
+        'hostName' => [
+            'node-a.vpn.example.org',               // Node A
+            'node-b.vpn.example.org'                // Node B
+        ],
+        'oRangeFour' => [
+            '10.42.42.0/24',                        // Node A
+            '10.44.44.0/24'                         // Node B
+        ],
+        'oRangeSix' => [
+            'fd42::/64',                            // Node A
+            'fd44::/64'                             // Node B
+        ],
+        'wRangeFour' => [
+            '10.43.43.0/24',                        // Node A
+            '10.45.45.0/24'                         // Node B
+        ],
+        'wRangeSix' => [
+            'fd43::/64',                            // Node A
+            'fd45::/64'                             // Node B
+        ],
+        'nodeUrl' => [
+            'http://node-a.vpn.example.org:41194',  // Node A
+            'http://node-b.vpn.example.org:41194'   // Node B
+        ],
     ],
 ],
 ```
