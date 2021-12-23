@@ -116,7 +116,6 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
-/usr/libexec/vpn-user-portal/generate-secrets
 cp /etc/vpn-user-portal/node.key /etc/vpn-server-node/node.key
 
 ###############################################################################
