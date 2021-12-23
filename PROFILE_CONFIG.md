@@ -237,7 +237,6 @@ OpenVPN specific configuration options.
 | [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |
 | [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |
 | [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |
-| [oClientToClient](#openvpn-client-to-client)      | `bool`                 | `false`  |
 | [oEnableLog](#openpvn-enable-log)                 | `bool`                 | `false`  |
 | [oUdpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
 | [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
@@ -275,17 +274,6 @@ public WiFi.
 
 ```
 'oBlockLan' => true,
-```
-,
-### OpenVPN Client To Client
-
-This OpenVPN only option prevents VPN clients from reaching each other. This is
-especially useful when the client is connected to a VPN where not all other VPN
-clients are to be trusted, e.g. a shared VPN service with users from multiple
-organizations.
-
-```
-'oClientToClient' => true,
 ```
 
 ### OpenVPN Enable Log

@@ -209,12 +209,7 @@ TBD.
 
 # Allow Client to Client Traffic
 
-Here you need to take care of two things:
-
-1. Set `clientToClient` to `true` to allow communication between clients 
-   connected to the same OpenVPN server process, see 
-   [Profile Config](PROFILE_CONFIG.md);
-2. Modify the firewall to allow (certain) `tun` traffic to reach each other.
+Modify the firewall to allow (certain) `tun` traffic to reach each other.
 
 Suppose your current `FORWARD` rules are like this:
 
@@ -230,9 +225,8 @@ To allow all `tun` traffic also to all other `tun` devices, this is easy:
     -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 
 There is one caveat: this allows client-to-client traffic *between* different 
-VPN profiles as well! So be aware of this. It is currently not possible to 
-allow client-to-client traffic only within a profile unless you create a lot of
-manual firewall rules explicitly specifying `tun` devices.
+VPN profiles as well! If you do not want this, you can use `-s` and `-d` to 
+specify source and destination ranges.
 
 # Reject Forwarding Traffic
 
