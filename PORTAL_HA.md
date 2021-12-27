@@ -2,8 +2,7 @@
 
 This document explains how to run a "high available" and "redundant" setup.
 
-
- store the application database inside 
+It will explain how to store the application database inside 
 [MariaDB](https://mariadb.org/) and the (browser) session information inside 
 [memcached](https://www.memcached.org/) instead of the local file system. This 
 is useful if you want to make the VPN service "high available" or provide load 
@@ -18,80 +17,21 @@ to MySQL as well. Next to MariaDB and MySQL, also PostgreSQL is supported.
 * **NOTE**: your MariaDB/PostgreSQL setup should have higher availability than 
   your individual portal(s) otherwise this setup makes no sense;
 
-These instructions tell you how to setup a simple MariaDB server. This is by 
-no means complete and MUST NOT be used in production like this. Please talk to
-your local database expert first! It will also document how to configure 
-Memcached on your portal machines to share the (browser) session information.
-
 If you take all this in consideration, see 
 [Portal Configuration](#portal-configuration) on how to connect to your MariaDB
 server. Make sure you replace the server location and credentials.
 
 We assume you are using `deploy_fedora_v3_controller.sh` on all your 
 controller(s) with the same domain name, e.g. `vpn.example.org` and will use 
-"round robin" DNS for HA / load balancing. On your node(s) you run 
-`deploy_fedora_v3_node.sh`.
+"round robin" DNS or some other load balancing technology, e.g. a proxy. Again,
+make sure this proxy has a higher availability than your VPN portal(s).
+
+On your node(s) you run `deploy_fedora_v3_node.sh`.
 
 # MariaDB Installation
 
-Follow the instructions below to configure your MariaDB server:
-
-```
-$ sudo dnf -y install mariadb-server
-$ sudo systemctl enable --now mariadb
-$ sudo mysql_secure_installation
-```
-
-You can leave most things at their defaults, but set a `root` password when 
-asked, you will need it below.
-
-# MariaDB Configuration
-
-Now you need to create a database and a user with a password.
-
-```
-$ mysql -u root -p
-```
-
-Provide the `root` password, and run the following commands. Replace the name 
-of the database and user if you want. Make sure you choose your own password.
-
-## Local Access
-
-```
-MariaDB [(none)]> CREATE DATABASE vpn;
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON vpn.* to vpn@localhost IDENTIFIED BY 's3cr3t';
-MariaDB [(none)]> FLUSH PRIVILEGES;
-MariaDB [(none)]> QUIT
-```
-
-Now you should be able to connect to the database using your newly created 
-account:
-
-```
-$ mysql vpn -u vpn -p
-```
-
-## Remote Access
-
-```
-MariaDB [(none)]> CREATE DATABASE vpn;
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON vpn.* to vpn@'%' IDENTIFIED BY 's3cr3t';
-MariaDB [(none)]> FLUSH PRIVILEGES;
-MariaDB [(none)]> QUIT
-```
-
-Now you should be able to connect to your database server from your VPN portal
-using your newly created account:
-
-```
-$ mysql vpn -h db.example.org -u vpn -p
-```
-
-**NOTE**: you MUST make sure only your VPN portals can reach MariaDB and not
-the complete Internet! It seems by default MariaDB listens in `:::3306` which
-means all interfaces (both IPv4 and IPv6). You MUST firewall this port and 
-restrict access to your VPN portals only!
+See instructions on how to install MariaDB [here](DATABASE.md), make sure you
+install it on a separate system from your VPN portal(s).
 
 # Memcached Installation
 
