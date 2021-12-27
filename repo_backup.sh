@@ -16,12 +16,14 @@ GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
     # Misc
-    https://git.sr.ht/~eduvpn/disco.eduvpn.org
-    https://git.sr.ht/~eduvpn/app.eduvpn.org
-    https://git.sr.ht/~eduvpn/status.eduvpn.org
+    https://git.sr.ht/~eduvpn/cdn \
+    https://git.sr.ht/~eduvpn/disco.eduvpn.org \
+    https://git.sr.ht/~eduvpn/app.eduvpn.org \
+    https://git.sr.ht/~eduvpn/status.eduvpn.org \
 
     # Server Repositories
     https://git.sr.ht/~fkooman/builder.deb \
+    https://git.sr.ht/~fkooman/nbuilder.deb \
     https://git.sr.ht/~fkooman/builder.rpm \
     https://git.sr.ht/~fkooman/php-constant-time.deb \
     https://git.sr.ht/~fkooman/php-jwt \
