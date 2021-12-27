@@ -85,10 +85,6 @@ sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/httpd/conf.d/${WEB_FQDN}.conf"
 # update hostname of VPN server
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-user-portal/config.php"
 
-# DB init
-# XXX would be nice if we could avoid this
-sudo -u apache /usr/libexec/vpn-user-portal/init
-
 # update the default IP ranges for the profile
 # on Debian we can use ipcalc-ng
 sed -i "s|10.42.42.0|$(ipcalc -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
