@@ -169,7 +169,7 @@ The script will output some errors about being unable to start OpenVPN. This is
 because we changed the controller's default configuration. It is fine, we will
 fix that shortly!
 
-First we install the [vpn-daemon](https://github.com/letsconnectvpn/vpn-daemon):
+First we install the [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon):
 
     $ sudo apt install vpn-daemon
 

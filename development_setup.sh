@@ -15,7 +15,7 @@ git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
-git clone https://git.sr.ht/~fkooman/vpn-daemon
+git clone -b v1 https://git.sr.ht/~fkooman/vpn-daemon
 git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
 git clone https://git.sr.ht/~fkooman/builder.rpm
 git clone https://git.sr.ht/~fkooman/builder.deb
@@ -29,7 +29,7 @@ git clone https://git.sr.ht/~fkooman/builder.deb
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
 #git clone git@git.sr.ht:~fkooman/vpn-ca
-#git clone git@git.sr.ht:~fkooman/vpn-daemon
+#git clone -b v1 git@git.sr.ht:~fkooman/vpn-daemon
 #git clone git@git.sr.ht:~fkooman/vpn-maint-scripts
 #git clone git@git.sr.ht:~fkooman/builder.rpm
 #git clone git@git.sr.ht:~fkooman/builder.deb

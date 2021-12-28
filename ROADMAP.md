@@ -37,7 +37,7 @@ make your case!
 - New [API_V3](API_V3.md) for use by eduVPN / Let's Connect! Applications
 - Merge of vpn-user-portal, vpn-server-api and vpn-lib-common in 1 component
 - Switch 
-  [VPN Daemon](https://git.sr.ht/~fkooman/vpn-daemon/tree/v2/item/README.md) to 
+  [VPN Daemon](https://git.sr.ht/~fkooman/vpn-daemon) to 
   use HTTP(S) instead of TCP socket, implement WireGuard management
 - Support PostgreSQL, MySQL/MariaDB for portal data storage instead of only 
   SQLite

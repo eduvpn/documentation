@@ -36,7 +36,7 @@ locations.
 # Prerequisites
 
 In order to securely add node(s) to your VPN setup we implemented a simple 
-[VPN daemon](https://github.com/letsconnectvpn/vpn-daemon) that runs on the 
+[VPN daemon](https://git.sr.ht/~fkooman/vpn-daemon) that runs on the 
 node(s). The communication channel between the controller and node is 
 protected by TLS (client certificates) when contacting remote nodes.
 
