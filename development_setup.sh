@@ -9,26 +9,27 @@ cd "${BASE_DIR}" || exit
 # clone repositories (read-only)
 git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-user-portal
 git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-node
-git clone -b v2 https://git.sr.ht/~fkooman/vpn-documentation
+git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
 git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
 git clone https://git.sr.ht/~fkooman/vpn-ca
-git clone -b v2 https://git.sr.ht/~fkooman/vpn-daemon
+git clone https://git.sr.ht/~fkooman/vpn-daemon
 git clone -b v2 https://git.sr.ht/~fkooman/vpn-maint-scripts
 git clone https://git.sr.ht/~fkooman/builder.rpm
-git clone https://git.sr.ht/~fkooman/builder.deb
+git clone https://git.sr.ht/~fkooman/nbuilder.deb
 
 # clone all repositories (read/write)
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-user-portal
-#git clone -b ${REPO_BRANCH} git@git.sr.ht:~fkooman/vpn-server-node
-#git clone -b v2 git@git.sr.ht:~fkooman/vpn-documentation
+#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-user-portal
+#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-server-node
+#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-documentation
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN
 #git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
 #git clone git@git.sr.ht:~fkooman/vpn-ca
-#git clone -b v2 git@git.sr.ht:~fkooman/vpn-daemon
+#git clone git@git.sr.ht:~fkooman/vpn-daemon
 #git clone -b v2 git@git.sr.ht:~fkooman/vpn-maint-scripts
 #git clone git@git.sr.ht:~fkooman/builder.rpm
 #git clone git@git.sr.ht:~fkooman/builder.deb
+#git clone git@git.sr.ht:~fkooman/nbuilder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
@@ -65,7 +66,6 @@ cat << EOF > config/config.php
 return array_merge(\$baseConfig, \$localConfig);
 EOF
 
-php libexec/init.php
 php libexec/generate-secrets.php
 php bin/add-user.php --user foo --pass bar
 
