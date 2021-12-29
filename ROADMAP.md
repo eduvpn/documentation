@@ -44,12 +44,13 @@ make your case!
 - New OAuth 
   [Token format](https://git.sr.ht/~fkooman/php-oauth2-server/tree/main/item/TOKEN_FORMAT.md)
 - Implement memcached support for `fkooman/secookie`
+- Keep the WireGuard private key only on the node(s), not on the portal...
 
 ## Work in Progress
 
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
-- Add public CA and public WireGuard key to the discovery files to have an 
+- Add public CA and public WireGuard key(s) to the discovery files to have an 
   additional trust channel between app and server in addition to Web TLS, or 
   perhaps _sign_ the API responses with a public key mentioned in the discovery 
   files...
@@ -57,7 +58,6 @@ make your case!
 - Work on implementing 
   [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
   of discovery files
-- Keep the WireGuard private key only on the node(s), not on the portal...
 - Browser generated WireGuard private key (in portal so server never knows it)
 - Generate QR code in browser instead of on the server
 
