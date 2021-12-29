@@ -45,8 +45,10 @@ make your case!
   [Token format](https://git.sr.ht/~fkooman/php-oauth2-server/tree/main/item/TOKEN_FORMAT.md)
 - Implement memcached support for `fkooman/secookie`
 - Keep the WireGuard private key only on the node(s), not on the portal...
-
-## Work in Progress
+- Removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
+  2FA for all, or for none
+  
+## Work in Progress / Under Consideration
 
 - VPN Usage stats need to be completely redone, currently only "VPN client use" 
   is available because that was easy
@@ -60,17 +62,15 @@ make your case!
   of discovery files
 - Browser generated WireGuard private key (in portal so server never knows it)
 - Generate QR code in browser instead of on the server
-
-## Under Consideration
+- implement PSK per config/user for WireGuard (similar to tls-crypt-v2 with 
+  OpenVPN)?
+  
+## For Future Consideration (>= 3.1)
 
 - Reimplement 2FA, but only for local user accounts
 - Implement Admin API. e.g. for bulk-configuration downloads for managed 
   clients
-- We removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
-  2FA for all, or for none
 - Guest Usage has been completely removed for now, need to think how and 
   whether to get this back in a clean way *with* pseudonyms, don't leak local 
   user identity to guest servers! We MAY keep it out of 3.x and require servers
   to keep running 2.x until we come up with a better approach...
-- implement PSK per config/user for WireGuard (similar to tls-crypt-v2 with 
-  OpenVPN)
