@@ -102,7 +102,7 @@ $localConfig = [
 return array_merge($baseConfig, $localConfig);
 EOF
 
-cp "${BASE_DIR}/vpn-user-portal/config/node.key" "${BASE_DIR}/vpn-server-node/config/node.key"
+cp "${BASE_DIR}/vpn-user-portal/config/node.0.key" "${BASE_DIR}/vpn-server-node/config/node.key"
 
 ######################################
 # launch script                      #

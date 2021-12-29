@@ -112,7 +112,7 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
-cp /etc/vpn-user-portal/node.key /etc/vpn-server-node/node.key
+cp /etc/vpn-user-portal/node.0.key /etc/vpn-server-node/node.key
 
 ###############################################################################
 # CERTIFICATE

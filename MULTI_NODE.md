@@ -138,6 +138,7 @@ Restart Apache:
 Before moving on to the nodes, make note of the value of 
 `/etc/vpn-user-portal/node.key`. You'll need it next!
 
+TODO: each node uses their own `node.key` now, so we need to generate new ones
 ## Nodes
 
 The instructions below will be only shown for Node A, but they are identical
