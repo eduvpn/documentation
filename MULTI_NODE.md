@@ -19,8 +19,8 @@ deployment uses:
 Role       | DNS Host               | IPv4       | IPv6         |
 ---------- | ---------------------- | ---------- | ------------ |
 Controller | vpn.example.org        | 192.0.2.10 | 2001:db8::10 |
-Node A     | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
-Node B     | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
+Node A (0) | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
+Node B (1) | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
 
 We will use NAT for IPv4 and IPv6 client traffic.
 
@@ -85,28 +85,28 @@ also take a array if they are _node specific_, see
         'displayName' => 'Default',
         'dnsServerList' => ['9.9.9.9', '2620:fe::fe'],
         'hostName' => [
-            'node-a.vpn.example.org',               // Node A
-            'node-b.vpn.example.org'                // Node B
+            'node-a.vpn.example.org',               // Node A (0)
+            'node-b.vpn.example.org'                // Node B (1)
         ],
         'oRangeFour' => [
-            '10.42.42.0/24',                        // Node A
-            '10.44.44.0/24'                         // Node B
+            '10.42.42.0/24',                        // Node A (0)
+            '10.44.44.0/24'                         // Node B (1)
         ],
         'oRangeSix' => [
-            'fd42::/64',                            // Node A
-            'fd44::/64'                             // Node B
+            'fd42::/64',                            // Node A (0)
+            'fd44::/64'                             // Node B (1)
         ],
         'wRangeFour' => [
-            '10.43.43.0/24',                        // Node A
-            '10.45.45.0/24'                         // Node B
+            '10.43.43.0/24',                        // Node A (0)
+            '10.45.45.0/24'                         // Node B (1)
         ],
         'wRangeSix' => [
-            'fd43::/64',                            // Node A
-            'fd45::/64'                             // Node B
+            'fd43::/64',                            // Node A (0)
+            'fd45::/64'                             // Node B (1)
         ],
         'nodeUrl' => [
-            'http://node-a.vpn.example.org:41194',  // Node A
-            'http://node-b.vpn.example.org:41194'   // Node B
+            'http://node-a.vpn.example.org:41194',  // Node A (0)
+            'http://node-b.vpn.example.org:41194'   // Node B (1)
         ],
     ],
 ],
@@ -135,10 +135,17 @@ Restart Apache:
 
     $ sudo systemctl restart apache2
 
-Before moving on to the nodes, make note of the value of 
-`/etc/vpn-user-portal/node.key`. You'll need it next!
+For each node you want to add you need to generate a new "Node Key", e.g. for
+node "1" you'd use the following:
 
-TODO: each node uses their own `node.key` now, so we need to generate new ones
+```
+$ sudo /usr/libexec/vpn-user-portal/generate-secrets --node 1
+```
+
+This will write a new node key to `/etc/vpn-user-portal/node.1.key`. This is 
+the key that should be used on "Node 1". By default a key is generated for 
+"Node 0", so you do not need to generate that one (again).
+
 ## Nodes
 
 The instructions below will be only shown for Node A, but they are identical
