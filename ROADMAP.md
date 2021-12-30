@@ -8,6 +8,9 @@ If you'd like to have something added, removed, changed: please contact us on
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 
 make your case!
 
+For our current progress see our 
+[issue tracker](https://todo.sr.ht/~eduvpn/server).
+
 ## High Level Changes
 
 - [WireGuard](WIREGUARD.md) Support
@@ -22,7 +25,8 @@ make your case!
   
 ## Ops Changes
 
-- Runs on Debian >= 11, Fedora >= 34, Possibly CentOS/RHEL/Rocky 9
+- Runs on Debian >= 11, Fedora >= 34, Possibly Ubuntu 22.04 and 
+  CentOS/RHEL/Rocky 9
 
 ## Implementation Changes
 
@@ -62,8 +66,6 @@ make your case!
   of discovery files
 - Browser generated WireGuard private key (in portal so server never knows it)
 - Generate QR code in browser instead of on the server
-- implement PSK per config/user for WireGuard (similar to tls-crypt-v2 with 
-  OpenVPN)?
   
 ## For Future Consideration (>= 3.1)
 
