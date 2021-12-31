@@ -107,26 +107,48 @@ You can configure the database in `/etc/vpn-user-portal/config.php`:
     ...
 ```
 
-After changing the configuration, try to access the VPN portal. This SHOULD
-automatically create the tables in your MariaDB server and migrate the database
-schema to a newer version (if necessary).
+## Database Initialization
 
-## Manual Database Initialization & Migration
-
-You can disable this automatic initialiation and migration behavior by setting 
-the `autoInitMigrate` option to `false` under the `Db` section in 
-`/etc/vpn-user-portal/config.php`. This may be necessary if the account 
-accessing your MariaDB server does not have the required permissions to 
-`CREATE` or `ALTER` tables.
-
-You can still (manually) trigger the initialization/migration by calling:
+Now you are ready to initialize the database:
 
 ```bash
-$ /usr/libexec/vpn-user-portal/db-update
+$ /usr/libexec/vpn-user-portal/db --init
 ```
 
-This of course requires adequate permissions on the database. If you really 
-want to perform every step manually, you need to look in 
-`/usr/share/vpn-user-portal/schema` for the migration SQL scripts. Make sure 
-you also set the correct schema version in the `version` table after you 
-performed the migrations!
+You can override your database configuration with `--dsn`, `--user`, `--pass` 
+options in case you need different credentials to perform a database 
+initialization.
+
+## Database Migration
+
+Updates to the VPN software MAY require database migrations. This will be 
+inidicated in the release notes of newer versions.
+
+You can perform the migration:
+
+```bash
+$ /usr/libexec/vpn-user-portal/db --migrate
+```
+
+You can override your database configuration with `--dsn`, `--user`, `--pass` 
+options in case you need different credentials to perform a database 
+migration.
+
+If a migration is needed, but not performed the VPN portal will give a clear 
+error message. 
+
+## Manual Initialization / Migration
+
+If you really want to perform every step manually, you need to look in 
+`/usr/share/vpn-user-portal/schema` for the SQL schema files. The latest 
+version available there SHOULD be used for initialization, the files with `_` 
+are the migration queries that need to be run to migrate from one version to 
+the next.
+
+**NOTE**: make sure you also create/update the `version` table that contains 
+the current version, e.g.:
+
+```sql
+CREATE TABLE version (current_version TEXT NOT NULL);
+INSERT INTO version VALUES('2021123001');
+```
