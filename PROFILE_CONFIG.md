@@ -16,7 +16,7 @@ To modify any of the options, modify the file mentioned above and look for the
 ```
 'vpnProfiles' => [
     [
-        'profileId' = 'default',
+        'profileId' => 'default',
         'displayName' => 'Default',
         ...
         ...
