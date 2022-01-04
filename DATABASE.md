@@ -107,9 +107,26 @@ You can configure the database in `/etc/vpn-user-portal/config.php`:
     ...
 ```
 
+## Database Info
+
+You can show the current status of your database:
+
+```bash
+$ /usr/libexec/vpn-user-portal/db
+```
+
+This will tell you whether initialization or migration is required, e.g.:
+
+```bash
+$ /usr/libexec/vpn-user-portal/db
+Current Schema Version : 2022010202
+Required Schema Version: 2022010202
+Status                 : **OK**
+```
+
 ## Database Initialization
 
-Now you are ready to initialize the database:
+If you need to initialize the database:
 
 ```bash
 $ /usr/libexec/vpn-user-portal/db --init
