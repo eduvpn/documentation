@@ -26,6 +26,7 @@ The changes made to the API documentation before it is final.
 |            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
 | 2021-11-02 | Document [VPN Protocol Selection](#vpn-protocol-selection) for clients                                          |
 | 2021-11-04 | Update the `/info` response fields, rewrite "VPN Protocol Selection" section                                    |
+| 2022-04-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified                                       |
 
 # Instance Discovery
 
@@ -207,10 +208,7 @@ mark them as unsupported. Currently `openvpn` and `wireguard` values are
 supported.
 
 The `vpn_proto_preferred` is set by the server operator for a particular 
-profile. Clients SHOULD follow this and try to connect using this protocol by 
-default. A client MAY override this if necessary, for example when the 
-preferred protocol is WireGuard, but the client's "Force TCP" setting is 
-enabled.
+profile. This information MUST NOT be used by the VPN client.
 
 ## Connect
 
@@ -224,7 +222,6 @@ key for when WireGuard will be used:
 ```bash
 $ curl \
     -d "profile_id=employees" \
-    -d "vpn_proto=wireguard" \
     --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" \
     -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api/v3/connect"
@@ -235,26 +232,16 @@ VPN configuration files that belong to the same OAuth _authorization_.
 
 The `POST` request has (optional) parameters:
 
-| Parameter    | Required? | For Protocol | Value(s)                                                                      |
-| ------------ | --------- | ------------ | ----------------------------------------------------------------------------- |
-| `profile_id` | Yes       | _All_        | The `profile_id` from the `/info` response                                    |
-| `vpn_proto`  | No        | _All_        | Either `wireguard` or `openvpn`. The default value is `vpn_proto_preferred`   |
-| `public_key` | Yes       | `wireguard`  | A WireGuard public key, when using WireGuard                                  |
-| `tcp_only`   | No        | `openvpn`    | Connect only over TCP. Either `on` or `off` when specified, defaults to `off` |
+| Parameter    | Required | Value(s)                                                                      |
+| ------------ | -------- | ----------------------------------------------------------------------------- |
+| `profile_id` | Yes      | The `profile_id` from the `/info` response                                    |
+| `public_key` | No       | A WireGuard public key, for WireGuard                                         |
+| `tcp_only`   | No       | Connect only over TCP. Either `on` or `off` when specified, defaults to `off` |
 
 #### Profile ID
 
 The value of `profile_id` MUST be of one of the identifiers for the profiles 
 returned in the `/info` response.
-
-### VPN Protocol
-
-The client can use `vpn_proto` to force a particular protocol. It MUST be a 
-value listed under `vpn_proto_list` and SHOULD follow the `vpn_proto_preferred` 
-value from the `/info` response.
-
-See [VPN Protocol Selection](#vpn-protocol-selection) on how to implement 
-protocol selection.
 
 #### Public Key
 
@@ -435,7 +422,6 @@ HTTP/1.1 204 No Content
 | `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are neither `on` nor `off`                 |
 | `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
-| `/connect`    | `invalid "vpn_proto"`        | 400  | When the specified `vpn_proto` is not supported by the profile       |
 | `/disconnect` | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/disconnect` | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 
@@ -466,28 +452,20 @@ either OpenVPN, WireGuard, or _both_. Administrators can also configure a
 _preferred_ protocol per profile if both are supported.
 
 Clients supporting this version of the API SHOULD support both OpenVPN and 
-WireGuard, but MAY only support OpenVPN (for now).
+WireGuard, but MAY support only OpenVPN.
 
-All existing eduVPN/Let's Connect! have some sort of "Force TCP" setting that 
-allows users to force OpenVPN connections to use TCP only. This is important in 
-case UDP is blocked in the network, or is broken, typically due to (Path) MTU 
-Discovery issues. Eventually applications SHOULD be able to determine 
-automatically whether UDP works reliably and we could get rid of this setting 
-toggle.
+All existing eduVPN/Let's Connect! applications have some sort of "Force TCP" 
+setting that allows users to force OpenVPN connections to use TCP only. This is 
+important in case UDP is blocked in the network, or is broken, typically due to 
+(Path) MTU Discovery issues. Eventually applications SHOULD be able to 
+determine automatically whether UDP works reliably and we could get rid of this 
+setting toggle.
 
-| Protocol Support   | Preferred | Force TCP | What Should Happen?                                     |
-| ------------------ | --------- | --------- | ------------------------------------------------------- |
-| OpenVPN, WireGuard | OpenVPN   | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
-| OpenVPN, WireGuard | OpenVPN   | Off       | `POST /connect [vpn_proto=openvpn]`                     |
-| OpenVPN, WireGuard | WireGuard | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
-| OpenVPN, WireGuard | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
-| OpenVPN            | OpenVPN   | On        | `POST /connect [vpn_proto=openvpn, tcp_only=on]`        |
-| OpenVPN            | OpenVPN   | Off       | `POST /connect [vpn_proto=openvpn]`                     |
-| WireGuard          | WireGuard | On        | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
-| WireGuard          | WireGuard | Off       | `POST /connect [vpn_proto=wireguard, public_key=${PK}]` |
-
-**NOTE**: when only WireGuard is supported on the server, the "Force TCP" 
-option is ignored and an attempt is made to connect over WireGuard anyway!
+For now, the "Force TCP" selection SHOULD be interpreted as: "Prefer using 
+OpenVPN over TCP, if available". This works for protocols that support both 
+OpenVPN and WireGuard, but not for protocols supporting only WireGuard where 
+a WireGuard configuration will be returned no matter what. WireGuard MAY work
+over UDP where OpenVPN did not, so it is still better than doing nothing.
 
 We assume the client always supports OpenVPN. In scope of this API version, the 
 following _pseudo code_ can be used to implement the protocol selection.
@@ -495,25 +473,13 @@ following _pseudo code_ can be used to implement the protocol selection.
 If the client supports both OpenVPN and WireGuard:
 
 ```
-if Profile_Supports_OpenVPN && (${Force_TCP} == On || Profile_Prefers_OpenVPN) {
-    POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
-    
-    return
-}
-
-POST /connect [vpn_proto=wireguard, public_key=${PK}]
+POST /connect [public_key=${PK}, tcp_only=${Force_TCP}]
 ```
 
 If the client only supports OpenVPN:
 
 ```
-if Profile_Supports_OpenVPN {
-    POST /connect [vpn_proto=openvpn, tcp_only=${Force_TCP}]
-    
-    return
-}
-
-Error: Client does not support WireGuard, but profile only supports WireGuard
+POST /connect [tcp_only=${Force_TCP}]
 ```
 
 # Flow
