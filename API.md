@@ -26,7 +26,8 @@ The changes made to the API documentation before it is final.
 |            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
 | 2021-11-02 | Document [VPN Protocol Selection](#vpn-protocol-selection) for clients                                          |
 | 2021-11-04 | Update the `/info` response fields, rewrite "VPN Protocol Selection" section                                    |
-| 2022-04-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified                                       |
+| 2022-04-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified, the server will always decide based  |
+|            | on the provided parameters, i.e. `public_key` and `tcp_only` and the supported protocols by the profile...      |
 
 # Instance Discovery
 
