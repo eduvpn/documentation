@@ -28,6 +28,8 @@ The changes made to the API documentation before it is final.
 | 2021-11-04 | Update the `/info` response fields, rewrite "VPN Protocol Selection" section                                    |
 | 2022-04-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified, the server will always decide based  |
 |            | on the provided parameters, i.e. `public_key` and `tcp_only` and the supported protocols by the profile...      |
+| 2022-04-06 | The `profile_id` parameter on the `/disconnect` call is never used, no point in having the client send it, so   |
+|            | the need to send this has been removed                                                                          |
 
 # Instance Discovery
 
@@ -377,8 +379,9 @@ PrivateKey = AJmdZTXhNRwMT1CEvXys2T9SNYnXUG2niJVT4biXaX0=
 
 ## Disconnect
 
-This call is to indicate to the server that the VPN session can be terminated.
-This MUST ONLY be called when the _user_ decides to stop the VPN connection.
+This call is to indicate to the server that the VPN session(s) belonging to 
+this OAuth authorization can be terminated. This MUST ONLY be called when the 
+_user_ decides to stop the VPN connection.
 
 The purpose of this call is to clean up, i.e. release the IP address reserved
 for the client (WireGuard) and delete the certificate from the list of allowed 
@@ -400,13 +403,11 @@ terminated by the application, if possible.
 
 ```bash
 $ curl \
-    -d "profile_id=employees" \
     -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api/v3/disconnect"
 ```
 
-This `POST` call has 1 parameter, `profile_id`. Its value MUST be the same as 
-used for the `/connect` call.
+This `POST` call has no parameters.
 
 ### Response
 
@@ -423,8 +424,6 @@ HTTP/1.1 204 No Content
 | `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
 | `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are neither `on` nor `off`                 |
 | `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
-| `/disconnect` | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
-| `/disconnect` | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 
 An example:
 
