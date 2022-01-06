@@ -60,7 +60,7 @@ By default there is a `default` profile. We will modify it. For this, edit
 omit the comments:
 
 ```
-'vpnProfiles' => [
+'ProfileList' => [
     [
         'profileId' = 'default',
         'displayName' => 'Default',
@@ -79,7 +79,7 @@ also take a array if they are _node specific_, see
 [Profile Configuration](PROFILE_CONFIG.md) for an overview.
 
 ```
-'vpnProfiles' => [
+'ProfileList' => [
     [
         'profileId' = 'default',
         'displayName' => 'Default',

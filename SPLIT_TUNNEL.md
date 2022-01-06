@@ -31,7 +31,7 @@ should be allowed from the VPN server.
 Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 
 ```
-'vpnProfiles' => [
+'ProfileList' => [
     'office' => [
         'displayName' => 'Office',
        // issued to VPN clients

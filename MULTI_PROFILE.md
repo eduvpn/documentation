@@ -27,7 +27,7 @@ modified, you can remove the `default` profile that was there if you didn't
 modify the default configuration yet.
 
 ```
-'vpnProfiles' => [
+'ProfileList' => [
     // Office Employees
     'office' => [
         'displayName' => 'Office',

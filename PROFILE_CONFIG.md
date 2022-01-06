@@ -11,10 +11,10 @@ their (default) value. This document has some additional explanation and
 discusses some considerations.
 
 To modify any of the options, modify the file mentioned above and look for the
-`vpnProfiles` section, e.g:
+`ProfileList` section, e.g:
 
 ```
-'vpnProfiles' => [
+'ProfileList' => [
     [
         'profileId' => 'default',
         'displayName' => 'Default',
