@@ -20,8 +20,8 @@ COMMIT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p udp -m state --state NEW -m udp --dport 51820 -j ACCEPT
--A INPUT -p udp -m state --state NEW -m udp --dport 1194:1258 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1258 -j ACCEPT
+-A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
