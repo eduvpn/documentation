@@ -268,7 +268,7 @@ generate one *per server*.
 #### TCP Only
 
 The `tcp_only` parameter is ONLY used by the OpenVPN protocol. In essence, when
-set to `true`, only TCP "remotes" are returned as part of the OpenVPN 
+set to `on`, only TCP "remotes" are returned as part of the OpenVPN 
 configuration file. The default is `off`, which means all (both UDP and TCP) 
 remotes are returned.
 
