@@ -1,9 +1,3 @@
----
-title: Configuring the Firewall
-description: Configure the VPN Firewall
-category: configuration
----
-
 # Introduction
 
 A very simple static firewall based on `iptables` is installed when running the 
@@ -41,11 +35,15 @@ You can find the firewall rules in `/etc/sysconfig/iptables` (IPv4) and
 
 After making changes, you can restart the firewall using:
 
-    $ sudo systemctl restart iptables && sudo systemctl restart ip6tables
+```bash
+$ sudo systemctl restart iptables && sudo systemctl restart ip6tables
+```
 
 You can fully disable the firewall as well:
 
-    $ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
+```bash
+$ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
+```
 
 ## Debian
 
@@ -54,75 +52,28 @@ and `/etc/iptables/rules.v6` (IPv6).
 
 After making changes, you can restart the firewall using:
 
-    $ sudo systemctl restart netfilter-persistent
+```bash
+$ sudo systemctl restart netfilter-persistent
+```
 
 You can fully disable the firewall as well:
 
-    $ sudo systemctl disable --now netfilter-persistent
+```bash
+$ sudo systemctl disable --now netfilter-persistent
+```
 
 ## IPv4 vs IPv6
 
 The configuration of IPv4 and IPv6 firewalls is _almost_ identical. When 
 modifying the configuration files you, obviously, have to use the IPv4 style
 addresses in the IPv4 firewall, and the IPv6 style addresses in the IPv6 
-firewall. In addition, the ICMP types are slightly different:
-
-|              | IPv4                   | IPv6                   |
-| ------------ | ---------------------- | ---------------------- |
-| Protocol     | `icmp`                 | `ipv6-icmp`            |
-| Error Packet | `icmp-host-prohibited` | `icmp6-adm-prohibited` |
-
-So when modifying the firewall files, make sure you use the correct protocol
-and error packet description. You can see this in the default firewall as 
-listed above.
+firewall. In addition, the ICMP type is different, i.e. `icmp` for IPv4 and 
+`ipv6-icmp` for IPv6, see the `iptables` and `ip6tables` for examples.
 
 # Improving the Defaults
 
-The default firewall works well, but can be improved upon by matching it more
-with your system. Two steps I always take:
-
-1. Specifying the exact network interfaces for which to allow "forwarding"
-2. Switch to `SNAT` for IPv4 and IPv6 NAT
-
-## Specifying Interfaces
-
-The default `FORWARD` rules used are:
-
-    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
-    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-
-This allows all traffic coming from the OpenVPN `tun` devices to all other 
-devices that are not also OpenVPN `tun` devices. If you know the external 
-interface you can use that instead. For example, if your external interface is
-`eth0`, the rules would look like this:
-
-    -A FORWARD -i tun+ -o eth0 -j ACCEPT
-    -A FORWARD -i eth0 -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-
-This allows all traffic to and from the VPN clients. This is fine in case NAT
-is used. When issuing [Public IP Addresses](#public-ip-addresses) to VPN 
-clients, see below.
-
-## Using SNAT
-
-The default `POSTROUTING` rule in the "NAT" table is:
-
-    -A POSTROUTING -s 10.0.0.0/8     -j MASQUERADE
-    -A POSTROUTING -s 172.16.0.0/12  -j MASQUERADE
-    -A POSTROUTING -s 192.168.0.0/16 -j MASQUERADE
-
-It is recommended to use `SNAT` and be explicit about the IP address(es) to NAT 
-to, i.e.:
-
-    -A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1
-
-Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
-`192.0.2.1` with your public IP address.
-
-**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
-and address(es).
+The default firewall works well, but can be improved upon by updating it to 
+match your deployment.
 
 ## Restricting SSH Access
 
@@ -131,12 +82,16 @@ makes sense to restrict this a set of hosts or a "bastion" host.
 
 The default `INPUT` rule for SSH is:
 
-    -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+```
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+```
 
 You can modify these rules like this:
 
-    -A INPUT -s 192.0.2.0/24    -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-    -A INPUT -s 198.51.100.0/24 -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+```
+-A INPUT -s 192.0.2.0/24    -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 198.51.100.0/24 -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+```
 
 This allows only SSH connections coming from `192.0.2.0/24` and 
 `198.51.100.0/24`. This will also prevent VPN clients from accessing the SSH 
@@ -144,16 +99,20 @@ server.
 
 # Opening Additional VPN Ports
 
-By default, one port, but both for TCP and UDP are open for OpenVPN 
+By default, one port, both for TCP and UDP are open for OpenVPN 
 connections:
 
-    -A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
-    -A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
+```
+-A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
+```
 
 You can easily add more by using "ranges", e.g.
 
-    -A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
-    -A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
+```
+-A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
+```
 
 # NAT to Multiple Public IP Addresses
 
@@ -162,13 +121,18 @@ multiple public IP addresses.
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
-    -A POSTROUTING -s 10.0.0.0/8     -j MASQUERADE
-    -A POSTROUTING -s 172.16.0.0/12  -j MASQUERADE
-    -A POSTROUTING -s 192.168.0.0/16 -j MASQUERADE
+```
+-A POSTROUTING -s 10.0.0.0/8 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 172.16.0.0/12 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.0.0/16 -o eth0 -j MASQUERADE
+```
 
-You can replace this by:
+Assuming all IP addresses assigned to VPN clients are in the `10.0.0.0/8` 
+prefix, you can replace this by for example this line:
 
-    -A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1-192.0.2.8
+```
+-A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1-192.0.2.8
+```
 
 Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
 `192.0.2.1-192.0.2.8` with your public IP addresses. All IP addresses in the 
@@ -180,17 +144,13 @@ and address(es).
 # NAT to Different Public IP Addresses per Profile
 
 When using [Multiple Profiles](MULTI_PROFILE.md), you may want to NAT to 
-different public IP addresses.
+different public IP addresses. You could for example use:
 
-The default `POSTROUTING` rule in the "NAT" table is:
-
-    -A POSTROUTING -j MASQUERADE
-
-You can replace this by:
-
-    -A POSTROUTING -s 10.0.1.0/24 -j SNAT --to-source 192.0.2.1
-    -A POSTROUTING -s 10.0.2.0/24 -j SNAT --to-source 192.0.2.2
-    -A POSTROUTING -s 10.0.3.0/24 -j SNAT --to-source 192.0.2.3
+```
+-A POSTROUTING -s 10.0.1.0/24 -j SNAT --to-source 192.0.2.1
+-A POSTROUTING -s 10.0.2.0/24 -j SNAT --to-source 192.0.2.2
+-A POSTROUTING -s 10.0.3.0/24 -j SNAT --to-source 192.0.2.3
+```
 
 Make sure you replace the IP ranges specified in `-s` with your VPN client IP 
 ranges assigned to the profiles, and the `--to-source` address with your public
@@ -199,34 +159,28 @@ IP addresses.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# Local DNS
-
-TBD.
-
-# VPN Daemon
-
-TBD.
-
 # Allow Client to Client Traffic
 
-Modify the firewall to allow (certain) `tun` traffic to reach each other.
+By default, client-to-client traffic is not allowed:
 
-Suppose your current `FORWARD` rules are like this:
+```
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -j ACCEPT
+-A FORWARD -i wg0 -o eth0 -j ACCEPT
+```
 
-    -A FORWARD -i tun+ -o eth0 -j ACCEPT
-    -A FORWARD -i eth0 -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+You can either allow all forwarding, be specific with IP ranges 
+(using the `-s` and `-d` flags) or even interfaces.
 
-To allow all `tun` traffic also to all other `tun` devices, this is easy:
-
-    -A FORWARD -i tun+ -o eth0 -j ACCEPT
-    -A FORWARD -i eth0 -o tun+ -j ACCEPT
-    -A FORWARD -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-
-There is one caveat: this allows client-to-client traffic *between* different 
-VPN profiles as well! If you do not want this, you can use `-s` and `-d` to 
-specify source and destination ranges.
+```
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i wg0 -o eth0 -j ACCEPT
+-A FORWARD -i wg0 -o wg0 -j ACCEPT
+-A FORWARD -i wg0 -o tun+ -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -j ACCEPT
+-A FORWARD -i tun+ -o tun+ -j ACCEPT
+-A FORWARD -i tun+ -o wg0 -j ACCEPT
+```
 
 # Reject Forwarding Traffic
 
@@ -240,19 +194,13 @@ ranges you also push to the client. As the client can always (manually)
 override the configuration and try to send all traffic over the VPN, this may
 need to be restricted.
 
-The default `FORWARD` rules used are:
-
-    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
-    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-
-If you want to only only traffic to `10.1.1.0/24` and `192.168.1.0/24` from 
+If you want to only only traffic _to_ `10.1.1.0/24` and `192.168.1.0/24` from 
 your VPN clients, you can use the following:
 
-    -A FORWARD -i tun+ ! -o tun+ -d 10.1.1.0/24 -j ACCEPT
-    -A FORWARD -i tun+ ! -o tun+ -d 192.168.1.0/24 -j ACCEPT
-    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+```
+-A FORWARD -i tun+ -d 10.1.1.0/24 -j ACCEPT
+-A FORWARD -i tun+ -d 192.168.1.0/24 -j ACCEPT
+```
 
 **NOTE**: for IPv6 the situation is similar.
 
@@ -262,20 +210,15 @@ As the VPN server is "dual stack" throughout, it is not possible to "disable"
 IPv6. However, one can easily modify the firewall to prevent all IPv6 traffic
 over the VPN to be rejected. By _rejecting_ instead of _dropping_, clients will
 quickly fall back to IPv4, there will not be any delays in establishing 
-connections.
+connections. You can simply remove all `FORWARD` rules and replace it with:
 
-The default `FORWARD` rules used are:
-
-    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
-    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
-
-You can simply remove all of them except the last one:
-
-    -A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+```
+-A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
+```
 
 This will cause all IPv6 to be rejected. The VPN becomes thus effectively 
-IPv4 only.
+IPv4 only. You can of course also use it to reject IPv4 traffic to create an
+IPv6-only VPN.
 
 # Public IP Addresses for VPN Clients
 
@@ -293,46 +236,27 @@ actually this is recommended over using IPv6 NAT!
 By removing all `POSTROUTING` rules from the "NAT" table takes care of 
 disabling NAT.
 
-## Restricting Incoming Traffic
+## Allowing Incoming Traffic
 
 The default `FORWARD` rules used are:
 
-    -A FORWARD -i tun+ ! -o tun+ -j ACCEPT
-    -A FORWARD ! -i tun+ -o tun+ -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+```
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -j ACCEPT
+-A FORWARD -i wg0 -o eth0 -j ACCEPT
+```
 
-When using public IP addresses this allows traffic from the outside to reach 
-the VPN clients. This may not be wanted. Restricting this is easy:
-
-    -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-    -A FORWARD -i tun+ -o eth0 -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-
-Assuming `eth0` is your external network interface, this allows VPN clients to 
-initiate connections and to receive responses, but outside systems cannot 
-initiate a connection to the VPN clients.
+This restrict any traffic initiating on the outside reaching your VPN clients.
 
 If you want to allow traffic from a designated host to the clients, e.g. for 
 remote management, you can use the following:
 
-    -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-    -A FORWARD -i tun+ -o eth0 -j ACCEPT
-    -A FORWARD -i eth0 -o tun+ -s 192.168.11.22/32 -j ACCEPT
-    -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+```
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i tun+ -o eth0 -j ACCEPT
+-A FORWARD -i wg0 -o eth0 -j ACCEPT
+-A FORWARD -i eth0 -o tun+ -s 192.168.11.22/32 -j ACCEPT
+-A FORWARD -i eth0 -o wg0 -s 192.168.11.22/32 -j ACCEPT
+```
 
 **NOTE**: for IPv6 the situation is similar.
-
-# Updating
-
-Starting from version 2.2.0 of `vpn-server-node` the 
-`vpn-server-node-generate-firewall` script is a "dummy". It won't have any 
-effect. This is fine in upgrade scenarios, because every deploy will have a 
-firewall, either because it was generated by 
-`vpn-server-node-generate-firewall` before, or was already a manual firewall 
-configured by the server administrator and it won't make any difference.
-
-You can (optionally) read this document and tweak your current firewall 
-configuration if wanted, or as it may become necessary in the future.
-
-New server deployments will use the templates as mentioned at the start of this
-document. Feel free to use those as templates to update your current firewall.
