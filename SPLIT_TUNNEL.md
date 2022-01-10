@@ -32,7 +32,8 @@ Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 
 ```
 'ProfileList' => [
-    'office' => [
+    [
+        'profileId' => 'office',
         'displayName' => 'Office',
        // issued to VPN clients
         'oRangeFour' => '10.0.0.0/24',

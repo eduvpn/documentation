@@ -29,7 +29,8 @@ modify the default configuration yet.
 ```
 'ProfileList' => [
     // Office Employees
-    'office' => [
+    [
+        'profileId' => 'office',
         'displayName' => 'Office',
         'hostName' => 'office.vpn.example',
         'oRangeFour' => '172.23.114.0/24',
@@ -40,7 +41,8 @@ modify the default configuration yet.
     ],
 
     // Administrators
-    'admin' => [
+    [
+        'profileId' => 'admin',
         'displayName' => 'Administrators',
         'hostName' => 'admin.vpn.example',
         'oRangeFour' => '10.61.60.0/24',
