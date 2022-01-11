@@ -53,7 +53,7 @@ We use [fkooman/oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server),
 a library to implement a secure OAuth 2.1 server.
 
 It uses public key signatures to sign/verify the issues OAuth 
-[tokens](https://git.sr.ht/~fkooman/php-oauth2-server/tree/v7/item/TOKEN_FORMAT.md).
+[tokens](https://git.sr.ht/~fkooman/php-oauth2-server/tree/main/item/TOKEN_FORMAT.md).
 
 ## CA
 
