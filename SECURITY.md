@@ -97,8 +97,11 @@ By default the CA uses `RSA` with keys of length 3072 bits, and signs using
 The CA also supports `ECDSA` with the NIST P-384 (secp384r1) curve, and 
 `EdDSA` with `Ed25519`. Refer to the next section to see what is possible.
 
-Currently, RSA is the default. Future versions of the VPN software will switch
-to `EdDSA` and drop TLSv1.2 support.
+From vpn-server-api 
+[2.3.0](https://github.com/eduvpn/vpn-server-api/blob/v2/CHANGES.md#230-2021-10-18),
+ECDSA is the default. If the CA was initialized before the upgrade to 2.3.0, 
+ECDSA will only be used for new server and client certificates. New 
+installations of the server will use ECDSA for the CA as well.
 
 ### TLS Algorithm Support
 
