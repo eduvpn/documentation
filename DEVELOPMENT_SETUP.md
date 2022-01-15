@@ -26,8 +26,8 @@ VM with a desktop. In addition, install the required software (dependencies):
 
 ```
 $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
-    php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-gmp php-curl \
-    php-gd unzip qrencode wireguard-tools scdoc
+    php-json php-mbstring php-pcre php-pdo php-intl php-spl php-sodium php-gmp \
+    php-curl php-gd unzip qrencode wireguard-tools scdoc
 ```
 
 # Debian >= 11, Ubuntu >= 21.10
@@ -38,8 +38,8 @@ install a VM with a desktop. In addition, install the required software
 
 ```
 $ sudo apt install curl git build-essential php-gmp php-sqlite3 composer \
-    php-curl php-xml php-gmp php-cli unzip golang-go qrencode wireguard-tools \
-    scdoc
+    php-curl php-xml php-gmp php-intl php-cli unzip golang-go qrencode \
+    wireguard-tools scdoc
 ```
 
 # Installation
