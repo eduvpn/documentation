@@ -426,12 +426,13 @@ Do **NOT** use the "Message" for string comparison in your application code,
 getting any of these (4xx) errors below indicates a problem in the application. 
 Obviously if there in a 5xx error, that is NOT a problem in the client.
 
-| Call          | Message                          | Code | Description                                                                       |
-| ------------- | -------------------------------- | ---- | --------------------------------------------------------------------------------- |
-| `/connect`    | `no such "profile_id"`           | 404  | When the profile does not exist, or the user has no permission                    |
-| `/connect`    | `invalid "prefer_tcp"`           | 400  | When the specified values are neither `yes` nor `no`                              |
-| `/connect`    | `invalid value for "profile_id"` | 400  | When the syntax for the `profile_id` is invalid                                   |
-| `/connect`    | `missing "public_key" parameter` | 400  | When the profile only supports WireGuard and no WireGuard public key was provided |
+| Call          | Example Message                        | Code | Description                                                                                   |
+| ------------- | -------------------------------------- | ---- | --------------------------------------------------------------------------------------------- |
+| `/connect`    | `no such "profile_id"`                 | 404  | When the profile does not exist, or the user has no permission                                |
+| `/connect`    | `invalid "prefer_tcp"`                 | 400  | When the specified values are neither `yes` nor `no`                                          |
+| `/connect`    | `invalid value for "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                                               |
+| `/connect`    | `missing "public_key" parameter`       | 400  | When the profile only supports WireGuard and no WireGuard public key was provided             |
+| `/connect`    | `profile "x" does not support OpenVPN` | 406  | When the profile does not support the VPN protocol(s) supported by the client (or vice versa) | 
 
 An example:
 
