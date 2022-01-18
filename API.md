@@ -235,6 +235,11 @@ The `POST` request has (optional) parameters:
 | `public_key` | No       | A WireGuard public key, for the WireGuard protocol                               |
 | `prefer_tcp` | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
+If the VPN client supports only WireGuard or OpenVPN and not both, see 
+[VPN Protocol Selection](#vpn-protocol-selection) for the `Accept` header. To
+add it to the cURL example use e.g.`-H "Accept: application/x-openvpn-profile"` 
+to indicate your client only supports OpenVPN.
+
 #### Profile ID
 
 The value of `profile_id` MUST be of one of the identifiers for the profiles 
@@ -451,7 +456,10 @@ with a "Details..." button.
 
 The VPN server decides which protocol will be used for the VPN connection. This
 can be either OpenVPN or WireGuard. The client _is_ able to influence this 
-decision. The algorithm in the server:
+decision. You don't really need to understand the algorithm, but it will 
+explain what is going on when what you see is not what you expect.
+
+The algorithm in the server:
 
 ```
 Which Protocol Will be Used?
