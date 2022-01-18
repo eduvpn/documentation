@@ -32,6 +32,8 @@ The changes made to the API documentation before it is final.
 |            | the need to send this has been removed                                                                          |
 | 2022-01-18 | Rename `tcp_only` to `prefer_tcp` and switch to `yes` and `no` values instead of `on` and `off`                 |
 |            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
+|            | Remove the `vpn_proto_preferred` key from the `/info` response                                                  |
+|            | Rewrite [VPN Protocol Selection](#vpn-protocol-selection) and document protocol selection, add `Accept` header  |
 
 # Instance Discovery
 
@@ -39,25 +41,21 @@ This document assumes you already know which server you want to connect to, by
 its FQDN, e.g. `vpn.example.org`. 
 
 We also provide documentation on how to implement "discovery" for the eduVPN 
-branded application [here](SERVER_DISCOVERY.md).
+branded application [here](SERVER_DISCOVERY.md). If you are implementing an API
+client, it is a good idea to first implement the API and then look at the 
+"discovery".
 
 # Standards
 
 The VPN servers provide an API protected with 
-[OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/), currently 
-in draft. If the application implemented the [APIv2](API.md), it will also
-work as-is with APIv3. 
+[OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/). 
 
-The _only_ difference in the OAuth implementation between APIv2 and APIv3 is 
-that refresh tokens are now single use. When using a refresh token, the 
-response includes also a _new_ refresh token. Should a refresh token be used 
-multiple times, the whole authorization is revoked and the client will need to 
-reauthorize.
+The only difference with the OAuth implementation between the 2.x and 3.x 
+server is that the OAuth server does not accept the same _refresh token_ more
+than once, i.e. it can't be replayed. This should not have any impact as it was
+already an OAuth 2.0 requirement to handle this scenario properly.
 
-After some rudimentary tests, it seems all existing eduVPN/Let's Connect! 
-clients are handling this properly.
-
-# Endpoint Discovery
+# Server Endpoint Discovery
 
 A "well-known" URL is provided to figure out the OAuth and API endpoint one
 has to use. The document can be retrieved from `/.well-known/vpn-user-portal`, 
@@ -82,9 +80,8 @@ this API.
 This file MUST be freshly retrieved before all attempts to connect to a server 
 to make sure any updates to this file are discovered.
 
-**NOTE**: eduVPN/Let's Connect! 2.x servers also already support the 
-`/.well-known/vpn-user-portal` endpoint, so there is no need to still retrieve
-`/info.json`.
+**NOTE**: the 2.x servers also supports the `/.well-known/vpn-user-portal` for 
+a long time, so there is no need to retrieve the legacy `/info.json` document.
 
 ## Endpoint Location
 
@@ -100,7 +97,8 @@ specification are required, even optional ones:
 
 - `client_id`;
 - `redirect_uri` MUST be a support URL as found 
-  [here](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/src/OAuth/ClientDb.php);
+  [here](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/src/OAuth/ClientDb.php), 
+  if you need a new registration, please contact us;
 - `response_type`: MUST be `code`;
 - `scope`: MUST be `config`;
 - `state`;
@@ -129,9 +127,8 @@ All error conditions MUST be handled according to the OAuth specification(s).
 
 # Using the API
 
-The API is kept as simple as possible, and a considerable simplification of
-the [APIv2](API.md). Every API call below will include a cURL example, and an
-example response that can be expected.
+Every API call below will include a cURL example, and an example response that 
+can be expected.
 
 All `POST` requests MUST be sent encoded as 
 `application/x-www-form-urlencoded`.
@@ -182,8 +179,7 @@ Content-Type: application/json
                 "vpn_proto_list": [
                     "openvpn",
                     "wireguard"
-                ],
-                "vpn_proto_preferred": "wireguard"
+                ]
             },
             {
                 "default_gateway": false,
@@ -191,8 +187,7 @@ Content-Type: application/json
                 "profile_id": "admins",
                 "vpn_proto_list": [
                     "wireguard"
-                ],
-                "vpn_proto_preferred": "wireguard"
+                ]
             }
         ]
     }
@@ -211,9 +206,6 @@ The `vpn_proto_list` field indicates which VPN protocol(s) are supported. If
 you client does not support any of the listed protocols, you can omit them, or 
 mark them as unsupported. Currently `openvpn` and `wireguard` values are 
 supported.
-
-The `vpn_proto_preferred` is set by the server operator for a particular 
-profile. This information MUST NOT be used by the VPN client.
 
 ## Connect
 
@@ -240,7 +232,7 @@ The `POST` request has (optional) parameters:
 | Parameter    | Required | Value(s)                                                                         |
 | ------------ | -------- | -------------------------------------------------------------------------------- |
 | `profile_id` | Yes      | The `profile_id` from the `/info` response                                       |
-| `public_key` | No       | A WireGuard public key, for WireGuard                                            |
+| `public_key` | No       | A WireGuard public key, for the WireGuard protocol                               |
 | `prefer_tcp` | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
 #### Profile ID
@@ -264,20 +256,20 @@ Note for implementation: you MAY also use
 keypair and extract the public key using `crypto_box_publickey()` instead of
 using `exec()` to run the `wg` tool.
 
-**NOTE**: do NOT use the same WireGuard private key for different servers, 
-generate one *per server*.
+**NOTE**: you MUST NOT use the same WireGuard private key for different 
+servers, generate one *per server*.
 
 #### Prefer TCP
 
-The `prefer_tcp` parameter is currently only used in combination with the 
-OpenVPN protocol.
+The `prefer_tcp` parameter is a hint for the VPN server for the OpenVPN 
+protocol.
 
-If set the `yes`, the client indicates that a connection over TCP is preferred.
+If set to `yes`, the client indicates that a connection over TCP is preferred.
 The server MAY accept this and return an OpenVPN configuration with the TCP 
-"remotes" first and thus have the client try to connect over TCP First.
+"remotes" first and thus have the client try to connect over TCP first.
 
 The server MAY ignore the option, for example when the profile only supports
-WireGuard, or the OpenVPN process does not listen on TCP ports.
+WireGuard, or the OpenVPN configuration does not use TCP.
 
 ### Response
 
@@ -392,7 +384,7 @@ _user_ decides to stop the VPN connection.
 
 The purpose of this call is to clean up, i.e. release the IP address reserved
 for the client (WireGuard) and delete the certificate from the list of allowed 
-certificates (OpenVPN). 
+certificates (OpenVPN).
 
 After calling this method you MUST NOT use the same configuration again to 
 attempt to connect to the VPN server. First call `/connect` again.
@@ -404,7 +396,7 @@ when the user closes the VPN application without disconnecting first, unless
 the VPN connection can also be managed outside the VPN.
 
 This call MUST be executed *after* the VPN connection itself has been 
-terminated by the application, if possible.
+terminated by the application, if that is possible.
 
 ### Request
 
@@ -425,9 +417,9 @@ HTTP/1.1 204 No Content
 
 ## Error Responses
 
-Do **NOT** use the "Message" for string comparision in your application code, 
+Do **NOT** use the "Message" for string comparison in your application code, 
 getting any of these (4xx) errors below indicates a problem in the application. 
-Obivously if there in a 5xx error, that is NOT a problem in the client.
+Obviously if there in a 5xx error, that is NOT a problem in the client.
 
 | Call          | Message                          | Code | Description                                                                       |
 | ------------- | -------------------------------- | ---- | --------------------------------------------------------------------------------- |
@@ -457,41 +449,69 @@ with a "Details..." button.
 
 # VPN Protocol Selection
 
-Profiles are able to support both OpenVPN and WireGuard. It is up to the 
-server administrator to enable particular protocols. Profiles can support 
-either OpenVPN, WireGuard, or _both_. Administrators can also configure a 
-_preferred_ protocol per profile if both are supported.
-
-Clients supporting this version of the API SHOULD support both OpenVPN and 
-WireGuard, but MAY support only OpenVPN.
-
-All existing eduVPN/Let's Connect! applications have some sort of "Force TCP" 
-setting that allows users to force OpenVPN connections to use TCP only. This is 
-important in case UDP is blocked in the network, or is broken, typically due to 
-(Path) MTU Discovery issues. Eventually applications SHOULD be able to 
-determine automatically whether UDP works reliably and we could get rid of this 
-setting toggle.
-
-For now, the "Force TCP" selection SHOULD be interpreted as: "Prefer using 
-OpenVPN over TCP, if available". This works for protocols that support both 
-OpenVPN and WireGuard, but not for protocols supporting only WireGuard where 
-a WireGuard configuration will be returned no matter what. WireGuard MAY work
-over UDP where OpenVPN did not, so it is still better than doing nothing.
-
-We assume the client always supports OpenVPN. In scope of this API version, the 
-following _pseudo code_ can be used to implement the protocol selection.
-
-If the client supports both OpenVPN and WireGuard:
+The VPN server decides which protocol will be used for the VPN connection. This
+can be either OpenVPN or WireGuard. The client _is_ able to influence this 
+decision. The algorithm in the server:
 
 ```
-POST /connect [public_key=${PK}, prefer_tcp=${Force_TCP}]
+Which Protocol Will be Used?
+    VPN Client Supports: OpenVPN, but not WireGuard:
+        Profile Supports: OpenVPN:
+            ---> "OpenVPN"
+        ---> Error
+        
+    VPN Client Supports: WireGuard, but not OpenVPN:
+        Profile Supports: WireGuard
+            ---> "WireGuard"
+        ---> Error
+    
+    # At this point we know the client supports OpenVPN & WireGuard
+     
+    Profile Supports: OpenVPN, but not WireGuard:
+        ---> "OpenVPN"
+        
+    Profile Supports: WireGuard, but not OpenVPN:
+        ---> "WireGuard"
+        
+    # At this point we know both the VPN client and Profile supports OpenVPN & WireGuard
+
+    OpenVPN is Preferred Protocol:
+        ---> "OpenVPN"
+            
+    Client Prefers TCP:
+        OpenVPN Server Supports TCP:
+            ---> "OpenVPN"
+        
+    Client Provides WireGuard Public Key:
+        ---> "WireGuard"
+        
+    ---> "OpenVPN"
 ```
 
-If the client only supports OpenVPN:
+This works fine when the VPN client supports _both_ OpenVPN and WireGuard. If 
+it only supports one of them the client MUST send the `Accept` request header 
+as part of the [Connect](#connect) request.
+
+If the VPN client only supports OpenVPN:
 
 ```
-POST /connect [prefer_tcp=${Force_TCP}]
+Accept: application/x-openvpn-profile
 ```
+
+If the VPN client only supports WireGuard:
+
+```
+Accept: application/x-wireguard-profile
+```
+
+If the VPN client supports both OpenVPN and WireGuard:
+
+```
+Accept: application/x-openvpn-profile, application/x-wireguard-profile
+```
+
+**NOTE**: if the `Accept` request header is missing, it is assumed that the 
+VPN client supports both OpenVPN and WireGuard.
 
 # Flow
 
