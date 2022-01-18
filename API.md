@@ -31,6 +31,7 @@ The changes made to the API documentation before it is final.
 | 2022-01-06 | The `profile_id` parameter on the `/disconnect` call is never used, no point in having the client send it, so   |
 |            | the need to send this has been removed                                                                          |
 | 2022-01-18 | Rename `tcp_only` to `prefer_tcp` and switch to `yes` and `no` values instead of `on` and `off`                 |
+|            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
 
 # Instance Discovery
 
@@ -424,19 +425,24 @@ HTTP/1.1 204 No Content
 
 ## Error Responses
 
-| Call          | Message                      | Code | Description                                                          |
-| ------------- | ---------------------------- | ---- | -------------------------------------------------------------------- |
-| `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
-| `/connect`    | `invalid "prefer_tcp"`       | 400  | When the specified values are neither `yes` nor `no`                 |
-| `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
+Do **NOT** use the "Message" for string comparision in your application code, 
+getting any of these (4xx) errors below indicates a problem in the application. 
+Obivously if there in a 5xx error, that is NOT a problem in the client.
+
+| Call          | Message                          | Code | Description                                                                       |
+| ------------- | -------------------------------- | ---- | --------------------------------------------------------------------------------- |
+| `/connect`    | `no such "profile_id"`           | 404  | When the profile does not exist, or the user has no permission                    |
+| `/connect`    | `invalid "prefer_tcp"`           | 400  | When the specified values are neither `yes` nor `no`                              |
+| `/connect`    | `invalid value for "profile_id"` | 400  | When the syntax for the `profile_id` is invalid                                   |
+| `/connect`    | `missing "public_key" parameter` | 400  | When the profile only supports WireGuard and no WireGuard public key was provided |
 
 An example:
 
 ```
-HTTP/1.1 400 Bad Request
+HTTP/1.1 404 Not Found
 Content-Type: application/json
 
-{"error":"profile not available"}
+{"error":"no such \"profile_id\""}
 ```
 
 In addition to these errors, there can also be an error with the server that we
