@@ -30,6 +30,7 @@ The changes made to the API documentation before it is final.
 |            | on the provided parameters, i.e. `public_key` and `tcp_only` and the supported protocols by the profile...      |
 | 2022-01-06 | The `profile_id` parameter on the `/disconnect` call is never used, no point in having the client send it, so   |
 |            | the need to send this has been removed                                                                          |
+| 2022-01-18 | Rename `tcp_only` to `prefer_tcp` and switch to `yes` and `no` values instead of `on` and `off`                 |
 
 # Instance Discovery
 
@@ -235,11 +236,11 @@ VPN configuration files that belong to the same OAuth _authorization_.
 
 The `POST` request has (optional) parameters:
 
-| Parameter    | Required | Value(s)                                                                      |
-| ------------ | -------- | ----------------------------------------------------------------------------- |
-| `profile_id` | Yes      | The `profile_id` from the `/info` response                                    |
-| `public_key` | No       | A WireGuard public key, for WireGuard                                         |
-| `tcp_only`   | No       | Connect only over TCP. Either `on` or `off` when specified, defaults to `off` |
+| Parameter    | Required | Value(s)                                                                         |
+| ------------ | -------- | -------------------------------------------------------------------------------- |
+| `profile_id` | Yes      | The `profile_id` from the `/info` response                                       |
+| `public_key` | No       | A WireGuard public key, for WireGuard                                            |
+| `prefer_tcp` | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
 #### Profile ID
 
@@ -265,12 +266,17 @@ using `exec()` to run the `wg` tool.
 **NOTE**: do NOT use the same WireGuard private key for different servers, 
 generate one *per server*.
 
-#### TCP Only
+#### Prefer TCP
 
-The `tcp_only` parameter is ONLY used by the OpenVPN protocol. In essence, when
-set to `on`, only TCP "remotes" are returned as part of the OpenVPN 
-configuration file. The default is `off`, which means all (both UDP and TCP) 
-remotes are returned.
+The `prefer_tcp` parameter is currently only used in combination with the 
+OpenVPN protocol.
+
+If set the `yes`, the client indicates that a connection over TCP is preferred.
+The server MAY accept this and return an OpenVPN configuration with the TCP 
+"remotes" first and thus have the client try to connect over TCP First.
+
+The server MAY ignore the option, for example when the profile only supports
+WireGuard, or the OpenVPN process does not listen on TCP ports.
 
 ### Response
 
@@ -420,9 +426,8 @@ HTTP/1.1 204 No Content
 
 | Call          | Message                      | Code | Description                                                          |
 | ------------- | ---------------------------- | ---- | -------------------------------------------------------------------- |
-| `/connect`    | `no TCP connection possible` | 406  | When the specified profile has no OpenVPN processes listening on TCP |
 | `/connect`    | `profile not available`      | 400  | When the profile does not exist, or the user has no permission       |
-| `/connect`    | `invalid "tcp_only"`         | 400  | When the specified values are neither `on` nor `off`                 |
+| `/connect`    | `invalid "prefer_tcp"`       | 400  | When the specified values are neither `yes` nor `no`                 |
 | `/connect`    | `invalid "profile_id"`       | 400  | When the syntax for the `profile_id` is invalid                      |
 
 An example:
@@ -473,13 +478,13 @@ following _pseudo code_ can be used to implement the protocol selection.
 If the client supports both OpenVPN and WireGuard:
 
 ```
-POST /connect [public_key=${PK}, tcp_only=${Force_TCP}]
+POST /connect [public_key=${PK}, prefer_tcp=${Force_TCP}]
 ```
 
 If the client only supports OpenVPN:
 
 ```
-POST /connect [tcp_only=${Force_TCP}]
+POST /connect [prefer_tcp=${Force_TCP}]
 ```
 
 # Flow
@@ -532,33 +537,3 @@ the user about this, e.g. through a notification that possibly opens the
 application if not yet open. This allows the user to (manually) 
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
-
-# TODO
-
-- the `default_gateway` (bool) field probably needs to be renamed still, maybe 
-  to `allow_all_traffic` or something.
-- talk about limits for the API, for example 1 user can only be online _n_ 
-  times.
-
-# Notes
-
-- we should probably rename the `/connect` call to `/setup` or `/register`, or 
-  something like this, as there is no actual connection taking place...
-- Clients will have to deal with the scenario that no IP address is available 
-  anymore for them, i.e. the `/connect` call fails
-- Clients will really need a check to verify the VPN connection is up, e.g. 
-  ping the remote peer address (gateway?) or simply by checking when the last
-  handshake took place?
-- The certificate/public key will expire exactly at the moment the OAuth 
-  refresh and access token no longer work
-- when the computer goes to sleep you can just try to reconnect with the 
-  previously obtained configuration, no need to use the API, BUT if connecting
-  doesn't work go back to the API
-- we need a flow diagram...
-- the application SHOULD show a "Renew" button, starting from >= 30 minutes after
-  the OAuth authorization (using the browser) took place. The reason for this 
-  30 minutes is that _browser_ sessions in the portal are valid for 30 minutes 
-  in eduVPN/Let's Connect! servers. Renewing before the user is forced to login 
-  again results in getting a session that expires at the exact same time as the 
-  previous one which is confusing to the user when they are trying out the 
-  "Renew" button
