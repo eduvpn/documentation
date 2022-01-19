@@ -41,7 +41,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     unzip
 ```
 
-# Debian >= 11
+# Debian >= 10
 
 When you are not running Debian as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -50,6 +50,8 @@ VM with a desktop. In addition, install the required software (dependencies):
 $ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
     php-xml php-cli unzip golang
 ```
+
+**NOTE**: on Debian 10 you MUST install golang from `buster-backports`.
 
 # Installation
 
