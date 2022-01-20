@@ -29,7 +29,7 @@ reading this document!
 Follow the instructions below to configure your MariaDB server:
 
 ```
-$ sudo dnf -y install mariadb-server
+$ sudo dnf -y install php-mysqlnd mariadb-server
 $ sudo systemctl enable --now mariadb
 $ sudo mysql_secure_installation
 ```
@@ -94,7 +94,7 @@ restrict access to your VPN portals only!
 ## PostgreSQL Installation
 
 ```
-$ sudo dnf -y install postgresql-server
+$ sudo dnf -y install php-pgsql postgresql-server 
 $ sudo postgresql-setup --initdb
 $ sudo systemctl enable --now postgresql
 ```
