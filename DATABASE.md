@@ -6,23 +6,23 @@ The VPN server supports various databases. The default is
 For SQLite, no configuration is needed, it will work out of the box.
 
 We'll describe how to configure [MariaDB](https://mariadb.org/), however the
-same will work for MySQL.
-
-We also support [PostgreSQL](https://www.postgresql.org/), but it receives less
-testing.
+same will work for MySQL. We'll also describe 
+[PostgreSQL](https://www.postgresql.org/), it is preferred over MariaDB/MySQL.
+Obviously you should only use one of these :-)
 
 We assume you used `deploy_${DIST}.sh` to install the VPN service.
 
-**NOTE**: this document only explains how to install a *basic* MariaDB. You 
-**SHOULD** be very familiar with MariaDB/MySQL before attemping this! If you 
-are not, please stay with the default SQLite database!
+**NOTE**: this document only explains how to install a *basic* MariaDB and 
+PostgreSQL server. You **SHOULD** be very familiar with 
+PostgreSQL/MariaDB/MySQL before attemping to run this in production! If you are 
+not, please stay with the default SQLite database!
 
 # Installation
 
-We'll show how to install MariaDB on Fedora. Other distributions are very 
-similar. We assume how to "convert" these instructions to your relevant 
-platform. If you can not do that, you should probably not be reading this 
-document!
+We'll show how to install MariaDB and PostgreSQL on Fedora. Other 
+distributions are very similar. We assume how to "convert" these instructions 
+to your relevant platform. If you can not do that, you should probably not be 
+reading this document!
 
 ## MariaDB Installation
 
@@ -91,17 +91,86 @@ the complete Internet! It seems by default MariaDB listens in `:::3306` which
 means all interfaces (both IPv4 and IPv6). You MUST firewall this port and 
 restrict access to your VPN portals only!
 
+## PostgreSQL Installation
+
+```
+$ sudo dnf -y install postgresql-server
+$ sudo postgresql-setup --initdb
+$ sudo systemctl enable --now postgresql
+```
+
+## PostgreSQL Configuration
+
+First we'll allow password authentication. Modify 
+`/var/lib/pgsql/data/pg_hba.conf`. Add these lines:
+
+```
+host    all             all             127.0.0.1/32            password
+host    all             all             ::1/128                 password
+```
+
+**NOTE**: this will send passwords _plaintext_ over the connection. Do NOT do
+this in production. Check out 
+[Password Authentication](https://www.postgresql.org/docs/current/auth-password.html).
+
+Now, restart PostgreSQL:
+
+```
+$ sudo systemctl restart postgresql
+```
+
+In order to create a database, we need to execute the `createuser` command as
+`postgres` user:
+
+```
+$ sudo su -l postgres 
+$ createuser -d -P vpn
+Enter password for new role: 
+Enter it again: 
+$ exit
+```
+
+The `-d` option will allow the user to create databases. The `-P` option will 
+ask immediately to specify a password. Provide one!
+
+Now to test it, back in your normal user account:
+
+```
+$ psql -h localhost -U vpn
+```
+
+This will ask for the password and should then show the PostgreSQL prompt:
+
+```
+$ psql -h localhost -U vpn
+Password for user vpn: 
+psql (13.4)
+Type "help" for help.
+
+vpn=> 
+```
+
+Now you are all good to go!
+
 # Configuration
 
-You can configure the database in `/etc/vpn-user-portal/config.php`:
+You can configure the database in `/etc/vpn-user-portal/config.php`, replace 
+`s3cr3t` with the password you used when setting up the database. Choose the
+relevant configuration for your setup, either MariaDB/MySQL or PostgreSQL:
 
 ```php
     ...
 
+    // MariaDB/MySQL
     'Db' => [
 	    'dbDsn' => 'mysql:host=db.example.org;dbname=vpn',
 	    'dbUser' => 'vpn',
 	    'dbPass' => 's3cr3t',
+    ],
+    
+    // PostgreSQL
+    'Db' => [
+        'dbDsn' => 'pgsql:host=localhost;port=5432;dbname=vpn;user=vpn;password=s3cr3t',
     ],
 
     ...
