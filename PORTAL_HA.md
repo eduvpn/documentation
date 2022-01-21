@@ -3,19 +3,19 @@
 This document explains how to run a "high available" and "redundant" setup.
 
 It will explain how to store the application database inside 
-[MariaDB](https://mariadb.org/) and the (browser) session information inside 
+[PostgreSQL](https://www.postgresql.org/) or [MariaDB](https://mariadb.org/) 
+and the (browser) session information inside 
 [memcached](https://www.memcached.org/) instead of the local file system. This 
 is useful if you want to make the VPN service "high available" or provide load 
-balancing between servers. When we mention MariaDB below, the same should apply 
-to MySQL as well. Next to MariaDB and MySQL, also PostgreSQL is supported.
+balancing between servers.
  
 * **NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
 * **NOTE**: do this ONLY for new servers, there is NO automatic migration from 
-  SQLite to MariaDB/PostgreSQL!
+  SQLite to PostgreSQL/MariaDB!
 * **NOTE**: you can use this if you want to deploy multiple portal instances 
   using the same storage backend;
-* **NOTE**: your MariaDB/PostgreSQL setup should have higher availability than 
-  your individual portal(s) otherwise this setup makes no sense;
+* **NOTE**: your PostgreSQL/MariaDB setup should have higher availability than 
+  your individual portal(s), otherwise this setup makes no sense;
 
 If you take all this in consideration, see 
 [Portal Configuration](#portal-configuration) on how to connect to your MariaDB
@@ -28,10 +28,9 @@ make sure this proxy has a higher availability than your VPN portal(s).
 
 On your node(s) you run `deploy_fedora_v3_node.sh`.
 
-# MariaDB Installation
+# Database Configuration
 
-See instructions on how to install MariaDB [here](DATABASE.md), make sure you
-install it on a separate system from your VPN portal(s).
+See [this](DATABASE.md) on how to configure PostgreSQL or MariaDB.
 
 # Memcached Installation
 
@@ -81,7 +80,7 @@ $ sudo systemctl restart memcached
 Make sure you have the required PHP module installed for MariaDB/MySQL:
 
 ```
-$ sudo dnf -y install mariadb php-mysqlnd php-pecl-memcached
+$ sudo dnf -y install php-pecl-memcached
 ```
 
 If these modules were not yet installed, restart PHP:
@@ -116,22 +115,6 @@ Make the following changes:
     'useMemcached' => true,
     'memcachedServerList' => ['p1.home.arpa:11211', 'p2.home.arpa:11211'],
 ```
-
-You can configure the database in `/etc/vpn-user-portal/config.php` as well:
-
-```
-    ...
-
-    'Db' => [
-	    'dbDsn' => 'mysql:host=localhost;dbname=vpn',
-	    'dbUser' => 'vpn',
-	    'dbPass' => 's3cr3t',
-    ],
-
-    ...
-```
-
-Now you should be able to "reset" the server which will use the MariaDB server:
 
 ```
 $ sudo vpn-maint-reset-system
