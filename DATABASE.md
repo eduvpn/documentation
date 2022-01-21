@@ -200,7 +200,7 @@ restrict access to your VPN portals only!
 ```
 $ sudo dnf -y install postgresql-server 
 $ sudo postgresql-setup --initdb
-$ sudo systemctl enable --now postgresql
+$ sudo systemctl enable postgresql
 ```
 
 ## PostgreSQL Configuration
@@ -209,18 +209,31 @@ First we'll allow password authentication. Modify
 `/var/lib/pgsql/data/pg_hba.conf`. Add these lines:
 
 ```
-host    all             all             127.0.0.1/32            password
-host    all             all             ::1/128                 password
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
 ```
 
-**NOTE**: this will send passwords _plaintext_ over the connection. Do NOT do
-this in production. Check out 
-[Password Authentication](https://www.postgresql.org/docs/current/auth-password.html).
+Replace `127.0.0.1/32` and `::1/128` with the IP(v6) prefixes where the 
+PostgreSQL "client" is coming from if you run PostgreSQL on a separate system.
 
-Now, restart PostgreSQL:
+Also modify `/var/lib/pgsql/data/postgresql.conf` and set:
 
 ```
-$ sudo systemctl restart postgresql
+password_encryption = scram-sha-256
+```
+
+Also modify the `listen_addresses` option if you want to allow connecting 
+from a remote system, e.g.:
+
+```
+#listen_addresses = 'localhost'
+listen_addresses = '*'
+```
+
+Now, start PostgreSQL:
+
+```
+$ sudo systemctl start postgresql
 ```
 
 In order to create a database, we need to execute the `createuser` command as
