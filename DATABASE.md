@@ -1,35 +1,139 @@
 # Introduction
 
-The VPN server supports various databases. The default is 
-[SQLite](https://sqlite.org/).
+The VPN server supports other databases than just the default 
+[SQLite](https://sqlite.org/). For SQLite, no configuration is needed, it works 
+out of the box. If you are happy with that, there is no need to read this 
+document.
 
-For SQLite, no configuration is needed, it will work out of the box.
+**NOTE (1)**: only consider switching databases if your database has a higher 
+reliability than your systems on which you host the VPN server, and you want to 
+run a [HA](PORTAL_HA.md) setup.
 
-We'll describe how to configure [MariaDB](https://mariadb.org/), however the
-same will work for MySQL. We'll also describe 
-[PostgreSQL](https://www.postgresql.org/), it is preferred over MariaDB/MySQL.
-Obviously you should only use one of these :-)
+**NOTE (2)**: this document only explains how to _use_ another database, it 
+does NOT explain how to run reliably database infrastructure! The document 
+_does_ provide database server installation/configuration instructions to the 
+level needed to _test_ the different database backends. This is NOT suitable
+for production.
 
-We assume you used `deploy_${DIST}.sh` to install the VPN service.
+**NOTE(3)**: if you can choose, please use PostgreSQL and not MariaDB/MySQL.
 
-**NOTE**: this document only explains how to install a *basic* MariaDB and 
-PostgreSQL server. You **SHOULD** be very familiar with 
-PostgreSQL/MariaDB/MySQL before attemping to run this in production! If you are 
-not, please stay with the default SQLite database!
+**NOTE(4)**: we assume you used `deploy_${DIST}_controller.sh` and 
+`deploy_${DIST}_node.sh` to install the VPN service.
 
-# Installation
+# Configuration
 
-We'll show how to install MariaDB and PostgreSQL on Fedora. Other 
-distributions are very similar. We assume how to "convert" these instructions 
-to your relevant platform. If you can not do that, you should probably not be 
-reading this document!
+You can configure the database in `/etc/vpn-user-portal/config.php`, replace 
+the `host`, `dbname` with the values obtained from your database administrator. 
 
-## MariaDB Installation
+## PostgreSQL
+
+Make sure you have the `php-pgsql` package installed:
+
+```bash
+$ sudo dnf install php-pgsql
+```
+
+In `/etc/vpn-user-portal/config.php`:
+
+```php
+    'Db' => [
+        'dbDsn' => 'pgsql:host=db.example.org;dbname=vpn;user=vpn;password=s3cr3t',
+    ],
+```
+
+Replace `host`, `dbname`, `user` and `password` with the values you obtained 
+from your database administrator.
+
+## MariaDB/MySQL
+
+Make sure you have the `php-mysqlnd` package installed:
+
+```bash
+$ sudo dnf install php-mysqlnd
+```
+
+In `/etc/vpn-user-portal/config.php`:
+
+```php
+    'Db' => [
+	    'dbDsn' => 'mysql:host=db.example.org;dbname=vpn',
+	    'dbUser' => 'vpn',
+	    'dbPass' => 's3cr3t',
+    ],
+```
+
+Replace `host`, `dbname`, `dbUser` and `dbPass` with the values you obtained 
+from your database administrator.
+
+## Database Info
+
+You can show the current status of your database, this will tell you whether 
+the configuration was done properly, i.e. we are able to connect to the 
+database and whether initialization or migration is required, e.g.:
+
+```bash
+$ sudo /usr/libexec/vpn-user-portal/db
+Current Schema Version : 2022010202
+Required Schema Version: 2022010202
+Status                 : **OK**
+```
+
+## Database Initialization
+
+If you need to initialize the database:
+
+```bash
+$ sudo /usr/libexec/vpn-user-portal/db --init
+```
+
+You can override your database configuration with `--dsn`, `--user`, `--pass` 
+options in case you need different credentials to perform a database 
+initialization.
+
+## Database Migration
+
+Updates to the VPN software MAY require database migrations. This will be 
+inidicated in the release notes of newer versions.
+
+You can perform the migration:
+
+```bash
+$ sudo /usr/libexec/vpn-user-portal/db --migrate
+```
+
+You can override your database configuration with `--dsn`, `--user`, `--pass` 
+options in case you need different credentials to perform a database 
+migration.
+
+If a migration is needed, but not performed the VPN portal will give a clear 
+error message.
+
+## Manual Initialization / Migration
+
+If you really want to perform every step manually, you need to look in 
+`/usr/share/vpn-user-portal/schema` for the SQL schema files. The latest 
+version available there SHOULD be used for initialization, the files with `_` 
+are the migration queries that need to be run to migrate from one version to 
+the next.
+
+**NOTE**: make sure you also create/update the `version` table that contains 
+the current version, e.g.:
+
+```sql
+CREATE TABLE version (current_version TEXT NOT NULL);
+INSERT INTO version VALUES('2021123001');
+```
+
+# Database Server Installation
+
+As mentioned above, this is only for testing!
+
+# MariaDB Installation
 
 Follow the instructions below to configure your MariaDB server:
 
 ```
-$ sudo dnf -y install php-mysqlnd mariadb-server
+$ sudo dnf -y install mariadb-server
 $ sudo systemctl enable --now mariadb
 $ sudo mysql_secure_installation
 ```
@@ -94,7 +198,7 @@ restrict access to your VPN portals only!
 ## PostgreSQL Installation
 
 ```
-$ sudo dnf -y install php-pgsql postgresql-server 
+$ sudo dnf -y install postgresql-server 
 $ sudo postgresql-setup --initdb
 $ sudo systemctl enable --now postgresql
 ```
@@ -148,93 +252,4 @@ psql (13.4)
 Type "help" for help.
 
 vpn=> 
-```
-
-Now you are all good to go!
-
-# Configuration
-
-You can configure the database in `/etc/vpn-user-portal/config.php`, replace 
-`s3cr3t` with the password you used when setting up the database. Choose the
-relevant configuration for your setup, either MariaDB/MySQL or PostgreSQL:
-
-```php
-    ...
-
-    // MariaDB/MySQL
-    'Db' => [
-	    'dbDsn' => 'mysql:host=db.example.org;dbname=vpn',
-	    'dbUser' => 'vpn',
-	    'dbPass' => 's3cr3t',
-    ],
-    
-    // PostgreSQL
-    'Db' => [
-        'dbDsn' => 'pgsql:host=localhost;port=5432;dbname=vpn;user=vpn;password=s3cr3t',
-    ],
-
-    ...
-```
-
-## Database Info
-
-You can show the current status of your database:
-
-```bash
-$ /usr/libexec/vpn-user-portal/db
-```
-
-This will tell you whether initialization or migration is required, e.g.:
-
-```bash
-$ /usr/libexec/vpn-user-portal/db
-Current Schema Version : 2022010202
-Required Schema Version: 2022010202
-Status                 : **OK**
-```
-
-## Database Initialization
-
-If you need to initialize the database:
-
-```bash
-$ /usr/libexec/vpn-user-portal/db --init
-```
-
-You can override your database configuration with `--dsn`, `--user`, `--pass` 
-options in case you need different credentials to perform a database 
-initialization.
-
-## Database Migration
-
-Updates to the VPN software MAY require database migrations. This will be 
-inidicated in the release notes of newer versions.
-
-You can perform the migration:
-
-```bash
-$ /usr/libexec/vpn-user-portal/db --migrate
-```
-
-You can override your database configuration with `--dsn`, `--user`, `--pass` 
-options in case you need different credentials to perform a database 
-migration.
-
-If a migration is needed, but not performed the VPN portal will give a clear 
-error message. 
-
-## Manual Initialization / Migration
-
-If you really want to perform every step manually, you need to look in 
-`/usr/share/vpn-user-portal/schema` for the SQL schema files. The latest 
-version available there SHOULD be used for initialization, the files with `_` 
-are the migration queries that need to be run to migrate from one version to 
-the next.
-
-**NOTE**: make sure you also create/update the `version` table that contains 
-the current version, e.g.:
-
-```sql
-CREATE TABLE version (current_version TEXT NOT NULL);
-INSERT INTO version VALUES('2021123001');
 ```
