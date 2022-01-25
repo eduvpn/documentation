@@ -1,6 +1,7 @@
 # Introduction
 
-The VPN service consists of two separate components:
+The VPN service consists of two separate components that can be installed 
+together, or seperately:
 
 1. Portal/Controller(s)
 2. Node(s)
