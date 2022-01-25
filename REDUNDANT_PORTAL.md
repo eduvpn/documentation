@@ -111,6 +111,73 @@ If you are using
 `/etc/letsencrypt` folder to your other portals. Make sure you do this at least
 every 90 days (the expiry of Let's Encrypt certificates)!
 
+# keepalived
+
+`p1.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
+
+```
+vrrp_instance VI_1 {
+        state MASTER
+        interface eth0
+        virtual_router_id 51
+        priority 255
+        advert_int 1
+        authentication {
+              auth_type PASS
+              auth_pass 12345
+        }
+        virtual_ipaddress {
+              192.168.122.99/24
+        }
+}
+
+vrrp_instance VI_6 {
+        state MASTER
+        interface eth0
+        virtual_router_id 56
+        priority 255
+        advert_int 1
+        authentication {
+              auth_type PASS
+              auth_pass 12345
+        }
+        virtual_ipaddress {
+              fd7f:aaec:599a:204::99/64
+        }
+}
+```
+
+`p2.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
+
+
+```
+vrrp_instance VI_1 {
+        state BACKUP
+        interface eth0
+        virtual_router_id 51
+        priority 254
+        advert_int 1
+        authentication {
+              auth_type PASS
+              auth_pass 12345
+        }
+        virtual_ipaddress {
+              192.168.122.99/24
+        }
+}
+```
+
+Enable/start on both systems:
+
+```bash
+$ sudo systemctl enable --now keepalived
+```
+
+Update firewall on both, **NOTE**: set the exact IP address:
+
+```
+-A INPUT -s 192.168.122.0/24 -p vrrp -j ACCEPT
+```
 
 ## CA 
 
