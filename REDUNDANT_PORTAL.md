@@ -113,6 +113,8 @@ every 90 days (the expiry of Let's Encrypt certificates)!
 
 # keepalived
 
+See also: https://www.redhat.com/sysadmin/keepalived-basics
+
 `p1.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
 
 ```
