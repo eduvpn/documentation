@@ -128,6 +128,78 @@ INSERT INTO version VALUES('2021123001');
 
 As mentioned above, this is only for testing!
 
+## PostgreSQL Installation
+
+```
+$ sudo dnf -y install postgresql-server 
+$ sudo postgresql-setup --initdb
+$ sudo systemctl enable postgresql
+```
+
+## PostgreSQL Configuration
+
+First we'll allow password authentication. Modify 
+`/var/lib/pgsql/data/pg_hba.conf`. Add these lines:
+
+```
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
+```
+
+Replace `127.0.0.1/32` and `::1/128` with the IP(v6) prefixes where the 
+PostgreSQL "client" is coming from if you run PostgreSQL on a separate system.
+
+Also modify `/var/lib/pgsql/data/postgresql.conf` and set:
+
+```
+password_encryption = scram-sha-256
+```
+
+Also modify the `listen_addresses` option if you want to allow connecting 
+from a remote system, e.g.:
+
+```
+#listen_addresses = 'localhost'
+listen_addresses = '*'
+```
+
+Now, start (and auto start on boot) PostgreSQL:
+
+```
+$ sudo systemctl enable --now postgresql
+```
+
+In order to create a database, we need to execute the `createuser` command as
+`postgres` user:
+
+```
+$ sudo su -l postgres 
+$ createuser -d -P vpn
+Enter password for new role: 
+Enter it again: 
+$ exit
+```
+
+The `-d` option will allow the user to create databases. The `-P` option will 
+ask immediately to specify a password. Provide one!
+
+Now to test it, back in your normal user account:
+
+```
+$ psql -h localhost -U vpn
+```
+
+This will ask for the password and should then show the PostgreSQL prompt:
+
+```
+$ psql -h localhost -U vpn
+Password for user vpn: 
+psql (13.4)
+Type "help" for help.
+
+vpn=> 
+```
+
 # MariaDB Installation
 
 Follow the instructions below to configure your MariaDB server:
@@ -194,75 +266,3 @@ $ mysql vpn -h db.example.org -u vpn -p
 the complete Internet! It seems by default MariaDB listens in `:::3306` which
 means all interfaces (both IPv4 and IPv6). You MUST firewall this port and 
 restrict access to your VPN portals only!
-
-## PostgreSQL Installation
-
-```
-$ sudo dnf -y install postgresql-server 
-$ sudo postgresql-setup --initdb
-$ sudo systemctl enable postgresql
-```
-
-## PostgreSQL Configuration
-
-First we'll allow password authentication. Modify 
-`/var/lib/pgsql/data/pg_hba.conf`. Add these lines:
-
-```
-host    all             all             127.0.0.1/32            scram-sha-256
-host    all             all             ::1/128                 scram-sha-256
-```
-
-Replace `127.0.0.1/32` and `::1/128` with the IP(v6) prefixes where the 
-PostgreSQL "client" is coming from if you run PostgreSQL on a separate system.
-
-Also modify `/var/lib/pgsql/data/postgresql.conf` and set:
-
-```
-password_encryption = scram-sha-256
-```
-
-Also modify the `listen_addresses` option if you want to allow connecting 
-from a remote system, e.g.:
-
-```
-#listen_addresses = 'localhost'
-listen_addresses = '*'
-```
-
-Now, start PostgreSQL:
-
-```
-$ sudo systemctl start postgresql
-```
-
-In order to create a database, we need to execute the `createuser` command as
-`postgres` user:
-
-```
-$ sudo su -l postgres 
-$ createuser -d -P vpn
-Enter password for new role: 
-Enter it again: 
-$ exit
-```
-
-The `-d` option will allow the user to create databases. The `-P` option will 
-ask immediately to specify a password. Provide one!
-
-Now to test it, back in your normal user account:
-
-```
-$ psql -h localhost -U vpn
-```
-
-This will ask for the password and should then show the PostgreSQL prompt:
-
-```
-$ psql -h localhost -U vpn
-Password for user vpn: 
-psql (13.4)
-Type "help" for help.
-
-vpn=> 
-```
