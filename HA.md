@@ -66,7 +66,10 @@ for is a "Multi Node" setup. This is extensively documented
 
 You can add as many nodes as you want to a single "Controller / Portal". Of 
 course, this can be combined with making the "Controller / Portal" redundant as
-explained in the next section.
+explained in the next section. 
+
+For example, the diagram below shows 3 systems, where there are two "Nodes" 
+and one "Controller / Portal":
 
 ```
                 .----------------.
@@ -74,7 +77,7 @@ explained in the next section.
                 | Controller     |
                 |                |
                 |                |
-           .----|                |----.
+           .--->|                |<---.
            |    |                |    |
            |    .----.           |    |
            |    | DB |           |    |
@@ -99,15 +102,55 @@ VPN client would simply pick another node and connect to that one.
 
 # Making the "Controller / Portal" Redundant
 
+If you _are_ worried about _availability_, you may want to duplicate the 
+"Portal / Controller" as well. Obviously, this only makes sense if you have 
+more than one node, otherwise there's still a single point of failure 
+(your "Node").
 
+```
+               .------------------.
+         .---->| Database Cluster |<-----.
+         |     '------------------'      |
+         |                               |
+         |                               |
+         |                               |
+.----------------.              .----------------.
+| Portal /       |              | Portal /       |
+| Controller (1) |              | Controller (2) |
+|                |              |                |
+|                |              |                |
+|                |              |                |
+|                |              |                |
+|                |              |                |
+|                |              |                |
+'--------.-------'              '--------.-------'
+          \                             /
+           \                           /
+            \                         /
+.------------'-----------------------'-----------.
+| Load Balancer / "Round Robin DNS" / keepalived |
+'------------.----------------------.------------'
+            /                        \
+           '                          '
+.---------------------.    .---------------------.
+| Node (1)            |    | Node (2)            |
+|                     |    |                     |
+|                     |    |                     |
+|                     |    |                     |
+|                     |    |                     |
+|                     |    |                     |
+.-----------.---------.    .-----------.---------.
+| WireGuard | OpenVPN |    | WireGuard | OpenVPN |
+'-----------'---------'    '-----------'---------'
+```
 
+Going this way, requires you to have a (network) database available that is 
+already "High Available", probably a database cluster. It MUST be more reliable 
+than a single "Portal / Controller" system. If you do not have this, or are not 
+sure how to set this up, duplicating the "Portal / Controller" makes no sense.
 
-Obviously.
-The VPN service consists of two separate components that can be installed 
-together, or seperately:
+Setting up a database cluster is outside of the scope of this documentation, 
+we assume you will have one.
 
-
-availability (= reduncancy)
-scalability
-
-
+Once you decided to go this way, continue reading the documentation 
+[here](REDUNDANT_PORTAL.md).
