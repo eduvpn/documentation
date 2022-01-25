@@ -1,36 +1,41 @@
 # Introduction
 
-This document explains how to run a "high available" and "redundant" setup.
+The VPN service consists of two separate components:
 
-It will explain how to store the application database inside 
-[PostgreSQL](https://www.postgresql.org/) or [MariaDB](https://mariadb.org/) 
-and the (browser) session information inside 
-[memcached](https://www.memcached.org/) instead of the local file system. This 
-is useful if you want to make the VPN service "high available" or provide load 
-balancing between servers.
- 
-* **NOTE**: this ONLY applies to eduVPN/Let's Connect! 3.x!
-* **NOTE**: do this ONLY for new servers, there is NO automatic migration from 
-  SQLite to PostgreSQL/MariaDB!
-* **NOTE**: you can use this if you want to deploy multiple portal instances 
-  using the same storage backend;
-* **NOTE**: your PostgreSQL/MariaDB setup should have higher availability than 
-  your individual portal(s), otherwise this setup makes no sense;
+1. Portal/Controller(s)
+2. Node(s)
 
-If you take all this in consideration, see 
-[Portal Configuration](#portal-configuration) on how to connect to your MariaDB
-server. Make sure you replace the server location and credentials.
+On default installations, using `deploy_${DIST}.sh` these two components are 
+installed on the same server.
 
-We assume you are using `deploy_fedora_v3_controller.sh` on all your 
-controller(s) with the same domain name, e.g. `vpn.example.org` and will use 
-"round robin" DNS or some other load balancing technology, e.g. a proxy. Again,
-make sure this proxy has a higher availability than your VPN portal(s).
+It is possible to split (both of them) and run them on multiple machines. The
+reason for doing this are twofold:
 
-On your node(s) you run `deploy_fedora_v3_node.sh`.
+1. Survive downtime when one of the Portal/Controller(s) goes down;
+2. Scale up to many more VPN connections than can be handled by a single 
+   machine
 
-# Database Configuration
+This document describes how to do (1), i.e. deploy multiple "Portal/Controller" 
+machines. Deploying multiple "Nodes" to accomplish (2) is documented 
+[here](MULTI_NODE.md).
 
-See [this](DATABASE.md) on how to configure PostgreSQL or MariaDB.
+For some organizations deploying the VPN service, solving (1) is not considered 
+necessary because their virtual platform takes care of this to a satisfying 
+degree. 
+
+When deploying the VPN service you can choose to solve just (2), or both (1) 
+and (2). In either case, the first step is always to deploy a separate 
+"Portal/Controller" and "Node" on two different machines. We provide deployment 
+scripts for this, i.e.`deploy_${DIST}_controller.sh` and 
+`deploy_${DIST}_node.sh`.
+
+
+If you want to service as many VPN users as possible we are talking about 
+scalability. You can accomplish this by adding additional VPN nodes. We call
+this "Multi Node" and is documented [here](MULTI_NODE.md).
+
+If you want to make your VPN service as reliable as possible, i.e. being able
+to "survive" downtime of one or more of the machines, 
 
 # Memcached Installation
 
@@ -77,13 +82,13 @@ $ sudo systemctl restart memcached
 
 # Portal Configuration
 
-Make sure you have the required PHP module installed for MariaDB/MySQL:
+Make sure you have the required PHP module installed for memcache:
 
 ```
 $ sudo dnf -y install php-pecl-memcached
 ```
 
-If these modules were not yet installed, restart PHP:
+If this module were not yet installed, restart PHP:
 
 ```
 $ sudo systemctl restart php-fpm
@@ -91,31 +96,17 @@ $ sudo systemctl restart php-fpm
 
 Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 
-```
-    ...
-    
-    'Session' => [
-        // Whether to use memcached for sessions
-        // DEFAULT: false
-        'useMemcached' => false,
-
-        // list of memcached servers host:port
-        // DEFAULT: []
-        'memcachedServerList' => [
-            'localhost:11211',
-        ],
-    ],
-
-    ...
+```php
+'sessionModule' => 'MemcacheSessionModule',
+'MemcacheSessionModule' => [
+    'serverList' => [
+        'p1.home.arpa:11211', 
+        'p2.home.arpa:11211'
+    ]
+],
 ```
 
-Make the following changes:
-
-```
-    'useMemcached' => true,
-    'memcachedServerList' => ['p1.home.arpa:11211', 'p2.home.arpa:11211'],
-```
-
+FIXME: the below is not actually true
 ```
 $ sudo vpn-maint-reset-system
 ```

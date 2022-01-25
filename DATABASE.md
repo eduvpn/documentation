@@ -13,7 +13,7 @@ run a [HA](PORTAL_HA.md) setup.
 does NOT explain how to run reliably database infrastructure! The document 
 _does_ provide database server installation/configuration instructions to the 
 level needed to _test_ the different database backends. This is NOT suitable
-for production.
+for production as-is!
 
 **NOTE(3)**: if you can choose, please use PostgreSQL and not MariaDB/MySQL.
 
