@@ -1,59 +1,43 @@
 # Introduction
 
-This document describes the version 3 API provided by a future version of the 
-eduVPN/Let's Connect! servers. The API is intended to be used by the eduVPN and 
-Let's Connect! applications and uses OAuth 2 for authorization.
+This document describes version 3 of the API provided by eduVPN and 
+Let's Connect! servers.
 
-The API can be used to obtain server information, prepare for a connection and 
-clean up a connection. 
+The API is intended to be used by the eduVPN and Let's Connect! applications.
 
-# Changes
+Using this document you should be able to implement the API in your VPN client, 
+or provide the same API for your VPN server to leverage the existing VPN 
+clients.
 
-The changes made to the API documentation before it is final.
+This API is fully supported by all eduVPN / Let's Connect! 3.x servers and 2.x 
+servers with version >= 2.4.1.
 
-| Date       | Change                                                                                                          |
-| ---------- | --------------------------------------------------------------------------------------------------------------- |
-| 2021-08-04 | Allow client to specify supported VPN protocols on `/info` call using the `X-Proto-Support` HTTP request header |
-| 2021-09-01 | The `vpn_proto` field was added to the `/info` response                                                         |
-|            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
-|            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
-|            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
-| 2021-09-02 | Add "Error Responses" section                                                                                   |
-| 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
-| 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
-| 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
-| 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
-|            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
-| 2021-11-02 | Document [VPN Protocol Selection](#vpn-protocol-selection) for clients                                          |
-| 2021-11-04 | Update the `/info` response fields, rewrite "VPN Protocol Selection" section                                    |
-| 2022-01-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified, the server will always decide based  |
-|            | on the provided parameters, i.e. `public_key` and `tcp_only` and the supported protocols by the profile...      |
-| 2022-01-06 | The `profile_id` parameter on the `/disconnect` call is never used, no point in having the client send it, so   |
-|            | the need to send this has been removed                                                                          |
-| 2022-01-18 | Rename `tcp_only` to `prefer_tcp` and switch to `yes` and `no` values instead of `on` and `off`                 |
-|            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
-|            | Remove the `vpn_proto_preferred` key from the `/info` response                                                  |
-|            | Rewrite [VPN Protocol Selection](#vpn-protocol-selection) and document protocol selection, add `Accept` header  |
-
-# Instance Discovery
-
-This document assumes you already know which server you want to connect to, by
-its FQDN, e.g. `vpn.example.org`. 
-
-We also provide documentation on how to implement "discovery" for the eduVPN 
-branded application [here](SERVER_DISCOVERY.md). If you are implementing an API
-client, it is a good idea to first implement the API and then look at the 
-"discovery".
+The API design was finalized and is considered _stable_ from 2022-01-27.
 
 # Standards
 
-The VPN servers provide an API protected with 
-[OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/). 
+We use a simple HTTP API protected by OAuth 2, following all recommendations 
+of the [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/) 
+draft specification. See section 10 of that document for a high level overview
+of the changes from OAuth 2, it basically boils down:
 
-The only difference with the OAuth implementation between the 2.x and 3.x 
-server is that the OAuth server does not accept the same _refresh token_ more
-than once, i.e. it can't be replayed. This should not have any impact as it was
-already an OAuth 2.0 requirement to handle this scenario properly.
+- Only use "Authorization Code" Grant;
+- Use PKCE (RFC 7636);
+- Never reuse "refresh tokens";
+- Only send the `Bearer` token as part of the HTTP `Authorization` Request 
+  Header.
+
+All HTTP request MUST use HTTPS.
+
+# Server Discovery
+
+As there are many servers running eduVPN / Let's Connect! you need to know 
+which server you need to connect to. This can be either hard-coded in the 
+application, the user can be asked to provide a server address or a "discovery" 
+can be implemented.
+
+For eduVPN specific we implement "server discovery" as documented 
+[here](SERVER_DISCOVERY.md).
 
 # Server Endpoint Discovery
 
@@ -79,9 +63,6 @@ this API.
 
 This file MUST be freshly retrieved before all attempts to connect to a server 
 to make sure any updates to this file are discovered.
-
-**NOTE**: the 2.x servers also supports the `/.well-known/vpn-user-portal` for 
-a long time, so there is no need to retrieve the legacy `/info.json` document.
 
 ## Endpoint Location
 
@@ -123,7 +104,8 @@ through the `redirect_uri` as part of the authorization, for an access and
 refresh token. It is also used to retrieve new access tokens when the current 
 access token expires.
 
-All error conditions MUST be handled according to the OAuth specification(s).
+All error conditions, both during the authorization phase AND when talking 
+to the API endpoint MUST be handled according to the OAuth specification(s).
 
 # Using the API
 
@@ -203,9 +185,10 @@ field is an object, the keys are
 [BCP-47 language codes](https://en.wikipedia.org/wiki/IETF_language_tag). 
 
 The `vpn_proto_list` field indicates which VPN protocol(s) are supported. If 
-you client does not support any of the listed protocols, you can omit them, or 
-mark them as unsupported. Currently `openvpn` and `wireguard` values are 
-supported.
+a VPN client does not support (some) of the listed protocols, they can be 
+omitted, or marked as unsupported in that VPN client. Currently `openvpn` and 
+`wireguard` values are supported. As an example: a WireGuard only client 
+SHOULD NOT list VPN profiles that only support OpenVPN.
 
 ## Connect
 
@@ -231,14 +214,15 @@ The `POST` request has (optional) parameters:
 
 | Parameter    | Required | Value(s)                                                                         |
 | ------------ | -------- | -------------------------------------------------------------------------------- |
-| `profile_id` | Yes      | The `profile_id` from the `/info` response                                       |
+| `profile_id` | Yes      | The `profile_id`, as obtained from the `/info` response                          |
 | `public_key` | No       | A WireGuard public key, for the WireGuard protocol                               |
 | `prefer_tcp` | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
 If the VPN client supports only WireGuard or OpenVPN and not both, see 
-[VPN Protocol Selection](#vpn-protocol-selection) for the `Accept` header. To
-add it to the cURL example use e.g.`-H "Accept: application/x-openvpn-profile"` 
-to indicate your client only supports OpenVPN.
+[VPN Protocol Selection](#vpn-protocol-selection) on how to use the `Accept` 
+header. To add it to the cURL example use e.g. 
+`-H "Accept: application/x-openvpn-profile"` to indicate your client only 
+supports OpenVPN.
 
 #### Profile ID
 
@@ -256,25 +240,27 @@ $ wg genkey | wg pubkey
 e4C2dNBB7k/U8KjS+xZdbicbZsqR1BqWIr1l924P3R4=
 ```
 
-Note for implementation: you MAY also use 
-[libsodium](https://doc.libsodium.org/)'s `crypto_box_keypair()` to generate a 
-keypair and extract the public key using `crypto_box_publickey()` instead of
-using `exec()` to run the `wg` tool.
+Note for implementation: you MAY use [libsodium](https://doc.libsodium.org/)'s 
+`crypto_box_keypair()` to generate a keypair and extract the public key using 
+`crypto_box_publickey()` instead of using `exec()` to run the `wg` tool.
 
-**NOTE**: you MUST NOT use the same WireGuard private key for different 
+**NOTE**: you SHOULD NOT use the same WireGuard private key for different 
 servers, generate one *per server*.
+
+**NOTE**: a VPN client MAY opt to generate a new public / private key for 
+every new call to `/connect` instead of storing it.
 
 #### Prefer TCP
 
-The `prefer_tcp` parameter is a hint for the VPN server for the OpenVPN 
-protocol.
+The `prefer_tcp` parameter is a hint for the VPN server, currently only for the 
+OpenVPN protocol.
 
 If set to `yes`, the client indicates that a connection over TCP is preferred.
 The server MAY accept this and return an OpenVPN configuration with the TCP 
 "remotes" first and thus have the client try to connect over TCP first.
 
 The server MAY ignore the option, for example when the profile only supports
-WireGuard, or the OpenVPN configuration does not use TCP.
+WireGuard, or the OpenVPN server configuration does not use TCP.
 
 ### Response
 
@@ -350,7 +336,7 @@ remote vpn.example 1194 udp
 remote vpn.example 1194 tcp
 ```
 
-If the profile is an WireGuard profile you'll get the complete WireGuard client
+If the profile is an WireGuard profile you'll get a WireGuard client
 configuration with `Content-Type: application/x-wireguard-profile`, e.g.:
 
 ```
@@ -367,9 +353,10 @@ AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = vpn.example:51820
 ```
 
-You MUST use the `Expires` response header value to figure out how long the VPN 
-session will be valid for. When implementing the client, make sure you never
-connect to the VPN server with an expired VPN configuration.
+For both OpenVPN and WIreGuard, you MUST use the `Expires` response header 
+value to figure out how long the VPN session will be valid for. When 
+implementing the client, make sure you never connect to the VPN server with an 
+expired VPN configuration.
 
 Before using this configuration, your locally generated private key needs to 
 be added under the `[Interface]` section, e.g.:
@@ -398,7 +385,7 @@ This call is "best effort", i.e. it is not a huge deal when the call fails. No
 special care has to be taken when this call fails, e.g. the connection is dead,
 or the application crashes. However, it MUST be called on "application exit" 
 when the user closes the VPN application without disconnecting first, unless 
-the VPN connection can also be managed outside the VPN.
+the VPN connection can also be persisted outside the VPN application.
 
 This call MUST be executed *after* the VPN connection itself has been 
 terminated by the application, if that is possible.
@@ -422,8 +409,10 @@ HTTP/1.1 204 No Content
 
 ## Error Responses
 
-Do **NOT** use the "Message" for string comparison in your application code, 
-getting any of these (4xx) errors below indicates a problem in the application. 
+Do **NOT** use the exact "Message" for string comparison in your application 
+code, getting any of these (4xx) errors below indicates a problem in the 
+application.
+
 Obviously if there in a 5xx error, that is NOT a problem in the client.
 
 | Call          | Example Message                        | Code | Description                                                                                   |
@@ -497,9 +486,8 @@ Which Protocol Will be Used?
     ---> "OpenVPN"
 ```
 
-This works fine when the VPN client supports _both_ OpenVPN and WireGuard. If 
-it only supports one of them the client MUST send the `Accept` request header 
-as part of the [Connect](#connect) request.
+A VPN application can indicate protocol support by using the HTTP `Accept` 
+request header. This header is used on the `/connect` call.
 
 If the VPN client only supports OpenVPN:
 
@@ -522,7 +510,7 @@ Accept: application/x-openvpn-profile, application/x-wireguard-profile
 **NOTE**: if the `Accept` request header is missing, it is assumed that the 
 VPN client supports both OpenVPN and WireGuard.
 
-# Flow
+# Application Flow
 
 Below we describe how the application MUST interact with the API. It does NOT
 include information on how to handle OAuth. The application MUST properly 
@@ -531,10 +519,10 @@ a "Refresh Token" and when using the API with an "Access Token".
 
 1. Call `/info` to retrieve a list of available VPN profiles for the user;
 2. Show the available profiles to the user if there is >1 profile and allow
-   the user to choose, show "No Profiles Available for your Account" when there
+   the user to choose. Show "No Profiles Available for your Account" when there
    are no profiles;
 3. After the user chose (or there was only 1 profile) perform the `/connect` 
-   call as per [VPN Protocol Selection](#vpn-protocol-selection);
+   call as per [Connect](#connect);
 4. Store the configuration file from the response. Make note of the value of
    the `Expires` response header to be able to figure out how long your are 
    able to use this VPN configuration;
@@ -572,3 +560,32 @@ the user about this, e.g. through a notification that possibly opens the
 application if not yet open. This allows the user to (manually) 
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
+
+# History
+
+The changes made to the API documentation before it was considered final.
+
+| Date       | Change                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------- |
+| 2021-08-04 | Allow client to specify supported VPN protocols on `/info` call using the `X-Proto-Support` HTTP request header |
+| 2021-09-01 | The `vpn_proto` field was added to the `/info` response                                                         |
+|            | The `tcp_only` POST parameter was added for OpenVPN profiles                                                    |
+|            | The `public_key` POST parameter is now only required for WireGuard profiles                                     |
+|            | Remove the `X-Proto-Support` header again now that we have `vpn_proto` in `/info` response                      |
+| 2021-09-02 | Add "Error Responses" section                                                                                   |
+| 2021-09-20 | Restored the `default_gateway` bool as needed by the NetworkManager client on Linux                             |
+| 2021-10-13 | Remove all references to `/info.json`, MUST use `/.well-known/vpn-user-portal` from now on                      |
+| 2021-10-27 | Mention following redirects MUST only allow redirecting to `https://`                                           |
+| 2021-11-01 | Allow specifying the protocol to use on the `/connect` call                                                     |
+|            | The `vpn_proto` field was in the `/info` response and is of type string array                                   |
+| 2021-11-02 | Document [VPN Protocol Selection](#vpn-protocol-selection) for clients                                          |
+| 2021-11-04 | Update the `/info` response fields, rewrite "VPN Protocol Selection" section                                    |
+| 2022-01-05 | The `vpn_proto` POST parameter was removed and `/connect` call simplified, the server will always decide based  |
+|            | on the provided parameters, i.e. `public_key` and `tcp_only` and the supported protocols by the profile...      |
+| 2022-01-06 | The `profile_id` parameter on the `/disconnect` call is never used, no point in having the client send it, so   |
+|            | the need to send this has been removed                                                                          |
+| 2022-01-18 | Rename `tcp_only` to `prefer_tcp` and switch to `yes` and `no` values instead of `on` and `off`                 |
+|            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
+|            | Remove the `vpn_proto_preferred` key from the `/info` response                                                  |
+|            | Rewrite [VPN Protocol Selection](#vpn-protocol-selection) and document protocol selection, add `Accept` header  |
+
