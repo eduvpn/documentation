@@ -113,13 +113,21 @@ needed. It is only needed:
 - on "first launch" when offering the search for "Institute Access" and 
   "Organizations";
 - when the user tries to add new server AND the user did NOT yet choose an 
-  organization before.
+  organization before;
+- when the authorization for the server associated with an already chosen 
+  organization is triggered, e.g. after expiry or recovation.
 
 The reason for this is that the list can get quit big. We expect it can be up
 to 1MB in the future.
 
 The keys `display_name`, `org_id`, `secure_internet_home` are required keys. 
 The `keyword_list` is optional.
+
+**NOTE**: when the `org_id` that the user chose previously is no longer 
+available in `organization_list.json` the application should ask the user to 
+choose their organization (again). This can occur for example when the 
+organization replaced their identity provider,  uses a different domain after 
+rebranding or simply ceased to exist.
 
 ## Support Contact
 
