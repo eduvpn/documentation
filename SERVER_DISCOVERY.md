@@ -115,7 +115,7 @@ needed. It is only needed:
 - when the user tries to add new server AND the user did NOT yet choose an 
   organization before;
 - when the authorization for the server associated with an already chosen 
-  organization is triggered, e.g. after expiry or recovation.
+  organization is triggered, e.g. after expiry or revocation.
 
 The reason for this is that the list can get quit big. We expect it can be up
 to 1MB in the future.
