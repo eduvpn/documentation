@@ -101,7 +101,7 @@ REPO_URL_LIST=(\
     https://github.com/Amebis/eduOpenVPN \
     https://github.com/Amebis/eduOAuth \
     https://github.com/Amebis/eduJSON \
-    https://github.com/Amebis/eduEd25519 \
+    https://github.com/Amebis/eduLibsodium \
     https://github.com/Amebis/openvpn \
     https://github.com/Amebis/openvpn-build \
     https://github.com/Amebis/eduEx \
