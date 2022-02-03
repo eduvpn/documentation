@@ -18,7 +18,7 @@ git clone ${GIT_HOST}~fkooman/vpn-portal-artwork-eduVPN
 git clone ${GIT_HOST}~fkooman/vpn-portal-artwork-LC
 git clone ${GIT_HOST}~fkooman/vpn-ca
 git clone -b v1 ${GIT_HOST}~fkooman/vpn-daemon
-git clone ${GIT_HOST}~fkooman/vpn-maint-scripts
+git clone -b v1 ${GIT_HOST}~fkooman/vpn-maint-scripts
 git clone ${GIT_HOST}~fkooman/builder.rpm
 git clone ${GIT_HOST}~fkooman/builder.deb
 
