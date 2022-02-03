@@ -2,42 +2,29 @@
 
 REPO_BRANCH=v3
 BASE_DIR=${HOME}/Projects/eduVPN-${REPO_BRANCH}
+GIT_HOST=https://git.sr.ht/
+#GIT_HOST=git@git.sr.ht:
 
 mkdir -p "${BASE_DIR}"
 cd "${BASE_DIR}" || exit
 
 # clone repositories (read-only)
-git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-user-portal
-git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-server-node
-git clone -b "${REPO_BRANCH}" https://git.sr.ht/~fkooman/vpn-documentation
-git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-eduVPN
-git clone https://git.sr.ht/~fkooman/vpn-portal-artwork-LC
-git clone https://git.sr.ht/~fkooman/vpn-ca
-git clone https://git.sr.ht/~fkooman/vpn-daemon
-git clone -b v2 https://git.sr.ht/~fkooman/vpn-maint-scripts
-git clone https://git.sr.ht/~fkooman/builder.rpm
-git clone https://git.sr.ht/~fkooman/nbuilder.deb
-
-# clone all repositories (read/write)
-#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-user-portal
-#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-server-node
-#git clone -b "${REPO_BRANCH}" git@git.sr.ht:~fkooman/vpn-documentation
-#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-eduVPN
-#git clone git@git.sr.ht:~fkooman/vpn-portal-artwork-LC
-#git clone git@git.sr.ht:~fkooman/vpn-ca
-#git clone git@git.sr.ht:~fkooman/vpn-daemon
-#git clone -b v2 git@git.sr.ht:~fkooman/vpn-maint-scripts
-#git clone git@git.sr.ht:~fkooman/builder.rpm
-#git clone git@git.sr.ht:~fkooman/builder.deb
-#git clone git@git.sr.ht:~fkooman/nbuilder.deb
+git clone -b "${REPO_BRANCH}" ${GIT_HOST}~fkooman/vpn-user-portal
+git clone -b "${REPO_BRANCH}" ${GIT_HOST}~fkooman/vpn-server-node
+git clone -b "${REPO_BRANCH}" ${GIT_HOST}~fkooman/vpn-documentation
+git clone -b "${REPO_BRANCH}" ${GIT_HOST}~fkooman/vpn-portal-artwork-eduVPN
+git clone -b "${REPO_BRANCH}" ${GIT_HOST}~fkooman/vpn-portal-artwork-LC
+git clone ${GIT_HOST}~fkooman/vpn-ca
+git clone ${GIT_HOST}~fkooman/vpn-daemon
+git clone ${GIT_HOST}~fkooman/vpn-maint-scripts
+git clone ${GIT_HOST}~fkooman/builder.rpm
+git clone ${GIT_HOST}~fkooman/nbuilder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
 for PACKAGE_NAME in vpn-daemon php-oauth2-server php-secookie vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-node vpn-user-portal vpn-maint-scripts; do
-	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
-#	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.rpm rpm/${PACKAGE_NAME}.rpm
-	git clone https://git.sr.ht/~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
-#	git clone git@git.sr.ht:~fkooman/${PACKAGE_NAME}.deb deb/${PACKAGE_NAME}.deb
+	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
+	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
 done
 
 ######################################
