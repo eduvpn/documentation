@@ -227,6 +227,28 @@ $ rpmbuild -bs SPECS/vpn-user-portal.spec
 $ rpmbuild -bb SPECS/vpn-user-portal.spec
 ```
 
+Or use the `${HOME}/.local/bin/local_build` script:
+
+```bash
+#!/bin/sh
+if [ -d SPECS ]; then
+    # we are in the package root
+    spectool -g -R SPECS/*.spec
+    cp SOURCES/* "${HOME}/rpmbuild/SOURCES"
+    rpmbuild -bs SPECS/*.spec
+    rpmbuild -bb SPECS/*.spec    
+elif [ -d ../SPECS ]; then
+    # we are in the SPECS directory already
+    spectool -g -R ./*.spec
+    cp ../SOURCES/* "${HOME}/rpmbuild/SOURCES"
+    rpmbuild -bs ./*.spec
+    rpmbuild -bb ./*.spec    
+else 
+    echo "ERROR: cannot find SPEC file"
+    exit 1
+fi
+```
+
 Then you can commit your changes:
 
 ```
@@ -257,16 +279,14 @@ PROJECT_NAME=$(basename "${PWD}")
 PROJECT_VERSION=${1}
 RELEASE_DIR="${PWD}/release"
 
-if [ -z "${1}" ]
-then
+if [ -z "${1}" ]; then
     # we take the last "tag" of the Git repository as version
     PROJECT_VERSION=$(git describe --abbrev=0 --tags)
     echo Version: "${PROJECT_VERSION}"
 fi
 
 mkdir -p "${RELEASE_DIR}"
-if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]
-then
+if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]; then
     echo "Version ${PROJECT_VERSION} already has a release!"
     exit 1
 fi
