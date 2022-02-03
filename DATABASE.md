@@ -15,9 +15,14 @@ _does_ provide database server installation/configuration instructions to the
 level needed to _test_ the different database backends. This is NOT suitable
 for production as-is!
 
-**NOTE(3)**: if you can choose, please use PostgreSQL and not MariaDB/MySQL.
+**NOTE (3)**: if you can choose, please use PostgreSQL and NOT MariaDB/MySQL.
 
-**NOTE(4)**: we assume you used `deploy_${DIST}_controller.sh` and 
+**NOTE (4)**: when using MariaDB/MySQL there's currently a 
+[problem](https://todo.sr.ht/~eduvpn/server/53) when generating aggregate 
+statistics. This query works fine in PostgreSQL and SQLite... Any expert 
+insight would be appreciated!
+
+**NOTE (5)**: we assume you used `deploy_${DIST}_controller.sh` and 
 `deploy_${DIST}_node.sh` to install the VPN service.
 
 # Configuration
