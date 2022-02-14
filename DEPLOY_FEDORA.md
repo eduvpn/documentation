@@ -81,10 +81,10 @@ settings.
 By default there is a user `demo` and `admin` with a generated password for 
 portal access. Those are printed at the end of the deploy script.
 
-If you want to update/add users you can use the `vpn-user-portal-add-user`. 
+If you want to update/add users you can use `vpn-user-portal-account`. 
 Provide an existing account to _update_ the password:
 
-    $ sudo vpn-user-portal-add-user
+    $ sudo vpn-user-portal-account --add
     User ID: foo
     Setting password for user "foo"
     Password: 
