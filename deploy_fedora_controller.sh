@@ -122,7 +122,7 @@ systemctl enable --now crond
 USER_NAME="vpn"
 USER_PASS=$(pwgen 12 -n 1)
 
-sudo -u apache vpn-user-portal-account --add --user "${USER_NAME}" --password "${USER_PASS}"
+sudo -u apache vpn-user-portal-account --add "${USER_NAME}" --password "${USER_PASS}"
 
 echo "########################################################################"
 echo "# Portal"

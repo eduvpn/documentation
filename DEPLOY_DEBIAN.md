@@ -80,8 +80,7 @@ portal access. Those are printed at the end of the deploy script.
 If you want to update/add users you can use `vpn-user-portal-account`. 
 Provide an existing account to _update_ the password:
 
-    $ sudo -u www-data vpn-user-portal-account --add
-    User ID: foo
+    $ sudo -u www-data vpn-user-portal-account --add foo
     Setting password for user "foo"
     Password: 
     Password (repeat): 
