@@ -22,7 +22,8 @@ For our current progress see our
 - Much simpler configuration, especially for "multi node" setups
 - Allow limits on number of active OAuth clients and VPN configuration 
   downloads per user
-  
+- Keep aggregate logs longer than 30 days, i.e. usage statistics
+
 ## Ops Changes
 
 - Runs on Debian >= 11, Fedora >= 34, Possibly Ubuntu 22.04 and 
@@ -52,27 +53,22 @@ For our current progress see our
 - Removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
   2FA for all, or for none
   
-## Work in Progress / Under Consideration
-
-- VPN Usage stats need to be completely redone, currently only "VPN client use" 
-  is available because that was easy
-- Add public CA and public WireGuard key(s) to the discovery files to have an 
-  additional trust channel between app and server in addition to Web TLS, or 
-  perhaps _sign_ the API responses with a public key mentioned in the discovery 
-  files...
-- Keep aggregate logs longer than 30 days, i.e. usage statistics
-- Work on implementing 
-  [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
-  of discovery files
-- Browser generated WireGuard private key (in portal so server never knows it)
-- Generate QR code in browser instead of on the server
-  
 ## For Future Consideration (>= 3.1)
 
 - Reimplement 2FA, but only for local user accounts
 - Implement Admin API. e.g. for bulk-configuration downloads for managed 
   clients
+- Restore Graphs for stats
 - Guest Usage has been completely removed for now, need to think how and 
   whether to get this back in a clean way *with* pseudonyms, don't leak local 
   user identity to guest servers! We MAY keep it out of 3.x and require servers
   to keep running 2.x until we come up with a better approach...
+- Add public CA and public WireGuard key(s) to the discovery files to have an 
+  additional trust channel between app and server in addition to Web TLS, or 
+  perhaps _sign_ the API responses with a public key mentioned in the discovery 
+  files...
+- Work on implementing 
+  [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
+  of discovery files
+- Browser generated WireGuard private key (in portal so server never knows it)
+- Generate QR code in browser instead of on the server
