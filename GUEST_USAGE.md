@@ -52,7 +52,8 @@ The following information needs to be provided in order to be added:
 * A web site we can refer end-users to for this particular _Secure Internet_ 
   server (Optional);
 * The SAML metadata URL that contains all the organizations that have access 
-  to your server which will be used to populate the eduVPN applications;
+  to your server which will be used to populate the eduVPN applications, i.e. 
+  the **IdP** (federation) metadata URL;
 * The full hostname (FQDN) of your VPN server;
 * Make sure TLS is configured properly! Use e.g. 
   [SSL Server Test](https://www.ssllabs.com/ssltest/);
