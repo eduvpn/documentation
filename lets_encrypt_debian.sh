@@ -11,7 +11,7 @@
 # VARIABLES
 ###############################################################################
 
-MACHINE_HOSTNAME=$(hostname -f)
+MACHINE_HOSTNAME=$(hostname -f | tr '[:upper:]' '[:lower:]')
 
 # DNS name of the Web Server
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
