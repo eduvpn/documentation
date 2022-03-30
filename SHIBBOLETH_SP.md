@@ -28,15 +28,16 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
 * Set `handlerSSL` to `true` and `cookieProps` to `https` in the `<Sessions>`
   element
 * Set the `entityID` to the entity ID of your IdP, or configure the
-  `discoveryURL` in the `<SSO>` element
+  `discoveryURL` in the `<SSO>` element, e.g.: 
+  `<SSO entityID="https://idp.example.org/saml/metadata">SAML2</SSO>`
 * Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
   1.0 support (only on Debian 9)
 * Set the `path` (or file on Debian 9) in the `<MetadataProvider>` element for 
   a simple static metadata file, e.g.: 
-  `<MetadataProvider type="XML" validate="false" path="idp.tuxed.net.xml"/>` and 
-  put the `idp.tuxed.net.xml` file in `/etc/shibboleth`. Set `validate` to 
-  `false` to keep the IdP working in case it has `validUntil` specified in the
-  XML
+  `<MetadataProvider type="XML" validate="false" path="idp.example.org.xml"/>` 
+  and put the `idp.example.org.xml` file in `/etc/shibboleth`. Set `validate` 
+  to `false` to keep the IdP working in case it has `validUntil` specified in 
+  the XML
 
 Configuring automatic metadata refresh is outside the scope of this document,
 refer to your identity federation documentation.
