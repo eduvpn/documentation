@@ -11,11 +11,13 @@
 # VARIABLES
 ###############################################################################
 
-MACHINE_HOSTNAME=$(hostname -f | tr '[:upper:]' '[:lower:]')
+MACHINE_HOSTNAME=$(hostname -f)
 
 # DNS name of the Web Server
 printf "DNS name of the Web Server [%s]: " "${MACHINE_HOSTNAME}"; read -r WEB_FQDN
 WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
+# convert hostname to lowercase
+WEB_FQDN=$(echo "${WEB_FQDN}" | tr '[:upper:]' '[:lower:]')
 
 ###############################################################################
 # SYSTEM
