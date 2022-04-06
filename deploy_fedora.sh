@@ -144,6 +144,13 @@ systemctl enable --now crond
 # VPN SERVER CONFIG
 ###############################################################################
 
+# increase the allowed number of processes for the OpenVPN service
+mkdir -p /etc/systemd/system/openvpn-server@.service.d
+cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
+[Service]
+LimitNPROC=127
+EOF
+
 vpn-maint-apply-changes
 
 ###############################################################################
