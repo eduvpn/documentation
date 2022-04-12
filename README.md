@@ -1,11 +1,5 @@
 # Introduction
 
-**NOTE**
-For the experimental version 3.x switch to the `v3` branch of this
-repository, it will be updated over the next weeks and become the default after
-release of 3.x!
-**NOTE**
-
 This is the eduVPN/Let's Connect! documentation repository. This repository 
 targets administrators and developers. It contains information on how to deploy 
 the VPN software on a server, but also (technical) details about the 
@@ -22,6 +16,21 @@ try to find the contact information of your organization
 [here](https://status.eduvpn.org/). If you don't know where to go, then simply
 contact us at 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
+
+# Supported Versions
+
+| Version                                              | Release Date | OS Support                                    |  EOL*            | 
+| ---------------------------------------------------- | ------------ | --------------------------------------------- | ---------------- |
+| [3](https://github.com/eduvpn/documentation/tree/v3) | TBD          | Debian (11), Fedora (35)                      | TBD              |
+| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (9, 10, 11), CentOS 7, Fedora (34, 35) | 2024-06-30       |
+| [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | N/A                                           | Unsupported      | 
+
+We support a release until such time the EOL date has been reached or none of 
+the eduVPN servers we officially [support](https://status.eduvpn.org/) are 
+running that version anymore, whichever comes first. 
+
+We **only** support the particular release on operating systems that are still 
+supported by their vendor!
 
 # Features
 
