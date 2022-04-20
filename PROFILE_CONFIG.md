@@ -237,7 +237,7 @@ OpenVPN specific configuration options.
 | [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |
 | [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |
 | [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |
-| [oEnableLog](#openpvn-enable-log)                 | `bool`                 | `false`  |
+| [oEnableLog](#openvpn-enable-log)                 | `bool`                 | `false`  |
 | [oUdpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
 | [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
 | [oExposedUdpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
