@@ -1,23 +1,14 @@
----
-title: Shibboleth SP (Debian)
-description: SAML Authentication using Shibboleth
-category: authentication
----
-
-This document describes installing Shibboleth on Debian 9 and 10.
+This document describes installing Shibboleth on Debian 11.
 
 # Installation
 
-## Debian 9
+## Debian 11
 
-    $ sudo apt install libapache2-mod-shib2
-    $ sudo shib-keygen
-
-## Debian 10
-
-    $ sudo apt install libapache2-mod-shib
-    $ sudo shib-keygen -n sp-encrypt
-    $ sudo shib-keygen -n sp-signing
+```
+$ sudo apt install libapache2-mod-shib
+$ sudo shib-keygen -n sp-encrypt
+$ sudo shib-keygen -n sp-signing
+```
 
 # Configuration
 
@@ -29,10 +20,8 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
   element
 * Set the `entityID` to the entity ID of your IdP, or configure the
   `discoveryURL` in the `<SSO>` element
-* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
-  1.0 support (only on Debian 9)
-* Set the `path` (or file on Debian 9) in the `<MetadataProvider>` element for 
-  a simple static metadata file, e.g.: 
+* Set the `path` in the `<MetadataProvider>` element for a simple static 
+  metadata file, e.g.: 
   `<MetadataProvider type="XML" validate="false" path="idp.tuxed.net.xml"/>` and 
   put the `idp.tuxed.net.xml` file in `/etc/shibboleth`. Set `validate` to 
   `false` to keep the IdP working in case it has `validUntil` specified in the
@@ -43,12 +32,16 @@ refer to your identity federation documentation.
 
 Verify the Shibboleth configuration:
 
-    $ sudo shibd -t
-    overall configuration is loadable, check console for non-fatal problems
+```
+$ sudo shibd -t
+overall configuration is loadable, check console for non-fatal problems
+```
 
 Restart Shibboleth:
 
-    $ sudo systemctl restart shibd
+```
+$ sudo systemctl restart shibd
+```
 
 Next: register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
@@ -91,7 +84,9 @@ If you have a case where only one attribute needs to match, you can use
 
 Make sure you restart Apache after changing the configuration:
 
-    $ sudo systemctl restart apache2
+```
+$ sudo systemctl restart apache2
+```
 
 **NOTE** if you are using IDs such as `entitlement` and `unscoped-affiliation` 
 make sure they are correctly enabled/set in 
@@ -100,20 +95,16 @@ make sure they are correctly enabled/set in
 ### Portal
 
 In order to configure the VPN portal, modify `/etc/vpn-user-portal/config.php`
-and set the `authMethod` and `ShibAuthentication` options:
+and set the `authModule` and `ShibAuthModule` options:
 
-    ...
+```
+'authModule' => 'ShibAuthModule',
 
-    'authMethod' => 'ShibAuthentication',
-
-    ...
-
-    'ShibAuthentication' => [
-        'userIdAttribute' => 'persistent-id',
-        'permissionAttribute' => 'entitlement',
-    ],
-
-    ...
+'ShibAuthModule' => [
+    'userIdAttribute' => 'uid',
+    'permissionAttributeList' => ['entitlement'],
+],
+```
 
 The mentioned attributes `persistent-id` and `entitlement` are configured in
 the Shibboleth configuration. Modify/add others as required in
