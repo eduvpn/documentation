@@ -1,12 +1,6 @@
----
-title: Deploying on Debian
-description: Install and Maintain eduVPN/Let's Connect! on Debian
-category: installation
----
-
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Debian 9, 10 or 11 installation. It will configure all 
-components and will be ready for use after running!
+you can run on a fresh Debian 11 or Ubuntu 22.04 installation. It will 
+configure all components and will be ready for use after running!
 
 Additional scripts are available after deployment:
 
@@ -15,12 +9,12 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Debian 9, 10 or 11 installation with all updates installed;
+* Clean Debian 11, or Ubuntu 22.04 installation with all updates installed;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
-  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
-  script will take care of the host firewall;
+  `tcp/443`, `udp/1194`, `tcp/1194` and `udp/51820` for basic functionality, 
+  the deploy script will take care of the host firewall;
 * Working DNS entry for your VPN server, e.g. `vpn.example.org`.
 
 We test only with the official Debian 

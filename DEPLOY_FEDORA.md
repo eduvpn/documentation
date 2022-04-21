@@ -20,8 +20,8 @@ Additional scripts are available after deployment:
 * You SHOULD use static IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
-  `tcp/443`, `udp/1194` and `tcp/1194` for basic functionality, the deploy 
-  script will take care of the host firewall;
+  `tcp/443`, `udp/1194`, `tcp/1194` and `udp/51820` for basic functionality, 
+  the deploy script will take care of the host firewall;
 * Working DNS entry for your VPN server, e.g. `vpn.example.org`.
 
 We test only with the official Fedora 
