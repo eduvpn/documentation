@@ -75,6 +75,8 @@ a2enconf vpn-user-portal
 a2ensite "${WEB_FQDN}" localhost
 a2dissite 000-default
 
+systemctl restart apache2
+
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
