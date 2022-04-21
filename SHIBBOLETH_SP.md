@@ -71,7 +71,7 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
     </Location>
 
     # do not secure OAuth Token Endpoint as used by VPN clients
-    <Location /vpn-user-portal/oauth>
+    <Location /vpn-user-portal/oauth/token>
         Require all granted
     </Location> 
 
