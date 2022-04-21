@@ -68,8 +68,8 @@ settings.
 
 #### Username & Password
 
-By default there is a user `demo` and `admin` with a generated password for 
-portal access. Those are printed at the end of the deploy script.
+By default there is a user `vpn` with a generated password for portal access. 
+The credentials are printed at the end of the deploy script.
 
 If you want to update/add users you can use `vpn-user-portal-account`. 
 Provide an existing account to _update_ the password:
@@ -82,7 +82,7 @@ Provide an existing account to _update_ the password:
 You can configure which user(s) is/are an administrator by setting the 
 `adminUserIdList` option in `/etc/vpn-user-portal/config.php`, e.g.:
 
-    'adminUserIdList' => ['admin'],
+    'adminUserIdList' => ['vpn'],
 
 #### LDAP
 
@@ -99,10 +99,6 @@ It is easy to enable RADIUS authentication. This is documented separately. See
 It is easy to enable SAML authentication for identity federations, this is 
 documented separately. See [SAML](SAML.md).
 
-### 2FA
-
-It is possible to enable [2FA](2FA.md) with TOTP.
-
 ### ACLs
 
 If you want to restrict the use of the VPN a bit more than on whether someone
@@ -115,10 +111,9 @@ Debian's PHP package has some unfortunate defaults that only work for
 very light usage and in no way for deploys where you expect more than a few 
 users to use the service.
 
-Modify `/etc/php/7.0/fpm/pool.d/www.conf` (Debian 9),
-`/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10) or 
-`/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11) and change the following 
-settings. We'll use the CentOS/Fedora defaults here as well:
+Modify `/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11) or 
+`/etc/php/8.1/fpm/pool.d/www.conf` (Ubuntu 22.04) and change the following 
+settings. We'll use the Fedora defaults here:
 
     pm = dynamic
     pm.max_children = 50
