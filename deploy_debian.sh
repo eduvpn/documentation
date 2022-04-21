@@ -1,11 +1,11 @@
 #!/bin/sh
 
 #
-# Deploy a single VPN machine
+# Deploy a VPN server on Debian/Ubuntu
 #
 
 ###############################################################################
-# CONFIGURATION
+# VARIABLES
 ###############################################################################
 
 MACHINE_HOSTNAME=$(hostname -f)
@@ -16,35 +16,29 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 # convert hostname to lowercase
 WEB_FQDN=$(echo "${WEB_FQDN}" | tr '[:upper:]' '[:lower:]')
 
+# Try to detect external "Default Gateway" Interface, but allow admin override
+EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
+printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
+EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
+
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
 apt update
-
-# until ALL composer.json of the packages using sqlite have "ext-sqlite3" we'll 
-# install it manually here...
-DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    apache2 php-fpm pwgen iptables-persistent sudo gnupg php-sqlite3 \
-    lsb-release
+apt install -y apt-transport-https curl apache2 php-fpm pwgen \
+    iptables-persistent sudo lsb-release ipcalc-ng tmux
 
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
-curl -o /etc/apt/trusted.gpg.d/eduVPN.asc https://repo.eduvpn.org/v2/deb/debian-20200817.key
-echo "deb https://repo.eduvpn.org/v2/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN_v2.list
-
-# enable dev repo if requested
-if [ "${VPN_DEV_REPO}" = 1 ]; then
-    curl -o /etc/apt/trusted.gpg.d/fkooman.asc https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
-    echo "deb https://repo.tuxed.net/eduVPN/v2-dev/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN_v2-dev.list
-fi
+curl -o /etc/apt/trusted.gpg.d/fkooman.asc https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN_v3-dev.list
 
 apt update
 
 # install software (VPN packages)
-DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-server-api \
-    vpn-user-portal vpn-maint-scripts
+apt install -y vpn-user-portal vpn-server-node vpn-maint-scripts
 
 ###############################################################################
 # CERTIFICATE
@@ -77,41 +71,36 @@ cp resources/localhost.debian.conf /etc/apache2/sites-available/localhost.conf
 # update hostname
 sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/apache2/sites-available/${WEB_FQDN}.conf"
 
-a2enconf vpn-server-api vpn-user-portal
+a2enconf vpn-user-portal
 a2ensite "${WEB_FQDN}" localhost
 a2dissite 000-default
-
-###############################################################################
-# VPN-SERVER-API
-###############################################################################
-
-# update hostname of VPN server
-sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-server-api/config.php"
-
-# update the default IP ranges
-sed -i "s|10.0.0.0/25|$(vpn-server-api-suggest-ip -4)|" "/etc/vpn-server-api/config.php"
-sed -i "s|fd00:4242:4242:4242::/64|$(vpn-server-api-suggest-ip -6)|" "/etc/vpn-server-api/config.php"
-
-# initialize the CA
-sudo -u www-data vpn-server-api-init
 
 ###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
-# DB init
-sudo -u www-data vpn-user-portal-init
+# update hostname of VPN server
+sed -i "s/vpn.example/${WEB_FQDN}/" "/etc/vpn-user-portal/config.php"
+
+# update the default IP ranges for the profile
+# on Debian we can use ipcalc-ng
+sed -i "s|10.42.42.0|$(ipcalc-ng -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd42::|$(ipcalc-ng -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|10.43.43.0|$(ipcalc-ng -4 -r 24 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
+sed -i "s|fd43::|$(ipcalc-ng -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/config.php"
 
 ###############################################################################
 # NETWORK
 ###############################################################################
 
 cat << EOF > /etc/sysctl.d/70-vpn.conf
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production, you SHOULD be using STATIC addresses!
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+
+# enable IPv4 and IPv6 forwarding
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
-# **REMOVE** for static IPv6 configurations!
-net.ipv6.conf.all.accept_ra = 2
 EOF
 
 sysctl --system
@@ -120,32 +109,28 @@ sysctl --system
 # UPDATE SECRETS
 ###############################################################################
 
-# update internal API secrets from the defaults to something secure
-SECRET_PORTAL_API=$(pwgen -s 32 -n 1)
-SECRET_NODE_API=$(pwgen -s 32 -n 1)
-sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-user-portal/config.php"
-sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${SECRET_NODE_API}|" "/etc/vpn-server-node/config.php"
-sed -i "s|XXX-vpn-user-portal/vpn-server-api-XXX|${SECRET_PORTAL_API}|" "/etc/vpn-server-api/config.php"
-sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${SECRET_NODE_API}|" "/etc/vpn-server-api/config.php"
+cp /etc/vpn-user-portal/keys/node.0.key /etc/vpn-server-node/keys/node.key
 
 ###############################################################################
 # DAEMONS
 ###############################################################################
 
 systemctl enable --now php${PHP_VERSION}-fpm
-# on Debian 9 we must restart php-fpm because php-libsodium gets installed as a 
-# dependency which requires a restart...
-systemctl restart php${PHP_VERSION}-fpm 
-systemctl restart apache2
+systemctl enable --now apache2
+systemctl enable --now vpn-daemon
+systemctl enable --now crond
 
 ###############################################################################
-# OPENVPN SERVER CONFIG
+# VPN SERVER CONFIG
 ###############################################################################
 
-# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
-# by default! 
+# increase the allowed number of processes for the OpenVPN service
+mkdir -p /etc/systemd/system/openvpn-server@.service.d
+cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
+[Service]
+LimitNPROC=127
+EOF
 
-# generate (new) OpenVPN server configuration files and start OpenVPN
 vpn-maint-apply-changes
 
 ###############################################################################
@@ -154,6 +139,8 @@ vpn-maint-apply-changes
 
 cp resources/firewall/iptables  /etc/iptables/rules.v4
 cp resources/firewall/ip6tables /etc/iptables/rules.v6
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/iptables/rules.v4
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/iptables/rules.v6
 
 systemctl enable netfilter-persistent
 systemctl restart netfilter-persistent
@@ -162,27 +149,20 @@ systemctl restart netfilter-persistent
 # USERS
 ###############################################################################
 
-REGULAR_USER="demo"
-REGULAR_USER_PASS=$(pwgen 12 -n 1)
+USER_NAME="vpn"
+USER_PASS=$(pwgen 12 -n 1)
 
-# the "admin" user is a special user, listed by ID to have access to "admin" 
-# functionality in /etc/vpn-user-portal/config.php (adminUserIdList)
-ADMIN_USER="admin"
-ADMIN_USER_PASS=$(pwgen 12 -n 1)
-
-sudo -u www-data vpn-user-portal-account --add "${REGULAR_USER}" --password "${REGULAR_USER_PASS}"
-sudo -u www-data vpn-user-portal-account --add "${ADMIN_USER}" --password "${ADMIN_USER_PASS}"
-
-###############################################################################
-# SHOW INFO
-###############################################################################
+sudo -u www-data vpn-user-portal-account --add "${USER_NAME}" --password "${USER_PASS}"
 
 echo "########################################################################"
 echo "# Portal"
+echo "# ======"
 echo "#     https://${WEB_FQDN}/"
-echo "#         Regular User: ${REGULAR_USER}"
-echo "#         Regular User Pass: ${REGULAR_USER_PASS}"
+echo "#         User Name: ${USER_NAME}"
+echo "#         User Pass: ${USER_PASS}"
 echo "#"
-echo "#         Admin User: ${ADMIN_USER}"
-echo "#         Admin User Pass: ${ADMIN_USER_PASS}"
+echo "# Admin"
+echo "# ====="
+echo "# Add 'vpn' to 'adminUserIdList' in /etc/vpn-user-portal/config.php in"
+echo "# order to make yourself an admin in the portal."
 echo "########################################################################"
