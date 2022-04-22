@@ -53,7 +53,7 @@ return array_merge(\$baseConfig, \$localConfig);
 EOF
 
 php libexec/generate-secrets.php
-php bin/account.php --add --user foo --password bar
+php bin/account.php --add foo --password bar
 
 # symlink to the official templates we have so we can easily modify and test
 # them
