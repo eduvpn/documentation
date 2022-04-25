@@ -242,6 +242,7 @@ OpenVPN specific configuration options.
 | [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
 | [oExposedUdpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
 | [oExposedTcpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
+| [oListenOn](#openvpn-listen-address)              | `string`               | `::`     |
 
 ### OpenVPN Range Four
 
@@ -336,6 +337,25 @@ See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md),
 ### OpenVPN Exposed Port List
 
 TBD.
+
+### OpenVPN Listen Address
+
+You can configure the OpenVPN processes to listen on a specific IPv4 _or_ IPv6 
+address. This MAY be helpful in certain network configurations where a proper
+configuration using [Source Routing](SOURCE_ROUTING.md) is not possible. 
+
+By using this option your VPN clients lose the ability to connect over IPv4 
+_or_ IPv6 support. The default is `::` which allows connecting over both IPv4 
+and IPv6.
+
+Example:
+
+```
+'oListenOn' => '10.5.5.7',
+```
+
+**NOTE**: using this option is NOT recommended and should be avoided if 
+possible.
 
 # Apply Changes
 
