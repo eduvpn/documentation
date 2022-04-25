@@ -141,6 +141,7 @@ d	/run/openvpn-client	0710	root	root	-
 d	/run/openvpn-server	0750	root	nogroup	-
 d	/run/openvpn		0755	root	root	-	-
 EOF
+systemd-tmpfiles --create
 
 vpn-maint-apply-changes
 
