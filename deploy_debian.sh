@@ -133,6 +133,15 @@ cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
 LimitNPROC=127
 EOF
 
+# we want to change the owner of the socket, so vpn-daemon can read it, this
+# overrides /usr/lib/tmpfiles.d/openvpn.conf as installed by the distribution
+# package
+cat << EOF > /etc/tmpfiles.d/openvpn.conf
+d	/run/openvpn-client	0710	root	root	-
+d	/run/openvpn-server	0750	root	nogroup	-
+d	/run/openvpn		0755	root	root	-	-
+EOF
+
 vpn-maint-apply-changes
 
 ###############################################################################
