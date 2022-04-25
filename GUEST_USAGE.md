@@ -1,22 +1,18 @@
----
-title: Guest Usage
-description: Setup and Enable Guest Usage (VPN Federation)
-category: advanced
----
+# Introduction
 
 **NOTE**: "Guest Usage" is only relevant is you are part of the eduVPN 
-community, i.e. an NREN.
+community, i.e. an NREN. It does not impact organizations wanting to deploy 
+eduVPN / Let's Connect! only for their own users! "Guest Usage" is **DISABLED**
+by default!
 
-The VPN server software implements "Guest Usage". This means that users of one
-VPN server deployment, e.g operated by organization A, can use another 
-deployment, say operated by organization B, and vice versa.
+The VPN server software implements optional support for "Guest Usage". This 
+means that users of a VPN server deployed by NREN A, can use the VPN servers of 
+other NRENs part of "Secure Internet".
 
 The trust created between the VPN servers is based on signatures over OAuth 2.0
 access tokens. Each server can configure public keys of other VPN servers it
 trusts, thus allowing users of those lists servers to access its VPN service
 as well.
-
-This "Guest Usage" scenario is OPTIONAL and **DISABLED** by default.
 
 # Configuration
 
