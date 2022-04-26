@@ -1,9 +1,3 @@
----
-title: Access Control
-description: Configure ACL (Access Control Lists) to manage access to VPN profiles
-category: configuration
----
-
 The VPN service supports access control. This allows configuring that users 
 require certain "permissions" to access a particular VPN profile. This is 
 useful if you have multiple types of users. For example, only employees get 
@@ -15,13 +9,12 @@ Currently, the following access control mechanisms are supported:
 - SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
   `eduPersonEntitlement`)
 - LDAP (via LDAP attribute, e.g. `memberOf`)
-- Static (supported by `FormPdoAuthentication` (default), 
-  `FormLdapAuthentication` and `FormRadiusAuthentication`)
 
-The permissions are _cached_ for up to a configurable period. By default this 
-is 3 months, but can easily be modified. This cache is required, because not
-all authentication backends have a way to validate the permissions 
-"out of band", i.e. when the user is not actively authenticating.
+The permissions are _cached_ for up to a configurable period through 
+[Session Expiry](SESSION_EXPIRY.md). By default this is 90 days, but can easily 
+be modified. This cache is required, because not all authentication backends 
+have a way to validate the permissions "out of band", i.e. when the user is not 
+actively in the process of authenticating.
 
 # Configuration
 
@@ -33,29 +26,25 @@ We assume [SAML](SAML.md) is already configured and working.
 
 You have to choose a SAML attribute you want to use for determining the 
 membership. Typically, that would be `eduPersonEntitlement` or 
-`eduPersonAffiliation`, but any SAML attribute will do. You MAY need to specify 
-the OID variant as shown in the example below depending on your IdP / identity
-federation.
+`eduPersonAffiliation`, but any SAML attribute will do.
 
 In order to configure this, modify `/etc/vpn-user-portal/config.php` 
-and set the `permissionAttribute` to the name of the attribute:
+and add the attribute to the `permissionAttributeList` list. For example:
 
-    'MellonAuthentication' => [
-        // OID for eduPersonTargetedId
-        'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
-        // OID for eduPersonPrincipalName
-        //'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_6',
+```
+'ShibAuthModule' => [
 
-        // ** AUTHORIZATION | PERMISSIONS **
-        // OID for eduPersonEntitlement
-        //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7',
-        // OID for eduPersonAffiliation
-        //'permissionAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_1',
-    ],
+    // ...
+    
+    'permissionAttributeList' => ['entitlement'],
+    
+    // ...
+],
+```
 
-Once you authenticate to the portal, on the "Account" page, i.e. 
-`https://vpn.example/vpn-user-portal/account`, you should see the 
-"Group Membership(s)" listed there.
+In order to test whether everything works fine, you can enable the 
+`showPermissions` option in `/etc/vpn-user-portal/config.php` by setting it to 
+`true`. This will show the "raw" permissions on the user's "Account" page.
 
 ## LDAP
 
@@ -65,53 +54,22 @@ You have to choose an LDAP attribute you want to use for determining the
 membership. Typically, that would be `memberOf`, but any LDAP attribute will work.
 
 In order to configure this, modify `/etc/vpn-user-portal/config.php` 
-and set the `permissionAttribute` to the name of the attribute:
+and set the `permissionAttributeList` to the name of the attribute:
 
-    // LDAP
-    'FormLdapAuthentication' => [
-        // LDAP configuration
+```
+'LdapAuthModule' => [
+    
+    // ...
+    
+    'permissionAttributeList' => ['memberOf'],
 
-        // ...
+    // ...
+],
+```
 
-        // ...
-
-        'permissionAttribute' => ['memberOf'],
-    ],
-
-Once you authenticate to the portal, on the "Account" page, i.e. 
-`https://vpn.example/vpn-user-portal/account`, you should see the 
-"Group Membership(s)" listed there.
-
-## Static
-
-The authentication backends `FormPdoAuthentication` (default), 
-`FormLdapAuthentication` and `FormRadiusAuthentication` support "static" 
-permissions. This means that you can use a (JSON) file where the mapping 
-between permissions and users are stored.
-
-Thie file is stored in `/etc/vpn-user-portal/static_permissions.json` and has
-the following format:
-
-    {
-        "administrators": [
-            "foobar",
-            "foobaz"
-        ],
-        "employees": [
-            "foobar",
-            "foo",
-            "bar",
-            "baz"
-        ]
-    }
-
-This means that the users `foobar` and `foobaz` get the `administrators` 
-permission and the users `foobar`, `foo`, `bar` and `baz` get the `employees`
-permission. Note that the user `foobar` has two permissions.
-
-**NOTE**: if you are using the `FormLdapAuthentication` authentication backend, 
-the static permissions are _added_ to the ones that may have been retrieved 
-through LDAP.
+In order to test whether everything works fine, you can enable the 
+`showPermissions` option in `/etc/vpn-user-portal/config.php` by setting it to 
+`true`. This will show the "raw" permissions on the user's "Account" page.
 
 ## Admin/Portal/API Access
 
@@ -122,7 +80,9 @@ prevent them from accessing the service at all.
 
 In `/etc/vpn-user-portal/config.php` you can configure it like this:
 
-    'accessPermissionList' => ['employees'],
+```
+'accessPermissionList' => ['employees'],
+```
 
 This requires everyone to have the permission `employees`. If you specify more
 than one "permission", the user needs to be member of only one. The permissions

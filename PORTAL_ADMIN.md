@@ -1,9 +1,3 @@
----
-title: Portal Administrators
-description: How to configure admin users for the portal
-category: configuration
----
-
 Certain users can be "promoted" to admin in the VPN portal. This can be done in
 two ways, based on either
 
@@ -16,27 +10,15 @@ the identity management system, using permissions may make more sense.
 
 ### User ID
 
-The default deploy, using `deploy_${DIST}.sh` sets the `admin` user as an
-admin in `/etc/vpn-user-portal/config.php` using the `adminUserIdList` 
-configuration array:
+Modify `/etc/vpn-user-portal/config.php` and add the user IDs to the 
+`adminUserIdList`, e.g.:
 
-    'adminUserIdList' => ['admin'],
-
-You can mark additional users as admins:
-
-    'adminUserIdList' => ['admin', 'john', 'jane'],
+```
+'adminUserIdList' => ['admin', 'john', 'jane'],
+```
 
 This is the simplest solution. To view the user ID of your account, you can use 
-the "Account" page when logged into the portal. For SAML deployments using the 
-`eduPersonTargetedID` attribute, it would look like this:
-
-    'adminUserIdList' => [
-        'https://idp.tuxed.net/metadata!https://vpn.tuxed.net/vpn-user-portal/_saml/metadata!g1Bd2dM7ugdEVZlpKBoWUCL3GWc4LdewUW1YkgUnVEg',
-        'https://engine.test.surfconext.nl/authentication/idp/metadata!https://vpn.tuxed.net/vpn-user-portal/_saml/metadata!87e996c1735dec301cf67788f22c978f7fd9868d',
-    ],
-
-In case the used user ID attribute is a pseudonym as above, you'd have to ask
-the other future admins to go to their "Account" page and tell you the user ID.
+the "Account" page when logged into the portal.
 
 ### Permission
 
@@ -55,20 +37,21 @@ In order to configure the permissions, first the attribute has to be selected
 for this. This can be for example the `eduPersonEntitlement` attribute where 
 the administrators get the "admin" entitlement. 
 
-One can set the `permissionAttribute` under the various authentication 
-mechanisms, see the configuration [template](https://github.com/eduvpn/vpn-user-portal/blob/v3/config/config.php.example). 
+One can set the `permissionAttributeList` under the various authentication 
+mechanisms.
 
 For example on [Shibboleth](SHIBBOLETH_SP.md):
 
-    'permissionAttribute' => 'entitlement',
-
-**NOTE** since version 2.0.7 of vpn-user-portal, the value of 
-`permissionAttribute` can also be an array, so it can list multiple attributes.
+```
+'permissionAttributeList' => ['entitlement'],
+```
 
 Then you have to configure _which_ entitlement will grant administrator access
 using the `adminPermissionList` option, for example:
 
-    'adminPermissionList' => ['http://eduvpn.org/role/admin'],
+```
+'adminPermissionList' => ['http://eduvpn.org/role/admin'],
+```
 
 This should make all users that have that particular entitlement value an 
 administrator in the portal.
