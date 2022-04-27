@@ -18,6 +18,13 @@ If you want to contribute a new translation you can take the
 [empty](https://github.com/eduvpn/vpn-user-portal/blob/v3/locale/empty.php) 
 file and translate all strings in there and send it.
 
+Also please update `src/Tpl.php` under the `supportedLanguages()` function, 
+e.g.:
+
+```
+'nl-NL' => 'Nederlands',
+```
+
 The files use the PHP 
 [Array](https://secure.php.net/manual/en/language.types.array.php) syntax.
 
