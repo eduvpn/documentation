@@ -561,6 +561,44 @@ application if not yet open. This allows the user to (manually)
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
 
+# Expiry Notification
+
+All VPN sessions have an expiry. The default (as set by the server) is 90 days, 
+but this could be lowered by the server operator. In the field we have 
+deployments where this expiry ranges from 12 hours to 3 years.
+
+In order to avoid user's VPN connection terminating unexpectedly, e.g. in the 
+middle of a video conference, the client SHOULD implement an expiry 
+notification informing the user and offering them to immediately "reauthorize" 
+the VPN client and thus obtain a new session.
+
+We experimented with expiry notifications quite a bit and came to the following
+algorithm to determine when to show the expiry notification and allow the user
+to "reauthorize".
+
+```
+If 
+    ${CONNECTED_AT} > 30*60 && 
+    ${EXPIRES_AT} < 24*60*60 && 
+    ${NOW} - ${CONNECTED_AT} >= 0.75 * (${EXPIRES_AT} - ${CONNECTED_AT})
+```
+
+We need to wait at least 30 minutes before being able to "reauthorize" as the 
+VPN Portal's browser session is active for 30 minutes by default. Authorizing 
+again within this window would result in the same `${EXPIRES_AT}` as it is 
+bound to the time the user _authenticates_.
+
+We only want to show a notification in the last 24 hours of the session so as 
+to not clutter the UI when the expiry is nowhere in sight.
+
+Specifically for the "short" lived VPN sessions we want at least 75% of the 
+time of the VPN session to be over before showing the notification to avoid 
+showing it continuously on VPN servers that have a short session expiry 
+configured.
+
+When triggering the "reauthorize", you MUST delete the current OAuth 
+tokens after obtaining new ones so the old ones won't be used anymore.
+
 # History
 
 The changes made to the API documentation before it was considered final.
