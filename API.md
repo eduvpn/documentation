@@ -615,9 +615,17 @@ their first OAuth access token. With `${SESSION_EXPIRES_AT}` we mean the time
 the session expires, as obtained from the `Expires` HTTP response header 
 part of the `/connect` call response.
 
-When the user presses the "Renew" button, the existing OAuth authorization MUST
-be deleted, either before attempting to get the new OAuth tokens, or 
-immediately after.
+When the user clicks the "Renew" button the following MUST happen in this 
+order:
+
+1. Call `/disconnect`;
+2. Delete the OAuth access and refresh token;
+3. Start the OAuth authorization flow;
+4. Automatically reconnect to the server and profile if (and only if) the 
+   client was previously connected.
+
+The OS notification shown to the user _MAY_ offer the "Renew" button inside the
+notification as well, if supported by the OS.
 
 # History
 
