@@ -92,10 +92,29 @@ TBD.
 
 ### php-saml-sp
 
-The php-saml-sp software used to be part of the eduVPN / Let's Connect! 
-repository, but is not anymore.
+The [php-saml-sp](https://www.php-saml-sp.eu/) software used to be part of the 
+eduVPN / Let's Connect! repository, but is NOT anymore. So if you want to keep 
+using it, you MUST upgrade to the latest version. Fortunately, there are no 
+configuration changes required and all that is needed is to perform the 
+upgrade.
 
-**NOTE**: if you were using [php-saml-sp](https://www.php-saml-sp.eu/) you MUST
-also upgrade the repository configurtion, see below.
+Add the new repository:
 
+```
+$ curl https://repo.php-saml-sp.eu/fkooman+repo@tuxed.net.asc | sudo tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc
+$ echo "deb https://repo.php-saml-sp.eu/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/php-saml-sp_v2.list
+```
 
+Perform the upgrade:
+
+```
+$ sudo apt update
+$ sudo apt dist-upgrade
+```
+
+The latest version makes some dependencies obsolete that can now be deleted as
+well:
+
+```
+$ sudo apt autoremove --purge
+```
