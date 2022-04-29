@@ -561,6 +561,72 @@ application if not yet open. This allows the user to (manually)
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
 
+# Session Expiry
+
+All VPN sessions have an expiry. The default (as set by the server) is 90 days. 
+The server operator is able to change this. Some organizations set the session
+expiry as short as 12 hours, others extend it to 3 years. This section 
+describes what apps can do to handle session expiry gracefully without 
+inconveniencing the user too much.
+
+**NOTE**: the approach described below is a suggestion. However, for the 
+official eduVPN/Let's Connect! apps this is a MUST.
+
+The reason for discussing session expiry is that we want to avoid a user's VPN 
+connection terminating unexpectedly, e.g. in the middle of a video conference 
+call.
+
+In order to help the user avoiding unexpected VPN connection drops, the client
+implements:
+
+1. A countdown timer that shows how long the VPN session will still be valid 
+   for;
+2. A "Renew" button that allows the user to "refresh" the VPN session at a 
+   convenient time;
+3. An OS notification that informs the user when the expiry is imminent, or has 
+   already occurred.
+
+| What                           | Visible                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------ | 
+| Countdown Timer                | Always                                                                   |
+| "Renew" Button                 | On the last day*                                                         | 
+| OS Notification                | One hour before `${SESSION_EXPIRES_AT}` _AND_ on `${SESSION_EXPIRES_AT}` |
+
+With "On the last day" we mean that each of the following holds: 
+
+1. At least 30 minutes have passed since the _session start_;
+2. The _session expiry_ will occur _today_, i.e. within 24 hours;
+3. If the total _session duration_ is less than 24 hours, at least 75% of the
+   total session duration MUST have passed.
+   
+Written as an `IF` statement it could be expressed like this:
+
+```
+${NOW} > (${SESSION_STARTED_AT} + 30*60)
+    && 
+${NOW} > (${SESSION_EXPIRES_AT} - 24*60*60)
+    && 
+${NOW} > (${SESSION_STARTED_AT} + 0.75 * (${SESSION_EXPIRES_AT} - ${SESSION_STARTED_AT}))
+```
+
+With `${NOW}` we mean the current time stamp. With `${SESSION_STARTED_AT}` we 
+mean the moment the OAuth authorization completed, i.e. the client obtained 
+their first OAuth access token. With `${SESSION_EXPIRES_AT}` we mean the time
+the session expires, as obtained from the `Expires` HTTP response header 
+part of the `/connect` call response.
+
+When the user clicks the "Renew" button the following MUST happen in this 
+order:
+
+1. Call `/disconnect`;
+2. Delete the OAuth access and refresh token;
+3. Start the OAuth authorization flow;
+4. Automatically reconnect to the server and profile if (and only if) the 
+   client was previously connected.
+
+The OS notification shown to the user _MAY_ offer the "Renew" button inside the
+notification as well, if supported by the OS.
+
 # History
 
 The changes made to the API documentation before it was considered final.

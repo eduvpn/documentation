@@ -12,11 +12,18 @@ explains how.
 You can check which translations are already available, and possibly update 
 them if they are out of date:
 
-* [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/v2/locale)
+* [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/v3/locale)
 
 If you want to contribute a new translation you can take the 
-[empty](https://github.com/eduvpn/vpn-user-portal/blob/v2/locale/empty.php) 
+[empty](https://github.com/eduvpn/vpn-user-portal/blob/v3/locale/empty.php) 
 file and translate all strings in there and send it.
+
+Also please update `src/Tpl.php` under the `supportedLanguages()` function, 
+e.g.:
+
+```
+'nl-NL' => 'Nederlands',
+```
 
 The files use the PHP 
 [Array](https://secure.php.net/manual/en/language.types.array.php) syntax.
@@ -32,7 +39,7 @@ TBD.
 Once you are done, you can submit your translation file either by creating a 
 "Pull Request" on GitHub, or simply mailing the file with your translations to
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org). Don't
-forget to mention how you want to be 
-[credited](https://github.com/eduvpn/vpn-user-portal/blob/v2/locale/CREDITS.md).
+forget to mention how/if you want to be 
+[credited](https://github.com/eduvpn/vpn-user-portal/blob/v3/locale/CREDITS.md).
 
 Thanks!
