@@ -64,7 +64,7 @@ normal deploy script.
 
 ### Repository
 
-Remove all files under `/etc/apt/sources.list.d` that reference eduVPN of Let's 
+Remove all files under `/etc/apt/sources.list.d` that reference eduVPN or Let's 
 Connect!. Also remove the files under `/etc/apt/trusted.gpg.d` that are related 
 to eduVPN.
 
@@ -79,8 +79,6 @@ $ sudo apt autoremove --purge
 
 ## Install 3.x
 
-This should have taken care of removing everything from 2.x. 
-
 Now you are ready to follow the the [steps](DEPLOY_DEBIAN.md) to install 3.x.
 Continue reading below on things you have to consider *after* deploying 3.x.
 
@@ -92,6 +90,17 @@ This section will help you convert your 2.x configuration to 3.x configuration.
 We'll use the 2.x configuration to selectively update the 3.x configuration in
 the right place as needed. It is HIGHLY RECOMMENDED that you update the freshly
 installed configuration file selectively based on the instructions below.
+
+In 3.x the _vpn-server-api_ component no longer exists, and thus the 
+configuration that was previously spread out over _vpn-user-portal_ and 
+_vpn-server-api_ are now consolidated in _vpn-user-portal_.
+
+In 2.x some credentials were directly specified in the configuration files, 
+this has been replaced by files in 3.x, so the configuration files no longer
+contain secrets.
+
+In 2.x each profile had a unique `profileNumber`, this requirement has been 
+removed in 3.x.
 
 #### Authentication
 
