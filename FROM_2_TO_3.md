@@ -19,8 +19,8 @@ You probably have to go first from Debian 9 to 10 and then to 11 if you are
 still running Debian 9. If you try to go in 1 step, be extra careful and read
 all upgrade instructions carefully to make sure this is actually possible.
 
-When you already run Debian 11, make sure your system is fully update to date
-and freshly rebooted:
+When you already run Debian 11, make sure your system is fully up to date and 
+freshly rebooted:
 
 ```
 $ sudo vpn-maint-update-system
@@ -59,7 +59,7 @@ Store the output for later as you will need it to restore the accounts!
 
 ## Remove 2.x
 
-No we'll fully remove the 2.x software and deploy the 3.x server with the 
+Now we'll fully remove the 2.x software and deploy the 3.x server with the 
 normal deploy script.
 
 ### Repository
