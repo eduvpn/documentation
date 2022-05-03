@@ -99,12 +99,77 @@ In 2.x some credentials were directly specified in the configuration files,
 this has been replaced by files in 3.x, so the configuration files no longer
 contain secrets.
 
-In 2.x each profile had a unique `profileNumber`, this requirement has been 
-removed in 3.x.
+#### Profile Configuration
+
+You can also compare the "Profile Configuration" documentation for 
+[2.x](https://github.com/eduvpn/documentation/blob/v2/PROFILE_CONFIG.md) and 
+[3.x](https://github.com/eduvpn/documentation/blob/v3/PROFILE_CONFIG.md) in 
+case you want to clarify some of the options. For completeness sake, there is 
+also a 
+[list](https://github.com/eduvpn/vpn-server-api/blob/v2/CONFIG_CHANGES.md) of 
+configuration changes for the 2.x server since the release of 2.0.0.
+
+In 3.x the `vpnProfiles` key has been renamed to `ProfileList`. The `profileId`
+is now an option inside the profile and no longer the array "key". The 
+`profileNumber` is no longer needed. In 2.x the configuration looks like this
+for example:
+
+```
+'vpnProfiles' => [
+    'foo' => [
+        'profileNumber' => 1,
+        'displayName' => 'Foo Profile',
+        ...
+        ...
+    ],
+],
+```
+
+And in 3.x it will look like this, all other things equal:
+
+```
+'ProfileList' => [
+    [
+        'profileId' => 'foo',
+        'displayName' => 'Foo Profile',
+        ...
+        ...
+    ],
+],
+```
+
+As for the individual options, the table below will help you make the 
+conversion:
+
+| Option (in 2.x)        | Type       | Option (in 3.x)                              | Type                 |
+| ---------------------- | ---------- | -------------------------------------------- | -------------------- |
+| `profileNumber`        | `int`      | _Obsolete_                                   | _N/A_                | 
+| `displayName`          | `string`   | `displayName`                                | `string`             |
+| `range`                | `string`   | `oRangeFour`                                 | `string`             |
+| `range6`               | `string`   | `oRangeSix`                                  | `string`             |
+| `hostName`             | `string`   | `hostName`                                   | `string`             |
+| `listen`               | `string`   | `oListenOn`                                  | `string`             |
+| `managementIp`         | `string`   | `nodeUrl`                                    | `string`             |
+| `defaultGateway`       | `bool`     | `defaultGateway`                             | `bool`               |
+| `blockLan`             | `bool`     | `oBlockLan`                                  | `bool`               |
+| `routes`               | `string[]` | `routeList`                                  | `string[]`           |
+| `dns`                  | `string[]` | `dnsServerList`                              | `string[]`           |
+| `dnsDomain`            | `string`   | `dnsSearchDomainList`                        | `string[]`           |
+| `dnsDomainSearch`      | `string[]` | `dnsSearchDomainList`                        | `string[]`           |
+| `clientToClient`       | `bool`     | _Obsolete_                                   | _N/A_                |
+| `enableLog`            | `bool`     | `oEnableLog`                                 | `bool`               |
+| `enableAcl`            | `bool`     | _Obsolete_                                   | _N/A_                |
+| `aclPermissionList`    | `string[]` | `aclPermissionList`                          | `string[]` or `null` |
+| `vpnProtoPorts`        | `string[]` | `oUdpPortList`, `oTcpPortList`               | `int[]`              |
+| `exposedVpnProtoPorts` | `string[]` | `oExposedUdpPortList`, `oExposedTcpPortList` | `int[]`              |
+| `hideProfile`          | `bool`     | _Obsolete_                                   | _N/A_                |
+| `tlsOneThree`          | `bool`     | _Obsolete_                                   | _N/A_                |
+| `tlsProtection`        | `string`   | _Obsolete_                                   | _N/A_                | 
+
+**NOTE**: `clientToClient` is now handled exclusively by the firewall on the 
+VPN server.
 
 #### Authentication
-
-#### Profiles
 
 #### Miscellaneous 
 
