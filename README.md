@@ -48,8 +48,8 @@ This is an (incomplete) list of features of the VPN software:
   devices and admins to manage users, configurations and connections;
 - Multi Language support;
 - Authentication to portals using local user database (default), 
-  [LDAP](LDAP.md), [RADIUS](RADIUS.md), [SAML](SAML.md) and 
-  [Client Certificates](CLIENT_CERT_AUTH.md);
+  [LDAP](LDAP.md), [RADIUS](RADIUS.md), [OIDC](MOD_AUTH_OPENIDC.md), 
+  [SAML](SAML.md) and [Client Certificates](CLIENT_CERT_AUTH.md);
 - OAuth 2.0 [API](API.md) for integration with native eduVPN/Let's Connect! 
   applications;
 - [Deployment scenarios](PROFILE_CONFIG.md):
