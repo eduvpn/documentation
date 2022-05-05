@@ -9,14 +9,14 @@ Relying Party (RP) towards an OpenID Connect Provider (OP) using
 ## Fedora
 
 ```
-$ dnf install mod_auth_openidc
+$ sudo dnf install mod_auth_openidc
 $ sudo systemctl restart httpd
 ```
 
 ## Debian / Ubuntu
 
 ```
-$ apt install libapache2-mod-auth-openidc
+$ sudo apt install libapache2-mod-auth-openidc
 $ sudo systemctl restart apache2
 ```
 
@@ -30,7 +30,7 @@ RP working.
 You need the following information from your OP:
 
 * `OIDCProviderMetadataURL`: the provider's metadata URL, e.g.: 
-  `https://accounts.google.com/.well-known/openid-configuration`;
+  `https://oidc.example.org/.well-known/openid-configuration`;
 * `OIDCClientID`: the RP client ID, as obtained for your OP;
 * `OIDCClientSecret`: the RP client secret, as obtained from your OP.
 
