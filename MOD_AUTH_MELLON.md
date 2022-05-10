@@ -1,9 +1,3 @@
----
-title: Mellon
-description: SAML Authentication using mod_auth_mellon
-category: authentication
----
-
 Below we assume you use `vpn.example`, but modify this domain to your own 
 domain name!
 
@@ -78,7 +72,7 @@ section.
 
 If you also want to use authorization based on an attribute, e.g. 
 `eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
-`permissionAttribute` as well.
+`permissionAttributeList` as well.
 
 # Apache
 
