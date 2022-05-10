@@ -169,6 +169,25 @@ VPN server.
 
 #### Authentication
 
+The authentication modules have been renamed:
+
+| Name (in 2.x)              | Name (in 3.x)          |                                      |
+| -------------------------- | ---------------------- | ------------------------------------ |
+| `FormPdoAuthentication`    | `DbAuthModule`         | [Documentation](DB_AUTH.md)          |
+| `FormLdapAuthentication`   | `LdapAuthModule`       | [Documentation](LDAP.md)             |
+| `FormRadiusAuthentication` | `RadiusAuthModule`     | [Documentation](RADIUS.md)           |
+| `MellonAuthentication`     | `MellonAuthModule`     | [Documentation](MOD_AUTH_MELLON.md)  |
+| `ShibAuthentication`       | `ShibAuthModule`       | [Documentation](SHIBBOLETH_SP.md)    |
+| `PhpSamlSpAuthentication`  | `PhpSamlSpAuthModule`  | [Documentation](PHP_SAML_SP.md)      |
+| `ClientCertAuthentication` | `ClientCertAuthModule` | [Documentation](CLIENT_CERT_AUTH.md) |
+| _N/A_                      | `OidcAuthModule`       | [Documentation](MOD_AUTH_OPENIDC.md) |
+
+Please refer to the documentation links and compare your current authentication 
+configuration with the 3.x documentation. There may be minor changes required,
+but that should be rather obvious. The configuration file itself, i.e. 
+`/etc/vpn-user-portal/config.php` should also be very helpful and contains 
+information about all options.
+
 #### Miscellaneous 
 
 ### Restore Local User Accounts
