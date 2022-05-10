@@ -32,12 +32,17 @@ on your 2.x server installation, for example the TLS certificates.
 
 ## Backup
 
-It is important to make backups of the configuration files as they will help 
-you with configuring the 3.x server. Those files are:
+It is important to make backups of the configuration files and database as they 
+will help you with configuring/restoring the 3.x server. Those files are:
 
 * `/etc/vpn-user-portal/config.php`
 * `/etc/vpn-server-api/config.php`
 * `/etc/vpn-server-node/config.php`
+
+As for the database files:
+
+* `/var/lib/vpn-user-portal/db.sqlite`
+* `/var/lib/vpn-server-api/db.sqlite`
 
 Copy them to a safe location. If you made any other manual changes to any of 
 the configuration files, you MUST make a backup of this file as well, e.g.:
@@ -47,15 +52,8 @@ the configuration files, you MUST make a backup of this file as well, e.g.:
 * `/etc/iptables/rules.v6` (IPv6 firewall)
 * `/etc/sysctl.d/70-vpn.conf` (sysctl)
 
-If you are using the local user database, you will lose the accounts defined 
-there, so you MUST now create a backup of those accounts:
-
-```
-$ sudo apt install sqlite3
-$ sudo sqlite3 /var/lib/vpn-user-portal/db.sqlite ".dump users"
-```
-
-Store the output for later as you will need it to restore the accounts!
+You MAY also want to backup your TLS key, certificate and chain if you are not
+using Let's Encrypt or any other ACME capable certificate authority.
 
 ## Remove 2.x
 
