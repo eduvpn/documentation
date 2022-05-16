@@ -39,7 +39,7 @@ $ curl https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/tru
 ## Repository Config
 
 ```bash
-echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3.list
 ```
 
 # Fedora
