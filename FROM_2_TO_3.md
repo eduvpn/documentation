@@ -84,10 +84,11 @@ Continue reading below on things you have to consider *after* deploying 3.x.
 
 ### Configuration
 
-This section will help you convert your 2.x configuration to 3.x configuration. 
-We'll use the 2.x configuration to selectively update the 3.x configuration in
-the right place as needed. It is HIGHLY RECOMMENDED that you update the freshly
-installed configuration file selectively based on the instructions below.
+This section will help you convert your 2.x configuration to a 3.x 
+configuration. We'll use the 2.x configuration to selectively update the 3.x 
+configuration in the right place as needed. It is HIGHLY RECOMMENDED that you 
+update the freshly installed configuration file selectively based on the 
+instructions below.
 
 In 3.x the _vpn-server-api_ component no longer exists, and thus the 
 configuration that was previously spread out over _vpn-user-portal_ and 
