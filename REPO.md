@@ -3,7 +3,7 @@
 This page will tell you everything about the production package repositories 
 for eduVPN / Let's Connect!.
 
-This page will reflect always the most up to date configuration and keys that
+This page will always reflect the most up to date configuration and keys that
 are required for using the packages.
 
 ## Repository Key
