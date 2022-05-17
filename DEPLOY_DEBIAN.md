@@ -17,12 +17,14 @@ Additional scripts are available after deployment:
   the deploy script will take care of the host firewall;
 * Working DNS entry for your VPN server, e.g. `vpn.example.org`.
 
-We test only with the official Debian 
-[netinst](https://www.debian.org/distrib/netinst) and the official 
-[Cloud](https://cdimage.debian.org/cdimage/openstack/) images.
-
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
+
+**NOTE**: we only test with the official cloud images, if you are using your 
+own (modified) images, YMMV.
+
+* [Debian](https://cloud.debian.org/)
+* [Ubuntu](https://cloud-images.ubuntu.com/)
 
 **NOTE** if you expect to do a production deploy, please read the section below 
 about modifying the PHP configuration.
@@ -93,6 +95,9 @@ It is easy to enable LDAP authentication. This is documented separately. See
 
 It is easy to enable RADIUS authentication. This is documented separately. See
 [RADIUS](RADIUS.md).
+
+**NOTE**: only supported on Debian 11! Will not work on Future releases of 
+Debian and/or Ubuntu.
 
 #### SAML
 
