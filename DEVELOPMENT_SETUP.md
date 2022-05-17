@@ -278,6 +278,7 @@ Please setup your own PGP and Minisign keys before running this script.
 PROJECT_NAME=$(basename "${PWD}")
 PROJECT_VERSION=${1}
 RELEASE_DIR="${PWD}/release"
+KEY_ID=6237BAF1418A907DAA98EAA79C5EDD645A571EB2
 
 if [ -z "${1}" ]; then
     # we take the last "tag" of the Git repository as version
@@ -292,11 +293,12 @@ if [ -f "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz" ]; then
 fi
 
 git archive --prefix "${PROJECT_NAME}-${PROJECT_VERSION}/" "${PROJECT_VERSION}" -o "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
-gpg2 --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
+gpg2 --default-key ${KEY_ID} --armor --detach-sign "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
 minisign -Sm "${RELEASE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.xz"
 ```
 
-Make the script executable:
+Modify the `KEY_ID` variable to point to your own PGP key. Make the script 
+executable:
 
     $ chmod +x ${HOME}/.local/bin/make_release
 
