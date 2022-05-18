@@ -19,11 +19,11 @@ contact us at
 
 # Supported Versions
 
-| Version                                              | Release Date | OS Support                              |  EOL*      | 
-| ---------------------------------------------------- | ------------ | --------------------------------------- | ---------- |
-| [3](https://github.com/eduvpn/documentation/tree/v3) | TBD          | Debian (>= 11), Fedora (>= 36)          | TBD        |
-| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 9), CentOS 7, Fedora (>= 34) | 2024-06-30 |
-| [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | _N/A_                                   | _N/A_      | 
+| Version                                              | Release Date | OS Support                                        |  EOL*      | 
+| ---------------------------------------------------- | ------------ | ------------------------------------------------- | ---------- |
+| [3](https://github.com/eduvpn/documentation/tree/v3) | TBD          | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36) | TBD        |
+| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 9), CentOS 7, Fedora (>= 34)           | 2024-06-30 |
+| [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | _N/A_                                             | _N/A_      | 
 
 We support a release until such time the EOL date has been reached or none of 
 the eduVPN servers we officially [support](https://status.eduvpn.org/) are 
@@ -93,28 +93,19 @@ can't be bothered to setup an IRC client. See you there!
 ## Supported Operating Systems
 
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
+- [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
 - [Fedora](DEPLOY_FEDORA.md) 35 (`x86_64`)
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
-Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
-for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
-third party PHP repositories to prevent having to support these repositories
-in the future.
+**NOTE**: we assume we will be able to support Red Hat Enterprise 9 and its derivatives 
+in the near future after their release.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
 
 **NOTE**: if you want to deploy on multiple machines for load balancing, please 
 follow [these](MULTI_NODE.md) instructions!
-
-## Experimental
-
-- [Fedora](DEPLOY_FEDORA.md) 35 (`aarch64`) 
-  (Only available through the "development" repository)
-
-You can use the Fedora `aarch64` packages on e.g. the 
-[Raspberry Pi](RASPBERRY_PI.md).
 
 # Development
 
