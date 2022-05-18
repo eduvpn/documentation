@@ -9,7 +9,8 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Debian 11, or Ubuntu 22.04 installation with all updates installed;
+* Clean Debian 11, or Ubuntu 22.04 installation with all updates installed and
+  rebooted after updates;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
@@ -20,11 +21,9 @@ Additional scripts are available after deployment:
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
 
-**NOTE**: we only test with the official cloud images, if you are using your 
-own (modified) images, YMMV.
-
-* [Debian](https://cloud.debian.org/)
-* [Ubuntu](https://cloud-images.ubuntu.com/)
+**NOTE**: we only test with clean installations of Ubuntu and Debian. If you, 
+or your organization (heavily) modified the Ubuntu or Debian installations the 
+VPN deployment MAY not work.
 
 **NOTE** if you expect to do a production deploy, please read the section below 
 about modifying the PHP configuration.

@@ -15,7 +15,8 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Fedora installation with all updates installed;
+* Clean Fedora installation with all updates installed and rebooted after 
+  updates;
 * SELinux MUST be enabled;
 * You SHOULD use static IPv4 and IPv6 address configured on your external 
   interface;
@@ -23,12 +24,13 @@ Additional scripts are available after deployment:
   `tcp/443`, `udp/1194`, `tcp/1194` and `udp/51820` for basic functionality, 
   the deploy script will take care of the host firewall;
 * Working DNS entry for your VPN server, e.g. `vpn.example.org`.
-
-We test only with the official Fedora 
-[Cloud Base Images](https://alt.fedoraproject.org/cloud/).
  
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
+
+**NOTE**: we only test with clean installations of Fedora. If you, or your 
+organization (heavily) modified the Ubuntu or Debian installations the VPN 
+deployment MAY not work.
 
 ## Base Deploy
 
