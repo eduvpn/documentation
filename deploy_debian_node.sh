@@ -28,7 +28,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 
 cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
-echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee -a /etc/apt/sources.list.d/eduVPN_v3.list
+echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
 
 apt update
 
