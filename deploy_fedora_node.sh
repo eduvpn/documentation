@@ -34,12 +34,14 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-cat << EOF > /etc/yum.repos.d/eduVPN_v3-dev.repo
-[eduVPN_v3-dev]
-name=eduVPN 3.x Development Packages (Fedora \$releasever)
-baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/fedora-\$releasever-\$basearch
+# import PGP key
+rpm --import resources/repo+v3@eduvpn.org.asc
+# configure repository
+cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
+[eduVPN_v3]
+name=eduVPN 3.x Packages (Fedora \$releasever)
+baseurl=https://repo.eduvpn.org/v3/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
-gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 enabled=1
 EOF
 
