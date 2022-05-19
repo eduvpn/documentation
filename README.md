@@ -87,6 +87,8 @@ can't be bothered to setup an IRC client. See you there!
 
 ## Instruction Videos
 
+**NOTE**: these videos MAY be out of date!
+
 - [Basic eduVPN/Let's Connect! Server Installation](https://www.youtube.com/watch?v=yBItHovq4AU)
 - [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
 
@@ -98,14 +100,14 @@ can't be bothered to setup an IRC client. See you there!
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
-**NOTE**: we assume we will be able to support Red Hat Enterprise 9 and its derivatives 
-in the near future after their release.
+**NOTE**: we assume we will be able to support Red Hat Enterprise 9 and its 
+derivatives in the near future after their release.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
 
 **NOTE**: if you want to deploy on multiple machines for load balancing, please 
-follow [these](MULTI_NODE.md) instructions!
+follow [these](HA.md) instructions!
 
 # Development
 
