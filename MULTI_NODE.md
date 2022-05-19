@@ -16,11 +16,11 @@ All three need to be set up with static IP configurations and working DNS. Make
 sure all works properly before starting the setup. For example, my test 
 deployment uses:
 
-| Role       | DNS Host               | IPv4       | IPv6         |
-| ---------- | ---------------------- | ---------- | ------------ |
-| Controller | vpn.example.org        | 192.0.2.10 | 2001:db8::10 |
-| Node A (0) | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
-| Node B (1) | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
+| Role       | DNS Host                 | IPv4         | IPv6           |
+| ---------- | ------------------------ | ------------ | -------------- |
+| Controller | `vpn.example.org`        | `192.0.2.10` | `2001:db8::10` |
+| Node A (0) | `node-a.vpn.example.org` | `192.0.2.20` | `2001:db8::20` |
+| Node B (1) | `node-b.vpn.example.org` | `192.0.2.30` | `2001:db8::30` |
 
 We will use NAT for IPv4 and IPv6 client traffic.
 
