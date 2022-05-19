@@ -9,11 +9,6 @@ your server installation. By default a simple "plain" branding is used.
 
 # Installation
 
-## CentOS 
-
-    $ sudo yum -y install vpn-portal-artwork-LC
-    $ sudo yum -y install vpn-portal-artwork-eduVPN
-
 ## Fedora
 
     $ sudo dnf -y install vpn-portal-artwork-LC

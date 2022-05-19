@@ -15,8 +15,10 @@ This instruction is for a _single_ server deployment.
 
 # Hostname
 
-    $ sudo hostnamectl set-hostname vpn.example.com
-    
+```bash
+$ sudo hostnamectl set-hostname vpn.example.com
+```
+
 # DNS
 
 Make sure the new hostname has an A (and AAAA) record to your VPN server IPs.
@@ -30,7 +32,7 @@ or manually obtain them from your CA and install them.
 
 Rename `/etc/httpd/conf.d/vpn.example.org.conf` to 
 `/etc/httpd/conf.d/vpn.example.com.conf`. Replace all occurences of 
-`vpn.example.org` with `vpn.example.com` in the file.
+`vpn.example.org` with `vpn.example.com` in this file.
 
 # Server
 
@@ -41,7 +43,9 @@ change them to the new hostname.
 
 Run:
 
-    $ sudo vpn-maint-apply-changes
+```bash
+$ sudo vpn-maint-apply-changes
+```
 
 Reboot your system to make sure everything comes back correctly. All should be
 done now!

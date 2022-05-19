@@ -5,7 +5,7 @@ category: documentation
 ---
 
 Most organizations start by deploying a single server, which can scale quite 
-well to ~ 1000 simultaneously connected clients assuming >= 16 CPU cores with 
+well to ~1000 simultaneously connected clients assuming >= 16 CPU cores with 
 AES-NI and adequate network performance, e.g. 10+ Gbit interface(s).
 
 There are many aspects of "scaling", and not all will be answered here, but 
@@ -58,33 +58,40 @@ addresses. Of course, a machine with 64 cores is still pretty rare. It will be
 more common to divide this over multiple (physical) machines.
 
 To issue an IP address to all connected clients in this scenario, one would 
-need a `/20` IPv4 network configured in the `range` setting of the VPN profile.
-As for IPv6, at least an `/100` is required in the `range6` option. Each 
-OpenVPN process will get a `/112`, the smallest block currently supported by 
-OpenVPN.
+need a `/20` IPv4 network configured in the `oRangeFour` setting of the VPN 
+profile. As for IPv6, at least an `/100` is required in the `oRangeSix` option. 
+Each OpenVPN process will get a `/112`, the smallest block currently supported 
+by OpenVPN.
 
-Additional UDP/TCP ports (up to 64) can be configured with `vpnProtoPorts` in 
-`/etc/vpn-server-api/config.php`. For example to run 16 OpenVPN processes you
-can use this:
+Additional UDP/TCP ports (up to 64) can be configured with `oUdpPortList` and 
+`oTcpPortList` in `/etc/vpn-user-portal/config.php`. For example to run 16 
+OpenVPN processes you can use this:
 
-    'vpnProtoPorts' => [
-        'udp/1200', // 75% UDP ports
-        'udp/1201',
-        'udp/1202',
-        'udp/1203',
-        'udp/1204',
-        'udp/1205',
-        'udp/1206',
-        'udp/1207',
-        'udp/1208',
-        'udp/1209',
-        'udp/1210',
-        'udp/1211',
-        'tcp/1200', // 25% TCP ports
-        'tcp/1201',
-        'tcp/1202',
-        'tcp/1203',
-    ],
+```php
+// 75% UDP ports
+'oUdpPortList' => [
+    1200,
+    1201,
+    1202,
+    1203,
+    1204,
+    1205,
+    1206,
+    1207,
+    1208,
+    1209,
+    1210,
+    1211,
+],
+
+// 25% TCP ports
+'oTcpPortList' => [ 
+    1200
+    1201,
+    1202,
+    1203,
+],
+```
 
 As to determine how many ports should be UDP and how many should be TCP, we 
 have some information from one of our servers:
@@ -95,9 +102,6 @@ As you can see on that server we have a bit too many TCP ports available to
 connect to, and it would be better to allocate 3/4 to UDP and 1/4 to TCP as is 
 done in the example above. Look [here](MONITORING.md) on how to check the load 
 distribution on your server.
-
-See [OpenVPN Processes](PROFILE_CONFIG.md#openvpn-processes) for more 
-information.
 
 ### Certificates / Keys
 
@@ -115,8 +119,10 @@ configuration is generated with one UDP and TCP port picked at random. So for
 example, when a user downloads a configuration, the `remote` lines could be 
 like this:
 
-    remote vpn.example 1195 udp
-    remote vpn.example 1200 tcp
+```
+remote vpn.example 1195 udp
+remote vpn.example 1200 tcp
+```
 
 Because every configuration download will result in another (random) selection
 of ports, the load will eventually be distributed among the various processes.
@@ -134,21 +140,18 @@ protocols are meant:
 * `tcp/443`
 
 They have a higher chance of working in restricted networks. If they are made 
-available through `vpnProtoPorts`, or `exposedVpnProtoPorts` one UDP and one 
-TCP port is picked at random from the special ports, that way at most 4 
-"remotes" are listed in the client configuration, e.g.:
+available through `oUdpPortList` / `oTcpPortList`, or `oExposedUdpPortList` / 
+`oExposedTcpPortList` one UDP and one TCP port is picked at random from the 
+special ports, that way at most 4 "remotes" are listed in the client configuration, e.g.:
 
-    remote vpn.example 1195 udp
-    remote vpn.example 1200 tcp
-    remote vpn.example 443 udp
-    remote vpn.example 80 tcp
+```
+remote vpn.example 1195 udp
+remote vpn.example 1200 tcp
+remote vpn.example 443 udp
+remote vpn.example 80 tcp
+```
 
-# Multiple Servers
+# HA
 
-On CentOS it is possible to deploy extra servers with OpenVPN processes.
-
-To set up a single (separate) controller and multiple nodes, go 
-[here](MULTI_NODE.md).
-
-To add an additional node, or additional nodes to your exsting single server
-setup, go [here](ADD_DAEMON_NODE.md).
+See [HA](HA.md) for information on "High Availbility" in order to deploy 
+multiple "controllers" and/or "nodes".

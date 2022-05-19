@@ -331,8 +331,7 @@ specified MUST be a power of 2, e.g. 1, 2, 4, 8, 16, 32 or 64.
 **NOTE**: you should aim for around 75% UDP processes, and 25% TCP processes 
 for optimal performance for most clients.
 
-See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md), 
-[Limits on OpenVPN Process](LIMIT_N_PROC.md)
+See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md).
 
 ### OpenVPN Exposed Port List
 

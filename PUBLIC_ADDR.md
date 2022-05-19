@@ -8,8 +8,9 @@ In case you want to use routable IPv4 and/or IPv6 addresses you need to
 modify the configuration and make sure your upstream router routes the 
 appropriate range(s) to your VPN server's IP address(es).
 
-First edit `/etc/vpn-user-portal/config.php` and set the `rangeFour` and/or 
-`rangeSix` addresses as appropriate.
+First edit `/etc/vpn-user-portal/config.php` and set the `xRangeFour` and/or 
+`xRangeSix` addresses as appropriate, where `x` is either `w` or `o` depending
+on whether you are configuring WireGuard or OpenVPN.
 
 Next, modify the firewall according to 
 [these](FIREWALL.md#public-ip-addresses-for-vpn-clients) instructions.

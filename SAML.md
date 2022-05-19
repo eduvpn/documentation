@@ -12,7 +12,7 @@ There are three, yeah I know, options for configuring SAML for your VPN server:
 
 1. [Shibboleth](SHIBBOLETH_SP.md)
 2. [php-saml-sp](PHP_SAML_SP.md)
-3. [mod_auth_mellon](MOD_AUTH_MELLON.md) (*NOT RECOMMENDED*)
+3. [mod_auth_mellon](MOD_AUTH_MELLON.md)
 
 They are listed here in order of preference.
 
