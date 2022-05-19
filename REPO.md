@@ -18,6 +18,7 @@ URL: https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
+
 mDMEYoKbBhYJKwYBBAHaRw8BAQdAYqEfYQm8BFK1dC7dFbOQRoV+q47cB9i0gur8
 z9Dg4820MGVkdVZQTiAzLnggUmVwbyBTaWduaW5nIEtleSA8cmVwbyt2M0BlZHV2
 cG4ub3JnPoiZBBMWCgBBFiEE9nEMqvu0eoo+yRgAYp1+4rY93nMFAmKCmwYCGwMF
