@@ -64,7 +64,7 @@ of the 3.x server!
 
 If you find any issue, feel free to report it to the 
 [mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy), or use 
-our [ticket system](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
+our [issue tracker](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
 provide as much information as you can that helps us to reproduce the issue.
 
 ## Client Applications
