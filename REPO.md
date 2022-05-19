@@ -12,9 +12,9 @@ Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
 fkooman | `F671 0CAA FBB4 7A8A 3EC9  1800 629D 7EE2 B63D DE73` | 2032-05-13
 
-URL: https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc
-
 ### PGP Key
+
+[Download](https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc)
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
