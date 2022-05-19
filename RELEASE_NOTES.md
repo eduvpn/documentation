@@ -67,6 +67,10 @@ If you find any issue, feel free to report it to the
 our [issue tracker](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
 provide as much information as you can that helps us to reproduce the issue.
 
+If you find issues with our documentation, some parts are not fully updated to
+3.x, we'll work with you to update the documentation when necessary so it will
+benefit all.
+
 ## Client Applications
 
 All the official eduVPN / Let's Connect! applications have been updated to 
