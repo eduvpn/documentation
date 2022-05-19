@@ -1,4 +1,4 @@
- # Introduction
+# Introduction
 
 By default, the VPN service is installed on one system using the 
 `deploy_${DIST}.sh` script. This works really well for small(ish) deployments, 

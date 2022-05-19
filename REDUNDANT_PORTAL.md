@@ -1,5 +1,9 @@
 # Introduction
 
+**NOTE**: THIS IS A WORK IN PROGRESS! IF YOU WANT TO DEPLOY THIS, PLEASE 
+CONTACT US AND WE'LL GO THROUGH IT TOGETHER AND UPDATE THE DOCUMENTATION AS
+WE GO!
+
 In order to make the "Controller / Portal" redundant we have to go through a 
 few steps:
 

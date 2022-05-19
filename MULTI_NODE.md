@@ -16,33 +16,30 @@ All three need to be set up with static IP configurations and working DNS. Make
 sure all works properly before starting the setup. For example, my test 
 deployment uses:
 
-Role       | DNS Host               | IPv4       | IPv6         |
----------- | ---------------------- | ---------- | ------------ |
-Controller | vpn.example.org        | 192.0.2.10 | 2001:db8::10 |
-Node A (0) | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
-Node B (1) | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
+| Role       | DNS Host               | IPv4       | IPv6         |
+| ---------- | ---------------------- | ---------- | ------------ |
+| Controller | vpn.example.org        | 192.0.2.10 | 2001:db8::10 |
+| Node A (0) | node-a.vpn.example.org | 192.0.2.20 | 2001:db8::20 |
+| Node B (1) | node-b.vpn.example.org | 192.0.2.30 | 2001:db8::30 |
 
 We will use NAT for IPv4 and IPv6 client traffic.
 
 Perform these steps on the hosts:
 
-    $ curl -L -O https://github.com/eduvpn/documentation/archive/v3.tar.gz
-    $ tar -xzf v3.tar.gz
-    $ cd documentation-3
-
-**TIP**: whenever you modify a `.php` file, make sure the syntax is correct 
-after editing:
-
-    $ php -l /path/to/file.php
-
-This will tell you whether or not the syntax is correct!
+```bash
+$ curl -L -O https://github.com/eduvpn/documentation/archive/v3.tar.gz
+$ tar -xzf v3.tar.gz
+$ cd documentation-3
+```
 
 ## Controller
 
 On the controller host:
 
-    $ sudo -s
-    # ./deploy_debian_controller.sh
+```bash
+$ sudo -s
+# ./deploy_debian_controller.sh
+```
 
 Make note of the credentials that are printed at the end, you can use them to
 test your server!
@@ -50,7 +47,10 @@ test your server!
 After the controller is installed, make sure you'll get a valid TLS 
 certificate, for example using the included `lets_encrypt_debian.sh` script:
 
-    # ./lets_encrypt_debian.sh
+```bash
+$ sudo -s
+# ./lets_encrypt_debian.sh
+```
 
 Now visit your site at https://vpn.example.org/. Make sure there is no TLS 
 error and you can login with the credentials you noted before.
@@ -59,7 +59,7 @@ By default there is a `default` profile. We will modify it. For this, edit
 `/etc/vpn-user-portal/config.php`. You will find something like this if you 
 omit the comments:
 
-```
+```php
 'ProfileList' => [
     [
         'profileId' = 'default',
@@ -78,7 +78,7 @@ To make this a multi node, you need to modify some of the options. Some options
 also take a array if they are _node specific_, see 
 [Profile Configuration](PROFILE_CONFIG.md) for an overview.
 
-```
+```php
 'ProfileList' => [
     [
         'profileId' = 'default',
@@ -133,12 +133,14 @@ nodes:
 
 Restart Apache:
 
-    $ sudo systemctl restart apache2
+```bash
+$ sudo systemctl restart apache2
+```
 
 For each node you want to add you need to generate a new "Node Key", e.g. for
 node "1" you'd use the following:
 
-```
+```bash
 $ sudo /usr/libexec/vpn-user-portal/generate-secrets --node 1
 ```
 
@@ -155,8 +157,10 @@ perform these steps in parallel on both machines.
 
 Make sure you can reach the API endpoint:
 
-    $ curl https://vpn.example.org/vpn-user-portal/node-api.php
-    {"error":"missing authentication information"}
+```bash
+$ curl https://vpn.example.org/vpn-user-portal/node-api.php
+{"error":"missing authentication information"}
+```
 
 This error is expected as no secret was provided. This just makes sure the 
 controller is configured correctly and allows requests from the nodes.
@@ -164,9 +168,11 @@ controller is configured correctly and allows requests from the nodes.
 Next, it is time to install the software. You should have downloaded and 
 unpacked the archive already, see [Requirements](#Requirements).
 
-    $ cd documentation-3
-    $ sudo -s
-    # ./deploy_debian_node.sh
+```bash
+$ cd documentation-3
+$ sudo -s
+# ./deploy_debian_node.sh
+```
 
 The script will ask for the API URL and the _node key_. The API URL is the URL 
 we tested above. The secret is the one extracted at the end of the previous 
@@ -178,30 +184,42 @@ fix that shortly!
 
 Modify `/etc/default/vpn-daemon`:
 
-    LISTEN=:41194
+```
+LISTEN=:41194
+```
 
 Start/enable the daemon:
 
-    $ sudo systemctl enable --now vpn-daemon
+```bash
+$ sudo systemctl enable --now vpn-daemon
+```
 
 The firewall also requires tweaking, open it to allow traffic from the 
 controller to the node's VPN daemon:
 
 In `/etc/iptables/rules.v4`:
 
-    -A INPUT -s 192.0.2.10/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+```
+-A INPUT -s 192.0.2.10/32 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+```
 
 In `/etc/iptables/rules.v6`, if you prefer using IPv6:
 
-    -A INPUT -s 2001:db8::10/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+```
+-A INPUT -s 2001:db8::10/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+```
 
 Now you are ready to apply the changes and it should work without error:
 
-    $ sudo vpn-maint-apply-changes
+```bash
+$ sudo vpn-maint-apply-changes
+```
 
 Restart the firewall:
 
-    $ sudo systemctl restart netfilter-persistent
+```bash
+$ sudo systemctl restart netfilter-persistent
+```
 
 Make sure you repeat these steps on Node B as well!
 
@@ -225,7 +243,7 @@ client certificate for the controller. We use
 [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca) which is already installed on 
 your controller, but you can also download and install it on your own system.
 
-```
+```bash
 $ vpn-ca -init-ca -name "Management CA" -domain-constraint .vpn.example.org
 $ vpn-ca -server  -name node-a.vpn.example.org
 $ vpn-ca -server  -name node-b.vpn.example.org
@@ -240,7 +258,7 @@ the respective node(s). Store them in `/etc/vpn-daemon` as `ca.crt`,
 `server.crt` and `server.key`. Make sure they can be read by the `vpn-daemon` 
 process:
 
-```
+```bash
 $ sudo -s
 $ cd /etc/vpn-daemon
 $ chmod 0640 *
@@ -256,7 +274,7 @@ CREDENTIALS_DIRECTORY=/etc/vpn-daemon
 
 Now restart `vpn-daemon`:
 
-```
+```bash
 $ sudo systemctl restart vpn-daemon
 ```
 
@@ -272,14 +290,14 @@ lock icon visible. Now you are all good!
 
 If there are any problems, review the `vpn-daemon` log on your node(s):
 
-```
+```bash
 $ sudo journalctl -t vpn-daemon
 ```
 
 If your daemon is running properly, you can try `curl` from your controller(s) 
 to verify the TLS connection can be established:
 
-```
+```bash
 $ curl \
     --cacert /etc/vpn-user-portal/vpn-daemon/ca.crt \
     --cert /etc/vpn-user-portal/vpn-daemon/vpn-daemon-client.crt \
