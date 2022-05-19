@@ -9,19 +9,20 @@ update your system using the `vpn-maint-update-system` command.
 
 ## New Features
 
-- Use WireGuard in addition to OpenVPN for VPN connections
-- Support "High Availability" deployments (memcached, PostgreSQL)
+- Use [WireGuard](https://www.wireguard.com/) in addition to OpenVPN for VPN 
+  connections
+- Support [High Availability](HA.md) deployments (memcached, PostgreSQL)
 - Allow limits on number of (concurrent) connections per user
-- Support OpenID Connect for user authentication
+- Support [OpenID Connect](MOD_AUTH_OPENIDC.md) for user authentication
 
 ## Other Changes
 
-- APIv3 (also implemented in eduVPN / Let's Connect! 2.x servers) that greatly 
-  simplifies the API and also supports WireGuard;
-- RADIUS is only still supported on Debian 11 as the module for RADIUS support 
-  no longer works with PHP >= 8;
+- [APIv3](API.md) (also implemented in eduVPN / Let's Connect! 2.x servers) 
+  that greatly simplifies the API and also supports WireGuard;
+- [RADIUS](RADIUS.md) is only still supported on Debian 11 as the module for 
+  RADIUS support no longer works with PHP >= 8;
 - Usage statistics are retained for longer than 30 days;
-- Remove 2FA/MFA support, 2FA is supported by leveraging the identity provider
+- Remove 2FA/MFA support, 2FA is supported by leveraging an identity provider
 
 ## Security
 
@@ -64,7 +65,7 @@ of the 3.x server!
 If you find any issue, feel free to report it to the 
 [mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy), or use 
 our [ticket system](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
-provide as much information as you can that helps us to reproduce the issue:
+provide as much information as you can that helps us to reproduce the issue.
 
 ## Client Applications
 
