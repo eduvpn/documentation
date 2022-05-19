@@ -204,7 +204,7 @@ $ sudo sqlite3 /var/lib/vpn-user-portal/db.sqlite
 Now _attach_ your 2.x database file:
 
 ```sql
-ATTACH DATABASE /path/to/2.x/vpn-user-portal/db.sqlite AS v2;
+ATTACH DATABASE "/path/to/2.x/vpn-user-portal/db.sqlite" AS v2;
 ```
 
 Delete the user from your _new_ installation that were created during 
@@ -218,6 +218,12 @@ And migrate over the users from the 2.x database to the new one:
 
 ```sql
 INSERT INTO main.local_users SELECT * FROM v2.users;
+```
+
+Finally, detach the database:
+
+```sql
+DETACH v2
 ```
 
 ### php-saml-sp
