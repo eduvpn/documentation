@@ -94,6 +94,3 @@ baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 enabled=1
 ```
-gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
-EOF
-```
