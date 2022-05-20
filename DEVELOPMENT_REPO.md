@@ -88,7 +88,7 @@ $ sudo rpm --import fkooman+repo@tuxed.net.asc
 Add the following to the file `/etc/yum.repos.d/eduVPN_v3-dev.repo`:
 
 ```
-[eduVPN_v3]
+[eduVPN_v3-dev]
 name=eduVPN 3.x Development Packages (Fedora $releasever)
 baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/fedora-$releasever-$basearch
 gpgcheck=1
