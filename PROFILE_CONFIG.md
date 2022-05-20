@@ -215,6 +215,10 @@ Specify the IPv4 range for WireGuard VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
+**NOTE**: the UDP port used by WireGuard is `51820` and can be modified by 
+changing the `listenPort` option under the `WireGuard` section in 
+`/etc/vpn-user-portal/config.php`. This port is "global" and NOT per profile.
+
 ### WireGuard Range Six
 
 Specify the IPv6 range for WireGuard VPN clients. As an example:
