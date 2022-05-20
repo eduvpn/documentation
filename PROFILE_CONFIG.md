@@ -204,6 +204,8 @@ WireGuard specific configuration options.
 | [wRangeFour](#wireguard-range-four) | `string[]` or `string` | _N/A_   |
 | [wRangeSix](#wireguard-range-six)   | `string[]` or `string` | _N/A_   |
 
+We wrote some additional documentation on WireGuard [here](WIREGUARD.md).
+
 ### WireGuard Range Four
 
 Specify the IPv4 range for WireGuard VPN clients. As an example:
