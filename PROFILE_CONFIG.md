@@ -1,7 +1,5 @@
 # Profile Configuration
 
-For this document we assume you used the included `deploy_${DIST}.sh` script.
-
 Profiles, are configured in `/etc/vpn-user-portal/config.php` and
 can contain many options to support various deployment scenarios. These are 
 described in the table below.
