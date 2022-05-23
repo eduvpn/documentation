@@ -1,31 +1,28 @@
 #!/bin/sh
 
 #
-# Deploy a VPN Node
+# Deploy a VPN server on Debian/Ubuntu
 #
 
 ###############################################################################
-# CONFIGURATION
+# VARIABLES
 ###############################################################################
 
-DEFAULT_API_URL=http://localhost/vpn-server-api/api.php
-printf "API URL of VPN 'Controller' [http://localhost/vpn-server-api/api.php]: "; read -r API_URL
-API_URL=${API_URL:-${DEFAULT_API_URL}}
-
-printf "API Secret (from /etc/vpn-server-api/config.php on 'Controller'): "; read -r API_SECRET
+# Try to detect external "Default Gateway" Interface, but allow admin override
+EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
+printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
+EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
 
 ###############################################################################
 # SOFTWARE
 ###############################################################################
 
 apt update
-
-# until ALL composer.json of the packages using sqlite have "ext-sqlite3" we'll 
-# install it manually here...
-DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
-    iptables-persistent sudo gnupg php-cli lsb-release
+apt install -y apt-transport-https curl iptables-persistent sudo lsb-release \
+    tmux
 
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
+PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
 echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
@@ -33,37 +30,50 @@ echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/ap
 apt update
 
 # install software (VPN packages)
-DEBIAN_FRONTEND=noninteractive apt install -y vpn-server-node vpn-maint-scripts
+apt install -y vpn-server-node vpn-maint-scripts
 
 ###############################################################################
 # NETWORK
 ###############################################################################
 
 cat << EOF > /etc/sysctl.d/70-vpn.conf
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production, you SHOULD be using STATIC addresses!
+net.ipv6.conf.${EXTERNAL_IF}.accept_ra = 2
+
+# enable IPv4 and IPv6 forwarding
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
-# **REMOVE** for static IPv6 configurations!
-net.ipv6.conf.all.accept_ra = 2
 EOF
 
 sysctl --system
 
 ###############################################################################
-# VPN-SERVER-NODE
-###############################################################################
-sed -i "s|http://localhost/vpn-server-api/api.php|${API_URL}|" /etc/vpn-server-node/config.php
-sed -i "s|XXX-vpn-server-node/vpn-server-api-XXX|${API_SECRET}|" /etc/vpn-server-node/config.php
-
-###############################################################################
-# OPENVPN SERVER CONFIG
+# DAEMONS
 ###############################################################################
 
-# NOTE: the openvpn-server systemd unit file only allows 10 OpenVPN processes
-# by default! 
+systemctl enable --now crond
 
-# generate (new) OpenVPN server configuration files and start OpenVPN
-vpn-maint-apply-changes
+###############################################################################
+# VPN SERVER CONFIG
+###############################################################################
+
+# increase the allowed number of processes for the OpenVPN service
+mkdir -p /etc/systemd/system/openvpn-server@.service.d
+cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
+[Service]
+LimitNPROC=127
+EOF
+
+# we want to change the owner of the socket, so vpn-daemon can read it, this
+# overrides /usr/lib/tmpfiles.d/openvpn.conf as installed by the distribution
+# package
+cat << EOF > /etc/tmpfiles.d/openvpn.conf
+d	/run/openvpn-client	0710	root	root	-
+d	/run/openvpn-server	0750	root	nogroup	-
+d	/run/openvpn		0755	root	root	-	-
+EOF
+systemd-tmpfiles --create
 
 ###############################################################################
 # FIREWALL
@@ -71,10 +81,8 @@ vpn-maint-apply-changes
 
 cp resources/firewall/node/iptables  /etc/iptables/rules.v4
 cp resources/firewall/node/ip6tables /etc/iptables/rules.v6
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/iptables/rules.v4
+sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/iptables/rules.v6
 
 systemctl enable netfilter-persistent
 systemctl restart netfilter-persistent
-
-###############################################################################
-# DONE
-###############################################################################

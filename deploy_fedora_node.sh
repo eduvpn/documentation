@@ -79,8 +79,8 @@ systemctl enable --now crond
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/iptables.v3  /etc/sysconfig/iptables
-cp resources/firewall/ip6tables.v3 /etc/sysconfig/ip6tables
+cp resources/firewall/node/iptables.v3  /etc/sysconfig/iptables
+cp resources/firewall/node/ip6tables.v3 /etc/sysconfig/ip6tables
 
 sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/iptables
 sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/ip6tables

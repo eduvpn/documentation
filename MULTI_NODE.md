@@ -9,11 +9,10 @@ automatically be distributed over the nodes.
 ## Requirements
 
 At least 3 machines (or VMs) running Debian >= 11. The two machines that will 
-be the nodes ideally have the same specifications. They also SHOULD have CPU 
-AES acceleration, e.g. AES-NI.
+be the nodes ideally have the same specifications.
 
 All three need to be set up with static IP configurations and working DNS. Make 
-sure all works properly before starting the setup. For example, my test 
+sure all works properly before starting the setup. For example, our test 
 deployment uses:
 
 | Role       | DNS Host                 | IPv4         | IPv6           |
@@ -41,8 +40,8 @@ $ sudo -s
 # ./deploy_debian_controller.sh
 ```
 
-Make note of the credentials that are printed at the end, you can use them to
-test your server!
+Make note of the user credentials that are printed at the end, you can use them 
+to test your server!
 
 After the controller is installed, make sure you'll get a valid TLS 
 certificate, for example using the included `lets_encrypt_debian.sh` script:
@@ -57,7 +56,7 @@ error and you can login with the credentials you noted before.
 
 By default there is a `default` profile. We will modify it. For this, edit 
 `/etc/vpn-user-portal/config.php`. You will find something like this if you 
-omit the comments:
+ignore the comments:
 
 ```php
 'ProfileList' => [
@@ -155,7 +154,7 @@ for Node B... so you have to perform them twice, please note that on Node B
 you should replace any occurrence of `node-a` with `node-b`. Ideally you 
 perform these steps in parallel on both machines.
 
-Make sure you can reach the API endpoint:
+Make sure you can reach the API endpoint from the node(s):
 
 ```bash
 $ curl https://vpn.example.org/vpn-user-portal/node-api.php
