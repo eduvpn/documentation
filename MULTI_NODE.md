@@ -234,7 +234,7 @@ client(s) under "Connections" in the portal when connected.
 
 ## TLS
 
-**NOTE**: these instructions are for Fedora, not yet for Debian!
+**NOTE**: these instructions are for Debian, not for Fedora!
 
 When everything works properly using HTTP, you SHOULD switch to HTTPS for
 communication between controller and node(s). Without TLS there is no
@@ -256,36 +256,39 @@ $ vpn-ca -client  -name vpn-daemon-client
 ```
 
 Copy `ca.crt`, `node-X.vpn.example.org.crt` and `node-X.vpn.example.org.key` to
-the respective node(s). Store them in `/etc/vpn-daemon` as `ca.crt`, 
-`server.crt` and `server.key`. Make sure they can be read by the `vpn-daemon` 
-process:
+the respective node(s). Store them in the following locations (note the 
+`private` folder for the key):
+
+| File                         | Location                                 |
+| ---------------------------- | ---------------------------------------- |
+| `ca.crt`                     | `/etc/ssl/vpn-daemon/ca.crt`             | 
+| `node-X.vpn.example.org.crt` | `/etc/ssl/vpn-daemon/server.crt`         |
+| `node-X.vpn.example.org.key` | `/etc/ssl/vpn-daemon/private/server.key` |
+
+Now, enable [System and Service Credentials](https://systemd.io/CREDENTIALS/)
+by writing the following content to 
+`/etc/systemd/system/vpn-daemon.service.d/credentials.conf`:
+
+```
+[Service]
+LoadCredential=ca.crt:/etc/ssl/vpn-daemon/ca.crt
+LoadCredential=server.crt:/etc/ssl/vpn-daemon/server.crt
+LoadCredential=server.key:/etc/ssl/vpn-daemon/private/server.key
+```
+
+Make sure to reload the `systemd` daemon and restart `vpn-daemon`:
 
 ```bash
-$ sudo -s
-$ cd /etc/vpn-daemon
-$ chmod 0640 *
-$ chgrp vpn-daemon *
-```
-
-Modify `/etc/sysconfig/vpn-daemon` and enable the `CREDENTIALS_DIRECTORY` 
-option:
-
-```
-CREDENTIALS_DIRECTORY=/etc/vpn-daemon
-```
-
-Now restart `vpn-daemon`:
-
-```bash
+$ sudo systemctl daemon-reload
 $ sudo systemctl restart vpn-daemon
 ```
 
 Repeat this on all your nodes.
 
 On your controller(s) you copy the `ca.crt`, `vpn-daemon-client.crt` and 
-`vpn-daemon-client.key` to `/etc/vpn-user-portal/vpn-daemon` and modify the
-`nodeUrl` option(s) in the profile configuration in 
-`/etc/vpn-user-portal/config.php` to `https://`.
+`vpn-daemon-client.key` to `/etc/vpn-user-portal/keys/vpn-daemon` and modify 
+the `nodeUrl` option(s) in the profile configuration in 
+`/etc/vpn-user-portal/config.php` to use `https://` instead of `http://`.
 
 Viewing the portal "Info" page should show your node(s) as green and have the 
 lock icon visible. Now you are all good!
@@ -301,8 +304,8 @@ to verify the TLS connection can be established:
 
 ```bash
 $ curl \
-    --cacert /etc/vpn-user-portal/vpn-daemon/ca.crt \
-    --cert /etc/vpn-user-portal/vpn-daemon/vpn-daemon-client.crt \
-    --key /etc/vpn-user-portal/vpn-daemon/vpn-daemon-client.key \
+    --cacert /etc/vpn-user-portal/keys/vpn-daemon/ca.crt \
+    --cert /etc/vpn-user-portal/vpn-daemon/keys/vpn-daemon-client.crt \
+    --key /etc/vpn-user-portal/vpn-daemon/keys/vpn-daemon-client.key \
     https://node-a.vpn.example.org:41194/i/node 
 ```
