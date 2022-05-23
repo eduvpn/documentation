@@ -119,7 +119,6 @@ cp /etc/vpn-user-portal/keys/node.0.key /etc/vpn-server-node/keys/node.key
 
 systemctl enable --now php${PHP_VERSION}-fpm
 systemctl enable --now apache2
-systemctl enable --now crond
 
 ###############################################################################
 # VPN SERVER CONFIG

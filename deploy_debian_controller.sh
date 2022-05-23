@@ -98,7 +98,6 @@ sed -i "s|fd43::|$(ipcalc-ng -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/
 
 systemctl enable --now php${PHP_VERSION}-fpm
 systemctl enable --now apache2
-systemctl enable --now crond
 
 ###############################################################################
 # FIREWALL

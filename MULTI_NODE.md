@@ -158,7 +158,7 @@ Make sure you can reach the API endpoint from the node(s):
 
 ```bash
 $ curl https://vpn.example.org/vpn-user-portal/node-api.php
-{"error":"missing authentication information"}
+{"error":"authentication required"}
 ```
 
 This error is expected as no secret was provided. This just makes sure the 
@@ -173,24 +173,28 @@ $ sudo -s
 # ./deploy_debian_node.sh
 ```
 
-The script will ask for the API URL and the _node key_. The API URL is the URL 
-we tested above. The secret is the one extracted at the end of the previous 
-section.
+On your node, modify `/etc/vpn-server-node/config.php` and set `apiUrl` to 
+`https://vpn.example.org/vpn-user-portal/node-api.php`. Also set the 
+`nodeNumber` to the number associated with your node.
 
-The script will output some errors about being unable to start OpenVPN. This is
-because we changed the controller's default configuration. It is fine, we will
-fix that shortly!
-
-Modify `/etc/default/vpn-daemon`:
+Next, modify `/etc/default/vpn-daemon`:
 
 ```
 LISTEN=:41194
 ```
 
-Start/enable the daemon:
+Restart the daemon:
 
 ```bash
-$ sudo systemctl enable --now vpn-daemon
+$ sudo systemctl restart vpn-daemon
+```
+
+Copy the contents of `/etc/vpn-user-portal/keys/node.0.key` to 
+`/etc/vpn-server-node/keys/node.key`. Make sure it only contains the secret and
+not a trailing return. If you are using copy/paste using this:
+
+```bash
+$ echo -n 'SECRET' | sudo tee /etc/vpn-server-node/keys/node.key
 ```
 
 The firewall also requires tweaking, open it to allow traffic from the 
@@ -208,16 +212,16 @@ In `/etc/iptables/rules.v6`, if you prefer using IPv6:
 -A INPUT -s 2001:db8::10/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
 ```
 
-Now you are ready to apply the changes and it should work without error:
-
-```bash
-$ sudo vpn-maint-apply-changes
-```
-
 Restart the firewall:
 
 ```bash
 $ sudo systemctl restart netfilter-persistent
+```
+
+Now you are ready to apply the changes and this should work without error:
+
+```bash
+$ sudo vpn-maint-apply-changes
 ```
 
 Make sure you repeat these steps on Node B as well!
@@ -225,9 +229,8 @@ Make sure you repeat these steps on Node B as well!
 Now is the time to test everything. Go to the portal at 
 `https://vpn.example.org/`, download a configuration, test it with your 
 client. Download a configuration for both profiles and make sure they work. 
-Login to the admin portal using the `admin` user and password you noted at the
-end of the controller install and make sure you see your client(s) under 
-"Connections" in the portal when connected.
+Login with an account that has "Admin" privileges, and make sure you see your 
+client(s) under "Connections" in the portal when connected.
 
 ## TLS
 
