@@ -17,6 +17,9 @@ Additional scripts are available after deployment:
   `tcp/443`, `udp/1194`, `tcp/1194` and `udp/51820` for basic functionality, 
   the deploy script will take care of the host firewall;
 * Working DNS entry for your VPN server, e.g. `vpn.example.org`.
+* Have the correct hostname configured on your system. Use 
+  `hostnamectl set-hostname vpn.example.org` (as root) to set your hostname. If 
+  you need to change the hostname, reboot after to make sure it "sticks".
 
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
@@ -43,9 +46,8 @@ this:
     $ sudo -s
     # ./deploy_debian.sh
 
-Specify the hostname you want to use for your VPN server. The recommended 
-hostname SHOULD already be the one you want to use... If not, set the hostname
-correctly first.
+**NOTE**: if the script does NOT suggest the actual hostname you want to use 
+on your system, make sure you configure your hostname first, see above.
 
 **NOTE**: you can NOT use `localhost` as a hostname, nor an IP address!
 
