@@ -86,3 +86,10 @@ If your server is currently running in what we call "Secure Internet" or
 "Guest Usage" mode, i.e. you are an NREN and provide VPN access to your 
 institutes' users and users of other NRENs institutes, you MUST NOT upgrade. 
 This deployment mode will be supported only from eduVPN 3.1 onward.
+
+## Known Issues
+
+We are aware of the following issues with 3.x:
+
+* VPN clients (all platforms) will always appear "Connected" when using 
+  WireGuard, even if there is no VPN traffic (possible).
