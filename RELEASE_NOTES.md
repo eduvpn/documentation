@@ -75,13 +75,18 @@ benefit all.
 
 All the official eduVPN / Let's Connect! applications have been updated to 
 support the 3.x server with both OpenVPN and WireGuard. Make sure all your 
-clients are updated to their latest available version. For Windows the 3.0 
-application needs to be installed, which is the default for new installations, 
-but not yet pushed as an update for existing 2.x client installations. This 
-will be done in the coming weeks.
+clients are updated to their latest available version. 
 
-* [List of eduVPN Applications](https://app.eduvpn.org/)
-* [List of Let's Connect! Applications](https://app.letsconnect-vpn.org/)
+**NOTE** for Windows, when using the eduVPN application, the 3.0 application 
+needs to be installed, which is the default for new installations, but not yet 
+offered as an  update for existing 2.x client installations. This will be done 
+in the coming weeks. For Let's Connect! the existing 2.x clients installations 
+will offer an update to 3.0.
+
+Full list of the available applications:
+
+* [eduVPN](https://app.eduvpn.org/)
+* [Let's Connect!](https://app.letsconnect-vpn.org/)
 
 ## Guest Usage 
 
@@ -97,6 +102,14 @@ We are aware of the following issues with 3.x:
 * VPN clients (all platforms) will always appear "Connected" when using 
   WireGuard, even if there is no VPN traffic (possible).
 * Windows clients need version 3.0 of the VPN Client. Existing installations
-  are (not yet) auto updated to 3.0. Users MUST install 3.0 manually if they 
-  have an existing installation of the Windows client. New installations of 
-  the client will always be 3.0.
+  are (not yet) offered an updated to 3.0. Users MUST install 3.0 manually if 
+  they have an existing installation of the Windows client. New installations 
+  of the client will always be 3.0.
+  
+## Changes
+
+The table below lists the changes to the release notes.
+
+| Date       | Note                      |
+| ---------- | ------------------------- |
+| 2022-05-24 | Initial 3.x Release Notes | 
