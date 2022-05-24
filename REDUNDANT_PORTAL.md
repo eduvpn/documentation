@@ -1,17 +1,20 @@
 # Introduction
 
-**NOTE**: THIS IS A WORK IN PROGRESS! IF YOU WANT TO DEPLOY THIS, PLEASE 
-CONTACT US AND WE'LL GO THROUGH IT TOGETHER AND UPDATE THE DOCUMENTATION AS
-WE GO!
+Setting up a redundant portal is one part of making the VPN service 
+"High Available". The other is running multiple VPN nodes. A complete 
+overview of the options can be found [here](HA.md).
 
 In order to make the "Controller / Portal" redundant we have to go through a 
 few steps:
 
-1. Install the portal on >= 1 systems;
-2. Obtain credentials for a remote database cluster;
-3. Configure the database;
-4. Synchronize the configuration between;
-5. Setup memcache;
+1. Install the controller/portal on >= 1 systems
+2. Obtain credentials for a remote database cluster
+3. Configure the database
+4. Synchronize the configuration between the portals
+5. Setup memcache
+6. Setup keepalived
+
+We'll walk you through all steps in the rest of this document.
 
 # Installation
 
@@ -22,7 +25,7 @@ You can configure the "Controller / Portal" on multiple systems, using the
 Make sure you provide the same hostname when asked when running the deploy 
 script, e.g. `vpn.example.org`.
 
-The machines themselves can have the names `p1.vpn.example.org`, 
+The machines themselves SHOULD have the names `p1.vpn.example.org`, 
 `p2.vpn.example.org`, ..., or whatever fits for your situation.
 
 You perform all configuration on one of the "Controllers / Portal", and then 
@@ -38,15 +41,30 @@ just set up and follow the instructions [here](DATABASE.md).
 On all of your "Controller / Portal" machines:
 
 ```
-$ sudo dnf -y install memcached php-pecl-memcached
-$ sudo systemctl enable --now memcached
-$ sudo systemctl restart php-fpm
+$ sudo apt -y install memcached php-memcached
+$ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 ```
 
 ## Configuration
 
 By default Memcached only listens on `localhost`. For our purpose however each
 installation of the portal should be able to reach all Memcached servers. 
+
+### Debian / Ubuntu
+
+Modify `/etc/memcached.conf` and change the `-l` line from `-l 127.0.0.1` to
+`-l 0.0.0.0,::`
+
+Restart memcached:
+
+```
+$ sudo systemctl restart memcached
+```
+
+**NOTE**: you MUST make sure you use your firewall to prevent systems on the 
+Internet from reaching your Memcached service!
+
+### Fedora 
 
 Modify `/etc/sysconfig/memcached` and change the `OPTIONS` line from 
 `OPTIONS="-l 127.0.0.1,::1"` to `OPTIONS=""` to listen on all interfaces.
@@ -77,6 +95,8 @@ Memcache again:
 $ sudo systemctl restart memcached
 ```
 
+### Portal
+
 Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 
 ```php
@@ -89,6 +109,10 @@ Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 ],
 ```
 
+**NOTE**: on `p1.vpn.example.org`, the server `p1.vpn.example.org` SHOULD come
+first, and on `p2.vpn.example.org`, the server `p2.vpn.example.org` SHOULD come
+first.
+
 # Synchronize Configuration
 
 Some files need to be copied from one of the portals to the other(s), e.g. VPN 
@@ -96,11 +120,10 @@ CA, OAuth key, OpenVPN/WireGuard key material and HTTPS certificate.
 
 **TODO**: not all file locations are correct yet!
 
-Copy the following files/folders from one of your portals to the other(s):
+Copy the following folders from one of your portals to the other(s):
 
-* File `/etc/vpn-user-portal/config.php`;
-* File `/etc/vpn-user-portal/oauth.key`;
-* Folder `/var/lib/vpn-user-portal`;
+* Folder `/etc/vpn-user-portal`
+* Folder `/var/lib/vpn-user-portal`
 
 When making changes to your (portal) configuration, i.e. adding or removing 
 profiles, these files/folders will need to be synchronized again!
@@ -188,17 +211,3 @@ Update firewall on both, **NOTE**: set the exact IP address:
 ```
 -A INPUT -s 192.168.122.0/24 -p vrrp -j ACCEPT
 ```
-
-## CA 
-
-[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -init-ca -domain-constraint .home.arpa
-[fkooman@fralen-tuxed-net tmp-ca]$ vpn-ca -server -name p.home.arpa
-
-# On the Nodes
-
-# DB
-
-- install all updates
-- reboot
-
-sudo dnf -y install mariadb-server

@@ -1,10 +1,12 @@
-# Multi Node Setup
+# Introduction
 
-When you want to scale up your deployment, i.e. have multiple nodes connected 
-with one controller, this document is for you!
+Setting up multiple VPN nodes is one part of making the VPN service 
+"High Available". The other is setting up a redundant portal. A complete 
+overview of the options can be found [here](HA.md).
 
-This document will show how to set up multiple nodes. The VPN clients will 
-automatically be distributed over the nodes.
+Setting up multiple nodes allows the "load" of the VPN service to be 
+distributed over multiple (virtual) servers and avoid (extensive) downtime when 
+one of the nodes goes down.
 
 ## Requirements
 

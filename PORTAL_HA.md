@@ -1,1 +1,0 @@
-[Moved Here](HA.md)
