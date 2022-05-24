@@ -80,6 +80,9 @@ application needs to be installed, which is the default for new installations,
 but not yet pushed as an update for existing 2.x client installations. This 
 will be done in the coming weeks.
 
+* [List of eduVPN Applications](https://app.eduvpn.org/)
+* [List of Let's Connect! Applications](https://app.letsconnect-vpn.org/)
+
 ## Guest Usage 
 
 If your server is currently running in what we call "Secure Internet" or 
