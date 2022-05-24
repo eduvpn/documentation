@@ -4,6 +4,10 @@
 # Use Let's Encrypt to obtain certificates for the Web Server
 #
 
+if ! [ "root" = "$(id -u -n)" ]; then
+    echo "ERROR: ${0} must be run as root!"; exit 1
+fi
+
 ###############################################################################
 # VARIABLES
 ###############################################################################
