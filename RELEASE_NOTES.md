@@ -42,9 +42,10 @@ systems:
 - [Ubuntu 22.04](DEPLOY_DEBIAN.md)
 - [Fedora 36](DEPLOY_FEDORA.md)
 
-We are reasonably confident we will be able to support Red Hat Enterprise Linux 
-9 (and its derivatives like Rocky Linux and Alma Linux) soon after their 
-release.
+We are reasonably confident we will be able to support 
+[Red Hat Enterprise Linux](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
+9 (and its derivatives like [Rocky Linux](https://rockylinux.org/) and 
+[AlmaLinux OS](https://almalinux.org/)) soon after their release.
 
 **Recommended OS**: Debian 11
 
