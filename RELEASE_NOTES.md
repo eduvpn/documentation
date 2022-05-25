@@ -5,7 +5,10 @@ updated as needed. It is a big release consisting of many changes.
 
 As this is a new major release, we expect some (minor) issues to still exist 
 that we'll run into in the next weeks/months, so it is important to regularly 
-update your system using the `vpn-maint-update-system` command.
+update your system using the `vpn-maint-update-system` command. If you are 
+currently deploying eduVPN / Let's Connect! in production, we highly recommend 
+that you first install 3.x on a test system before planning an upgrade or new 
+installation.
 
 ## New Features
 
@@ -39,37 +42,39 @@ systems:
 - [Ubuntu 22.04](DEPLOY_DEBIAN.md)
 - [Fedora 36](DEPLOY_FEDORA.md)
 
-We are reasonably confident we will be able to support RHEL 9 (and its 
-derivatives) soon after their release.
+We are reasonably confident we will be able to support Red Hat Enterprise Linux 
+9 (and its derivatives like Rocky Linux and Alma Linux) soon after their 
+release.
 
 **Recommended OS**: Debian 11
 
 We will support future releases of the above operating systems as soon as they 
 become available. We will never support "EOL" releases of operating systems, 
-and only support operating systems up to 1 year after a new version of that OS 
-is available. Example: you MUST upgrade to Debian 12 within one year of its 
-release.
+and only commit to support operating systems up to 1 year after a new version 
+of that OS is available. Example: you MUST upgrade to Debian 12 within one year 
+of its release.
 
 ## Upgrading
 
 In case you are currently running eduVPN / Let's Connect! 2.x on Debian 11 you 
-can use the [upgrade instructions](FROM_2_TO_3.md) to move to 3.x. Please note 
+can use the [Upgrade Instructions](FROM_2_TO_3.md) to move to 3.x. Please note 
 that your users will be forced to reauthorize the official apps and/or download 
 a new configuration file from the portal.
 
-However, it is recommended, if at all possible, to perform a fresh installation 
-of the 3.x server!
+However, it is HIGHLY RECOMMENDED, if at all possible, to perform a fresh 
+installation of the 3.x server!
 
 ## Issues
 
 If you find any issue, feel free to report it to the 
-[mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy), or use 
-our [issue tracker](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
-provide as much information as you can that helps us to reproduce the issue.
+[mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy), or 
+directly use our [issue tracker](https://todo.sr.ht/~eduvpn/server) directly. 
+Please try to provide as much information as you can that helps us to reproduce 
+the issue.
 
-If you find issues with our documentation, some parts are not fully updated to
-3.x, we'll work with you to update the documentation when necessary so it will
-benefit all.
+If you find issues with our documentation, some parts are not fully updated for
+3.x yet, we'll work with you to update the documentation when necessary so it 
+will benefit all.
 
 ## Client Applications
 
@@ -92,8 +97,9 @@ Full list of the available applications:
 
 If your server is currently running in what we call "Secure Internet" or 
 "Guest Usage" mode, i.e. you are an NREN and provide VPN access to your 
-institutes' users and users of other NRENs institutes, you MUST NOT upgrade. 
-This deployment mode will be supported only from eduVPN 3.1 onward.
+institutes' users and users of other NRENs institutes, you MUST NOT upgrade / 
+install 3.x yet. This deployment mode will be supported only from eduVPN 3.1 
+onward.
 
 ## Known Issues
 
