@@ -17,20 +17,20 @@ be ready to update when new releases appear!
 
 A simple CSV format:
 
-    $ sudo vpn-server-api-status 
+    $ sudo vpn-user-portal-status 
     profile_id,active_connection_count,max_connection_count,percentage_in_use
     amsterdam,102,488,20
 
 If you want to see an aggregate of the number of connected clients over all 
 profiles, you can use this:
 
-    $ sudo vpn-server-api-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
+    $ sudo vpn-user-portal-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
 
 # JSON
 
 Aggregate information:
 
-    $ sudo vpn-server-api-status --json
+    $ sudo vpn-user-portal-status --json
     [
         {
             "profile_id": "amsterdam",
@@ -52,7 +52,7 @@ Aggregate information:
 
 Show also connected VPN client information:
 
-    $ sudo vpn-server-api-status --json --connections
+    $ sudo vpn-user-portal-status --json --connections
     [
         {
             "profile_id": "amsterdam",
@@ -94,7 +94,7 @@ Show also connected VPN client information:
 To show all users connected to the profile `amsterdam` you can use something
 like this using the [jq](https://stedolan.github.io/jq/) tool:
 
-    $ sudo vpn-server-api-status --json --connections | jq '.[] | select(.profile_id | contains("amsterdam")) | .connection_list | .[] .user_id'
+    $ sudo vpn-user-portal-status --json --connections | jq '.[] | select(.profile_id | contains("amsterdam")) | .connection_list | .[] .user_id'
 
 ## Alerting
 
@@ -106,6 +106,6 @@ You can use the status command from `cron` to send out alerts when the IP space
 is about to be depleted, e.g.:
 
     MAILTO=admin@example.org
-    */5 * * * * /usr/bin/vpn-server-api-status --alert 75
+    */5 * * * * /usr/bin/vpn-user-portal-status --alert 75
 
 Assuming `cron` is able to mail reports this should work!
