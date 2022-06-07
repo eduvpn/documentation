@@ -236,17 +236,17 @@ profile/protocol, nor overlap the range specified in another profile/protocol!
 
 OpenVPN specific configuration options.
 
-| Option                                            | Type                   | Default  |
-| ------------------------------------------------- | ---------------------- | -------- |
-| [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |
-| [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |
-| [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |
-| [oEnableLog](#openvpn-enable-log)                 | `bool`                 | `false`  |
-| [oUdpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
-| [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |
-| [oExposedUdpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
-| [oExposedTcpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |
-| [oListenOn](#openvpn-listen-address)              | `string`               | `::`     |
+| Option                                            | Type                   | Default  | Notes                            |
+| ------------------------------------------------- | ---------------------- | -------- | -------------------------------- |
+| [oRangeFour](#openvpn-range-four)                 | `string[]` or `string` | _N/A_    |                                  |
+| [oRangeSix](#openvpn-range-six)                   | `string[]` or `string` | _N/A_    |                                  |
+| [oBlockLan](#openvpn-block-lan)                   | `bool`                 | `false`  |                                  |
+| [oEnableLog](#openvpn-enable-log)                 | `bool`                 | `false`  |                                  |
+| [oUdpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |                                  |
+| [oTcpPortList](#openvpn-port-list)                | `int[]`                | `[1194]` |                                  |
+| [oExposedUdpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |                                  |
+| [oExposedTcpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |                                  |
+| [oListenOn](#openvpn-listen-address)              | `string[]` or `string` | `::`     | Also accepts `string[]` >= 3.0.1 |
 
 ### OpenVPN Range Four
 
@@ -359,6 +359,9 @@ Example:
 
 **NOTE**: using this option is NOT recommended and should be avoided if 
 possible.
+
+**NOTE**: you can also specify an array of IP addresses when running >= 3.0.1, 
+this allows you to specify an IP per node when using multiple nodes.
 
 # Apply Changes
 
