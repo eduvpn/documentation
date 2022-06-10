@@ -46,7 +46,7 @@ cat << EOF > config/config.php
 \$localConfig = [
     //'styleName' => 'eduVPN',
     //'styleName' => 'LC',
-    'adminUserIdList' => ['admin', 'foo'],
+    'adminUserIdList' => ['admin'],
     'vpnCaPath' => '${BASE_DIR}/vpn-ca/vpn-ca',
 ];
 return array_merge(\$baseConfig, \$localConfig);
