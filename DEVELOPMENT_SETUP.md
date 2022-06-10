@@ -72,7 +72,7 @@ to easily test the portals.
 Now with your browser you can connect to the user portal on 
 `http://localhost:8082/`.
 
-You can login with the users `foo` and password `bar` (user account) or `admin`
+You can login with the users `foo` with password `bar` (user account) or `admin`
 with password `secret` (administrator account).
 
 # VPN Server Configuration
