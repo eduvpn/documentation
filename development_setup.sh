@@ -46,13 +46,14 @@ cat << EOF > config/config.php
 \$localConfig = [
     //'styleName' => 'eduVPN',
     //'styleName' => 'LC',
-    'adminUserIdList' => ['foo'],
+    'adminUserIdList' => ['admin'],
     'vpnCaPath' => '${BASE_DIR}/vpn-ca/vpn-ca',
 ];
 return array_merge(\$baseConfig, \$localConfig);
 EOF
 
 php libexec/generate-secrets.php
+php bin/account.php --add admin --password secret
 php bin/account.php --add foo --password bar
 
 # symlink to the official templates we have so we can easily modify and test
