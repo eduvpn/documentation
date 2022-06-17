@@ -99,6 +99,6 @@ cat << 'EOF' | tee "${BASE_DIR}/launch.sh" > /dev/null
 #!/bin/sh
 vpn-daemon/vpn-daemon &
 cd vpn-user-portal || exit
-php -S localhost:8082 -t web
+php -S localhost:8082 -t web dev/router.php
 EOF
 chmod +x "${BASE_DIR}/launch.sh"
