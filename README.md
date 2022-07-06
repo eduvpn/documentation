@@ -22,7 +22,7 @@ contact us at
 | Version                                              | Release Date | OS Support                                        |  EOL*      | 
 | ---------------------------------------------------- | ------------ | ------------------------------------------------- | ---------- |
 | [3](https://github.com/eduvpn/documentation/tree/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36) | TBD        |
-| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 9), CentOS 7, Fedora (>= 34)           | 2024-06-30 |
+| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 9), CentOS 7, Fedora (>= 35)           | 2024-06-30 |
 | [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | _N/A_                                             | _N/A_      | 
 
 We support a release until such time the EOL date has been reached or none of 
@@ -96,7 +96,7 @@ can't be bothered to setup an IRC client. See you there!
 ## Supported Operating Systems
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) 34, 35 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 35, 36 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) 9, 10, 11 (`x86_64`) 
 
 **Current Recommendation**: install your VPN server on Debian 11.
