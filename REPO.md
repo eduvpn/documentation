@@ -73,7 +73,7 @@ $ sudo rpm --import centos%2B20210419%40eduvpn.org.asc
 ```
 [eduVPN_v2]
 name=eduVPN 2.x Packages (EL 7)
-baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-$basearch
+baseurl=https://repo.eduvpn.org/v2/rpm/centos+epel-7-$basearch
 gpgcheck=1
 enabled=1
 ```

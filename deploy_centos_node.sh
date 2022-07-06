@@ -60,7 +60,7 @@ rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
 cat << EOF > /etc/yum.repos.d/eduVPN_v2.repo
 [eduVPN_v2]
 name=eduVPN 2.x Packages (EL 7)
-baseurl=https://repo.eduvpn.org/v2/rpm/epel-7-\$basearch
+baseurl=https://repo.eduvpn.org/v2/rpm/centos+epel-7-\$basearch
 gpgcheck=1
 enabled=${VPN_STABLE_REPO}
 EOF
@@ -68,7 +68,7 @@ EOF
 cat << EOF > /etc/yum.repos.d/eduVPN_v2-dev.repo
 [eduVPN_v2-dev]
 name=eduVPN 2.x Development Packages (EL 7)
-baseurl=https://repo.tuxed.net/eduVPN/v2-dev/rpm/epel-7-\$basearch
+baseurl=https://repo.tuxed.net/eduVPN/v2-dev/rpm/centos+epel-7-\$basearch
 gpgcheck=1
 gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 enabled=${VPN_DEV_REPO}

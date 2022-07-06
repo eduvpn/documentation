@@ -9,7 +9,7 @@
     $ cat << 'EOF' > /etc/yum.repos.d/eduVPN_v2-dev.repo
     [eduVPN_v2-dev]
     name=eduVPN 2.x Development Packages (EL 7)
-    baseurl=https://repo.tuxed.net/eduVPN/v2-dev/rpm/epel-7-$basearch
+    baseurl=https://repo.tuxed.net/eduVPN/v2-dev/rpm/centos+epel-7-$basearch
     gpgcheck=1
     gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
     EOF
