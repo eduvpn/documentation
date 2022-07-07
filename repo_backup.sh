@@ -33,9 +33,6 @@ REPO_URL_LIST=(\
     https://git.sr.ht/~fkooman/php-oauth2-server \
     https://git.sr.ht/~fkooman/php-oauth2-server.deb \
     https://git.sr.ht/~fkooman/php-oauth2-server.rpm \
-    https://git.sr.ht/~fkooman/php-openvpn-connection-manager \
-    https://git.sr.ht/~fkooman/php-openvpn-connection-manager.deb \
-    https://git.sr.ht/~fkooman/php-openvpn-connection-manager.rpm \
     https://git.sr.ht/~fkooman/php-otp-verifier \
     https://git.sr.ht/~fkooman/php-otp-verifier.deb \
     https://git.sr.ht/~fkooman/php-otp-verifier.rpm \

@@ -21,10 +21,11 @@ git clone -b v1 ${GIT_HOST}~fkooman/vpn-daemon
 git clone -b v1 ${GIT_HOST}~fkooman/vpn-maint-scripts
 git clone ${GIT_HOST}~fkooman/builder.rpm
 git clone ${GIT_HOST}~fkooman/builder.deb
+git clone ${GIT_HOST}~fkooman/nbuilder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
-for PACKAGE_NAME in vpn-daemon vpn-lib-common php-openvpn-connection-manager php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
+for PACKAGE_NAME in vpn-daemon vpn-lib-common php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
 	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
 done
