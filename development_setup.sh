@@ -25,7 +25,7 @@ git clone ${GIT_HOST}~fkooman/nbuilder.deb
 
 # clone all RPM/DEB packages
 mkdir -p rpm deb
-for PACKAGE_NAME in vpn-daemon vpn-lib-common php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts; do
+for PACKAGE_NAME in vpn-daemon vpn-lib-common php-jwt php-oauth2-server php-otp-verifier php-secookie php-sqlite-migrate vpn-ca vpn-portal-artwork-LC vpn-portal-artwork-eduVPN vpn-server-api vpn-server-node vpn-user-portal vpn-maint-scripts php-saml-sp php-saml-sp-artwork-eduVPN; do
 	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".rpm rpm/"${PACKAGE_NAME}".rpm
 	git clone ${GIT_HOST}~fkooman/"${PACKAGE_NAME}".deb deb/"${PACKAGE_NAME}".deb
 done
