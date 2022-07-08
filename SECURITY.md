@@ -112,17 +112,16 @@ figure out which algorithms are supported.
 | ------------- | ---------------- |
 | CentOS 7      | TLSv1.2          |
 | Fedora        | TLSv1.2, TLSv1.3 |
-| Debian 9      | TLSv1.2          | 
 | Debian 10, 11 | TLSv1.2, TLSv1.3 |
 
 Whenever possible, the client/server will use the highest TLS version. As for 
 which types of keys are supported by the VPN server:
 
-| CA    | CentOS 7 | Fedora | Debian 9 | Debian 10, 11 |
-|-------|--------- | ------ | -------- | ------------- |
-| RSA   | Y        | Y      | Y        | Y             |
-| ECDSA | Y        | Y      | Y        | Y             |
-| EdDSA | N        | Y      | N        | Y             |
+| CA    | CentOS 7 | Fedora | Debian 10, 11 |
+|-------|--------- | ------ | ------------- |
+| RSA   | Y        | Y      | Y             |
+| ECDSA | Y        | Y      | Y             |
+| EdDSA | N        | Y      | Y             |
 
 The client plays an important role here. In order to support `EdDSA` the client 
 MUST support TLSv1.3, *and* support storing `EdDSA` keys in its key store.
@@ -135,7 +134,7 @@ only TLSv1.3 supports `EdDSA`, we did not need to modify anything for this
 scenario, but using `EdDSA` is restricted to "modern" VPN servers. Only servers
 (and clients) using OpenSSL >= 1.1.1 support TLSv1.3 (and `EdDSA`).
 
-**NOTE** in order to support `ECDSA` on CentOS 7 and Debian 9 you need to run
+**NOTE** in order to support `ECDSA` on CentOS 7 you need to run
 vpn-user-portal >= 2.3.4 and vpn-server-node >= 2.2.4 on your server.
 
 ### Switching Key Type

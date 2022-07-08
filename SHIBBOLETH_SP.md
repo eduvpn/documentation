@@ -4,16 +4,9 @@ description: SAML Authentication using Shibboleth
 category: authentication
 ---
 
-This document describes installing Shibboleth on Debian 9 and 10.
+This document describes installing Shibboleth on Debian 10 and 11.
 
 # Installation
-
-## Debian 9
-
-    $ sudo apt install libapache2-mod-shib2
-    $ sudo shib-keygen
-
-## Debian 10
 
     $ sudo apt install libapache2-mod-shib
     $ sudo shib-keygen -n sp-encrypt
@@ -30,10 +23,8 @@ Modify `/etc/shibboleth/shibboleth2.xml`:
 * Set the `entityID` to the entity ID of your IdP, or configure the
   `discoveryURL` in the `<SSO>` element, e.g.: 
   `<SSO entityID="https://idp.example.org/saml/metadata">SAML2</SSO>`
-* Remove `SAML1` from the `<SSO>` attribute content as we no longer need SAML
-  1.0 support (only on Debian 9)
-* Set the `path` (or file on Debian 9) in the `<MetadataProvider>` element for 
-  a simple static metadata file, e.g.: 
+* Set the `path` in the `<MetadataProvider>` element for a simple static 
+  metadata file, e.g.: 
   `<MetadataProvider type="XML" validate="false" path="idp.example.org.xml"/>` 
   and put the `idp.example.org.xml` file in `/etc/shibboleth`. Set `validate` 
   to `false` to keep the IdP working in case it has `validUntil` specified in 

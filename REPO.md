@@ -30,12 +30,6 @@ The repository configuration is done in
 `/etc/apt/sources.list.d/eduVPN_v2.list`, add the following line there 
 depending on the version of Debian you are using.
 
-### Debian 9
-
-```
-deb https://repo.eduvpn.org/v2/deb stretch main
-```
-
 ### Debian 10
 
 ```

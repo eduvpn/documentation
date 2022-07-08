@@ -5,7 +5,7 @@ category: installation
 ---
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Debian 9, 10 or 11 installation. It will configure all 
+you can run on a fresh Debian 10 or 11 installation. It will configure all 
 components and will be ready for use after running!
 
 Additional scripts are available after deployment:
@@ -15,7 +15,7 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Debian 9, 10 or 11 installation with all updates installed;
+* Clean Debian 10 or 11 installation with all updates installed;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 
@@ -126,8 +126,7 @@ Debian's PHP package has some unfortunate defaults that only work for
 very light usage and in no way for deploys where you expect more than a few 
 users to use the service.
 
-Modify `/etc/php/7.0/fpm/pool.d/www.conf` (Debian 9),
-`/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10) or 
+Modify `/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10) or 
 `/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11) and change the following 
 settings. We'll use the CentOS/Fedora defaults here as well:
 
