@@ -87,7 +87,8 @@ can't be bothered to setup an IRC client. See you there!
 
 ## Instruction Videos
 
-**NOTE**: these videos MAY be out of date!
+**NOTE**: these videos are for eduVPN / Let's Connect 2.x and still need to
+be updated for 3.x:
 
 - [Basic eduVPN/Let's Connect! Server Installation](https://www.youtube.com/watch?v=yBItHovq4AU)
 - [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
@@ -96,12 +97,13 @@ can't be bothered to setup an IRC client. See you there!
 
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
-- [Fedora](DEPLOY_FEDORA.md) 35 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 36 (`x86_64`)
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
-**NOTE**: we assume we will be able to support Red Hat Enterprise 9 and its 
-derivatives in the near future after their release.
+**NOTE**: we will support Red Hat Enterprise 9 and its derivatives
+[AlmaLinux](https://almalinux.org/) and [Rocky Linux](https://rockylinux.org/ 
+in the near future.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
