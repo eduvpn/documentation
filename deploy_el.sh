@@ -56,12 +56,12 @@ systemctl disable --now php-fpm >/dev/null 2>/dev/null || true
 systemctl disable --now vpn-daemon >/dev/null 2>/dev/null || true
 
 # import PGP key
-rpm --import https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+rpm --import resources/repo+v3@eduvpn.org.asc
 # configure repository
 cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
-[eduVPN_v3-dev]
-name=eduVPN 3.x Development Packages (EL 9)
-baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/alma+epel-9-x86_64
+[eduVPN_v3]
+name=eduVPN 3.x Packages (EL 9)
+baseurl=https://repo.eduvpn.org/v3/rpm/alma+epel-9-\$basearch
 gpgcheck=1
 enabled=1
 EOF
