@@ -75,6 +75,9 @@ $ sudo apt remove --purge vpn-user-portal vpn-server-api vpn-server-node vpn-mai
 $ sudo apt autoremove --purge
 ```
 
+Make sure you also remove any lingering files from `/etc/openvpn/server`, if 
+any.
+
 ## Install 3.x
 
 Now you are ready to follow the the [steps](DEPLOY_DEBIAN.md) to install 3.x.
