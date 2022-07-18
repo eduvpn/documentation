@@ -106,7 +106,7 @@ Install sslh:
 Modify `/etc/default/sslh` by changing `DAEMON_OPTS`:
 
 ```
-DAEMON_OPTS="--user sslh --listen 0.0.0.0:443 --listen [::]:443 --tls 127.0.0.1:8443 -openvpn 127.0.0.1:1194 --pidfile /var/run/sslh/sslh.pid"
+DAEMON_OPTS="--user sslh --listen 0.0.0.0:443 --listen [::]:443 --tls 127.0.0.1:8443 --openvpn 127.0.0.1:1194 --pidfile /var/run/sslh/sslh.pid"
 ```
 
 ## Let's Encrypt
