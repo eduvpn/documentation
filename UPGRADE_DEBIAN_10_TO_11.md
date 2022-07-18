@@ -11,7 +11,8 @@ Now test that everything still works properly, to make sure that you start from
 a working "base".
 
 **NOTE**: if you have the opportunity, please make a snapshot of your system, 
-e.g. through your VM platform!
+e.g. through your VM platform so you can rollback immediately if the upgrade
+doesn't work.
  
 Follow the instructions 
 [here](https://www.debian.org/releases/bullseye/amd64/release-notes/ch-upgrading.en.html). 
