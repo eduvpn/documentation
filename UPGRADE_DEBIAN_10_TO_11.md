@@ -1,13 +1,18 @@
 ## Upgrading from Debian 10 to Debian 11
 
-First, make sure your Debian 10 system is fully up to date:
+First, make sure your Debian 10 system is fully up to date and reboot it:
 
 ```
 $ sudo vpn-maint-update-system
+$ sudo reboot
 ```
-    
-Reboot after this to make sure all is still well.
-    
+
+Now test that everything still works properly, to make sure that you start from
+a working "base".
+
+**NOTE**: if you have the opportunity, please make a snapshot of your system, 
+e.g. through your VM platform!
+ 
 Follow the instructions 
 [here](https://www.debian.org/releases/bullseye/amd64/release-notes/ch-upgrading.en.html). 
 
