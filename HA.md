@@ -14,13 +14,13 @@ Something is to be said for keeping everything on one system or virtual
 machine: it is easy to create a backup/snapshot of the system and restore it 
 in a few minutes in case of trouble.
 
-If you do not have a HA virtual cluster at your disposal you may require 
+If you do _not_ have a HA virtual cluster at your disposal you may require 
 something more, i.e. split the VPN service over multiple systems where you can 
 tolerate one or more machines going offline.
 
 Of course, everything has trade-offs. If you are not careful, your service 
 could easily become _less_ available, than simply running everything on a 
-Raspberry Pi in your office closet.
+Raspberry Pi in your office closet 😊
 
 # Terminology
 
@@ -31,10 +31,10 @@ which can then run on different (virtual) systems.
 2. Node
 
 The "Portal" handles the Web UI, User Authentication, OAuth API for the VPN 
-applications and service configuration. 
+applications and service configuration.
 
 The "Node" is responsible for configuring the VPN software, i.e. OpenVPN and 
-WireGuard, reporting to the Portal and handling the VPN connections.
+WireGuard, reporting to the Portal and handling the VPN connections themselves.
 
 ```
 .-----------------------------------------------.
@@ -63,8 +63,8 @@ want to "exit" your VPN traffic in different locations, what you are looking
 for is a "Multi Node" setup. This is documented [here](MULTI_NODE.md).
 
 You can add as many nodes as you want to a single Portal. Of 
-course, this can be combined with making the Portal "HA" as explained in the 
-next section.
+course, this can also be combined with making the Portal "HA" as explained in 
+the next section. **do one first**
 
 For example, the diagram below shows 3 systems, where there are two "Nodes" 
 and one Portal:
@@ -97,6 +97,10 @@ and one Portal:
 When a VPN client attempts to connect, it will pick a "Node" at random, after 
 making sure it is "up". So if, for example, one node is down for maintenance, 
 the VPN client would simply pick another node and connect to that one.
+
+**NOTE**: the VPN client has to communicate to the Portal in order to determine 
+which Node to connect to, this means if one of the nodes goes down, the client
+talks again to the Portal to obtain a new configuration file.
 
 # Making the Portal Redundant (HA Portal)
 
