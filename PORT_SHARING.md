@@ -6,10 +6,10 @@ category: advanced
 
 This document describes how to configure your VPN server in such a way as to
 make it most likely people can connect to it. This is done by making it 
-possible to connect to the VPN service using both `udp/443` and `tcp/443` in 
-addition to `udp/1194` and `tcp/1194`. A complication here is that the web 
-server claims `tcp/443`, so we need to share `tcp/443` between the web server 
-and OpenVPN. We'll use [sslh](https://github.com/yrutschle/sslh) for this task.
+possible to connect to the VPN service using both `udp/443` and `tcp/443`. A 
+complication here is that the web server claims `tcp/443`, so we need to share 
+`tcp/443` between the web server and OpenVPN. We'll use 
+[sslh](https://github.com/yrutschle/sslh) for this task.
 
 In larger deployments you'll want to use multiple machines where the portal
 and API run on a different machine from the OpenVPN backend server(s) so port
@@ -20,28 +20,24 @@ sharing is not needed, i.e. OpenVPN can claim `tcp/443` directly.
 We need to edit `/etc/vpn-server-api/config.php` and modify `vpnProtoPorts` and 
 set `exposedVpnProtoPorts`. The `vpnProtoPorts` option includes the protocols 
 and ports the OpenVPN processes actually listen on, and `exposedVpnProtoPorts` 
-is what the client will get. So here we do not expose `tcp/1195`, but `tcp/443` 
+is what the client will get. So here we do not expose `tcp/1194`, but `tcp/443` 
 instead:
 
     'vpnProtoPorts' => [
-        'udp/1194',
-        'tcp/1194',
         'udp/443',
-        'tcp/1195',
+        'tcp/1194',
     ],
 
     ...
 
     'exposedVpnProtoPorts' => [
-        'udp/1194',
-        'tcp/1194',
         'udp/443',
         'tcp/443',
     ],
 
-In `vpnProtoPorts` we make OpenVPN listen on `tcp/1195` and NOT on `tcp/443`, 
+In `vpnProtoPorts` we make OpenVPN listen on `tcp/1194` and NOT on `tcp/443`, 
 we need `tcp/443` for sslh to listen on. It will forward connections to 
-`tcp/443` to `tcp/1195` internally (or to the web server, depending on what 
+`tcp/443` to `tcp/1194` internally (or to the web server, depending on what 
 makes the request).
 
 You _may_ also want to modify the `range` setting. For 4 OpenVPN processes we
@@ -107,9 +103,11 @@ Install sslh:
 
     $ sudo apt -y install sslh
 
-Modify `/etc/default/sslh`. Set `RUN=no` to `RUN=yes` and change `DAEMON_OPTS`:
+Modify `/etc/default/sslh` by changing `DAEMON_OPTS`:
 
-    DAEMON_OPTS="--user sslh --listen [::]:443 --ssl 127.0.0.1:8443 --openvpn 127.0.0.1:1195 --pidfile /var/run/sslh/sslh.pid"
+```
+DAEMON_OPTS="--user sslh --listen 0.0.0.0:443 --listen [::]:443 --tls 127.0.0.1:8443 -openvpn 127.0.0.1:1194 --pidfile /var/run/sslh/sslh.pid"
+```
 
 ## Let's Encrypt
 
