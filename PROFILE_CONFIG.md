@@ -147,14 +147,13 @@ As another, somewhat contrived, example that makes clear how it would work:
 'excludeRouteList' => ['10.223.140.5/32', 'fc5b:7c64:3001:a95f::1234/128'],
 ```
 
-As of 2021-11-23 this currently does NOT work everywhere. OpenVPN 
-(Windows, Android, Linux) has a 
-[bug](https://community.openvpn.net/openvpn/ticket/1161) regarding IPv6, that 
-is being worked on. TunnelKit (iOS, macOS) does not yet support this 
-[at all](https://github.com/passepartoutvpn/tunnelkit/issues/225).
+As of 2022-07-20 this does NOT work everywhere. It works only without issues
+on Windows (both OpenVPN and WireGuard). It does NOT work properly on the rest
+of the OSes:
 
-With WireGuard we have mixed results, it works fine on Windows, but not (yet) 
-on macOS.
+* [--route-ipv6 does not recognize net_gateway or net_gateway-ipv6](https://community.openvpn.net/openvpn/ticket/1161) (OpenVPN)
+* [Add net_gateway / net_gateway_ipv6 gateway flag for --route and --route-ipv6](https://github.com/passepartoutvpn/tunnelkit/issues/225) (OpenVPN)
+* ["excluded routes" does not work](https://github.com/eduvpn/apple/issues/475) (WireGuard)
 
 ### ACL Permission List
 
