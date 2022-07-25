@@ -138,7 +138,15 @@ will become `DOMAIN\fkooman` assuming the user entered `fkooman` as
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
 the exact same format as used in the LDAP server. This avoids creating multiple
-accounts in the VPN service with different case.
+accounts in the VPN service with different case. You SHOULD specify the 
+`userIdAttribute`! A future version of the VPN server will make this a MUST.
+
+You can restrict access to the VPN service to a subset of the users in the 
+LDAP server by following the [ACL](ACL.md) documentation, or (not recommended) 
+by using a filter that only returns results in case the user entry matches a 
+specific filter. If you use a filter you MUST specific the `userIdAttribute` as 
+the decision whether or not the account is allowed to login is based on whether 
+or not results are returned.
 
 ```php
 'LdapAuthModule' => [
