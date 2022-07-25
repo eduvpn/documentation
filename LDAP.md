@@ -1,16 +1,11 @@
 This document describes how to configure LDAP. We assume you used the 
 `deploy_${DIST}.sh` script to deploy the software.
 
-The LDAP integration can be used both for user authentication and for 
-authorization, i.e. who will be considered an _administrator_ and which 
-profiles will be available for a particular user.
+The LDAP integration can be used both for _authentication_ and \
+_authorization_.
 
-For more information about authorization, after getting authentication to work, 
-you can look [here](PORTAL_ADMIN.md) for determining admin portal access, and 
-[here](ACL.md) for determining who can access which profiles.
-
-**NOTE**: we have an instruction video on how to configure Active Directory 
-via LDAP [here](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
+This document talks about _authentication_. See [ACL](ACL.md) for more on 
+_authorization_.
 
 # Introduction
 
@@ -21,15 +16,15 @@ module.
 First, install `ldapsearch` and the PHP module for LDAP:
 
 ```bash
-$ sudo yum install openldap-clients php-ldap  # Fedora
-$ sudo apt install ldap-utils php-ldap        # Debian
+$ sudo dnf install openldap-clients php-ldap  # Fedora / EL
+$ sudo apt install ldap-utils php-ldap        # Debian / Ubuntu
 ```
 
 Restart PHP to activate the LDAP module:
 
 ```
-$ sudo systemctl restart php-fpm                            # Fedora
-$ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm    # Debian
+$ sudo systemctl restart php-fpm                            # Fedora / EL
+$ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm    # Debian / Ubuntu
 ```
  
 You need a couple of details first, you can obtain those from your LDAP 
@@ -142,7 +137,8 @@ will become `DOMAIN\fkooman` assuming the user entered `fkooman` as
 
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
-the exact same format as used in the LDAP server.
+the exact same format as used in the LDAP server. This avoids creating multiple
+accounts in the VPN service with different case.
 
 ```php
 'LdapAuthModule' => [
@@ -236,7 +232,7 @@ You can copy/paste the CA certificate from the certificates shown.
 **NOTE**: make sure you validate this CA out of band! You MUST be sure this 
 is the actual CA!
 
-## Fedora
+## Fedora / EL
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it
@@ -258,7 +254,7 @@ You **MUST** restart `php-fpm` to pick up the changes:
 $ sudo systemctl restart php-fpm
 ```
 
-## Debian
+## Debian / Ubuntu
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it
