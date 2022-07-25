@@ -1,8 +1,11 @@
-The VPN service supports access control. This allows configuring that users 
-require certain "permissions" to access a particular VPN profile. This is 
-useful if you have multiple types of users. For example, only employees get 
-access to the "Employees" profile, but students do not. You can also require 
-certain permissions to be able to use the Portal/API at all.
+The VPN service supports access control. You can:
+
+1. Restrict who has access to the server;
+2. Restrict who has access to certain VPN profiles;
+3. Determine who has admin privileges.
+
+Restricting access to the server and to VPN profiles is documented here. To 
+configure who has access to the admin, look [here](PROFILE_ADMIN.md).
 
 Currently, the following access control mechanisms are supported:
 
@@ -13,14 +16,14 @@ Currently, the following access control mechanisms are supported:
 The permissions are _cached_ for up to a configurable period through 
 [Session Expiry](SESSION_EXPIRY.md). By default this is 90 days, but can easily 
 be modified. This cache is required, because not all authentication backends 
-have a way to validate the permissions "out of band", i.e. when the user is not 
-actively in the process of authenticating.
-
-# Configuration
+have a way to reliably validate the permissions "out of band", i.e. when the 
+user is not actively in the process of authenticating.
 
 The configuration is done in `/etc/vpn-user-portal/config.php`.
 
-## SAML
+## Authentication 
+
+### SAML
 
 We assume [SAML](SAML.md) is already configured and working.
 
@@ -46,7 +49,7 @@ In order to test whether everything works fine, you can enable the
 `showPermissions` option in `/etc/vpn-user-portal/config.php` by setting it to 
 `true`. This will show the "raw" permissions on the user's "Account" page.
 
-## LDAP
+### LDAP
 
 We assume [LDAP](LDAP.md) is already configured and working. 
 
@@ -71,11 +74,11 @@ In order to test whether everything works fine, you can enable the
 `showPermissions` option in `/etc/vpn-user-portal/config.php` by setting it to 
 `true`. This will show the "raw" permissions on the user's "Account" page.
 
-## Admin/Portal/API Access
+## Access to the Service
 
 You can restrict access to the Portal/API to certain permissions. For example,
 if you only went `employees` to be able to access the VPN service and not 
-`students`, you can. in addition to profile restrictions (see next section) 
+`students`, you canm in addition to profile restrictions (see next section), 
 prevent them from accessing the service at all.
 
 In `/etc/vpn-user-portal/config.php` you can configure it like this:
@@ -88,10 +91,7 @@ This requires everyone to have the permission `employees`. If you specify more
 than one "permission", the user needs to be member of only one. The permissions
 are thus "OR".
 
-In order to provide access to the "Admin" part of the portal, see 
-[PORTAL_ADMIN](PORTAL_ADMIN.md).
-
-## Profile Mapping
+## Profile Authorization
 
 Add the authorized attribute values to `aclPermissionList` for each of the 
 profiles where you want to restrict access, for example:
@@ -104,6 +104,10 @@ either make sure your account has any permissions, or logout and login again.
 
 ```
 'aclPermissionList' => [
-    'http://eduvpn.org/role/admin',
+    'employees',
 ],
 ```
+
+This requires everyone to have the permission `employees` before being allowed
+access to the profile.. If you specify more than one "permission", the user 
+needs to be member of only one. The permissions are thus "OR".
