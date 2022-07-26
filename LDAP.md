@@ -283,3 +283,26 @@ You **MUST** restart `php-fpm` to pick up the changes:
 ```bash
 $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 ```
+
+# Troubleshooting
+
+You can use `ldapsearch` to figure out what would be the required values for
+the various configuration options and test them independently of the VPN 
+service. This is HIGHLY recommended!
+
+In case this turns out to not be enough, additional logging is written to 
+_syslog_. You can view the log regarding authentication using `journalctl`, 
+i.e.:
+
+```bash
+$ sudo journalctl -f -t vpn-user-portal
+```
+
+After running this, try to authenticate to the portal and if something goes 
+wrong, you'll see it in the log, e.g.:
+
+```
+$ sudo journalctl -f -t vpn-user-portal
+Jul 26 11:10:46 vpn.example.org vpn-user-portal[150350]: Unable to validate credentials: LDAP error: (49) Invalid credentials
+Jul 26 11:11:42 vpn.example.org vpn-user-portal[150726]: Unable to validate credentials: user ID attribute "uidX" not available in LDAP response
+```
