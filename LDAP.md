@@ -1,8 +1,7 @@
 This document describes how to configure LDAP. We assume you used the 
 `deploy_${DIST}.sh` script to deploy the software.
 
-The LDAP integration can be used both for _authentication_ and \
-_authorization_.
+The LDAP integration can be used both for _authentication_ and _authorization_.
 
 This document talks about _authentication_. See [ACL](ACL.md) for more on 
 _authorization_.
