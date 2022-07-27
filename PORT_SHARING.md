@@ -37,6 +37,9 @@ to one "normal" UDP and TCP port. This way, when the connection to the normal
 ports fails, there is a fallback to the special ones which have a higher
 chance of working.
 
+Remember to also [adjust](#firewall) the firewall accordingly when you change 
+the ports!
+
 ## Web Server
 
 ### CentOS / Fedora
@@ -122,8 +125,8 @@ On CentOS/Fedora you need to modify SELinux to allow OpenVPN to listen on
 
 ## Firewall
 
-You need to update the firewall to allow access to `udp/443`. Look 
-[here](FIREWALL.md#opening-additional-vpn-ports).
+You need to update the firewall to allow access to `udp/443`, or any other 
+port you chose to use. Look [here](FIREWALL.md#opening-additional-vpn-ports).
 
 ## Applying
 
