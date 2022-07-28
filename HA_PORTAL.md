@@ -140,13 +140,13 @@ every 90 days (the expiry of Let's Encrypt certificates)!
 
 # keepalived
 
-See also: 
+Install `keepalived`:
 
-* https://www.redhat.com/sysadmin/ha-cluster-linux
-* https://www.redhat.com/sysadmin/keepalived-basics
-* https://www.redhat.com/sysadmin/advanced-keepalived
+```bash
+$ sudo apt install keepalived
+```
 
-`p1.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
+On `p1.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
 
 ```
 vrrp_instance VI_1 {
@@ -180,7 +180,7 @@ vrrp_instance VI_6 {
 }
 ```
 
-`p2.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
+On `p2.vpn.example.org` in `/etc/keepalived/keepalived.conf`:
 
 
 ```
@@ -198,7 +198,25 @@ vrrp_instance VI_1 {
               192.168.122.99/24
         }
 }
+
+vrrp_instance VI_6 {
+        state BACKUP
+        interface eth0
+        virtual_router_id 56
+        priority 255
+        advert_int 1
+        authentication {
+              auth_type PASS
+              auth_pass 12345
+        }
+        virtual_ipaddress {
+              fd7f:aaec:599a:204::99/64
+        }
+}
 ```
+
+Make sure you update the `interface` if required, it is not always `eth0`, but
+depends on your (VM) platform.
 
 Enable/start on both systems:
 
@@ -206,8 +224,16 @@ Enable/start on both systems:
 $ sudo systemctl enable --now keepalived
 ```
 
-Update firewall on both, **NOTE**: set the exact IP address:
+Update firewall on both, **NOTE**: set the exact IP address(es) of the other 
+portal servers:
 
 ```
 -A INPUT -s 192.168.122.0/24 -p vrrp -j ACCEPT
 ```
+
+See also: 
+
+* https://www.redhat.com/sysadmin/ha-cluster-linux
+* https://www.redhat.com/sysadmin/keepalived-basics
+* https://www.redhat.com/sysadmin/advanced-keepalived
+
