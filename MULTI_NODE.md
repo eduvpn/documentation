@@ -228,6 +228,9 @@ $ sudo vpn-maint-apply-changes
 
 Make sure you repeat these steps on Node B as well!
 
+**NOTE**: if you also run the [HA Portal](HA_PORTAL.md), you MUST synchronize
+the `/var/lib/vpn-user-portal` folder again between the _n_ portals!
+
 Now is the time to test everything. Go to the portal at 
 `https://vpn.example.org/`, download a configuration and test it with your 
 VPN client. Login with an account that has "Admin" privileges, and make sure 
