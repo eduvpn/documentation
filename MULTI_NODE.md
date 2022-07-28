@@ -117,7 +117,7 @@ You can of course choose your own `xRangeFour` and `xRangeSix`, but make sure
 they are not duplicated, or overlap!
 
 Next, modify the `<Files node-api.php>` section in 
-`/etc/apache2/conf.d/vpn-user-portal.conf` by adding the IP addresses of the 
+`/etc/apache2/conf-available/vpn-user-portal.conf` by adding the IP addresses of the 
 nodes:
 
 ```
@@ -229,10 +229,9 @@ $ sudo vpn-maint-apply-changes
 Make sure you repeat these steps on Node B as well!
 
 Now is the time to test everything. Go to the portal at 
-`https://vpn.example.org/`, download a configuration, test it with your 
-client. Download a configuration for both profiles and make sure they work. 
-Login with an account that has "Admin" privileges, and make sure you see your 
-client(s) under "Connections" in the portal when connected.
+`https://vpn.example.org/`, download a configuration and test it with your 
+VPN client. Login with an account that has "Admin" privileges, and make sure 
+you see your client(s) under "Connections" in the portal when connected.
 
 ## TLS
 
