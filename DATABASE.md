@@ -135,16 +135,26 @@ As mentioned above, this is only for testing!
 
 ## PostgreSQL Installation
 
+### Fedora
+
 ```
 $ sudo dnf -y install postgresql-server 
 $ sudo postgresql-setup --initdb
 $ sudo systemctl enable postgresql
 ```
 
+### Debian
+
+```
+$ sudo apt -y install postgresql 
+```
+
+
 ## PostgreSQL Configuration
 
 First we'll allow password authentication. Modify 
-`/var/lib/pgsql/data/pg_hba.conf`. Add these lines:
+`/var/lib/pgsql/data/pg_hba.conf`. On Debian this is 
+`/etc/postgresql/13/main/pg_hba.conf`. Add these lines:
 
 ```
 host    all             all             127.0.0.1/32            scram-sha-256
@@ -154,7 +164,8 @@ host    all             all             ::1/128                 scram-sha-256
 Replace `127.0.0.1/32` and `::1/128` with the IP(v6) prefixes where the 
 PostgreSQL "client" is coming from if you run PostgreSQL on a separate system.
 
-Also modify `/var/lib/pgsql/data/postgresql.conf` and set:
+Also modify `/var/lib/pgsql/data/postgresql.conf` 
+(or `/etc/postgresql/13/main/postgresql.conf` on Debian) and set:
 
 ```
 password_encryption = scram-sha-256
@@ -168,10 +179,12 @@ from a remote system, e.g.:
 listen_addresses = '*'
 ```
 
-Now, start (and auto start on boot) PostgreSQL:
+Now, start (and auto start on boot) PostgreSQL, on Debian it was auto started, 
+so you only need to restart it:
 
 ```
-$ sudo systemctl enable --now postgresql
+$ sudo systemctl enable postgresql
+$ sudo systemctl restart postgresql
 ```
 
 In order to create a database, we need to execute the `createuser` command as
@@ -188,13 +201,14 @@ $ exit
 The `-d` option will allow the user to create databases. The `-P` option will 
 ask immediately to specify a password. Provide one!
 
-Now to test it, back in your normal user account:
+Create the database:
 
 ```
-$ psql -h localhost -U vpn
+$ createdb -h localhost -U vpn vpn
 ```
 
-This will ask for the password and should then show the PostgreSQL prompt:
+This will ask for the password, provide it. The database will be created. Test
+whether you can connect to the database:
 
 ```
 $ psql -h localhost -U vpn
@@ -204,6 +218,8 @@ Type "help" for help.
 
 vpn=> 
 ```
+
+All good!
 
 # MariaDB Installation
 
