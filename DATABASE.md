@@ -32,7 +32,8 @@ the `host`, `dbname` with the values obtained from your database administrator.
 
 ## PostgreSQL
 
-Make sure you have the `php-pgsql` package installed:
+Make sure you have the `php-pgsql` package installed, on Debian use `apt` 
+instead of `dfn`:
 
 ```bash
 $ sudo dnf install php-pgsql
