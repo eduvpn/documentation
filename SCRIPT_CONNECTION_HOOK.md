@@ -48,10 +48,11 @@ else
 fi
 
 curl \
-    ${REMOTE_URL} \
+    --fail \
     --data-urlencode "ip_four=${VPN_IP_FOUR}" \
     --data-urlencode "ip_six=${VPN_IP_SIX}" \
-    --data-urlencode "user_id=${VPN_USER_ID}"
+    --data-urlencode "user_id=${VPN_USER_ID}" \
+    ${REMOTE_URL}
 ```
 
 **NOTE**: The _return value_ of the script MUST be `0`, otherwise the VPN 
