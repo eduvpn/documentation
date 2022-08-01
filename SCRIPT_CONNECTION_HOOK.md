@@ -12,26 +12,26 @@ You can enable running a script in `/etc/vpn-user-portal/config.php` by setting
 the `connectScriptPath` configuration option, e.g.:
 
 ```php
-    'connectScriptPath' => '/usr/local/bin/connect.sh',
+    'connectScriptPath' => '/usr/local/bin/my_script.sh',
 ```
 
 Make sure the script is available under that path and is set to be 
-"executable", i.e. `chmod +x /path/to/script`.
+"executable", e.g.: `sudo chmod +x /usr/local/bin/my_script.sh`.
 
 ## Variables
 
 A number of variables will be exposed to the script through 
 _environment variables_:
 
-| Variable         | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `EVENT`          | `C`: Connect, `D`: Disconnect                        |
-| `USER_ID`        | User ID                                              |
-| `PROFILE_ID`     | Profile ID                                           |
-| `CONNECTION_ID`  | OpenVPN: X.509 certificate CN, WireGuard: Public Key |
-| `IP_FOUR`        | IPv4 address assigned to VPN client                  |
-| `IP_SIX`         | IPv6 address assigned to VPN client                  |
-| `ORIGINATING_IP` | OpenVPN only: original IP address of VPN client      |
+| Variable             | Description                                          |
+| -------------------- | ---------------------------------------------------- |
+| `VPN_EVENT`          | `C`: Connect, `D`: Disconnect                        |
+| `VPN_USER_ID`        | User ID                                              |
+| `VPN_PROFILE_ID`     | Profile ID                                           |
+| `VPN_CONNECTION_ID`  | OpenVPN: X.509 certificate CN, WireGuard: Public Key |
+| `VPN_IP_FOUR`        | IPv4 address assigned to VPN client                  |
+| `VPN_IP_SIX`         | IPv6 address assigned to VPN client                  |
+| `VPN_ORIGINATING_IP` | OpenVPN only: original IP address of VPN client      |
 
 ## Example Script
 
