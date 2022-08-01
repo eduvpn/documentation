@@ -1,6 +1,7 @@
 This page documents how to launch a (custom) script when a VPN client connects, 
-and/or disconnect. This can for example be used to verify a user still exists 
-in the LDAP server, or trigger firewall modifications in a remote system.
+and/or disconnects. This can for example be used to verify if a user still 
+exists in the LDAP server, or trigger firewall modifications in a remote 
+system.
 
 **NOTE**: this describes a FUTURE feature, and is not yet available in a 
 released version. We aim to include this in 3.0.4 server.
@@ -70,5 +71,5 @@ download for WireGuard the "connect" event is triggered and on deletion
 
 Items we MUST investigate/test before we can declare this feature stable:
 
-* Investigate the when "housekeeping" scripts are running to clean up expired 
+* Make sure when "housekeeping" scripts are running to clean up expired 
   configurations that also the disconnect event is triggered for WireGuard!
