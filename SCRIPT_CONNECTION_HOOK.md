@@ -47,7 +47,7 @@ else
         REMOTE_URL=https://www.example.org/disconnect
 fi
 
-curl -G \
+curl \
     ${REMOTE_URL} \
     --data-urlencode "ip_four=${VPN_IP_FOUR}" \
     --data-urlencode "ip_six=${VPN_IP_SIX}" \
