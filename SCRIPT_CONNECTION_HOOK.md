@@ -74,3 +74,6 @@ Items we MUST investigate/test before we can declare this feature stable:
 
 * Make sure when "housekeeping" scripts are running to clean up expired 
   configurations that also the disconnect event is triggered for WireGuard!
+* Should we make a 'generic' way to reject connections? i.e. have the 
+  `ConnectionHookInterface` methods return `bool` so we can show a "nice" error 
+  to the user instead of a `HTTP 500`?
