@@ -58,10 +58,19 @@ systemctl disable --now vpn-daemon >/dev/null 2>/dev/null || true
 # import PGP key
 rpm --import resources/repo+v3@eduvpn.org.asc
 # configure repository
+if grep "AlmaLinux" /etc/os-release >/dev/null; then
+    REPO_DIR_PREFIX=alma+epel-9
+elif grep "Rocky Linux" /etc/os-release >/dev/null; then
+    REPO_DIR_PREFIX=rocky+epel-9
+else 
+    echo "OS not supported!"
+    exit 1
+fi
+
 cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
 [eduVPN_v3]
 name=eduVPN 3.x Packages (EL 9)
-baseurl=https://repo.eduvpn.org/v3/rpm/alma+epel-9-\$basearch
+baseurl=https://repo.eduvpn.org/v3/rpm/${REPO_DIR_PREFIX}-\$basearch
 gpgcheck=1
 enabled=1
 EOF

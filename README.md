@@ -98,12 +98,11 @@ be updated for 3.x:
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
 - [Fedora](DEPLOY_FEDORA.md) 36 (`x86_64`)
-- [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
+- Enterprise Linux
+  - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
+  - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
 
 **Current Recommendation**: install your VPN server on Debian 11.
-
-**NOTE**: we will support other _free_ Red Hat Enterprise 9 derivatives, e.g.
-[Rocky Linux](https://rockylinux.org/) when they become available.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
