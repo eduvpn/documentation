@@ -5,7 +5,7 @@ The VPN service supports access control. You can:
 3. Determine who has admin privileges.
 
 Restricting access to the server and to VPN profiles is documented here. To 
-configure who has access to the admin, look [here](PROFILE_ADMIN.md).
+configure who has access to the admin, look [here](PORTAL_ADMIN.md).
 
 Currently, the following access control mechanisms are supported:
 
