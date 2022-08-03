@@ -3,8 +3,12 @@ and/or disconnects. This can for example be used to verify if a user still
 exists in the LDAP server, or trigger firewall modifications in a remote 
 system.
 
-**NOTE**: this describes a FUTURE feature, and is not yet available in a 
-released version. We aim to include this in 3.0.4 server.
+**NOTE**: this describes a **PREVIEW** feature. We aim to fully support this 
+feature starting from server version >= 3.1. Please test and provide us with 
+feedback if you want to use this feature to make sure it satisfies your 
+requirements! Be aware that you MAY need to update your configuration when 
+using this feature before we consider this feature stable! The more feedback we 
+get, the better!
 
 ## Configuration
 
