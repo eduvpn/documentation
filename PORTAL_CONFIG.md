@@ -147,7 +147,7 @@ switch to a different session mechanism. This is documented
 
 ## Script Connection Hook
 
-**NOTE** this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
+**NOTE**: this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
 officially supported and meant for testing only!
 
  Added: 3.0.4 ([#84](https://todo.sr.ht/~eduvpn/server/84))
@@ -157,7 +157,7 @@ documented [here](SCRIPT_CONNECTION_HOOK.md).
 
 ## Remove Authorization on Disconnect
 
-**NOTE** this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
+**NOTE**: this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
 officially supported and meant for testing only!
 
 Added: 3.0.5 ([#78](https://todo.sr.ht/~eduvpn/server/78))
