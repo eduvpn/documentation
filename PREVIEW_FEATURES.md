@@ -7,6 +7,10 @@ certain features as preview features first to get wider testing of said feature
 before committing to supporting it for the remainder of the major server 
 version.
 
+The reason for introducing preview features is that it becomes much easier 
+to test for potential interested parties without needing to install a 
+development version of the VPN server.
+
 If you choose to use a preview feature you MUST consider the following:
 
 1. The feature MAY disappear altogether if it turns out nobody is using it;
