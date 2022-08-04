@@ -1,5 +1,7 @@
+# Preview Features
+
 You probably found this document because you were thinking of testing a 
-**PREVIEW** feature.
+preview feature.
 
 Preview features are features that are part of the production release, but not
 enabled by default and not yet considered final. We MAY choose to implement
