@@ -144,3 +144,34 @@ port!
 If you are using a HA Portal setup configuration for your portal you should
 switch to a different session mechanism. This is documented 
 [here](HA_PORTAL.md).
+
+## Script Connection Hook
+
+**NOTE** this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
+officially supported and meant for testing only!
+
+ Added: 3.0.4 ([#84](https://todo.sr.ht/~eduvpn/server/84))
+
+You can run a script after a VPN client connects and/or disconnects. This is
+documented [here](SCRIPT_CONNECTION_HOOK.md).
+
+## Remove Authorization on Disconnect
+
+**NOTE** this is a [Preview Feature](PREVIEW_FEATURES.md)! It is NOT yet 
+officially supported and meant for testing only!
+
+Added: 3.0.5, ([#78](https://todo.sr.ht/~eduvpn/server/78))
+
+You can delete the OAuth authorization as used by the VPN client on disconnect.
+This would force the user to authorize (and thus authenticate) again the next
+time a VPN connection is established. This may be particularlly interesting for
+organization that have MFA enabled and want to force users to authenticate 
+every time they connect to the VPN.
+
+**NOTE**: this ONLY applies when the user manually disconnect, or closes the 
+VPN application or reboots the system. System suspend, or (temporary) loss of
+network connectivity will NOT force the user to authorize the application 
+again!
+
+**NOTE**: this is restricted to VPN clients only using the API, it does not 
+work when users manually download VPN configurations through the portal!
