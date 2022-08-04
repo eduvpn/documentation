@@ -1,3 +1,5 @@
+# Portal Configuration
+
 This document explains all configuration options that do not belong to profile
 specific configuration as documented separately in 
 [Profile Config](PROFILE_CONFIG.md).
@@ -13,7 +15,7 @@ Below we'll discuss all the configuration options in their relevant sections.
 As mentioned, the VPN profile configuration is already documented 
 [here](PROFILE_CONFIG.md).
 
-### Style
+## Style
 
 You can _style_ the VPN portal by setting the `styleName` option. Currently, 
 two styles are available, `eduVPN` for eduVPN and `LC` for Let's Connect!. 
@@ -32,17 +34,17 @@ Example:
 If you want to implement your own (custom) branding, you can look 
 [here](CUSTOM_BRANDING.md) on how to do that.
 
-### Session Expiry
+## Session Expiry
 
 We have separate documentation for session expiry, look 
 [here](SESSION_EXPIRY.md).
 
-### Database
+## Database
 
 You can switch to using another database if you do not want to use the default 
 SQLite. We documented this [separately](DATABASE.md).
 
-### Authentication
+## Authentication
 
 We support various user authentication mechanisms. We document all of them 
 separately:
@@ -58,7 +60,7 @@ separately:
 
 Please follow the instructions there.
 
-### Access Control
+## Access Control
 
 Access to the portal can be restricted in different ways. They are documented
 separately:
@@ -70,7 +72,7 @@ separately:
 * [Admin User ID List](PORTAL_ADMIN.md#user-id) - determine who gets admin 
   permissions in the portal, based on user ID.
 
-### Portal Language
+## Portal Language
 
 The portal is translated in a wide number of languages. You can set the 
 default language of the portal, and the available languages. The user can 
@@ -86,7 +88,7 @@ Example:
 If you want to contribute translations, you can find out how to do that 
 [here](CONTRIBUTE_TRANSLATIONS.md).
 
-### Show Permissions
+## Show Permissions
 
 Previous server versions would show the user's _permissions_ as conveyed 
 through the authentication mechanism, e.g. SAML or LDAP attribute values.
@@ -97,7 +99,7 @@ This has been disabled by default now. You can enable it again:
 'showPermissions' => true,
 ```
 
-### Maximum Number of Active Configurations
+## Maximum Number of Active Configurations
 
 Here you can configure how many configurations can be active at the same time,
 when the user manually downloads configurations through the VPN Portal. The
@@ -116,7 +118,7 @@ configurations obtained through the API! See
 [here](#maximum-number-of-active-api-configurations) for restricting the number 
 of active configurations through the API.
 
-### WireGuard
+## WireGuard
 
 You can configure the WireGuard port over which VPN clients can connect to the
 WireGuard service. The default is `51820`. WireGuard only supports UDP so there
@@ -137,7 +139,7 @@ Example:
 **NOTE**: make sure you update the [firewall](FIREWALL.md) if you change the 
 port!
 
-### Session Module
+## Session Module
 
 If you are using a HA Portal setup configuration for your portal you should
 switch to a different session mechanism. This is documented 
