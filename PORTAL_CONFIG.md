@@ -118,6 +118,18 @@ configurations obtained through the API! See
 [here](#maximum-number-of-active-api-configurations) for restricting the number 
 of active configurations through the API.
 
+## Maximum Number of Active API Configurations
+
+Limit the number of active VPN configurations obtained through the API that is
+used by the eduVPN/Let's Connect! VPN applications. Effectively this means that 
+the user can have this many VPN apps connected simultaneously.
+
+```php
+'Api' => [
+    'maxActiveConfigurations' => 3,
+],
+```
+
 ## WireGuard
 
 You can configure the WireGuard port over which VPN clients can connect to the
