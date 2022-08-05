@@ -162,16 +162,29 @@ officially supported and meant for testing only!
 
 Added: 3.0.5 ([#78](https://todo.sr.ht/~eduvpn/server/78))
 
-You can delete the OAuth authorization as used by the VPN client on disconnect.
+The server can delete the OAuth authorization as used for server API access by 
+the eduVPN/Let's Connect! applications.
+
 This would force the user to authorize (and thus authenticate) again the next
 time a VPN connection is established. This may be particularlly interesting for
 organization that have MFA enabled and want to force users to authenticate 
 every time they connect to the VPN.
 
-**NOTE**: this ONLY applies when the user manually disconnect, or closes the 
-VPN application or reboots the system. System suspend, or (temporary) loss of
+You can enable this in `/etc/vpn-user-portal/config.php`:
+
+```php
+'Api' => [
+    'deleteAuthorizationOnDisconnect' => true,
+],
+```
+
+**NOTE**: this ONLY applies when the user *manually* disconnect, closes the 
+VPN application, or reboots the system. System suspend, or (temporary) loss of
 network connectivity will NOT force the user to authorize the application 
 again!
 
-**NOTE**: this is restricted to VPN clients only using the API, it does not 
-work when users manually download VPN configurations through the portal!
+**NOTE**: this is restricted to the eduVPN/Let's Connect! VPN clients only, it 
+does not work when users manually download VPN configurations through the 
+portal! If necessary, you can 
+[disable](#maximum-number-of-active-configurations) manual configuration 
+downloads.
