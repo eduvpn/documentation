@@ -70,7 +70,10 @@ moments: for WireGuard the script is called when the client configuration is
 _created_, for OpenVPN the script is called when the client actually connects.
 
 This is most obvious when users are using the VPN Portal: on configuration 
-download for WireGuard the "connect" event is triggered and on deletion 
+download for WireGuard the "connect" event is triggered and on deletion the 
+"disconnect" event. For OpenVPN it remains on actual VPN connect/disconnect. 
+When using the eduVPN/Let's Connect! applications through the API there is 
+functionally no difference.
 
 ## TODO
 
