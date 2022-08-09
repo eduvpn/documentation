@@ -326,6 +326,6 @@ done
 # Creating DEB packages
 
 Debian packages currently only work from proper releases. Updating the Debian 
-packages is described [here](https://git.sr.ht/~fkooman/builder.deb). You can
+packages is described [here](https://git.sr.ht/~fkooman/nbuilder.deb). You can
 also use your own `vpn-user-portal.deb` fork to get going. Follow the 
 instructions there.
