@@ -271,7 +271,18 @@ The following script is used to make official releases of the components as
 with [Minisign](https://jedisct1.github.io/minisign/) for Fedora/CentOS. 
 Please setup your own PGP and Minisign keys before running this script.
 
-`${HOME}/.local/bin/make_release`:
+Make sure your `${HOME}/.gitconfig` contains at least the following:
+
+```
+[user]
+	name = François Kooman
+	email = fkooman@deic.dk
+
+[tar "tar.xz"]
+	command = xz -c
+```
+
+Add the following to the file `${HOME}/.local/bin/make_release`:
 
 ```
 #!/bin/sh
