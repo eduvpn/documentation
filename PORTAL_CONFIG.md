@@ -190,21 +190,21 @@ You can enable this in `/etc/vpn-user-portal/config.php`:
 ],
 ```
 
-**NOTE**: this ONLY applies when the user *manually* disconnect, closes the 
-VPN application, or reboots the system. System suspend, or (temporary) loss of
-network connectivity will NOT force the user to authorize the application 
+The authorization is ONLY deleted when the user *manually* disconnects, closes 
+the VPN application, or reboots the system. System suspend, or (temporary) loss 
+of network connectivity will NOT force the user to authorize the application 
 again!
 
-**NOTE**: this is restricted to the eduVPN/Let's Connect! VPN clients only, it 
-does not work when users manually download VPN configurations through the 
-portal! If necessary, you can 
-[disable](#maximum-number-of-active-configurations) manual configuration 
-downloads.
+### Caveats
 
-**NOTE**: users can write their own client that implements the API and mimics 
-the official client, so this is not "bullet proof". One should also use 
-[Session Expiry](#session-expiry) to limit a VPN session to e.g. 3 days.
-
-**NOTE**: we have NOT tested this extensively on all VPN clients, this 
-feature depends on the VPN clients properly calling the `/disconnect` API 
-call. Please help us test this properly.
+* This is restricted to the eduVPN/Let's Connect! VPN clients only, it does not 
+  work when users manually download VPN configurations through the portal! If 
+  necessary, you can [disable](#maximum-number-of-active-configurations) manual 
+  configuration downloads;
+* Users could write their own client that implements the API and mimics the 
+  official client, but omits the call to `/disconnect`. So this is not 
+  "bullet proof". One should also use [Session Expiry](#session-expiry) to 
+  limit the duration of a VPN session if that is considered important;
+* We have NOT tested this extensively on all VPN clients, this feature depends 
+  on the VPN clients properly calling the `/disconnect` API call (at the right
+  moment). Please help us test this properly.
