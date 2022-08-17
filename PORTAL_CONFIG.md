@@ -200,3 +200,11 @@ does not work when users manually download VPN configurations through the
 portal! If necessary, you can 
 [disable](#maximum-number-of-active-configurations) manual configuration 
 downloads.
+
+**NOTE**: users can write their own client that implements the API and mimics 
+the official client, so this is not "bullet proof". One should also use 
+[Session Expiry](#session-expiry) to limit a VPN session to e.g. 3 days.
+
+**NOTE**: we have NOT tested this extensively on all VPN clients, this 
+feature depends on the VPN clients properly calling the `/disconnect` API 
+call. Please help us test this properly.
