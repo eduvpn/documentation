@@ -393,7 +393,7 @@ terminated by the application, if that is possible.
 ### Request
 
 ```bash
-$ curl \
+$ curl -X POST \
     -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/api/v3/disconnect"
 ```
