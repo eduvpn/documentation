@@ -24,6 +24,9 @@ The Admin API is _disabled_ by default, but it is easy to enable.
 
 **TODO**: document how to enable it
 
+The _secret_ can be found in `/etc/vpn-user-portal/keys/admin-api.key`. Use 
+this value in the `Authorization` (Bearer) header.
+
 # API Calls
 
 **TODO**: think about names of API 
@@ -36,7 +39,7 @@ configurations of a particular user.
 | -------------- | -------- | -------------------------------------------------------------------------------- |
 | `user_id`      | Yes      | The user for which to create the configuration                                   |
 | `display_name` | No       | How to list the created configuration in the portal (default: `Admin API`)       |
-| `profile_id`   | Yes      | The `profile_id`,                                                                |
+| `profile_id`   | Yes      | The `profile_id` of the VPN profile to create a configuration for                |
 | `public_key`   | No       | A WireGuard public key, for the WireGuard protocol                               |
 | `prefer_tcp`   | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
@@ -58,6 +61,8 @@ $ curl \
 ```
 
 ## Destroy
+
+**TODO**: also need `profile_id` to only delete config of certain profile?
 
 ```bash
 $ curl \
