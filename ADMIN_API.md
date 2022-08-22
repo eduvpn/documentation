@@ -86,4 +86,5 @@ service as documented.
 
 ## macOS
 
-TBD.
+Probably using 
+[this](https://github.com/WireGuard/wireguard-apple/blob/master/MOBILECONFIG.md).
