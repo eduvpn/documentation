@@ -57,7 +57,7 @@ $ curl \
     --data-urlencode "display_name=Admin API Example Config" \
     --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" \
     -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/admin/v1/create"
+    "https://vpn.example.org/vpn-user-portal/admin/api/v1/create"
 ```
 
 ## Destroy
@@ -68,7 +68,7 @@ $ curl \
 $ curl \
     -d "user_id=foo" \
     -H "Authorization: Bearer abcdefgh" \
-    "https://vpn.example.org/vpn-user-portal/admin/v1/destroy"
+    "https://vpn.example.org/vpn-user-portal/admin/api/v1/destroy"
 ```
 
 # VPN Client
