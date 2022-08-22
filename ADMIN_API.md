@@ -70,3 +70,20 @@ $ curl \
     -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/admin/v1/destroy"
 ```
+
+# VPN Client
+
+We'll describe how to configure VPN clients with these configuration files. 
+
+## Windows
+
+Complete documentation on how to setup Windows with WireGuard to have VPN 
+enabled before user authentication can be found 
+[here](https://github.com/WireGuard/wireguard-windows/blob/master/docs/enterprise.md).
+
+You can deploy the configuration file and MSI through AD/GPO and enable the 
+service as documented.
+
+## macOS
+
+TBD.
