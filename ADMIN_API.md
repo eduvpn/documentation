@@ -40,7 +40,6 @@ configurations of a particular user.
 | `user_id`      | Yes      | The user for which to create the configuration                                   |
 | `display_name` | No       | How to list the created configuration in the portal (default: `Admin API`)       |
 | `profile_id`   | Yes      | The `profile_id` of the VPN profile to create a configuration for                |
-| `public_key`   | No       | A WireGuard public key, for the WireGuard protocol                               |
 | `prefer_tcp`   | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
 ## Create
@@ -55,7 +54,6 @@ $ curl \
     -d "user_id=foo" \
     -d "profile_id=employees" \
     --data-urlencode "display_name=Admin API Example Config" \
-    --data-urlencode "public_key=nmZ5ExqRpLgJV9yWKlaC7KQ7EAN7eRJ4XBz9eHJPmUU=" \
     -H "Authorization: Bearer abcdefgh" \
     "https://vpn.example.org/vpn-user-portal/admin/api/v1/create"
 ```
