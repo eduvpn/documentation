@@ -26,8 +26,8 @@ By default, the API is only accessible from `localhost` in order to avoid
 anyone accessing the API from the network.
 
 You can modify `/etc/httpd/conf.d/vpn-user-portal.conf` on Fedora/EL, or 
-`/etc/apache2/conf-available/vpn-user-portal.conf`. Do NOT forget to restart 
-Apache after modifying the files.
+`/etc/apache2/conf-available/vpn-user-portal.conf` on Debian/Ubuntu. Do NOT 
+forget to restart Apache after modifying the files.
 
 In order to use the API, the _secret_ you need can be found in 
 `/etc/vpn-user-portal/keys/admin-api.key` after generating it which was done
