@@ -81,7 +81,7 @@ REPO_URL_LIST=(\
     https://git.sr.ht/~fkooman/vpn-user-portal.rpm \
 
     # Common
-    https://github.com/jwijenbergh/eduvpn-common \
+    https://github.com/eduvpn/eduvpn-common \
 
     # Linux App
     https://github.com/eduvpn/python-eduvpn-client \
