@@ -65,9 +65,10 @@ $ curl \
 
 ## Destroy
 
-| Parameter      | Required | Value(s)                                                                         |
-| -------------- | -------- | -------------------------------------------------------------------------------- |
-| `user_id`      | Yes      | The user for which to create the configuration                                   |
+| Parameter      | Required | Value(s)                                                                                     |
+| -------------- | -------- | -------------------------------------------------------------------------------------------- |
+| `user_id`      | Yes      | The user for which to create the configuration                                               |
+| `delete_user`  | No       | Whether or not to delete the user account (as well). Either `yes` or `no`. Defaults to `yes` |
 
 **TODO**: SHOULD we also require `profile_id` to only delete config of certain 
 profile?
