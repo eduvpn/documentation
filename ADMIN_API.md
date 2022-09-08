@@ -26,8 +26,11 @@ By default, the API is only accessible from `localhost` in order to avoid
 anyone accessing the API from the network.
 
 You can modify `/etc/httpd/conf.d/vpn-user-portal.conf` on Fedora/EL, or 
-`/etc/apache2/conf-available/vpn-user-portal.conf` on Debian/Ubuntu. Do NOT 
-forget to restart Apache after modifying the files.
+`/etc/apache2/conf-available/vpn-user-portal.conf` on Debian/Ubuntu. Set the 
+`Require ip` option under `<Files admin-api.php>` to the IP address(es) from
+which you want to access the API.
+	
+Do NOT forget to restart Apache after modifying the files.
 
 In order to use the API, the _secret_ you need can be found in 
 `/etc/vpn-user-portal/keys/admin-api.key` after generating it which was done
@@ -36,9 +39,13 @@ below.
 
 # API Calls
 
-We currently have two API calls, `/create` and `/destroy` that can be used to
-create a VPN configuration for a particular user and to remove the VPN 
-configurations of a particular user.
+Two API calls are provided, `/create` and `/destroy` that can be used to create 
+a VPN configuration for a particular user (and profile) and to remove the VPN 
+configurations of a particular user and delete their account.
+
+The `/create` call will transparently create the user if necessary and the 
+`/destroy` call will delete the account as well as disconnect the client(s) of
+that user and delete the configuration(s).
 
 ## Create
 
@@ -68,10 +75,13 @@ $ curl \
 | Parameter      | Required | Value(s)                                                                                     |
 | -------------- | -------- | -------------------------------------------------------------------------------------------- |
 | `user_id`      | Yes      | The user for which to create the configuration                                               |
-| `delete_user`  | No       | Whether or not to delete the user account (as well). Either `yes` or `no`. Defaults to `yes` |
 
-**TODO**: SHOULD we also require `profile_id` to only delete config of certain 
+**TODO**: should we also require `profile_id` to only delete config of certain 
 profile?
+
+**TODO**: should we also allow for not deleting the user account? if the answer
+to the above question is YES then we should probably not (always) delete the 
+user account
 
 ### Request
 
