@@ -30,6 +30,22 @@ was up.
 **NOTE**: in case there are updates to system components/libraries or the 
 kernel you MUST reboot the system.
 
+## Automatic Updates
+
+Create the file `/etc/cron.weekly/vpn-maint-update-system` with the following
+content:
+
+```
+#!/bin/sh
+/usr/sbin/vpn-maint-update-system && /usr/sbin/reboot
+``
+
+Make it executable:
+
+```bash
+$ sudo chmod +x /etc/cron.weekly/vpn-maint-update-system
+```
+
 # Multi Server
 
 If you are running a setup with a separate controller and node(s), you will 
