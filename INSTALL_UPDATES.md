@@ -38,7 +38,7 @@ content:
 ```
 #!/bin/sh
 /usr/sbin/vpn-maint-update-system && /usr/sbin/reboot
-``
+```
 
 Make it executable:
 
