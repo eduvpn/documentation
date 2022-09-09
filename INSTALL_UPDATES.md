@@ -46,6 +46,15 @@ Make it executable:
 $ sudo chmod +x /etc/cron.weekly/vpn-maint-update-system
 ```
 
+This is the easiest approach, but not necessarily resulting in the least 
+amount of downtime. If you are actively maintaining your server(s) you may be
+able to get away with not always rebooting. This just makes sure your server is
+always up to date and by always rebooting there is no uncertainty whether or 
+not updated system libraries are used, or you are running the latest kernel.
+
+In case of security updates it MAY be necessary to schedule updates sooner than
+the weekly update.
+
 # Multi Server
 
 If you are running a setup with a separate controller and node(s), you will 
