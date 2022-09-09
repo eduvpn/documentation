@@ -11,9 +11,6 @@ These instructions apply to the official installation instructions using the
 `deploy_${DIST}.sh` scripts. If you installed the servers in a different way 
 then some changes MAY be necessary!
 
-**NOTE**: make sure you installed the `vpn-maint-scripts` package and use the 
-correct software [repositories](REPO.md).
-
 # Single Server
 
 All that is needed is run the following command on your VPN server:
