@@ -79,6 +79,11 @@ own as shown above!
         Require all granted
     </Location> 
 
+    # If you run separete node(s) you MUST allow access to "node-api.php" 
+    # withouh protecting it with Shibboleth
+    #<Location /vpn-user-portal/node-api.php>
+    #    Require all granted
+    #</Location>
     ...
 
 </VirtualHost>
