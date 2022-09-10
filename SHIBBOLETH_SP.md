@@ -75,6 +75,12 @@ In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
         Require all granted
     </Location> 
 
+	# If you run separete node(s) you MUST allow access to "node-api.php" 
+	# withouh protecting it with Shibboleth
+	#<Location /vpn-user-portal/node-api.php>
+	#    Require all granted
+	#</Location>
+
     ...
 
     </VirtualHost>
