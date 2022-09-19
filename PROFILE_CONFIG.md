@@ -55,6 +55,7 @@ Common configuration options, independent of the VPN protocol. See
 | [aclPermissionList](#acl-permission-list)      | `string[]`             | `null`                   |
 | [dnsSearchDomainList](#dns-search-domain-list) | `string[]`             | `[]`                     |
 | [nodeUrl](#node-url)                           | `string[]` or `string` | `http://localhost:41194` |
+| [onNode](#on-node)                             | `int[]` or `int`       | `0`                      |
 | [preferredProto](#preferred-protocol)          | `string`               | `openvpn`                |
 
 ### Profile ID
@@ -179,6 +180,26 @@ the [Default Gateway](#default-gateway) is _not_ set.
 When using a separate system to handle VPN connections, i.e. when using a 
 controller + node(s) setup. See [Multi Node](MULTI_NODE.md) for extensive 
 documentation on the topic.
+
+### On Node
+
+When deploying profile(s) to multiple nodes you may want to indicate to which
+specific node(s) the profile belongs. For example, if you have 4 nodes and you
+want to deploy a profile only to node 2 and 3, use the following:
+
+```
+'onNode' => [2, 3],
+```
+
+If you do NOT specify the `onNode` option, it will default to `0` if there is
+only one node defined, or if there are multiple nodes start counting from 0, 
+i.e. if you have two nodes defined, the default will be `[0, 1]`.
+
+This option is available from vpn-user-portal >= 3.0.6. It was added due to a 
+[bug](https://todo.sr.ht/~eduvpn/server/90) that did not allow deploying 
+profiles to only a subset of nodes. Unfortunately we can not break existing
+configurations, so we needed to introduce a new option specifically for this
+case.
 
 ### Preferred Protocol
 
