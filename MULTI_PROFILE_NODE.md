@@ -22,30 +22,30 @@ modify the default configuration yet.
 
 ```
 'ProfileList' => [
-	// Our Node in Amsterdam
+    // Our Node in Amsterdam
     [
         'profileId' => 'ams',
         'displayName' => 'Amsterdam',
         'hostName' => 'ams1.vpn.example.org',
         'wRangeFour' => ['172.23.114.0/24', '10.123.94.0/24'],
         'wRangeSix' => ['fd36:2246:1d09:3014::/64', 'fdb6:21f2:f9c:34fb::/64'],
-		'defaultGateway' => true,
-		'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
-		'nodeUrl' => 'http://ams1.vpn.example.org:41194',
-		'onNode' => 0,
+        'defaultGateway' => true,
+        'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+        'nodeUrl' => 'http://ams1.vpn.example.org:41194',
+        'onNode' => 0,
     ],
 
-	// Our Nodes in Frankfurt	
-	[
+    // Our Nodes in Frankfurt	
+    [
         'profileId' => 'fra',
         'displayName' => 'Frankfurt',
         'hostName' => ['fra1.vpn.example.org', 'fra2.vpn.example.org'],
         'wRangeFour' => ['10.61.60.0/24', '10.7.192.0/24'],
         'wRangeSix' => ['fd85:f1d9:20b7:b74c::/64', 'fd89:79cb:b63c:717e::/64'],
-		'defaultGateway' => true,
-		'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
-		'nodeUrl' => ['http://fra1.vpn.example.org:41194', http://fra2.vpn.example.org:41194'],
-		'onNode' => [2, 3],
+        'defaultGateway' => true,
+        'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+        'nodeUrl' => ['http://fra1.vpn.example.org:41194', http://fra2.vpn.example.org:41194'],
+        'onNode' => [2, 3],
     ],
 ],
 ```
