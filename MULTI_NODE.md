@@ -303,7 +303,14 @@ $ vpn-ca -client  -name vpn-daemon-client
 ```
 
 Copy `ca.crt`, `node-X.vpn.example.org.crt` and `node-X.vpn.example.org.key` to
-the respective node(s). Store them in the following locations (note the 
+the respective node(s). Prepare the directory to store the files:
+
+```bash
+$ sudo mkdir -p /etc/ssl/vpn-daemon/private
+$ sudo mkdir -p /etc/systemd/system/vpn-daemon.service.d
+```
+
+Store the certificates/keys in the following locations (note the 
 `private` folder for the key):
 
 | File                         | Location                                 |
@@ -332,10 +339,16 @@ $ sudo systemctl restart vpn-daemon
 
 Repeat this on all your nodes.
 
-On your controller(s) you copy the `ca.crt`, `vpn-daemon-client.crt` and 
-`vpn-daemon-client.key` to `/etc/vpn-user-portal/keys/vpn-daemon` and modify 
-the `nodeUrl` option(s) in the profile configuration in 
-`/etc/vpn-user-portal/config.php` to use `https://` instead of `http://`.
+On your controller(s), create the directory for storing the files:
+
+```bash
+$ sudo mkdir -p /etc/vpn-user-portal/keys/vpn-daemon
+```
+
+Copy the `ca.crt`, `vpn-daemon-client.crt` and `vpn-daemon-client.key` to 
+`/etc/vpn-user-portal/keys/vpn-daemon` and modify the `nodeUrl` option(s) 
+in the profile configuration in `/etc/vpn-user-portal/config.php` to use 
+`https://` instead of `http://`.
 
 Viewing the portal "Info" page should show your node(s) as green and have the 
 lock icon visible. Now you are all good!
