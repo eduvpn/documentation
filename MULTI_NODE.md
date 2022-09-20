@@ -188,9 +188,9 @@ On your node, modify `/etc/vpn-server-node/config.php`, set `apiUrl`,
 <?php
 
 return [
-	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
     'nodeNumber' => 0,
-	'profileIdList' => ['ams'],    
+    'profileIdList' => ['ams'],    
 ```
 
 ### Node 1
@@ -199,9 +199,9 @@ return [
 <?php
 
 return [
-	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
     'nodeNumber' => 1,
-	'profileIdList' => ['fra'],    
+    'profileIdList' => ['fra'],    
 ```
 
 ### Node 2
@@ -210,9 +210,9 @@ return [
 <?php
 
 return [
-	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
     'nodeNumber' => 2,
-	'profileIdList' => ['fra'],    
+    'profileIdList' => ['fra'],    
 ```
 
 Next, modify `/etc/default/vpn-daemon`:
