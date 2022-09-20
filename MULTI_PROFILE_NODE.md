@@ -44,7 +44,7 @@ modify the default configuration yet.
         'wRangeSix' => ['fd85:f1d9:20b7:b74c::/64', 'fd89:79cb:b63c:717e::/64'],
         'defaultGateway' => true,
         'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
-        'nodeUrl' => ['http://fra1.vpn.example.org:41194', http://fra2.vpn.example.org:41194'],
+        'nodeUrl' => ['http://fra1.vpn.example.org:41194', 'http://fra2.vpn.example.org:41194'],
         'onNode' => [2, 3],
     ],
 ],
