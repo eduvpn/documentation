@@ -8,20 +8,37 @@ Setting up multiple nodes allows the "load" of the VPN service to be
 distributed over multiple (virtual) servers and avoid (extensive) downtime when 
 one of the nodes goes down.
 
+In this document we'll show how to deploy a VPN service that has one controller 
+and three nodes. One node is located in Amsterdam, two in Frankfurt. This will
+demonstrate all possible configuration scenarios.
+
+Here, the VPN clients choosing "Amsterdam" will always connect to the 
+same node (`ams1.vpn.example.org`), clients choosing "Frankfurt" will end up on 
+one of the two nodes, either `fra1.vpn.example.org` or `fra2.vpn.example.org`, 
+randomly selected when connecting to the VPN.
+
+Of course your setup can also start with one controller and one node!
+
+**NOTE**: the algorithm deciding which node the VPN client will connect to is 
+currently very simple. It randomly picks one from the list of VPN nodes that is
+up. In the future we envision also considering the "load" of the node before 
+deciding.
+
 ## Requirements
 
-At least 3 machines (or VMs) running Debian >= 11. The two machines that will 
-be the nodes ideally have the same specifications.
+In this scenario we require 4 machines (or VMs) running Debian >= 11. Ideally, 
+nodes all have the same specifications.
 
-All three need to be set up with static IP configurations and working DNS. Make 
+All four need to be set up with static IP configurations and working DNS. Make 
 sure all works properly before starting the setup. For example, our test 
 deployment uses:
 
-| Role       | DNS Host                 | IPv4         | IPv6           |
-| ---------- | ------------------------ | ------------ | -------------- |
-| Controller | `vpn.example.org`        | `192.0.2.10` | `2001:db8::10` |
-| Node A (0) | `node-a.vpn.example.org` | `192.0.2.20` | `2001:db8::20` |
-| Node B (1) | `node-b.vpn.example.org` | `192.0.2.30` | `2001:db8::30` |
+| Role          | DNS Host               | IPv4         | IPv6           |
+| ------------- | ---------------------- | ------------ | -------------- |
+| Controller    | `vpn.example.org`      | `192.0.2.10` | `2001:db8::10` |
+| Node 0 (ams1) | `ams1.vpn.example.org` | `192.0.2.20` | `2001:db8::20` |
+| Node 1 (fra1) | `fra1.vpn.example.org` | `192.0.2.30` | `2001:db8::30` |
+| Node 2 (fra2) | `fra2.vpn.example.org` | `192.0.2.40` | `2001:db8::40` |
 
 We will use NAT for IPv4 and IPv6 client traffic.
 
@@ -56,69 +73,57 @@ $ sudo -s
 Now visit your site at https://vpn.example.org/. Make sure there is no TLS 
 error and you can login with the credentials you noted before.
 
-By default there is a `default` profile. We will modify it. For this, edit 
-`/etc/vpn-user-portal/config.php`. You will find something like this if you 
-ignore the comments:
+### Configuration
+
+We'll modify `/etc/vpn-user-portal/config.php` and remove the existing 
+"default" profile and replace it with our `ams` and `fra` profiles:
 
 ```php
 'ProfileList' => [
+    // Our Node in Amsterdam
     [
-        'profileId' = 'default',
-        'displayName' => 'Default',
-        'dnsServerList' => ['9.9.9.9', '2620:fe::fe'],
-        'hostName' => 'vpn.example.org',
-        'oRangeFour' => '10.42.42.0/24',
-        'oRangeSix' => 'fd42::/64',
-        'wRangeFour' => '10.43.43.0/24',
-        'wRangeSix' => 'fd43::/64',
+        'profileId' => 'ams',
+        'displayName' => 'Amsterdam',
+        'hostName' => 'ams1.vpn.example.org',
+        'wRangeFour' => ['172.23.114.0/24', '10.123.94.0/24'],
+        'wRangeSix' => ['fd36:2246:1d09:3014::/64', 'fdb6:21f2:f9c:34fb::/64'],
+        'defaultGateway' => true,
+        'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+        'nodeUrl' => 'http://ams1.vpn.example.org:41194',
+        'onNode' => 0,
+    ],
+
+    // Our Nodes in Frankfurt	
+    [
+        'profileId' => 'fra',
+        'displayName' => 'Frankfurt',
+        'hostName' => ['fra1.vpn.example.org', 'fra2.vpn.example.org'],
+        'wRangeFour' => ['10.61.60.0/24', '10.7.192.0/24'],
+        'wRangeSix' => ['fd85:f1d9:20b7:b74c::/64', 'fd89:79cb:b63c:717e::/64'],
+        'defaultGateway' => true,
+        'dnsServerList' => ['9.9.9.9', '2620:fe::9'],
+        'nodeUrl' => ['http://fra1.vpn.example.org:41194', 'http://fra2.vpn.example.org:41194'],
+        'onNode' => [1, 2],
     ],
 ],
 ```
 
-To make this a multi node, you need to modify some of the options. Some options
-also take a array if they are _node specific_, see 
-[Profile Configuration](PROFILE_CONFIG.md) for an overview.
+If you want to generate your own random IPv4 and IPv6 prefixes to avoid 
+"collisions" for use in the `wRangeFour` and `wRangeSix` configuration options, 
+you can use `ipcalc-ng`:
 
-```php
-'ProfileList' => [
-    [
-        'profileId' = 'default',
-        'displayName' => 'Default',
-        'dnsServerList' => ['9.9.9.9', '2620:fe::fe'],
-        'hostName' => [
-            'node-a.vpn.example.org',               // Node A (0)
-            'node-b.vpn.example.org'                // Node B (1)
-        ],
-        'oRangeFour' => [
-            '10.42.42.0/24',                        // Node A (0)
-            '10.44.44.0/24'                         // Node B (1)
-        ],
-        'oRangeSix' => [
-            'fd42::/64',                            // Node A (0)
-            'fd44::/64'                             // Node B (1)
-        ],
-        'wRangeFour' => [
-            '10.43.43.0/24',                        // Node A (0)
-            '10.45.45.0/24'                         // Node B (1)
-        ],
-        'wRangeSix' => [
-            'fd43::/64',                            // Node A (0)
-            'fd45::/64'                             // Node B (1)
-        ],
-        'nodeUrl' => [
-            'http://node-a.vpn.example.org:41194',  // Node A (0)
-            'http://node-b.vpn.example.org:41194'   // Node B (1)
-        ],
-    ],
-],
-```
+| Address Family | Command                               |
+| -------------- | ------------------------------------- |
+| IPv4           | `ipcalc-ng -4 -r 24 -n --no-decorate` |
+| IPv6           | `ipcalc-ng -6 -r 64 -n --no-decorate` |
 
-You can of course choose your own `xRangeFour` and `xRangeSix`, but make sure 
-they are not duplicated, or overlap!
+See [Profile Config](PROFILE_CONFIG.md) for an explanation of what all the 
+configuration options mean exactly.
 
 Next, modify the `<Files node-api.php>` section in 
-`/etc/apache2/conf-available/vpn-user-portal.conf` by adding the IP addresses of the 
-nodes:
+`/etc/apache2/conf-available/vpn-user-portal.conf` by adding the IP addresses 
+of the nodes, make sure `Require ip` lists all the IP addresses, if you want 
+to allow only 1 address use the `/32` prefix (IPv4) or `/128` (IPv6):
 
 ```
 <Files node-api.php>
@@ -138,23 +143,22 @@ Restart Apache:
 $ sudo systemctl restart apache2
 ```
 
-For each node you want to add you need to generate a new "Node Key", e.g. for
-node "1" you'd use the following:
+For each node you want to add you need to generate a new "Node Key". By default 
+we have one for node 0 (`ams1.vpn.example.org`), but we need keys for node 1 
+and 2 (the two nodes in Frankfurt):
 
 ```bash
 $ sudo /usr/libexec/vpn-user-portal/generate-secrets --node 1
+$ sudo /usr/libexec/vpn-user-portal/generate-secrets --node 2
 ```
 
-This will write a new node key to `/etc/vpn-user-portal/node.1.key`. This is 
-the key that should be used on "Node 1". By default a key is generated for 
-"Node 0", so you do not need to generate that one (again).
+Copy the generated `node.0.key`, `node.1.key` and `node.2.key` to the 
+respective nodes. We'll put them in the correct place in the next section.
 
 ## Nodes
 
-The instructions below will be only shown for Node A, but they are identical
-for Node B... so you have to perform them twice, please note that on Node B 
-you should replace any occurrence of `node-a` with `node-b`. Ideally you 
-perform these steps in parallel on both machines.
+The instructions below will be only shown for Node 0, but they are identical
+for Node 1 and 2... You have to perform these instructions three times.
 
 Make sure you can reach the API endpoint from the node(s):
 
@@ -175,9 +179,41 @@ $ sudo -s
 # ./deploy_debian_node.sh
 ```
 
-On your node, modify `/etc/vpn-server-node/config.php` and set `apiUrl` to 
-`https://vpn.example.org/vpn-user-portal/node-api.php`. Also set the 
-`nodeNumber` to the number associated with your node.
+On your node, modify `/etc/vpn-server-node/config.php`, set `apiUrl`, 
+`nodeNumber` and `profileIdList`:
+
+### Node 0
+
+```php
+<?php
+
+return [
+	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'nodeNumber' => 0,
+	'profileIdList' => ['ams'],    
+```
+
+### Node 1
+
+```php
+<?php
+
+return [
+	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'nodeNumber' => 1,
+	'profileIdList' => ['fra'],    
+```
+
+### Node 2
+
+```php
+<?php
+
+return [
+	'apiUrl' => 'https://vpn.example.org/vpn-user-portal/node-api.php',
+    'nodeNumber' => 2,
+	'profileIdList' => ['fra'],    
+```
 
 Next, modify `/etc/default/vpn-daemon`:
 
@@ -191,9 +227,11 @@ Restart the daemon:
 $ sudo systemctl restart vpn-daemon
 ```
 
-Copy the contents of `/etc/vpn-user-portal/keys/node.0.key` to 
-`/etc/vpn-server-node/keys/node.key`. Make sure it only contains the secret and
-not a trailing return. If you are using copy/paste using this:
+Copy the `node.0.key`, `node.1.key` and `node.2.key` on their respective nodes
+to `/etc/vpn-server-node/keys/node.key`.
+
+**NOTE**: make sure it only contains the secret and not a trailing return. If 
+you are using copy/paste using this:
 
 ```bash
 $ echo -n 'SECRET' | sudo tee /etc/vpn-server-node/keys/node.key
@@ -220,13 +258,14 @@ Restart the firewall:
 $ sudo systemctl restart netfilter-persistent
 ```
 
-Now you are ready to apply the changes and this should work without error:
+Now you are ready to apply the changes and this should work without error on 
+all your nodes:
 
 ```bash
 $ sudo vpn-maint-apply-changes
 ```
 
-Make sure you repeat these steps on Node B as well!
+Make sure you repeat these steps on Node 1 and 2 as well!
 
 **NOTE**: if you also run the [HA Portal](HA_PORTAL.md), you MUST synchronize
 the `/var/lib/vpn-user-portal` folder again between the _n_ portals!
@@ -238,7 +277,8 @@ you see your client(s) under "Connections" in the portal when connected.
 
 ## TLS
 
-**NOTE**: these instructions are for Debian, not for Fedora!
+**NOTE**: these instructions are for Debian, not (yet) for Fedora or Enterprise
+Linux!
 
 When everything works properly using HTTP, you SHOULD switch to HTTPS for
 communication between controller and node(s). Without TLS there is no
