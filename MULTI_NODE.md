@@ -309,7 +309,7 @@ to verify the TLS connection can be established:
 ```bash
 $ curl \
     --cacert /etc/vpn-user-portal/keys/vpn-daemon/ca.crt \
-    --cert /etc/vpn-user-portal/vpn-daemon/keys/vpn-daemon-client.crt \
-    --key /etc/vpn-user-portal/vpn-daemon/keys/vpn-daemon-client.key \
+    --cert /etc/vpn-user-portal/keys/vpn-daemon/vpn-daemon-client.crt \
+    --key /etc/vpn-user-portal/keys/vpn-daemon/vpn-daemon-client.key \
     https://node-a.vpn.example.org:41194/i/node 
 ```
