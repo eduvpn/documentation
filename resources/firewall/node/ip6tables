@@ -27,7 +27,8 @@ COMMIT
 # SSH
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 # VPN Daemon
--A INPUT -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+#-A INPUT -s 2001:db8::10/128 -p tcp -m state --state NEW -m tcp --dport 41194 -j ACCEPT
+
 -A INPUT -p ipv6-icmp -j ACCEPT
 -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -i tun+ -o eth0 -j ACCEPT
