@@ -136,11 +136,7 @@ If you also want to use authorization based on an attribute, e.g.
             MellonMergeEnvVars On
             MellonSPPrivateKeyFile /etc/apache2/saml/sp.key
             MellonSPCertFile /etc/apache2/saml/sp.crt
-            # Some IdPs only accept RSA-SHA256 signatures, but the version of
-            # mod_auth_mellon in Debian 9 does not support this yet, you need
-            # to use the backport, see: 
-            # https://packages.debian.org/stretch-backports/libapache2-mod-auth-mellon 
-            #MellonSignatureMethod rsa-sha256
+            MellonSignatureMethod rsa-sha256
             MellonEndpointPath /saml
             # When using SURFconext as a WAYF, use this line
             MellonIdPMetadataFile /etc/apache2/saml/metadata.test.surfconext.nl.xml
