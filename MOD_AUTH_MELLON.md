@@ -3,13 +3,13 @@ domain name!
 
 # Installation
 
-## Fedora 
+## Fedora / Enterprise Linux
 
 First install `mod_auth_mellon`:
 
     $ sudo dnf -y install mod_auth_mellon
 
-## Debian
+## Debian  / Ubuntu
 
     $ sudo apt -y install libapache2-mod-auth-mellon
 
@@ -76,7 +76,7 @@ If you also want to use authorization based on an attribute, e.g.
 
 # Apache
 
-## CentOS 
+## Fedora / Enterprise Linux
 
     <VirtualHost *:443>
 
@@ -123,7 +123,7 @@ If you also want to use authorization based on an attribute, e.g.
 
     </VirtualHost>
 
-## Debian
+## Debian / Ubuntu
 
     <VirtualHost *:443>
 
