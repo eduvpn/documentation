@@ -292,8 +292,12 @@ different from single server installations. That is, if you want to do it
 We have some scripts that make this easy for you as part of the 
 [vpn-maint-scripts](https://git.sr.ht/~fkooman/vpn-maint-scripts) project.
 
+**NOTE**: make sure you can SSH to the controller and all node(s) and run 
+commands using `sudo` on the machines without requiring a password.
+
 If you install the script(s) on the system that you use to manage your VPN
-servers, you can run through the above steps with ease.
+servers, you can run through the above steps with ease. This works on Linux
+and macOS.
 
 ```bash
 $ git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
@@ -313,7 +317,8 @@ NODES="
 "
 ```
 
-Now you can run the script the update your controller and node(s):
+Now you can run the script the update your controller and node(s),
+there's no need for `root` permissions:
 
 ```bash
 $ bin/vpn-maint-update-system-multi
