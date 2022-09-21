@@ -103,18 +103,21 @@ If you also want to use authorization based on an attribute, e.g.
             MellonEnable "auth"
         </Location>
         
-        # disable Mellon for the API
-        <Location /vpn-user-portal/api.php>
+    	# do not restrict API Endpoint as used by VPN clients
+        <Location /vpn-user-portal/api>
             MellonEnable "off"
         </Location>
-        # disable Mellon for the OAuth Token Endpoint
-        <Location /vpn-user-portal/oauth.php>
+		
+        # do not secure OAuth Token Endpoint as used by VPN clients
+        <Location /vpn-user-portal/oauth/token>
             MellonEnable "off"
         </Location>
-        # disable Mellon for the Node-API
-        <Location /vpn-user-portal/node-api.php>
-            MellonEnable "off"
-        </Location>
+		
+	    # If you run separete node(s) you MUST allow access to "node-api.php" 
+	    # withouh protecting it with Mellon
+	    #<Location /vpn-user-portal/node-api.php>
+        #    MellonEnable "off"
+        #</Location>
 
         ...
 
@@ -150,18 +153,23 @@ If you also want to use authorization based on an attribute, e.g.
         <Location /vpn-user-portal>
             MellonEnable "auth"
         </Location>
-        # disable Mellon for the API
-        <Location /vpn-user-portal/api.php>
+        
+    	# do not restrict API Endpoint as used by VPN clients
+        <Location /vpn-user-portal/api>
             MellonEnable "off"
         </Location>
-        # disable Mellon for the OAuth Token Endpoint
-        <Location /vpn-user-portal/oauth.php>
+		
+        # do not secure OAuth Token Endpoint as used by VPN clients
+        <Location /vpn-user-portal/oauth/token>
             MellonEnable "off"
         </Location>
-        # disable Mellon for the Node-API
-        <Location /vpn-user-portal/node-api.php>
-            MellonEnable "off"
-        </Location>
+		
+	    # If you run separete node(s) you MUST allow access to "node-api.php" 
+	    # withouh protecting it with Mellon
+	    #<Location /vpn-user-portal/node-api.php>
+        #    MellonEnable "off"
+        #</Location>
+
 
         ...
 
