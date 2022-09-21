@@ -308,10 +308,10 @@ Create a file `server.list` with the following content:
 
 ```
 CONTROLLERS="
-    vpn.example.org
+	vpn.example.org
 "
 NODES="
-    ams1.vpn.example.org
+	ams1.vpn.example.org
 	fra1.vpn.example.org
 	fra2.vpn.example.org
 "
