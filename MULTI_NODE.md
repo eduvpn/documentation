@@ -278,6 +278,54 @@ Now is the time to test everything. Go to the portal at
 VPN client. Login with an account that has "Admin" privileges, and make sure 
 you see your client(s) under "Connections" in the portal when connected.
 
+## Installing Updates
+
+The scenario for installing updates in _multi node_ deployments is a bit 
+different from single server installations. That is, if you want to do it
+"nicely". The steps involve:
+
+* Stop the node(s)
+* Update the controller (+ maybe reboot)
+* Update the node(s) (+ maybe reboot)
+* Start the node(s)
+
+We have some scripts that make this easy for you as part of the 
+[vpn-maint-scripts](https://git.sr.ht/~fkooman/vpn-maint-scripts) project.
+
+If you install the script(s) on the system that you use to manage your VPN
+servers, you can run through the above steps with ease.
+
+```bash
+$ git clone https://git.sr.ht/~fkooman/vpn-maint-scripts
+$ cd vpn-maint-scripts
+```
+
+Create a file `server.list` with the following content:
+
+```
+CONTROLLERS="
+    vpn.example.org
+"
+NODES="
+    ams1.vpn.example.org
+	fra1.vpn.example.org
+	fra2.vpn.example.org
+"
+```
+
+Now you can run the script the update your controller and node(s):
+
+```bash
+$ bin/vpn-maint-update-system-multi
+```
+
+If you also want to reboot your systems, e.g. in case of kernel or
+system library updates:
+
+```bash
+$ bin/vpn-maint-update-system-multi --reboot
+```
+
 ## TLS
 
 **NOTE**: these instructions are for Debian, not (yet) for Fedora or Enterprise
