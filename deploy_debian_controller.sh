@@ -37,7 +37,7 @@ echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/ap
 apt update
 
 # install software (VPN packages)
-apt install -y vpn-user-portal
+apt install -y vpn-user-portal vpn-maint-scripts
 
 ###############################################################################
 # CERTIFICATE
