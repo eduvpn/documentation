@@ -7,14 +7,14 @@ maintenance scripts.
 It is an initial attempt to create an 
 [SBOM](https://en.wikipedia.org/wiki/Software_supply_chain).
 
-| Component       												     | Description                     | Branch | Language |
-| ------------------------------------------------------------------ | ------------------------------- | ------ | -------- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)      | User Portal / API               | `v3`   | PHP      |
-| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)      | Node                            | `v3`   | PHP      |
-| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)           | Cookie/session library          | `main` | PHP      |
-| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server/) | OAuth 2.0 server                | `main` | PHP      |
-| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)                | Manages VPN connections on Node | `main` | Go       |
-| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                        | X.509 Server/Client Cert CA     | `main` | Go       |
+| Component       												    | Description                     | Branch | Language |
+| ----------------------------------------------------------------- | ------------------------------- | ------ | -------- |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`   | PHP      |
+| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `v3`   | PHP      |
+| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `main` | PHP      |
+| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main` | PHP      |
+| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main` | Go       |
+| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main` | Go       |
 
 The only _additional_ dependency we have is the WireGuard library written 
 in Go, [wgctrl-go](https://github.com/WireGuard/wgctrl-go) that is a 
@@ -27,7 +27,7 @@ packages are created using
 [builder.rpm](https://git.sr.ht/~fkooman/builder.rpm) and 
 [nbuilder.deb](https://git.sr.ht/~fkooman/nbuilder.deb). The 
 _package descriptions_ can be found by appending `.rpm` or `.deb` behind
-the name of the "Component" listed above.
+the repository name of the "Component" listed above.
 
 What is also missing is the PHP autoloader that is used when packaging the 
 software for Fedora and Enterprise Linux, and 
