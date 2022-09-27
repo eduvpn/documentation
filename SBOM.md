@@ -22,7 +22,15 @@ dependency of `vpn-daemon`. The library itself has again a bunch of
 dependencies that we ignore and just _vendor_ in the `vpn-daemon`
 releases.
 
+We create Fedora / Enterprise Linux and Debian / Ubuntu packages. The 
+packages are created using 
+[builder.rpm](https://git.sr.ht/~fkooman/builder.rpm) and 
+[nbuilder.deb](https://git.sr.ht/~fkooman/nbuilder.deb). The 
+_package descriptions_ can be found by appending `.rpm` or `.deb` behind
+the name of the "Component" listed above.
+
 What is also missing is the PHP autoloader that is used when packaging the 
 software for Fedora and Enterprise Linux, and 
 [phpab](https://github.com/theseer/Autoload) which is used both there and by 
-the Debian/Ubuntu packages.
+the Debian/Ubuntu packages. We also omit the _development dependencies_, 
+like PHPUnit for running unit tests.
