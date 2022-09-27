@@ -4,6 +4,9 @@ This page lists ALL software, including dependencies, of the _production_
 releases of eduVPN / Let's Connect! It does _not_ include installation or
 maintenance scripts.
 
+It is an initial attempt to create an 
+[SBOM](https://en.wikipedia.org/wiki/Software_supply_chain).
+
 | Component       												     | Description                     | Branch | Language |
 | ------------------------------------------------------------------ | ------------------------------- | ------ | -------- |
 | [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)      | User Portal / API               | `v3`   | PHP      |
