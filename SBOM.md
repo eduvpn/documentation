@@ -2,7 +2,9 @@
 
 This page lists ALL software, including dependencies, of the _production_ 
 releases of eduVPN / Let's Connect! It does _not_ include installation or
-maintenance scripts.
+maintenance scripts, not components that we consider part of the 
+operating system, e.g.: OpenVPN, WireGuard, Apache, PHP, Go, which we use 
+without modification.
 
 It is an initial attempt to create an 
 [SBOM](https://en.wikipedia.org/wiki/Software_supply_chain).
