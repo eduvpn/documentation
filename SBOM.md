@@ -9,19 +9,19 @@ without modification.
 It is an initial attempt to create an 
 [SBOM](https://en.wikipedia.org/wiki/Software_supply_chain).
 
-| Component       												    | Description                     | Branch   | Language |
-| ----------------------------------------------------------------- | ------------------------------- | -------- | -------- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`     | PHP      |
-| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `v3`     | PHP      |
-| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `main`   | PHP      |
-| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      |
-| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`   | Go       |
-| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`   | Go       |
-| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       |
+| Component       												    | Description                     | Branch   | Language | LoC*  |
+| ----------------------------------------------------------------- | ------------------------------- | -------- | -------- | ----- |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`     | PHP      | 11305 |
+| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `v3`     | PHP      | 1054  |
+| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `main`   | PHP      | 835   |
+| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      | 2158  |
+| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`   | Go       | 380   |
+| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`   | Go       | 263   |
+| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       | TBD   |
 
 We do not list the dependencies of `wgctrl-go`, there are many. This 
 library is a dependency of `vpn-daemon`. We _vendor_ this library in 
-the `vpn-daemon` releases.
+	the `vpn-daemon` releases.
 
 We create Fedora / Enterprise Linux and Debian / Ubuntu packages. The 
 packages are created using 
@@ -35,3 +35,7 @@ software for Fedora and Enterprise Linux, and
 [phpab](https://github.com/theseer/Autoload) which is used both there and by 
 the Debian/Ubuntu packages. We also omit the _development dependencies_, 
 like PHPUnit for running unit tests.
+
+`*` For PHP we use [phploc](https://github.com/sebastianbergmann/phploc) and 
+look in the output for `NCLOC`. For Go code we use 
+[cloc](https://github.com/WireGuard/wgctrl-go). Measured on 2022-10-03.
