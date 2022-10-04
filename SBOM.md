@@ -38,4 +38,4 @@ like PHPUnit for running unit tests.
 
 `*` For PHP we use [phploc](https://github.com/sebastianbergmann/phploc) and 
 look in the output for `NCLOC`. For Go code we use 
-[cloc](https://github.com/WireGuard/wgctrl-go). Measured on 2022-10-03.
+[cloc](https://github.com/AlDanial/cloc). Measured on 2022-10-03.
