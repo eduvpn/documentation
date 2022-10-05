@@ -91,14 +91,15 @@ $ sudo systemctl restart unbound
 ## Profile Configuration
 
 Modify `/etc/vpn-user-portal/config.php` for each of the VPN profiles 
-where you want to use "local DNS", set the `dnsServerList` entry to:
+where you want to use "local DNS", point the `dnsServerList` entry to
+the IPv4 (and IPv6) addresses of your DNS server:
 
 ```
-'dnsServerList' => ['@GW4@', '@GW6@'],
+'dnsServerList' => ['10.5.5.1', 'fc55::1/64'],
 ```
 
-The `@GW4@` and `@GW6@` strings will be replaced by the IPv4 and IPv6 address 
-of the gateway.
+Replace the IP addresses with IP addresses at which the VPN clients can reach 
+the DNS server.
 
 ## Firewall
 
