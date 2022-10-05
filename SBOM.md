@@ -17,12 +17,12 @@ It is an initial attempt to create an
 | [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      | 2158  |
 | [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`   | Go       | 380   |
 | [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`   | Go       | 263   |
-| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       | →∞    |
+| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       | ?     |
 
-We do not list the dependencies of `wgctrl-go`, there are many. This library 
-is a direct dependency of `vpn-daemon`. We _vendor_ this library (and its 
-dependencies) in the `vpn-daemon` releases, see `Makefile` in `vpn-daemon` 
-project.
+We do not list the dependencies of `wgctrl-go`, there are many (indirect) 
+ones. It is not exactly clear to me which ones are actually used. We _vendor_ 
+`wgctrl-go` (and its dependencies) in the `vpn-daemon` releases, see the
+`Makefile` in `vpn-daemon` project.
 
 We create Fedora / Enterprise Linux and Debian / Ubuntu packages. The 
 packages are created using 
