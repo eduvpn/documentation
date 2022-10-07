@@ -78,7 +78,7 @@ In order to test whether everything works fine, you can enable the
 
 You can restrict access to the Portal/API to certain permissions. For example,
 if you only went `employees` to be able to access the VPN service and not 
-`students`, you canm in addition to profile restrictions (see next section), 
+`students`, you can in addition to profile restrictions (see next section), 
 prevent them from accessing the service at all.
 
 In `/etc/vpn-user-portal/config.php` you can configure it like this:
@@ -90,6 +90,9 @@ In `/etc/vpn-user-portal/config.php` you can configure it like this:
 This requires everyone to have the permission `employees`. If you specify more
 than one "permission", the user needs to be member of only one. The permissions
 are thus "OR".
+
+If you specify `[]`, nobody will get access. If you leave this option away, 
+everyone (who can authenticate) gets access (the default).
 
 ## Profile Authorization
 
