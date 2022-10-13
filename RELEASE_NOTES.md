@@ -41,11 +41,7 @@ systems:
 - [Debian 11](DEPLOY_DEBIAN.md)
 - [Ubuntu 22.04](DEPLOY_DEBIAN.md)
 - [Fedora 36](DEPLOY_FEDORA.md)
-
-We are reasonably confident we will be able to support 
-[Red Hat Enterprise Linux](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
-9 (and its derivatives like [Rocky Linux](https://rockylinux.org/) and 
-[AlmaLinux OS](https://almalinux.org/)) soon after their release.
+- [Enterprise Linux 9](DEPLOY_EL.md)
 
 **Recommended OS**: Debian 11
 
@@ -83,12 +79,6 @@ All the official eduVPN / Let's Connect! applications have been updated to
 support the 3.x server with both OpenVPN and WireGuard. Make sure all your 
 clients are updated to their latest available version. 
 
-**NOTE** for Windows, when using the eduVPN application, the 3.0 application 
-needs to be installed, which is the default for new installations, but not yet 
-offered as an  update for existing 2.x client installations. This will be done 
-in the coming weeks. For Let's Connect! the existing 2.x clients installations 
-will offer an update to 3.0.
-
 Full list of the available applications:
 
 * [eduVPN](https://app.eduvpn.org/)
@@ -104,7 +94,7 @@ onward.
 
 ## Known Issues
 
-We are aware of the following issues with 3.x:
+We are aware of the following issue(s) with 3.x:
 
 * VPN clients (all platforms) will always appear "Connected" when using 
   WireGuard, even if there is no VPN traffic (possible).
@@ -115,5 +105,6 @@ The table below lists the changes to the release notes.
 
 | Date       | Note                                           |
 | ---------- | ---------------------------------------------- |
+| 2022-10-13 | Mention EL9 is officially supported now        |
 | 2022-09-26 | eduVPN on Windows will auto upgrade to 3.0 now |
 | 2022-05-24 | Initial 3.x Release Notes                      | 
