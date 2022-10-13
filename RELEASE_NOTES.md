@@ -108,15 +108,12 @@ We are aware of the following issues with 3.x:
 
 * VPN clients (all platforms) will always appear "Connected" when using 
   WireGuard, even if there is no VPN traffic (possible).
-* Windows clients need version 3.0 of the VPN Client. Existing installations
-  are (not yet) offered an updated to 3.0. Users MUST install 3.0 manually if 
-  they have an existing installation of the Windows client. New installations 
-  of the client will always be 3.0.
   
 ## Changes
 
 The table below lists the changes to the release notes.
 
-| Date       | Note                      |
-| ---------- | ------------------------- |
-| 2022-05-24 | Initial 3.x Release Notes | 
+| Date       | Note                                           |
+| ---------- | ---------------------------------------------- |
+| 2022-09-26 | eduVPN on Windows will auto upgrade to 3.0 now |
+| 2022-05-24 | Initial 3.x Release Notes                      | 
