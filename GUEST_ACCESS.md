@@ -1,10 +1,10 @@
 # Introduction
 
 This document describes how to enable "Guest Access". This is a feature 
-provided to the eduVPN community.
+provided to the eduVPN community. It is NOT available for Let's Connect!.
 
 Participating NRENs configure an eduVPN server to allow users from 
-server hosted by other NRENs to access their VPN server as well. 
+servers hosted by other NRENs to access their VPN server as well. 
 
 This means for example that a user from the eduVPN server hosted in The
 Netherlands by SURF can access the VPN server in Germany hosted by DFN.
@@ -42,8 +42,8 @@ section:
 ]
 ```
 
-Next you need to generate a HMAC key that will be used to "obfuscate"
-the user identifiers of your user as to not leak them to other NRENs.
+Next you need to generate a HMAC key that will be used to "obfuscate" the user 
+identifiers of your users as to not "leak" them to other NREN servers.
 
 ```bash
 $ sudo /usr/libexec/vpn-user-portal/generate-secrets --hmac
