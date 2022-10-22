@@ -11,10 +11,10 @@ It is an initial attempt to create an
 
 | Component       												    | Description                     | Branch   | Language | LoC*  |
 | ----------------------------------------------------------------- | ------------------------------- | -------- | -------- | ----- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`     | PHP      | 11305 |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`     | PHP      | 11613 |
 | [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `v3`     | PHP      | 1054  |
 | [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `main`   | PHP      | 835   |
-| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      | 2158  |
+| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      | 2181  |
 | [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`   | Go       | 380   |
 | [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`   | Go       | 263   |
 | [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       | ?     |
@@ -41,4 +41,4 @@ PHPUnit for running unit tests.
 look in the output for `NCLOC`. For Go code we use 
 [cloc](https://github.com/AlDanial/cloc). All projects (except `wgctrl-go`) 
 include a `Makefile` target `sloc` that can be used to reproduce these values. 
-Measured on 2022-10-03.
+Measured on 2022-10-22.
