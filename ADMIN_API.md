@@ -41,13 +41,15 @@ below.
 
 Two API calls are provided, `/create` and `/destroy` that can be used to create 
 a VPN configuration for a particular user (and profile) and to remove the VPN 
-configurations of a particular user and delete their account.
+configurations of a particular user *and* delete their account.
 
 The `/create` call will transparently create the user if necessary and the 
 `/destroy` call will delete the account as well as disconnect the client(s) of
 that user and delete the configuration(s).
 
 ## Create
+
+Create a VPN configuration for a particular user (and profile).
 
 | Parameter      | Required | Value(s)                                                                         |
 | -------------- | -------- | -------------------------------------------------------------------------------- |
@@ -72,9 +74,11 @@ $ curl \
 
 ## Destroy
 
+Remove the VPN configurations of a particular user *and* delete their account.
+
 | Parameter      | Required | Value(s)                                                                                     |
 | -------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `user_id`      | Yes      | The user for which to create the configuration                                               |
+| `user_id`      | Yes      | The user for which to delete the configuration(s) and delete their account                   |
 
 **TODO**: should we also require `profile_id` to only delete config of certain 
 profile?
