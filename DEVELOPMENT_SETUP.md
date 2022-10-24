@@ -11,15 +11,17 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either Fedora >= 34, Debian >= 11 or Ubuntu >= 
-21.10. Other distributions MAY also work, but some minor details, regarding 
+We assume you will be using either Fedora >= 36, Debian >= 11 or Ubuntu >= 
+22.04. Other distributions MAY also work, but some minor details, regarding 
 installation of the required software, will be different.
 
 **NOTE**: if you try to build a package repository you need to be on the 
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
-# Fedora >= 34
+# Requirements
+
+## Fedora >= 36
 
 If you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -30,7 +32,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     php-curl php-gd unzip qrencode wireguard-tools scdoc sqlite php-ldap
 ```
 
-# Debian >= 11, Ubuntu >= 21.10
+## Debian >= 11, Ubuntu >= 22.04
 
 If you are not running Debian/Ubuntu as your desktop OS, it is easiest to 
 install a VM with a desktop. In addition, install the required software 
@@ -59,7 +61,7 @@ All projects have unit tests included, they can be run from the project folder,
 e.g.: 
 
     $ cd ${HOME}/Projects/eduVPN-v3/vpn-user-portal
-    $ vendor/bin/phpunit
+    $ make test
 
 # Using
 
@@ -118,6 +120,56 @@ easiest is to (re)start vpn-daemon as `root`, or use the `vpn-daemon.service`
 file as can be found 
 [here](https://git.sr.ht/~fkooman/vpn-daemon#systemd), but make sure to update 
 the path at `ExecStart=`.
+
+# Development
+
+## Composer
+
+We'll depend on a number of packages for development purposes that you can
+install first.
+
+```
+$ mkdir -p ${HOME}/.composer`
+$ cat << EOF > ${HOME}/.composer/composer.json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git.sr.ht/~fkooman/put"
+        }
+    ],
+    "require": {
+        "fkooman/put": "^0",
+        "friendsofphp/php-cs-fixer": "^3",
+        "phploc/phploc": "^7",
+        "phpstan/phpstan": "^1",
+        "vimeo/psalm": "^4"
+    }
+}
+EOF
+$ composer global update
+```
+
+On macOS you need to add `${HOME}/.composer/bin` to your `PATH`, e.g.:
+
+```
+$ echo '/Users/fkooman/.composer/vendor/bin' | sudo tee /etc/paths.d/composer
+```
+
+Don't forget to close all terminals. On Fedora this is not necessary, it will 
+be automatically added to your path, but does require a logout/login after
+installing the `composer` package.
+
+The tools `php-cs-fixer`, `phploc`, `phpstan` and `psalm` are used during
+development. You can read about their purpose on their respective websites:
+
+* [php-cs-fixer](https://cs.symfony.com/)
+* [psalm](https://psalm.dev/)
+* [phpstan](https://phpstan.org/)
+* [phploc](https://github.com/sebastianbergmann/phploc)
+
+The VPN software (and dependencies) contain `Makefile` targets that use this 
+software.
 
 # Modifying Code
 
