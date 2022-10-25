@@ -25,7 +25,7 @@ EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
 printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
 EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
 
-printf "Enable Automatic Update? [Y/n]? "; read -r AUTO_UPDATE
+printf "Enable *Weekly* Automatic Update & Reboot? [Y/n]? "; read -r AUTO_UPDATE
 AUTO_UPDATE=${AUTO_UPDATE:-y}
 
 # whether or not to use the "development" repository (for experimental builds 
