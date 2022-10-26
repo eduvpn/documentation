@@ -56,9 +56,21 @@ client and VPN server. So if you have SSH running on your server, the clients
 will be able to connect to it when you don't take additional steps! Look 
 [here](FIREWALL.md).
 
+**NOTE**: if you want to use the [Development Repository](DEVELOPMENT_REPO.md) 
+for your installation, which has development releases and supports additional 
+OSes/architectures, use:
+
+```bash
+# USE_DEV_REPO=y ./deploy_debian.sh
+```
+
 ## Update
 
-See [INSTALL_UPDATES](INSTALL_UPDATES.md).
+During the deployment you are asked whether to enable automatic updates. If you
+choose `y`, the default, a _cronjob_ is installed in 
+`/etc/cron.weekly/vpn-maint-update-system`.
+
+For manual installation, see [INSTALL_UPDATES](INSTALL_UPDATES.md).
 
 ## Configuration
 

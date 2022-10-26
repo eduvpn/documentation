@@ -93,6 +93,10 @@ fi
 # install software (VPN packages)
 /usr/bin/dnf -y install vpn-server-node vpn-user-portal vpn-maint-scripts
 
+###############################################################################
+# AUTO UDPATE
+###############################################################################
+
 if [ "${AUTO_UPDATE}" = "y" ]; then
     cat << EOF > /etc/cron.weekly/vpn-maint-update-system
 #!/bin/sh
