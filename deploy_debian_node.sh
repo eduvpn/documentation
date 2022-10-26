@@ -30,7 +30,6 @@ apt install -y apt-transport-https curl iptables-persistent sudo lsb-release \
     tmux
 
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
-PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
     curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc

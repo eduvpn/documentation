@@ -69,7 +69,7 @@ openssl req \
 
 a2enmod ssl headers rewrite proxy_fcgi setenvif 
 a2dismod status
-a2enconf php${PHP_VERSION}-fpm
+a2enconf "php${PHP_VERSION}-fpm"
 
 # VirtualHost
 cp resources/ssl.debian.conf /etc/apache2/mods-available/ssl.conf
@@ -109,7 +109,7 @@ sed -i "s|fd43::|$(ipcalc-ng -6 -r 64 -n --no-decorate)|" "/etc/vpn-user-portal/
 # DAEMONS
 ###############################################################################
 
-systemctl enable --now php${PHP_VERSION}-fpm
+systemctl enable --now "php${PHP_VERSION}-fpm"
 systemctl enable --now apache2
 
 ###############################################################################
