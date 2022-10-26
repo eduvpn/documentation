@@ -20,6 +20,10 @@ WEB_FQDN=${WEB_FQDN:-${MACHINE_HOSTNAME}}
 # convert hostname to lowercase
 WEB_FQDN=$(echo "${WEB_FQDN}" | tr '[:upper:]' '[:lower:]')
 
+# whether or not to use the "development" repository (for experimental builds 
+# or platforms not yet officially supported)
+USE_DEV_REPO=${USE_DEV_REPO:-n}
+
 ###############################################################################
 # SOFTWARE
 ###############################################################################
@@ -31,8 +35,13 @@ apt install -y apt-transport-https curl apache2 php-fpm pwgen \
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
-cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
-echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+if [ "${USE_DEV_REPO}" = "y" ]; then
+    curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc
+    echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3-dev.list
+else
+    cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
+    echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+fi
 
 apt update
 

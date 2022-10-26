@@ -17,6 +17,10 @@ EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
 printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
 EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
 
+# whether or not to use the "development" repository (for experimental builds 
+# or platforms not yet officially supported)
+USE_DEV_REPO=${USE_DEV_REPO:-n}
+
 ###############################################################################
 # SOFTWARE
 ###############################################################################
@@ -28,8 +32,13 @@ apt install -y apt-transport-https curl iptables-persistent sudo lsb-release \
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
-cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
-echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+if [ "${USE_DEV_REPO}" = "y" ]; then
+    curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc
+    echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3-dev.list
+else
+    cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
+    echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+fi
 
 apt update
 

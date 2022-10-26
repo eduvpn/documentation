@@ -77,11 +77,11 @@ else
     rpm --import resources/repo+v3@eduvpn.org.asc
     # configure repository
     cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
-    [eduVPN_v3]
-    name=eduVPN 3.x Packages (Fedora \$releasever)
-    baseurl=https://repo.eduvpn.org/v3/rpm/fedora-\$releasever-\$basearch
-    gpgcheck=1
-    enabled=1
+[eduVPN_v3]
+name=eduVPN 3.x Packages (Fedora \$releasever)
+baseurl=https://repo.eduvpn.org/v3/rpm/fedora-\$releasever-\$basearch
+gpgcheck=1
+enabled=1
 EOF
 fi
 

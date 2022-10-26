@@ -17,6 +17,10 @@ EXTERNAL_IF=$(ip -4 ro show default | tail -1 | awk {'print $5'})
 printf "External Network Interface [%s]: " "${EXTERNAL_IF}"; read -r EXT_IF
 EXTERNAL_IF=${EXT_IF:-${EXTERNAL_IF}}
 
+# whether or not to use the "development" repository (for experimental builds 
+# or platforms not yet officially supported)
+USE_DEV_REPO=${USE_DEV_REPO:-n}
+
 ###############################################################################
 # SYSTEM
 ###############################################################################
@@ -38,16 +42,28 @@ systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
 
-# import PGP key
-rpm --import resources/repo+v3@eduvpn.org.asc
-# configure repository
-cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
+if [ "${USE_DEV_REPO}" = "y" ]; then
+    # import PGP key
+    rpm --import https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+    cat << EOF > /etc/yum.repos.d/eduVPN_v3-dev.repo
+[eduVPN_v3-dev]
+name=eduVPN 3.x Development Packages (Fedora \$releasever)
+baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/fedora-\$releasever-\$basearch
+gpgcheck=1
+enabled=1
+EOF
+else
+    # import PGP key
+    rpm --import resources/repo+v3@eduvpn.org.asc
+    # configure repository
+    cat << EOF > /etc/yum.repos.d/eduVPN_v3.repo
 [eduVPN_v3]
 name=eduVPN 3.x Packages (Fedora \$releasever)
 baseurl=https://repo.eduvpn.org/v3/rpm/fedora-\$releasever-\$basearch
 gpgcheck=1
 enabled=1
 EOF
+fi
 
 # install software (dependencies)
 /usr/bin/dnf -y install php-opcache iptables-nft iptables-services \
