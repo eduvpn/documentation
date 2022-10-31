@@ -55,6 +55,9 @@ $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v3/developme
 $ sh ./development_setup.sh
 ```
 
+**NOTE**: running this command can take a long time, this has to do with Go
+dependency downloads (almost 1GB) to `$(HOME}/go` for some reason 🤷.
+
 # Testing
 
 All projects have unit tests included, they can be run from the project folder,
