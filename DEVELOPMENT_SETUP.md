@@ -27,7 +27,7 @@ VM with a desktop. In addition, install the required software (dependencies):
 ```
 $ sudo yum -y install golang php-cli git composer php-date php-filter php-hash \
     php-json php-mbstring php-pcre php-pdo php-spl php-libsodium php-curl \
-    php-gd unzip
+    php-gd unzip qrencode scdoc 
 ```
 
 # Fedora >= 35
@@ -38,7 +38,7 @@ VM with a desktop. In addition, install the required software (dependencies):
 ```
 $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     php-json php-mbstring php-pcre php-pdo php-spl php-sodium php-curl php-gd \
-    unzip
+    unzip scdoc qrencode
 ```
 
 # Debian >= 11
@@ -48,7 +48,7 @@ VM with a desktop. In addition, install the required software (dependencies):
 
 ```
 $ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
-    php-xml php-cli unzip golang
+    php-xml php-cli unzip golang qrencode scdoc
 ```
 
 # Installation
