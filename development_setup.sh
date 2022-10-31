@@ -72,6 +72,7 @@ done
 # vpn-daemon                         #
 ######################################
 cd "${BASE_DIR}/vpn-daemon" || exit
+echo "[Go] building vpn-daemon... (may take a while...)"
 go build -o vpn-daemon tuxed.net/vpn-daemon/cmd/vpn-daemon/...
 
 ######################################
