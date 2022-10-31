@@ -30,7 +30,7 @@ $ sudo yum -y install golang php-cli git composer php-date php-filter php-hash \
     php-gd unzip
 ```
 
-# Fedora >= 33
+# Fedora >= 35
 
 When you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -41,7 +41,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     unzip
 ```
 
-# Debian >= 10
+# Debian >= 11
 
 When you are not running Debian as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -50,8 +50,6 @@ VM with a desktop. In addition, install the required software (dependencies):
 $ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
     php-xml php-cli unzip golang
 ```
-
-**NOTE**: on Debian 10 you MUST install golang from `buster-backports`.
 
 # Installation
 
@@ -66,11 +64,11 @@ $ sh ./development_setup.sh
 
 # Testing
 
-All projects have unit tests included, they can be run from the project folder,
-e.g.: 
+Most projects have unit tests included, they can be run from the project 
+folder, e.g.: 
 
     $ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
-    $ vendor/bin/phpunit
+    $ make test
 
 # Using
 
@@ -280,6 +278,6 @@ done
 # Creating DEB packages
 
 Debian packages currently only work from proper releases. Updating the Debian 
-packages is described [here](https://git.sr.ht/~fkooman/builder.deb). You can
+packages is described [here](https://git.sr.ht/~fkooman/nbuilder.deb). You can
 also use your own `vpn-user-portal.deb` fork to get going. Follow the 
 instructions there.
