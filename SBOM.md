@@ -9,15 +9,15 @@ modification.
 It is an initial attempt to create an 
 [SBOM](https://en.wikipedia.org/wiki/Software_supply_chain).
 
-| Component       												    | Description                     | Branch   | Language | LoC*  |
-| ----------------------------------------------------------------- | ------------------------------- | -------- | -------- | ----- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `v3`     | PHP      | 11613 |
-| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `v3`     | PHP      | 1054  |
-| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `main`   | PHP      | 835   |
-| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `main`   | PHP      | 2181  |
-| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`   | Go       | 380   |
-| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`   | Go       | 263   |
-| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master` | Go       | ?     |
+| Component       												    | Description                     | Tag/Branch | Language | LoC*  |
+| ----------------------------------------------------------------- | ------------------------------- | ---------- | -------- | ----- |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.1.3`    | PHP      | 11615 |
+| [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `3.0.2`    | PHP      | 1028  |
+| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `6.1.0`    | PHP      | 835   |
+| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `7.3.1`    | PHP      | 2149  |
+| [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`     | Go       | 380   |
+| [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`     | Go       | 263   |
+| [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master`   | Go       | ?     |
 
 We do not list the dependencies of `wgctrl-go`, there are many (indirect) ones. 
 It is not exactly clear to me which ones are actually used. We _vendor_ 
