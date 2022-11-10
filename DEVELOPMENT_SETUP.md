@@ -146,7 +146,10 @@ $ cat << EOF > ${HOME}/.composer/composer.json
         "friendsofphp/php-cs-fixer": "^3",
         "phploc/phploc": "^7",
         "phpstan/phpstan": "^1",
-        "vimeo/psalm": "^4"
+        "vimeo/psalm": "^4",
+        "phan/phan": "^5",
+        "phpmd/phpmd": "^2",
+        "phpbench/phpbench": "^1"
     }
 }
 EOF
