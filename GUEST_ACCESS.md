@@ -42,12 +42,25 @@ section:
 ]
 ```
 
+After enabling "Guest Access" you SHOULD reset your server to remove all data,
+as with "Guest Access" enabled you'll get new "User IDs". This way you'll 
+remove any users accounts that were created before enabling "Guest Access".
+
+```bash
+$ sudo vpn-maint-reset-system
+```
+
 Next you need to generate a HMAC key that will be used to "obfuscate" the user 
 identifiers of your users as to not "leak" them to other NREN servers.
 
 ```bash
 $ sudo /usr/libexec/vpn-user-portal/generate-secrets --hmac
 ```
+
+If you were using the `adminUserIdList` option in 
+`/etc/vpn-user-portal/config.php` to list your admins, you MUST update them to 
+list the new "User IDs". Have your admins look on their "Account" page in the
+portal so you can add them.
 
 # Public Key
 
