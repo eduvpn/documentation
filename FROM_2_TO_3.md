@@ -71,7 +71,7 @@ to eduVPN.
 Delete all the software we will replace when running the new deploy:
 
 ```
-$ sudo apt remove --purge vpn-user-portal vpn-server-api vpn-server-node vpn-maint-scripts
+$ sudo apt remove --purge vpn-user-portal vpn-server-api vpn-server-node vpn-maint-scripts vpn-daemon
 $ sudo apt autoremove --purge
 ```
 
