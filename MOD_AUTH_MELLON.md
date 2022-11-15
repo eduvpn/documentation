@@ -1,6 +1,9 @@
 Below we assume you use `vpn.example`, but modify this domain to your own 
 domain name!
 
+This document describes how to use/configure 
+[mod_auth_mellon](https://github.com/latchset/mod_auth_mellon).
+
 # Installation
 
 ## Fedora / Enterprise Linux
@@ -66,13 +69,39 @@ Edit `/etc/vpn-user-portal/config.php` and set:
 
     'authModule' => 'MellonAuthModule',
 
-By default the `eduPersonTargetedId` attribute will be used to identify users.
-You can change the `userIdAttribute` value under the `MellonAuthentication` 
-section.
+You MUST set the `userIdAttribute` value under the `MellonAuthModule` section.
 
 If you also want to use authorization based on an attribute, e.g. 
 `eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
 `permissionAttributeList` as well.
+
+## Examples
+
+Using `uid`:
+
+```php
+'MellonAuthModule' => [
+    // uid
+    'userIdAttribute' => 'MELLON_urn:oid:0_9_2342_19200300_100_1_1',
+    // eduPersonAffiliation
+    'permissionAttributeList' => ['MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_1']
+],
+```
+
+If you want to use `eduPersonTargetedID`, which is not really recommended, 
+use _pairwise-id_ instead, you can configure it like this:
+
+```php
+'MellonAuthModule' => [
+    // eduPersonTargetedId
+    'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
+    'nameIdSerialization' => true,
+    'spEntityId' => 'https://vpn.example/saml/metadata',
+```
+
+This will _serialize_ the XML node to a string using the IdP and SP entity ID
+together with the eduPersonTargetedID _value_. If you are using the "Name ID", 
+very much not recommended, you can set `userIdAttribute` to `MELLON_NAME_ID`.
 
 # Apache
 
@@ -87,6 +116,9 @@ If you also want to use authorization based on an attribute, e.g.
             MellonSecureCookie On
             MellonIdP "IDP"
             MellonMergeEnvVars On
+            # Override the SP's entityID if needed, by default it is 
+            # https://vpn.example/saml/metadata
+            #MellonSPentityId https://vpn.example/saml
             MellonSPPrivateKeyFile /etc/httpd/saml/sp.key
             MellonSPCertFile /etc/httpd/saml/sp.crt
             MellonSignatureMethod rsa-sha256
@@ -95,8 +127,8 @@ If you also want to use authorization based on an attribute, e.g.
             #MellonIdPMetadataFile /etc/httpd/saml/metadata.test.surfconext.nl.xml
             MellonIdPMetadataFile /etc/httpd/saml/metadata.surfconext.nl.xml
             # When using a discovery service, use these two lines below 
-            # MellonIdPMetadataFile /path/to/metadata.xml
-            # MellonDiscoveryUrl "https://disco.example.org/"
+            #MellonIdPMetadataFile /path/to/metadata.xml
+            #MellonDiscoveryUrl "https://disco.example.org/"
         </Location>
         
         <Location /vpn-user-portal>
@@ -134,6 +166,9 @@ If you also want to use authorization based on an attribute, e.g.
             MellonSecureCookie On
             MellonIdP "IDP"
             MellonMergeEnvVars On
+            # Override the SP's entityID if needed, by default it is 
+            # https://vpn.example/saml/metadata
+            #MellonSPentityId https://vpn.example/saml
             MellonSPPrivateKeyFile /etc/apache2/saml/sp.key
             MellonSPCertFile /etc/apache2/saml/sp.crt
             MellonSignatureMethod rsa-sha256
@@ -142,8 +177,8 @@ If you also want to use authorization based on an attribute, e.g.
             MellonIdPMetadataFile /etc/apache2/saml/metadata.test.surfconext.nl.xml
             #MellonIdPMetadataFile /etc/apache2/saml/metadata.surfconext.nl.xml
             # When using a discovery service, use these two lines below 
-            # MellonIdPMetadataFile /path/to/metadata.xml
-            # MellonDiscoveryUrl "https://disco.example.org/"
+            #MellonIdPMetadataFile /path/to/metadata.xml
+            #MellonDiscoveryUrl "https://disco.example.org/"
         </Location>
 
         <Location /vpn-user-portal>
