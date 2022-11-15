@@ -88,7 +88,7 @@ Using `uid`:
 ],
 ```
 
-If you want to use `eduPersonTargetedID`, which is not really recommended, 
+If you want to use `eduPersonTargetedId`, which is not really recommended, 
 use _pairwise-id_ instead, you can configure it like this:
 
 ```php
@@ -97,10 +97,11 @@ use _pairwise-id_ instead, you can configure it like this:
     'userIdAttribute' => 'MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_10',
     'nameIdSerialization' => true,
     'spEntityId' => 'https://vpn.example/saml/metadata',
+],
 ```
 
 This will _serialize_ the XML node to a string using the IdP and SP entity ID
-together with the eduPersonTargetedID _value_. If you are using the "Name ID", 
+together with the eduPersonTargetedId _value_. If you are using the "Name ID", 
 very much not recommended, you can set `userIdAttribute` to `MELLON_NAME_ID`.
 
 # Apache
