@@ -5,10 +5,7 @@ category: advanced
 ---
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
-DNS servers used by the server itself (as configured in `/etc/resolv.conf`) for
-the VPN clients as well. If no usable address is available, e.g. only 
-"localhost" addresses are configured there, the public DNS service offered by 
-[Quad9](https://quad9.net/) is used. 
+the public DNS service offered by [Quad9](https://quad9.net/) by default.
 
 It is possible to run your own local DNS resolver for the VPN clients. This has 
 a number of benefits:
@@ -22,7 +19,7 @@ Running your own DNS resolver can also be a good idea if no upstream DNS server
 is provided by your ISP.
 
 **NOTE**: if your organization has a (trusted) DNS service you SHOULD probably
-use those! See [Profile Config](PROFILE_CONFIG.md), look for the 
+use that one! See [Profile Config](PROFILE_CONFIG.md), look for the 
 `dnsServerList` option.
 
 # Configuration
@@ -92,14 +89,21 @@ $ sudo systemctl restart unbound
 
 Modify `/etc/vpn-user-portal/config.php` for each of the VPN profiles 
 where you want to use "local DNS", point the `dnsServerList` entry to
-the IPv4 (and IPv6) addresses of your DNS server:
+the IPv4 (and IPv6) address(es) of your DNS server or the template variables
+`@GW4@` and/or `@GW6@`:
 
 ```
-'dnsServerList' => ['10.5.5.1', 'fc55::1/64'],
+'dnsServerList' => ['@GW4@', '@GW6@'],
 ```
 
-Replace the IP addresses with IP addresses at which the VPN clients can reach 
-the DNS server.
+The `@GW4@` and `@GW6@` template variables are replaced by the gateway IP 
+addresses of the VPN server. You can of course also specify real IP addresses 
+here, but make sure the DNS servers are reachable by the VPN clients and that 
+traffic to the DNS server(s) is routed over the VPN if you are not using a 
+"default gateway" configuration.
+
+**NOTE**: the template variables `@GW4@` and `@GW6@` are available in 
+vpn-user-portal >= 3.1.6. 
 
 ## Firewall
 
