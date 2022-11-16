@@ -40,7 +40,7 @@ systems:
 
 - [Debian 11](DEPLOY_DEBIAN.md)
 - [Ubuntu 22.04](DEPLOY_DEBIAN.md)
-- [Fedora 36](DEPLOY_FEDORA.md)
+- [Fedora >= 36](DEPLOY_FEDORA.md)
 - [Enterprise Linux 9](DEPLOY_EL.md)
 
 **Recommended OS**: Debian 11
