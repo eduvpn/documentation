@@ -42,6 +42,23 @@ Setting a local recursive DNS server takes a few steps:
 $ sudo dnf -y install unbound
 ```
 
+You MUST disable the `systemd-resolved` "stub" resolver if you want to have 
+_unbound_ listen on all interfaces on port 53. Create the directory,
+and then the file `/etc/systemd/resolved.conf.d/stub-listener.conf` with the 
+following content:
+
+```
+[Resolve]
+DNSStubListener=no
+```
+
+Restart `systemd-resolved`:
+
+```bash
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart systemd-resolved
+```
+
 ### Debian 
 
 ```
