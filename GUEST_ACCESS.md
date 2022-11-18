@@ -89,7 +89,8 @@ provide use with the following information:
 * An *abuse* contact email address to be contacted in case of abuse (preferably 
   a role-based mail address);
 * A *technical* contact email address to be contacted in case of technical 
-  problems (preferably a role-based mail address);
+  problems, i.e. that reaches the operators/maintainers of the VPN server(s), 
+  preferably a role-based mail address;
 * End-user support contact(s), at least one of: mail, URL, phone number.
   **NOTE** these will become public;
 * A web site we can refer end-users to for this particular _Secure Internet_ 
