@@ -12,6 +12,7 @@ Currently, the following access control mechanisms are supported:
 - SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
   `eduPersonEntitlement`)
 - LDAP (via LDAP attribute, e.g. `memberOf`)
+- Static Permissions (via JSON file)
 
 The permissions are _cached_ for up to a configurable period through 
 [Session Expiry](SESSION_EXPIRY.md). By default this is 90 days, but can easily 
@@ -21,7 +22,7 @@ user is not actively in the process of authenticating.
 
 The configuration is done in `/etc/vpn-user-portal/config.php`.
 
-## Authentication 
+## Methods
 
 ### SAML
 
@@ -73,6 +74,40 @@ and set the `permissionAttributeList` to the name of the attribute:
 In order to test whether everything works fine, you can enable the 
 `showPermissions` option in `/etc/vpn-user-portal/config.php` by setting it to 
 `true`. This will show the "raw" permissions on the user's "Account" page.
+
+## Static
+
+**NOTE**: this has been implemented in vpn-user-portal >= 3.1.8
+
+You can use a (JSON) file where the mapping between permissions and users are 
+stored.
+
+This file is stored in `/etc/vpn-user-portal/static_permissions.json` and has 
+the following format:
+
+```json
+{
+    "administrators": [
+        "foobar",
+        "foobaz"
+    ],
+    "employees": [
+        "foobar",
+        "foo",
+        "bar",
+        "baz"
+    ]
+}
+```
+
+This means that the users `foobar` and `foobaz` get the `administrators` 
+permission and the users `foobar`, `foo`, `bar` and `baz` get the `employees`
+permission. Note that the user `foobar` has _two_ permissions.
+
+These permissions do not mean anything by themselves, and need to be further 
+mapped, e.g. through `accessPermissionList`, `aclPermissionList` or 
+`adminPermissionList` in `/etc/vpn-user-portal/config.php`. See below for 
+more information.
 
 ## Access to the Service
 
