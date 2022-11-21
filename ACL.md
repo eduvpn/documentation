@@ -1,3 +1,5 @@
+# ACL
+
 The VPN service supports access control. You can:
 
 1. Restrict who has access to the server;
@@ -108,6 +110,9 @@ These permissions do not mean anything by themselves, and need to be further
 mapped, e.g. through `accessPermissionList`, `aclPermissionList` or 
 `adminPermissionList` in `/etc/vpn-user-portal/config.php`. See below for 
 more information.
+
+The existence of this file activates "Static Permissions" for your server. Make 
+sure it in the correct format, see the example above.
 
 ## Access to the Service
 
