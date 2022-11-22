@@ -182,6 +182,16 @@ You can either allow all forwarding, be specific with IP ranges
 -A FORWARD -i tun+ -o wg0 -j ACCEPT
 ```
 
+As an example, you have two WireGuard-only profiles on your server with 
+`10.0.0.0/24` and `10.100.100.0/24` prefixes where the first allows access to 
+the Internet, and the second only allows connectivity between the clients.
+
+```
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i wg0 -s 10.0.0.0/24 -o eth0 -j ACCEPT
+-A FORWARD -i wg0 -s 10.100.100.0/24 -d 10.100.100.0/24 -i wg0 -o wg0 -j ACCEPT
+```
+
 # Reject Forwarding Traffic
 
 Sometimes you want to prevent VPN clients from reaching certain network, or 
