@@ -84,13 +84,13 @@ Full list of the available applications:
 * [eduVPN](https://app.eduvpn.org/)
 * [Let's Connect!](https://app.letsconnect-vpn.org/)
 
-## Guest Usage 
+## Guest Access 
 
-If your server is currently running in what we call "Secure Internet" or 
-"Guest Usage" mode, i.e. you are an NREN and provide VPN access to your 
-institutes' users and users of other NRENs institutes, you MUST NOT upgrade / 
-install 3.x yet. This deployment mode will be supported only from eduVPN 3.1 
-onward.
+[Guest Access](GUEST_ACCESS.md) (only available for NRENs, disabled by default) 
+has switched to the new OAuth token format. It also "obfuscates" the local user
+identifiers now so they are not leaked to other servers by using a HMAC.
+
+"Guest Access" is only available in vpn-user-portal >= 3.1.0.
 
 ## Known Issues
 
@@ -105,6 +105,7 @@ The table below lists the changes to the release notes.
 
 | Date       | Note                                           |
 | ---------- | ---------------------------------------------- |
+| 2022-11-23 | Update "Guest Access" section                  |
 | 2022-10-13 | Mention EL9 is officially supported now        |
 | 2022-09-26 | eduVPN on Windows will auto upgrade to 3.0 now |
 | 2022-05-24 | Initial 3.x Release Notes                      | 
