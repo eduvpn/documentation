@@ -130,6 +130,11 @@ the user can have this many VPN apps connected simultaneously.
 ],
 ```
 
+The user *can* authorize as many VPN clients as they want, but the number of
+active simultaneous connections is limited by this value. If set to 3, and a 
+4th client attempts to connect, the client that was connected the longest will 
+automatically be disconnected.
+
 ## WireGuard
 
 You can configure the WireGuard port over which VPN clients can connect to the
