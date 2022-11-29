@@ -97,7 +97,7 @@ can't be bothered to setup an IRC client. See you there!
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
 - [Fedora](DEPLOY_FEDORA.md) >= 35 (`x86_64`)
-- [Debian](DEPLOY_DEBIAN.md) 10, 11 (`x86_64`) 
+- [Debian](DEPLOY_DEBIAN.md) >= 10 (`x86_64`) 
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
@@ -111,19 +111,6 @@ rebooted before you install the software!
 
 **NOTE**: if you want to deploy on multiple machines for load balancing, please 
 follow [these](MULTI_NODE.md) instructions!
-
-## Experimental
-
-- [Fedora](DEPLOY_FEDORA.md) 34, 35 (`aarch64`) 
-  (Only available through the "development" repository)
-
-You can use the Fedora `aarch64` packages on e.g. the 
-[Raspberry Pi](RASPBERRY_PI.md).
-
-We also have **EXPERIMENTAL** support for "EL8", i.e. CentOS 8, Rocky Linux 8
-and Red Hat Enterprise Linux. See 
-[this](https://list.surfnet.nl/pipermail/eduvpn-deploy/2021-July/000343.html) 
-mailinglist post.
 
 # Development
 
