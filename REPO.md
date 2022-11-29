@@ -14,7 +14,7 @@ fkooman | `F671 0CAA FBB4 7A8A 3EC9  1800 629D 7EE2 B63D DE73` | 2032-05-13
 
 ### PGP Key
 
-[Download](https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc)
+[Download](resources/repo+v3@eduvpn.org.asc)
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -34,7 +34,7 @@ CRLMAwAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYp1+4rY93nPy0QEA
 ## Repository Key
 
 ```bash
-$ curl https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/eduVPN_v3.asc
+$ curl https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
 ```
 
 ## Repository Config
