@@ -58,7 +58,7 @@ else
 fi
 
 # import PGP key and add repository
-rpm --import "https://repo.eduvpn.org/v2/rpm/centos+20210419@eduvpn.org.asc"
+rpm --import resources/centos+20210419@eduvpn.org.asc
 cat << EOF > /etc/yum.repos.d/eduVPN_v2.repo
 [eduVPN_v2]
 name=eduVPN 2.x Packages (EL 7)
