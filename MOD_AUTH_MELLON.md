@@ -88,7 +88,8 @@ Using `uid`:
 ],
 ```
 
-Using [Pairwise Subject Identifier](https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.html#_Toc536097230](https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.html#_Toc536097230):
+Using 
+[Pairwise Subject Identifier](https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.html#_Toc536097230):
 
 ```php
 'MellonAuthModule' => [
