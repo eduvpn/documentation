@@ -88,6 +88,14 @@ Using `uid`:
 ],
 ```
 
+Using [https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.html#_Toc536097230](https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.html#_Toc536097230):
+
+```php
+'MellonAuthModule' => [
+    'userIdAttribute' => 'MELLON_urn:oasis:names:tc:SAML:attribute:pairwise-id',
+],
+```
+
 If you want to use `eduPersonTargetedId`, which is not really recommended, 
 use _pairwise-id_ instead, you can configure it like this:
 
