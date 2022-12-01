@@ -48,7 +48,7 @@ echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sud
 ## Repository Key
 
 ```bash
-$ curl -O https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.asc
+$ curl -O https://repo.eduvpn.org/v3/rpm/repo+v3@eduvpn.org.asc
 $ sudo rpm --import repo+v3@eduvpn.org.asc
 ```
 
