@@ -34,7 +34,7 @@ CRLMAwAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYp1+4rY93nPy0QEA
 ## Repository Key
 
 ```bash
-$ curl https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
+$ curl https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
 ```
 
 ## Repository Config
@@ -48,7 +48,7 @@ echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sud
 ## Repository Key
 
 ```bash
-$ curl -O https://repo.eduvpn.org/v3/repo+v3@eduvpn.org.asc
+$ curl -O https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.asc
 $ sudo rpm --import repo+v3@eduvpn.org.asc
 ```
 
