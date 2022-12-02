@@ -94,6 +94,7 @@ Using
 ```php
 'MellonAuthModule' => [
     'userIdAttribute' => 'MELLON_urn:oasis:names:tc:SAML:attribute:pairwise-id',
+    '' => ['MELLON_urn:oid:1_3_6_1_4_1_5923_1_1_1_7'],
 ],
 ```
 
