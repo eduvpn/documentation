@@ -1,100 +1,82 @@
----
-title: Monitoring
-description: Server Monitoring
-category: documentation
----
+# Monitoring
 
 We have very minimal monitoring capability in the VPN software as of now. This 
 will most likely be improved in the future if there is a need for it.
 
-**NOTE**: `port_client_count` and `connection_list` are only available when 
-using [vpn-daemon](VPN_DAEMON.md) and in JSON output format.
-
-**NOTE**: these format is NOT "stable". If you depend on this in your scripting
+**NOTE**: this format is NOT "stable". If you depend on this in your scripting
 be ready to update when new releases appear!
 
 # CSV
 
 A simple CSV format:
 
-    $ sudo vpn-user-portal-status 
-    profile_id,active_connection_count,max_connection_count,percentage_in_use
-    amsterdam,102,488,20
+```bash
+$ sudo vpn-user-portal-status
+profile_id,active_connection_count,max_connection_count,percentage_in_use
+ams,109,997,10
+```
 
 If you want to see an aggregate of the number of connected clients over all 
 profiles, you can use this:
 
-    $ sudo vpn-user-portal-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
+```bash
+$ sudo vpn-user-portal-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
+```
 
 # JSON
 
-Aggregate information:
+You can also get the output as JSON:
 
-    $ sudo vpn-user-portal-status --json
-    [
-        {
-            "profile_id": "amsterdam",
-            "active_connection_count": 103,
-            "max_connection_count": 488,
-            "percentage_in_use": 21,
-            "port_client_count": {
-                "udp/1194": 15,
-                "udp/1195": 27,
-                "udp/1196": 21,
-                "udp/1197": 17,
-                "tcp/443": 9,
-                "tcp/1194": 4,
-                "tcp/1195": 6,
-                "tcp/1196": 4
-            }
-        }
-    ]
+```bash
+$ sudo vpn-user-portal-status --json
+[
+    {
+        "profile_id": "ams",
+        "active_connection_count": 109,
+        "max_connection_count": 997,
+        "percentage_in_use": 10
+    }
+]
+```
 
 Show also connected VPN client information:
 
-    $ sudo vpn-user-portal-status --json --connections
-    [
-        {
-            "profile_id": "amsterdam",
-            "active_connection_count": 106,
-            "max_connection_count": 488,
-            "percentage_in_use": 21,
-            "port_client_count": {
-                "udp/1194": 16,
-                "udp/1195": 26,
-                "udp/1196": 21,
-                "udp/1197": 19,
-                "tcp/443": 9,
-                "tcp/1194": 4,
-                "tcp/1195": 7,
-                "tcp/1196": 4
+```bash
+[
+    {
+        "profile_id": "ams",
+        "active_connection_count": 110,
+        "max_connection_count": 997,
+        "percentage_in_use": 11,
+        "connection_list": [
+            {
+                "user_id": "Nqw0fn/4jeS06cq/r2lnxm4l6mGY2F2SKiYu/98Aowo=",
+                "ip_list": [
+                    "192.168.62.2",
+                    "fd75:2e3b:af59:8c76::2"
+                ],
+                "vpn_proto": "openvpn"
             },
-            "connection_list": [
-                {
-                    "user_id": "john.doe",
-                    "virtual_address": [
-                        "192.0.2.44",
-                        "2001:db8::44"
-                    ]
-                },
-                {
-                    "user_id": "jane.doe",
-                    "virtual_address": [
-                        "192.0.2.45",
-                        "2001:db8::45"
-                    ]
-                },
 
-                ...
-
-            ]
-        }
-    ]
+            ...
+            
+        ]
+    }
+]
+```
     
-To show all users connected to the profile `amsterdam` you can use something
+To show all users connected to the profile `ams` you can use something
 like this using the [jq](https://stedolan.github.io/jq/) tool:
 
-    $ sudo vpn-user-portal-status --json --connections | jq '.[] | select(.profile_id | contains("amsterdam")) | .connection_list | .[] .user_id'
+```bash
+$ sudo vpn-user-portal-status --json --connections | jq '.[] | select(.profile_id | contains("ams")) | .connection_list | .[] .user_id' -r
+```
+
+To show the number of WireGuard and OpenVPN connections:
+
+```bash
+$ sudo vpn-user-portal-status --json --connections | jq '.[] | select(.profile_id | contains("ams")) | .connection_list | .[] .vpn_proto' -r | sort | uniq -c
+```
 
 ## Alerting
 
@@ -105,7 +87,9 @@ default is `90` indicating `90%`.
 You can use the status command from `cron` to send out alerts when the IP space 
 is about to be depleted, e.g.:
 
-    MAILTO=admin@example.org
-    */5 * * * * /usr/bin/vpn-user-portal-status --alert 75
+```cron
+MAILTO=admin@example.org
+*/5 * * * * /usr/bin/vpn-user-portal-status --alert 75
+```
 
 Assuming `cron` is able to mail reports this should work!

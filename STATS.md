@@ -39,3 +39,5 @@ $ sudo vpn-user-portal-status --json
     }
 ]
 ```
+
+If you want to implement _alerting_, you can have a look [here](MONITORING.md)
