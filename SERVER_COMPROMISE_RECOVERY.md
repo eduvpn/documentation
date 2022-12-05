@@ -87,5 +87,5 @@ We wrote a simple patch `[8]` implementing exactly this.
 * `[4]` https://github.com/eduvpn/python-eduvpn-client/issues/389
 * `[5]` https://github.com/golang/go/issues/40017
 * `[6]` https://github.com/golang/go/issues/22274
-* `[7` https://github.com/eduvpn/documentation/blob/v3/SERVER_DISCOVERY.md
+* `[7]` https://github.com/eduvpn/documentation/blob/v3/SERVER_DISCOVERY.md
 * `[8]` https://git.sr.ht/~fkooman/vpn-user-portal/commit/971d6e2f0c33c003902d25cfed29c4c567dd71f9
