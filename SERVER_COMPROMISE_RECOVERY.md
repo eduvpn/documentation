@@ -1,4 +1,4 @@
-# Signed API Responses
+# Recovery after Server Compromise
 
 **NOTE**: this a a PROPOSAL. We'd like to hear feedback on it.
 
@@ -13,10 +13,12 @@ our clients check whether the TLS certificate has been revoked. This is a
 generic problem for HTTP client libraries on all platforms. Support for 
 revocation checking is either incomplete, or missing, or difficult to enable 
 conditionally, i.e. not all servers support it, so we need a secure way to 
-inform the client it MUST enforce it.
+inform the client it MUST enforce it to prevent "downgrade" attack where OCSP 
+verification can be disabled (again) by the attacker.
 
-This means that a MITM attack can be performed without the client ever finding 
-out that something is wrong, even after the TLS certificate has been revoked.
+Not solving this means that a MITM attack can be performed without the client 
+ever finding out that something is wrong, even after the TLS server certificate 
+has been revoked.
 
 ## Solutions
 
