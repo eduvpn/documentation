@@ -81,11 +81,11 @@ We wrote a simple patch `[8]` implementing exactly this.
 
 ## References
 
-1. https://github.com/eduvpn/android/issues/339
-2. https://github.com/eduvpn/apple/issues/410
-3. https://github.com/Amebis/eduVPN/issues/168
-4. https://github.com/eduvpn/python-eduvpn-client/issues/389
-5. https://github.com/golang/go/issues/40017
-6. https://github.com/golang/go/issues/22274
-7. https://github.com/eduvpn/documentation/blob/v3/SERVER_DISCOVERY.md
-8. https://git.sr.ht/~fkooman/vpn-user-portal/commit/971d6e2f0c33c003902d25cfed29c4c567dd71f9
+* `[1]` https://github.com/eduvpn/android/issues/339
+* `[2]` https://github.com/eduvpn/apple/issues/410
+* `[3]` https://github.com/Amebis/eduVPN/issues/168
+* `[4]` https://github.com/eduvpn/python-eduvpn-client/issues/389
+* `[5]` https://github.com/golang/go/issues/40017
+* `[6]` https://github.com/golang/go/issues/22274
+* `[7` https://github.com/eduvpn/documentation/blob/v3/SERVER_DISCOVERY.md
+* `[8]` https://git.sr.ht/~fkooman/vpn-user-portal/commit/971d6e2f0c33c003902d25cfed29c4c567dd71f9
