@@ -4,17 +4,18 @@ By default the `systemd` unit file for `openvpn-server` only allows 10
 OpenVPN processes. If you have (many) profiles and many OpenVPN processes this
 may fail to start some OpenVPN processes.
 
-To fix this we need to override the OpenVPN service file and prevent it from 
-being overriden by (future) software updates.
+To fix this we need to override this setting by adding a systemd drop-in snippet
+changing only this value. You can either create a file
 
-    $ sudo cp /lib/systemd/system/openvpn-server@.service /etc/systemd/system
-
-Modify `/etc/systemd/system/openvpn-server@.service`, by changing:
-
-    LimitNPROC=10
+    /etc/systemd/system/openvpn-server@.service.d/override.conf
     
-To 
+or execute the matching systemd command spawning an editor for this file
 
+    $ sudo systemctl edit openvpn-server@.service
+
+In the editor, add
+
+    [Service]
     LimitNPROC=128
 
 Now we have to apply the changes:
