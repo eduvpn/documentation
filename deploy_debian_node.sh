@@ -49,6 +49,18 @@ EOF
 sysctl --system
 
 ###############################################################################
+# OPENVPN
+###############################################################################
+
+# increase the allowed number of processes for the OpenVPN service
+mkdir -p /etc/systemd/system/openvpn-server@.service.d
+cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
+[Service]
+LimitNPROC=127
+EOF
+systemctl daemon-reload
+
+###############################################################################
 # VPN-SERVER-NODE
 ###############################################################################
 sed -i "s|http://localhost/vpn-server-api/api.php|${API_URL}|" /etc/vpn-server-node/config.php

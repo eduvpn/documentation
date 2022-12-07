@@ -1,5 +1,8 @@
 # LimitNPROC
 
+**NOTE**: for new deployments (after 2022-12-07) we do this automatically now
+just like in 3.x.
+
 By default the `systemd` unit file for `openvpn-server` only allows 10 
 OpenVPN processes. If you have (many) profiles and many OpenVPN processes this
 may fail to start some OpenVPN processes.
