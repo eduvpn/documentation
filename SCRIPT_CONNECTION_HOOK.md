@@ -27,15 +27,21 @@ Make sure the script is available under that path and is set to be
 A number of variables will be exposed to the script through 
 _environment variables_:
 
-| Variable             | Description                                          |
-| -------------------- | ---------------------------------------------------- |
-| `VPN_EVENT`          | `C`: Connect, `D`: Disconnect                        |
-| `VPN_USER_ID`        | User ID                                              |
-| `VPN_PROFILE_ID`     | Profile ID                                           |
-| `VPN_CONNECTION_ID`  | OpenVPN: X.509 certificate CN, WireGuard: Public Key |
-| `VPN_IP_FOUR`        | IPv4 address assigned to VPN client                  |
-| `VPN_IP_SIX`         | IPv6 address assigned to VPN client                  |
-| `VPN_ORIGINATING_IP` | OpenVPN only: original IP address of VPN client      |
+| Variable             | Description                                          | Event    | 
+| -------------------- | ---------------------------------------------------- | -------- |
+| `VPN_EVENT`          | `C`: Connect, `D`: Disconnect                        | `C`, `D` |
+| `VPN_USER_ID`        | User ID                                              | `C`, `D` |
+| `VPN_PROFILE_ID`     | Profile ID                                           | `C`, `D` |
+| `VPN_CONNECTION_ID`  | OpenVPN: X.509 certificate CN, WireGuard: Public Key | `C`, `D` |
+| `VPN_IP_FOUR`        | IPv4 address assigned to VPN client                  | `C`, `D` |
+| `VPN_IP_SIX`         | IPv6 address assigned to VPN client                  | `C`, `D` |
+| `VPN_ORIGINATING_IP` | OpenVPN only: original IP address of VPN client      | `C`      |
+| `VPN_PROTO`          | `wireguard` or `openvpn`                             | `C`      |
+| `VPN_BYTES_IN`       | Bytes received from VPN client                       | `D`      |
+| `VPN_BYTES_OUT`      | Bytes sent to VPN client                             | `D`      |
+
+`VPN_PROTO`, `VPN_BYTES_IN` and `VPN_BYTES_OUT` are available in 
+vpn-user-portal >= 3.2.0.
 
 ## Example Script
 
