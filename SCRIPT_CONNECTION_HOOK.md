@@ -36,7 +36,7 @@ _environment variables_:
 | `VPN_IP_FOUR`        | IPv4 address assigned to VPN client                  | `C`, `D` |
 | `VPN_IP_SIX`         | IPv6 address assigned to VPN client                  | `C`, `D` |
 | `VPN_ORIGINATING_IP` | OpenVPN only: original IP address of VPN client      | `C`      |
-| `VPN_PROTO`          | `wireguard` or `openvpn`                             | `C`      |
+| `VPN_PROTO`          | `wireguard` or `openvpn`                             | `C`, `D` |
 | `VPN_BYTES_IN`       | Bytes received from VPN client                       | `D`      |
 | `VPN_BYTES_OUT`      | Bytes sent to VPN client                             | `D`      |
 
