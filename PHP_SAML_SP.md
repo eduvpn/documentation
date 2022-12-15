@@ -52,6 +52,11 @@ IdPs found in the metadata will be allowed access.
 To test your SP/IdP configuration, go to `https://vpn.example.org/php-saml-sp/` 
 and use the "Test" button.
 
+You can look 
+[here](https://git.sr.ht/~fkooman/php-saml-sp/tree/main/item/METADATA.md) if 
+you want all details on how to (properly) configure IdP metadata, including 
+dynamic refresh.
+
 ## Configuring the VPN Service
 
 The configuration is done through `/etc/vpn-user-portal/config.php`.
