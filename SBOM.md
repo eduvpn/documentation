@@ -11,7 +11,7 @@ It is an initial attempt to create an
 
 | Component       												    | Description                     | Tag/Branch | Language | LoC*  |
 | ----------------------------------------------------------------- | ------------------------------- | ---------- | -------- | ----- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.1.3`    | PHP      | 11615 |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.2.0`    | PHP      | 12116 |
 | [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `3.0.2`    | PHP      | 1028  |
 | [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `6.1.0`    | PHP      | 835   |
 | [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `7.3.1`    | PHP      | 2149  |
