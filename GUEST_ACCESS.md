@@ -134,3 +134,62 @@ Public Key: k7.pub.ozEaVoU0p1HezQ41.HmV1WLVuRDoPiYoa2pP0qxP1YpWdKr5AoMdV_ZWl4i4
 ```
 
 Do **NOT** forget to attach the signed copy of the policy document!
+
+# Usage
+
+Once deployed, it may be interesting to figure out whether your service is used
+and by whom.
+
+## Guest Users
+
+To show how many guest users there are, you can use the including tooling, 
+e.g.:
+
+```bash
+$ sudo vpn-user-portal-account --list | grep '@' | cut -d '@' -f 2 | sort | uniq -c | sort -n -r
+     38 eduvpn1.eduvpn.de
+      8 eduvpn.deic.dk
+      7 eduvpn.ac.lk
+      4 eduvpn1.funet.fi
+      3 eduvpn.uran.ua
+      2 vpn.pern.edu.pk
+      2 guest.eduvpn.ac.za
+      1 eduvpn.eenet.ee
+```
+
+Here you can see how many *unique* users arrive from a particular other 
+country. Of course you could have also seen that on the portal's "Users" tab, 
+but this makes it easier to automatically count them.
+
+## Local Users
+
+When "Guest Access" is enabled, and you also have local users, you can also 
+figure out who they are, depending on your server's configuration. For example,
+if you use [Shibboleth](SHIBBOLETH_SP.md) for user authentication, and you use 
+the `eduPersonTargetedID` attribute (or any other that contains the domain 
+(or scope) of the organization the user originates from) you can do this.
+
+When "Guest Access" is enabled, a "pseudonymous" identifier is generated for 
+each user account and the original identifier is stored in the `auth_data` 
+column of the `users` table as JSON. This is done as to not "leak" the local 
+user identifier to other servers.
+
+When using the `eduPersonTargetedID` attribute, the value has the format 
+`${IDP_ENTITY_ID}!${SP_ENTITY_ID}!${USER_ID}`, for example 
+`http://login.surf.nl/adfs/services/trust!https://nl.eduvpn.org/saml!588b17cf3a31012abb4860ae6faf440b6da006fe`.
+
+Now to figure out which "IdPs" are used and by how many users, we can query 
+the database:
+
+```bash
+$ sudo sqlite3 \
+    /var/lib/vpn-user-portal/db.sqlite \
+    "SELECT json_extract(auth_data, '$.userId') FROM users WHERE user_id NOT LIKE '%@%'" \
+    | cut -d '!' -f 1 \
+    | sort \
+    | uniq -c \
+    | sort -r -n
+```
+
+This will output IdPs used together with how many users of each IdP used the 
+service.
