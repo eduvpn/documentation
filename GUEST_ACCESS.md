@@ -161,6 +161,15 @@ Here you can see how many *unique* users arrive from a particular other
 country. Of course you could have also seen that on the portal's "Users" tab, 
 but this makes it easier to automatically count them.
 
+If you are more interested in getting results about the actual use on a 
+particular date, you can try this:
+
+```bash
+$ sudo sqlite3 \
+    /var/lib/vpn-user-portal/db.sqlite \
+    "SELECT DATE(connected_at) AS date, COUNT(DISTINCT user_id) as unique_guest_user_count FROM connection_log WHERE user_id LIKE '%@%' GROUP BY date ORDER BY connected_at"
+```
+
 ## Local Users
 
 When "Guest Access" is enabled, and you also have local users, you can also 
