@@ -71,8 +71,8 @@ supported VPN clients.
 # Deployment
 
 **NOTE**: if you plan to install and run a eduVPN/Let's Connect! server please 
-subscribe to the "deployers" mailing list 
-[here](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy). It will be used 
+subscribe to the mailing list 
+[here](https://lists.geant.org/sympa/info/eduvpn-deploy). It will be used 
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 

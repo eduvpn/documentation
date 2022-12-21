@@ -31,4 +31,4 @@ Please write us on
 are part of the R&E (Research & Education) community and want to discuss 
 preview features in private, or if you are not part of the R&E community, or 
 prefer public communication, publicly on 
-[eduvpn-deploy@list.surfnet.nl](mailto:eduvpn-deploy@list.surfnet.nl).
+[eduvpn-deploy@lists.geant.org](mailto:eduvpn-deploy@lists.geant.org).

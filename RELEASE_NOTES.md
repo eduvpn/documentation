@@ -64,10 +64,9 @@ installation of the 3.x server!
 ## Issues
 
 If you find any issue, feel free to report it to the 
-[mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy), or 
-directly use our [issue tracker](https://todo.sr.ht/~eduvpn/server) directly. 
-Please try to provide as much information as you can that helps us to reproduce 
-the issue.
+[mailing list](https://lists.geant.org/sympa/info/eduvpn-deploy), or use our 
+[issue tracker](https://todo.sr.ht/~eduvpn/server) directly. Please try to 
+provide as much information as you can that helps us to reproduce the issue.
 
 If you find issues with our documentation, some parts are not fully updated for
 3.x yet, we'll work with you to update the documentation when necessary so it 
