@@ -78,7 +78,7 @@ Now you are all done regarding upgrading to the new packages. You can keep
 using Debian 9 until it is officially [EOL](https://wiki.debian.org/LTS), which 
 at the very latest is June 30, 2022. We **MAY** discontinue Debian 9 support 
 BEFORE this date, please keep a close eye on the 
-[mailing list](https://list.surfnet.nl/mailman/listinfo/eduvpn-deploy) and 
+[mailing list](https://lists.geant.org/sympa/info/eduvpn-deploy) and 
 subscribe if you haven't done that yet!
 
 In case you are ready to migrate to Debian 10, which is a bit more involved, 
