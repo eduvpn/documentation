@@ -188,7 +188,13 @@ cat << EOF > /etc/systemd/system/openvpn-server@.service.d/override.conf
 LimitNPROC=127
 EOF
 
-vpn-maint-apply-changes
+/usr/libexec/vpn-server-node/server-config
+# in case the deploy script is run multiple times, make sure the services are 
+# properly (re)enabled/started with the new configuration
+for S in openvpn-server@default-0 openvpn-server@default-1 wg-quick@wg0; do
+    systemctl disable --now "${S}"
+    systemctl enable --now "${S}"
+done
 
 ###############################################################################
 # FIREWALL
