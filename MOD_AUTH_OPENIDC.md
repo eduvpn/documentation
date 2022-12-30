@@ -50,8 +50,8 @@ Modify your Apache "Virtual Host" by changing
 `/etc/httpd/conf.d/vpn.example.org.conf` (Fedora). The below is an example of
 what it should look like. Replace with your own values. 
 
-**NOTE**: do **NOT** reuse the`OIDCClientSecret` as shown below, generate your 
-own as shown above!
+**NOTE**: do **NOT** reuse the`OIDCCryptoPassphrase` as shown below, generate 
+your own as shown above!
 
 ```
 <VirtualHost *:443>
