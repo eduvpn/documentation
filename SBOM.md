@@ -11,7 +11,7 @@ It is an initial attempt to create an
 
 | Component       												    | Description                     | Tag/Branch | Language | LoC*  |
 | ----------------------------------------------------------------- | ------------------------------- | ---------- | -------- | ----- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.2.0`    | PHP      | 12116 |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.2.2`    | PHP      | 12132 |
 | [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `3.0.2`    | PHP      | 1028  |
 | [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `6.1.0`    | PHP      | 835   |
 | [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `7.3.1`    | PHP      | 2149  |
@@ -41,4 +41,4 @@ PHPUnit for running unit tests.
 look in the output for `NCLOC`. For Go code we use 
 [cloc](https://github.com/AlDanial/cloc). All projects (except `wgctrl-go`) 
 include a `Makefile` target `sloc` that can be used to reproduce these values. 
-Measured on 2022-10-22.
+Measured on 2023-01-02.
