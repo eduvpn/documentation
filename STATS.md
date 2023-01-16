@@ -18,6 +18,9 @@ The information on this page is updated in 5 minute intervals.
 The "Export" buttons allow you to export the "Live" and "Aggregate" information
 to CSV for import in the tool of your choice, for example to generate graphs. 
 
+**NOTE**: currently the "Aggregated" stats do NOT work when using PostgreSQL 
+or MariaDB ([#118](https://todo.sr.ht/~eduvpn/server/118)).
+
 As an example, we import the "Aggregated" data in LibreOffice to generate a
 graph.
 

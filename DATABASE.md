@@ -20,7 +20,9 @@ for production as-is!
 **NOTE (4)**: when using MariaDB/MySQL there's currently a 
 [problem](https://todo.sr.ht/~eduvpn/server/53) when generating aggregate 
 statistics. This query works fine in PostgreSQL and SQLite... Any expert 
-insight would be appreciated!
+insight would be appreciated! It actually got worse when we switched to a 
+"subquery", it also breaks in PostgreSQL 
+[now](https://todo.sr.ht/~eduvpn/server/118).
 
 **NOTE (5)**: we assume you used `deploy_${DIST}_controller.sh` and 
 `deploy_${DIST}_node.sh` to install the VPN service.
