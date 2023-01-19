@@ -137,7 +137,6 @@ As mentioned above, this is only for testing!
 ```
 $ sudo dnf -y install postgresql-server 
 $ sudo postgresql-setup --initdb
-$ sudo systemctl enable postgresql
 ```
 
 ### Debian
@@ -145,7 +144,6 @@ $ sudo systemctl enable postgresql
 ```
 $ sudo apt -y install postgresql 
 ```
-
 
 ## PostgreSQL Configuration
 
