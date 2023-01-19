@@ -15,16 +15,10 @@ _does_ provide database server installation/configuration instructions to the
 level needed to _test_ the different database backends. This is NOT suitable
 for production as-is!
 
-**NOTE (3)**: if you can choose, please use PostgreSQL and NOT MariaDB/MySQL.
+**NOTE (3)**: if you can choose, we recommend you use PostgreSQL and not 
+MariaDB/MySQL.
 
-**NOTE (4)**: when using MariaDB/MySQL there's currently a 
-[problem](https://todo.sr.ht/~eduvpn/server/53) when generating aggregate 
-statistics. This query works fine in PostgreSQL and SQLite... Any expert 
-insight would be appreciated! It actually got worse when we switched to a 
-"subquery", it also breaks in PostgreSQL 
-[now](https://todo.sr.ht/~eduvpn/server/118).
-
-**NOTE (5)**: we assume you used `deploy_${DIST}_controller.sh` and 
+**NOTE (4)**: we assume you used `deploy_${DIST}_controller.sh` and 
 `deploy_${DIST}_node.sh` to install the VPN service.
 
 # Configuration
@@ -101,7 +95,7 @@ initialization.
 ## Database Migration
 
 Updates to the VPN software MAY require database migrations. This will be 
-inidicated in the release notes of newer versions.
+indicated in the release notes of newer versions.
 
 You can perform the migration:
 
@@ -163,6 +157,9 @@ First we'll allow password authentication. Modify
 host    all             all             127.0.0.1/32            scram-sha-256
 host    all             all             ::1/128                 scram-sha-256
 ```
+
+**NOTE**: make sure these rows are placed *above* the lines that have `METHOD` 
+with value `ident`, or replace the ones with `ident` in them.
 
 Replace `127.0.0.1/32` and `::1/128` with the IP(v6) prefixes where the 
 PostgreSQL "client" is coming from if you run PostgreSQL on a separate system.
