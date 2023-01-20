@@ -28,8 +28,32 @@ anyone accessing the API from the network.
 You can modify `/etc/httpd/conf.d/vpn-user-portal.conf` on Fedora/EL, or 
 `/etc/apache2/conf-available/vpn-user-portal.conf` on Debian/Ubuntu. Set the 
 `Require ip` option under `<Files admin-api.php>` to the IP address(es) from
-which you want to access the API.
-	
+which you want to access the API. If your `vpn-user-portal.conf` does not 
+contain anything related to the "Admin API", make sure the following parts are
+added:
+
+```
+Alias ${VPN_APP_ROOT}/admin/api       /usr/share/vpn-user-portal/web/admin-api.php
+
+<Directory /usr/share/vpn-user-portal/web>
+
+    ...
+    
+    <Files admin-api.php>
+        <RequireAny>
+            Require local
+            # Add the IP address(es) of your system(s) that need to access the
+            # Admin API here
+            #Require ip 192.0.2.0/24
+            #Require ip 2001:db::/32
+        </RequireAny>
+    </Files>
+
+    ...
+ 
+</Directory>
+```
+
 **NOTE**: if you modify `vpn-user-portal.conf` file, on Debian/Ubuntu, you MAY 
 be notified during upgrades of `vpn-user-portal` about a changed configuration 
 file. In that case choose to KEEP your current configuration file, or manually 
