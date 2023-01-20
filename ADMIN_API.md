@@ -30,6 +30,11 @@ You can modify `/etc/httpd/conf.d/vpn-user-portal.conf` on Fedora/EL, or
 `Require ip` option under `<Files admin-api.php>` to the IP address(es) from
 which you want to access the API.
 	
+**NOTE**: if you modify `vpn-user-portal.conf` file, on Debian/Ubuntu, you MAY 
+be notified during upgrades of `vpn-user-portal` about a changed configuration 
+file. In that case choose to KEEP your current configuration file, or manually 
+merge your changes!
+
 Do NOT forget to restart Apache after modifying the files.
 
 In order to use the API, the _secret_ you need can be found in 

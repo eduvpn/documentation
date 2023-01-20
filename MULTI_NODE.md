@@ -137,6 +137,11 @@ to allow only 1 address use the `/32` prefix (IPv4) or `/128` (IPv6):
 </Files>
 ```
 
+**NOTE**: if you modify `vpn-user-portal.conf` file, on Debian/Ubuntu, you MAY 
+be notified during upgrades of `vpn-user-portal` about a changed configuration 
+file. In that case choose to KEEP your current configuration file, or manually 
+merge your changes!
+
 Restart Apache:
 
 ```bash
