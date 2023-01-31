@@ -1,4 +1,4 @@
-# API Clients
+# API Client Registration
 
 The OAuth client registrations for the eduVPN and Let's Connect! applications
 are _hard-coded_. The full list can be found 
