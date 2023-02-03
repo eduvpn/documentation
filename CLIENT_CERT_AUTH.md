@@ -21,8 +21,10 @@ section you can add the following lines:
 
     SSLVerifyClient optional
     SSLVerifyDepth 1
-    SSLCACertificateFile /etc/pki/tls/certs/ca.crt   # CentOS/RHEL/Fedora
-    #SSLCACertificateFile /etc/ssl/certs/ca.crt      # Debian/Ubuntu
+    # CentOS/RHEL/Fedora
+    SSLCACertificateFile /etc/pki/tls/certs/ca.crt
+    # Debian/Ubuntu
+    #SSLCACertificateFile /etc/ssl/certs/ca.crt
     SSLUserName SSL_CLIENT_S_DN_CN
     
 Point `SSLCACertificateFile` to the CA under which your client certificate was
