@@ -156,6 +156,9 @@ Example:
 **NOTE**: make sure you update the [firewall](FIREWALL.md) if you change the 
 port!
 
+**NOTE**: there's an issue on EL9 with SELinux when you want to change the 
+port. See issue [#123](https://todo.sr.ht/~eduvpn/server/123) for the status.
+
 ## Session Module
 
 If you are using a HA Portal setup configuration for your portal you should
