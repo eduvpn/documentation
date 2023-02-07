@@ -118,7 +118,18 @@ all DNS queries will go to the configured DNS servers anyway.
 This is especially helpful if you have multiple OpenVPN processes in one 
 profile that want to use the DNS resolver running on the VPN server. This 
 restores behavior that was available in the 2.x server.
- 
+
+#### Public DNS Providers
+
+If you are looking for public DNS providers, we are aware of the following 
+ones. We can't vouch for any of them, obviously.
+
+* [dns0.eu](https://www.dns0.eu/) (Strictly EU based, claims GDPR compliancy)
+* [Quad9](https://www.quad9.com/)
+* [Cloudflare](https://1.1.1.1/dns/)
+* [Google Public DNS](https://developers.google.com/speed/public-dns/)
+* [DNS.WATCH](https://dns.watch/)
+
 ### Route List
 
 If you are _not_ using the VPN as a [Default Gateway](#default-gateway) you can
