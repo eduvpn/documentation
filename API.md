@@ -372,23 +372,31 @@ PrivateKey = AJmdZTXhNRwMT1CEvXys2T9SNYnXUG2niJVT4biXaX0=
 
 This call is to indicate to the server that the VPN session(s) belonging to 
 this OAuth authorization can be terminated. This MUST ONLY be called when the 
-_user_ decides to stop the VPN connection.
+_user_ decides to stop the VPN connection:
+
+1. The user toggles the VPN connection to "off" in the application;
+2. The user switches to another profile, or server;
+3. The user quits the VPN application
+4. The users reboots the device while the VPN is active (implicit application 
+   quiting)
 
 The purpose of this call is to clean up, i.e. release the IP address reserved
 for the client (WireGuard) and delete the certificate from the list of allowed 
 certificates (OpenVPN).
 
 After calling this method you MUST NOT use the same configuration again to 
-attempt to connect to the VPN server. First call `/connect` again.
+attempt to connect to the VPN server. First call `/info` and `/connect` again.
 
 This call is "best effort", i.e. it is not a huge deal when the call fails. No 
 special care has to be taken when this call fails, e.g. the connection is dead,
-or the application crashes. However, it MUST be called on "application exit" 
-when the user closes the VPN application without disconnecting first, unless 
-the VPN connection can also be persisted outside the VPN application.
+or the application crashes. 
 
 This call MUST be executed *after* the VPN connection itself has been 
 terminated by the application, if that is possible.
+
+When talking about "System VPNs", i.e. VPN connections that are not controlled 
+by the user, but by the device administrator, or possibly explicitly configured
+as a "System VPN" by the user, if available, these rules do not apply.
 
 ### Request
 
@@ -552,7 +560,7 @@ The basic rules:
 (for the user) and the `/connect` to obtain a configuration. This does NOT 
 apply when the application configures a "system VPN" that also runs without the 
 VPN application being active. The application MUST implement a means to notify
-the user when the configuration is about to expire.
+the user when the (system VPN) configuration is about to expire.
 
 It can of course happen that the VPN is not working when using the VPN 
 configuration that is not yet expired. In that case the client SHOULD inform
@@ -654,4 +662,4 @@ The changes made to the API documentation before it was considered final.
 |            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
 |            | Remove the `vpn_proto_preferred` key from the `/info` response                                                  |
 |            | Rewrite [VPN Protocol Selection](#vpn-protocol-selection) and document protocol selection, add `Accept` header  |
-
+| 2023-02-07 | Improve "Disconnect" section to list all cases where `/disconnect` should be called                             |
