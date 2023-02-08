@@ -117,7 +117,8 @@ all DNS queries will go to the configured DNS servers anyway.
 `@GW4@` and `@GW6@` that will be replaced by the address of the VPN gateway. 
 This is especially helpful if you have multiple OpenVPN processes in one 
 profile that want to use the DNS resolver running on the VPN server. This 
-restores behavior that was available in the 2.x server.
+restores behavior that was available in the 2.x server. In order to configure
+this see [Local DNS](LOCAL_DNS.md).
 
 #### Public DNS Providers
 

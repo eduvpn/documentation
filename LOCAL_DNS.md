@@ -1,8 +1,4 @@
----
-title: Local DNS
-description: Run Local DNS Resolver on VPN server
-category: advanced
----
+# Local DNS
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
 the public DNS service offered by [Quad9](https://quad9.net/) by default.
