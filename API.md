@@ -589,33 +589,16 @@ implements:
 
 1. A countdown timer that shows how long the VPN session will still be valid 
    for;
-2. A "Renew" button that allows the user to "refresh" the VPN session at a 
-   convenient time;
+2. A "Renew Session" button that allows the user to "refresh" the VPN session 
+   at a convenient time;
 3. An OS notification that informs the user when the expiry is imminent, or has 
    already occurred.
 
-| What                           | Visible                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------ | 
-| Countdown Timer                | Always                                                                   |
-| "Renew" Button                 | On the last day*                                                         | 
-| OS Notification                | One hour before `${SESSION_EXPIRES_AT}` _AND_ on `${SESSION_EXPIRES_AT}` |
-
-With "On the last day" we mean that each of the following holds: 
-
-1. At least 30 minutes have passed since the _session start_;
-2. The _session expiry_ will occur _today_, i.e. within 24 hours;
-3. If the total _session duration_ is less than 24 hours, at least 75% of the
-   total session duration MUST have passed.
-   
-Written as an `IF` statement it could be expressed like this:
-
-```
-${NOW} > (${SESSION_STARTED_AT} + 30*60)
-    && 
-${NOW} > (${SESSION_EXPIRES_AT} - 24*60*60)
-    && 
-${NOW} > (${SESSION_STARTED_AT} + 0.75 * (${SESSION_EXPIRES_AT} - ${SESSION_STARTED_AT}))
-```
+| What                   | Visible                                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------- | 
+| Countdown Timer        | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00                                                      |
+| "Renew Session" Button | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00 _AND_ `${NOW}` - `${SESSION_STARTED_AT}` >= 00:30:00 |
+| OS Notification        | `${SESSION_EXPIRES_AT}` - `${NOW}` IN {4:00:00, 02:00:00, 01:00:00, 00:00:00}                       |
 
 With `${NOW}` we mean the current time stamp. With `${SESSION_STARTED_AT}` we 
 mean the moment the OAuth authorization completed, i.e. the client obtained 
@@ -623,8 +606,8 @@ their first OAuth access token. With `${SESSION_EXPIRES_AT}` we mean the time
 the session expires, as obtained from the `Expires` HTTP response header 
 part of the `/connect` call response.
 
-When the user clicks the "Renew" button the following MUST happen in this 
-order:
+When the user clicks the "Renew Session" button the following MUST happen in 
+this order:
 
 1. Call `/disconnect`;
 2. Delete the OAuth access and refresh token;
@@ -632,12 +615,12 @@ order:
 4. Automatically reconnect to the server and profile if (and only if) the 
    client was previously connected.
 
-The OS notification shown to the user _MAY_ offer the "Renew" button inside the
-notification as well, if supported by the OS.
+The OS notification shown to the user _MAY_ offer the "Renew Session" button 
+inside the notification as well, if supported by the OS.
 
 # History
 
-The changes made to the API documentation before it was considered final.
+The changes made to the API documentation.
 
 | Date       | Change                                                                                                          |
 | ---------- | --------------------------------------------------------------------------------------------------------------- |
@@ -662,4 +645,6 @@ The changes made to the API documentation before it was considered final.
 |            | When profile does not exist, a 404 is returned on `/connect` instead of 400                                     |
 |            | Remove the `vpn_proto_preferred` key from the `/info` response                                                  |
 |            | Rewrite [VPN Protocol Selection](#vpn-protocol-selection) and document protocol selection, add `Accept` header  |
+| 2022-01-27 | **Declared API "Stable"**                                                                                       |
 | 2023-02-07 | Improve "Disconnect" section to list all cases where `/disconnect` should be called                             |
+| 2023-02-08 | Simplify "Session Expiry" section                                                                               |
