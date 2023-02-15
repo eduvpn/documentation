@@ -1,4 +1,4 @@
-# What to expect in eduVPN / Let's Connect! >= 3.1?
+# What to expect in eduVPN / Let's Connect!
 
 If you'd like to have something added, removed, changed or change the priority: 
 please contact us on 
@@ -8,22 +8,24 @@ make your case :-)
 For our current progress see our 
 [issue tracker](https://todo.sr.ht/~eduvpn/server).
 
-# Features
+# Big Things
 
-## Must
+Possibly only in 4.x as they are "breaking" changes, or complicated to add 
+(reliably) to currently installed servers:
 
-- Restore Graphs for stats
+- Drop OpenVPN support
+- Store all server/profile configuration in the database
+- Allow “User Defined” VPNs
+  – e.g. private networks for your own devices/servers (possibly P2P)
 
-## Nice to have
+# Smaller Things
 
-- More granular profiles, e.g. give a particular user always the same IP
-- Reimplement 2FA, but only for local user accounts
-- Add public CA and public WireGuard key(s) to the discovery files to have an 
-  additional trust channel between app and server in addition to Web TLS, or 
-  perhaps _sign_ the API responses with a public key mentioned in the discovery 
-  files...
-- Work on implementing 
-  [hardware signing](https://argon.tuxed.net/fkooman/hardware_token_research_proposal.pdf) 
-  of discovery files
-- Browser generated WireGuard private key (in portal so server never knows it)
-- Generate QR code in browser instead of on the server
+These may be implemented already in 3.x as they are not necessarily "breaking":
+
+- Add WireGuard+TCP support
+- "Real Time" Authorization with LDAP, OIDC backends
+  - Removes the need to periodically authenticate to get the latest 
+    "attributes/claims" from the IdM
+- Add more graphs on "Stats" page
+  - Currently only a graph for "client distribution" is available
+- Reimplement 2FA, but only for *local* user accounts
