@@ -22,6 +22,9 @@ Possibly only in 4.x as they are "breaking" changes, or complicated to add
 
 These may be implemented already in 3.x as they are not necessarily "breaking":
 
+- Also provide client configuration file as JSON(?)
+  - allows client to build their own config file locally with optional tweaks
+    _without_ parsing WireGuard or OpenVPN configuration files
 - Add WireGuard+TCP support
 - "Real Time" Authorization with LDAP, OIDC backends
   - Removes the need to periodically authenticate to get the latest 
