@@ -42,9 +42,10 @@ section:
 ]
 ```
 
-After enabling "Guest Access" you SHOULD reset your server to remove all data,
-as with "Guest Access" enabled you'll get new "User IDs". This way you'll 
-remove any users accounts that were created before enabling "Guest Access".
+After enabling "Guest Access" you **MUST** reset your server to remove all 
+data. With "Guest Access" enabled you'll get new "User IDs" which will break
+e.g. OAuth. With this reset you'll delete all existing user accounts, 
+invalidate all VPN configurations and associated OAuth authorizations.
 
 ```bash
 $ sudo vpn-maint-reset-system
