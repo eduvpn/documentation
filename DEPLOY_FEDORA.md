@@ -31,9 +31,9 @@ Additional scripts are available after deployment:
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
 
-**NOTE**: we only test with clean installations of Fedora. If you, or your 
-organization (heavily) modified the Ubuntu or Debian installations the VPN 
-deployment MAY not work.
+**NOTE**: we only test with relatively clean and unmodified installations of 
+Fedora. If you, or your organization (heavily) modified the OS installation the 
+VPN deployment MAY not work...
 
 ## Base Deploy
 

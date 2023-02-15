@@ -24,9 +24,9 @@ Additional scripts are available after deployment:
 If you have a more complicated setup, we recommend to manually walk through 
 the deploy script and follow the steps.
 
-**NOTE**: we only test with clean installations of Ubuntu and Debian. If you, 
-or your organization (heavily) modified the Ubuntu or Debian installations the 
-VPN deployment MAY not work.
+**NOTE**: we only test with relatively clean and unmodified installations of 
+Debian/Ubuntu. If you, or your organization (heavily) modified the OS 
+installation the VPN deployment MAY not work...
 
 **NOTE** if you expect to do a production deploy, please read the section below 
 about modifying the PHP configuration.
