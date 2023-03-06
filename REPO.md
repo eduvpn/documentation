@@ -80,7 +80,7 @@ Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
 ```
 [eduVPN_v3]
 name=eduVPN 3.x Packages (EL9)
-baseurl=https://repo.eduvpn.org/v3/rpm/alma+epel-9-x86_64
+baseurl=https://repo.eduvpn.org/v3/rpm/alma+epel-9-$basearch
 gpgcheck=1
 enabled=1
 ```
@@ -100,7 +100,7 @@ Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
 ```
 [eduVPN_v3]
 name=eduVPN 3.x Packages (EL9)
-baseurl=https://repo.eduvpn.org/v3/rpm/rocky+epel-9-x86_64
+baseurl=https://repo.eduvpn.org/v3/rpm/rocky+epel-9-$basearch
 gpgcheck=1
 enabled=1
 ```
