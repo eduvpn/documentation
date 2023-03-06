@@ -63,3 +63,31 @@ baseurl=https://repo.eduvpn.org/v3/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 enabled=1
 ```
+
+# Enterprise Linux
+
+## Repository Key
+
+```bash
+$ curl -O https://repo.eduvpn.org/v3/rpm/repo+v3@eduvpn.org.asc
+$ sudo rpm --import repo+v3@eduvpn.org.asc
+```
+
+## Repository Config
+
+Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
+
+```
+[eduVPN_v3]
+name=eduVPN 3.x Packages (EL9)
+baseurl=*REPLACE ME, SEE BELOW*
+gpgcheck=1
+enabled=1
+```
+
+Set the `baseurl` with the value from the column, depending on your exact OS:
+
+| OS            | `baseurl`                                            |
+| ------------- | ---------------------------------------------------- |
+| Rocky Linux 9 | `https://repo.eduvpn.org/v3/rpm/rocky+epel-9-x86_64` |
+| AlmaLinux 9   | `https://repo.eduvpn.org/v3/rpm/alma+epel-9-x86_64`  |
