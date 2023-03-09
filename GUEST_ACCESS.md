@@ -33,7 +33,7 @@ In order to enable "Guest Access" on your server you MUST have
 
 The "Guest Access" functionality MUST be manually enabled.
 
-You need to edit `/etc/vnp-user-portal/config.php` and modify the `Api` 
+You need to edit `/etc/vpn-user-portal/config.php` and modify the `Api` 
 section:
 
 ```php
