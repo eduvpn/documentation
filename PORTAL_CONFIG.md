@@ -49,6 +49,7 @@ SQLite. We documented this [separately](DATABASE.md).
 We support various user authentication mechanisms. We document all of them 
 separately:
 
+* [Local User Database](DB_AUTH.md) (default)
 * [LDAP](LDAP.md)
 * [SAML](SAML.md)
   * [Shibboleth](SHIBBOLETH_SP.md)
