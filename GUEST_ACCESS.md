@@ -61,7 +61,8 @@ $ sudo /usr/libexec/vpn-user-portal/generate-secrets --hmac
 If you were using the `adminUserIdList` option in 
 `/etc/vpn-user-portal/config.php` to list your admins, you MUST update them to 
 list the new "User IDs". Have your admins look on their "Account" page in the
-portal so you can add them.
+portal so you can add them. For more information on admin accounts you can 
+look [here](https://github.com/eduvpn/documentation/blob/v3/PORTAL_ADMIN.md).
 
 # Public Key
 
@@ -69,9 +70,9 @@ We need to register your OAuth public key in our "discovery" file
 to allow all participating servers to fetch it and allow users from
 your VPN service.
 
-You can find this Public Key by going to the "Info" tab in your VPN 
-portal. Expand the "Server" section by clicking "More" and look for 
-"Public Key" under "OAuth". It has the following form:
+You can find this Public Key by going to the "Info" tab,  with an admin 
+account, in your VPN portal. Expand the "Server" section by clicking "More" and 
+look for "Public Key" under "OAuth". It has the following form:
 
 ```
 k7.pub.ozEaVoU0p1HezQ41.HmV1WLVuRDoPiYoa2pP0qxP1YpWdKr5AoMdV_ZWl4i4
