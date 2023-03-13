@@ -588,7 +588,7 @@ In order to help the user avoiding unexpected VPN connection drops, the client
 implements:
 
 1. A countdown timer that shows how long the VPN session will still be valid 
-   for;
+   for so the use is made aware of upcoming expiry;
 2. A "Renew Session" button that allows the user to "refresh" the VPN session 
    at a convenient time;
 3. An OS notification that informs the user when the expiry is imminent, or has 
@@ -598,7 +598,7 @@ implements:
 | ---------------------- | --------------------------------------------------------------------------------------------------- | 
 | Countdown Timer        | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00                                                      |
 | "Renew Session" Button | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00 _AND_ `${NOW}` - `${SESSION_STARTED_AT}` >= 00:30:00 |
-| OS Notification        | `${SESSION_EXPIRES_AT}` - `${NOW}` IN {4:00:00, 02:00:00, 01:00:00, 00:00:00}                       |
+| OS Notification        | `${SESSION_EXPIRES_AT}` - `${NOW}` IN {04:00:00, 02:00:00, 01:00:00, 00:00:00}                       |
 
 With `${NOW}` we mean the current time stamp. With `${SESSION_STARTED_AT}` we 
 mean the moment the OAuth authorization completed, i.e. the client obtained 
