@@ -11,15 +11,21 @@
 #
 # @daily (cd /home/fkooman/eduVPN && ./repo_backup.sh)
 #
+# We host a number of private repositories on codeberg.org, for which you need
+# access. You can generate an SSH key on the host you run the backup script 
+# from and register it as a "Read Only Deploy Key" in the repository settings, 
+# e.g. https://codeberg.org/eduVPN/${REPO}/settings/keys
+#
+# Add this to ${HOME}/.ssh/known_hosts:
+# codeberg.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVIC02vnjFyL+I4RHfvIGNtOgJMe769VTF1VR4EB3ZB
+#
 
 GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
     # Misc
-    
-    # private repos
-    #https://git.sr.ht/~eduvpn/cdn.eduvpn.org \
-    #https://git.sr.ht/~eduvpn/disco.eduvpn.org \
+    git@codeberg.org:eduVPN/cdn.eduvpn.org.git \
+    git@codeberg.org:eduVPN/disco.eduvpn.org.git \
     
     https://git.sr.ht/~eduvpn/app.eduvpn.org \
     https://git.sr.ht/~eduvpn/status.eduvpn.org \
