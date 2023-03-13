@@ -588,7 +588,7 @@ In order to help the user avoiding unexpected VPN connection drops, the client
 implements:
 
 1. A countdown timer that shows how long the VPN session will still be valid 
-   for so the use is made aware of upcoming expiry;
+   for so the user is made aware of upcoming expiry;
 2. A "Renew Session" button that allows the user to "refresh" the VPN session 
    at a convenient time;
 3. An OS notification that informs the user when the expiry is imminent, or has 
