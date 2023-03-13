@@ -16,13 +16,15 @@ GIT_PATH=/usr/bin/git
 
 REPO_URL_LIST=(\
     # Misc
-    https://git.sr.ht/~eduvpn/cdn \
-    https://git.sr.ht/~eduvpn/disco.eduvpn.org \
+    
+    # private repos
+    #https://git.sr.ht/~eduvpn/cdn.eduvpn.org \
+    #https://git.sr.ht/~eduvpn/disco.eduvpn.org \
+    
     https://git.sr.ht/~eduvpn/app.eduvpn.org \
     https://git.sr.ht/~eduvpn/status.eduvpn.org \
 
     # Server Repositories
-    https://git.sr.ht/~fkooman/builder.deb \
     https://git.sr.ht/~fkooman/nbuilder.deb \
     https://git.sr.ht/~fkooman/builder.rpm \
     https://git.sr.ht/~fkooman/put \
@@ -80,12 +82,14 @@ REPO_URL_LIST=(\
     https://git.sr.ht/~fkooman/vpn-user-portal.deb \
     https://git.sr.ht/~fkooman/vpn-user-portal.rpm \
 
-    # Common
-    https://github.com/eduvpn/eduvpn-common \
-
     # Linux App
     https://github.com/eduvpn/python-eduvpn-client \
-
+    https://github.com/eduvpn/eduvpn-common \
+    https://git.sr.ht/~jwijenbergh/python3-eduvpn-common.deb \
+    https://git.sr.ht/~jwijenbergh/python-eduvpn-client.deb \
+    https://git.sr.ht/~jwijenbergh/python-eduvpn-client.rpm \
+    https://git.sr.ht/~jwijenbergh/python3-eduvpn-common.rpm \
+    
     # Android app
     https://github.com/eduvpn/android \
     https://github.com/eduvpn/ics-openvpn \
@@ -94,9 +98,6 @@ REPO_URL_LIST=(\
     # iOS/macOS app
     https://github.com/eduvpn/apple \
     https://github.com/passepartoutvpn/tunnelkit \
-
-    # DEPRECATED macOS app
-    https://github.com/eduvpn/macos \
 
     # Windows app
     https://github.com/Amebis/eduVPN \
