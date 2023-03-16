@@ -26,9 +26,8 @@ REPO_URL_LIST=(\
     # Misc
     git@codeberg.org:eduVPN/cdn.eduvpn.org.git \
     git@codeberg.org:eduVPN/disco.eduvpn.org.git \
-    
-    https://git.sr.ht/~eduvpn/app.eduvpn.org \
-    https://git.sr.ht/~eduvpn/status.eduvpn.org \
+    https://codeberg.org/eduVPN/app.eduvpn.org \
+    https://codeberg.org/eduVPN/status.eduvpn.org \
 
     # Server Repositories
     https://git.sr.ht/~fkooman/nbuilder.deb \
