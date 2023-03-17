@@ -28,7 +28,7 @@ be unique.
 On Fedora you may also need to take a look at the [SELinux](SELINUX.md) 
 instructions.
 
-# Options
+## Options
 
 This table describes all available profile configuration options. The 
 "Default" column indicates what the value is if the option is _missing_ from 
@@ -38,7 +38,7 @@ Be careful when changing configuration options. They *MAY* break existing
 VPN client connections when not using the native eduVPN / Let's Connect! 
 applications.
 
-## Common
+### Common
 
 Common configuration options, independent of the VPN protocol. See 
 [WireGuard](#wireguard) and [OpenVPN](#openvpn) for protocol specific options.
@@ -58,20 +58,20 @@ Common configuration options, independent of the VPN protocol. See
 | [onNode](#on-node)                             | `int[]` or `int`       | `0`                      |
 | [preferredProto](#preferred-protocol)          | `string`               | `openvpn`                |
 
-### Profile ID
+#### Profile ID
 
 The profile ID is used to uniquely identify a profile. It can only contain 
 letters, `[a-z]`, numbers `[0-9]` and the dash (`-`). Examples of valid profile 
 IDs identifiers are `employees`, `students`, `admin`. It MUST NOT be numeric,
 e.g. `1`, or `214`.
 
-### Display Name
+#### Display Name
 
 Specify the name you want to give this profile. This will be visible to the
 users and allows them to determine which protocol to select if more than one
 is available.
 
-### Host Name
+#### Host Name
 
 This is the DNS name that VPN clients will use to connect to the VPN 
 server. It is _highly recommended_ that you make the profile ID part of the 
@@ -80,12 +80,12 @@ servers. As an example, if your profile has the name `employees`, your DNS name
 could be `employees.vpn.example.org`. Obviously, you can make this a `CNAME` to
 `vpn.example.org` as long as you have only one server.
 
-### Default Gateway
+#### Default Gateway
 
 This option allows you to indicate to the VPN client that all their traffic
 needs to be sent over the VPN.
 
-### DNS Server List
+#### DNS Server List
 
 Provide a list of DNS servers to your VPN clients, as an example:
 
@@ -120,7 +120,7 @@ profile that want to use the DNS resolver running on the VPN server. This
 restores behavior that was available in the 2.x server. In order to configure
 this see [Local DNS](LOCAL_DNS.md).
 
-#### Public DNS Providers
+##### Public DNS Providers
 
 If you are looking for public DNS providers, we are aware of the following 
 ones. We can't vouch for any of them, obviously.
@@ -131,7 +131,7 @@ ones. We can't vouch for any of them, obviously.
 * [Google Public DNS](https://developers.google.com/speed/public-dns/)
 * [DNS.WATCH](https://dns.watch/)
 
-### Route List
+#### Route List
 
 If you are _not_ using the VPN as a [Default Gateway](#default-gateway) you can
 specify the _routes_ for which the VPN client needs to use the VPN. You use 
@@ -144,7 +144,7 @@ Example:
 'routeList' => ['10.223.140.0/24', 'fc5b:7c64:3001:a95f::/64'],
 ```
 
-### Exclude Route List
+#### Exclude Route List
 
 This is the opposite of [Route List](#route-list). Here you list all prefixes
 that are _not_ supposed to go over the VPN. There are two uses cases for this:
@@ -178,14 +178,14 @@ of the OSes:
 * [Add net_gateway / net_gateway_ipv6 gateway flag for --route and --route-ipv6](https://github.com/passepartoutvpn/tunnelkit/issues/225) (OpenVPN)
 * ["excluded routes" does not work](https://github.com/eduvpn/apple/issues/475) (WireGuard)
 
-### ACL Permission List
+#### ACL Permission List
 
 Restrict access to VPN profiles based on user permissions. The authentication 
 module can make permissions available either through LDAP or SAML that can be
 used to restrict access to a profile. See [ACL](ACL.md) for extensive 
 documentation on the topic.
 
-### DNS Search Domain List
+#### DNS Search Domain List
 
 Allow you to specify the "Connection-specific DNS Suffix Search List" for the
 VPN client, e.g.:
@@ -197,13 +197,13 @@ VPN client, e.g.:
 **NOTE**: the search domains are ONLY used when DNS servers are specified and
 the [Default Gateway](#default-gateway) is _not_ set.
 
-### Node URL
+#### Node URL
 
 When using a separate system to handle VPN connections, i.e. when using a 
 controller + node(s) setup. See [Multi Node](MULTI_NODE.md) for extensive 
 documentation on the topic.
 
-### On Node
+#### On Node
 
 When deploying profile(s) to multiple nodes you may want to indicate to which
 specific node(s) the profile belongs. For example, if you have 4 nodes and you
@@ -223,7 +223,7 @@ profiles to only a subset of nodes. Unfortunately we can not break existing
 configurations, so we needed to introduce a new option specifically for this
 case.
 
-### Preferred Protocol
+#### Preferred Protocol
 
 When your profile supports multiple protocols, this option can be used to set
 the preferred protocol. This allows for example to transitioning (the majority 
@@ -237,7 +237,7 @@ OpenVPN is considered enabled when both `oRangeFour` and `oRangeSix` are set.
 WireGuard is considered enabled when both `wRangeFour` and `wRangeSix` are set.
 
 
-## WireGuard
+### WireGuard
 
 WireGuard specific configuration options.
 
@@ -248,7 +248,7 @@ WireGuard specific configuration options.
 
 We wrote some additional documentation on WireGuard [here](WIREGUARD.md).
 
-### WireGuard Range Four
+#### WireGuard Range Four
 
 Specify the IPv4 range for WireGuard VPN clients. As an example:
 
@@ -263,7 +263,7 @@ profile/protocol, nor overlap the range specified in another profile/protocol!
 changing the `listenPort` option under the `WireGuard` section in 
 `/etc/vpn-user-portal/config.php`. This port is "global" and NOT per profile.
 
-### WireGuard Range Six
+#### WireGuard Range Six
 
 Specify the IPv6 range for WireGuard VPN clients. As an example:
 
@@ -274,7 +274,7 @@ Specify the IPv6 range for WireGuard VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
-## OpenVPN
+### OpenVPN
 
 OpenVPN specific configuration options.
 
@@ -290,7 +290,7 @@ OpenVPN specific configuration options.
 | [oExposedTcpPortList](#openvpn-exposed-port-list) | `int[]`                | `[]`     |                                  |
 | [oListenOn](#openvpn-listen-address)              | `string[]` or `string` | `::`     | Also accepts `string[]` >= 3.0.1 |
 
-### OpenVPN Range Four
+#### OpenVPN Range Four
 
 Specify the IPv4 range for OpenVPN VPN clients. As an example:
 
@@ -301,7 +301,7 @@ Specify the IPv4 range for OpenVPN VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
-### OpenVPN Range Six
+#### OpenVPN Range Six
 
 Specify the IPv6 range for OpenVPN VPN clients. As an example:
 
@@ -312,7 +312,7 @@ Specify the IPv6 range for OpenVPN VPN clients. As an example:
 **NOTE**: make sure the specified range is unique, and not used by any other
 profile/protocol, nor overlap the range specified in another profile/protocol!
 
-### OpenVPN Block LAN
+#### OpenVPN Block LAN
 
 This OpenVPN only option prevents the client from accessing devices on the 
 local network. This is especially useful when the client is connected to a 
@@ -323,7 +323,7 @@ public WiFi.
 'oBlockLan' => true,
 ```
 
-### OpenVPN Enable Log
+#### OpenVPN Enable Log
 
 This OpenVPN only option enables OpenVPN server logging. This can be used to
 debug (some) connection issues with incompatible clients.
@@ -342,7 +342,7 @@ $ sudo journalctl -f -t openvpn
 **NOTE**: this option should probably only be enabled on test systems and not 
 in production.
 
-### OpenVPN Port List
+#### OpenVPN Port List
 
 List of UDP/TCP ports to be used by the OpenVPN processes. The IP ranges 
 [OpenVPN Range Four](#openvpn-range-four) and 
@@ -379,11 +379,11 @@ for optimal performance for most clients.
 
 See also: [Port Sharing](PORT_SHARING.md), [Multi Profile](MULTI_PROFILE.md).
 
-### OpenVPN Exposed Port List
+#### OpenVPN Exposed Port List
 
 TBD.
 
-### OpenVPN Listen Address
+#### OpenVPN Listen Address
 
 You can configure the OpenVPN processes to listen on a specific IPv4 _or_ IPv6 
 address. This MAY be helpful in certain network configurations where a proper
@@ -405,7 +405,7 @@ possible.
 **NOTE**: you can also specify an array of IP addresses when running >= 3.0.1, 
 this allows you to specify an IP per node when using multiple nodes.
 
-# Apply Changes
+## Apply Changes
 
 To apply the configuration changes:
 
