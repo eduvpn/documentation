@@ -1,25 +1,27 @@
+# Mod auth mellon
+
 Below we assume you use `vpn.example`, but modify this domain to your own 
 domain name!
 
 This document describes how to use/configure 
 [mod_auth_mellon](https://github.com/latchset/mod_auth_mellon).
 
-# Installation
+## Installation
 
-## Fedora / Enterprise Linux
+### Fedora / Enterprise Linux
 
 First install `mod_auth_mellon`:
 
     $ sudo dnf -y install mod_auth_mellon
 
-## Debian  / Ubuntu
+### Debian  / Ubuntu
 
     $ sudo apt -y install libapache2-mod-auth-mellon
 
 In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
 base path, and for `systemctl` you use `apache2` instead of `httpd`.
 
-# Configuration
+## Configuration
 
 Generate an SP signing key:
 
@@ -75,7 +77,7 @@ If you also want to use authorization based on an attribute, e.g.
 `eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
 `permissionAttributeList` as well.
 
-## Examples
+### Examples
 
 Using `uid`:
 
@@ -115,9 +117,9 @@ This will _serialize_ the XML node to a string using the IdP and SP entity ID
 together with the eduPersonTargetedId _value_. If you are using the "Name ID", 
 very much not recommended, you can set `userIdAttribute` to `MELLON_NAME_ID`.
 
-# Apache
+## Apache
 
-## Fedora / Enterprise Linux
+### Fedora / Enterprise Linux
 
     <VirtualHost *:443>
 
@@ -167,7 +169,7 @@ very much not recommended, you can set `userIdAttribute` to `MELLON_NAME_ID`.
 
     </VirtualHost>
 
-## Debian / Ubuntu
+### Debian / Ubuntu
 
     <VirtualHost *:443>
 

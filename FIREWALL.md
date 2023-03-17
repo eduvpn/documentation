@@ -1,4 +1,4 @@
-# Introduction
+# Firewall
 
 A very simple static firewall based on `iptables` is installed when running the 
 deploy scripts. It allows connections to the VPN, SSH, HTTP and HTTPS ports. In 
@@ -70,7 +70,7 @@ addresses in the IPv4 firewall, and the IPv6 style addresses in the IPv6
 firewall. In addition, the ICMP type is different, i.e. `icmp` for IPv4 and 
 `ipv6-icmp` for IPv6, see the `iptables` and `ip6tables` for examples.
 
-# Improving the Defaults
+## Improving the Defaults
 
 The default firewall works well, but can be improved upon by updating it to 
 match your deployment.
@@ -97,7 +97,7 @@ This allows only SSH connections coming from `192.0.2.0/24` and
 `198.51.100.0/24`. This will also prevent VPN clients from accessing the SSH 
 server.
 
-# Opening Additional VPN Ports
+## Opening Additional VPN Ports
 
 By default, one port, both for TCP and UDP are open for OpenVPN 
 connections:
@@ -114,7 +114,7 @@ You can easily add more by using "ranges", e.g.
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
 ```
 
-# NAT to Multiple Public IP Addresses
+## NAT to Multiple Public IP Addresses
 
 When using NAT with many clients, it makes sense to "share" the traffic over
 multiple public IP addresses.
@@ -141,7 +141,7 @@ specified `--to-source` range will be used, specified IPs included.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# NAT to Different Public IP Addresses per Profile
+## NAT to Different Public IP Addresses per Profile
 
 When using [Multiple Profiles](MULTI_PROFILE.md), you may want to NAT to 
 different public IP addresses. You could for example use:
@@ -159,7 +159,7 @@ IP addresses.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# Allow Client to Client Traffic
+## Allow Client to Client Traffic
 
 By default, client-to-client traffic is not allowed:
 
@@ -192,7 +192,7 @@ the Internet, and the second only allows connectivity between the clients.
 -A FORWARD -i wg0 -s 10.100.100.0/24 -d 10.100.100.0/24 -i wg0 -o wg0 -j ACCEPT
 ```
 
-# Reject Forwarding Traffic
+## Reject Forwarding Traffic
 
 Sometimes you want to prevent VPN clients from reaching certain network, or 
 allow them to reach only certain networks. For example in the "split tunnel" 
@@ -214,7 +214,7 @@ your VPN clients, you can use the following:
 
 **NOTE**: for IPv6 the situation is similar.
 
-# Reject IPv6 Client Traffic
+## Reject IPv6 Client Traffic
 
 As the VPN server is "dual stack" throughout, it is not possible to "disable" 
 IPv6. However, one can easily modify the firewall to prevent all IPv6 traffic
@@ -230,7 +230,7 @@ This will cause all IPv6 to be rejected. The VPN becomes thus effectively
 IPv4 only. You can of course also use it to reject IPv4 traffic to create an
 IPv6-only VPN.
 
-# Public IP Addresses for VPN Clients
+## Public IP Addresses for VPN Clients
 
 If you want to use [Public Addresses](PUBLIC_ADDR.md) for the VPN clients, this 
 has some implications for the firewall:
@@ -241,12 +241,12 @@ has some implications for the firewall:
 **NOTE**: it is possible to use NAT for IPv4 and public IP addresses for IPv6,
 actually this is recommended over using IPv6 NAT!
 
-## Disabling NAT
+### Disabling NAT
 
 By removing all `POSTROUTING` rules from the "NAT" table takes care of 
 disabling NAT.
 
-## Allowing Incoming Traffic
+### Allowing Incoming Traffic
 
 The default `FORWARD` rules used are:
 

@@ -1,4 +1,4 @@
-# Introduction
+# High Availability (HA)
 
 The easiest way to install the VPN service is using the `deploy_${DIST}.sh` 
 script. This will install the service on a single machine. This work really 
@@ -22,7 +22,7 @@ Of course, everything has trade-offs. If you are not careful, your service
 could easily become _less_ available, than simply running everything on a 
 Raspberry Pi in your office closet 😊
 
-# Terminology
+## Terminology
 
 The software conceptually consists of two components that can be "split" and 
 which can then run on different (virtual) systems.
@@ -54,7 +54,7 @@ WireGuard, reporting to the Portal and handling the VPN connections themselves.
 '----'------------'-------'-----------'---------'
 ```
 
-# Handling More VPN Connections (Multi Node)
+## Handling More VPN Connections (Multi Node)
 
 If you are not so worried about _availability_, but just want to be able to 
 handle more VPN connections than can be offered by a single system, e.g. you 
@@ -102,7 +102,7 @@ the VPN client would simply pick another node and connect to that one.
 which Node to connect to, this means if one of the nodes goes down, the client
 talks again to the Portal to obtain a new configuration file.
 
-# Making the Portal Redundant (HA Portal)
+## Making the Portal Redundant (HA Portal)
 
 If you _are_ worried about _availability_, you may want to duplicate the Portal 
 as well. Obviously, this only makes sense if you have more than one node, 

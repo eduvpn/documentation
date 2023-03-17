@@ -1,3 +1,5 @@
+# Script connection hook
+
 This page documents how to launch a (custom) script when a VPN client connects, 
 and/or disconnects. This can for example be used to verify if a user still 
 exists in the LDAP server, or trigger firewall modifications in a remote 

@@ -1,18 +1,8 @@
----
-title: BGP
-description: Use BGP announcements
-category: advanced
-author: Jørn Åne (Uninett)
----
-
 # BGP
 
-## Warning
+*Warning*
 
 This guide is provided as is.  The eduVPN project provides no support for BGP.
-
-
-## Introduction
 
 If your network allows it, the IP ranges used by your vpn-server-node can be obtained through BGP.  For this to work, you must know the following:
 

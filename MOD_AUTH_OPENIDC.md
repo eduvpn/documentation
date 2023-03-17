@@ -1,28 +1,28 @@
-# Introduction
+# Mod Auth OpenIDC
 
 This module configures the Apache web server to operate as an OpenID Connect 
 Relying Party (RP) towards an OpenID Connect Provider (OP) using 
 [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc).
 
-# Installation
+## Installation
 
-## Fedora
+### Fedora
 
 ```
 $ sudo dnf install mod_auth_openidc
 $ sudo systemctl restart httpd
 ```
 
-## Debian / Ubuntu
+### Debian / Ubuntu
 
 ```
 $ sudo apt install libapache2-mod-auth-openidc
 $ sudo systemctl restart apache2
 ```
 
-# Configuration
+## Configuration
 
-## OpenID Connect
+### OpenID Connect
 
 The below instructions will show you what to do at the _minimum_ to get your
 RP working.
@@ -43,7 +43,7 @@ $ pwgen -s 64 -n 1
 
 Once you have/know all values configure the "VirtualHost" as mentioned below.
 
-## Virtual Host
+### Virtual Host
 
 Modify your Apache "Virtual Host" by changing 
 `/etc/apache2/sites-available/vpn.example.org.conf` (Debian / Ubuntu) or 
@@ -101,7 +101,7 @@ On Debian / Ubuntu:
 $ sudo systemctl restart apache2
 ```
     
-## VPN Portal
+### VPN Portal
 
 Modify `/etc/vpn-user-portal/config.php` and set:
 

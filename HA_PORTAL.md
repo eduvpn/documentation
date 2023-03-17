@@ -1,4 +1,4 @@
-# Introduction
+# HA Portal
 
 Setting up a redundant portal is one part of making the VPN service 
 "High Available". The other is running multiple VPN nodes. A complete 
@@ -16,7 +16,7 @@ few steps:
 
 We'll walk you through all steps in the rest of this document.
 
-# Installation
+## Installation
 
 You can configure the "Controller / Portal" on multiple systems, using the 
 `deploy_${DIST}_controller.sh`, and your node(s) using 
@@ -31,12 +31,12 @@ The machines themselves SHOULD have the names `p1.vpn.example.org`,
 You perform all configuration on one of the "Controllers / Portal", and then 
 simple copy the configuration / data to the other(s).
 
-# Database
+## Database
 
 In order to configure the database, perform that from one of the portals you 
 just set up and follow the instructions [here](DATABASE.md).
 
-# Memcached
+## Memcached
 
 On all of your "Controller / Portal" machines:
 
@@ -45,12 +45,12 @@ $ sudo apt -y install memcached php-memcached
 $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 ```
 
-## Configuration
+### Configuration
 
 By default Memcached only listens on `localhost`. For our purpose however each
 installation of the portal should be able to reach all Memcached servers. 
 
-### Debian / Ubuntu
+#### Debian / Ubuntu
 
 Modify `/etc/memcached.conf` and change the `-l` line from `-l 127.0.0.1` to
 `-l 0.0.0.0,::`
@@ -64,7 +64,7 @@ $ sudo systemctl restart memcached
 **NOTE**: you MUST make sure you use your firewall to prevent systems on the 
 Internet from reaching your Memcached service!
 
-### Fedora 
+#### Fedora 
 
 Modify `/etc/sysconfig/memcached` and change the `OPTIONS` line from 
 `OPTIONS="-l 127.0.0.1,::1"` to `OPTIONS=""` to listen on all interfaces.
@@ -95,7 +95,7 @@ Memcache again:
 $ sudo systemctl restart memcached
 ```
 
-### Portal
+#### Portal
 
 Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 
@@ -113,7 +113,7 @@ Modify the session configuration in `/etc/vpn-user-portal/config.php`:
 first, and on `p2.vpn.example.org`, the server `p2.vpn.example.org` SHOULD come
 first.
 
-# Synchronize Configuration
+## Synchronize Configuration
 
 Some files need to be copied from one of the portals to the other(s), e.g. VPN 
 CA, OAuth key, OpenVPN/WireGuard key material and HTTPS certificate.
@@ -138,7 +138,7 @@ If you are using
 `/etc/letsencrypt` folder to your other portals. Make sure you do this at least
 every 90 days (the expiry of Let's Encrypt certificates)!
 
-# keepalived
+## keepalived
 
 Install `keepalived`:
 

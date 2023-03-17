@@ -1,8 +1,10 @@
+# Shibboleth SP
+
 This document describes installing Shibboleth on Debian 11.
 
-# Installation
+## Installation
 
-## Debian 11
+### Debian 11
 
 ```
 $ sudo apt install libapache2-mod-shib
@@ -10,7 +12,7 @@ $ sudo shib-keygen -n sp-encrypt
 $ sudo shib-keygen -n sp-signing
 ```
 
-# Configuration
+## Configuration
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 
@@ -46,7 +48,7 @@ $ sudo systemctl restart shibd
 Next: register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
 
-### Apache
+#### Apache
 
 In `/etc/apache2/sites-available/vpn.example.org.conf` add the following:
 
@@ -100,7 +102,7 @@ $ sudo systemctl restart apache2
 make sure they are correctly enabled/set in 
 `/etc/shibboleth/attribute-map.xml`.
 
-### Portal
+#### Portal
 
 In order to configure the VPN portal, modify `/etc/vpn-user-portal/config.php`
 and set the `authModule` and `ShibAuthModule` options:

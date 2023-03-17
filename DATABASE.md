@@ -1,4 +1,4 @@
-# Introduction
+# Database
 
 The VPN server supports other databases than just the default 
 [SQLite](https://sqlite.org/). For SQLite, no configuration is needed, it works 
@@ -21,12 +21,12 @@ MariaDB/MySQL.
 **NOTE (4)**: we assume you used `deploy_${DIST}_controller.sh` and 
 `deploy_${DIST}_node.sh` to install the VPN service.
 
-# Configuration
+## Configuration
 
 You can configure the database in `/etc/vpn-user-portal/config.php`, replace 
 the `host`, `dbname` with the values obtained from your database administrator. 
 
-## PostgreSQL
+### PostgreSQL
 
 Make sure you have the `php-pgsql` package installed, on Debian use `apt` 
 instead of `dfn`:
@@ -46,7 +46,7 @@ In `/etc/vpn-user-portal/config.php`:
 Replace `host`, `dbname`, `user` and `password` with the values you obtained 
 from your database administrator.
 
-## MariaDB/MySQL
+### MariaDB/MySQL
 
 Make sure you have the `php-mysqlnd` package installed:
 
@@ -67,7 +67,7 @@ In `/etc/vpn-user-portal/config.php`:
 Replace `host`, `dbname`, `dbUser` and `dbPass` with the values you obtained 
 from your database administrator.
 
-## Database Info
+### Database Info
 
 You can show the current status of your database, this will tell you whether 
 the configuration was done properly, i.e. we are able to connect to the 
@@ -80,7 +80,7 @@ Required Schema Version: 2022010202
 Status                 : **OK**
 ```
 
-## Database Initialization
+### Database Initialization
 
 If you need to initialize the database:
 
@@ -92,7 +92,7 @@ You can override your database configuration with `--dsn`, `--user`, `--pass`
 options in case you need different credentials to perform a database 
 initialization.
 
-## Database Migration
+### Database Migration
 
 Updates to the VPN software MAY require database migrations. This will be 
 indicated in the release notes of newer versions.
@@ -110,7 +110,7 @@ migration.
 If a migration is needed, but not performed the VPN portal will give a clear 
 error message.
 
-## Manual Initialization / Migration
+### Manual Initialization / Migration
 
 If you really want to perform every step manually, you need to look in 
 `/usr/share/vpn-user-portal/schema` for the SQL schema files. The latest 
@@ -126,26 +126,26 @@ CREATE TABLE version (current_version TEXT NOT NULL);
 INSERT INTO version VALUES('2021123001');
 ```
 
-# Database Server Installation
+## Database Server Installation
 
 As mentioned above, this is only for testing!
 
-## PostgreSQL Installation
+### PostgreSQL Installation
 
-### Fedora
+#### Fedora
 
 ```
 $ sudo dnf -y install postgresql-server 
 $ sudo postgresql-setup --initdb
 ```
 
-### Debian
+#### Debian
 
 ```
 $ sudo apt -y install postgresql 
 ```
 
-## PostgreSQL Configuration
+### PostgreSQL Configuration
 
 First we'll allow password authentication. Modify 
 `/var/lib/pgsql/data/pg_hba.conf`. On Debian this is 
@@ -219,7 +219,7 @@ vpn=>
 
 All good!
 
-# MariaDB Installation
+## MariaDB Installation
 
 Follow the instructions below to configure your MariaDB server:
 
@@ -232,7 +232,7 @@ $ sudo mysql_secure_installation
 You can leave most things at their defaults, but set a `root` password when 
 asked, you will need it below.
 
-## MariaDB Configuration
+### MariaDB Configuration
 
 Now you need to create a database and a user with a password.
 
@@ -243,7 +243,7 @@ $ mysql -u root -p
 Provide the `root` password, and run the following commands. Replace the name 
 of the database and user if you want. Make sure you choose your own password.
 
-### Local Access
+#### Local Access
 
 If you install the MariaDB on the same system as your VPN service, run the 
 following commands:
@@ -262,7 +262,7 @@ account:
 $ mysql vpn -u vpn -p
 ```
 
-### Remote Access
+#### Remote Access
 
 If you install the MariaDB on a different system from your VPN service, as you
 SHOULD, run the following commands:

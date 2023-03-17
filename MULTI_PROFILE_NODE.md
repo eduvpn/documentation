@@ -1,4 +1,4 @@
-# Introduction
+# Multi Profile Node
 
 As shown in the [Multi Profile](MULTI_PROFILE.md) and 
 [Multi Node](MULTI_NODE.md) documentation it is possible to define multiple 

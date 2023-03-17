@@ -1,4 +1,4 @@
-# Introduction
+# SBOM
 
 This page lists ALL software, including dependencies, of the _production_ 
 releases of eduVPN / Let's Connect! It does _not_ include installation or 

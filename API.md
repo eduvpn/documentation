@@ -1,4 +1,4 @@
-# Introduction
+# API
 
 This document describes version 3 of the API provided by eduVPN and 
 Let's Connect! servers.
@@ -14,7 +14,7 @@ servers with version >= 2.4.1.
 
 The API design was finalized and is considered _stable_ from 2022-01-27.
 
-# Standards
+## Standards
 
 We use a simple HTTP API protected by OAuth 2, following all recommendations 
 of the [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/) 
@@ -29,7 +29,7 @@ of the changes from OAuth 2, it basically boils down:
 
 All HTTP request MUST use HTTPS.
 
-# Server Discovery
+## Server Discovery
 
 As there are many servers running eduVPN / Let's Connect! you need to know 
 which server you need to connect to. This can be either hard-coded in the 
@@ -39,7 +39,7 @@ can be implemented.
 For eduVPN specific we implement "server discovery" as documented 
 [here](SERVER_DISCOVERY.md).
 
-# Server Endpoint Discovery
+## Server Endpoint Discovery
 
 A "well-known" URL is provided to figure out the OAuth and API endpoint one
 has to use. The document can be retrieved from `/.well-known/vpn-user-portal`, 
@@ -64,13 +64,13 @@ this API.
 This file MUST be freshly retrieved before all attempts to connect to a server 
 to make sure any updates to this file are discovered.
 
-## Endpoint Location
+### Endpoint Location
 
 When fetching this document, _redirects_, e.g. `301`, `302`, `303`, MUST be 
 followed, but MUST NOT allow redirect to anything else than other `https://` 
 URLs, e.g. redirects to `http://` MUST be rejected.
 
-# Authorization Endpoint
+## Authorization Endpoint
 
 The `authorization_endpoint` is used to obtain an authorization code through an
 "Authorization Request". All query parameters as defined by the OAuth 
@@ -97,7 +97,7 @@ a location the application can intercept.
 All error conditions, both during the authorization phase AND when talking 
 to the API endpoint MUST be handled according to the OAuth specification(s).
 
-# Token Endpoint
+## Token Endpoint
 
 The `token_endpoint` is used to exchange the authorization code, as obtained
 through the `redirect_uri` as part of the authorization, for an access and 
@@ -107,7 +107,7 @@ access token expires.
 All error conditions, both during the authorization phase AND when talking 
 to the API endpoint MUST be handled according to the OAuth specification(s).
 
-# Using the API
+## Using the API
 
 Every API call below will include a cURL example, and an example response that 
 can be expected.
@@ -123,16 +123,16 @@ documented above. The following API calls are available:
 - "Connect" to a VPN profile (`/connect`);
 - "Disconnect" from a VPN profile (`/disconnect`)
 
-# API Calls
+## API Calls
 
-## Info
+### Info
 
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available.
 
 This `GET` call has no parameters.
 
-### Request
+#### Request
 
 Request all available VPN profiles:
 
@@ -142,7 +142,7 @@ $ curl \
     https://vpn.example.org/vpn-user-portal/api/v3/info
 ```
 
-### Response
+#### Response
 
 ```
 HTTP/1.1 200 OK
@@ -190,11 +190,11 @@ omitted, or marked as unsupported in that VPN client. Currently `openvpn` and
 `wireguard` values are supported. As an example: a WireGuard only client 
 SHOULD NOT list VPN profiles that only support OpenVPN.
 
-## Connect
+### Connect
 
 Get the profile configuration for the profile you want to connect to.
 
-### Request
+#### Request
 
 Connect to the "Employees" profile (`employees`) and specify a WireGuard public 
 key for when WireGuard will be used:
@@ -224,12 +224,12 @@ header. To add it to the cURL example use e.g.
 `-H "Accept: application/x-openvpn-profile"` to indicate your client only 
 supports OpenVPN.
 
-#### Profile ID
+##### Profile ID
 
 The value of `profile_id` MUST be of one of the identifiers for the profiles 
 returned in the `/info` response.
 
-#### Public Key
+##### Public Key
 
 When the WireGuard protocol is expected to be used, the `public_key` parameter 
 MUST be set. The value of `public_key` MUST be a valid WireGuard public key. It 
@@ -250,7 +250,7 @@ servers, generate one *per server*.
 **NOTE**: a VPN client MAY opt to generate a new public / private key for 
 every new call to `/connect` instead of storing it.
 
-#### Prefer TCP
+##### Prefer TCP
 
 The `prefer_tcp` parameter is a hint for the VPN server, currently only for the 
 OpenVPN protocol.
@@ -262,7 +262,7 @@ The server MAY accept this and return an OpenVPN configuration with the TCP
 The server MAY ignore the option, for example when the profile only supports
 WireGuard, or the OpenVPN server configuration does not use TCP.
 
-### Response
+#### Response
 
 If the profile is an OpenVPN profile you'll get the complete OpenVPN client
 configuration with `Content-Type: application/x-openvpn-profile`, e.g.:
@@ -368,7 +368,7 @@ PrivateKey = AJmdZTXhNRwMT1CEvXys2T9SNYnXUG2niJVT4biXaX0=
 ...
 ```
 
-## Disconnect
+### Disconnect
 
 This call is to indicate to the server that the VPN session(s) belonging to 
 this OAuth authorization can be terminated. This MUST ONLY be called when the 
@@ -398,7 +398,7 @@ When talking about "System VPNs", i.e. VPN connections that are not controlled
 by the user, but by the device administrator, or possibly explicitly configured
 as a "System VPN" by the user, if available, these rules do not apply.
 
-### Request
+#### Request
 
 ```bash
 $ curl -X POST \
@@ -408,14 +408,14 @@ $ curl -X POST \
 
 This `POST` call has no parameters.
 
-### Response
+#### Response
 
 ```
 HTTP/1.1 204 No Content
 
 ```
 
-## Error Responses
+### Error Responses
 
 Do **NOT** use the exact "Message" for string comparison in your application 
 code, getting any of these (4xx) errors below indicates a problem in the 
@@ -450,7 +450,7 @@ the user if so instructed by the support desk, and MAY be shown to the user in
 full, however a generic "Server Error" could be considered as well, perhaps 
 with a "Details..." button.
 
-# VPN Protocol Selection
+## VPN Protocol Selection
 
 The VPN server decides which protocol will be used for the VPN connection. This
 can be either OpenVPN or WireGuard. The client _is_ able to influence this 
@@ -518,7 +518,7 @@ Accept: application/x-openvpn-profile, application/x-wireguard-profile
 **NOTE**: if the `Accept` request header is missing, it is assumed that the 
 VPN client supports both OpenVPN and WireGuard.
 
-# Application Flow
+## Application Flow
 
 Below we describe how the application MUST interact with the API. It does NOT
 include information on how to handle OAuth. The application MUST properly 
@@ -569,7 +569,7 @@ application if not yet open. This allows the user to (manually)
 disconnect/connect again restoring the VPN and possibly renewing the 
 authorization when e.g. the authorization was revoked.
 
-# Session Expiry
+## Session Expiry
 
 All VPN sessions have an expiry. The default (as set by the server) is 90 days. 
 The server operator is able to change this. Some organizations set the session
@@ -618,7 +618,7 @@ this order:
 The OS notification shown to the user _MAY_ offer the "Renew Session" button 
 inside the notification as well, if supported by the OS.
 
-# History
+## History
 
 The changes made to the API documentation.
 

@@ -1,4 +1,4 @@
-# Introduction
+# Multi Profile
 
 It is possible to add additional "profiles" to a VPN service. This is useful 
 when you for example have two categories of users using the same VPN server,
@@ -16,7 +16,7 @@ Below, we will end up with two profiles:
 You may also need to take a look at the [SELinux](SELINUX.md) instructions when
 running on Fedora.
 
-# Configuration
+## Configuration
 
 The configuration file `/etc/vpn-user-portal/config.php` needs to be 
 modified, you can remove the `default` profile that was there if you didn't
@@ -55,7 +55,7 @@ more flexibility to move to a setup with multiple machines in the future.
 **NOTE**: if you add/modify UDP and TCP ports you may also need to update the 
 [firewall](FIREWALL.md)!
 
-## Apply Changes
+### Apply Changes
 
 To apply the configuration changes:
 

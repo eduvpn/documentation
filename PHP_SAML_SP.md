@@ -1,10 +1,4 @@
----
-title: PHP-SAML-SP
-description: SAML Authentication using php-saml-sp
-category: authentication
----
-
-## Introduction
+# PHP Saml SP
 
 Very simple, secure SAML SP written in PHP.
 

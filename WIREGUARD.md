@@ -1,22 +1,22 @@
-# Introduction
+# WireGuard
 
 As WireGuard is new in 3.x, this document will try to dive into some more 
 detail regarding how it works.
 
-# Configuration
+## Configuration
 
 WireGuard in eduVPN / Let's Connect! has a lot less toggles than OpenVPN so 
 should be easier to configure. See the "WireGuard" 
 [section](PROFILE_CONFIG.md#wireguard) for more information. There is also the
 "global" option to set the WireGuard port. By default this is `51820`.
 
-# Comparison with OpenVPN
+## Comparison with OpenVPN
 
 There are a number of differences between OpenVPN and WireGuard. Most of them 
 are summed up in 
 [this](https://www.tuxed.net/fkooman/blog/taming_wireguard.html) blog post.
 
-# What to Use?
+## What to Use?
 
 It is possible to configure profiles to support both OpenVPN and WireGuard 
 simultaneously. We recommend to use WireGuard whenever possible, and only 

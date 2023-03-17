@@ -1,15 +1,6 @@
----
-title: Avoid Organization Selection
-description: Avoid Browser Organization Selection in Identity Federations
-category: dev
----
-
-
 # Skipping the SAML WAYF
 
 This builds on [SERVER_DISCOVERY](SERVER_DISCOVERY.md).
-
-## Introduction
 
 Most "Secure Internet" servers use SAML to authenticate users and have a WAYF 
 (Where Are You From) in the browser to redirect users to the 

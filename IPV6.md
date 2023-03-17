@@ -1,6 +1,6 @@
-**WORK IN PROGRESS**
-
 # IPv6
+
+**WORK IN PROGRESS**
 
 The VPN server software supports both IPv4 and IPv6. We've reached a point 
 in the "evolution" of the Internet that IPv4 NAT is unavoidable, but for IPv6

@@ -1,4 +1,4 @@
-# Introduction
+# Guest Access
 
 This document describes how to enable "Guest Access". This is a feature 
 provided to the eduVPN community. It is NOT available for Let's Connect!.
@@ -13,7 +13,7 @@ Netherlands by SURF can access the VPN server in Germany hosted by DFN.
 this purpose. It MUST NOT be used for any other purpose like providing 
 access to restricted resources on the network!
 
-# Eligibility / Requirements
+## Eligibility / Requirements
 
 Only NRENs are able to register a server for "Guest Access". 
 
@@ -29,7 +29,7 @@ Currently we do NOT recommend registering your VPN server in eduGAIN!
 In order to enable "Guest Access" on your server you MUST have 
 `vpn-user-portal` >= 3.1. In older versions it will NOT work.
 
-# Configuration
+## Configuration
 
 The "Guest Access" functionality MUST be manually enabled.
 
@@ -64,7 +64,7 @@ list the new "User IDs". Have your admins look on their "Account" page in the
 portal so you can add them. For more information on admin accounts you can 
 look [here](https://github.com/eduvpn/documentation/blob/v3/PORTAL_ADMIN.md).
 
-# Public Key
+## Public Key
 
 We need to register your OAuth public key in our "discovery" file 
 to allow all participating servers to fetch it and allow users from
@@ -80,7 +80,7 @@ k7.pub.ozEaVoU0p1HezQ41.HmV1WLVuRDoPiYoa2pP0qxP1YpWdKr5AoMdV_ZWl4i4
 
 Make note of this public key as you need it for your server's registration.
 
-# Registration
+## Registration
 
 Please contact 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org) and 
@@ -113,7 +113,7 @@ provide use with the following information:
 
 Use "_Add [${FQDN}] to Secure Internet eduVPN_" as "Subject" of the mail.
   
-## Template
+### Template
 
 Subject: `Add [vpn.example.org] to Secure Internet eduVPN`
 
@@ -137,12 +137,12 @@ Public Key: k7.pub.ozEaVoU0p1HezQ41.HmV1WLVuRDoPiYoa2pP0qxP1YpWdKr5AoMdV_ZWl4i4
 
 Do **NOT** forget to attach the signed copy of the policy document!
 
-# Usage
+## Usage
 
 Once deployed, it may be interesting to figure out whether your service is used
 and by whom.
 
-## Guest Users
+### Guest Users
 
 To show how many guest users there are, you can use the including tooling, 
 e.g.:
@@ -172,7 +172,7 @@ $ sudo sqlite3 \
     "SELECT DATE(connected_at) AS date, COUNT(DISTINCT user_id) as unique_guest_user_count FROM connection_log WHERE user_id LIKE '%@%' GROUP BY date ORDER BY connected_at"
 ```
 
-## Local Users
+### Local Users
 
 When "Guest Access" is enabled, and you also have local users, you can also 
 figure out who they are, depending on your server's configuration. For example,

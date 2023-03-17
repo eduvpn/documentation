@@ -1,3 +1,5 @@
+# Radius
+
 This document describes how to configure RADIUS for deployed systems. We assume 
 you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 
 you use `vpn.example`, but modify this domain to your own domain name!
@@ -25,7 +27,7 @@ for instructions on how to configure LDAP.
 **NOTE**: RADIUS authentication is no longer supported on PHP 8.x so it will
 only work on Debian 11 as of this moment and not on Fedora or Ubuntu.
 
-# Configuration
+## Configuration
 
 First install the PHP module for RADIUS:
 

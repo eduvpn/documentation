@@ -1,3 +1,5 @@
+# LDAP
+
 This document describes how to configure LDAP. We assume you used the 
 `deploy_${DIST}.sh` script to deploy the software.
 
@@ -6,9 +8,9 @@ The LDAP integration can be used both for _authentication_ and _authorization_.
 This document talks about _authentication_. See [ACL](ACL.md) for more on 
 _authorization_.
 
-# Important Notes
+## Important Notes
 
-## 3.0.2
+### 3.0.2
 
 There was an issue in `vpn-user-portal` before 3.0.2 where, when 
 `userIdAttribute` was set, but not available in the LDAP result set, the user 
@@ -31,7 +33,7 @@ In case you were depending on this unintended behavior, your VPN server
 installation may fail to allow users to authenticate with version 3.0.2, even 
 though it worked with previous versions.
 
-# Introduction
+## Introduction
 
 It is a good idea to try with `ldapsearch` if you are not absolutely sure what
 to configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
@@ -58,7 +60,7 @@ administrator, you need _at least_:
 * The attribute to use for user authentication;
 * Whether or not this attribute is part of the user's DN.
 
-## FreeIPA
+### FreeIPA
 
 For simple [FreeIPA](https://www.freeipa.org/page/Main_Page) setups these are
 sufficient. Here the `uid` we want to use for users to authenticate is part of 
@@ -75,7 +77,7 @@ $ ldapsearch \
 After providing the user's password, you should see all the LDAP attributes 
 associated with that user account, e.g. `memberOf`, `mail`, `uid`.
 
-## Active Directory
+### Active Directory
 
 If you are using 
 [Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
@@ -105,7 +107,7 @@ $ ldapsearch \
         "(userPrincipalName=fkooman@example.org)"
 ```
 
-## Search First
+### Search First
 
 If you want to use an attribute that is NOT part of the DN, you first need to 
 perform a search for the user's DN, based on the attribute + value you 
@@ -140,7 +142,7 @@ $ ldapsearch \
 If this works, we can use this information as explained below in the 
 configuration examples.
 
-# Configuration
+## Configuration
 
 You can configure the portal to use LDAP. This is configured in the file 
 `/etc/vpn-user-portal/config.php`.
@@ -239,7 +241,7 @@ or not results are returned.
 
 This should be all to configure your LDAP!
 
-# LDAPS
+## LDAPS
 
 In order to use LDAPS, you can use the LDAPS scheme in the `baseUri`
 configuration option, e.g.:
@@ -264,7 +266,7 @@ You can copy/paste the CA certificate from the certificates shown.
 **NOTE**: make sure you validate this CA out of band! You MUST be sure this 
 is the actual CA!
 
-## Fedora / EL
+### Fedora / EL
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it
@@ -286,7 +288,7 @@ You **MUST** restart `php-fpm` to pick up the changes:
 $ sudo systemctl restart php-fpm
 ```
 
-## Debian / Ubuntu
+### Debian / Ubuntu
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it
@@ -308,7 +310,7 @@ You **MUST** restart `php-fpm` to pick up the changes:
 $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 You can use `ldapsearch` to figure out what would be the required values for
 the various configuration options and test them independently of the VPN 

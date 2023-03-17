@@ -1,4 +1,4 @@
-# Introduction
+# About
 
 This is the eduVPN/Let's Connect! documentation repository. This repository 
 targets administrators and developers. It contains information on how to deploy 
@@ -17,7 +17,7 @@ try to find the contact information of your organization
 contact us at 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
-# Supported Versions
+## Supported Versions
 
 | Version                                              | Release Date | OS Support                                                   |  EOL*      |
 | ---------------------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
@@ -32,7 +32,7 @@ running that version anymore, whichever comes first.
 We **only** support the particular release on operating systems that are still 
 supported by their vendor!
 
-# Features
+## Features
 
 This is an (incomplete) list of features of the VPN software:
 
@@ -63,12 +63,12 @@ This is an (incomplete) list of features of the VPN software:
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled (on Fedora);
 
-# Client Support
+## Client Support
 
 See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
 supported VPN clients.
 
-# Deployment
+## Deployment
 
 **NOTE**: if you plan to install and run a eduVPN/Let's Connect! server please 
 subscribe to the mailing list 
@@ -76,7 +76,7 @@ subscribe to the mailing list
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
-# IRC Contact
+## IRC Contact
 
 You can also join IRC for _technical_ questions/discussions/feedback on 
 [Libera.Chat](https://libera.chat/), channel `#eduvpn`. Please stick around for 
@@ -85,7 +85,7 @@ a while to wait for a response!
 You can also easily use the [Web Chat](https://web.libera.chat/#eduvpn) if you 
 can't be bothered to setup an IRC client. See you there!
 
-## Instruction Videos
+### Instruction Videos
 
 **NOTE**: these videos are for eduVPN / Let's Connect 2.x and still need to
 be updated for 3.x:
@@ -93,7 +93,7 @@ be updated for 3.x:
 - [Basic eduVPN/Let's Connect! Server Installation](https://www.youtube.com/watch?v=yBItHovq4AU)
 - [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
 
-## Supported Operating Systems
+### Supported Operating Systems
 
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
@@ -110,12 +110,12 @@ rebooted before you install the software!
 **NOTE**: if you want to deploy on multiple machines for load balancing, please 
 follow [these](HA.md) instructions!
 
-# Development
+## Development
 
 If you want to set up your own server development environment see 
 [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
 
-# License 
+## License 
 
 This work (this documentation repository) is licensed under a Creative Commons 
 Attribution-ShareAlike 4.0 International License.
@@ -125,7 +125,7 @@ See [LICENSE](LICENSE).
 The VPN server software is licensed under the 
 [AGPLv3+](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
-# Security Contact
+## Security Contact
 
 If you find a security problem in the code, the deployed service(s) and want to
 report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 

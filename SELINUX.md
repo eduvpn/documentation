@@ -1,9 +1,11 @@
+# SELinux
+
 If you used the `deploy_${DIST}.sh` script on CentOS, Red Hat Enterprise Linux 
 or Fedora, your VPN server has SELinux fully enabled and configured. If you 
 make changes to the configuration, you MAY need to update the SELinux 
 configuration.
 
-# OpenVPN 
+## OpenVPN 
 
 By default, OpenVPN is not allowed to listen on any other ports than `udp/1194` 
 and `tcp/1194`.

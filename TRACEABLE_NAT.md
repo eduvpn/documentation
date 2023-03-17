@@ -1,13 +1,4 @@
----
-title: Traceable NAT
-description: Make NAT users tracable using a static iptables configuration
-category: advanced
-author: Jørn Åne de Jong (Uninett)
----
-
 # Traceable NAT
-
-## Introduction
 
 When using NAT, it is hard to identify the user behind an action, because every uses has the same outgoing IP address.
 A solution to this could be Netflow, but that requires Netflow to be installed on every eduVPN host, which can be a hassle.
@@ -116,7 +107,7 @@ You will see a lot of lines such as
 Port ranges are shown at the end of the line. Scroll with the arrow keys or PgUp/PgDown and find the line that matches your source port number.
 You have now found the internal IPv4 address that was involved in the incident.  This internal IP address (on the left) can be matched to a user through the eduVPN portal (webinterface).
 
-# Example Script
+## Example Script
 
 `vpn-generate-natfw.php`:
 

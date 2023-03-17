@@ -1,3 +1,5 @@
+# Portal admin
+
 Certain users can be "promoted" to admin in the VPN portal. This can be done in
 two ways, based on either
 

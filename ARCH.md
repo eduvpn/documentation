@@ -1,8 +1,4 @@
----
-title: Architecture
-description: Description of Service Architecture
-category: documentation
----
+# Architecture
 
 This is a very short overview of the server architecture for version 1.0 of 
 eduVPN.
@@ -70,4 +66,3 @@ machine. When run on multiple machines, the portal and server API are installed
 on 1 machine, and the server node on the other machine(s).
 
 ![Architecture](img/ARCH.png)
-
