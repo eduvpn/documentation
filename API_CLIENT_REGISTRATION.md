@@ -12,7 +12,7 @@ This is done by creating a JSON file in
 
 The format is an _array_ with _objects_. See the full example below.
 
-# Format
+## Format
 
 The object supports the following fields / types:
 
@@ -24,7 +24,7 @@ The object supports the following fields / types:
 | `client_name`       | No       | `string`   | value of `client_id` | `My Application`                       |
 | `requires_approval` | No       | `bool`     | `true`               | `false`                                |
 
-# Example
+## Example
 
 As an example we'll list the govVPN OAuth client registrations here. This would
 be the full contents of `/etc/vpn-user-portal/oauth_client_db.json`:

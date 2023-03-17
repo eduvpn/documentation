@@ -60,30 +60,30 @@ hbtNfeBYGPPLFHY/gw7jLsMACApu636zxr77LxzbFgz7
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-# Debian / Ubuntu
+## Debian / Ubuntu
 
-## Repository Key
+### Repository Key
 
 ```bash
 $ curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | sudo tee /etc/apt/trusted.gpg.d/eduVPN_v3-dev.asc
 ```
 
-## Repository Config
+### Repository Config
 
 ```bash
 echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3-dev.list
 ```
 
-# Fedora
+## Fedora
 
-## Repository Key
+### Repository Key
 
 ```bash
 $ curl -O https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
 $ sudo rpm --import fkooman+repo@tuxed.net.asc
 ```
 
-## Repository Config
+### Repository Config
 
 Add the following to the file `/etc/yum.repos.d/eduVPN_v3-dev.repo`:
 

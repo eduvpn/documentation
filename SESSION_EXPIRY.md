@@ -10,7 +10,7 @@ authorization, and possibly provide their 2FA credentials/token as well.
 
 The default is 90 days.
 
-# What to Choose?
+## What to Choose?
 
 The default of 90 days, but you may want to deviate from this. Either by 
 setting it to a (much) shorter interval, for example if you want your users to
@@ -35,7 +35,7 @@ to expire so users can choose a more convenient time to renew their session.
 authenticates at 09:30, the next day at 09:30 their session will expire, 
 meaning the may have to authorize/authenticate during a video call.
 
-## Changing Session Expiry
+### Changing Session Expiry
 
 You can change the session expiry by modifying 
 `/etc/vpn-user-portal/config.php` and set `sessionExpiry` to the value you 

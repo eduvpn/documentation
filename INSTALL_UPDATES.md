@@ -11,7 +11,7 @@ These instructions apply to the official installation instructions using the
 `deploy_${DIST}.sh` scripts. If you installed the servers in a different way 
 then some changes MAY be necessary!
 
-# Single Server
+## Single Server
 
 All that is needed is run the following command on your VPN server:
 
@@ -27,7 +27,7 @@ was up.
 **NOTE**: in case there are updates to system components/libraries or the 
 kernel you MUST reboot the system.
 
-## Automatic Updates
+### Automatic Updates
 
 Create the file `/etc/cron.weekly/vpn-maint-update-system` with the following
 content:
@@ -52,7 +52,7 @@ not updated system libraries are used, or you are running the latest kernel.
 In case of security updates it MAY be necessary to schedule updates sooner than
 the weekly update.
 
-# Multi Server
+## Multi Server
 
 If you are running a setup with a separate controller and node(s), you will 
 need to consider some extra things when installing updates. It is best to stop

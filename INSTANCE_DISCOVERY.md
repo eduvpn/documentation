@@ -1,8 +1,4 @@
----
-title: Instance Discovery
-description: Obtain a list of VPN server Instances
-category: dev
----
+# Instance Discovery
 
 **NOTE**: this is legacy. See [SERVER_DISCOVERY](SERVER_DISCOVERY.md) for the 
 new server discovery we are implementing in Q1-2020.
@@ -14,7 +10,7 @@ VPN server they want to connect to.
 This document can be used by application developers implementing the 
 [API](API.md).
 
-# Discovery File
+## Discovery File
 
 For eduVPN the discovery file is available 
 [here](https://static.eduvpn.nl/disco/). Discovery files are JSON files 
@@ -22,7 +18,7 @@ describing the available VPN servers. The files are accompanied with a file
 containing a signature as well, to make sure they were not tampered with on the
 server.
 
-## Types
+### Types
 
 For eduVPN we define two "types" of discovery files. One for "Secure Internet" 
 and one for "Institute Access".
@@ -37,11 +33,11 @@ used to protect (private) networks at an organization.
 eduVPN applications MUST support both discovery files and make a clear 
 distinction in the UI of the application between them.
 
-## Fetching Frequency
+### Fetching Frequency
 
 The discovery files MUST be obtained according to these rules:
 
-### "Secure Internet"
+#### "Secure Internet"
 
 This file is obtained when:
 
@@ -56,12 +52,12 @@ This makes sure the user can manually trigger a reload after deleting the
 If no "Secure Internet" server was selected, the "Secure Internet" discovery 
 file is NOT fetched.
 
-### "Institute Access"
+#### "Institute Access"
 
 This file is ONLY obtained when the user selects to add a "Institute Access" 
 instance through "Add Provider". There is no automatic update here.
 
-## Format
+### Format
 
 The JSON file looks like this:
 
@@ -93,7 +89,7 @@ themselves, see [API](API.md).
 A `public_key` field MAY be specified, but it is NOT used by the application,
 it is only used by other VPN servers.
 
-## Validation
+### Validation
 
 When downloading the instance discovery file, the signature MUST be verified as
 well. The signature file is located in the same folder, but has the `.sig` 
@@ -122,9 +118,9 @@ The public key that is currently used is
 `E5On0JTtyUVZmcWd+I/FXRm32nSq8R2ioyW7dcu/U88=`. This is a Base64-encoded 
 [Ed25519](https://en.wikipedia.org/wiki/Curve25519) public key.
 
-# Authorization
+## Authorization
 
-## Institute Access
+### Institute Access
 
 Every server configured for "Institute Access" has their own OAuth server. The
 application needs to (try) to start the authorization flow for each of them 
@@ -133,7 +129,7 @@ particular server. All "Institute Access" servers are completely independent,
 the only thing in common is that they are mentioned in the "Institute Access"
 discovery file.
 
-## Secure Internet
+### Secure Internet
 
 Obtaining an access token from any of the instances listed in the discovery 
 file is enough and can then be used at all the instances. Typically the user

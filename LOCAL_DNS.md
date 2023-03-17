@@ -18,7 +18,7 @@ is provided by your ISP.
 use that one! See [Profile Config](PROFILE_CONFIG.md), look for the 
 `dnsServerList` option.
 
-# Configuration
+## Configuration
 
 Setting a local recursive DNS server takes a few steps:
 
@@ -30,9 +30,9 @@ Setting a local recursive DNS server takes a few steps:
    server;
 4. Make the VPN profiles use the "local DNS".
 
-## Install Unbound
+### Install Unbound
 
-### Fedora
+#### Fedora
 
 ```
 $ sudo dnf -y install unbound
@@ -55,13 +55,13 @@ $ sudo systemctl daemon-reload
 $ sudo systemctl restart systemd-resolved
 ```
 
-### Debian 
+#### Debian 
 
 ```
 $ sudo apt -y install unbound
 ```
 
-## Configure Unbound
+### Configure Unbound
 
 You need to change the Unbound configuration. You can add the following file
 to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in 
@@ -98,7 +98,7 @@ $ sudo systemctl enable unbound
 $ sudo systemctl restart unbound
 ```
 
-## Profile Configuration
+### Profile Configuration
 
 Modify `/etc/vpn-user-portal/config.php` for each of the VPN profiles 
 where you want to use "local DNS", point the `dnsServerList` entry to
@@ -118,7 +118,7 @@ traffic to the DNS server(s) is routed over the VPN if you are not using a
 **NOTE**: the template variables `@GW4@` and `@GW6@` are available in 
 vpn-user-portal >= 3.1.6. 
 
-## Firewall
+### Firewall
 
 In order to allow the VPN clients to reach the DNS server, the firewall needs
 to be relaxed to allow traffic to `udp/53` and `tcp/53` coming from the VPN 
@@ -126,7 +126,7 @@ clients.
 
 Follow the instructions [here](FIREWALL.md#local-dns)
 
-## Apply
+### Apply
 
 To apply the configuration changes:
 

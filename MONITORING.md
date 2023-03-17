@@ -6,7 +6,7 @@ will most likely be improved in the future if there is a need for it.
 **NOTE**: this format is NOT "stable". If you depend on this in your scripting
 be ready to update when new releases appear!
 
-# CSV
+## CSV
 
 A simple CSV format:
 
@@ -23,7 +23,7 @@ profiles, you can use this:
 $ sudo vpn-user-portal-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
 ```
 
-# JSON
+## JSON
 
 You can also get the output as JSON:
 

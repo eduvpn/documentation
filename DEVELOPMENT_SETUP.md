@@ -1,8 +1,4 @@
----
-title: Development Setup
-description: Setup a Developer Environment
-category: dev
----
+# Development Setup
 
 This document will describe how to set up an Let's Connect! / eduVPN 
 development environment for easy development and running it on your development 
@@ -19,9 +15,9 @@ installation of the required software, will be different.
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
-# Requirements
+## Requirements
 
-## Fedora >= 36
+### Fedora >= 36
 
 If you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -32,7 +28,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     php-curl php-gd unzip qrencode wireguard-tools scdoc sqlite php-ldap
 ```
 
-## Debian >= 11, Ubuntu >= 22.04
+### Debian >= 11, Ubuntu >= 22.04
 
 If you are not running Debian/Ubuntu as your desktop OS, it is easiest to 
 install a VM with a desktop. In addition, install the required software 
@@ -44,7 +40,7 @@ $ sudo apt install curl git build-essential php-gmp php-sqlite3 composer \
     wireguard-tools scdoc sqlite3
 ```
 
-# Installation
+## Installation
 
 Download the `development_setup_v3.sh` script from this repository and run it. 
 It will by default create a directory `${HOME}/Project/eduVPN-v3` under which 
@@ -58,7 +54,7 @@ $ sh ./development_setup.sh
 **NOTE**: running this command can take a long time, this has to do with Go
 dependency downloads (almost 1GB) to `$(HOME}/go` for some reason 🤷.
 
-# Testing
+## Testing
 
 All projects have unit tests included, they can be run from the project folder,
 e.g.: 
@@ -66,7 +62,7 @@ e.g.:
     $ cd ${HOME}/Projects/eduVPN-v3/vpn-user-portal
     $ make test
 
-# Using
+## Using
 
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
@@ -80,7 +76,7 @@ Now with your browser you can connect to the user portal on
 You can login with the users `foo` with password `bar` (user account) or `admin`
 with password `secret` (administrator account).
 
-# VPN Server Configuration
+## VPN Server Configuration
 
 To generate the OpenVPN server configuration files:
 
@@ -90,7 +86,7 @@ To generate the OpenVPN server configuration files:
 The OpenVPN server configuration files will be written to `openvpn-config`, the
 WireGuard configuration files will be written to `wg-config`.
 
-## OpenVPN 
+### OpenVPN 
 
 Unfortunately it is not that easy to start OpenVPN server processes on your 
 development machine as it requires certain "libexec" scripts to be in the 
@@ -105,7 +101,7 @@ OpenVPN, e.g.:
 $ sudo systemctl start openvpn-server@default-{0,1}
 ```
 
-## WireGuard
+### WireGuard
 
 You can copy `wg-config/wg0.conf` to `/etc/wireguard/wg0.conf` and start 
 WireGuard using this configuration file. 
@@ -124,9 +120,9 @@ file as can be found
 [here](https://git.sr.ht/~fkooman/vpn-daemon#systemd), but make sure to update 
 the path at `ExecStart=`.
 
-# Development
+## Development
 
-## Composer
+### Composer
 
 We'll depend on a number of packages for development purposes that you can
 install first.
@@ -177,7 +173,7 @@ development. You can read about their purpose on their respective websites:
 The VPN software (and dependencies) contain `Makefile` targets that use this 
 software.
 
-# Modifying Code
+## Modifying Code
 
 If you want to modify any of your code, it makes sense to switch to using your
 own "fork". We'll only consider the eduVPN/LC components here and not the 
@@ -222,7 +218,7 @@ package from a commit. For DEB packages you need to make a release first. What
 I am doing is developing on CentOS/Fedora and only when considered stable I'll
 make a release after which I also create Debian packages.
 
-# Creating RPM packages
+## Creating RPM packages
 
 First install all requirements on your Fedora system as described 
 [here](https://git.sr.ht/~fkooman/builder.rpm).
@@ -322,7 +318,7 @@ Make sure you update `REPO_URL_BRANCH_LIST` and point it to your fork of the
 If all goes well, you'll end up with your own RPM repository with your fork
 of the package in it!
 
-# Software Releases
+## Software Releases
 
 The following script is used to make official releases of the components as 
 `tar.xz`. It signs the source code with both PGP (for the Debian packages) and
@@ -392,7 +388,7 @@ for F in release/*${V}*; do
 done
 ```
 
-# Creating DEB packages
+## Creating DEB packages
 
 Debian packages currently only work from proper releases. Updating the Debian 
 packages is described [here](https://git.sr.ht/~fkooman/nbuilder.deb). You can

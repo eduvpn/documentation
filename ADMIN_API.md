@@ -14,7 +14,7 @@ scenario.
 
 **NOTE**: this is a [Preview Feature](PREVIEW_FEATURES.md)!
 
-# Configuration
+## Configuration
 
 The API is _disabled_ by default, but it is easy to enable.
 
@@ -66,7 +66,7 @@ In order to use the API, the _secret_ you need can be found in
 above. Use this value in the `Authorization` (Bearer) header. See the examples
 below.
 
-# API Calls
+## API Calls
 
 Two API calls are provided, `/create` and `/destroy` that can be used to create 
 a VPN configuration for a particular user (and profile) and to remove the VPN 
@@ -76,7 +76,7 @@ The `/create` call will transparently create the user if necessary and the
 `/destroy` call will delete the account as well as disconnect the client(s) of
 that user and delete the configuration(s).
 
-## Create
+### Create
 
 Create a VPN configuration for a particular user (and profile).
 
@@ -87,7 +87,7 @@ Create a VPN configuration for a particular user (and profile).
 | `profile_id`   | Yes      | The `profile_id` of the VPN profile to create a configuration for                |
 | `prefer_tcp`   | No       | Prefer connecting over TCP to the server. Either `yes` or `no`. Defaults to `no` |
 
-### Request
+#### Request
 
 Connect to the "Employees" profile (`employees`) and specify a WireGuard public 
 key for when WireGuard will be used:
@@ -101,7 +101,7 @@ $ curl \
     "https://vpn.example.org/vpn-user-portal/admin/api/v1/create"
 ```
 
-## Destroy
+### Destroy
 
 Remove the VPN configurations of a particular user *and* delete their account.
 
@@ -116,7 +116,7 @@ profile?
 to the above question is YES then we should probably not (always) delete the 
 user account
 
-### Request
+#### Request
 
 ```bash
 $ curl \
@@ -125,11 +125,11 @@ $ curl \
     "https://vpn.example.org/vpn-user-portal/admin/api/v1/destroy"
 ```
 
-# VPN Client
+## VPN Client
 
 We'll describe how to configure VPN clients with these configuration files. 
 
-## Windows
+### Windows
 
 Complete documentation on how to setup Windows with WireGuard to have VPN 
 enabled before user authentication can be found 
@@ -138,7 +138,7 @@ enabled before user authentication can be found
 You can deploy the configuration file and MSI through AD/GPO and enable the 
 service as documented.
 
-## macOS
+### macOS
 
 Probably using 
 [this](https://github.com/WireGuard/wireguard-apple/blob/master/MOBILECONFIG.md).

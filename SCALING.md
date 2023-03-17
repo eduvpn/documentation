@@ -1,8 +1,4 @@
----
-title: Scaling
-description: Performance/Scaling Notes
-category: documentation
----
+# Scaling
 
 Most organizations start by deploying a single server, which can scale quite 
 well to ~1000 simultaneously connected clients assuming >= 16 CPU cores with 
@@ -12,13 +8,13 @@ There are many aspects of "scaling", and not all will be answered here, but
 this document will provide input about how to design and configure your VPN 
 server(s) in order to handle a large amount of VPN clients.
 
-# One Server
+## One Server
 
 Most simple deploys have a single server setup. So how well does that scale 
 with the current software? The important metric here is "concurrent connected 
 clients".
 
-## Hardware
+### Hardware
 
 It is recommend to run "bare metal" and not on a virtual platform. One can 
 start with a virtual machine, and move to bare metal later to increase the 
@@ -35,7 +31,7 @@ possible to use 2 NICs, one to handle the VPN traffic, and one to handle the
 "plain" traffic. This could potentially increase the performance by a factor of
 two.
 
-## Server Configuration
+### Server Configuration
 
 Gathering information from other VPN operators resulted in estimating that one 
 needs one CPU core for ~64 concurrent client connections. As of now 
@@ -103,7 +99,7 @@ connect to, and it would be better to allocate 3/4 to UDP and 1/4 to TCP as is
 done in the example above. Look [here](MONITORING.md) on how to check the load 
 distribution on your server.
 
-### Certificates / Keys
+#### Certificates / Keys
 
 As all keys/certificates are generated on the server, it may make sense to
 switch to EC certificates instead of RSA. Generating RSA private keys can take
@@ -112,7 +108,7 @@ switch to EC certificates instead of RSA. Generating RSA private keys can take
 See the CA section of the [security document](SECURITY.md#ca) for more
 information on this.
 
-## Client
+### Client
 
 In order to distribute client connections over the various ports, the client
 configuration is generated with one UDP and TCP port picked at random. So for 
@@ -151,7 +147,7 @@ remote vpn.example 443 udp
 remote vpn.example 80 tcp
 ```
 
-# HA
+## HA
 
 See [HA](HA.md) for information on "High Availbility" in order to deploy 
 multiple "controllers" and/or "nodes".

@@ -29,30 +29,30 @@ CRLMAwAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYp1+4rY93nPy0QEA
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-# Debian / Ubuntu
+## Debian / Ubuntu
 
-## Repository Key
+### Repository Key
 
 ```bash
 $ curl https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
 ```
 
-## Repository Config
+### Repository Config
 
 ```bash
 echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3.list
 ```
 
-# Fedora
+## Fedora
 
-## Repository Key
+### Repository Key
 
 ```bash
 $ curl -O https://repo.eduvpn.org/v3/rpm/repo+v3@eduvpn.org.asc
 $ sudo rpm --import repo+v3@eduvpn.org.asc
 ```
 
-## Repository Config
+### Repository Config
 
 Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
 
@@ -64,16 +64,16 @@ gpgcheck=1
 enabled=1
 ```
 
-# AlmaLinux
+## AlmaLinux
 
-## Repository Key
+### Repository Key
 
 ```bash
 $ curl -O https://repo.eduvpn.org/v3/rpm/repo+v3@eduvpn.org.asc
 $ sudo rpm --import repo+v3@eduvpn.org.asc
 ```
 
-## Repository Config
+### Repository Config
 
 Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
 
@@ -85,7 +85,7 @@ gpgcheck=1
 enabled=1
 ```
 
-# Rocky Linux
+## Rocky Linux
 
 
 ```bash
@@ -93,7 +93,7 @@ $ curl -O https://repo.eduvpn.org/v3/rpm/repo+v3@eduvpn.org.asc
 $ sudo rpm --import repo+v3@eduvpn.org.asc
 ```
 
-## Repository Config
+### Repository Config
 
 Add the following to the file `/etc/yum.repos.d/eduVPN_v3.repo`:
 

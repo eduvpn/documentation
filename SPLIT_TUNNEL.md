@@ -18,7 +18,7 @@ push DNS servers to the client. If there are, then make sure to also specify
 `dnsSearchDomainList`. In addition, make sure the IP address(es) of the DNS 
 server(s) are also included in the `routeList`.
 
-# Example
+## Example
 
 We have an organization `example.local` that has two IP ranges, `10.42.42.0/24` 
 and `10.43.43.0/24` that clients need access to from home. The internal DNS 
@@ -26,7 +26,7 @@ server, on `10.1.1.1/32` is responsible for resolving the `example.local`
 domain for internal servers. Only traffic to these IP ranges and the DNS server
 should be allowed from the VPN server.
 
-# Profile Configuration
+## Profile Configuration
 
 Configure an `office` profile in `/etc/vpn-user-portal/config.php`, e.g.:
 
@@ -66,7 +66,7 @@ To apply the configuration changes:
 $ sudo vpn-maint-apply-changes
 ```
 
-# Firewall Configuration
+## Firewall Configuration
 
 Restricting network access for VPN clients is already documented in 
 [FIREWALL.md](FIREWALL.md#reject-forwarding-traffic), but just to be complete,

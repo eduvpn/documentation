@@ -1,4 +1,8 @@
-# What to expect in eduVPN / Let's Connect!
+# Roadmap
+
+This document describes the roadmap
+
+## What to expect in eduVPN / Let's Connect!
 
 If you'd like to have something added, removed, changed or change the priority: 
 please contact us on 
@@ -8,7 +12,7 @@ make your case :-)
 For our current progress see our 
 [issue tracker](https://todo.sr.ht/~eduvpn/server).
 
-# Big Things
+## Big Things
 
 Possibly only in 4.x as they are "breaking" changes, or complicated to add 
 (reliably) to currently installed servers:
@@ -18,7 +22,7 @@ Possibly only in 4.x as they are "breaking" changes, or complicated to add
 - Allow “User Defined” VPNs
   – e.g. private networks for your own devices/servers (possibly P2P)
 
-# Smaller Things
+## Smaller Things
 
 These may be implemented already in 3.x as they are not necessarily "breaking":
 
