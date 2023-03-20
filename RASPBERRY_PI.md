@@ -1,4 +1,4 @@
-# Deployment on a Raspberry Pi
+# Raspberry Pi Deployment
 
 Because, why not. When developing technology, what use is it when you can't 
 run it on the smallest and cheapest of devices? Why do we always need the 

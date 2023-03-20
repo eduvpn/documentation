@@ -1,4 +1,4 @@
-# Mod Auth OpenIDC
+# OpenID Connect (mod_auth_openidc)
 
 This module configures the Apache web server to operate as an OpenID Connect 
 Relying Party (RP) towards an OpenID Connect Provider (OP) using 

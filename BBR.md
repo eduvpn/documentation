@@ -1,8 +1,4 @@
----
-title: Bottleneck Bandwidth and Round-trip propagation time (BBR)
-description: Changing Congestion Control Algorithm
-category: advanced
----
+# BBR
 
 There's this shiny 
 [BBR](https://en.wikipedia.org/wiki/TCP_congestion_control#TCP_BBR) congestion 

@@ -1,4 +1,4 @@
-# Skipping the SAML WAYF
+# Server Discovery - Skipping the "WAYF"
 
 This builds on [SERVER_DISCOVERY](SERVER_DISCOVERY.md).
 

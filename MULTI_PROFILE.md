@@ -1,4 +1,4 @@
-# Multi Profile
+# Multi Profile Deployments
 
 It is possible to add additional "profiles" to a VPN service. This is useful 
 when you for example have two categories of users using the same VPN server,

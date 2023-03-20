@@ -1,4 +1,4 @@
-# Port sharing
+# Port Sharing
 
 This document describes how to configure your VPN server in such a way as to
 make it most likely people can connect to it. This is done by making it 

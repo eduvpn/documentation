@@ -1,4 +1,4 @@
-# Portal admin
+# Portal Administration
 
 Certain users can be "promoted" to admin in the VPN portal. This can be done in
 two ways, based on either
@@ -10,7 +10,7 @@ The User ID based "admin" authorization is the simplest. However, if the
 admins regularly change, or are already based on a certain role exposed through 
 the identity management system, using permissions may make more sense.
 
-### User ID
+## User ID
 
 Modify `/etc/vpn-user-portal/config.php` and add the user IDs to the 
 `adminUserIdList`, e.g.:
@@ -22,7 +22,7 @@ Modify `/etc/vpn-user-portal/config.php` and add the user IDs to the
 This is the simplest solution. To view the user ID of your account, you can use 
 the "Account" page when logged into the portal.
 
-### Permission
+## Permission
 
 When the "admins" are already decided on through the identity management 
 system, e.g. LDAP or SAML, it makes sense to use that "permission" / "role" to 

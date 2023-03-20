@@ -1,4 +1,4 @@
-# Custom branding
+# Custom Branding
 
 This document describes how to apply your own branding (style and e.g. logo) to
 the portal.

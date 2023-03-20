@@ -1,4 +1,4 @@
-# Deploy Debian
+# Deploying on Debian
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh Debian 11 or Ubuntu 22.04 installation. It will 

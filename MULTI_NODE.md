@@ -1,4 +1,4 @@
-# Multi Node
+# Multi Node Deployments
 
 Setting up multiple VPN nodes is one part of making the VPN service 
 "High Available". The other is setting up a redundant portal. A complete 

@@ -1,4 +1,4 @@
-# Mod auth mellon
+# SAML (mod_auth_mellon)
 
 Below we assume you use `vpn.example`, but modify this domain to your own 
 domain name!

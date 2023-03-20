@@ -1,4 +1,4 @@
-# Contribute translations
+# Contribute Translations
 
 If you'd like to contribute translations to the VPN software this document
 explains how.

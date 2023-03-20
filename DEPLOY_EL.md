@@ -1,8 +1,4 @@
----
-title: Deploying on EL
-description: Install and Maintain eduVPN/Let's Connect! on EL
-category: installation
----
+# Deploying on Enterprise Linux
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh EL installation. It will configure all components 

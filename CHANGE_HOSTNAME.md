@@ -1,4 +1,4 @@
-# Change Hostname
+# Changing Server Hostname
 
 In case you want to change the hostname of your VPN server, you need to follow
 these steps:

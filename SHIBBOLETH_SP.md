@@ -1,4 +1,4 @@
-# Shibboleth SP
+# SAML (Shibboleth SP)
 
 This document describes installing Shibboleth on Debian 11.
 

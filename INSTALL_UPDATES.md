@@ -1,4 +1,4 @@
-# Install Updates
+# Installing Updates
 
 This document will explain how to update your VPN server(s). This document is 
 split in two parts:

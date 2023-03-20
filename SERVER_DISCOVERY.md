@@ -1,9 +1,3 @@
----
-title: Server Discovery
-description: Server Discovery for VPN Applications
-category: dev
----
-
 # Server Discovery
 
 **NOTE**: the format of `v2` is stable as of 2020-08-26. Format changes will

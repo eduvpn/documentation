@@ -1,4 +1,4 @@
-# PHP Saml SP
+# SAML (php-saml-sp)
 
 Very simple, secure SAML SP written in PHP.
 

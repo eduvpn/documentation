@@ -1,4 +1,4 @@
-# From v2 to v3 server
+# Server Upgrade from 2.x to 3.x
 
 This document will help you migrate your existing server from eduVPN / Let's 
 Connect! 2.x to 3.x.
