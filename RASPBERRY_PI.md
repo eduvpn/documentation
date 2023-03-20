@@ -32,7 +32,7 @@ To write to SD-card, for USB disk you would use something like
 `--media=/dev/sdb`:
 
 ```bash
-$ sudo arm-image-installer --image=Fedora-Minimal-34-1.2.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
+$ sudo arm-image-installer --image=Fedora-Minimal-37-1.7.aarch64.raw.xz --resizefs --target=rpi3 --media=/dev/mmcblk0
 ```
 
 **NOTE**: for the Raspberry Pi 4, use `--target=rpi4`!
