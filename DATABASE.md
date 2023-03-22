@@ -7,7 +7,7 @@ document.
 
 **NOTE (1)**: only consider switching databases if your database has a higher 
 reliability than your systems on which you host the VPN server, and you want to 
-run a [HA](PORTAL_HA.md) setup.
+run a [HA](HA_PORTAL.md) setup.
 
 **NOTE (2)**: this document only explains how to _use_ another database, it 
 does NOT explain how to run reliably database infrastructure! The document 
