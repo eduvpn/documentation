@@ -40,9 +40,6 @@ You can list the users:
 $ sudo vpn-user-portal-account --list
 ```
 
-**NOTE**: currently only users that were (ever) logged in will be visible here, 
-see [#125](https://todo.sr.ht/~eduvpn/server/125).
-
 ### Delete User
 
 You can delete a user, e.g. to delete the user `foo`:
