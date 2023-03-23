@@ -8,8 +8,8 @@ how to modify the software for one's own needs.
 
 For more information see:
 
-- https://www.eduvpn.org
-- https://letsconnect-vpn.org
+- [eduvpn.org](https://www.eduvpn.org/)
+- [letsconnect-vpn.org](https://www.letsconnect-vpn.org/)
 
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
 try to find the contact information of your organization 
