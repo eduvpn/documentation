@@ -62,7 +62,7 @@ If you were using the `adminUserIdList` option in
 `/etc/vpn-user-portal/config.php` to list your admins, you MUST update them to 
 list the new "User IDs". Have your admins look on their "Account" page in the
 portal so you can add them. For more information on admin accounts you can 
-look [here](https://github.com/eduvpn/documentation/blob/v3/PORTAL_ADMIN.md).
+look [here](PORTAL_ADMIN.md).
 
 ## Public Key
 
