@@ -297,7 +297,7 @@ will work out of the box.
 Put the self signed certificate file in 
 `/usr/local/share/ca-certificates/ipa.example.org.crt`. After this:
  
- ```bash
+```bash
 $ sudo update-ca-certificates
 ```
 
