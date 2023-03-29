@@ -30,9 +30,11 @@ These may be implemented already in 3.x as they are not necessarily "breaking":
   - allows client to build their own config file locally with optional tweaks
     _without_ parsing WireGuard or OpenVPN configuration files
 - Add WireGuard+TCP support
-- "Real Time" Authorization with LDAP, OIDC backends
+- "Real Time" Authorization with LDAP, OIDC backends 
+  ([#131](https://todo.sr.ht/~eduvpn/server/131))
   - Removes the need to periodically authenticate to get the latest 
     "attributes/claims" from the IdM
-- Add more graphs on "Stats" page
+- Add more graphs on "Stats" page ([#11](https://todo.sr.ht/~eduvpn/server/11))
   - Currently only a graph for "client distribution" is available
-- Reimplement 2FA, but only for *local* user accounts
+- Reimplement 2FA, but only for *local* user accounts 
+  ([#14](https://todo.sr.ht/~eduvpn/server/14))
