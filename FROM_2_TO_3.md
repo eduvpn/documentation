@@ -78,8 +78,9 @@ $ sudo apt autoremove --purge
 ```
 
 **NOTE**: if not all packages were installed, the above command will exit with
-an error. Remove the packages that you do not have installed from the list (the
-output well tell you which are not installed) and run it again!
+an error. Remove the packages that you do not have installed from the list of 
+packages to remove, the output of the command will tell you which are not 
+installed, and run it again!
 
 Make sure you also remove any lingering files from `/etc/openvpn/server`.
 
