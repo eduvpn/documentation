@@ -77,8 +77,11 @@ $ sudo apt remove --purge vpn-user-portal vpn-server-api vpn-server-node vpn-mai
 $ sudo apt autoremove --purge
 ```
 
-Make sure you also remove any lingering files from `/etc/openvpn/server`, if 
-any.
+**NOTE**: if not all packages were installed, the above command will exit with
+an error. Remove the packages that you do not have installed from the list (the
+output well tell you which are not installed) and run it again!
+
+Make sure you also remove any lingering files from `/etc/openvpn/server`.
 
 ## Install 3.x
 
@@ -199,8 +202,7 @@ information about all options.
 ### Restore Local User Accounts
 
 Using the `sqlite3` command line tool you can migrate your old users database
-to the new server. Install the `sqlite3` package on Debian/Ubuntu, or the 
-`sqlite` package on Fedora.
+to the new server. Install the `sqlite3` package first.
 
 ```
 $ sudo sqlite3 /var/lib/vpn-user-portal/db.sqlite
