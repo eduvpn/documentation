@@ -550,8 +550,8 @@ any traffic over it or not.
 The basic rules:
 
 1. `/connect` (and `/disconnect`) ONLY need to be called when the user decides 
-   to connect/disconnect, not when this happens automatically for whatever 
-   reason, e.g. suspending the device, network not available, ...;
+   to connect/disconnect/renew, not when this happens automatically for 
+   whatever reason, e.g. suspending the device, network not available, ...;
 2. There are no API calls as long as the VPN is (supposed to be) up (or down).
 
 **NOTE** if the application implements some kind of "auto connect" on 
@@ -609,10 +609,11 @@ part of the `/connect` call response.
 When the user clicks the "Renew Session" button the following MUST happen in 
 this order:
 
-1. Call `/disconnect`;
-2. Delete the OAuth access and refresh token;
-3. Start the OAuth authorization flow;
-4. Automatically reconnect to the server and profile if (and only if) the 
+1. Disconnect the active VPN connection;
+2. Call `/disconnect`;
+3. Delete the OAuth access and refresh token;
+4. Start the OAuth authorization flow;
+5. Automatically reconnect to the server and profile if (and only if) the 
    client was previously connected.
 
 The OS notification shown to the user _MAY_ offer the "Renew Session" button 
