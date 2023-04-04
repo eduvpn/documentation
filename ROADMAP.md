@@ -38,3 +38,8 @@ These may be implemented already in 3.x as they are not necessarily "breaking":
   - Currently only a graph for "client distribution" is available
 - Reimplement 2FA, but only for *local* user accounts 
   ([#14](https://todo.sr.ht/~eduvpn/server/14))
+- Allow profiles to be configured as "split tunnel" by default, e.g. 
+  `defaultGateway` is set to `false` with `routeList` set, but allow the VPN 
+  client to override this to send _all_ traffic over the VPN, currently some
+  servers duplicate a VPN profile (one with split tunnel, one with default 
+  gateway)
