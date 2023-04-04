@@ -34,6 +34,8 @@ These may be implemented already in 3.x as they are not necessarily "breaking":
   ([#131](https://todo.sr.ht/~eduvpn/server/131))
   - Removes the need to periodically authenticate to get the latest 
     "attributes/claims" from the IdM
+  - Think about adding _hybrid_ authentication/authorization, e.g. have SAML 
+    WebSSO for authentication, and LDAP for _authorization_s
 - Add more graphs on "Stats" page ([#11](https://todo.sr.ht/~eduvpn/server/11))
   - Currently only a graph for "client distribution" is available
 - Reimplement 2FA, but only for *local* user accounts 
