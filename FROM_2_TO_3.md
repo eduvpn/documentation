@@ -245,8 +245,8 @@ upgrade.
 Add the new repository:
 
 ```
-$ curl https://repo.php-saml-sp.eu/fkooman+repo@tuxed.net.asc | sudo tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc
-$ echo "deb https://repo.php-saml-sp.eu/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/php-saml-sp_v2.list
+$ curl -s https://repo.php-saml-sp.eu/v2/deb/fkooman+repo@tuxed.net.gpg | sudo tee /usr/share/keyrings/fkooman+repo@tuxed.net.gpg >/dev/null
+$ echo "deb [signed-by=/usr/share/keyrings/fkooman+repo@tuxed.net.gpg] https://repo.php-saml-sp.eu/v2/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/php-saml-sp_v2.list >/dev/null
 ```
 
 Perform the upgrade:

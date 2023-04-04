@@ -65,13 +65,13 @@ hbtNfeBYGPPLFHY/gw7jLsMACApu636zxr77LxzbFgz7
 ### Repository Key
 
 ```bash
-$ curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | sudo tee /etc/apt/trusted.gpg.d/eduVPN_v3-dev.asc
+$ curl -s https://repo.tuxed.net/eduVPN/v3-dev/deb/fkooman+repo@tuxed.net.gpg | sudo tee /usr/share/keyrings/fkooman+repo@tuxed.net.gpg >/dev/null
 ```
 
 ### Repository Config
 
 ```bash
-echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3-dev.list
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/fkooman+repo@tuxed.net.gpg] https://repo.tuxed.net/eduVPN/v3-dev/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3-dev.list >/dev/null
 ```
 
 ## Fedora

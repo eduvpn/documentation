@@ -34,13 +34,13 @@ CRLMAwAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYp1+4rY93nPy0QEA
 ### Repository Key
 
 ```bash
-$ curl https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.asc | sudo tee /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
+$ curl -s https://repo.eduvpn.org/v3/deb/repo+v3@eduvpn.org.gpg | sudo tee /usr/share/keyrings/repo+v3@eduvpn.org.gpg >/dev/null
 ```
 
 ### Repository Config
 
 ```bash
-echo "deb https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3.list
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/repo+v3@eduvpn.org.gpg] https://repo.eduvpn.org/v3/deb $(/usr/bin/lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/eduVPN_v3.list >/dev/null
 ```
 
 ## Fedora

@@ -32,15 +32,16 @@ apt update
 apt install -y apt-transport-https curl apache2 php-fpm pwgen \
     iptables-persistent sudo lsb-release ipcalc-ng tmux
 
+DEBIAN_ARCH=$(dpkg --print-architecture)
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
-    curl https://repo.tuxed.net/fkooman+repo@tuxed.net.asc | tee /etc/apt/trusted.gpg.d/fkooman+repo@tuxed.net.asc
-    echo "deb https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3-dev.list
+    cp resources/fkooman+repo@tuxed.net.gpg /usr/share/keyrings/
+    echo "deb [arch=${DEBIAN_ARCH} signed-by=/usr/share/keyrings/fkooman+repo@tuxed.net.gpg] https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN_v3-dev.list
 else
-    cp resources/repo+v3@eduvpn.org.asc /etc/apt/trusted.gpg.d/repo+v3@eduvpn.org.asc
-    echo "deb https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" | tee /etc/apt/sources.list.d/eduVPN_v3.list
+    cp resources/repo+v3@eduvpn.org.gpg /usr/share/keyrings/
+    echo "deb [arch=${DEBIAN_ARCH} signed-by=/usr/share/keyrings/repo+v3@eduvpn.org.gpg] https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN_v3.list
 fi
 
 apt update
