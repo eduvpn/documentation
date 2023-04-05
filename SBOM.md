@@ -11,10 +11,10 @@ It is an initial attempt to create an
 
 | Component       												    | Description                     | Tag/Branch | Language | LoC*  |
 | ----------------------------------------------------------------- | ------------------------------- | ---------- | -------- | ----- |
-| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.3.0`    | PHP      | 12281 |
+| [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal)     | User Portal / API               | `3.3.3`    | PHP      | 12412 |
 | [vpn-server-node](https://git.sr.ht/~fkooman/vpn-server-node)     | Node                            | `3.0.2`    | PHP      | 1028  |
-| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `6.1.0`    | PHP      | 835   |
-| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `7.4.0`    | PHP      | 2169  |
+| [php-secookie](https://git.sr.ht/~fkooman/php-secookie/)          | Cookie/session library          | `6.2.0`    | PHP      | 904   |
+| [php-oauth2-server](https://git.sr.ht/~fkooman/php-oauth2-server) | OAuth 2.0 server                | `7.5.3`    | PHP      | 2298  |
 | [vpn-daemon](https://git.sr.ht/~fkooman/vpn-daemon)               | Manages VPN connections on Node | `main`     | Go       | 380   |
 | [vpn-ca](https://git.sr.ht/~fkooman/vpn-ca)                       | X.509 Server/Client Cert CA     | `main`     | Go       | 263   |
 | [wgctrl-go](https://github.com/WireGuard/wgctrl-go)               | WireGuard Go Library            | `master`   | Go       | ?     |
@@ -42,4 +42,4 @@ look in the output for `NCLOC`. For Go code we use
 [cloc](https://github.com/AlDanial/cloc). All projects (except `wgctrl-go`) 
 include a `Makefile` target `sloc` that can be used to reproduce these values. 
 
-**Last Updated**: 2023-01-23
+**Last Updated**: 2023-04-05
