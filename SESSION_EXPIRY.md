@@ -27,7 +27,7 @@ users that are no longer eligible to use the VPN from the portal.
 It is a bit of a judgment call. We know of organizations that set it to 12 
 hours, and also organizations that set it to 3 years.
 
-The eduVPN/Let's Connect! applications will show the user the remaining time
+The eduVPN / Let's Connect! applications will show the user the remaining time
 of their VPN session and/or send notifications when the VPN session is about
 to expire so users can choose a more convenient time to renew their session.
  
@@ -62,3 +62,43 @@ portal.
 ```bash
 $ sudo vpn-maint-reset-system
 ```
+
+### Per User Session Expiry
+
+**NOTE**: this has been implemented in vpn-user-portal >= 3.3.4
+
+It is possible to allow individual `sessionExpiry` overrides based on user 
+permissions. The following two are use cases we identified:
+
+1. You want certain (power)users to be able to forgo regular 
+   authentication/authorization and give them e.g. `P1Y` instead of whatever 
+   the default is for your server;
+2. You want certain users with access to sensitive resources to 
+   authenticate/authorize e.g. every day and for instance provide their second 
+   factor.
+
+In order to configure this, make sure you follow the [ACL](ACL.md) 
+documentation and set the `permissionAttributeList`, or properly configure the 
+"Static" ACL.
+
+We standardized the values required to have per user session expiry to the 
+following format: `http://eduvpn.org/expiry#VALUE` where `VALUE` is one of the
+_intervals_ as discussed in the previous section. Some examples:
+
+* `http://eduvpn.org/expiry#P1Y` (1 year)
+* `http://eduvpn.org/expiry#P12H` (12 hours)
+
+**NOTE**: if 0, or >1 are provided through your IdM, the default 
+`sessionExpiry` will be used.
+
+Next, you need to enable specific values that are to be by your server. This is
+done by setting the `userSessionExpiryList` next to the `sessionExpiry` field
+in `/etc/vpn-user-portal/config.php`, for example:
+
+```
+'sessionExpiry' => 'P90D',
+'userSessionExpiryList' => ['P1Y', 'P12H'],
+```
+
+**NOTE**: these values will only be used from the next user 
+authentication/authorization and will NOT take effect immediately.

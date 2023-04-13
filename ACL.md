@@ -154,3 +154,7 @@ either make sure your account has any permissions, or logout and login again.
 This requires everyone to have the permission `employees` before being allowed
 access to the profile.. If you specify more than one "permission", the user 
 needs to be member of only one. The permissions are thus "OR".
+
+## Session Expiry
+
+See [Per User Session Expiry](SESSION_EXPIRY.md#per-user-session-expiry).
