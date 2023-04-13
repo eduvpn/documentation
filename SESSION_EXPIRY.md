@@ -91,9 +91,9 @@ _intervals_ as discussed in the previous section. Some examples:
 **NOTE**: if 0, or >1 are provided through your IdM, the default 
 `sessionExpiry` will be used.
 
-Next, you need to enable specific values that are to be by your server. This is
-done by setting the `userSessionExpiryList` next to the `sessionExpiry` field
-in `/etc/vpn-user-portal/config.php`, for example:
+Next, you need to explicitly configure specific values that are to be supported 
+by your server. This is done by setting the `userSessionExpiryList` next to the 
+`sessionExpiry` field in `/etc/vpn-user-portal/config.php`. For example:
 
 ```
 'sessionExpiry' => 'P90D',
