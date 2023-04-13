@@ -93,14 +93,20 @@ _intervals_ as discussed in the previous section. Some examples:
 **NOTE**: if 0, or >1 are provided through your IdM, the default 
 `sessionExpiry` will be used.
 
-Next, you need to explicitly configure specific values that are to be supported 
-by your server. This is done by setting the `userSessionExpiryList` next to the 
-`sessionExpiry` field in `/etc/vpn-user-portal/config.php`. For example:
+Next, you need to _explicitly_ configure specific values that are to be 
+supported by your server. This is done by setting the `userSessionExpiryList` 
+next to the `sessionExpiry` field in `/etc/vpn-user-portal/config.php`. For 
+example:
 
 ```
 'sessionExpiry' => 'P90D',
 'userSessionExpiryList' => ['P1Y', 'P12H'],
 ```
+
+This allows `http://eduvpn.org/expiry#P1Y`, `http://eduvpn.org/expiry#P12H` and 
+`http://eduvpn.org/expiry#P90D`. The `sessionExpiry` value, here `P90D` is 
+_always_ supported, also if `userSessionExpiryList` is not (explicitly) 
+configured.
 
 **NOTE**: these values will only be used from the next user 
 authentication/authorization and will NOT take effect immediately.
