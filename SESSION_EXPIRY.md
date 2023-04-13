@@ -28,12 +28,14 @@ It is a bit of a judgment call. We know of organizations that set it to 12
 hours, and also organizations that set it to 3 years.
 
 The eduVPN / Let's Connect! applications will show the user the remaining time
-of their VPN session and/or send notifications when the VPN session is about
-to expire so users can choose a more convenient time to renew their session.
+of their VPN session and send notifications when the VPN session is about
+to expire so users can choose a more convenient time to renew their session. 
+See [this](API.md#session-expiry) for more information on session expiry for
+apps.
  
 **NOTE**: if you choose to for example 1 day, this will mean that if a user
 authenticates at 09:30, the next day at 09:30 their session will expire, 
-meaning the may have to authorize/authenticate during a video call.
+meaning they may have to authorize/authenticate during a video call.
 
 ### Changing Session Expiry
 
