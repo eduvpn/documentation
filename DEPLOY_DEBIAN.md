@@ -1,4 +1,4 @@
-# Deploying on Debian
+# Deploying on Debian & Ubuntu
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh Debian 11 or Ubuntu 22.04 installation. It will 
@@ -124,27 +124,6 @@ documented separately. See [SAML](SAML.md).
 If you want to restrict the use of the VPN a bit more than on whether someone
 has an account or not, e.g. to limit certain profiles to certain (groups of)
 users, see [ACL](ACL.md).
-
-## PHP 
-
-Debian's PHP package has some unfortunate defaults that only work for 
-very light usage and in no way for deploys where you expect more than a few 
-users to use the service.
-
-Modify `/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11) or 
-`/etc/php/8.1/fpm/pool.d/www.conf` (Ubuntu 22.04) and change the following 
-settings. We'll use the Fedora defaults here:
-
-    pm = dynamic
-    pm.max_children = 50
-    pm.start_servers = 5
-    pm.min_spare_servers = 5
-    pm.max_spare_servers = 35
- 
-You can tweak those further if needed, but they'll do for some time! Restart 
-the PHP service to activate the changes:
-
-    $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
 
 ## Optional
 

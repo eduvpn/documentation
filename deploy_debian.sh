@@ -106,6 +106,22 @@ a2dissite 000-default
 systemctl restart apache2
 
 ###############################################################################
+# PHP
+###############################################################################
+
+# update some php-fpm defaults to make PHP on Debian/Ubuntu better suited for
+# production loads
+
+cat << EOF > /etc/php/${PHP_VERSION}/fpm/pool.d/www_vpn.conf
+[www]
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+EOF
+
+###############################################################################
 # VPN-USER-PORTAL
 ###############################################################################
 
