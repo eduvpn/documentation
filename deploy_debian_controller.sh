@@ -37,10 +37,10 @@ DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
-    cp resources/fkooman+repo@tuxed.net.gpg /usr/share/keyrings/
+    cp resources/fkooman+repo@tuxed.net.gpg /usr/share/keyrings/fkooman+repo@tuxed.net.gpg
     echo "deb [arch=${DEBIAN_ARCH} signed-by=/usr/share/keyrings/fkooman+repo@tuxed.net.gpg] https://repo.tuxed.net/eduVPN/v3-dev/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN_v3-dev.list
 else
-    cp resources/repo+v3@eduvpn.org.gpg /usr/share/keyrings/
+    cp resources/repo+v3@eduvpn.org.gpg /usr/share/keyrings/repo+v3@eduvpn.org.gpg
     echo "deb [arch=${DEBIAN_ARCH} signed-by=/usr/share/keyrings/repo+v3@eduvpn.org.gpg] https://repo.eduvpn.org/v3/deb ${DEBIAN_CODE_NAME} main" > /etc/apt/sources.list.d/eduVPN_v3.list
 fi
 
