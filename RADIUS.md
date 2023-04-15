@@ -1,8 +1,4 @@
----
-title: RADIUS
-description: Enable RADIUS Authentication
-category: authentication
----
+# RADIUS
 
 This document describes how to configure RADIUS for deployed systems. We assume 
 you used the `deploy_${DIST}.sh` script to deploy the software. Below we assume 
@@ -27,7 +23,7 @@ supported for 802.1X.
 LDAP is supported by all common IdMs, even Active Directory. Go [here](LDAP.md)
 for instructions on how to configure LDAP.
 
-# Configuration
+## Configuration
 
 First install the PHP module for RADIUS:
 

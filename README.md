@@ -17,7 +17,7 @@ try to find the contact information of your organization
 contact us at 
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
-# Supported Versions
+## Supported Versions
 
 | Version                                              | Release Date | OS Support                                                   |  EOL*      |
 | ---------------------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
@@ -32,7 +32,7 @@ running that version anymore, whichever comes first.
 We **only** support the particular release on operating systems that are still 
 supported by their vendor!
 
-# Features
+## Features
 
 This is an (incomplete) list of features of the VPN software:
 
@@ -66,12 +66,12 @@ This is an (incomplete) list of features of the VPN software:
   other designated servers (optional);
 - Native [applications](CLIENT_COMPAT.md) available for most common platforms.
 
-# Client Support
+## Client Support
 
 See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
 supported OpenVPN clients.
 
-# Deployment
+## Deployment
 
 **NOTE**: if you plan to install and run a eduVPN/Let's Connect! server please 
 subscribe to the "deployers" mailing list 
@@ -79,7 +79,7 @@ subscribe to the "deployers" mailing list
 for announcements of updates and discussion about running 
 eduVPN/Let's Connect!.
 
-# IRC Contact
+## IRC Contact
 
 You can also join IRC for _technical_ questions/discussions/feedback on 
 [Libera.Chat](https://libera.chat/), channel `#eduvpn`. Please stick around for 
@@ -112,13 +112,13 @@ rebooted before you install the software!
 **NOTE**: if you want to deploy on multiple machines for load balancing, please 
 follow [these](MULTI_NODE.md) instructions!
 
-# Development
+## Development
 
 If you want to set up your own server development environment see 
 [DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md). See the `v3` branch for the 
 upcoming 3.x server.
 
-# License 
+## License 
 
 This work (this documentation repository) is licensed under a Creative Commons 
 Attribution-ShareAlike 4.0 International License.
@@ -128,7 +128,7 @@ See [LICENSE](LICENSE).
 The VPN server software is licensed under the 
 [AGPLv3+](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
-# Security Contact
+## Security Contact
 
 If you find a security problem in the code, the deployed service(s) and want to
 report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 

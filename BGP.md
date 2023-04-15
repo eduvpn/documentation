@@ -1,18 +1,7 @@
----
-title: BGP
-description: Use BGP announcements
-category: advanced
-author: Jørn Åne (Uninett)
----
-
 # BGP
 
-## Warning
-
-This guide is provided as is.  The eduVPN project provides no support for BGP.
-
-
-## Introduction
+**WARNING**: this guide is provided as is. The eduVPN project provides no 
+support for BGP.
 
 If your network allows it, the IP ranges used by your vpn-server-node can be obtained through BGP.  For this to work, you must know the following:
 
@@ -27,7 +16,6 @@ Please note that many BGP implementations will refuse to issue subnets smaller t
 If you need to be able to split your subnet, discuss this with your network operator.
 
 **DO NOT SET THIS UP BEFORE TALKING TO YOUR NETWORK ADMINISTRATOR FIRST**
-
 
 ## Install exaBGP
 

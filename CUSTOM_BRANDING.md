@@ -1,13 +1,9 @@
----
-title: Custom Branding
-description: Apply your own Branding/Themes
-category: customization
----
+# Custom Branding
 
 This document describes how to apply your own branding (style and e.g. logo) to
 the portal.
 
-# Custom Portal Footer
+## Custom Portal Footer
 
 If all you want is to add a simple text at the bottom of (all) pages, you can
 use the "custom footer" functionality.
@@ -22,7 +18,7 @@ following content:
 **NOTE**: this footer is *always* visible, also when VPN apps are being 
 authorized.
 
-## Translations
+### Translations
 
 You can also use multi language custom footers. You can use the 
 `<?=$this->t('Text To Translate');?>` format to make text translatable and 
@@ -50,7 +46,7 @@ they exist.
 escape them by adding a backslash (`\`) in front of them, e.g. 
 `'Don\'t click here!'`.
 
-# Template Overriding
+## Template Overriding
 
 The portal uses templates, located in the following folder:
 

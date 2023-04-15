@@ -1,8 +1,4 @@
----
-title: Architecture
-description: Description of Service Architecture
-category: documentation
----
+# Architecture
 
 This is a very short overview of the server architecture for version 1.0 of 
 eduVPN.

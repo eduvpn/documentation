@@ -1,8 +1,4 @@
----
-title: Add Node(s)
-description: Add additional VPN nodes for handling OpenVPN connections
-category: advanced
----
+# Add Daemon Node
 
 **NOTE**: if you have only 1 VPN server and do not want to deploy additional
 servers, check the documentation on how to switch to the daemon on one server 
@@ -33,16 +29,16 @@ process(es). A typical deploy looks like this:
 Those machines can be in the same data center, or in physically different 
 locations.
 
-# Prerequisites
+## Prerequisites
 
 In order to securely add node(s) to your VPN setup we implemented a simple 
 [VPN daemon](https://git.sr.ht/~fkooman/vpn-daemon) that runs on the 
 node(s). The communication channel between the controller and node is 
 protected by TLS (client certificates) when contacting remote nodes.
 
-# Setup
+## Setup
 
-## Controller
+### Controller
 
 First we switch our controller to use the daemon as well to talk to the local
 OpenVPN processes. This is rather simple:
@@ -57,7 +53,7 @@ level as `vpnProfiles`.
 Make sure everything still works, i.e. you can see connected clients when 
 visiting the "Connections" tab in the portal.
 
-### CA 
+#### CA 
 
 As the daemon will use TLS with client certificates when talking to remote 
 daemons, and **only** when talking to remote daemons, we have to set up a 
@@ -87,7 +83,7 @@ web server can read them:
 Keep track of the `vpn-daemon.crt` and `vpn-daemon.key` files as you'll need
 them later on the node.
 
-### Profile
+#### Profile
 
 Add a new profile to your server as described [here](MULTI_PROFILE.md). For 
 every node you need to add an additional profile. You need to take care of 
@@ -121,7 +117,7 @@ you want to deploy on the node, e.g.:
 
     'profileList' => ['internet'],
 
-## Node
+### Node
 
 You can use the `deploy_${DIST}_node.sh` for installing the node. It will only
 install the relevant software to connect to your controller and handle VPN 
@@ -157,7 +153,7 @@ To apply the configuration changes:
 
 If the command is not available, install the `vpn-maint-scripts` package first.
 
-### Daemon 
+#### Daemon 
 
 Now to allow the controller to contact the node, we have to setup the daemon.
 

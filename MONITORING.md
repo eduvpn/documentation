@@ -1,8 +1,4 @@
----
-title: Monitoring
-description: Server Monitoring
-category: documentation
----
+# Monitoring
 
 We have very minimal monitoring capability in the VPN software as of now. This 
 will most likely be improved in the future if there is a need for it.
@@ -13,7 +9,7 @@ using [vpn-daemon](VPN_DAEMON.md) and in JSON output format.
 **NOTE**: these format is NOT "stable". If you depend on this in your scripting
 be ready to update when new releases appear!
 
-# CSV
+## CSV
 
 A simple CSV format:
 
@@ -26,7 +22,7 @@ profiles, you can use this:
 
     $ sudo vpn-server-api-status | tail -n +2 | cut -d ',' -f 2 | awk '{sum+=$1}END{print sum}'
 
-# JSON
+## JSON
 
 Aggregate information:
 

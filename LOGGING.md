@@ -1,9 +1,3 @@
----
-title: VPN Server Logging
-description: How to use/view VPN Server logging
-category: documentation
----
-
 # Logging
 
 There are three places where you can have VPN server logging:

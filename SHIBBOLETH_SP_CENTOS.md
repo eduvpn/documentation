@@ -1,8 +1,4 @@
----
-title: Shibboleth SP (CentOS)
-description: SAML Authentication using Shibboleth on CentOS
-category: authentication
----
+# Shibboleth SP (CentOS)
 
 This document describes installing Shibboleth on CentOS 7. On CentOS you have
 to install Shibboleth V3 packages provided by the Shibboleth project.
@@ -169,7 +165,7 @@ Restart Shibboleth:
 Next: register your SP in your identity federation, or in your IdP. The
 metadata URL is typically `https://vpn.example.org/Shibboleth.sso/Metadata`.
 
-### Portal
+## Portal
 
 In order to configure the VPN portal, modify `/etc/vpn-user-portal/config.php`
 and set the `authMethod` and `ShibAuthentication` options:

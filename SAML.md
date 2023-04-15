@@ -1,8 +1,4 @@
----
-title: SAML
-description: Enable SAML Authentication
-category: authentication
----
+# SAML
 
 This document describes how to configure SAML authentication for deployed
 systems. We assume you used the `deploy_${DIST}.sh` script to deploy the 

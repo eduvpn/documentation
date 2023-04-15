@@ -1,8 +1,4 @@
----
-title: LDAP
-description: Enable LDAP Authentication
-category: authentication
----
+# LDAP
 
 This document describes how to configure LDAP. We assume you used the 
 `deploy_${DIST}.sh` script to deploy the software.
@@ -18,7 +14,7 @@ you can look [here](PORTAL_ADMIN.md) for determining admin portal access, and
 **NOTE**: we have an instruction video on how to configure Active Directory 
 via LDAP [here](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
 
-# Introduction
+## Introduction
 
 It is a good idea to try with `ldapsearch` if you are not absolutely sure what
 to configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
@@ -57,6 +53,7 @@ After providing the user's password, you should see all the LDAP attributes
 associated with that user account, e.g. `memberOf`, `mail`, `uid`.
 
 ## Active Directory
+
 If you are using 
 [Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
 slightly different, replace `DOMAIN` with the name of your domain and `fkooman` 
@@ -112,7 +109,7 @@ bind now to the server to verify the password:
 If this works, we can use this information as explained below in the 
 configuration examples.
 
-# Configuration
+## Configuration
 
 You can configure the portal to use LDAP. This is configured in the file 
 `/etc/vpn-user-portal/config.php`.
@@ -196,7 +193,7 @@ the exact same format as used in the LDAP server.
 
 This should be all to configure your LDAP!
 
-# LDAPS
+## LDAPS
 
 In order to use LDAPS, you can use the LDAPS scheme in the `baseUri`
 configuration option, e.g.:
@@ -217,7 +214,7 @@ You can copy/paste the CA certificate from the certificates shown.
 **NOTE**: make sure you validate this CA out of band! You MUST be sure this 
 is the actual CA!
 
-## CentOS / Fedora
+### CentOS / Fedora
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it
@@ -235,7 +232,7 @@ You **MUST** restart `php-fpm` to pick up the changes:
 
     $ sudo systemctl restart php-fpm
 
-## Debian
+### Debian
 
 If you use a self signed certificate for your LDAP server perform these steps. 
 If your certificate is signed by a trusted CA you do not need to do this, it

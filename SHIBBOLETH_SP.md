@@ -1,18 +1,14 @@
----
-title: Shibboleth SP (Debian)
-description: SAML Authentication using Shibboleth
-category: authentication
----
+# Shibboleth SP (Debian)
 
 This document describes installing Shibboleth on Debian 10 and 11.
 
-# Installation
+## Installation
 
     $ sudo apt install libapache2-mod-shib
     $ sudo shib-keygen -n sp-encrypt
     $ sudo shib-keygen -n sp-signing
 
-# Configuration
+## Configuration
 
 Modify `/etc/shibboleth/shibboleth2.xml`:
 

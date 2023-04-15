@@ -1,13 +1,4 @@
----
-title: Traceable NAT
-description: Make NAT users tracable using a static iptables configuration
-category: advanced
-author: Jørn Åne de Jong (Uninett)
----
-
 # Traceable NAT
-
-## Introduction
 
 When using NAT, it is hard to identify the user behind an action, because every uses has the same outgoing IP address.
 A solution to this could be Netflow, but that requires Netflow to be installed on every eduVPN host, which can be a hassle.

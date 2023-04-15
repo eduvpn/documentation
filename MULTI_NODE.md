@@ -1,8 +1,4 @@
----
-title: Multi Node
-description: Set up a controller with two nodes
-category: advanced
----
+# Multi Node
 
 **WORK IN PROGRESS (2021-08-24)**
 

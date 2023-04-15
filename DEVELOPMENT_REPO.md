@@ -2,9 +2,7 @@
 
 **NOTE**: do this ONLY on your testing machines!
 
-## eduVPN 2.x
-
-### CentOS
+## CentOS
 
     $ cat << 'EOF' > /etc/yum.repos.d/eduVPN_v2-dev.repo
     [eduVPN_v2-dev]
@@ -14,7 +12,7 @@
     gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
     EOF
 
-### Fedora
+## Fedora
 
     $ cat << 'EOF' > /etc/yum.repos.d/eduVPN_v2-dev.repo
     [eduVPN_v2-dev]
@@ -24,7 +22,7 @@
     gpgkey=https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
     EOF
     
-### Debian
+## Debian
 
 On your Debian server:
 

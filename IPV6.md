@@ -1,5 +1,3 @@
-**WORK IN PROGRESS**
-
 # IPv6
 
 The VPN server software supports both IPv4 and IPv6. We've reached a point 

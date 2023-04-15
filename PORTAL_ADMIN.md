@@ -1,8 +1,4 @@
----
-title: Portal Administrators
-description: How to configure admin users for the portal
-category: configuration
----
+# Portal Administrators
 
 Certain users can be "promoted" to admin in the VPN portal. This can be done in
 two ways, based on either
@@ -14,7 +10,7 @@ The User ID based "admin" authorization is the simplest. However, if the
 admins regularly change, or are already based on a certain role exposed through 
 the identity management system, using permissions may make more sense.
 
-### User ID
+## User ID
 
 The default deploy, using `deploy_${DIST}.sh` sets the `admin` user as an
 admin in `/etc/vpn-user-portal/config.php` using the `adminUserIdList` 
@@ -38,7 +34,7 @@ the "Account" page when logged into the portal. For SAML deployments using the
 In case the used user ID attribute is a pseudonym as above, you'd have to ask
 the other future admins to go to their "Account" page and tell you the user ID.
 
-### Permission
+## Permission
 
 When the "admins" are already decided on through the identity management 
 system, e.g. LDAP or SAML, it makes sense to use that "permission" / "role" to 

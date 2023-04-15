@@ -1,9 +1,3 @@
----
-title: Split Tunnel
-description: Configure Split Tunnel
-category: configuration
----
-
 # Split Tunnel
 
 Configuring "split tunnel", i.e. only routing _certain_ traffic over the VPN 
@@ -24,7 +18,7 @@ push DNS servers to the client. If there are, then make sure to also specify
 `dnsDomain` and/or `dnsDomainSearch`. In addition, make sure they are also 
 included in the `routes`.
 
-# Example
+## Example
 
 We have an organization `example.local` that has two IP ranges, `10.42.42.0/24` 
 and `10.43.43.0/24` that clients need access to from home. The internal DNS 
@@ -32,7 +26,7 @@ server, on `10.1.1.1/32` is responsible for resolving the `example.local`
 domain for internal servers. Only traffic to these IP ranges and the DNS server
 should be allowed from the VPN server.
 
-# Profile Configuration
+## Profile Configuration
 
 Configure an `office` profile in `/etc/vpn-server-api/config.php`, e.g.:
 
@@ -73,7 +67,7 @@ To apply the configuration changes:
 
 If the command is not available, install the `vpn-maint-scripts` package first.
 
-# Firewall Configuration
+## Firewall Configuration
 
 Restricting network access for VPN clients is already documented in 
 [FIREWALL.md](FIREWALL.md#reject-forwarding-traffic), but just to be complete,

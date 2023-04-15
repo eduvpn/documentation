@@ -1,8 +1,4 @@
----
-title: VPN Daemon
-description: Use VPN Daemon for OpenVPN Management
-category: advanced
----
+# VPN Daemon
 
 **NOTE**: if you run on Debian, replace `yum` with `apt`.
 

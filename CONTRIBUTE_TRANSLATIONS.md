@@ -1,13 +1,9 @@
----
-title: Contribute Translations
-description: Contribute Translations for the User and Admin portal(s)
-category: customization
----
+# Contribute Translations
 
 If you'd like to contribute translations to the VPN software this document
 explains how.
 
-# Server
+## Server
 
 You can check which translations are already available, and possibly update 
 them if they are out of date:
@@ -23,11 +19,11 @@ The files use the PHP
 
 The "key" is the English string, the value should be the translation.
 
-# Apps
+## Apps
 
 TBD.
 
-# Submitting
+## Submitting
 
 Once you are done, you can submit your translation file either by creating a 
 "Pull Request" on GitHub, or simply mailing the file with your translations to

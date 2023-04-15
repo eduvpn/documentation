@@ -6,9 +6,9 @@ for eduVPN / Let's Connect!.
 This page will reflect always the most up to date configuration and keys that
 are required for using the packages.
 
-# Debian
+## Debian
 
-## Keys
+### Keys
 
 Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
@@ -24,27 +24,27 @@ $ gpg --import-options show-only --import debian+20200817@eduvpn.org.asc
 $ sudo cp debian+20200817@eduvpn.org.asc /etc/apt/trusted.gpg.d/debian+20200817@eduvpn.org.asc
 ```
 
-## Config
+### Config
 
 The repository configuration is done in 
 `/etc/apt/sources.list.d/eduVPN_v2.list`, add the following line there 
 depending on the version of Debian you are using.
 
-### Debian 10
+#### Debian 10
 
 ```
 deb https://repo.eduvpn.org/v2/deb buster main
 ```
 
-### Debian 11
+#### Debian 11
 
 ```
 deb https://repo.eduvpn.org/v2/deb bullseye main
 ```
 
-# CentOS
+## CentOS
 
-## Keys
+### Keys
 
 Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
@@ -60,7 +60,7 @@ $ gpg --import-options show-only --import centos+20210419@eduvpn.org.asc
 $ sudo rpm --import centos+20210419@eduvpn.org.asc
 ```
 
-## Config
+### Config
 
 `/etc/yum.repos.d/eduVPN_v2.repo`
 
@@ -72,9 +72,9 @@ gpgcheck=1
 enabled=1
 ```
 
-# Fedora
+## Fedora
 
-## Keys
+### Keys
 
 Owner   | Fingerprint                                          | Expires
 ------- | ---------------------------------------------------- | ----------
@@ -90,7 +90,7 @@ $ gpg --import-options show-only --import centos+20210419@eduvpn.org.asc
 $ sudo rpm --import centos+20210419@eduvpn.org.asc
 ```
 
-## Config
+### Config
 
 `/etc/yum.repos.d/eduVPN_v2.repo`
 

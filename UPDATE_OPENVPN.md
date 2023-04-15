@@ -1,4 +1,4 @@
-# Introduction
+# Update OpenVPN
 
 **NOTE**: we recommend to upgrade to Debian 11 instead of using the OpenVPN 
 backport!
@@ -12,7 +12,7 @@ instead of OpenVPN 2.4, which is part of `buster`.
 
 **NOTE**: there is NO real need to do this and we consider this experimental!
 
-# Enable Backports
+## Enable Backports
 
 First enable [backports](https://backports.debian.org/), we summerize the 
 instructions as per the site linked to:
@@ -25,7 +25,7 @@ Run:
 
     $ sudo apt update
 
-# Install OpenVPN from Backports
+## Install OpenVPN from Backports
 
 Install OpenVPN from backports:
 

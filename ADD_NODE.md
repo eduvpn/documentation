@@ -1,8 +1,4 @@
----
-title: Add Node
-description: Add a VPN node for handling OpenVPN connections
-category: advanced
----
+# Add Node
 
 **NOTE**: this is LEGACY. Do not use on new deployments. Use 
 [ADD_DAEMON_NODE](ADD_DAEMON_NODE.md) instead!
@@ -23,7 +19,7 @@ process(es). A typical deploy looks like this:
 Those machines can be in the same data center, or in physically different 
 locations.
 
-# Prerequisites
+## Prerequisites
 
 In order to add node(s) to your VPN setup there needs to be a _secure_ way for
 the controller to communicate with the node(s). Typically you'd use a private 
@@ -35,9 +31,9 @@ OpenVPN management ports, i.e. TCP ports 11940 and up.
 Note: those ports MUST only be available to the controller NOT to the public
 Internet!
 
-# Setup
+## Setup
 
-## Controller
+### Controller
 
 Initially we'll leave the controller, your existing VPN server, alone. We'll 
 just add a new "profile" that is delegated to your new node.
@@ -62,7 +58,7 @@ Next, take note of the secret under `apiConsumers => vpn-server-node` in
 `/etc/vpn-server-api/config.php`, you'll need it on the node
 later.
 
-## Node
+### Node
 
 You can use the `deploy_${DIST}_node.sh` for installing the node. It will only
 install the relevant software to connect to your controller and handle VPN 

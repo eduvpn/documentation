@@ -1,8 +1,4 @@
----
-title: User Delete
-description: Manually fully Delete a User
-category: advanced
----
+# User Delete
 
 This document describes how to delete a user from the VPN server. Note: 
 depending on the user authentication method there may be more to delete.
@@ -12,7 +8,7 @@ User data is stored in two locations:
 1. The vpn-user-portal (OAuth tokens for use by API)
 2. The vpn-server-api (2FA, certificate mapping, logging)
 
-# User Portal
+## User Portal
 
 If you are using the *default* username/password authentication you need to 
 delete the user from the user database. This is *NOT* relevant for SAML, LDAP 
@@ -38,7 +34,7 @@ sqlite> DELETE FROM authorizations WHERE user_id = 'ABCD';
 sqlite> .q
 ```
 
-# Server API
+## Server API
 
 Make sure to enable "foreign keys" with the `PRAGMA` statement shown below, 
 this is to delete the user data from all other tables that have a foreign key

@@ -1,4 +1,6 @@
-# What to expect in eduVPN / Let's Connect! 3.x?
+# Roadmap
+
+## What to expect in eduVPN / Let's Connect! 3.x?
 
 We expect to release eduVPN / Let's Connect! 3.x in **Q4 of 2021**. This will also
 depend on the eduVPN / Let's Connect! client application that will need to 
@@ -11,7 +13,7 @@ make your case!
 For our current progress see our 
 [issue tracker](https://todo.sr.ht/~eduvpn/server).
 
-## High Level Changes
+### High Level Changes
 
 - [WireGuard](WIREGUARD.md) Support
 - [HA/Redundancy](PORTAL_HA.md) for the portal;
@@ -24,12 +26,12 @@ For our current progress see our
   downloads per user
 - Keep aggregate logs longer than 30 days, i.e. usage statistics
 
-## Ops Changes
+### Ops Changes
 
 - Runs on Debian >= 11, Fedora >= 34, Possibly Ubuntu 22.04 and 
   CentOS/RHEL/Rocky 9
 
-## Implementation Changes
+### Implementation Changes
 
 - Require at least OpenVPN 2.5
 - [OAuth 2.1](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/) draft 
@@ -53,7 +55,7 @@ For our current progress see our
 - Removed "conditional 2FA" with the `PhpSamlSpAuthentication` module, it is 
   2FA for all, or for none
   
-## For Future Consideration (>= 3.1)
+### For Future Consideration (>= 3.1)
 
 - Reimplement 2FA, but only for local user accounts
 - Implement Admin API. e.g. for bulk-configuration downloads for managed 

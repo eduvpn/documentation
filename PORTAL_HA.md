@@ -1,4 +1,4 @@
-# Introduction
+# Portal HA
 
 **WORK IN PROGRESS**
 
@@ -30,7 +30,7 @@ We assume you are using `deploy_fedora_v3.sh` on all your portals with the same
 domain name, e.g. `vpn.example.org` and will use "round robin" DNS for HA / 
 load balancing.
 
-# MariaDB Installation
+## MariaDB Installation
 
 Follow the instructions below to configure your MariaDB server:
 
@@ -43,7 +43,7 @@ $ sudo mysql_secure_installation
 You can leave most things at their defaults, but set a `root` password when 
 asked, you will need it below.
 
-# MariaDB Configuration
+## MariaDB Configuration
 
 Now you need to create a database and a user with a password.
 
@@ -54,7 +54,7 @@ $ mysql -u root -p
 Provide the `root` password, and run the following commands. Replace the name 
 of the database and user if you want. Make sure you choose your own password.
 
-## Local Access
+### Local Access
 
 ```
 MariaDB [(none)]> CREATE DATABASE vpn;
@@ -70,7 +70,7 @@ account:
 $ mysql vpn -u vpn -p
 ```
 
-## Remote Access
+### Remote Access
 
 ```
 MariaDB [(none)]> CREATE DATABASE vpn;
@@ -91,7 +91,7 @@ the complete Internet! It seems by default MariaDB listens in `:::3306` which
 means all interfaces (both IPv4 and IPv6). You MUST firewall this port and 
 restrict access to your VPN portals only!
 
-# Memcached Installation
+## Memcached Installation
 
 On all of your portal servers:
 
@@ -100,7 +100,7 @@ $ sudo dnf -y install memcached
 $ sudo systemctl enable --now memcached
 ```
 
-# Memcached Configuration
+## Memcached Configuration
 
 By default Memcached only listens on `localhost`. For our purpose however each
 installation of the portal should be able to reach all Memcached servers. 
@@ -134,7 +134,7 @@ Memcache again:
 $ sudo systemctl restart memcached
 ```
 
-# Portal Configuration
+## Portal Configuration
 
 Make sure you have the required PHP module installed for MariaDB/MySQL:
 
@@ -207,7 +207,7 @@ If you were using local users, you can add them again:
 $ sudo -u apache vpn-user-portal-add-user
 ```
 
-# Other Aspects
+## Other Aspects
 
 Some additional files need to be copied from one of the portals to the 
 other(s), e.g. VPN CA, OAuth key, OpenVPN/WireGuard key material and HTTPS 

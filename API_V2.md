@@ -1,22 +1,19 @@
----
-title: API
-description: API Documentation for (Native) Application Developers
-category: dev
----
+# APIv2
 
-This document describes the API provided by all Let's Connect!/eduVPN services.
+This document describes the **now obsolete** API provided by all Let's 
+Connect!/eduVPN services.
 
 The API can be used by applications integrating with the VPN software, making
 it easier for users to start using the VPN.
 
-# Instance Discovery
+## Instance Discovery
 
 This document assumes you already have a FQDN to connect to, e.g. specified by
 the user, but in order to allow applications to create a list of VPN services 
 available to the user to connect to, we also documented 
 [Instance Discovery](INSTANCE_DISCOVERY.md).
 
-# Standards
+## Standards
 
 OAuth 2.0 is used to provide the API. The following documents are relevant for 
 implementations and should be followed except when explicitly stated 
@@ -38,13 +35,13 @@ basis:
 With this library it is very important that you handle all standard OAuth 
 "error" conditions regarding expired, invalid or revoked tokens.
 
-# Definitions
+## Definitions
 
 A VPN service running at a particular domain is called an _instance_, e.g. 
 `demo.eduvpn.nl`. An instance can have multiple _profiles_, e.g. 
 `employees` and `administrators`.
 
-# API Discovery
+## API Discovery
 
 The OAuth and API endpoints can be discovered by requesting a JSON document
 (`info.json`) from the instance, based on the `base_uri`, e.g. 
@@ -64,7 +61,7 @@ The OAuth and API endpoints can be discovered by requesting a JSON document
 When fetching the `info.json` file, _redirects_, e.g. `301`, `302`, `303`, 
 MUST be followed.
 
-# Authorization Endpoint
+## Authorization Endpoint
 
 The `authorization_endpoint` is used to obtain an authorization code. The 
 following query parameters MUST be specified on the authorization request:
@@ -84,7 +81,7 @@ extract the authorization code.
 
 All error conditions MUST be handled according to the OAuth specification(s).
 
-# Token Endpoint
+## Token Endpoint
 
 The `token_endpoint` is used to exchange the authorization code for an access
 and refresh token. It is also used to retrieve new access tokens when the 
@@ -99,7 +96,7 @@ authorization request, when:
 
 All error conditions MUST be handled according to the OAuth specification(s).
 
-# Using the API
+## Using the API
 
 The API is pragmatic "REST", keeping things as simple as possible without 
 obsessing about the proper HTTP verbs. There are no `PUT` and `DELETE` 
@@ -122,9 +119,9 @@ documented above. The following API calls are available:
 
 All error conditions MUST be handled according to the OAuth specification(s).
 
-## API Calls
+### API Calls
 
-### Multi Language Support
+#### Multi Language Support
 
 For the calls listed below, applications MUST check if the mentioned value is 
 a string, or an object. In case of an object, the language best matching
@@ -142,7 +139,7 @@ An example:
         "en-US": "Internet Access"
     }
 
-### Date / Time Formats
+#### Date / Time Formats
 
 Any occurrence of data and/or time has the 
 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)
@@ -150,7 +147,7 @@ format. It is used by the following API calls:
 
 - `/system_messages`
 
-### Profile List
+#### Profile List
 
 This call will show the available VPN profiles for this instance. This will 
 allow the application to show the user which profiles are available.
@@ -177,7 +174,7 @@ The response looks like this:
 [2.3.0](https://github.com/eduvpn/vpn-user-portal/blob/v2/CHANGES.md) and 
 indicates whether the profile expects all client traffic to go over the VPN.
 
-### Create a Key Pair 
+#### Create a Key Pair 
 
 **NOTE**: an obtained key pair is valid for ALL _profiles_ of a particular 
 _instance_, so if an instance has multiple profiles, only one key pair is 
@@ -208,7 +205,7 @@ In traditional OpenVPN client configuration files, the certificate would be
 placed in the `<cert>...</cert>` inline section, and the private key in the 
 `<key>...</key>` section.
 
-### Profile Config
+#### Profile Config
 
 Only get the profile configuration without certificate and private key.
 
@@ -226,7 +223,7 @@ from both the "normal" and "special" sets. Value `2` returns them _all_. The
 default is `1`. Only change this if you know what you are doing! More on 
 `remote` lines in the VPN configuration can be read [here](SCALING.md#client).
 
-### Check Certificate
+#### Check Certificate
 
 A call is available to check whether an already obtained certificate will be 
 accepted by the VPN server. There are a number of reasons why this may not be 
@@ -274,7 +271,7 @@ is `false`:
         }
     }
 
-### System Messages
+#### System Messages
 
     $ curl -H "Authorization: Bearer abcdefgh" \
         https://demo.eduvpn.nl/portal/api.php/system_messages
@@ -300,7 +297,7 @@ An example response:
         }
     }
 
-## OAuth Client Registration
+### OAuth Client Registration
 
 A list of OAuth client registrations that are available for all installations 
 can be found [here](https://github.com/eduvpn/vpn-user-portal/blob/v2/src/OAuthClientInfo.php).

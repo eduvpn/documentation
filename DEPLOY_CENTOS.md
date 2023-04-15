@@ -1,8 +1,4 @@
----
-title: Deploying on CentOS / Red Hat Enterprise Linux
-description: Install and Maintain eduVPN/Let's Connect! on CentOS
-category: installation
----
+# Deploying on CentOS / Red Hat Enterprise Linux
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh CentOS (or Red Hat Enterprise Linux) 7 installation. It 

@@ -1,8 +1,4 @@
----
-title: Development Setup
-description: Setup a Developer Environment
-category: dev
----
+# Development Setup
 
 This document will describe how to set up an Let's Connect! / eduVPN 
 development environment for easy development and running it on your development 
@@ -19,7 +15,7 @@ the required software, will be different.
 respective OS: for DEB packages you need to be on Debian, for Fedora/CentOS 
 packages you need to be on Fedora.
 
-# CentOS 7
+## CentOS 7
 
 When you are not running CentOS as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -30,7 +26,7 @@ $ sudo yum -y install golang php-cli git composer php-date php-filter php-hash \
     php-gd unzip qrencode scdoc 
 ```
 
-# Fedora >= 35
+## Fedora >= 35
 
 When you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -41,7 +37,7 @@ $ sudo dnf -y install golang php-cli git composer php-date php-filter php-hash \
     unzip scdoc qrencode
 ```
 
-# Debian >= 11
+## Debian >= 11
 
 When you are not running Debian as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):
@@ -51,7 +47,7 @@ $ sudo apt install curl git build-essential php-sqlite3 composer php-curl \
     php-xml php-cli unzip golang qrencode scdoc
 ```
 
-# Installation
+## Installation
 
 Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/eduVPN-v2` under which 
@@ -62,7 +58,7 @@ $ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/developme
 $ sh ./development_setup.sh
 ```
 
-# Testing
+## Testing
 
 Most projects have unit tests included, they can be run from the project 
 folder, e.g.: 
@@ -70,7 +66,7 @@ folder, e.g.:
     $ cd ${HOME}/Projects/eduVPN-v2/vpn-user-portal
     $ make test
 
-# Using
+## Using
 
 A "launch" script is included to run the PHP built-in web server to be able
 to easily test the portals.
@@ -84,7 +80,7 @@ Now with your browser you can connect to the user portal on
 You can login with the users `foo` and password `bar` or `admin` with password 
 `secret`.
 
-# VPN Configuration
+## VPN Configuration
 
 To generate the OpenVPN server configuration files:
 
@@ -93,7 +89,7 @@ To generate the OpenVPN server configuration files:
 
 The configuration will be stored in the `openvpn-config` folder.
 
-# Modifying Code
+## Modifying Code
 
 If you want to modify any of your code, it makes sense to switch to using your
 own "fork". We'll only consider the eduVPN/LC components here and not the 
@@ -138,7 +134,7 @@ package from a commit. For DEB packages you need to make a release first. What
 I am doing is developing on CentOS/Fedora and only when considered stable I'll
 make a release after which I also create Debian packages.
 
-# Creating RPM packages
+## Creating RPM packages
 
 First install all requirements on your Fedora system as described 
 [here](https://git.sr.ht/~fkooman/builder.rpm).
@@ -216,7 +212,7 @@ Make sure you update `REPO_URL_BRANCH_LIST` and point it to your fork of the
 If all goes well, you'll end up with your own RPM repository with your fork
 of the package in it!
 
-# Software Releases
+## Software Releases
 
 The following script is used to make official releases of the components as 
 `tar.xz`. It signs the source code with both PGP (for the Debian packages) and
@@ -275,7 +271,7 @@ for F in release/*${V}*; do
 done
 ```
 
-# Creating DEB packages
+## Creating DEB packages
 
 Debian packages currently only work from proper releases. Updating the Debian 
 packages is described [here](https://git.sr.ht/~fkooman/nbuilder.deb). You can

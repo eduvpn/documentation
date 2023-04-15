@@ -1,4 +1,4 @@
-## Upgrading from Debian 10 to Debian 11
+# Upgrade Debian 10 to Debian 11
 
 First, make sure your Debian 10 system is fully up to date and reboot it:
 

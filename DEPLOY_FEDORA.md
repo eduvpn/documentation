@@ -1,8 +1,4 @@
----
-title: Deploying on Fedora
-description: Install and Maintain eduVPN/Let's Connect! on Fedora
-category: installation
----
+# Deploying on Fedora
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh Fedora installation. It will configure all components 

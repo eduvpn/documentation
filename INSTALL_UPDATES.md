@@ -14,7 +14,7 @@ then some changes MAY be necessary!
 **NOTE**: make sure you installed the `vpn-maint-scripts` package and use the 
 correct software [repositories](REPO.md).
 
-# Single Server
+## Single Server
 
 All that is needed is run the following command on your VPN server:
 
@@ -30,7 +30,7 @@ was up.
 **NOTE**: in case there are updates to system components/libraries or the 
 kernel you MUST reboot the system.
 
-# Multi Server
+## Multi Server
 
 If you are running a setup with a separate controller and node(s), you will 
 need to consider some extra things when installing updates. It is best to stop

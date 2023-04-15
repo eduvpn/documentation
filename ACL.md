@@ -1,8 +1,4 @@
----
-title: Access Control
-description: Configure ACL (Access Control Lists) to manage access to VPN profiles
-category: configuration
----
+# ACL
 
 The VPN service supports access control. This allows configuring that users 
 require certain "permissions" to access a particular VPN profile. This is 
@@ -23,7 +19,7 @@ is 3 months, but can easily be modified. This cache is required, because not
 all authentication backends have a way to validate the permissions 
 "out of band", i.e. when the user is not actively authenticating.
 
-# Configuration
+## Configuration
 
 The configuration is done in two locations:
 
@@ -32,7 +28,7 @@ The configuration is done in two locations:
 - `/etc/vpn-server-api/config.php`: configure which profiles are 
   restricted by access control.
 
-## SAML
+### SAML
 
 We assume [SAML](SAML.md) is already configured and working.
 
@@ -62,7 +58,7 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 `https://vpn.example/vpn-user-portal/account`, you should see the 
 "Group Membership(s)" listed there.
 
-## LDAP
+### LDAP
 
 We assume [LDAP](LDAP.md) is already configured and working. 
 
@@ -87,7 +83,7 @@ Once you authenticate to the portal, on the "Account" page, i.e.
 `https://vpn.example/vpn-user-portal/account`, you should see the 
 "Group Membership(s)" listed there.
 
-## Static
+### Static
 
 The authentication backends `FormPdoAuthentication` (default), 
 `FormLdapAuthentication` and `FormRadiusAuthentication` support "static" 
@@ -118,7 +114,7 @@ permission. Note that the user `foobar` has two permissions.
 the static permissions are _added_ to the ones that may have been retrieved 
 through LDAP.
 
-## Admin/Portal/API Access
+### Admin/Portal/API Access
 
 You can restrict access to the Portal/API to certain permissions. For example,
 if you only went `employees` to be able to access the VPN service and not 
@@ -136,7 +132,7 @@ are thus "OR".
 In order to provide access to the "Admin" part of the portal, see 
 [PORTAL_ADMIN](PORTAL_ADMIN.md).
 
-## Profile Mapping
+### Profile Mapping
 
 Modify `/etc/vpn-server-api/config.php`, and set the `enableAcl` to 
 `true` and add the authorized attribute values to `aclPermissionList` for each 

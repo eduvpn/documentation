@@ -10,7 +10,7 @@ authorization, and possibly provide their 2FA credentials/token as well.
 
 The default is 90 days.
 
-# What to Choose?
+## What to Choose?
 
 The default of 90 days, but you may want to deviate from this. Either by 
 setting it to a (much) shorter interval, for example if you want your users to

@@ -1,8 +1,4 @@
----
-title: Source Routing
-description: Setup Source/Policy Routing
-category: advanced
----
+# Source Routing
 
 **NOTE**: this is a WORK IN PROGRESS!
 

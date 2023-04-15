@@ -1,4 +1,4 @@
-# Migrating from Debian 9 to Debian 10
+# Upgrade Debian 9 to Debian 10
 
 We split the migration from Debian 9 to Debian 10 in two parts:
 

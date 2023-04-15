@@ -1,8 +1,4 @@
----
-title: Local DNS
-description: Run Local DNS Resolver on VPN server
-category: advanced
----
+# Local DNS
 
 New VPN server installations, performed using `deploy_${DIST}.sh`, will use the 
 DNS servers used by the server itself (as configured in `/etc/resolv.conf`) for
@@ -24,7 +20,7 @@ is provided by your ISP.
 **NOTE**: if your organization has a (trusted) DNS service you SHOULD probably
 use those! See [PROFILE_CONFIG](PROFILE_CONFIG.md), look for the `dns` option.
 
-# Configuration
+## Configuration
 
 Setting a local recursive DNS server takes a few steps:
 
@@ -36,21 +32,21 @@ Setting a local recursive DNS server takes a few steps:
    server;
 4. Make the VPN profiles use the "local DNS".
 
-## Install Unbound
+### Install Unbound
 
-### CentOS 
+#### CentOS 
 
     $ sudo yum -y install unbound
 
-### Fedora
+#### Fedora
 
     $ sudo dnf -y install unbound
 
-### Debian 
+#### Debian 
 
     $ sudo apt -y install unbound
 
-## Configure Unbound
+### Configure Unbound
 
 You need to change the Unbound configuration. You can add the following file
 to `/etc/unbound/conf.d/VPN.conf` on CentOS/Fedora, and in 
@@ -81,7 +77,7 @@ Enable Unbound during boot, and (re)start it:
     $ sudo systemctl enable unbound
     $ sudo systemctl restart unbound
 
-## Profile Configuration
+### Profile Configuration
 
 Modify `/etc/vpn-server-api/config.php` for each of the VPN profiles 
 where you want to use "local DNS", set the `dns` entry to:
@@ -91,7 +87,7 @@ where you want to use "local DNS", set the `dns` entry to:
 The `@GW4@` and `@GW6@` strings will be replaced by the IPv4 and IPv6 address 
 of the gateway.
 
-## Firewall
+### Firewall
 
 In order to allow the VPN clients to reach the DNS server, the firewall needs
 to be relaxed to allow traffic to `udp/53` and `tcp/53` coming from the VPN 
@@ -99,7 +95,7 @@ clients.
 
 Follow the instructions [here](FIREWALL.md#local-dns)
 
-## Apply
+### Apply
 
 To apply the configuration changes:
 

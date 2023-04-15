@@ -1,8 +1,4 @@
----
-title: Public Addresses
-description: Use Public IP Addresses for VPN Clients
-category: advanced
----
+# Public Addresses
 
 By default, NAT is used and [RFC 1918](https://tools.ietf.org/html/rfc1918) 
 addresses are assigned to the clients for IPv4 and 

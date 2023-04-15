@@ -1,8 +1,4 @@
----
-title: Deploying on Debian
-description: Install and Maintain eduVPN/Let's Connect! on Debian
-category: installation
----
+# Deploying on Debian
 
 For simple one server deployments and tests, we have a deploy script available 
 you can run on a fresh Debian 10 or 11 installation. It will configure all 

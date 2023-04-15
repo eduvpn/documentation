@@ -1,28 +1,24 @@
----
-title: Mellon
-description: SAML Authentication using mod_auth_mellon
-category: authentication
----
+# Mellon
 
 Below we assume you use `vpn.example`, but modify this domain to your own 
 domain name!
 
-# Installation
+## Installation
 
-## CentOS 
+### CentOS 
 
 First install `mod_auth_mellon`:
 
     $ sudo yum -y install mod_auth_mellon
 
-## Debian
+### Debian
 
     $ sudo apt -y install libapache2-mod-auth-mellon
 
 In the examples below you will not use `/etc/httpd` but `/etc/apache2` as the
 base path, and for `systemctl` you use `apache2` instead of `httpd`.
 
-# Configuration
+## Configuration
 
 Generate an SP signing key:
 
@@ -80,9 +76,9 @@ If you also want to use authorization based on an attribute, e.g.
 `eduPersonEntitlement` or `eduPersonAffiliation` you can set the 
 `permissionAttribute` as well.
 
-# Apache
+## Apache
 
-## CentOS 
+### CentOS 
 
     <VirtualHost *:443>
 
@@ -122,7 +118,7 @@ If you also want to use authorization based on an attribute, e.g.
 
     </VirtualHost>
 
-## Debian
+### Debian
 
     <VirtualHost *:443>
 

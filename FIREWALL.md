@@ -1,10 +1,4 @@
----
-title: Configuring the Firewall
-description: Configure the VPN Firewall
-category: configuration
----
-
-# Introduction
+# Firewall
 
 A very simple static firewall based on `iptables` is installed when running the 
 deploy scripts. It allows connections to the VPN, SSH, HTTP and HTTPS ports. In 
@@ -76,7 +70,7 @@ So when modifying the firewall files, make sure you use the correct protocol
 and error packet description. You can see this in the default firewall as 
 listed above.
 
-# Improving the Defaults
+## Improving the Defaults
 
 The default firewall works well, but can be improved upon by matching it more
 with your system. Two steps I always take:
@@ -84,7 +78,7 @@ with your system. Two steps I always take:
 1. Specifying the exact network interfaces for which to allow "forwarding"
 2. Switch to `SNAT` for IPv4 and IPv6 NAT
 
-## Specifying Interfaces
+### Specifying Interfaces
 
 The default `FORWARD` rules used are:
 
@@ -105,7 +99,7 @@ This allows all traffic to and from the VPN clients. This is fine in case NAT
 is used. When issuing [Public IP Addresses](#public-ip-addresses) to VPN 
 clients, see below.
 
-## Using SNAT
+### Using SNAT
 
 The default `POSTROUTING` rule in the "NAT" table is:
 
@@ -122,7 +116,7 @@ Make sure you replace `10.0.0.0/8` with your VPN client IP range and
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-## Restricting SSH Access
+### Restricting SSH Access
 
 By default, SSH is allowed from everywhere, *including* the VPN clients. It 
 makes sense to restrict this a set of hosts or a "bastion" host.
@@ -140,7 +134,7 @@ This allows only SSH connections coming from `192.0.2.0/24` and
 `198.51.100.0/24`. This will also prevent VPN clients from accessing the SSH 
 server.
 
-# Opening Additional VPN Ports
+## Opening Additional VPN Ports
 
 By default, one port, but both for TCP and UDP are open for OpenVPN 
 connections:
@@ -153,7 +147,7 @@ You can easily add more by using "ranges", e.g.
     -A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
     -A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
 
-# NAT to Multiple Public IP Addresses
+## NAT to Multiple Public IP Addresses
 
 When using NAT with many clients, it makes sense to "share" the traffic over
 multiple public IP addresses.
@@ -173,7 +167,7 @@ specified `--to-source` range will be used, specified IPs included.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# NAT to Different Public IP Addresses per Profile
+## NAT to Different Public IP Addresses per Profile
 
 When using [Multiple Profiles](MULTI_PROFILE.md), you may want to NAT to 
 different public IP addresses.
@@ -195,15 +189,15 @@ IP addresses.
 **NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
 and address(es).
 
-# Local DNS
+## Local DNS
 
 TBD.
 
-# VPN Daemon
+## VPN Daemon
 
 TBD.
 
-# Allow Client to Client Traffic
+## Allow Client to Client Traffic
 
 Here you need to take care of two things:
 
@@ -230,7 +224,7 @@ VPN profiles as well! So be aware of this. It is currently not possible to
 allow client-to-client traffic only within a profile unless you create a lot of
 manual firewall rules explicitly specifying `tun` devices.
 
-# Reject Forwarding Traffic
+## Reject Forwarding Traffic
 
 Sometimes you want to prevent VPN clients from reaching certain network, or 
 allow them to reach only certain networks. For example in the "split tunnel" 
@@ -258,7 +252,7 @@ your VPN clients, you can use the following:
 
 **NOTE**: for IPv6 the situation is similar.
 
-# Reject IPv6 Client Traffic
+## Reject IPv6 Client Traffic
 
 As the VPN server is "dual stack" throughout, it is not possible to "disable" 
 IPv6. However, one can easily modify the firewall to prevent all IPv6 traffic
@@ -279,7 +273,7 @@ You can simply remove all of them except the last one:
 This will cause all IPv6 to be rejected. The VPN becomes thus effectively 
 IPv4 only.
 
-# Public IP Addresses for VPN Clients
+## Public IP Addresses for VPN Clients
 
 If you want to use [Public Addresses](PUBLIC_ADDR.md) for the VPN clients, this 
 has some implications for the firewall:
@@ -290,12 +284,12 @@ has some implications for the firewall:
 **NOTE**: it is possible to use NAT for IPv4 and public IP addresses for IPv6,
 actually this is recommended over using IPv6 NAT!
 
-## Disabling NAT
+### Disabling NAT
 
 By removing all `POSTROUTING` rules from the "NAT" table takes care of 
 disabling NAT.
 
-## Restricting Incoming Traffic
+### Restricting Incoming Traffic
 
 The default `FORWARD` rules used are:
 
@@ -324,7 +318,7 @@ remote management, you can use the following:
 
 **NOTE**: for IPv6 the situation is similar.
 
-# Updating
+## Updating
 
 Starting from version 2.2.0 of `vpn-server-node` the 
 `vpn-server-node-generate-firewall` script is a "dummy". It won't have any 

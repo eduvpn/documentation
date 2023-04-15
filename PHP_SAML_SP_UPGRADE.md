@@ -1,4 +1,6 @@
-# Who?
+# php-saml-sp Upgrade
+
+## Who?
 
 This document is ONLY relevant if you were using the experimental 
 `SamlAuthentication` authentication module in your VPN portal. As this module 
@@ -6,7 +8,7 @@ is experimental we kept the freedom to break things if necessary without you
 being able to complain about that ;-) However, it is nice to "support" it at 
 least a little bit.
 
-# What?
+## What?
 
 Versions of vpn-user-portal < 2.2.0 supported only the `SamlAuthentication`
 method. From 2.2.0 there is support for both `SamlAuthentication` and 
@@ -17,7 +19,7 @@ to simpleSAMLphp in how it functions. From version 2.3.0 support for
 upgrade in window between the 2.2.0 release and the 2.3.0 release as it gives 
 you the option and time to switch back if necessary and complain to us.
 
-# How?
+## How?
 
 Make sure your system is fully up to date by installing and applying all 
 updates and reboot. When updating to 2.2.0 everything will keep working as-is, 
@@ -77,7 +79,7 @@ and can be removed. They are now configured in `php-saml-sp`:
 The rest stays as is. After making these changes, the VPN portal should be 
 using php-saml-sp!
 
-# Cleanup 
+## Cleanup 
 
 After everything works you can now remove the old SAML keys:
 
