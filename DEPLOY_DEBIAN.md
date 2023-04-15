@@ -35,9 +35,9 @@ installation the VPN deployment MAY not work...
 Perform these steps on the host where you want to deploy:
 
     $ sudo apt -y install ca-certificates wget
-    $ wget https://github.com/eduvpn/documentation/archive/v3.tar.gz
+    $ wget https://codeberg.org/eduVPN/documentation/archive/v3.tar.gz
     $ tar -xzf v3.tar.gz
-    $ cd documentation-3
+    $ cd documentation
 
 We assume you have `sudo` installed and configured for your user first, after
 this:

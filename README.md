@@ -19,11 +19,11 @@ contact us at
 
 ## Supported Versions
 
-| Version                                              | Release Date | OS Support                                                   |  EOL*      |
-| ---------------------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
-| [3](https://github.com/eduvpn/documentation/tree/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
-| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
-| [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
+| Version                                                      | Release Date | OS Support                                                   |  EOL*      |
+| ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | ---------- |
+| [3](https://codeberg.org/eduVPN/documentation/src/branch/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
+| [2](https://codeberg.org/eduVPN/documentation/src/branch/v2) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
+| [1](https://codeberg.org/eduVPN/documentation/src/branch/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
 
 We support a release until such time the EOL date has been reached or none of 
 the eduVPN servers we officially [support](https://status.eduvpn.org/) are 

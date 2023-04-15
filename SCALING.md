@@ -123,12 +123,10 @@ remote vpn.example 1200 tcp
 Because every configuration download will result in another (random) selection
 of ports, the load will eventually be distributed among the various processes.
 
-Starting from release 2.1.1 of 
-[vpn-user-portal](https://github.com/eduvpn/vpn-user-portal) the following way
-of dealing with "special" ports is implemented, assuming they are used. Special 
-ports are always added at the end of the configuration files, below the 
-"remote" lines as mentioned above. By special ports the following ports and 
-protocols are meant:
+Starting from release 2.1.1 of vpn-user-portal the following way of dealing 
+with "special" ports is implemented, assuming they are used. Special ports are 
+always added at the end of the configuration files, below the "remote" lines as 
+mentioned above. By special ports the following ports and protocols are meant:
 
 * `udp/53`
 * `udp/443`

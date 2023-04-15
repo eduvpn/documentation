@@ -8,10 +8,10 @@ explains how.
 You can check which translations are already available, and possibly update 
 them if they are out of date:
 
-* [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/v3/locale)
+* [vpn-user-portal](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/locale)
 
 If you want to contribute a new translation you can take the 
-[empty](https://github.com/eduvpn/vpn-user-portal/blob/v3/locale/empty.php) 
+[empty](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/locale/empty.php) 
 file and translate all strings in there and send it.
 
 Also please update `src/Tpl.php` under the `supportedLanguages()` function, 
@@ -36,6 +36,6 @@ Once you are done, you can submit your translation file either by creating a
 "Pull Request" on GitHub, or simply mailing the file with your translations to
 [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org). Don't
 forget to mention how/if you want to be 
-[credited](https://github.com/eduvpn/vpn-user-portal/blob/v3/locale/CREDITS.md).
+[credited](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/locale/CREDITS.md).
 
 Thanks!

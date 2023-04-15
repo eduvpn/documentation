@@ -45,9 +45,9 @@ We will use NAT for IPv4 and IPv6 client traffic.
 Perform these steps on the hosts:
 
 ```bash
-$ curl -L -O https://github.com/eduvpn/documentation/archive/v3.tar.gz
+$ curl -L -O https://codeberg.org/eduVPN/documentation/archive/v3.tar.gz
 $ tar -xzf v3.tar.gz
-$ cd documentation-3
+$ cd documentation
 ```
 
 ## Controller

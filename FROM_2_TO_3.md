@@ -14,8 +14,8 @@ manually got through the portal once the upgrade is complete.
 You MUST be running the server on Debian 11, if you are not running on Debian 
 11, but on a previous version of Debian, follow the instructions here first:
 
-* [Debian 9 to Debian 10](https://github.com/eduvpn/documentation/blob/v2/UPGRADE_DEBIAN_9_TO_10.md);
-* [Debian 10 to Debian 11](https://github.com/eduvpn/documentation/blob/v2/UPGRADE_DEBIAN_10_TO_11.md)
+* [Debian 9 to Debian 10](https://codeberg.org/eduVPN/documentation/src/branch/v2/UPGRADE_DEBIAN_9_TO_10.md);
+* [Debian 10 to Debian 11](https://codeberg.org/eduVPN/documentation/src/branch/v2/UPGRADE_DEBIAN_10_TO_11.md)
 
 You probably have to go first from Debian 9 to 10 and then to 11 if you are 
 still running Debian 9. If you try to go in 1 step, be extra careful and read
@@ -110,11 +110,11 @@ contain secrets.
 #### Profile Configuration
 
 You can also compare the "Profile Configuration" documentation for 
-[2.x](https://github.com/eduvpn/documentation/blob/v2/PROFILE_CONFIG.md) and 
-[3.x](https://github.com/eduvpn/documentation/blob/v3/PROFILE_CONFIG.md) in 
+[2.x](https://codeberg.org/eduVPN/documentation/src/branch/v2/PROFILE_CONFIG.md) and 
+[3.x](https://codeberg.org/eduVPN/documentation/src/branch/v3/PROFILE_CONFIG.md) in 
 case you want to clarify some of the options. For completeness sake, there is 
 also a 
-[list](https://github.com/eduvpn/vpn-server-api/blob/v2/CONFIG_CHANGES.md) of 
+[list](https://git.sr.ht/~fkooman/vpn-server-api/tree/v2/item/CONFIG_CHANGES.md) of 
 configuration changes for the 2.x server since the release of 2.0.0.
 
 In 3.x the `vpnProfiles` key has been renamed to `ProfileList`. The `profileId`
