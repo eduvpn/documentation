@@ -30,9 +30,6 @@ the deploy script and follow the steps.
 Debian/Ubuntu. If you, or your organization (heavily) modified the OS 
 installation the VPN deployment MAY not work...
 
-**NOTE** if you expect to do a production deploy, please read the section below 
-about modifying the PHP configuration.
-
 ## Base Deploy
 
 Perform these steps on the host where you want to deploy:
