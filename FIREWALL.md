@@ -13,16 +13,16 @@ The _annotated_ default firewall configuration files as installed on new
 deployments can be found here:
 
 * [Single Server](README.md#deployment)
-  * [IPv4](resources/firewall/iptables)
-  * [IPv6](resources/firewall/ip6tables)
+    * [IPv4](resources/firewall/iptables)
+    * [IPv6](resources/firewall/ip6tables)
 
 * [Multi Node Server](MULTI_NODE.md)
-  * Controller
-    * [IPv4](resources/firewall/controller/iptables)
-    * [IPv6](resources/firewall/controller/ip6tables)
-  * Node
-    * [IPv4](resources/firewall/node/iptables)
-    * [IPv6](resources/firewall/node/ip6tables)
+    * Controller
+        * [IPv4](resources/firewall/controller/iptables)
+        * [IPv6](resources/firewall/controller/ip6tables)
+    * Node
+        * [IPv4](resources/firewall/node/iptables)
+        * [IPv6](resources/firewall/node/ip6tables)
 
 You can of course also use the firewall software of your choice, or fully 
 disable the firewall! As our goal was to keep things as simple and easy as 

@@ -64,8 +64,8 @@ The client takes the following steps:
 2. Send a ping to the gateway;
 3. Wait for the ping response (e.g. maximum 10 seconds);
 4. If ping does NOT return:
-  * Verify the VPN server supports OpenVPN over TCP
-  * Attempt to connect over TCP
+    * Verify the VPN server supports OpenVPN over TCP
+    * Attempt to connect over TCP
 
 If a VPN profile does not support OpenVPN over TCP, the client can give a 
 notice that the VPN connection is not working and leave it at that.

@@ -53,11 +53,11 @@ This is an (incomplete) list of features of the VPN software:
 - OAuth 2.0 [API](API.md) for integration with native eduVPN/Let's Connect! 
   applications;
 - [Deployment scenarios](PROFILE_CONFIG.md):
-  - Route all traffic over the VPN (for safer Internet usage on untrusted 
-    networks);
-  - Route only some traffic over the VPN (for access to the organization 
-    network);
-  - Client-to-client (only) networking;
+    - Route all traffic over the VPN (for safer Internet usage on untrusted 
+      networks);
+    - Route only some traffic over the VPN (for access to the organization 
+      network);
+    - Client-to-client (only) networking;
 - Group [ACL](ACL.md) support with SAML and LDAP;
 - Ability to disable all OpenVPN logging (default);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
@@ -99,8 +99,8 @@ be updated for 3.x:
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
 - [Fedora](DEPLOY_FEDORA.md) 36, 37 (`x86_64`)
 - Enterprise Linux
-  - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
-  - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
+    - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
+    - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
 
 **Current Recommendation**: install your VPN server on Debian 11.
 
