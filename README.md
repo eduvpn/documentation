@@ -6,8 +6,8 @@ software on a server, but also (technical) details on how to (better)
 integrate the software in existing infrastructure, and how configure the 
 software for one's own organization.
 
-**NOTE**: if you are an end-user of eduVPN and want to contact someone, please
-try to find the contact information of your organization 
+**If you are an end-user of eduVPN** and want to contact someone, please try to 
+find the contact information of your organization 
 [here](https://status.eduvpn.org/). If you don't know where to go, then contact 
 us at [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
@@ -19,7 +19,7 @@ This is an (incomplete) list of features of the VPN software:
 - Uses multiple OpenVPN processes for load sharing purposes;
 - Scales from a Raspberry Pi to many core systems with 10GBit networking;
 - Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
-- Support both NAT and publically routable IP addresses;
+- Support both NAT and publicly routable IP addresses;
 - CA for managing client certificates;
 - Support for [WireGuard](WIREGUARD.md);
 - [Secure](SECURITY.md) server and client configuration out of the box;
@@ -72,8 +72,11 @@ We support a server release until such time the EOL date has been reached. We
 **ONLY** support the particular release on operating systems that are still 
 supported by their vendor!
 
-| Version                                                      | Release Date | OS Support                                                   |  EOL       |
-| ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | ---------- |
-| [3](https://docs.eduvpn.org/server/v3/)                      | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
-| [2](https://docs.eduvpn.org/server/v2/)                      | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
-| [1](https://codeberg.org/eduVPN/documentation/src/branch/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
+| Version                                 | Release Date | OS Support                                                   |  EOL       |
+| --------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
+| [3](https://docs.eduvpn.org/server/v3/) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
+| [2](https://docs.eduvpn.org/server/v2/) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
+| 1                                       | 2017-07-13   | _N/A_                                                        | _N/A_      |
+
+If you are currently running the 2.x server, and want to upgrade to 3.x, you 
+can look [here](FROM_2_TO_3.md).
