@@ -15,32 +15,39 @@ us at [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
 This is an (incomplete) list of features of the VPN software:
 
-- OpenVPN server accepting connections on both UDP and TCP ports;
+- OpenVPN server accepting connections on both UDP and TCP [ports](PROFILE_CONFIG.md#openvpn-port-list);
 - Uses multiple OpenVPN processes for load sharing purposes;
-- Scales from a Raspberry Pi to many core systems with 10GBit networking;
-- Full IPv6 support, using IPv6 inside the tunnel and connecting over IPv6;
-- Support both NAT and publicly routable IP addresses;
-- CA for managing client certificates;
-- Support for [WireGuard](WIREGUARD.md);
+- [High Available](HA.md) deployments with multiple portals and nodes;
+- Scales from a [Raspberry Pi](RASPBERRY_PI.md) to many core systems with 10GBit networking;
+- Full [IPv6 support](IPV6.md), using IPv6 inside the tunnel and connecting over IPv6;
+- Support both NAT and [Public IPs](PUBLIC_ADDR.md);
+- Embedded CA for managing OpenVPN client certificates;
+- Full support for [WireGuard](WIREGUARD.md);
 - [Secure](SECURITY.md) server and client configuration out of the box;
-- Portal to allow users to manage their configurations for their 
-  devices and admins to manage users, configurations and connections;
-- Multi Language support;
-- Authentication to portals using local user database (default), 
+- User Portal to allow users to manage their VPN configurations on their 
+  devices and [Admin Portal](PORTAL_ADMIN.md) to manage users and connections;
+- [Internationalization / Localization](CONTRIBUTE_TRANSLATIONS.md) support;
+- Authentication to portals using [Local User DB](DB_AUTH.md) (default), 
   [LDAP](LDAP.md), [RADIUS](RADIUS.md), [OIDC](MOD_AUTH_OPENIDC.md), 
   [SAML](SAML.md) and [Client Certificates](CLIENT_CERT_AUTH.md);
 - OAuth 2.0 [API](API.md) for integration with native eduVPN/Let's Connect! 
   applications;
 - [Deployment scenarios](PROFILE_CONFIG.md):
-    - Route all traffic over the VPN (for safer Internet usage on untrusted 
+    - Full Tunnel to route all traffic over the VPN (for safer Internet usage on untrusted 
       networks);
-    - Route only some traffic over the VPN (for access to the organization 
-      network);
+    - [Split Tunnel](SPLIT_TUNNEL.md) to route only some traffic over the VPN 
+      (for access to the organization network);
     - Client-to-client (only) networking;
-- Group [ACL](ACL.md) support with SAML and LDAP;
-- Ability to disable all OpenVPN logging (default);
+- Group [ACL](ACL.md) support with SAML, LDAP authentication backends as well 
+  as "Static";
+- Ability to configure [Logging](LOGGING.md);
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
-- [SELinux](SELINUX.md) fully enabled (on Fedora);
+- [SELinux](SELINUX.md) fully enabled (on Fedora, EL);
+- Usage [Statistics](STATS.md) and [Monitoring](MONITORING.md);
+- Some [Preview Features](PREVIEW_FEATURES.md);
+
+Make sure to also check our [Roadmap](ROADMAP.md) to see what we are planning 
+to do in future releases.
 
 ## Installation
 
@@ -79,4 +86,5 @@ supported by their vendor!
 | 1                                       | 2017-07-13   | _N/A_                                                        | _N/A_      |
 
 If you are currently running the 2.x server, and want to upgrade to 3.x, you 
-can look [here](FROM_2_TO_3.md).
+can look [here](FROM_2_TO_3.md). 
+You can also view the 3.x [Release Notes](RELEASE_NOTES.md).
