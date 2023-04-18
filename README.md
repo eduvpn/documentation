@@ -72,7 +72,7 @@ We support a server release until such time the EOL date has been reached. We
 **ONLY** support the particular release on operating systems that are still 
 supported by their vendor!
 
-| Version                                                      | Release Date | OS Support                                                   |  EOL*      |
+| Version                                                      | Release Date | OS Support                                                   |  EOL       |
 | ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | ---------- |
 | [3](https://docs.eduvpn.org/server/v3/)                      | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
 | [2](https://docs.eduvpn.org/server/v2/)                      | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
