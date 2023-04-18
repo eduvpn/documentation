@@ -1,36 +1,15 @@
-# About
+# Home
 
-This is the eduVPN/Let's Connect! documentation repository. This repository 
-targets administrators and developers. It contains information on how to deploy 
-the VPN software on a server, but also (technical) details about the 
-implementation needed to (better) integrate it in existing infrastructure, and 
-how to modify the software for one's own needs.
-
-For more information see:
-
-- [eduvpn.org](https://www.eduvpn.org/)
-- [letsconnect-vpn.org](https://www.letsconnect-vpn.org/)
+Welcome to the VPN server documentation page. This site is intended for 
+VPN server operators. It contains information on how to deploy the VPN 
+software on a server, but also (technical) details on how to (better) 
+integrate the software in existing infrastructure, and how configure the 
+software for one's own organization.
 
 **NOTE**: if you are an end-user of eduVPN and want to contact someone, please
 try to find the contact information of your organization 
-[here](https://status.eduvpn.org/). If you don't know where to go, then simply
-contact us at 
-[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
-
-## Supported Versions
-
-| Version                                                      | Release Date | OS Support                                                   |  EOL*      |
-| ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | ---------- |
-| [3](https://codeberg.org/eduVPN/documentation/src/branch/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
-| [2](https://codeberg.org/eduVPN/documentation/src/branch/v2) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
-| [1](https://codeberg.org/eduVPN/documentation/src/branch/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
-
-We support a release until such time the EOL date has been reached or none of 
-the eduVPN servers we officially [support](https://status.eduvpn.org/) are 
-running that version anymore, whichever comes first. 
-
-We **only** support the particular release on operating systems that are still 
-supported by their vendor!
+[here](https://status.eduvpn.org/). If you don't know where to go, then contact 
+us at [eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org).
 
 ## Features
 
@@ -63,37 +42,9 @@ This is an (incomplete) list of features of the VPN software:
 - Support multiple deployment scenarios [simultaneously](MULTI_PROFILE.md);
 - [SELinux](SELINUX.md) fully enabled (on Fedora);
 
-## Client Support
+## Installation
 
-See [Client Compatibility](CLIENT_COMPAT.md) for more information about the 
-supported VPN clients.
-
-## Deployment
-
-**NOTE**: if you plan to install and run a eduVPN/Let's Connect! server please 
-subscribe to the mailing list 
-[here](https://lists.geant.org/sympa/info/eduvpn-deploy). It will be used 
-for announcements of updates and discussion about running 
-eduVPN/Let's Connect!.
-
-## IRC Contact
-
-You can also join IRC for _technical_ questions/discussions/feedback on 
-[Libera.Chat](https://libera.chat/), channel `#eduvpn`. Please stick around for 
-a while to wait for a response!
-
-You can also easily use the [Web Chat](https://web.libera.chat/#eduvpn) if you 
-can't be bothered to setup an IRC client. See you there!
-
-### Instruction Videos
-
-**NOTE**: these videos are for eduVPN / Let's Connect 2.x and still need to
-be updated for 3.x:
-
-- [Basic eduVPN/Let's Connect! Server Installation](https://www.youtube.com/watch?v=yBItHovq4AU)
-- [Integrate your Active Directory via LDAP with eduVPN/Let's Connect!](https://www.youtube.com/watch?v=qwf0RZ8YK9A)
-
-### Supported Operating Systems
+We support the following operating systems for deploying the VPN server:
 
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
@@ -102,32 +53,27 @@ be updated for 3.x:
     - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
     - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
 
-**Current Recommendation**: install your VPN server on Debian 11.
+We recommend you install your VPN server on Debian 11.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
-rebooted before you install the software!
+rebooted before you install the VPN software!
 
-**NOTE**: if you want to deploy on multiple machines for load balancing, please 
-follow [these](HA.md) instructions!
+**NOTE**: if you want to deploy on multiple machines for load balancing / high 
+availability, please follow [these](HA.md) instructions instead!
 
-## Development
+If you installed a VPN server and want to keep using it, please subscribe to 
+the mailing list [here](https://lists.geant.org/sympa/info/eduvpn-deploy). This 
+list will be used for announcements of updates and discussion about running the 
+VPN software.
 
-If you want to set up your own server development environment see 
-[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
+## Supported Versions
 
-## License 
+We support a server release until such time the EOL date has been reached. We 
+**ONLY** support the particular release on operating systems that are still 
+supported by their vendor!
 
-This work (this documentation repository) is licensed under a Creative Commons 
-Attribution-ShareAlike 4.0 International License.
-
-See [LICENSE](LICENSE).
-
-The VPN server software is licensed under the 
-[AGPLv3+](https://www.gnu.org/licenses/agpl-3.0.en.html).
-
-## Security Contact
-
-If you find a security problem in the code, the deployed service(s) and want to
-report it responsibly, contact [fkooman@tuxed.net](mailto:fkooman@tuxed.net). 
-You can use PGP. My key is `0x9C5EDD645A571EB2`. The full fingerprint is 
-`6237 BAF1 418A 907D AA98  EAA7 9C5E DD64 5A57 1EB2`.
+| Version                                                      | Release Date | OS Support                                                   |  EOL*      |
+| ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | ---------- |
+| [3](https://docs.eduvpn.org/server/v3/)                      | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
+| [2](https://docs.eduvpn.org/server/v2/)                      | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
+| [1](https://codeberg.org/eduVPN/documentation/src/branch/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
