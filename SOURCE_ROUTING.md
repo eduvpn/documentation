@@ -12,8 +12,11 @@ There are a number of situations to do _source routing_ or _policy routing_.
 These require that you do not send the traffic from the VPN clients over the 
 VPN server's default gateway.
 
-Luckily, it is relatively easy to fix. We document this for CentOS (and 
-Fedora). We created a physical test setup similar to what you see below.
+Luckily, it is relatively easy to fix. We document this for **CentOS, 
+Fedora and Ubuntu**. We created a physical test setup similar to what you see below.
+
+
+## Test setup
 
 ```
                            Internet
@@ -31,11 +34,12 @@ Fedora). We created a physical test setup similar to what you see below.
   VPN IP: 10.10.10.2           ^                              |
                                |                              |
                                |                              |
-                 192.168.178.2 |                192.168.178.3 |
+          192.168.178.2 (eth0) |                192.168.178.3 |
                         .------------.                     .-----.
                         | VPN Server |-------------------->| NAT |
                         '------------'                     '-----'
                 10.10.10.1     192.168.1.100      192.168.1.1
+                (wg0/tun0)	   (eth1)
 ```
 
 ## Assumptions
@@ -49,14 +53,16 @@ Fedora). We created a physical test setup similar to what you see below.
       `fd00:1010:1010:1010::100` on this network;
     - the remote NAT router has the IP addresses `192.168.1.1` and 
       `fd00:1010:1010:1010::1` on this network;
-3. You installed the VPN server using `deploy_centos.sh` or `deploy_fedora.sh`.
+3. You installed the VPN server using the deployment script `deploy_<os>.sh`.
 4. The network where you route your client traffic over has _static routes_ 
    back to your VPN server:
     - There is an IPv4 static route for `10.10.10.0/24` via `192.168.1.100`;
     - There is an IPv6 static route for `fd00:4242:4242:4242::/64` via 
       `fd00:1010:1010:1010::100`;
 
-## Source Routing
+## Source Routing CentOS and Fedora
+
+### Routing table
 
 We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 
@@ -64,7 +70,7 @@ We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 200     vpn
 ```
 
-### Rules
+### Routing rules
 
 First we test it manually, before making these rules permanent:
 
@@ -101,6 +107,62 @@ $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
 
 When you use NetworkManager you need to install the package 
 `NetworkManager-dispatcher-routing-rules.noarch`.
+
+## Source Routing Ubuntu
+
+### Routing table
+
+We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
+
+```
+200     vpn
+```
+
+### Routing rules with netplan
+
+We'll need to add the routing in the netplan configuration file `/etc/netplan/<your_filename>.yaml`, e.g.:
+
+```
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses:
+        - 192.168.178.2/24
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+        search:
+          - domain.xyz
+      routes:
+        - to: 0.0.0.0/0
+          via: 192.168.178.1
+      routing-policy:
+        - from: 10.10.10.0/24
+          table: 200
+        - from: fd00:4242:4242:4242::/64
+          table: 200
+    eth1:
+      addresses:
+        - 192.168.1.100/24
+        - fd00:1010:1010:1010::100/64
+      routes:
+        - to: default
+          via: 192.168.1.1
+          table: 200
+        - to: default
+          via: fd00:1010:1010:1010::1
+          table: 200
+```
+
+### Apply changes
+
+```
+netplan generate && netplan apply
+```
+
+## Troubleshooting
 
 It is smart to reboot your system to see if all comes up as expected:
 
