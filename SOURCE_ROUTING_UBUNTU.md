@@ -1,6 +1,7 @@
 # Source Routing Ubuntu
 
 **COPY FROM**: [SOURCE_ROUTING](SOURCE_ROUTING.md)
+
 **NOTE**: this is a WORK IN PROGRESS!
 
 There are a number of situations to do _source routing_ or _policy routing_.
@@ -69,7 +70,7 @@ We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
 
 ### Routing rules with netplan
 
-We'll need to add the routing in the netplan configuration file `/etc/netplan/00-installer-config.yaml`, e.g.:
+We'll need to add the routing in the netplan configuration file `/etc/netplan/<your_filename>.yaml`, e.g.:
 
 ```
 network:
