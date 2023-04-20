@@ -12,11 +12,9 @@ There are a number of situations to do _source routing_ or _policy routing_.
 These require that you do not send the traffic from the VPN clients over the 
 VPN server's default gateway.
 
-Luckily, it is relatively easy to fix. We document this for **CentOS, 
-Fedora and Ubuntu**. We created a physical test setup similar to what you see below.
+We created a physical test setup similar to what you see below.
 
-
-## Test setup
+## Test Setup
 
 ```
                            Internet
@@ -46,33 +44,32 @@ Fedora and Ubuntu**. We created a physical test setup similar to what you see be
 
 1. Your VPN clients get IP addresses assigned from the `10.10.10.0/24` and 
    `fd00:4242:4242:4242::/64` pools, the VPN server has `10.10.10.1` and
-   `fd00:4242:4242:4242::1` on the `tun0` device;
+   `fd00:4242:4242:4242::1` on the `tun0` or `wg0` device;
 2. A network connection between the VPN box and the NAT router exists through
    another interface, e.g. `eth1`:
     - the VPN box has the IP addresses `192.168.1.100` and 
       `fd00:1010:1010:1010::100` on this network;
     - the remote NAT router has the IP addresses `192.168.1.1` and 
       `fd00:1010:1010:1010::1` on this network;
-3. You installed the VPN server using the deployment script `deploy_<os>.sh`.
+3. You installed the VPN server using the deployment script 
+   `deploy_${DIST}.sh`.
 4. The network where you route your client traffic over has _static routes_ 
    back to your VPN server:
     - There is an IPv4 static route for `10.10.10.0/24` via `192.168.1.100`;
     - There is an IPv6 static route for `fd00:4242:4242:4242::/64` via 
       `fd00:1010:1010:1010::100`;
 
-## Source Routing CentOS and Fedora
+## Configuration
 
-### Routing table
-
-We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
+We'll need to add a new routing table. You can do this by adding a line in 
+`/etc/iproute2/rt_tables`:
 
 ```
 200     vpn
 ```
 
-### Routing rules
-
-First we test it manually, before making these rules permanent:
+Next, we'll add some routing rules manually in order to test whether we have
+the correct configuration:
 
 ```
 $ sudo ip -4 rule add to 10.10.10.0/24 lookup main
@@ -82,19 +79,29 @@ $ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
 ```
 
 The `to` rules are needed to make sure traffic between VPN clients uses the 
-`main` table so traffic between VPN clients remains possible (if allowed by
-the firewall).
+`main` table so traffic between VPN clients remains possible, if this is 
+allowed by the firewall.
 
-### Routes
-
-First we test it manually before making these routes permanent:
+Next, we'll add the routes:
 
 ```
 $ sudo ip -4 ro add default via 192.168.1.1 table vpn
 $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
 ```
 
-### Making it permanent
+## Permanent Configuration
+
+The above instructions are meant for testing, now let's make them permanent.
+
+### Enterprise Linux / Fedora
+
+Install the required _dependency_:
+
+```bash
+$ sudo dnf -y install NetworkManager-dispatcher-routing-rules
+```
+
+Make the _rules_ and _routes_ permanent:
 
 ```
 # echo 'to 10.10.10.0/24 lookup main' >/etc/sysconfig/network-scripts/rule-eth1
@@ -105,24 +112,12 @@ $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
 # echo 'default via fd00:1010:1010:1010::1 table vpn' > /etc/sysconfig/network-scripts/route6-eth1
 ```
 
-When you use NetworkManager you need to install the package 
-`NetworkManager-dispatcher-routing-rules.noarch`.
+### Ubuntu
 
-## Source Routing Ubuntu
+We'll need to add the routing in the [Netplan](https://netplan.io/) 
+configuration file `/etc/netplan/my-network.yaml`, e.g.:
 
-### Routing table
-
-We'll need to add a new routing table in `/etc/iproute2/rt_tables`, e.g.:
-
-```
-200     vpn
-```
-
-### Routing rules with netplan
-
-We'll need to add the routing in the netplan configuration file `/etc/netplan/<your_filename>.yaml`, e.g.:
-
-```
+```yaml
 network:
   version: 2
   ethernets:
@@ -131,10 +126,10 @@ network:
         - 192.168.178.2/24
       nameservers:
         addresses:
-          - 1.1.1.1
-          - 8.8.8.8
+          - 9.9.9.9
+          - 2620:fe::9
         search:
-          - domain.xyz
+          - example.org
       routes:
         - to: 0.0.0.0/0
           via: 192.168.178.1
@@ -156,17 +151,21 @@ network:
           table: 200
 ```
 
-### Apply changes
+You can find more information in the official documentation 
+[here](https://netplan.readthedocs.io/en/stable/examples/#configuring-source-routing).
 
-```
-netplan generate && netplan apply
+In order to apply the changes, run:
+
+```bash
+$ netplan generate 
+$ netplan apply
 ```
 
 ## Troubleshooting
 
 It is smart to reboot your system to see if all comes up as expected:
 
-```
+```bash
 $ ip -4 rule show table vpn
 32765:	from 10.10.10.0/24 lookup vpn 
 $ ip -4 ro show table vpn
