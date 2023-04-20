@@ -39,7 +39,7 @@ Fedora and Ubuntu**. We created a physical test setup similar to what you see be
                         | VPN Server |-------------------->| NAT |
                         '------------'                     '-----'
                 10.10.10.1     192.168.1.100      192.168.1.1
-				(wg0/tun0)	   (eth1)
+                (wg0/tun0)	   (eth1)
 ```
 
 ## Assumptions
