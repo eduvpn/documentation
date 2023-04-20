@@ -100,7 +100,7 @@ Provide an existing account to _update_ the password:
 You can configure which user(s) is/are an administrator by setting the 
 `adminUserIdList` option in `/etc/vpn-user-portal/config.php`, e.g.:
 
-    'adminUserIdList' => ['admin'],
+    'adminUserIdList' => ['foo'],
 
 #### LDAP
 
@@ -140,9 +140,9 @@ Make sure you use the exact same DNS name you used when running
 After completing the script, the certificate will be installed and the system 
 will automatically replace the certificate before it expires.
 
-### Let's Connect! Branding
+### Theme
 
-See [BRANDING](BRANDING.md).
+You can apply a [theme](BRANDING.md) to the portal if you want.
 
 ### Port Sharing
 
