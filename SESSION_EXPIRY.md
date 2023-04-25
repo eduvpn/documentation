@@ -37,7 +37,7 @@ apps.
 authenticates at 09:30, the next day at 09:30 their session will expire, 
 meaning they may have to authorize/authenticate during a video call.
 
-### Changing Session Expiry
+## Changing Session Expiry
 
 You can change the session expiry by modifying 
 `/etc/vpn-user-portal/config.php` and set `sessionExpiry` to the value you 
@@ -49,7 +49,7 @@ wish. Some examples:
 - `P1M` (1 month)
 - `P7D` (7 days)
 - `P1D` (1 day)
-- `P12H` (12 hours)
+- `PT12H` (12 hours)
 
 **NOTE**: if you modify this value, it will only take effect the next time the 
 user is forced to authenticate/authorize.
@@ -65,11 +65,11 @@ portal.
 $ sudo vpn-maint-reset-system
 ```
 
-### Per User Session Expiry
+## Per User Session Expiry
 
 **NOTE**: this has been implemented in vpn-user-portal >= 3.3.4
 
-It is possible to allow individual `sessionExpiry` overrides based on user 
+It is possible to allow an individual `sessionExpiry` override based on user 
 permissions. The following two are use cases we identified:
 
 1. You want certain (power)users to be able to forgo regular 
@@ -84,29 +84,41 @@ documentation and set the `permissionAttributeList`, or properly configure the
 "Static" ACL.
 
 We standardized the values required to have per user session expiry to the 
-following format: `http://eduvpn.org/expiry#VALUE` where `VALUE` is one of the
+following format: `https://eduvpn.org/expiry#VALUE` where `VALUE` is one of the
 _intervals_ as discussed in the previous section. Some examples:
 
-* `http://eduvpn.org/expiry#P1Y` (1 year)
-* `http://eduvpn.org/expiry#P12H` (12 hours)
+* `https://eduvpn.org/expiry#P1Y` (1 year)
+* `https://eduvpn.org/expiry#PT12H` (12 hours)
 
-**NOTE**: if 0, or >1 are provided through your IdM, the default 
-`sessionExpiry` will be used.
+The default `sessionExpiry` is used, when:
 
-Next, you need to _explicitly_ configure specific values that are to be 
-supported by your server. This is done by setting the `userSessionExpiryList` 
-next to the `sessionExpiry` field in `/etc/vpn-user-portal/config.php`. For 
-example:
+1. There is no override provided through the IdM;
+2. There is >1 override provided;
+3. An unsupported override is provided.
+
+You need to _explicitly_ configure specific values that are to be supported by 
+your server. This is done by setting the `supportedSessionExpiry`. For example:
 
 ```
 'sessionExpiry' => 'P90D',
-'userSessionExpiryList' => ['P1Y', 'P12H'],
+'supportedSessionExpiry' => ['P1Y', 'PT12H'],
 ```
 
-This allows `http://eduvpn.org/expiry#P1Y`, `http://eduvpn.org/expiry#P12H` and 
-`http://eduvpn.org/expiry#P90D`. The `sessionExpiry` value, here `P90D` is 
-_always_ supported, also if `userSessionExpiryList` is not (explicitly) 
-configured.
+This allows `https://eduvpn.org/expiry#P1Y`, `https://eduvpn.org/expiry#PT12H` 
+and `https://eduvpn.org/expiry#P90D`. The `sessionExpiry` value, here `P90D` is 
+_always_ supported, also when `supportedSessionExpiry` is not (explicitly) set.
 
 **NOTE**: these values will only be used from the next user 
-authentication/authorization and will NOT take effect immediately.
+authentication/authorization.
+
+## Per Profile Expiry
+
+We do NOT support per _profile_ expiry, but only per _user_. The chosen 
+architecture, i.e. the way OAuth is used for application authorization makes 
+this complicated and would result in behavior that is hard to reason about. The
+chosen expiry now applies to both manual configuration downloads through the 
+VPN portal as well as the application API.
+
+In future server releases we will consider a different approach that would 
+allow for this, or make this functionality obsolete as it becomes possible to
+"real time" verify user authorization(s).
