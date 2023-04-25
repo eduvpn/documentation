@@ -53,8 +53,8 @@ Download the `development_setup.sh` script from this repository and run it. It
 will by default create a directory `${HOME}/Project/eduVPN-v2` under which 
 everything will be installed. No `root` is required!
 
-```
-$ curl -L -O https://raw.githubusercontent.com/eduvpn/documentation/v2/development_setup.sh
+```bash
+$ curl -L -O https://codeberg.org/eduVPN/documentation/raw/branch/v2/development_setup.sh
 $ sh ./development_setup.sh
 ```
 
