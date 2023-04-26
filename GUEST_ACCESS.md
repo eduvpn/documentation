@@ -15,7 +15,8 @@ access to restricted resources on the network!
 
 ## Eligibility / Requirements
 
-Only NRENs are able to register a server for "Guest Access". 
+Only NRENs are able to register a server for "Guest Access". We MAY request a
+introduction (video) call if none of the eduVPN team has met you before.
 
 You MUST use SAML authentication for your VPN server and provide us 
 with a link to the SAML metadata for all IdPs (Identity Providers) that
