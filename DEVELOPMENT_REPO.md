@@ -94,3 +94,64 @@ baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/fedora-$releasever-$basearch
 gpgcheck=1
 enabled=1
 ```
+
+## AlmaLinux
+
+### Repository Key
+
+```bash
+$ curl -O https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+$ sudo rpm --import fkooman+repo@tuxed.net.asc
+```
+
+### Repository Config
+
+Add the following to the file `/etc/yum.repos.d/eduVPN_v3-dev.repo`:
+
+```
+[eduVPN_v3-dev]
+name=eduVPN 3.x Development Packages (EL 9)
+baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/alma+epel-9-$basearch
+gpgcheck=1
+enabled=1
+```
+
+## Rocky Linux
+
+### Repository Key
+
+```bash
+$ curl -O https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+$ sudo rpm --import fkooman+repo@tuxed.net.asc
+```
+
+### Repository Config
+
+Add the following to the file `/etc/yum.repos.d/eduVPN_v3-dev.repo`:
+
+```
+[eduVPN_v3-dev]
+name=eduVPN 3.x Development Packages (EL 9)
+baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/rocky+epel-9-$basearch
+gpgcheck=1
+enabled=1
+```
+
+## CentOS Stream
+
+```bash
+$ curl -O https://repo.tuxed.net/fkooman+repo@tuxed.net.asc
+$ sudo rpm --import fkooman+repo@tuxed.net.asc
+```
+
+### Repository Config
+
+Add the following to the file `/etc/yum.repos.d/eduVPN_v3-dev.repo`:
+
+```
+[eduVPN_v3-dev]
+name=eduVPN 3.x Development Packages (EL 9)
+baseurl=https://repo.tuxed.net/eduVPN/v3-dev/rpm/centos-stream+epel-next-9-$basearch
+gpgcheck=1
+enabled=1
+```
