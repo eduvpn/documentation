@@ -1,7 +1,5 @@
 # IPv6
 
-**WORK IN PROGRESS**
-
 The VPN server software supports both IPv4 and IPv6. We've reached a point 
 in the "evolution" of the Internet that IPv4 NAT is unavoidable, but for IPv6
 there is no excuse to not issue proper public IPv6 addresses to the VPN 
@@ -17,19 +15,22 @@ MUST have static IPv4 and IPv6 address configurations!
 
 ## IPv6 Routing
 
-IPv6 routing can be, and is, by default enabled in `/etc/sysctl.d/70-vpn.conf`:
+IPv6 routing can be, and is, by default enabled in `/etc/sysctl.d/70-vpn.conf` 
+where `eth0` is the external interface of your VPN server:
 
 ```
+# **ONLY** needed for IPv6 configuration through auto configuration. Do **NOT**
+# use this in production, you SHOULD be using STATIC addresses!
+net.ipv6.conf.eth0.accept_ra = 2
+
+# enable IPv4 and IPv6 forwarding
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
-# allow RA for IPv6 which is disabled by default when enabling IPv6 forwarding 
-# **REMOVE** for static IPv6 configurations!
-net.ipv6.conf.all.accept_ra = 2
 ```
 
-For production you MUST remove the `net.ipv6.conf.all.accept_ra` line as you'll
-be using static IPv6 addresses and thus not need this, so the only contents
-MUST be:
+For production you MUST remove the `net.ipv6.conf.eth0.accept_ra = 2` line as 
+you'll be using static IPv6 addresses and thus not need this, so the only 
+contents SHOULD be:
 
 ```
 net.ipv4.ip_forward = 1
@@ -50,14 +51,8 @@ IPv6 address of your VPN server.
 
 See [Public Addresses](PUBLIC_ADDR.md) on how to configure public IPv6 
 addresses in your VPN server as well as the 
-[firewall]([these](FIREWALL.md#public-ip-addresses-for-vpn-clients) 
-configuration when using public IP addresses.
-
-## NDP Proxy
-
-As a last resort you can use "NDP Proxying".
-
-TBD.
+[firewall](FIREWALL.md#public-ip-addresses-for-vpn-clients) configuration when 
+using public IP addresses.
 
 ## Disabling IPv6
 
