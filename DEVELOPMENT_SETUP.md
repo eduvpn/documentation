@@ -7,7 +7,7 @@ system.
 This is **NOT** meant to be used as installation instructions! See the 
 [deploy](README.md#deployment) instructions instead!
 
-We assume you will be using either Fedora >= 36, Debian >= 11 or Ubuntu >= 
+We assume you will be using either Fedora >= 37, Debian >= 11 or Ubuntu >= 
 22.04. Other distributions MAY also work, but some minor details, regarding 
 installation of the required software, will be different.
 
@@ -17,7 +17,7 @@ packages you need to be on Fedora.
 
 ## Requirements
 
-### Fedora >= 36
+### Fedora >= 37
 
 If you are not running Fedora as your desktop OS, it is easiest to install a
 VM with a desktop. In addition, install the required software (dependencies):

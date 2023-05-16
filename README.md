@@ -55,7 +55,7 @@ We support the following operating systems for deploying the VPN server:
 
 - [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
-- [Fedora](DEPLOY_FEDORA.md) 36, 37, 38 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) 37, 38 (`x86_64`)
 - Enterprise Linux
     - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
     - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
@@ -81,8 +81,8 @@ supported by their vendor!
 
 | Version                                 | Release Date | OS Support                                                   |  EOL       |
 | --------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
-| [3](https://docs.eduvpn.org/server/v3/) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
-| [2](https://docs.eduvpn.org/server/v2/) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
+| [3](https://docs.eduvpn.org/server/v3/) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 37), EL (>= 9) | TBD        |
+| [2](https://docs.eduvpn.org/server/v2/) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 37)                     | 2024-06-30 |
 | 1                                       | 2017-07-13   | _N/A_                                                        | _N/A_      |
 
 If you are currently running the 2.x server, and want to upgrade to 3.x, you 
