@@ -80,7 +80,7 @@ your own as shown above!
     </Location> 
 
     # If you run separete node(s) you MUST allow access to "node-api.php" 
-    # withouh protecting it with Shibboleth
+    # without protecting it with mod_auth_openidc
     #<Location /vpn-user-portal/node-api.php>
     #    Require all granted
     #</Location>
