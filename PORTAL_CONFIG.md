@@ -136,6 +136,29 @@ active simultaneous connections is limited by this value. If set to 3, and a
 4th client attempts to connect, the client that was connected the longest will 
 automatically be disconnected.
 
+## App Gone Interval
+
+When VPN clients use the API, they have to call the `/disconnect` API endpoint
+when disconnecting from the VPN. This does not always happen, and can result
+in "lingering" IP allocations for WireGuard. This is a problem when there is 
+limited IP space for WireGuard clients, e.g. when using Public IPv4 addresses.
+
+In order to mitigate this somewhat, we introduced the `appGoneInterval` API 
+configuration setting which indicates when a VPN client can be considered 
+"gone". If no activity at all has been seen from a VPN client in (by default) 
+72 hours, the IP allocation will be released. If the client _still_ is alive 
+after 72 hours, the user will have to (currently) manually reconnect their VPN
+client.
+
+```php
+'Api' => [
+    'appGoneInterval' => 'PT72H',
+],
+```
+
+**NOTE**: this ONLY applies when using eduVPN/Let's Connect! clients, never for
+configuration files manually downloaded through the portal.
+
 ## WireGuard
 
 You can configure the WireGuard port over which VPN clients can connect to the
