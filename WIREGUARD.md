@@ -6,9 +6,10 @@ detail regarding how it works.
 ## Configuration
 
 WireGuard in eduVPN / Let's Connect! has a lot less toggles than OpenVPN so 
-should be easier to configure. See the "WireGuard" 
-[section](PROFILE_CONFIG.md#wireguard) for more information. There is also the
-"global" option to set the WireGuard port. By default this is `51820`.
+should be easier to configure. For all configuration options, see:
+
+* [Portal Config](PORTAL_CONFIG.md#wireguard)
+* [Profile Config](PROFILE_CONFIG.md#wireguard)
 
 ## Comparison with OpenVPN
 
@@ -56,3 +57,27 @@ A profile example configuration would look like this:
     ],
 ],
 ```
+
+## IP Prefix Changes
+
+Changing the client IP prefix used for WireGuard clients is a bit more tricky
+than with OpenVPN. The main difference between OpenVPN and WireGuard is that 
+with OpenVPN the IP address assigned to the client is decided on _connect_ 
+time, but with WireGuard it is decided ahead of time, i.e. when downloading the
+configuration through the portal, or when the VPN app calls the `/connect` API 
+endpoint.
+
+When (completely) changing the IP prefix for WireGuard, all current 
+configurations will be deleted when applying the changes and clients will stop
+working. When *extending* the prefix, existing clients will keep working.
+
+| Current Prefix   | New Prefix       | Result                             |
+| ---------------- | ---------------- | ---------------------------------- |
+| `192.168.0.0/24` | `10.0.0.0/24`    | VPN configurations will be deleted |
+| `192.168.0.0/24` | `192.168.0.0/23` | VPN configurations will remain     | 
+
+In the first scenario. Users of the VPN client applications will need to 
+manually disconnect and then connect again to restart the VPN connection as the
+old one will be "dead". Users that manually downloaded a VPN configuration file
+through the portal will need to download a new one, the old one will no longer
+work.
