@@ -177,6 +177,8 @@ Example:
 ],
 ```
 
+See also [App Gone Interval](#app-gone-interval).
+
 **NOTE**: make sure you update the [firewall](FIREWALL.md) if you change the 
 port!
 
