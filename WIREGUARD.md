@@ -36,8 +36,8 @@ the defaults are perfectly fine in most cases!
 // ...
 
 'WireGuard' => [
-    // we prefer to listen on UDP/443 as it is more likely these days that
-    // firewalls do not block it because of HTTP/3 (QUIC) (default = 51820)
+    // listen on port 443 which is the HTTP/3 (QUIC) port, higher change it is 
+    // not blocked/mangled by firewalls... (default = 51820)
     'listenPort' => 443,
 ],
 
@@ -50,8 +50,9 @@ the defaults are perfectly fine in most cases!
     // (default = 3)
     'maxActiveConfigurations' => 2,
     
-    // we consider a VPN client "gone" after 96 hours surviving also long 
-    // weekends (default = 72 hours)
+    // we consider a VPN client "gone" after 96 hours of no activity 
+    // whatsoever, outlives also long weekends of laptop being suspended 
+    // (default = 72 hours, i.e. PT72H)
     'appGoneInterval' => 'PT96H',
 ],
 
@@ -118,7 +119,7 @@ release:
    eduVPN/Let's Connect! apps after they are considered "gone" 
    (default = after 72 hours).
 
-The tooling for [monitoring](MONITORING.md) and optionally out 
+The tooling for [monitoring](MONITORING.md) and optionally 
 [alerting](MONITORING.md#alerting) based on server utilization have also 
 improved to show the WireGuard IP allocations.
 
