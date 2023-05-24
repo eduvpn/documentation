@@ -27,9 +27,36 @@ MUST, for example on broken networks that e.g. block UDP, or have MTU issues.
 For most production scenarios we recommend to have the bulk of the users use
 WireGuard, but at the same time reserve a little space for OpenVPN connections.
 
-A profile example configuration would look like this:
+An example _partial_ configuration showing some VPN configuration options 
+relevant for deploying WireGuard can be seen in the example below. Note that 
+the defaults are perfectly fine in most cases!
 
 ```php
+
+// ...
+
+'WireGuard' => [
+    // we prefer to listen on UDP/443 as it is more likely these days that
+    // firewalls do not block it because of HTTP/3 (QUIC) (default = 51820)
+    'listenPort' => 443,
+],
+
+// we do not allow users to download VPN configuration files themselves through
+// the portal (default = 3)
+'maxActiveConfigurations' => 0,
+
+'Api' => [
+    // we allow users to connect with 2 VPN clients simultaneously 
+    // (default = 3)
+    'maxActiveConfigurations' => 2,
+    
+    // we consider a VPN client "gone" after 96 hours surviving also long 
+    // weekends (default = 72 hours)
+    'appGoneInterval' => 'PT96H',
+],
+
+// ...
+
 'ProfileList' => [
     [
         'profileId' => 'office',
@@ -54,9 +81,50 @@ A profile example configuration would look like this:
         // do not use OpenVPN with UDP
         'oUdpPortList' => [],
         'oTcpPortList' => [1194],
+        
+        // ...
     ],
+    
+    // ...
 ],
 ```
+
+## IP Management
+
+When using WireGuard, as opposed to using OpenVPN, the IP address the VPN 
+client will use needs to be determined _before_ starting the VPN "connection". 
+There is no in-protocol negotiation. WireGuard configuration files therefore 
+contain the IP address that the client will use. This means that the IP address 
+will be reserved for the duration of the [session](SESSION_EXPIRY.md), by 
+default 90 days. This is the case for both configuration file downloads through
+the portal and when using the [API](API.md).
+
+If there is enough IPv4 space available to assign to clients this is not a 
+problem. If a `/24` prefix is available for 10 clients, this will typically 
+suffice. However, if you do not have so much IP space available, for example
+when using [public IP addresses](PUBLIC_ADDR.md), additional measures need to
+be taken to make sure the IP space does not get quickly depleted. 
+
+A number of measures were taken to avoid that, and improved upon during the 3.x
+release:
+
+1. Limit the number of per user manual VPN configuration file 
+   [downloads](PORTAL_CONFIG.md#maximum-number-of-active-configurations) 
+   through the portal (default = 3);
+2. Limit the number of per user 
+   [VPN connections](PORTAL_CONFIG.md#maximum-number-of-active-api-configurations) 
+   when using the eduVPN/Let's Connect! apps (default = 3);
+3. [Reclaim IP allocations](PORTAL_CONFIG.md#app-gone-interval) by the 
+   eduVPN/Let's Connect! apps after they are considered "gone" 
+   (default = after 72 hours).
+
+The tooling for [monitoring](MONITORING.md) and optionally out 
+[alerting](MONITORING.md#alerting) based on server utilization have also 
+improved to show the WireGuard IP allocations.
+
+The defaults should suffice for most deployments, however you can tweak them if
+necessary, follow the links in the list above for more information about each
+of them.
 
 ## IP Prefix Changes
 
