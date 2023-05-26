@@ -100,7 +100,27 @@ On Debian / Ubuntu:
 ```
 $ sudo systemctl restart apache2
 ```
-    
+
+#### Multi Factor Authentication
+
+If your OpenID OP supports MFA, you can request it for all authentications 
+like described below. Update the `<Location /vpn-user-portal>` section like 
+this:
+
+```
+<Location /vpn-user-portal>
+    AuthType openid-connect
+    <RequireAll>
+        Require valid-user
+        Require claim acr:https://refeds.org/profile/mfa
+    </RequireAll>
+    OIDCPathAuthRequestParams acr_values=https://refeds.org/profile/mfa
+</Location>
+```
+
+**NOTE**: the `<RequireAll>` is VERY important, by default (it seems) if you 
+have multiple `Require` lines the policy is `RequireAny`.
+
 ### VPN Portal
 
 Modify `/etc/vpn-user-portal/config.php` and set:
