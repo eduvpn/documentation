@@ -61,21 +61,15 @@ We created a physical test setup similar to what you see below.
 
 ## Configuration
 
-We'll need to add a new routing table. You can do this by adding a line in 
-`/etc/iproute2/rt_tables`:
-
-```
-200     vpn
-```
-
-Next, we'll add some routing rules manually in order to test whether we have
-the correct configuration:
+We'll add some routing rules manually in order to test whether we have the 
+correct configuration. The number `5000` is an arbitrary number we pick not yet 
+defined in `/etc/iproute2/rt_tables`:
 
 ```
 $ sudo ip -4 rule add to 10.10.10.0/24 lookup main
-$ sudo ip -4 rule add from 10.10.10.0/24 lookup vpn
+$ sudo ip -4 rule add from 10.10.10.0/24 lookup 5000
 $ sudo ip -6 rule add to fd00:4242:4242:4242::/64 lookup main
-$ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup vpn
+$ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup 5000
 ```
 
 The `to` rules are needed to make sure traffic between VPN clients uses the 
@@ -85,8 +79,8 @@ allowed by the firewall.
 Next, we'll add the routes:
 
 ```
-$ sudo ip -4 ro add default via 192.168.1.1 table vpn
-$ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
+$ sudo ip -4 ro add default via 192.168.1.1 table 5000
+$ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table 5000
 ```
 
 ## Permanent Configuration
@@ -94,6 +88,9 @@ $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table vpn
 The above instructions are meant for testing, now let's make them permanent.
 
 ### Enterprise Linux / Fedora
+
+**NOTE**: this does not seem to work anymore in EL 9 / Fedora. We are working
+on a [solution](https://todo.sr.ht/~eduvpn/server/135).
 
 Install the required _dependency_:
 
@@ -105,14 +102,17 @@ Make the _rules_ and _routes_ permanent:
 
 ```
 # echo 'to 10.10.10.0/24 lookup main' >/etc/sysconfig/network-scripts/rule-eth1
-# echo 'from 10.10.10.0/24 lookup vpn' >/etc/sysconfig/network-scripts/rule-eth1
+# echo 'from 10.10.10.0/24 lookup 5000' >/etc/sysconfig/network-scripts/rule-eth1
 # echo 'to fd00:4242:4242:4242::/64 lookup main' >/etc/sysconfig/network-scripts/rule6-eth1
-# echo 'from fd00:4242:4242:4242::/64 lookup vpn' >/etc/sysconfig/network-scripts/rule6-eth1
-# echo 'default via 192.168.1.1 table vpn' > /etc/sysconfig/network-scripts/route-eth1
-# echo 'default via fd00:1010:1010:1010::1 table vpn' > /etc/sysconfig/network-scripts/route6-eth1
+# echo 'from fd00:4242:4242:4242::/64 lookup 5000' >/etc/sysconfig/network-scripts/rule6-eth1
+# echo 'default via 192.168.1.1 table 5000' > /etc/sysconfig/network-scripts/route-eth1
+# echo 'default via fd00:1010:1010:1010::1 table 5000' > /etc/sysconfig/network-scripts/route6-eth1
 ```
 
 ### Ubuntu
+
+**NOTE**: Configuring policy routing on Ubuntu has been contributed by a 
+community member and has not been tested the eduVPN team.
 
 We'll need to add the routing in the [Netplan](https://netplan.io/) 
 configuration file `/etc/netplan/my-network.yaml`, e.g.:
@@ -166,13 +166,13 @@ $ netplan apply
 It is smart to reboot your system to see if all comes up as expected:
 
 ```bash
-$ ip -4 rule show table vpn
-32765:	from 10.10.10.0/24 lookup vpn 
-$ ip -4 ro show table vpn
+$ ip -4 rule show table 5000
+32765:	from 10.10.10.0/24 lookup 5000
+$ ip -4 ro show table 5000
 default via 192.168.1.1 dev eth1 
-$ ip -6 rule show table vpn
-32765:	from fd00:4242:4242:4242::/64 lookup vpn 
-$ ip -6 ro show table vpn
+$ ip -6 rule show table 5000
+32765:	from fd00:4242:4242:4242::/64 lookup 5000
+$ ip -6 ro show table 5000
 default via fd00:1010:1010:1010::1 dev eth1 metric 1024 pref medium
 ```
 
