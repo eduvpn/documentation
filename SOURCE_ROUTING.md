@@ -83,6 +83,26 @@ $ sudo ip -4 ro add default via 192.168.1.1 table 5000
 $ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table 5000
 ```
 
+### WireGuard
+
+The above does NOT seem to work with WireGuard, i.e. then you can't reach the
+other devices connected to the VPN, for that to work the following approach is 
+needed:
+
+```bash
+$ sudo ip -4 rule add from 10.10.10.0/24 lookup 5000
+$ sudo ip -4 ro add default via 192.168.1.1 table 5000
+$ sudo ip -4 ro add 10.10.10.0/24 dev wg0 table 5000
+$ sudo ip -6 rule add from fd00:4242:4242:4242::/64 lookup 5000
+$ sudo ip -6 ro add default via fd00:1010:1010:1010::1 table 5000
+$ sudo ip -6 ro add fd00:4242:4242:4242::/64 dev wg0 table 5000
+```
+
+We'll have to investigate how to use the same policy routing rules that work
+for both OpenVPN and WireGuard. As you may have noticed, we specified the 
+`wg0` interface in the above lines. As OpenVPN can have multiple processes, it
+would become quite cumbersome to make that work...
+
 ## Permanent Configuration
 
 The above instructions are meant for testing, now let's make them permanent.
