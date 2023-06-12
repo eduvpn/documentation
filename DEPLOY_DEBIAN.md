@@ -1,7 +1,7 @@
 # Deploying on Debian & Ubuntu
 
 For simple one server deployments and tests, we have a deploy script available 
-you can run on a fresh Debian 11 or Ubuntu 22.04 installation. It will 
+you can run on a fresh Debian >= 11 or Ubuntu 22.04 installation. It will 
 configure all components and will be ready for use after running!
 
 Additional scripts are available after deployment:
@@ -11,8 +11,8 @@ Additional scripts are available after deployment:
 
 ## Requirements
 
-* Clean Debian 11, or Ubuntu 22.04 installation with all updates installed and
-  rebooted after updates;
+* Clean Debian >= 11, or Ubuntu 22.04 installation with all updates installed 
+  and rebooted after updates;
 * Have a **STATIC** IPv4 and IPv6 address configured on your external 
   interface;
 * Network equipment/VM platform allows access to the very least `tcp/80`, 

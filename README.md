@@ -53,14 +53,14 @@ to do in future releases.
 
 We support the following operating systems for deploying the VPN server:
 
-- [Debian](DEPLOY_DEBIAN.md) 11 (`x86_64`) 
+- [Debian](DEPLOY_DEBIAN.md) 11, 12 (`x86_64`) 
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
 - [Fedora](DEPLOY_FEDORA.md) 37, 38 (`x86_64`)
 - Enterprise Linux
     - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
     - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
 
-We recommend you install your VPN server on Debian 11.
+We recommend you install your VPN server on Debian 12.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the VPN software!

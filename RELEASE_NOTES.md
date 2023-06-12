@@ -38,12 +38,12 @@ installation.
 We support installation of the VPN server software on the following operating 
 systems:
 
-- [Debian 11](DEPLOY_DEBIAN.md)
+- [Debian >= 11](DEPLOY_DEBIAN.md)
 - [Ubuntu 22.04](DEPLOY_DEBIAN.md)
 - [Fedora >= 37](DEPLOY_FEDORA.md)
 - [Enterprise Linux 9](DEPLOY_EL.md)
 
-**Recommended OS**: Debian 11
+**Recommended OS**: Debian 12
 
 We will support future releases of the above operating systems as soon as they 
 become available. We will never support "EOL" releases of operating systems, 
@@ -53,10 +53,10 @@ of its release.
 
 ## Upgrading
 
-In case you are currently running eduVPN / Let's Connect! 2.x on Debian 11 you 
-can use the [Upgrade Instructions](FROM_2_TO_3.md) to move to 3.x. Please note 
-that your users will be forced to reauthorize the official apps and/or download 
-a new configuration file from the portal.
+In case you are currently running eduVPN / Let's Connect! 2.x on Debian 11 or 
+12 you can use the [Upgrade Instructions](FROM_2_TO_3.md) to move to 3.x. 
+Please note that your users will be forced to reauthorize the official apps 
+and/or download a new configuration file from the portal.
 
 However, it is HIGHLY RECOMMENDED, if at all possible, to perform a fresh 
 installation of the 3.x server!
