@@ -70,7 +70,7 @@ This should all run without any error and without asking any questions! Reboot
 your server after this and make sure everything still works. Try logging in to 
 the portal, connect with a VPN client.
 
-# Step by Step
+## Step by Step
 
 On a typical system, the below instructions will upgrade your server without 
 having to read through all the instructions listed above. Please look at every 
@@ -79,7 +79,7 @@ that were installed with `deploy_debian.sh` and are fairly standard clean
 Debian installations. If your organization (heavily) modifies standard Debian
 you MAY run into trouble! You've been warned! :-)
 
-## Preparation
+### Preparation
 
 First, make sure your Debian 10 system is fully up to date and reboot it:
 
@@ -91,7 +91,7 @@ $ sudo reboot
 Make sure everything (portal, apps, connecting to VPN) still works as 
 expected before continuing. 
 
-## Upgrade
+### Upgrade
 
 The below commands SHOULD be enough to fully upgrade your system:
 
