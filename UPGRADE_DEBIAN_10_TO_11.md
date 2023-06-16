@@ -69,3 +69,68 @@ $ sudo vpn-maint-update-system
 This should all run without any error and without asking any questions! Reboot 
 your server after this and make sure everything still works. Try logging in to 
 the portal, connect with a VPN client.
+
+# Script
+
+The below script will automate as much as possible from the upgrade. Please
+look at every line and make sure you understand it. This ONLY works for systems
+that were installed with `deploy_debian.sh` and are fairly standard clean 
+Debian installations. If your organization (heavily) modifies standard Debian
+you MAY run into trouble! You've been warned! :-)
+
+## Preparation
+
+First, make sure your Debian 10 system is fully up to date and reboot it:
+
+```bash
+$ sudo vpn-maint-update-system
+$ sudo reboot
+```
+
+First list, and then purge obsolete packages:
+
+```bash
+$ apt list "~o"
+$ sudo apt purge "~o"
+```
+
+First list, and then purge removed packages with residual files:
+
+```bash
+$ apt list "~c"
+$ sudo apt purge "~c"
+```
+
+Remove packages no longer needed:
+
+```bash
+$ sudo apt --purge autoremove
+```
+
+## Upgrade
+
+The below commands SHOULD be enough to fully upgrade your system:
+
+```bash
+$ sudo find /etc/apt -type f -name '*.list' -exec sed -i 's/buster/bullseye/g' {} +
+# https://www.debian.org/releases/bullseye/amd64/release-notes/ch-information.en.html#security-archive
+$ sudo find /etc/apt -type f -name '*.list' -exec sed -i 's/bullseye\/updates/bullseye-security/g' {} +
+$ sudo apt update
+$ sudo apt full-upgrade
+# PHP version upgrade
+$ sudo a2enconf php7.4-fpm
+```
+
+Now, reboot your system and make sure everything still works. Then you can 
+continue to perform some additional cleanup steps:
+
+```bash
+$ sudo apt --purge autoremove
+$ apt list "~o"
+$ sudo apt purge "~o"
+$ apt list "~c"
+$ sudo apt purge "~c"
+```
+
+After this is complete, you can reboot again. Make sure all comes back as 
+expected.
