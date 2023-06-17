@@ -1,74 +1,15 @@
 # Upgrade Debian 10 to Debian 11
 
-First, make sure your Debian 10 system is fully up to date and reboot it:
+This document will describe step-by-step how to update your eduVPN / Let's 
+Connect! 2.x server from Debian 10 to Debian 11.
 
-```
-$ sudo vpn-maint-update-system
-$ sudo reboot
-```
-
-Now test that everything still works properly, to make sure that you start from
-a working "base".
-
-**NOTE**: if you have the opportunity, please make a snapshot of your system, 
-e.g. through your VM platform so you can rollback immediately if the upgrade
-doesn't work.
- 
-Follow the instructions 
+Official Debian release upgrade instructions can be found 
 [here](https://www.debian.org/releases/bullseye/amd64/release-notes/ch-upgrading.en.html). 
+You SHOULD review them carefully.
 
-These are the official Debian upgrade instructions. You can and SHOULD follow 
-that document and read all sections and perform the steps when necessary. Do 
-**not** remove the "non-Debian packages" (4.2.2) as all packages are also 
-available on Debian 11 and will be upgraded without trouble. You **do** need to
-pay attention to "Changed security archive layout" (5.1.3) as the security 
-updates will require a different `deb` line in `/etc/apt/sources.list`.
-
-Pay attention the the cleanup as well (sections 4.7, 4.8). When updating the 
-repositories (section 4.3) also make sure you update 
-`/etc/apt/sources.list.d/eduVPN_v2.list` and replace `buster` with `bullseye`, 
-i.e.:
-
-```
-$ echo "deb https://repo.eduvpn.org/v2/deb bullseye main" | sudo tee /etc/apt/sources.list.d/eduVPN_v2.list
-```
-
-**NOTE**: if `/etc/apt/sources.list.d/eduVPN_v2.list` does not yet exist, 
-create it and remove all other files related to "eduVPN" or "LC" from 
-`/etc/apt/sources.list.d` that may have been put there in the past!
-
-After the update is complete, PHP will not be properly configured yet, this is 
-because the version changed from 7.3 to 7.4 and is part of a different Apache
-configuration. You have to manually re-enable PHP:
-
-```
-$ sudo a2enconf php7.4-fpm
-```
-
-In case you also modified the PHP configuration options, as suggested e.g. 
-[here](DEPLOY_DEBIAN.md#php), you need to reapply those as well and restart 
-PHP, to restart PHP:
-
-```
-$ sudo systemctl restart php7.4-fpm
-```
-
-Restart Apache:
-
-```
-$ sudo systemctl restart apache2
-```
-
-Run the following scripts to make sure all is in order:
-
-```
-$ sudo vpn-maint-apply-changes
-$ sudo vpn-maint-update-system
-```
-
-This should all run without any error and without asking any questions! Reboot 
-your server after this and make sure everything still works. Try logging in to 
-the portal, connect with a VPN client.
+If you have the opportunity, you SHOULD make a snapshot of your system, e.g. 
+through your VM platform so you can rollback immediately if the upgrade doesn't 
+work.
 
 After performing the upgrade to Debian 11, feel free to 
 [move](UPGRADE_DEBIAN_11_TO_12.md) directly to Debian 12!
@@ -76,11 +17,11 @@ After performing the upgrade to Debian 11, feel free to
 ## Step by Step
 
 On a typical system, the below instructions will upgrade your server without 
-having to read through all the instructions listed above. Please look at every 
-line and make sure you understand it. This ONLY works for systems
+having to read through the release upgrade instructions linked above. Please 
+look at every line and make sure you understand it. This ONLY works for systems
 that were installed with `deploy_debian.sh` and are fairly standard clean 
 Debian installations. If your organization (heavily) modifies standard Debian
-you MAY run into trouble! You've been warned! :-)
+you MAY run into trouble! You have been warned! :-)
 
 ### Preparation
 
@@ -99,12 +40,13 @@ expected before continuing.
 The below commands SHOULD be enough to fully upgrade your system:
 
 ```bash
-# change to bullseye repo
+# change to bullseye repo for all repository configurations that mention 
+# "buster"
 $ sudo find /etc/apt \
     -type f -name '*.list' \
     -exec sed -i 's/buster/bullseye/g' {} +
 
-# update bullseye security repository
+# adapt to new bullseye security repository configuration
 # @see https://www.debian.org/releases/bullseye/amd64/release-notes/ch-information.en.html#security-archive
 $ sudo find /etc/apt \
     -type f -name '*.list' \
@@ -118,6 +60,10 @@ $ sudo apt full-upgrade
 $ sudo a2enconf php7.4-fpm
 ```
 
+In case you modified the PHP configuration options, as recommended 
+[here](DEPLOY_DEBIAN.md#php), you need to reapply those as well for PHP 
+version 7.4!
+
 Now, reboot your system and make sure everything still works. Then you can 
 continue to perform some additional cleanup steps:
 
@@ -129,8 +75,11 @@ $ apt list "~c"
 $ sudo apt purge "~c"
 ```
 
-After this is complete, you can reboot again. Make sure all comes back as 
-expected and your VPN still works.
+To make sure you are running with the latest configuration applied, run this:
 
-After performing the upgrade to Debian 11, feel free to 
-[move](UPGRADE_DEBIAN_11_TO_12.md) directly to Debian 12!
+```bash
+$ sudo vpn-maint-apply-changes
+```
+
+After this is complete, you can reboot again. Make sure all comes back as 
+expected and your portal and VPN still works.

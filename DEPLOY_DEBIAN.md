@@ -122,8 +122,9 @@ Debian's PHP package has some unfortunate defaults that only work for
 very light usage and in no way for deploys where you expect more than a few 
 users to use the service.
 
-Modify `/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10) or 
-`/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11) and change the following 
+Modify `/etc/php/7.3/fpm/pool.d/www.conf` (Debian 10), 
+`/etc/php/7.4/fpm/pool.d/www.conf` (Debian 11), or 
+`/etc/php/8.2/fpm/pool.d/www.conf` (Debian 12) and change the following 
 settings. We'll use the CentOS/Fedora defaults here as well:
 
     pm = dynamic
