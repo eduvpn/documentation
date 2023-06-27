@@ -69,9 +69,18 @@ elif grep "Rocky Linux" /etc/os-release >/dev/null; then
     REPO_DIR_PREFIX=rocky+epel-9
 elif grep "CentOS Stream" /etc/os-release >/dev/null; then
     REPO_DIR_PREFIX=centos-stream+epel-next-9
-else 
+elif grep "Red Hat Enterprise Linux" /etc/os-release >/dev/null; then
+    REPO_DIR_PREFIX=rhel+epel-9
+else
     echo "OS not supported!"
     exit 1
+fi
+
+if grep "Red Hat Enterprise Linux" /etc/os-release >/dev/null; then
+    # on Red Hat Enterprise we need to do some extra stuff to enable EPEL
+    # @see https://docs.fedoraproject.org/en-US/epel/
+    subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+    dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 fi
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
