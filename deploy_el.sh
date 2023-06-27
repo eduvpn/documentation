@@ -79,8 +79,8 @@ fi
 if grep "Red Hat Enterprise Linux" /etc/os-release >/dev/null; then
     # on Red Hat Enterprise we need to do some extra stuff to enable EPEL
     # @see https://docs.fedoraproject.org/en-US/epel/
-    subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
-    dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+    /usr/bin/subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+    /usr/bin/dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 fi
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
@@ -107,6 +107,11 @@ fi
 
 # install software (dependencies)
 /usr/bin/dnf -y install epel-release
+if grep "CentOS Stream" /etc/os-release >/dev/null; then
+    # on CentOS Stream we enable the "epel-next" repository
+    /usr/bin/dnf -y install epel-next-release
+fi
+
 /usr/bin/dnf -y install mod_ssl php-opcache httpd iptables-nft pwgen cronie \
     iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
     ipcalc tmux
