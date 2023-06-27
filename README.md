@@ -57,6 +57,7 @@ We support the following operating systems for deploying the VPN server:
 - [Ubuntu](DEPLOY_DEBIAN.md) 22.04 (`x86_64`) 
 - [Fedora](DEPLOY_FEDORA.md) 37, 38 (`x86_64`)
 - Enterprise Linux
+    - [Red Hat Enterprise Linux](DEPLOY_EL.md) 9 (`x86_64`)
     - [AlmaLinux](DEPLOY_EL.md) 9 (`x86_64`)
     - [Rocky Linux](DEPLOY_EL.md) 9 (`x86_64`)
 
