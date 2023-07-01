@@ -21,8 +21,8 @@ contact us at
 
 | Version                                              | Release Date | OS Support                                                   |  EOL*      |
 | ---------------------------------------------------- | ------------ | ------------------------------------------------------------ | ---------- |
-| [3](https://github.com/eduvpn/documentation/tree/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 36), EL (>= 9) | TBD        |
-| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 35)                     | 2024-06-30 |
+| [3](https://github.com/eduvpn/documentation/tree/v3) | 2022-05-25   | Debian (>= 11), Ubuntu (>= 22.04), Fedora (>= 37), EL (>= 9) | TBD        |
+| [2](https://github.com/eduvpn/documentation/tree/v2) | 2019-04-02   | Debian (>= 10), CentOS 7, Fedora (>= 37)                     | 2024-06-30 |
 | [1](https://github.com/eduvpn/documentation/tree/v1) | 2017-07-13   | _N/A_                                                        | _N/A_      |
 
 We support a release until such time the EOL date has been reached or none of 
@@ -96,15 +96,15 @@ can't be bothered to setup an IRC client. See you there!
 ## Supported Operating Systems
 
 - [CentOS & Red Hat Enterprise Linux](DEPLOY_CENTOS.md) 7 (`x86_64`)
-- [Fedora](DEPLOY_FEDORA.md) >= 35 (`x86_64`)
+- [Fedora](DEPLOY_FEDORA.md) >= 37 (`x86_64`)
 - [Debian](DEPLOY_DEBIAN.md) >= 10 (`x86_64`) 
 
-**Current Recommendation**: install your VPN server on Debian 11.
+**Current Recommendation**: install your VPN server on Debian 12.
 
-Currently we do NOT support CentOS & Red Hat Enterprise Linux 8. We are waiting 
+We do NOT and will not support Red Hat Enterprise Linux 8. We were waiting 
 for [this](https://pagure.io/epel/issue/75) to be resolved. We avoid using 
-third party PHP repositories to prevent having to support these repositories
-in the future.
+third party PHP repositories to prevent having to support these repositories in 
+the future.
 
 **NOTE**: we expect ALL software updates to be installed and the server 
 rebooted before you install the software!
@@ -115,8 +115,7 @@ follow [these](MULTI_NODE.md) instructions!
 ## Development
 
 If you want to set up your own server development environment see 
-[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md). See the `v3` branch for the 
-upcoming 3.x server.
+[DEVELOPMENT_SETUP](DEVELOPMENT_SETUP.md).
 
 ## License 
 
