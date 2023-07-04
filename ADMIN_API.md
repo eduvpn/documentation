@@ -89,8 +89,8 @@ Create a VPN configuration for a particular user (and profile).
 
 #### Request
 
-Connect to the "Employees" profile (`employees`) and specify a WireGuard public 
-key for when WireGuard will be used:
+Obtain a configuration file for the "Employees" profile (`employees`) for the 
+user `foo`:
 
 ```bash
 $ curl \
