@@ -38,7 +38,7 @@ USE_DEV_REPO=${USE_DEV_REPO:-n}
 
 apt update
 apt install -y apt-transport-https curl apache2 php-fpm pwgen \
-    iptables-persistent sudo lsb-release ipcalc-ng tmux
+    iptables-persistent sudo lsb-release ipcalc-ng tmux cron
 
 DEBIAN_ARCH=$(dpkg --print-architecture)
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
