@@ -26,7 +26,7 @@ apt update
 # install it manually here...
 DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https curl \
     apache2 php-fpm pwgen iptables-persistent sudo gnupg php-sqlite3 \
-    lsb-release
+    lsb-release cron
 
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
 PHP_VERSION=$(/usr/sbin/phpquery -V)
