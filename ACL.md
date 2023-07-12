@@ -1,6 +1,6 @@
-# ACL
+# Access Control
 
-The VPN service supports access control. You can:
+The VPN service supports access control, i.e. authorization. You can:
 
 1. Restrict who has access to the server;
 2. Restrict who has access to certain VPN profiles;
@@ -9,22 +9,39 @@ The VPN service supports access control. You can:
 Restricting access to the server and to VPN profiles is documented here. To 
 configure who has access to the admin, look [here](PORTAL_ADMIN.md).
 
-Currently, the following access control mechanisms are supported:
+There are currently two _sources_ for authorization information:
 
-- SAML (via SAML attribute, e.g. `eduPersonAffiliation` or 
-  `eduPersonEntitlement`)
-- LDAP (via LDAP attribute, e.g. `memberOf`)
-- Static Permissions (via JSON file)
+1. User Authentication
+    - LDAP attribute, SAML attributes, OIDC claims, ...
+2. Static Permissions
+    - Locally assign permissions based on User ID
 
-The permissions are _cached_ for up to a configurable period through 
-[Session Expiry](SESSION_EXPIRY.md). By default this is 90 days, but can easily 
-be modified. This cache is required, because not all authentication backends 
-have a way to reliably validate the permissions "out of band", i.e. when the 
-user is not actively in the process of authenticating.
+The information obtained during user authentication (1) is cached for the 
+duration of the browser session when using the portal, and for the duration of 
+the [Session Expiry](SESSION_EXPIRY.md) when using the API.
 
-The configuration is done in `/etc/vpn-user-portal/config.php`.
+The reason for this is that there is not always a way to obtain _fresh_ 
+information about the user directly from the authenication source, for example
+when using SAML (WebSSO), or it might be "expensive" to do that on every page 
+load.
 
-## Methods
+Currently, the static permissions (2) _are_ updated immediately when using the 
+portal, but not when using the API.
+
+We are looking at implementing "real time" updating of authorization 
+information when using the API for authentication backends that support this
+([#131](https://todo.sr.ht/~eduvpn/server/131)).
+
+We are also working on implementing access control based on the user's origin 
+IP ([#146](https://todo.sr.ht/~eduvpn/server/146)).
+
+The configuration of access control is done primarily through 
+`/etc/vpn-user-portal/config.php`, see below for more details.
+
+## User Authentication
+
+Here you'll find how to obtain authorization information through the various
+user authentication mechanisms.
 
 ### SAML
 
