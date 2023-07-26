@@ -101,6 +101,18 @@ On Debian / Ubuntu:
 $ sudo systemctl restart apache2
 ```
 
+#### Using Preferred Username
+
+If you want to use the _claim_ `preferred_username` for example, you can 
+request the `profile` scope and set the `OIDCRemoteUserClaim`. The `@` at the 
+end means the `REMOTE_USER` field will contain the `preferred_username` 
+postfixed with the `issuer` (without `https://`).
+
+```
+OIDCScope "openid profile"
+OIDCRemoteUserClaim preferred_username@
+```
+
 #### Multi Factor Authentication
 
 If your OpenID OP supports MFA, you can request it for all authentications 
