@@ -145,8 +145,8 @@ In `/etc/vpn-user-portal/config.php` you can configure it like this:
 ```
 
 This requires everyone to have the permission `employees`. If you specify more
-than one "permission", the user needs to be member of only one. The permissions
-are thus "OR".
+than one "permission", the user needs to have only one of the listed 
+permissions. The permissions are thus "OR".
 
 If you specify `[]`, nobody will get access. If you leave this option away, 
 everyone (who can authenticate) gets access (the default).
@@ -168,9 +168,12 @@ either make sure your account has any permissions, or logout and login again.
 ],
 ```
 
-This requires everyone to have the permission `employees` before being allowed
-access to the profile.. If you specify more than one "permission", the user 
-needs to be member of only one. The permissions are thus "OR".
+This requires everyone to have the permission `employees`. If you specify more
+than one "permission", the user needs to have only one of the listed 
+permissions. The permissions are thus "OR".
+
+If you specify `[]`, nobody will get access. If you leave this option away, 
+everyone (who can authenticate) gets access (the default).
 
 ## Session Expiry
 
