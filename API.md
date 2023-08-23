@@ -3,7 +3,10 @@
 This document describes version 3 of the API provided by eduVPN and 
 Let's Connect! servers.
 
-The API is intended to be used by the eduVPN and Let's Connect! applications.
+The API is intended to be used by the eduVPN and Let's Connect! applications. 
+If you are creating your own application, look 
+[here](API_CLIENT_REGISTRATION.md) how to register your own client in the 
+server.
 
 Using this document you should be able to implement the API in your VPN client, 
 or provide the same API for your VPN server to leverage the existing VPN 
@@ -77,9 +80,7 @@ The `authorization_endpoint` is used to obtain an authorization code through an
 specification are required, even optional ones: 
 
 - `client_id`;
-- `redirect_uri` MUST be a support URL as found 
-  [here](https://git.sr.ht/~fkooman/vpn-user-portal/tree/v3/item/src/OAuth/ClientDb.php), 
-  if you need a new registration, please contact us;
+- `redirect_uri`;
 - `response_type`: MUST be `code`;
 - `scope`: MUST be `config`;
 - `state`;
