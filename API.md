@@ -596,9 +596,8 @@ implements:
    already occurred.
 
 | What                   | Visible                                                                                             |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | 
-| Main Countdown Timer   | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00                                                      |
-| Countdown Timer        |  Always                                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------- |
+| Countdown Timer        | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00                                                      |
 | "Renew Session" Button | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00 _AND_ `${NOW}` - `${SESSION_STARTED_AT}` >= 00:30:00 |
 | OS Notification        | `${SESSION_EXPIRES_AT}` - `${NOW}` IN {04:00:00, 02:00:00, 01:00:00, 00:00:00}                      |
 
@@ -608,9 +607,9 @@ their first OAuth access token. With `${SESSION_EXPIRES_AT}` we mean the time
 the session expires, as obtained from the `Expires` HTTP response header 
 part of the `/connect` call response.
 
-The difference between the "Main Countdown Timer" and the "Countdown Timer" is the
-location of the timer. The main countdown timer should be shown under the "Connected" text.
-The other countdown timer should always be shown in the connection info tab at the bottom.
+In addition to the "Countdown Timer" visible in the main application window, 
+there is also a timer under "Connection Info" in the UI. This timer is *always*
+visible.
 
 When the user clicks the "Renew Session" button the following MUST happen in 
 this order:
