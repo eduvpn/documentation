@@ -654,3 +654,4 @@ The changes made to the API documentation.
 | 2022-01-27 | **Declared API "Stable"**                                                                                       |
 | 2023-02-07 | Improve "Disconnect" section to list all cases where `/disconnect` should be called                             |
 | 2023-02-08 | Simplify "Session Expiry" section                                                                               |
+| 2023-08-25 | Mention a second "Countdown Timer" in "Connection Info"                                                         |
