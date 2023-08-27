@@ -8,35 +8,14 @@ The LDAP integration can be used both for _authentication_ and _authorization_.
 This document talks about _authentication_. See [ACL](ACL.md) for more on 
 _authorization_.
 
-## Important Notes
-
-### 3.0.2
-
-There was an issue in `vpn-user-portal` before 3.0.2 where, when 
-`userIdAttribute` was set, but not available in the LDAP result set, the user 
-provided "User ID" would be used verbatim. This is problematic for two reasons: 
-
-1. If you were using `userFilterTemplate` to restrict access to the service, 
-   this didn't actually work. LDAP entries that did NOT match the filter would
-   allow the user in with their provided "User ID";
-2. If the `userIdAttribute` was NOT available (at all) in the result set due to 
-   a mistake in the server configuration, or not all users had that specified
-   attribute, the user provided "User ID" would be used verbatim, and *not* the 
-   "normalized" value from the LDAP server.
-
-We were not aware that anyone would use the `userFilterTemplate` to restrict
-access to the service, as we expect everyone to use [ACL](ACL.md) for doing 
-this as documented. There was at least one instance in the wild that did this. 
-Potentially there are others.
-
-In case you were depending on this unintended behavior, your VPN server 
-installation may fail to allow users to authenticate with version 3.0.2, even 
-though it worked with previous versions.
+**NOTE**: from version 3.4.0 of `vpn-user-portal`, the `userIdAttribute` key 
+MUST be set, it is no longer optional.
 
 ## Introduction
 
-It is a good idea to try with `ldapsearch` if you are not absolutely sure what
-to configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
+In order to configure LDAP on your VPN server for authentication it is a good 
+idea to start with `ldapsearch` if you are not absolutely sure what to 
+configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
 module.
 
 First, install `ldapsearch` and the PHP module for LDAP:
@@ -164,15 +143,13 @@ will become `DOMAIN\fkooman` assuming the user entered `fkooman` as
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
 the exact same format as used in the LDAP server. This avoids creating multiple
-accounts in the VPN service with different case. You SHOULD specify the 
-`userIdAttribute`! A future version of the VPN server will make this a MUST.
+accounts in the VPN service with different case. You MUST specify the 
+`userIdAttribute`.
 
 You can restrict access to the VPN service to a subset of the users in the 
 LDAP server by following the [ACL](ACL.md) documentation, or (not recommended) 
 by using a filter that only returns results in case the user entry matches a 
-specific filter. If you use a filter you MUST specific the `userIdAttribute` as 
-the decision whether or not the account is allowed to login is based on whether 
-or not results are returned.
+specific filter.
 
 ```php
 'LdapAuthModule' => [
