@@ -150,3 +150,43 @@ manually disconnect and then connect again to restart the VPN connection as the
 old one will be "dead". Users that manually downloaded a VPN configuration file
 through the portal will need to download a new one, the old one will no longer
 work.
+
+## MTU
+
+**NOTE**: experimental feature in vpn-user-portal >= 3.4.0
+
+We noticed some issues in the field when PPPoE and DS-Lite is used by ISPs. If
+the MTU of the connection between client and server is 1500, there is no issue, 
+the default MTU of WireGuard, which is 
+[1420](https://lists.zx2c4.com/pipermail/wireguard/2017-December/002201.html) 
+fits perfectly fine then.
+
+However, when PPPoE is used, the MTU is not 1500, but 1492. When DS-Lite is 
+used, the MTU is not 1500, but 1460.
+
+So, to accomodate PPPoE we'd have to reduce the MTU of WireGuard to 1412, to 
+also accomodate DS-Lite, we'd need to set the MTU to 1380. For now we ignore 
+PPPoE over DS-Lite ;-)
+
+We hope to be able to automate, or accomodate for different MTUs without 
+configuration option, *or* e.g. set the default MTU to 1380 in the future.
+
+For now, if you want to modify the MTU:
+
+```php
+'WireGuard' => [
+
+    // ... other WireGuard options
+    
+    'useMtu' => 1380,
+],
+```
+
+Here we set the MTU to 1380. Do not forget to 
+[Apply Changes](PROFILE_CONFIG.md#apply-changes).
+
+### Client Support
+
+The iOS and macOS application support different MTUs. The Linux client has a 
+fix [lined up](https://github.com/eduvpn/python-eduvpn-client/issues/540). We 
+are not yet sure about Windows and Android.
