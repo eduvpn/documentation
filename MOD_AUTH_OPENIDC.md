@@ -50,8 +50,9 @@ Modify your Apache "Virtual Host" by changing
 `/etc/httpd/conf.d/vpn.example.org.conf` (Fedora). The below is an example of
 what it should look like. Replace with your own values. 
 
-**NOTE**: do **NOT** reuse the`OIDCCryptoPassphrase` as shown below, generate 
-your own as shown above!
+**NOTE**: set the `OIDCCryptoPassphrase` value to the one you generated
+above, i.e. replace `REPLACE_ME` with your passphrase and remove the `#` at the
+start of the line.
 
 ```
 <VirtualHost *:443>
@@ -62,7 +63,7 @@ your own as shown above!
     OIDCClientID s2kpEtzBpme1b6VU
     OIDCClientSecret z1YGPSHYHU3T8eY8
     OIDCRedirectURI https://vpn.example.org/vpn-user-portal/redirect_uri
-    OIDCCryptoPassphrase 2iSPYVjVeC9cB0PmhUZfSyKVtxwescz7Hyb7oHIbnNbpn5TQDb8npdS1P1oyokYc
+    #OIDCCryptoPassphrase REPLACE_ME
 
     <Location /vpn-user-portal>
         AuthType openid-connect
@@ -117,7 +118,7 @@ OIDCRemoteUserClaim preferred_username@
 
 If your OpenID OP supports MFA, you can request it for all authentications 
 like described below. Update the `<Location /vpn-user-portal>` section like 
-this:
+this where the ACR `https://refeds.org/profile/mfa` is requested and enforced:
 
 ```
 <Location /vpn-user-portal>
