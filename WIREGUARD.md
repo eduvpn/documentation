@@ -153,7 +153,9 @@ work.
 
 ## MTU
 
-**NOTE**: experimental feature in vpn-user-portal >= 3.4.0
+**NOTE**: experimental feature in vpn-user-portal >= 3.4.0, we currently do 
+NOT 100% understand how everything works _exactly_ or how it is supposed to
+work, see [Open Issues](#open-issues).
 
 We noticed some issues in the field when PPPoE and DS-Lite is used by ISPs. If
 the MTU of the connection between client and server is 1500, there is no issue, 
@@ -161,14 +163,17 @@ the default MTU of WireGuard, which is
 [1420](https://lists.zx2c4.com/pipermail/wireguard/2017-December/002201.html) 
 fits perfectly fine then.
 
-However, when PPPoE is used, the MTU is not 1500, but 1492. When DS-Lite is 
-used, the MTU is not 1500, but 1460.
+However, when PPPoE is deployed, the MTU is not 1500, but 1492. This results in 
+a broken connection when the WireGuard connection is made over IPv6, there's 
+not enough space for a WireGuard MTU of 1420.
 
-So, to accomodate PPPoE we'd have to reduce the MTU of WireGuard to 1412, to 
-also accomodate DS-Lite, we'd need to set the MTU to 1380. For now we ignore 
-PPPoE over DS-Lite ;-)
+When DS-Lite is used, the MTU is not 1500, but 1460 for _IPv4_ connections 
+(only).
 
-We hope to be able to automate, or accomodate for different MTUs without 
+So, to accommodate PPPoE we'd have to reduce the MTU of WireGuard to 1412, to 
+also accommodate DS-Lite, we'd need to set the MTU to 1380, or 1400?
+
+We hope to be able to automate, or accommodate for different MTUs without 
 configuration option, *or* e.g. set the default MTU to 1380 in the future.
 
 For now, if you want to modify the MTU:
@@ -178,12 +183,34 @@ For now, if you want to modify the MTU:
 
     // ... other WireGuard options
     
-    'useMtu' => 1380,
+    'useMtu' => 1400,
 ],
 ```
 
-Here we set the MTU to 1380. Do not forget to 
+Here we set the MTU to 1400. Do not forget to 
 [Apply Changes](PROFILE_CONFIG.md#apply-changes).
+
+### Open Issues
+
+Test case: we are connecting over IPv4 to the WireGuard server, over the 
+connection that has an MTU of 1460. Then we test with an SSH session over 
+IPv6.
+
+- It seems an MTU of 1400 also works fine over DS-Lite, anything higher results
+  in delays, but it still works (somewhat). Perhaps this is because connecting 
+  _over_ IPv4 to a WireGuard server results in smaller WireGuard packets than
+  connecting over IPv6? So we need not 40 bytes, but 20 bytes only and thus an 
+  MTU of 1420 - 20 = 1400;
+- Setting the MTU _only_ in the client configuration seems to be sufficient, 
+  but why is that?
+- How can we figure out what is the "optimal" MTU when considering various 
+  MTUs? i.e. 1492, 1460 and 1500?
+- Do we need any "clamping" or "mss" fixes? And how does that exactly work?
+- Can we lower the WireGuard server's MTU without breaking clients that do not
+  specify and MTU?
+
+See [#151](https://todo.sr.ht/~eduvpn/server/151) for more information and
+status.
 
 ### Client Support
 
