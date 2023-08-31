@@ -242,13 +242,13 @@ e.g.:
     // other LDAP configuration options...
     // ...
     
-    'tlsCa' => '/etc/ssl/certs/my-org-ca.crt',
+    'tlsCa' => '/etc/vpn-user-portal/ldap/ldap-ca.crt',
 ],
 ```
 
-On Fedora/EL you'd typically keep the CA certificate under 
-`/etc/pki/tls/certs`. On Debian/Ubuntu you would keep them under 
-`/etc/ssl/certs`.
+It is the easiest to create a directory `/etc/vpn-user-portal/ldap` and put the 
+CA certificate in there. Make sure the CA cert file has group readable, e.g. 
+`0640` permissions.
 
 ### Client Certificate Authentication
 
@@ -265,14 +265,14 @@ section:
     // other LDAP configuration options...
     // ...
     
-    'tlsCert' => '/etc/ssl/certs/my-ldap-client.crt',
-    'tlsKey' => '/etc/ssl/private/my-ldap-client.key', 
+    'tlsCert' => '/etc/vpn-user-portal/ldap/ldap-client.crt',
+    'tlsKey' => '/etc/vpn-user-portal/ldap/ldap-client.key', 
 ],
 ```
 
-**NOTE**: you MUST make sure the web server, e.g. the user/group `www-data` on 
-Debian / Ubuntu and `apache` on Fedora / EL can read the certificate and key 
-files.
+It is the easiest to create a directory `/etc/vpn-user-portal/ldap` and put the 
+certificate and key certificate in there. Make sure the certificate and key 
+file have group readable, e.g. `0640` permissions.
 
 You **MUST** restart `php-fpm` to pick up the changes. On Fedora / EL:
 
