@@ -199,13 +199,11 @@ Here we set the MTU to 1392. Do not forget to
 
 ### Open Issues
 
-Test case: we are connecting over IPv4 to the WireGuard server, over the 
-connection that has an MTU of 1460. Then we test with an SSH session over 
-IPv6.
-
 - Setting the MTU _only_ in the client configuration seems to be sufficient, 
   but why is that?
-- Do we need any "clamping" or "MSS" fixes? And how does that exactly work?
+- Do we need any "clamping" or "MSS" fixes? And how does that exactly work? 
+  For TCP only? What about UDP? Does it only apply to traffic coming through
+  the VPN?
 - Can we lower the WireGuard server's MTU without breaking clients that do not
   specify and MTU?
 - What if we have VPN tunnels running on top of each other? That will not work
