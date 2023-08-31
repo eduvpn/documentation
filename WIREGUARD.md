@@ -157,25 +157,31 @@ work.
 NOT 100% understand how everything works _exactly_ or how it is supposed to
 work, see [Open Issues](#open-issues).
 
-We noticed some issues in the field when PPPoE and DS-Lite is used by ISPs. If
-the MTU of the connection between client and server is 1500, there is no issue, 
-the default MTU of WireGuard, which is 
+We noticed some issues in the field when PPPoE and/or DS-Lite is used by ISPs. 
+If the MTU of the connection between client and server is 1500, there is no 
+issue, the default MTU of WireGuard, which is 
 [1420](https://lists.zx2c4.com/pipermail/wireguard/2017-December/002201.html) 
 fits perfectly fine then.
 
-However, when PPPoE is deployed, the MTU is not 1500, but 1492. This results in 
-a broken connection when the WireGuard connection is made over IPv6, there's 
-not enough space for a WireGuard MTU of 1420.
+Some common MTUs:
 
-When DS-Lite is used, the MTU is not 1500, but 1460 for _IPv4_ connections 
-(only).
+| Type            | MTU  | Connection | Works? | Max MTU |
+| --------------- | ---- | ---------- | ------ | ------- |
+| Ethernet        | 1500 | IPv4       | Yes    | 1440    |
+| Ethernet        | 1500 | IPv6       | Yes    | 1420    |
+| PPPoE           | 1492 | IPv4       | Yes    | 1432    |
+| PPPoE           | 1492 | IPv6       | No     | 1412    |
+| DS-Lite         | 1460 | IPv4       | No     | 1400    |
+| DS-Lite         | 1500 | IPv6       | Yes    | 1420    |
+| DS-Lite + PPPoE | 1452 | IPv4       | No     | 1392    |
+| DS-Lite + PPPoE | 1492 | IPv6       | No     | 1412    |
 
-So, to accommodate PPPoE we'd have to reduce the MTU of WireGuard to 1412, to 
-also accommodate DS-Lite, we'd need to set the MTU to 1400. When PPPoE and 
-DS-Lite are used, the MTU needs to be set to 1392.
+The "Works?" column indicates whether the default MTU of 1420 works with this
+type of connection.
 
 We hope to be able to automate, or accommodate for different MTUs without 
-configuration option, *or* e.g. set the default MTU to 1380 in the future.
+configuration option, *or* e.g. set the default MTU to 1392 in the future so 
+all connection types we saw in the field will work.
 
 For now, if you want to modify the MTU:
 
@@ -188,7 +194,7 @@ For now, if you want to modify the MTU:
 ],
 ```
 
-Here we set the MTU to 1400. Do not forget to 
+Here we set the MTU to 1392. Do not forget to 
 [Apply Changes](PROFILE_CONFIG.md#apply-changes).
 
 ### Open Issues
@@ -197,13 +203,9 @@ Test case: we are connecting over IPv4 to the WireGuard server, over the
 connection that has an MTU of 1460. Then we test with an SSH session over 
 IPv6.
 
-- It seems an MTU of 1400 works fine with DS-Lite, anything higher results
-  in delays or does not work at all;
 - Setting the MTU _only_ in the client configuration seems to be sufficient, 
   but why is that?
-- How can we figure out what is the "optimal" MTU when considering various 
-  MTUs? i.e. 1492, 1460 and 1500?
-- Do we need any "clamping" or "mss" fixes? And how does that exactly work?
+- Do we need any "clamping" or "MSS" fixes? And how does that exactly work?
 - Can we lower the WireGuard server's MTU without breaking clients that do not
   specify and MTU?
 - What if we have VPN tunnels running on top of each other? That will not work
@@ -214,6 +216,7 @@ status.
 
 ### Client Support
 
-The iOS and macOS application support different MTUs. The Linux client has a 
-fix [lined up](https://github.com/eduvpn/python-eduvpn-client/issues/540). We 
-are not yet sure about Windows and Android.
+The iOS, macOS and Windows application support different MTUs. The Linux client 
+has a fix 
+[lined up](https://github.com/eduvpn/python-eduvpn-client/issues/540). We 
+are not yet sure about Android.
