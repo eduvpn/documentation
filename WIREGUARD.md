@@ -153,7 +153,7 @@ work.
 
 ## MTU
 
-**NOTE**: experimental feature in vpn-user-portal >= 3.4.0, we currently do 
+**NOTE**: experimental feature in vpn-user-portal >= 3.3.7, we currently do 
 NOT 100% understand how everything works _exactly_ or how it is supposed to
 work, see [Open Issues](#open-issues).
 
@@ -171,7 +171,8 @@ When DS-Lite is used, the MTU is not 1500, but 1460 for _IPv4_ connections
 (only).
 
 So, to accommodate PPPoE we'd have to reduce the MTU of WireGuard to 1412, to 
-also accommodate DS-Lite, we'd need to set the MTU to 1380, or 1400?
+also accommodate DS-Lite, we'd need to set the MTU to 1400. When PPPoE and 
+DS-Lite are used, the MTU needs to be set to 1392.
 
 We hope to be able to automate, or accommodate for different MTUs without 
 configuration option, *or* e.g. set the default MTU to 1380 in the future.
@@ -183,7 +184,7 @@ For now, if you want to modify the MTU:
 
     // ... other WireGuard options
     
-    'useMtu' => 1400,
+    'useMtu' => 1392,
 ],
 ```
 
@@ -196,11 +197,8 @@ Test case: we are connecting over IPv4 to the WireGuard server, over the
 connection that has an MTU of 1460. Then we test with an SSH session over 
 IPv6.
 
-- It seems an MTU of 1400 also works fine over DS-Lite, anything higher results
-  in delays, but it still works (somewhat). Perhaps this is because connecting 
-  _over_ IPv4 to a WireGuard server results in smaller WireGuard packets than
-  connecting over IPv6? So we need not 40 bytes, but 20 bytes only and thus an 
-  MTU of 1420 - 20 = 1400;
+- It seems an MTU of 1400 works fine with DS-Lite, anything higher results
+  in delays or does not work at all;
 - Setting the MTU _only_ in the client configuration seems to be sufficient, 
   but why is that?
 - How can we figure out what is the "optimal" MTU when considering various 
@@ -208,6 +206,8 @@ IPv6.
 - Do we need any "clamping" or "mss" fixes? And how does that exactly work?
 - Can we lower the WireGuard server's MTU without breaking clients that do not
   specify and MTU?
+- What if we have VPN tunnels running on top of each other? That will not work
+  with a fixed MTU...
 
 See [#151](https://todo.sr.ht/~eduvpn/server/151) for more information and
 status.
