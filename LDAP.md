@@ -227,61 +227,60 @@ configuration option, e.g.:
 'ldapUri' => 'ldaps://ldap.example.org',
 ```
 
-If you use LDAPS and your LDAP server has a self signed certificate you may
-need to make the CA certificate available on the VPN machine.
+### Custom CA
 
-On the IPA server the CA certificate is stored in `/etc/ipa/ca.crt`. Copy this 
-to the machine running the VPN software. If you don't have direct access to the
-IPA server you can also use OpenSSL to obtain the CA certificate:
+**NOTE**: this only works from vpn-user-portal >= 3.3.7
 
-```bash
-$ openssl s_client -showcerts -connect ipa.example.org:ldaps
+If your LDAP server does not have a publicly trusted certificate, you can 
+configure the CA that issued the certificate in the `LdapAuthModule` section, 
+e.g.:
+
+```php
+'LdapAuthModule' => [
+    
+    // ...
+    // other LDAP configuration options...
+    // ...
+    
+    'tlsCa' => '/etc/ssl/certs/my-org-ca.crt',
+],
 ```
 
-You can copy/paste the CA certificate from the certificates shown. 
+On Fedora/EL you'd typically keep the CA certificate under 
+`/etc/pki/tls/certs`. On Debian/Ubuntu you would keep them under 
+`/etc/ssl/certs`.
 
-**NOTE**: make sure you validate this CA out of band! You MUST be sure this 
-is the actual CA!
+### Client Certificate Authentication
 
-### Fedora / EL
+**NOTE**: this only works from vpn-user-portal >= 3.3.7
 
-If you use a self signed certificate for your LDAP server perform these steps. 
-If your certificate is signed by a trusted CA you do not need to do this, it
-will work out of the box.
+If your LDAP server requires authentication using TLS client certificates, i.e. 
+"mutual TLS", you can configure the certificate and key in the `LdapAuthModule` 
+section:
 
-Put the self signed certificate file in `/etc/pki/ca-trust/source/anchors`. 
-After this:
-
-```bash
-$ sudo update-ca-trust
+```php
+'LdapAuthModule' => [
+    
+    // ...
+    // other LDAP configuration options...
+    // ...
+    
+    'tlsCert' => '/etc/ssl/certs/my-ldap-client.crt',
+    'tlsKey' => '/etc/ssl/private/my-ldap-client.key', 
+],
 ```
 
-This will add the CA certificate  to the system wide database in such a way
-that it will remain there, even when the `ca-certificates` package updates.
+**NOTE**: you MUST make sure the web server, e.g. the user/group `www-data` on 
+Debian / Ubuntu and `apache` on Fedora / EL can read the certificate and key 
+files.
 
-You **MUST** restart `php-fpm` to pick up the changes:
+You **MUST** restart `php-fpm` to pick up the changes. On Fedora / EL:
 
 ```bash
 $ sudo systemctl restart php-fpm
 ```
 
-### Debian / Ubuntu
-
-If you use a self signed certificate for your LDAP server perform these steps. 
-If your certificate is signed by a trusted CA you do not need to do this, it
-will work out of the box.
-
-Put the self signed certificate file in 
-`/usr/local/share/ca-certificates/ipa.example.org.crt`. After this:
- 
-```bash
-$ sudo update-ca-certificates
-```
-
-This will add the CA certificate  to the system wide database in such a way
-that it will remain there, even when the `ca-certificate` package updates.
-
-You **MUST** restart `php-fpm` to pick up the changes:
+On Debian / Ubuntu:
 
 ```bash
 $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm
