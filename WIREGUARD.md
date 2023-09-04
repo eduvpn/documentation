@@ -243,12 +243,37 @@ $ tracepath -6 -n dns.quad9.net
      Resume: pmtu 1280 
 ```
 
-For IPv6, the interface MTU is set to 1280. This setup is quite interesting, I
+For IPv6, the interface MTU is set to `1280`. This setup is quite interesting, I
 haven't seen this in many places. The benefits of going around and working from
-various locations.
+various locations. They most likely implemented a form of (2) as mentioned 
+above where the local router announces a lower MTU to its clients.
 
 So, with this network we do not expect any trouble connecting to WireGuard with
 the default settings.
+
+What _will_ break WireGuard in its default configuration is when the local 
+client interface has the default MTU of `1500`, but the router lowers the MTU 
+because of e.g PPPoE or DS-Lite.
+
+You'll clearly see that in the output of `tracepath` below:
+
+```bash
+$ tracepath -4 -n dns.quad9.net
+TBD
+```
+
+```bash
+$ tracepath -6 -n dns.quad9.net
+TBD
+```
+
+Exactly for _this_ scenario where the ISP didn't apply (1) or (2), we need to
+fiddle with WireGuard's MTU.
+
+Obviously the best fix would be for the ISP to implement (1), configure the
+user's router (2). But we may not always be so lucky as to be able to force 
+them to do that. It _might_ be possible for the user to configure their router
+to lower the MTU(s), but that seems an unfair ask.
 
 ### Setting the MTU
 
