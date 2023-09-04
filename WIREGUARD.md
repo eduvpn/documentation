@@ -259,21 +259,50 @@ You'll clearly see that in the output of `tracepath` below:
 
 ```bash
 $ tracepath -4 -n dns.quad9.net
-TBD
+ 1?: [LOCALHOST]                      pmtu 1500
+ 1:  192.168.178.1                                         1.272ms 
+ 1:  192.168.178.1                                         2.525ms 
+ 2:  192.0.0.2                                             2.580ms pmtu 1460
+
+...
+
+ 7:  9.9.9.9                                              26.348ms !H
+     Resume: pmtu 1460 
 ```
+
+And for IPv6:
 
 ```bash
 $ tracepath -6 -n dns.quad9.net
-TBD
+ 1?: [LOCALHOST]                        0.010ms pmtu 1500
+
+...
+
+ 8:  2620:fe::9                                           12.946ms !A
+     Resume: pmtu 1500 
 ```
 
-Exactly for _this_ scenario where the ISP didn't apply (1) or (2), we need to
-fiddle with WireGuard's MTU.
+We have an IPv4 MTU of `1460` over the path due to DS-Lite, but as our client
+does not know about it, it only becomes clear later. If WireGuard connects
+over IPv4 with the default MTU of `1420` that will not fit, the WireGuard 
+packet might be too large (by 20 bytes). As the WireGuard connection itself 
+does not know about the lower MTU further down the path, the packets it sends 
+and receive should be smaller than what would fit based on WireGuard's MTU. So, 
+some packets will be sent properly, and some will arrive just fine, just not
+the large ones.
 
-Obviously the best fix would be for the ISP to implement (1), configure the
+With DS-Lite, the IPv6 connection typically uses an MTU of `1500`. So when the
+VPN client connects over IPv6, there is no problem. Unfortunately, it is not
+always sure that a VPN client connects over IPv6, even if available, so we have
+to make sure IPv4 also works.
+
+Exactly for _this_ scenario where the ISP didn't apply (1) or (2) (for IPv4), 
+we need to fiddle with WireGuard's MTU.
+
+Obviously the best fix would be for the ISP to implement (1), or configure the
 user's router (2). But we may not always be so lucky as to be able to force 
 them to do that. It _might_ be possible for the user to configure their router
-to lower the MTU(s), but that seems an unfair ask.
+to lower the MTU(s), but that seems an unfair ask, even if supported.
 
 ### Setting the MTU
 
