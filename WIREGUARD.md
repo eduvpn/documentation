@@ -235,8 +235,9 @@ firewall of the VPN servers, so that should work transparently.
 
 ### Mitigation on Linux Client
 
-You can create a file _on_ the VPN client, e.g. 
-`/etc/sysctl.d/70-vpn-mtu.conf`:
+If a server solution is currently not possible, one can also create a file 
+_on_ the VPN client, e.g. `/etc/sysctl.d/70-vpn-mtu.conf`, should work on 
+at least Debian / Ubuntu and Fedora / EL:
 
 ```
 net.ipv4.tcp_mtu_probing = 1
