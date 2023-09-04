@@ -158,7 +158,7 @@ used by ISPs. This manifests itself as connections _hanging_ (indefinitely).
 For example, connecting to the VPN goes fine, using `ping` works and perhaps
 visiting some (small) web sites also functions. However, starting an SSH 
 session, visiting a "big" web page, or perhaps accessing mail through IMAP does 
-not.
+not. For once it is _not_ DNS 😅
 
 We noticed this problem mostly on Linux VPN clients. We suspect that the reason 
 for this is that 
@@ -182,7 +182,17 @@ over IPv6 and 60 bytes when connecting over IPv4. So, if PPPoE is used, which
 "eats" 8 bytes of the MTU, together with a WireGuard connection over IPv6, the 
 default MTU is too high. The WireGuard MTU would need to 1412 and not 1420.
 
-Some common MTUs in the field:
+There are two fixes ISPs could have deployed, either of them would work, but in 
+these scenarios, they did not:
+
+1. Increase the MTU between the user's router and their network that 
+   compensates for the overhead of PPPoE or DS-Lite so the MTU can remain 1500 
+   for the full path;
+2. Announce the effective MTU through DHCP (IPv4) and/or Router Advertisements 
+   (IPv6) from the user's router to the devices connected to it.
+
+As said, some ISPs did not deploy this, so we have to deal with it. Some common 
+MTUs in the field:
 
 | Type            | MTU  | Connection | Works? | Max WireGuard MTU |
 | --------------- | ---- | ---------- | ------ | ----------------- |
@@ -203,6 +213,42 @@ with this type of connection.
 
 The "Max WireGuard MTU" column is the highest WireGuard MTU setting that still 
 works without expecting MTU issues.
+
+### Testing your MTU
+
+On Linux there is a great tool called `tracepath` that can be used for this, on
+other platforms you'll have to resort to `ping` and its various incantations. 
+
+```bash
+$ tracepath -4 -n dns.quad9.net
+ 1?: [LOCALHOST]                      pmtu 1456
+
+...
+
+10:  80.157.200.214                                       29.760ms !H
+     Resume: pmtu 1456 
+```
+
+What we learn here, is that the MTU of the interface itself is already set to
+`1456`, and that also the entire path towards Quad9's DNS server does not 
+reduce the MTU further.
+
+```bash
+$ tracepath -6 -n dns.quad9.net
+ 1?: [LOCALHOST]                        0.009ms pmtu 1280
+ 
+ ...
+ 
+ 5:  2620:fe::fe                                          25.878ms !A
+     Resume: pmtu 1280 
+```
+
+For IPv6, the interface MTU is set to 1280. This setup is quite interesting, I
+haven't seen this in many places. The benefits of going around and working from
+various locations.
+
+So, with this network we do not expect any trouble connecting to WireGuard with
+the default settings.
 
 ### Setting the MTU
 
