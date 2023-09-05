@@ -337,6 +337,9 @@ AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = vpn.example:51820
 ```
 
+As can be seen in the examples, this API response also contains an `Expires` header that
+indicates when the VPN configuration will expire.
+
 ### Disconnect
 
 This call is to indicate to the server that the VPN session(s) belonging to 
