@@ -153,48 +153,39 @@ work.
 
 ## MTU
 
-We noticed some *VPN client* issues in the field when PPPoE and/or DS-Lite is 
-used by ISPs. This manifests itself as connections _hanging_ (indefinitely). 
-For example, connecting to the VPN goes fine, using `ping` works and perhaps
-visiting some (small) web sites also functions. However, starting an SSH 
-session, visiting a "big" web page, or perhaps accessing mail through IMAP does 
-not. For once it is _not_ DNS 😅
+**NOTE**: the analysis below might be incomplete, or incorrect at points, it is
+a very complex topic! Suggestions for improvements and corrections are very 
+welcome!
 
-We noticed this problem mostly on Linux VPN clients. We suspect that the reason 
-for this is that 
-[Packetization Layer Path MTU Discovery](https://www.rfc-editor.org/rfc/rfc4821) 
-is implemented, but not activated by default. We assume it _is_ on macOS and 
-Windows, and thus mitigates these MTU issues, but we can not find any source 
-confirming or denying that. 
+We noticed some VPN *client* connection issues in the field when PPPoE and/or 
+DS-Lite is used. This manifests itself as connections hanging (indefinitely) 
+when trying to browse the web, start an SSH session, or try to open your IMAP
+mailbox. For once it is _not_ DNS, but MTUs!
 
-Even though there _is_ a mitigation one can 
-[enable](#mitigation-on-linux-client) on Linux, it is probably better to fix 
-this on the server for all clients at once.
+This problem appears most prevalent on Linux. It is unclear why Windows and 
+macOS do not suffer, or suffer less, from connection hangs. We suspect it is 
+because they implemented some mitigation for Path MTU Discovery (PMTUD) 
+[issues](https://en.wikipedia.org/wiki/Path_MTU_Discovery#Problems), e.g. they
+may have implemented [RFC 4821](https://www.rfc-editor.org/rfc/rfc4821).
 
-### Background
+There is an easy mitigation you can [apply](#mitigation-on-linux-client) on
+a Linux VPN client as well that solves the most immediate problem. The rest of 
+this section will explain how it can be fixed in a, what we hope, more 
+sustainable way.
 
-If the (Path) MTU of the VPN connection between client and server is 1500, 
-there is no issue, whether the connection is done over IPv4 or IPv6. The 
-default MTU of WireGuard, which is 
-[1420](https://lists.zx2c4.com/pipermail/wireguard/2017-December/002201.html) 
-fits perfectly fine. The WireGuard packet overhead is 80 bytes when connecting 
-over IPv6 and 60 bytes when connecting over IPv4. So, if PPPoE is used, which 
-"eats" 8 bytes of the MTU, together with a WireGuard connection over IPv6, the 
-default MTU is too high. The WireGuard MTU would need to 1412 and not 1420.
+### When?
 
-There are two fixes ISPs could have deployed, either of them would work, but in 
-these scenarios, they did not:
+We observed that connection hanging occurs reliably when the following holds:
 
-1. Increase the MTU between the user's router and their network that 
-   compensates for the overhead of PPPoE or DS-Lite so the MTU can remain 1500 
-   for the full path;
-2. Announce the effective MTU through DHCP (IPv4) and/or Router Advertisements 
-   (IPv6) from the user's router to the devices connected to it.
+1. The network connection of the VPN client has MTU of 1500;
+2. Somewhere on the path, to the VPN server, the MTU is reduced;
+3. The MTU becomes low enough to not fit a WireGuard packet anymore.
 
-As said, some ISPs did not deploy this, so we have to deal with it. Some common 
-MTUs in the field:
+The following table shows when there will be issues expected with the default 
+WireGuard MTU (which will be 1420 when the network connection has an MTU of 
+1500):
 
-| Type            | MTU  | Connection | Works? | Max WireGuard MTU |
+| Type            | PMTU | Connection | Works? | Max WireGuard MTU |
 | --------------- | ---- | ---------- | ------ | ----------------- |
 | Ethernet        | 1500 | IPv4       | Yes    | 1440              |
 |                 | 1500 | IPv6       | Yes    | 1420              |
@@ -205,57 +196,19 @@ MTUs in the field:
 | DS-Lite + PPPoE | 1452 | IPv4       | No     | 1392              |
 |                 | 1492 | IPv6       | No     | 1412              |
 
-The "Connection" column indicates whether the VPN connection was established 
-over IPv4 or IPv6.
+* The "PMTU" column indicates the maximum MTU on the path between VPN client 
+  and server;
+* The "Connection" column indicates whether the VPN connection was established 
+  over IPv4 or IPv6;
+* The "Works?" column indicates whether the default WireGuard MTU of 1420 works 
+  with this type of connection;
+* The "Max WireGuard MTU" column is the highest WireGuard MTU setting that 
+  still works without expecting MTU issues.
 
-The "Works?" column indicates whether the default WireGuard MTU of 1420 works 
-with this type of connection. 
+### Determine PMTU
 
-The "Max WireGuard MTU" column is the highest WireGuard MTU setting that still 
-works without expecting MTU issues.
-
-### Testing your MTU
-
-On Linux there is a great tool called `tracepath` that can be used for this, on
-other platforms you'll have to resort to `ping` and its various incantations. 
-
-```bash
-$ tracepath -4 -n dns.quad9.net
- 1?: [LOCALHOST]                      pmtu 1456
-
-...
-
-10:  80.157.200.214                                       29.760ms !H
-     Resume: pmtu 1456 
-```
-
-What we learn here, is that the MTU of the interface itself is already set to
-`1456`, and that also the entire path towards Quad9's DNS server does not 
-reduce the MTU further.
-
-```bash
-$ tracepath -6 -n dns.quad9.net
- 1?: [LOCALHOST]                        0.009ms pmtu 1280
- 
- ...
- 
- 5:  2620:fe::fe                                          25.878ms !A
-     Resume: pmtu 1280 
-```
-
-For IPv6, the interface MTU is set to `1280`. This setup is quite interesting, I
-haven't seen this in many places. The benefits of going around and working from
-various locations. They most likely implemented a form of (2) as mentioned 
-above where the local router announces a lower MTU to its clients.
-
-So, with this network we do not expect any trouble connecting to WireGuard with
-the default settings.
-
-What _will_ break WireGuard in its default configuration is when the local 
-client interface has the default MTU of `1500`, but the router lowers the MTU 
-because of e.g PPPoE or DS-Lite.
-
-You'll clearly see that in the output of `tracepath` below:
+On Linux it is very easy to test the Path MTU (PMTU) using `tracepath`. For 
+example the PMTU without VPN connection could be like this:
 
 ```bash
 $ tracepath -4 -n dns.quad9.net
@@ -270,7 +223,7 @@ $ tracepath -4 -n dns.quad9.net
      Resume: pmtu 1460 
 ```
 
-And for IPv6:
+Note, that for IPv6 the PMTU does not need to be the same:
 
 ```bash
 $ tracepath -6 -n dns.quad9.net
@@ -282,38 +235,25 @@ $ tracepath -6 -n dns.quad9.net
      Resume: pmtu 1500 
 ```
 
-We have an IPv4 MTU of `1460` over the path due to DS-Lite, but as our client
-does not know about it, it only becomes clear later. If WireGuard connects
-over IPv4 with the default MTU of `1420` that will not fit, the WireGuard 
-packet might be too large (by 20 bytes). As the WireGuard connection itself 
-does not know about the lower MTU further down the path, the packets it sends 
-and receive should be smaller than what would fit based on WireGuard's MTU. So, 
-some packets will be sent properly, and some will arrive just fine, just not
-the large ones.
+Here we see the PMTU for IPv4 is 1460, and for IPv6 1500. If the VPN client 
+would always connect over IPv6, there would not be a problem, but unfortunately 
+that can't always be easily guaranteed. This connection uses DS-Lite to wrap
+IPv4 in IPv6 packets. This has a 40 byte overhead, and thus reduces the 
+effective MTU to 1460.
 
-With DS-Lite, the IPv6 connection typically uses an MTU of `1500`. So when the
-VPN client connects over IPv6, there is no problem. Unfortunately, it is not
-always sure that a VPN client connects over IPv6, even if available, so we have
-to make sure IPv4 also works.
-
-Exactly for _this_ scenario where the ISP didn't apply (1) or (2) (for IPv4), 
-we need to fiddle with WireGuard's MTU.
-
-Obviously the best fix would be for the ISP to implement (1), or configure the
-user's router (2). But we may not always be so lucky as to be able to force 
-them to do that. It _might_ be possible for the user to configure their router
-to lower the MTU(s), but that seems an unfair ask, even if supported.
+In the table above we see that WireGuard's MTU can be 1400 at most in the 
+scenario where the VPN connection is established over IPv4, which is not 
+enough. 
 
 ### Setting the MTU
 
 **NOTE**: setting the MTU only works in vpn-user-portal >= 3.3.7.
 
-Based on the table above, we can simply set the MTU to the maximum value that 
-still is expected to work on the networks used by the VPN clients. To be safe,
-that value should probably be `1392`.
+Based on the table above, we can set the MTU to the maximum value that still is 
+expected to work on the networks used by the VPN clients. If you don't know 
+what to choose, take 1392.
 
-The best approach is to set the MTU both in the client and server. We created
-an option for this you can add to `/etc/vpn-user-portal/config.php`:
+You can set the option `setMtu` like this in `/etc/vpn-user-portal/config.php`:
 
 ```php
 'WireGuard' => [
@@ -324,14 +264,20 @@ an option for this you can add to `/etc/vpn-user-portal/config.php`:
 ],
 ```
 
-For new VPN client configuration downloads, the MTU will be used, as well as 
-for the eduVPN / Let's Connect! clients once it reconnects to the VPN server.
+The MTU configuration flag will be used by both on the server and the client. 
 
-For VPN client configurations "in the field" that do not yet set their MTU, we 
-can use TCP MSS Clamping. This has already been enabled (by default) in the 
-firewall of the VPN servers, so that should work transparently.
+If the client is still using a configuration file with MTU configuration, the 
+firewall's "TCP MSS Clamping" will take care of making that client work.
 
-**TODO**: point to firewall docs on how to set this for iptables and nftables.
+Once you set the `setMtu` option, the changes need to be applied:
+
+```bash
+$ sudo vpn-maint-apply-changes
+```
+
+By default the firewall that is installed when you deployed your VPN server is
+already configured to enable TCP MSS Clamping, so nothing needs to be done 
+here.
 
 ### Mitigation on Linux Client
 
@@ -350,11 +296,12 @@ Then run the below command and reconnect to the (WireGuard) VPN:
 $ sudo sysctl --system
 ```
 
-### Resources
+### References
 
 We found the following resources very useful for understanding MTU, TCP MSS 
 Clamping and PMTUD.
 
+* [Header / MTU sizes for Wireguard](https://lists.zx2c4.com/pipermail/wireguard/2017-December/002201.html)
 * [What is MTU?](https://www.cloudflare.com/learning/network-layer/what-is-mtu/)
 * [Path MTU discovery in practice](https://blog.cloudflare.com/path-mtu-discovery-in-practice/)
 * [What is MSS (maximum segment size)?](https://www.cloudflare.com/learning/network-layer/what-is-mss/)
