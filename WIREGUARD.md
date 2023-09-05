@@ -207,8 +207,9 @@ WireGuard MTU (which will be 1420 when the network connection has an MTU of
 
 ### Determine PMTU
 
-On Linux it is very easy to test the Path MTU (PMTU) using `tracepath`. For 
-example the PMTU without VPN connection could be like this:
+If you have access to a VPN client that shows issues when connecting to 
+WireGuard you can test the Path MTU (PMTU) using `tracepath`. For example the 
+PMTU without VPN connection could be like this:
 
 ```bash
 $ tracepath -4 -n dns.quad9.net
@@ -237,13 +238,13 @@ $ tracepath -6 -n dns.quad9.net
 
 Here we see the PMTU for IPv4 is 1460, and for IPv6 1500. If the VPN client 
 would always connect over IPv6, there would not be a problem, but unfortunately 
-that can't always be easily guaranteed. This connection uses DS-Lite to wrap
-IPv4 in IPv6 packets. This has a 40 byte overhead, and thus reduces the 
-effective MTU to 1460.
+that can't always be guaranteed. This connection uses DS-Lite to wrap IPv4 in 
+IPv6 packets. This has a 40 byte overhead, and thus reduces the effective MTU 
+to 1460.
 
 In the table above we see that WireGuard's MTU can be 1400 at most in the 
 scenario where the VPN connection is established over IPv4, which is not 
-enough. 
+enough to fit WireGuard's default MTU of 1420.
 
 ### Setting the MTU
 
