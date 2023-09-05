@@ -250,6 +250,10 @@ enough to fit WireGuard's default MTU of 1420.
 
 **NOTE**: setting the MTU only works in vpn-user-portal >= 3.3.7.
 
+**NOTE**: this is **EXPERIMENTAL**, we MAY decide to make this the default at
+some point and remove (or rename) the configuration toggle! Please provide 
+feedback if you have ideas about this.
+
 Based on the table above, we can set the MTU to the maximum value that still is 
 expected to work on the networks used by the VPN clients. If you don't know 
 what to choose, take 1392.
