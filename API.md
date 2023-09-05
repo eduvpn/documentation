@@ -455,60 +455,6 @@ Accept: application/x-openvpn-profile, application/x-wireguard-profile
 **NOTE**: if the `Accept` request header is missing, it is assumed that the 
 VPN client supports both OpenVPN and WireGuard.
 
-## Session Expiry
-
-All VPN sessions have an expiry. The default (as set by the server) is 90 days. 
-The server operator is able to change this. Some organizations set the session
-expiry as short as 12 hours, others extend it to 3 years. This section 
-describes what apps can do to handle session expiry gracefully without 
-inconveniencing the user too much.
-
-**NOTE**: the approach described below is a suggestion. However, for the 
-official eduVPN/Let's Connect! apps this is a MUST.
-
-The reason for discussing session expiry is that we want to avoid a user's VPN 
-connection terminating unexpectedly, e.g. in the middle of a video conference 
-call.
-
-In order to help the user avoiding unexpected VPN connection drops, the client
-implements:
-
-1. A countdown timer that shows how long the VPN session will still be valid 
-   for so the user is made aware of upcoming expiry;
-2. A "Renew Session" button that allows the user to "refresh" the VPN session 
-   at a convenient time;
-3. An OS notification that informs the user when the expiry is imminent, or has 
-   already occurred.
-
-| What                   | Visible                                                                                             |
-| ---------------------- | --------------------------------------------------------------------------------------------------- |
-| Countdown Timer        | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00                                                      |
-| "Renew Session" Button | `${SESSION_EXPIRES_AT}` - `${NOW}` <= 24:00:00 _AND_ `${NOW}` - `${SESSION_STARTED_AT}` >= 00:30:00 |
-| OS Notification        | `${SESSION_EXPIRES_AT}` - `${NOW}` IN {04:00:00, 02:00:00, 01:00:00, 00:00:00}                      |
-
-With `${NOW}` we mean the current time stamp. With `${SESSION_STARTED_AT}` we 
-mean the moment the OAuth authorization completed, i.e. the client obtained 
-their first OAuth access token. With `${SESSION_EXPIRES_AT}` we mean the time
-the session expires, as obtained from the `Expires` HTTP response header 
-part of the `/connect` call response.
-
-In addition to the "Countdown Timer" visible in the main application window, 
-there is also a timer under "Connection Info" in the UI. This timer is *always*
-visible.
-
-When the user clicks the "Renew Session" button the following MUST happen in 
-this order:
-
-1. Disconnect the active VPN connection;
-2. Call `/disconnect`;
-3. Delete the OAuth access and refresh token;
-4. Start the OAuth authorization flow;
-5. Automatically reconnect to the server and profile if (and only if) the 
-   client was previously connected.
-
-The OS notification shown to the user _MAY_ offer the "Renew Session" button 
-inside the notification as well, if supported by the OS.
-
 ## History
 
 The changes made to the API documentation.
