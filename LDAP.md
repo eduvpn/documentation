@@ -132,13 +132,32 @@ You have to set `authMethod` first:
 'authMethod' => 'LdapAuthModule',
 ```
 
-Next is configuring the LDAP server in the `LdapAuthModule` section. 
+Next is configuring the LDAP server in the `LdapAuthModule` section. The table
+below lists all available settings.
+
+| Option                    | Required | Type            | Example                                     | Since |
+| ------------------------- | -------- | --------------- | ------------------------------------------- | ----- |
+| `ldapUri`                 | Yes      | `string`        | `ldaps://ldap.example.org`                  |       |
+| `userIdAttribute`         | Yes      | `string`        | `uid`                                       |       |
+| `bindDnTemplate`          | No*      | `string`        | `uid={{UID}},ou=people,dc=example,dc=org`   |       |
+| `baseDn`                  | No*      | `string`        | `ou=people,dc=example,dc=org`               |       |
+| `userFilterTemplate`      | No*      | `string`        | `(uid={{UID}})`                             |       |
+| `addRealm`                | No       | `string`        | `example.org`                               |       |
+| `searchBindDn`            | No       | `string`        | `cn=admin,dc=example,dc=org`                |       |
+| `searchBindPass`          | No       | `string`        | `s3cr3t`                                    |       |
+| `permissionAttributeList` | No       | `array<string>` | `['memberOf']`                              |       |
+| `tlsCa`                   | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-ca.crt`     | 3.3.7 |
+| `tlsCert`                 | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.crt` | 3.3.7 |
+| `tlsKey`                  | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.key` | 3.3.7 |
 
 **NOTE**: `{{UID}}` is a special template variable that is replaced by what the 
 user specifies in the "User Name" box at login in the portal. If you specify 
 `DOMAIN\{{UID}}` as `bindDnTemplate` in the configuration, the actual "bind DN" 
 will become `DOMAIN\fkooman` assuming the user entered `fkooman` as 
 "User Name" in the portal.
+
+**NOTE**: _*_ you MUST either specify `bindDnTemplate`, or `baseDn` together with 
+`userFilterTemplate` to be able to find a DN for a particular user.
 
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
@@ -252,7 +271,7 @@ CA certificate in there. Make sure the CA cert file has group readable, e.g.
 
 ### Client Certificate Authentication
 
-**NOTE**: this only works from vpn-user-portal >= 3.3.7
+**NOTE**: this is only available in vpn-user-portal >= 3.3.7
 
 If your LDAP server requires authentication using TLS client certificates, i.e. 
 "mutual TLS", you can configure the certificate and key in the `LdapAuthModule` 
