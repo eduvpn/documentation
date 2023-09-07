@@ -367,9 +367,13 @@ executable:
 
     $ chmod +x ${HOME}/.local/bin/make_release
 
+### SourceHut
+
 In order to upload the release, I'm using the `sr.ht` API. I am storing this
 file under `${HOME}/.local/bin/sr.ht_upload_release`. You'll need to update the
 locations. For other source hosting platforms it will be different.
+
+Make sure you store your API key under `${HOME}/.config/sr.ht/api.key`.
 
 ```
 #!/bin/sh
@@ -385,6 +389,54 @@ R=$(basename $(pwd))
 
 for F in release/*${V}*; do
 	curl -H "Authorization: Bearer ${B}" -F "file=@${F}" "https://git.sr.ht/api/~fkooman/repos/${R}/artifacts/${V}"
+done
+```
+
+### Codeberg
+
+In order to upload the release, I'm using the `codeberg.org` API. I am storing 
+this file under `${HOME}/.local/bin/codeberg.org_upload_release`. You'll need 
+to update the locations. For other source hosting platforms it will be 
+different.
+
+Make sure you store your API key under `${HOME}/.config/codeberg.org/api.key`.
+
+```bash
+#!/bin/sh
+
+# create release
+# @see https://codeberg.org/api/swagger#/repository/repoCreateRelease
+
+# upload artifact
+# @see https://codeberg.org/api/swagger#/repository/repoCreateReleaseAttachment
+
+ORG=eduVPN
+V=$(git describe --abbrev=0 --tags)
+B=$(cat ${HOME}/.config/codeberg.org/api.key)
+R=$(basename $(pwd))
+
+JSON_BODY="{\"tag_name\": \"${V}\"}"
+
+# create the release
+RELEASE_ID=$(curl -s \
+    -H "Authorization: token ${B}" \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -d "${JSON_BODY}" \
+    https://codeberg.org/api/v1/repos/${ORG}/${R}/releases | jq -r .id)
+
+#echo ${RELEASE_ID}
+
+# upload the artifact(s)
+for F in release/*${V}*; do
+    curl \
+        -s \
+        -X "POST" \
+        -H "Authorization: token ${B}" \
+        -H "Accept: application/json" \
+        -H "Content-Type: multipart/form-data" \
+        -F "attachment=@${F}" \
+        "https://codeberg.org/api/v1/repos/${ORG}/${R}/releases/${RELEASE_ID}/assets"
 done
 ```
 
