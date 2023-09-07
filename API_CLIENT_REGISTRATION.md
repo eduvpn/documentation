@@ -12,6 +12,9 @@ This is done by creating a JSON file in
 
 The format is an _array_ with _objects_. See the full example below.
 
+**NOTE**: from vpn-user-portal >= 3.4.0 you SHOULD define the `scope` field 
+with the value `config` to restrict the scope the VPN client can request.
+
 ## Format
 
 The object supports the following fields / types:
@@ -23,6 +26,7 @@ The object supports the following fields / types:
 | `client_secret`     | No       | `string`   | _N/A_                | `s3cr3t`                               |
 | `client_name`       | No       | `string`   | value of `client_id` | `My Application`                       |
 | `requires_approval` | No       | `bool`     | `true`               | `false`                                |
+| `scope`             | No       | `string`   | _N/A_                | `config`                               |
 
 ## Example
 
@@ -37,21 +41,24 @@ be the full contents of `/etc/vpn-user-portal/oauth_client_db.json`:
         "redirect_uris": [
             "http://127.0.0.1:{PORT}/callback",
             "http://[::1]:{PORT}/callback"
-        ]
+        ],
+        "scope": "config"
     },
     {
         "client_id": "org.govvpn.app.android",
         "client_name": "govVPN for Android",
         "redirect_uris": [
             "org.govvpn.app:/api/callback"
-        ]
+        ],
+        "scope": "config"
     },
     {
         "client_id": "org.govvpn.app.ios",
         "client_name": "govVPN for iOS",
         "redirect_uris": [
             "org.govvpn.app.ios:/api/callback"
-        ]
+        ],
+        "scope": "config"
     },
     {
         "client_id": "org.govvpn.app.macos",
@@ -59,7 +66,8 @@ be the full contents of `/etc/vpn-user-portal/oauth_client_db.json`:
         "redirect_uris": [
             "http://127.0.0.1:{PORT}/callback",
             "http://[::1]:{PORT}/callback"
-        ]
+        ],
+        "scope": "config"
     },
     {
         "client_id": "org.govvpn.app.linux",
@@ -67,7 +75,8 @@ be the full contents of `/etc/vpn-user-portal/oauth_client_db.json`:
         "redirect_uris": [
             "http://127.0.0.1:{PORT}/callback",
             "http://[::1]:{PORT}/callback"
-        ]
+        ],
+        "scope": "config"
     }
 ]
 ```
