@@ -146,9 +146,9 @@ below lists all available settings.
 | `searchBindDn`            | No       | `string`        | `cn=admin,dc=example,dc=org`                |       |
 | `searchBindPass`          | No       | `string`        | `s3cr3t`                                    |       |
 | `permissionAttributeList` | No       | `array<string>` | `['memberOf']`                              |       |
-| `tlsCa`                   | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-ca.crt`     | 3.3.7 |
-| `tlsCert`                 | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.crt` | 3.3.7 |
-| `tlsKey`                  | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.key` | 3.3.7 |
+| `tlsCa`                   | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-ca.crt`     | 3.4.0 |
+| `tlsCert`                 | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.crt` | 3.4.0 |
+| `tlsKey`                  | No       | `string`        | `/etc/vpn-user-portal/ldap/ldap-client.key` | 3.4.0 |
 
 **NOTE**: `{{UID}}` is a special template variable that is replaced by what the 
 user specifies in the "User Name" box at login in the portal. If you specify 
@@ -248,7 +248,7 @@ configuration option, e.g.:
 
 ### Custom CA
 
-**NOTE**: this only works from vpn-user-portal >= 3.3.7
+**NOTE**: this only works from vpn-user-portal >= 3.4.0
 
 If your LDAP server does not have a publicly trusted certificate, you can 
 configure the CA that issued the certificate in the `LdapAuthModule` section, 
@@ -271,7 +271,7 @@ CA certificate in there. Make sure the CA cert file has group readable, e.g.
 
 ### Client Certificate Authentication
 
-**NOTE**: this is only available in vpn-user-portal >= 3.3.7
+**NOTE**: this is only available in vpn-user-portal >= 3.4.0
 
 If your LDAP server requires authentication using TLS client certificates, i.e. 
 "mutual TLS", you can configure the certificate and key in the `LdapAuthModule` 
