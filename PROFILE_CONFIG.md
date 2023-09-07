@@ -109,10 +109,6 @@ explicitly blocked in order to prevent
 so you MAY have to add the addresses to [Route List](#route-list) when they are
 not usable from outside the VPN.
 
-**NOTE**: when [Default Gateway](#default-gateway) is set and DNS servers are
-configured the [DNS Search Domain List](#dns-search-domain-list) is ignored, as 
-all DNS queries will go to the configured DNS servers anyway.
-
 **NOTE**: with vpn-user-portal >= 3.1.6 you can use the placeholder values 
 `@GW4@` and `@GW6@` that will be replaced by the address of the VPN gateway. 
 This is especially helpful if you have multiple OpenVPN processes in one 
@@ -194,8 +190,7 @@ VPN client, e.g.:
 'dnsSearchDomainList' => ['example.org', 'example.com'],
 ```
 
-**NOTE**: the search domains are ONLY used when DNS servers are specified and
-the [Default Gateway](#default-gateway) is _not_ set.
+**NOTE**: the search domains are ONLY sent when DNS servers are specified.
 
 #### Node URL
 
