@@ -373,7 +373,17 @@ In order to upload the release, I'm using the `sr.ht` API. I am storing this
 file under `${HOME}/.local/bin/sr.ht_upload_release`. You'll need to update the
 locations. For other source hosting platforms it will be different.
 
-Make sure you store your API key under `${HOME}/.config/sr.ht/api.key`.
+Make sure you have `curl` installed.
+
+Make sure you store your API key under `${HOME}/.config/sr.ht/api.key`, 
+do not add any trailing new lines, e.g.:
+
+```bash
+$ mkdir -p ${HOME}/.config/sr.ht
+$ echo -n 'raw-key-string' > ${HOME}/.config/sr.ht/api.key
+```
+
+The script:
 
 ```
 #!/bin/sh
@@ -399,7 +409,21 @@ this file under `${HOME}/.local/bin/codeberg.org_upload_release`. You'll need
 to update the locations. For other source hosting platforms it will be 
 different.
 
-Make sure you store your API key under `${HOME}/.config/codeberg.org/api.key`.
+Make sure you have `curl` and `jq` installed.
+
+You can create a new API key 
+[here](https://codeberg.org/user/settings/applications). Make sure you give
+it "Read and Write" permissions in the "repository" category.
+
+Make sure you store your API key under `${HOME}/.config/codeberg.org/api.key`, 
+do not add any trailing new lines, e.g.:
+
+```bash
+$ mkdir -p ${HOME}/.config/codeberg.org
+$ echo -n 'raw-key-string' > ${HOME}/.config/codeberg.org/api.key
+```
+
+The script:
 
 ```bash
 #!/bin/sh
@@ -424,8 +448,6 @@ RELEASE_ID=$(curl -s \
     -H "Content-Type: application/json" \
     -d "${JSON_BODY}" \
     https://codeberg.org/api/v1/repos/${ORG}/${R}/releases | jq -r .id)
-
-#echo ${RELEASE_ID}
 
 # upload the artifact(s)
 for F in release/*${V}*; do
