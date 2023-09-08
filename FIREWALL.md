@@ -1,74 +1,87 @@
 # Firewall
 
-A very simple static firewall based on `iptables` is installed when running the 
+**NOTE**: if you installed your server before the default became _nftables_, 
+look [here](FIREWALL_IPTABLES.md) for _iptables_ documentation.
+
+**NOTE**: if you are currently using _iptables_, but would like to switch to
+_nftables_ you can use this document and "port" any changes you may have made
+based on the various sections below. If you can't figure it out, you can always
+contact [us](mailto:eduvpn-support@lists.geant.org).
+
+**NOTE**: Debian 11 and Ubuntu 22.04 ship with a version of _nftables_ that is
+too old, i.e older than 1.0.3 that added 
+[support](https://lwn.net/Articles/896732/) for wildcards in interface sets. 
+Therefor you can't use e.g. `iifname { "tun*", "wg0" }` on those OSes. You'll 
+have to either use a separate line if you want to use wildcards, or, mention 
+the interfaces explicitly as is done in the _nftables_ rules deployed out of 
+the box. Of course, if you run on Debian, please deploy on Debian 12, or 
+upgrade to Debian 12 first ;-)
+
+A very simple static firewall based on _nftables_ is installed when running the 
 deploy scripts. It allows connections to the VPN, SSH, HTTP and HTTPS ports. In 
 addition it uses NAT for both IPv4 and IPv6 client traffic.
 
 This document explains how to modify the firewall for common scenarios that
 deviate from the default and on how to tailor the VPN configuration for your 
-particular set-up. Much more is possible with `iptables` that is out
+particular set-up. Much more is possible with _nftables_ that is out
 of scope of this document. We only collected some common situations below.
 
-The _annotated_ default firewall configuration files as installed on new 
-deployments can be found here:
+For more information on what you can do with _nftables_, see their 
+[wiki](https://wiki.nftables.org/).
 
-* [Single Server](README.md#deployment)
-    * [IPv4](resources/firewall/iptables)
-    * [IPv6](resources/firewall/ip6tables)
+The default firewall configuration files as installed on new deployments can be 
+found here, they may be updated from time to time:
 
-* [Multi Node Server](MULTI_NODE.md)
-    * Controller
-        * [IPv4](resources/firewall/controller/iptables)
-        * [IPv6](resources/firewall/controller/ip6tables)
-    * Node
-        * [IPv4](resources/firewall/node/iptables)
-        * [IPv6](resources/firewall/node/ip6tables)
+* [Single Server](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/nftables.conf)
+* Separate Controller/Node
+  * [Controller](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/controller/nftables.conf)
+  * [Node](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/node/nftables.conf)
 
 You can of course also use the firewall software of your choice, or fully 
 disable the firewall! As our goal was to keep things as simple and easy as 
 possible by default.
 
-## CentOS, Red Hat Enterprise Linux and Fedora
+# Configuration File
 
-You can find the firewall rules in `/etc/sysconfig/iptables` (IPv4) and 
-`/etc/sysconfig/ip6tables` (IPv6). 
+You can find the configuration file in the following location:
 
-After making changes, you can restart the firewall using:
+| OS             | Location                       |
+| -------------- | ------------------------------ |
+| Debian, Ubuntu | `/etc/nftables.conf`           |
+| Fedora, EL     | `/etc/sysconfig/nftables.conf` |
+
+# Manage Firewall
+
+## List
 
 ```bash
-$ sudo systemctl restart iptables && sudo systemctl restart ip6tables
+$ sudo nft list ruleset
 ```
 
-You can fully disable the firewall as well:
+## Stop
 
 ```bash
-$ sudo systemctl disable --now iptables && sudo systemctl disable --now ip6tables
+$ sudo systemctl stop nftables
 ```
 
-## Debian
-
-You can find the firewall rules in `/etc/iptables/rules.v4` (IPv4) 
-and `/etc/iptables/rules.v6` (IPv6). 
-
-After making changes, you can restart the firewall using:
+## Start
 
 ```bash
-$ sudo systemctl restart netfilter-persistent
+$ sudo systemctl start nftables
 ```
 
-You can fully disable the firewall as well:
+## Restart
 
 ```bash
-$ sudo systemctl disable --now netfilter-persistent
+$ sudo systemctl restart nftables
 ```
 
 ## IPv4 vs IPv6
 
-The configuration of IPv4 and IPv6 firewalls is _almost_ identical. When 
-modifying the configuration files you, obviously, have to use the IPv4 style
-addresses in the IPv4 firewall, and the IPv6 style addresses in the IPv6 
-firewall. In addition, the ICMP type is different, i.e. `icmp` for IPv4 and 
-`ipv6-icmp` for IPv6, see the `iptables` and `ip6tables` for examples.
+Configuring IPv4 and IPv6 is very similar. Only when IP family specific 
+configuration is needed you need to refer to `ip` or `ip6`. You'll see in the
+examples below. We'll try to provide always configuration examples for both
+IPv4 and IPv6.
 
 ## Improving the Defaults
 
@@ -80,22 +93,34 @@ match your deployment.
 By default, SSH is allowed from everywhere, *including* the VPN clients. It 
 makes sense to restrict this a set of hosts or a "bastion" host.
 
-The default `INPUT` rule for SSH is:
+```
+table inet filter {
+    chain input {
+        ... 
+
+        tcp dport { 22, 1194 } accept
+        
+        ...
+    }
+}
+```
+
+You can modify it like this:
 
 ```
--A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-```
+table inet filter {
+    chain input {
+        ... 
 
-You can modify these rules like this:
+        tcp dport { 1194 } accept
+        
+        ip saddr { 192.0.2.0/24, 198.51.100.0/24 } tcp dport 22 accept
+        ip6 saddr { 2001:db8:1234:5678::1/64 } tcp dport 22 accept
 
+        ...
+    }
+}
 ```
--A INPUT -s 192.0.2.0/24    -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
--A INPUT -s 198.51.100.0/24 -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-```
-
-This allows only SSH connections coming from `192.0.2.0/24` and 
-`198.51.100.0/24`. This will also prevent VPN clients from accessing the SSH 
-server.
 
 ## Opening Additional VPN Ports
 
@@ -103,170 +128,152 @@ By default, one port, both for TCP and UDP are open for OpenVPN
 connections:
 
 ```
--A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT
+table inet filter {
+    chain input {
+        ... 
+
+        tcp dport { 22, 1194 } accept
+        udp dport { 1194, 51820 } accept
+        
+        ...
+    }
+}
 ```
 
-You can easily add more by using "ranges", e.g.
+You can easily add more by using "ranges", e.g.:
 
 ```
--A INPUT -p udp -m state --state NEW -m udp --dport 1194:1197 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 1194:1197 -j ACCEPT
+table inet filter {
+    chain input {
+        ... 
+
+        tcp dport { 22, 1194-1197 } accept
+        udp dport { 1194-1197, 51820 } accept
+        
+        ...
+    }
+}
+```
+
+Make sure you _also_ enable the additional _tun_ interfaces in the forward 
+chain, for example if you have 4 `tun` devices:
+
+```
+iifname { "tun0", "tun1", "tun2", "tun3", "wg0" } oifname $EXTERNAL_IF accept
+```
+
+On Debian >= 12, Fedora and EL you can also use a wild card:
+
+```
+iifname { "tun*", "wg0" } oifname $EXTERNAL_IF accept
 ```
 
 ## NAT to Multiple Public IP Addresses
 
-When using NAT with many clients, it makes sense to "share" the traffic over
-multiple public IP addresses.
-
-The default `POSTROUTING` rule in the "NAT" table is:
-
 ```
--A POSTROUTING -s 10.0.0.0/8 -o eth0 -j MASQUERADE
--A POSTROUTING -s 172.16.0.0/12 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.0.0/16 -o eth0 -j MASQUERADE
-```
-
-Assuming all IP addresses assigned to VPN clients are in the `10.0.0.0/8` 
-prefix, you can replace this by for example this line:
-
-```
--A POSTROUTING -s 10.0.0.0/8 -j SNAT --to-source 192.0.2.1-192.0.2.8
+    ...
+    
+    chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+        ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } oifname $EXTERNAL_IF snat ip to 192.0.2.0/28
+        ip6 saddr fc00::/7 oifname $EXTERNAL_IF snat ip6 to 2001:db8:1234:5678::/120
+    }
+    
+    ...
 ```
 
-Make sure you replace `10.0.0.0/8` with your VPN client IP range and 
-`192.0.2.1-192.0.2.8` with your public IP addresses. All IP addresses in the 
-specified `--to-source` range will be used, specified IPs included.
-
-**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
-and address(es).
+See also 
+[NAT pooling](https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)#NAT_pooling).
 
 ## NAT to Different Public IP Addresses per Profile
 
-When using [Multiple Profiles](MULTI_PROFILE.md), you may want to NAT to 
-different public IP addresses. You could for example use:
-
 ```
--A POSTROUTING -s 10.0.1.0/24 -j SNAT --to-source 192.0.2.1
--A POSTROUTING -s 10.0.2.0/24 -j SNAT --to-source 192.0.2.2
--A POSTROUTING -s 10.0.3.0/24 -j SNAT --to-source 192.0.2.3
+    ...
+
+    chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+        ip saddr 10.0.1.0/24 oifname $EXTERNAL_IF snat ip to 192.0.2.1
+        ip saddr 10.0.2.0/24 oifname $EXTERNAL_IF snat ip to 192.0.2.2
+        ip saddr 10.0.3.0/24 oifname $EXTERNAL_IF snat ip to 192.0.2.3
+        ip6 saddr fd99:1234:5678:9ab0::/64 oifname $EXTERNAL_IF snat ip6 to 2001:db8:1234:5678::
+        ip6 saddr fd99:1234:5678:9ab1::/64 oifname $EXTERNAL_IF snat ip6 to 2001:db8:1234:5678::1
+        ip6 saddr fd99:1234:5678:9ab2::/64 oifname $EXTERNAL_IF snat ip6 to 2001:db8:1234:5678::2
+    }
+     
+    ...
 ```
-
-Make sure you replace the IP ranges specified in `-s` with your VPN client IP 
-ranges assigned to the profiles, and the `--to-source` address with your public
-IP addresses.
-
-**NOTE**: for IPv6 the situation is similar, except you'd use the IPv6 range(s) 
-and address(es).
 
 ## Allow Client to Client Traffic
 
-By default, client-to-client traffic is not allowed:
-
 ```
--A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i tun+ -o eth0 -j ACCEPT
--A FORWARD -i wg0 -o eth0 -j ACCEPT
-```
-
-You can either allow all forwarding, be specific with IP ranges 
-(using the `-s` and `-d` flags) or even interfaces.
-
-```
--A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i wg0 -o eth0 -j ACCEPT
--A FORWARD -i wg0 -o wg0 -j ACCEPT
--A FORWARD -i wg0 -o tun+ -j ACCEPT
--A FORWARD -i tun+ -o eth0 -j ACCEPT
--A FORWARD -i tun+ -o tun+ -j ACCEPT
--A FORWARD -i tun+ -o wg0 -j ACCEPT
-```
-
-As an example, you have two WireGuard-only profiles on your server with 
-`10.0.0.0/24` and `10.100.100.0/24` prefixes where the first allows access to 
-the Internet, and the second only allows connectivity between the clients.
-
-```
--A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i wg0 -s 10.0.0.0/24 -o eth0 -j ACCEPT
--A FORWARD -i wg0 -s 10.100.100.0/24 -d 10.100.100.0/24 -i wg0 -o wg0 -j ACCEPT
+    ...
+    
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        tcp flags syn tcp option maxseg size set rt mtu
+        ct state vmap { invalid : drop, established : accept, related : accept }
+        iifname { "tun0", "tun1", "wg0" } oifname { $EXTERNAL_IF, "tun0", "tun1", "wg0" } accept
+    }
+    
+    ...
 ```
 
 ## Reject Forwarding Traffic
 
-Sometimes you want to prevent VPN clients from reaching certain network, or 
-allow them to reach only certain networks. For example in the "split tunnel" 
-scenario. By default, the firewall will allow all traffic and just route 
-traffic as long as the routing for it is configured.
-
-If you use split tunnel, it could make sense to only allow traffic for the 
-ranges you also push to the client. As the client can always (manually) 
-override the configuration and try to send all traffic over the VPN, this may
-need to be restricted.
-
-If you want to only only traffic _to_ `10.1.1.0/24` and `192.168.1.0/24` from 
-your VPN clients, you can use the following:
-
 ```
--A FORWARD -i tun+ -d 10.1.1.0/24 -j ACCEPT
--A FORWARD -i tun+ -d 192.168.1.0/24 -j ACCEPT
+    ...
+    
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        tcp flags syn tcp option maxseg size set rt mtu
+        ct state vmap { invalid : drop, established : accept, related : accept }
+        iifname { "tun0", "tun1", "wg0" } oifname $EXTERNAL_IF ip daddr { 10.1.1.0/24, 192.168.1.0/24 } accept
+        iifname { "tun0", "tun1", "wg0" } oifname $EXTERNAL_IF ip6 daddr 2001:db8::/32 accept
+    }
+    
+    ...
 ```
-
-**NOTE**: for IPv6 the situation is similar.
 
 ## Reject IPv6 Client Traffic
 
-As the VPN server is "dual stack" throughout, it is not possible to "disable" 
-IPv6. However, one can easily modify the firewall to prevent all IPv6 traffic
-over the VPN to be rejected. By _rejecting_ instead of _dropping_, clients will
-quickly fall back to IPv4, there will not be any delays in establishing 
-connections. You can simply remove all `FORWARD` rules and replace it with:
-
-```
--A FORWARD -j REJECT --reject-with icmp6-adm-prohibited
-```
-
-This will cause all IPv6 to be rejected. The VPN becomes thus effectively 
-IPv4 only. You can of course also use it to reject IPv4 traffic to create an
-IPv6-only VPN.
+TBD.
 
 ## Public IP Addresses for VPN Clients
 
-If you want to use [Public Addresses](PUBLIC_ADDR.md) for the VPN clients, this 
-has some implications for the firewall:
-
-1. NAT needs to be disabled;
-2. Incoming traffic for VPN clients may need to be blocked.
-
-**NOTE**: it is possible to use NAT for IPv4 and public IP addresses for IPv6,
-actually this is recommended over using IPv6 NAT!
-
 ### Disabling NAT
 
-By removing all `POSTROUTING` rules from the "NAT" table takes care of 
-disabling NAT.
+You can simply remove the entire `chain postrouting` section.
 
 ### Allowing Incoming Traffic
 
-The default `FORWARD` rules used are:
-
 ```
--A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i tun+ -o eth0 -j ACCEPT
--A FORWARD -i wg0 -o eth0 -j ACCEPT
-```
-
-This restrict any traffic initiating on the outside reaching your VPN clients.
-
-If you want to allow traffic from a designated host to the clients, e.g. for 
-remote management, you can use the following:
-
-```
--A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i tun+ -o eth0 -j ACCEPT
--A FORWARD -i wg0 -o eth0 -j ACCEPT
--A FORWARD -i eth0 -o tun+ -s 192.168.11.22/32 -j ACCEPT
--A FORWARD -i eth0 -o wg0 -s 192.168.11.22/32 -j ACCEPT
+    ...
+    
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        tcp flags syn tcp option maxseg size set rt mtu        
+        ct state vmap { invalid : drop, established : accept, related : accept }
+        iifname { "tun0", "tun1", "wg0" } oifname $EXTERNAL_IF accept
+        iifname $EXTERNAL_IF oifname { "tun0", "tun1", "wg0" } accept
+    }
+    
+    ...
 ```
 
-**NOTE**: for IPv6 the situation is similar.
+## TCP MSS Clamping
+
+One rule we did not explain yet is the one that is used for TCP MSS Clamping, 
+i.e.:
+
+```
+tcp flags syn tcp option maxseg size set rt mtu
+```
+
+What this does is rewrite the MSS TCP header to include the maximum MTU of the
+path. See the WireGuard [document](WIREGUARD.md#mtu) for more information. If 
+you know what you are doing, MTU != MSS! you can also set a specific value, 
+e.g.:
+
+```
+tcp flags syn tcp option maxseg size set 1324
+```

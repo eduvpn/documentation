@@ -30,7 +30,7 @@ USE_DEV_REPO=${USE_DEV_REPO:-n}
 
 apt update
 apt install -y apt-transport-https curl apache2 php-fpm pwgen \
-    iptables-persistent sudo lsb-release ipcalc-ng tmux
+    nftables sudo lsb-release ipcalc-ng tmux
 
 DEBIAN_ARCH=$(dpkg --print-architecture)
 DEBIAN_CODE_NAME=$(/usr/bin/lsb_release -cs)
@@ -133,11 +133,9 @@ systemctl enable --now apache2
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/controller/iptables  /etc/iptables/rules.v4
-cp resources/firewall/controller/ip6tables /etc/iptables/rules.v6
-
-systemctl enable netfilter-persistent
-systemctl restart netfilter-persistent
+cp resources/firewall/controller/nftables.conf /etc/nftables.conf
+sed -i "s|define EXTERNAL_IF = eth0|define EXTERNAL_IF = ${EXTERNAL_IF}|" /etc/nftables.conf
+systemctl enable --now nftables
 
 ###############################################################################
 # USERS

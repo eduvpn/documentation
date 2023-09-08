@@ -52,10 +52,11 @@ setsebool -P httpd_can_network_connect=1
 # SOFTWARE
 ###############################################################################
 
-# disable and stop existing firewalling
+# disable and stop existing firewalling (if running)
 systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
+systemctl disable --now nftables >/dev/null 2>/dev/null || true
 
 # stop daemons we use (if they are already running)
 systemctl disable --now httpd >/dev/null 2>/dev/null || true
@@ -86,8 +87,8 @@ EOF
 fi
 
 # install software (dependencies)
-/usr/bin/dnf -y install mod_ssl php-opcache httpd iptables-nft pwgen cronie \
-    iptables-services php-fpm php-cli policycoreutils-python-utils chrony \
+/usr/bin/dnf -y install mod_ssl php-opcache httpd pwgen cronie \
+    nftables php-fpm php-cli policycoreutils-python-utils chrony \
     ipcalc tmux
 
 # install software (VPN packages)
@@ -200,13 +201,9 @@ done
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/iptables  /etc/sysconfig/iptables
-cp resources/firewall/ip6tables /etc/sysconfig/ip6tables
-sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/iptables
-sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/ip6tables
-
-systemctl enable --now iptables
-systemctl enable --now ip6tables
+cp resources/firewall/nftables.conf /etc/sysconfig/nftables.conf
+sed -i "s|define EXTERNAL_IF = eth0|define EXTERNAL_IF = ${EXTERNAL_IF}|" /etc/sysconfig/nftables.conf
+systemctl enable --now nftables
 
 ###############################################################################
 # USERS

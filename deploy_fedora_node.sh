@@ -41,6 +41,7 @@ fi
 systemctl disable --now firewalld >/dev/null 2>/dev/null || true
 systemctl disable --now iptables >/dev/null 2>/dev/null || true
 systemctl disable --now ip6tables >/dev/null 2>/dev/null || true
+systemctl disable --now nftables >/dev/null 2>/dev/null || true
 
 if [ "${USE_DEV_REPO}" = "y" ]; then
     # import PGP key
@@ -66,7 +67,7 @@ EOF
 fi
 
 # install software (dependencies)
-/usr/bin/dnf -y install php-opcache iptables-nft iptables-services \
+/usr/bin/dnf -y install php-opcache nftables \
     php-cli policycoreutils-python-utils chrony cronie tmux
 
 # install software (VPN packages)
@@ -99,11 +100,6 @@ systemctl enable --now crond
 # FIREWALL
 ###############################################################################
 
-cp resources/firewall/node/iptables.v3  /etc/sysconfig/iptables
-cp resources/firewall/node/ip6tables.v3 /etc/sysconfig/ip6tables
-
-sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/iptables
-sed -i "s|-o eth0|-o ${EXTERNAL_IF}|" /etc/sysconfig/ip6tables
-
-systemctl enable --now iptables
-systemctl enable --now ip6tables
+cp resources/firewall/node/nftables.conf /etc/sysconfig/nftables.conf
+sed -i "s|define EXTERNAL_IF = eth0|define EXTERNAL_IF = ${EXTERNAL_IF}|" /etc/sysconfig/nftables.conf
+systemctl enable --now nftables
