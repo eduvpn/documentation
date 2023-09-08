@@ -35,8 +35,8 @@ found here, they may be updated from time to time:
 
 * [Single Server](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/nftables.conf)
 * Separate Controller/Node
-  * [Controller](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/controller/nftables.conf)
-  * [Node](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/node/nftables.conf)
+    * [Controller](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/controller/nftables.conf)
+    * [Node](https://codeberg.org/eduVPN/documentation/src/branch/v3/resources/firewall/node/nftables.conf)
 
 You can of course also use the firewall software of your choice, or fully 
 disable the firewall! As our goal was to keep things as simple and easy as 
