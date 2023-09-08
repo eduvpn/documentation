@@ -1,7 +1,8 @@
 # Firewall
 
 **NOTE**: if you installed your server before the default became _nftables_, 
-look [here](FIREWALL_IPTABLES.md) for _iptables_ documentation.
+look [here](FIREWALL_IPTABLES.md) for _iptables_ documentation. We switched
+to _nftables_ by default for new installations on 2023-09-08.
 
 **NOTE**: if you are currently using _iptables_, but would like to switch to
 _nftables_ you can use this document and "port" any changes you may have made
