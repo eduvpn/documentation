@@ -287,7 +287,7 @@ here.
 ### Mitigation on Linux Client
 
 If a server solution is currently not possible, one can also create a file 
-_on_ the VPN client, e.g. `/etc/sysctl.d/70-vpn-mtu.conf`, should work on 
+on the VPN _client_, e.g. `/etc/sysctl.d/70-vpn-mtu.conf`, should work on 
 at least Debian / Ubuntu and Fedora / EL:
 
 ```
