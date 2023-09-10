@@ -221,6 +221,9 @@ See also
 
 ## Reject Forwarding Traffic
 
+If you only want to allow traffic from VPN clients to certain prefixes, you can
+do that like this:
+
 ```
     ...
     
@@ -254,8 +257,7 @@ You can simply remove the entire `chain postrouting` section.
         type filter hook forward priority filter; policy drop;
         tcp flags syn tcp option maxseg size set rt mtu        
         ct state vmap { invalid : drop, established : accept, related : accept }
-        iifname { "tun0", "tun1", "wg0" } oifname $EXTERNAL_IF accept
-        iifname $EXTERNAL_IF oifname { "tun0", "tun1", "wg0" } accept
+        iifname { "tun0", "tun1", "wg0", $EXTERNAL_IF } oifname { "tun0", "tun1", "wg0", $EXTERNAL_IF } accept
     }
     
     ...
