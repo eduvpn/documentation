@@ -44,7 +44,7 @@ Modify `/etc/vpn-user-portal/config.php` to enable it:
         // OPTIONAL, DEFAULT = false
         //'originatingIp' => false,
         
-        // Log the "Auth Data" column from the `users` table to syslog as well
+        // Log the `authData` column from the `users` table to syslog as well
         // (Unpadded Base64 URL-safe encoded)
         // OPTIONAL, DEFAULT = false
         'authData' => false,
@@ -90,7 +90,8 @@ CONNECT fkooman (prefer-openvpn:FvrfxD1m0rvaxfWKZFY+kXAb3hn2yQjY7O37po1XDGM=) [*
 ```
 
 **NOTE**: if no `authData` is available, this results in the "empty string", 
-i.e. `[AUTH_DATA=]`.
+i.e. `[AUTH_DATA=]`. The `authData` is always Base64 URL-safe encoded without
+padding.
 
 #### Disconnect
 
