@@ -16,7 +16,9 @@ MUST be set, it is no longer optional.
 In order to configure LDAP on your VPN server for authentication it is a good 
 idea to start with `ldapsearch` if you are not absolutely sure what to 
 configure. Once `ldapsearch` works, it becomes easier to configure the LDAP
-module.
+module. Make sure you test from your VPN server so you are sure you actually
+can access the LDAP server. You SHOULD use [TLS](#ldaps) to talk to your LDAP
+server.
 
 First, install `ldapsearch` and the PHP module for LDAP:
 
@@ -35,96 +37,20 @@ $ sudo systemctl restart php$(/usr/sbin/phpquery -V)-fpm    # Debian / Ubuntu
 You need a couple of details first, you can obtain those from your LDAP 
 administrator, you need _at least_:
 
-* LDAP host;
-* The attribute to use for user authentication;
-* Whether or not this attribute is part of the user's DN.
-
-### FreeIPA
-
-For simple [FreeIPA](https://www.freeipa.org/page/Main_Page) setups these are
-sufficient. Here the `uid` we want to use for users to authenticate is part of 
-the DN:
-
-```bash
-$ ldapsearch \
-    -W \
-    -H ldap://ipa.tuxed.example \
-    -D "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example" \
-    -b "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example"
-```
-
-After providing the user's password, you should see all the LDAP attributes 
-associated with that user account, e.g. `memberOf`, `mail`, `uid`.
-
-### Active Directory
-
-If you are using 
-[Active Directory](https://en.wikipedia.org/wiki/Active_Directory), it is 
-slightly different, replace `DOMAIN` with the name of your domain and `fkooman` 
-with a valid user in your AD:
-
-```bash
-$ ldapsearch \
-        -W \
-        -H ldap://ad.example.org \
-        -D "DOMAIN\fkooman" \
-        -b "dc=example,dc=org" \
-        "(sAMAccountName=fkooman)"
-```
-
-You can use the old "NetBIOS domain name" as in the example above, _or_ some 
-other 
-[options](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/6a5891b8-928e-4b75-a4a5-0e3b77eaca52), 
-e.g. `userPrincipalName`:
-
-```bash
-$ ldapsearch \
-        -W \
-        -H ldap://ad.example.org \
-        -D "fkooman@example.org" \
-        -b "dc=example,dc=org" \
-        "(userPrincipalName=fkooman@example.org)"
-```
-
-### Search First
-
-If you want to use an attribute that is NOT part of the DN, you first need to 
-perform a search for the user's DN, based on the attribute + value you 
-want. For example we want the users to login with the `uidNumber` attribute and
-my `uidNumber` happens to be `572600001`:
-
-For this we do an _anonymous bind_ to figure out my DN in the LDAP:
-
-```bash
-$ ldapsearch \
-    -LLL \
-    -x \
-    -H ldap://server.ipa.test \
-    -b "cn=users,cn=accounts,dc=ipa,dc=test" \
-    "(uidNumber=572600001)" \
-    dn
-```
-
-This returns my DN, in this case 
-`dn: uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test` which we can now use to
-bind now to the server to verify the password:
-
-```bash
-$ ldapsearch \
-    -LLL \
-    -W \
-    -H ldap://server.ipa.test \
-    -D "uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test" \
-    -b "uid=fkooman,cn=users,cn=accounts,dc=ipa,dc=test"
-```
-
-If this works, we can use this information as explained below in the 
-configuration examples.
+* LDAP host, e.g. `ldap.example.org`;
+* The base DN, e.g. `ou=people,dc=example,dc=org`;
+* The attribute to use for user authentication, e.g. `uid`;
+* Possibly an account to perform a _search_ first to find the user's DN;
+* Possibly a mTLS client certificate/key when using e.g. Google's LDAP.
 
 ## Configuration
 
-You can configure the portal to use LDAP. This is configured in the file 
-`/etc/vpn-user-portal/config.php`.
+We'll show some example `ldapsearch` commands you can use to verify you have 
+all the required information to configure LDAP in your VPN server. Then we'll 
+show the configuration "block" to use for your particular scenario.
+
+In order to make the portal use LDAP authentication, you need to modify the 
+configuration file `/etc/vpn-user-portal/config.php`.
 
 You have to set `authMethod` first:
 
@@ -132,8 +58,140 @@ You have to set `authMethod` first:
 'authMethod' => 'LdapAuthModule',
 ```
 
-Next is configuring the LDAP server in the `LdapAuthModule` section. The table
-below lists all available settings.
+Next, you'll configure the `LdapAuthModule` block. Examples for that are shown
+below, all allowed configuration options can be found 
+[here](#configuration-options).
+
+### Username in DN
+
+The most simple case is the scenario where the username is part of the DN in 
+the LDAP server, e.g. `uid=alice,ou=people,dc=example,dc=org`. We can 
+directly try to bind with this DN, verify the password and obtain (some) 
+attributes. For example:
+
+```bash
+$ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'uid=alice,ou=people,dc=example,dc=org' -b 'uid=alice,ou=people,dc=example,dc=org' uid memberOf
+Enter LDAP Password: 
+dn: uid=alice,ou=people,dc=example,dc=org
+uid: alice
+memberOf: cn=employees,ou=groups,dc=example,dc=org
+```
+
+The `ldapsearch` asks for the user's password. After
+providing the correct one, it shows the attribute values for the attributes 
+`uid` and `memberOf`. The full LDAP configuration will look like this:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldap://ldap.example.org',
+    'bindDnTemplate' => 'uid={{UID}},ou=people,dc=example,dc=org',
+    'userIdAttribute' => 'uid',
+    'permissionAttributeList' => ['memberOf'],
+],
+```
+
+### Username NOT in DN
+
+Some LDAP servers do not directly specify the username in the DN of the LDAP 
+entries, but it is only available as an attribute. For example the DN looks 
+like this: `cn=Bob,ou=people,dc=example,dc=org`. In that case, you'll need 
+to search for the user first with the attribute you want to use, for example:
+
+```bash
+$ ldapsearch -LLL -x -H ldap://ldap.example.org -b 'ou=people,dc=example,dc=org' '(uid=alice)' uid memberOf
+dn: uid=alice,ou=people,dc=example,dc=org
+uid: alice
+memberOf: cn=employees,ou=groups,dc=example,dc=org
+```
+
+This LDAP server allows for _anonymous binds_ to search through the LDAP. If 
+your server does not, you need to specify an account to bind to the LDAP in 
+order to perform the search for the user's DN. In the example below we use an
+"admin" account, obviously you MUST NOT do that and use a read only account
+that can only be used to search the LDAP.
+
+```bash
+$ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'cn=admin,dc=example,dc=org' -b 'ou=people,dc=example,dc=org' '(uid=alice)'
+Enter LDAP Password: 
+dn: cn=Bob,ou=people,dc=example,dc=org
+```
+
+Now that we figured out the DN, we can bind with that DN and the user's password 
+and obtain the attributes we want:
+
+```bash
+$ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'cn=Bob,ou=people,dc=example,dc=org' -b 'cn=Bob,ou=people,dc=example,dc=org' uid memberOf
+Enter LDAP Password: 
+cn=Bob,ou=people,dc=example,dc=org
+uid: alice
+memberOf: cn=employees,ou=groups,dc=example,dc=org
+```
+
+The full LDAP configuration will look like this:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldap://ldap.example.org',
+    'baseDn' => 'ou=people,dc=example,dc=org',
+    'userFilterTemplate' => '(uid={{UID}})',
+    'userIdAttribute' => 'uid',
+    'permissionAttributeList' => ['memberOf'],
+    
+    // **only if** an account is needed because "anonymous bind" for search is 
+    // not possible
+    //'searchBindDn' => 'cn=admin,dc=example,dc=org',
+    //'searchBindPass' => 's3cr3t',
+],
+```
+
+### Active Directory
+
+Configuring Active Directory is basically the same as 
+[Username NOT in DN](#username-not-in-dn), but we'll go a bit more in detail
+here.
+
+When using Active Directory, you always need to set `baseDn` and 
+`userFilterTempalate`, this is because when "binding" with AD the DN used is 
+not a real DN, but has the format `EXAMPLE\user` or `user@example.org`. An 
+example:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldap://ad.example.org',
+    'bindDnTemplate' =>  'EXAMPLE\\{{UID}}',
+    'baseDn' => 'dc=example,dc=org',
+    'userFilterTemplate' => '(sAMAccountName={{UID}})',
+    'userIdAttribute' => 'sAMAccountName',
+    'permissionAttributeList' => ['memberOf'],
+],
+```
+
+Alternatively, you can also _first_ search for the user, then you do not need
+to set `bindDnTemplate`, but you MAY have to set `searchBindDn` and 
+`searchBindPass` if the AD does not allow anonymous bind and search. For 
+example:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldap://ad.example.org',
+    'baseDn' => 'dc=example,dc=org',
+    'userFilterTemplate' => '(sAMAccountName={{UID}})',
+    'userIdAttribute' => 'sAMAccountName',
+    'permissionAttributeList' => ['memberOf'],
+    'searchBindDn' => 'EXAMPLE\admin',
+    'searchBindPass' => 's3r3t',
+],
+```
+
+Where `EXAMPLE\admin` is a user that has the option to search the AD, you 
+obviously do NOT want this to be a privileged account!
+
+If is recommended to use `bindDnTemplate` as in that case you do not need to
+store any secrets in the LDAP configuration.
+
+## Configuration Options
+
+This is a full overview of all the configuration options.
 
 | Option                    | Required | Type            | Example                                     | Since |
 | ------------------------- | -------- | --------------- | ------------------------------------------- | ----- |
@@ -153,7 +211,7 @@ below lists all available settings.
 **NOTE**: `{{UID}}` is a special template variable that is replaced by what the 
 user specifies in the "User Name" box at login in the portal. If you specify 
 `DOMAIN\{{UID}}` as `bindDnTemplate` in the configuration, the actual "bind DN" 
-will become `DOMAIN\fkooman` assuming the user entered `fkooman` as 
+will become `DOMAIN\alice` assuming the user entered `alice` as 
 "User Name" in the portal.
 
 **NOTE**: _*_ you MUST either specify `bindDnTemplate`, or `baseDn` together 
@@ -164,7 +222,7 @@ order to search for the actual DN of the user account. See
 [Active Directory](#active-directory).
 
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
-`fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
+`alice` and `alice` are the same. By querying the `userIdAttribute` we take
 the exact same format as used in the LDAP server. This avoids creating multiple
 accounts in the VPN service with different case. You MUST specify the 
 `userIdAttribute`.
@@ -173,114 +231,6 @@ You can restrict access to the VPN service to a subset of the users in the
 LDAP server by following the [ACL](ACL.md) documentation, or (not recommended) 
 by using a filter that only returns results in case the user entry matches a 
 specific filter.
-
-```php
-'LdapAuthModule' => [
-    // *** FreeIPA ***
-    // -H ldap://ipa.tuxed.example
-    'ldapUri' => 'ldap://ipa.tuxed.example',
-    // -D "uid=fkooman,cn=users,cn=accounts,dc=tuxed,dc=example"
-    'bindDnTemplate' => 'uid={{UID}},cn=users,cn=accounts,dc=tuxed,dc=example',
-    // (if -b is the same -D we do NOT specify baseDn...)
-    // to normalize the entered user ID, specify the attribute you want to
-    // use to identify the user in the VPN server
-    'userIdAttribute' => 'uid',
-
-    // *** AD (NetBIOS domain name) ***
-    // -H ldap://ad.example.org \
-    'ldapUri' => 'ldap://ad.example.org',
-    // -D "DOMAIN\fkooman" \
-    'bindDnTemplate' => 'DOMAIN\{{UID}}',
-    // -b "dc=example,dc=org" \
-    'baseDn' => 'dc=example,dc=org',
-    // "(sAMAccountName=fkooman)"
-    'userFilterTemplate' => '(sAMAccountName={{UID}})',
-    // to normalize the entered user ID, specify the attribute you want to
-    // use to identify the user in the VPN server
-    'userIdAttribute' => 'sAMAccountName',
-
-    // *** AD (userPrincipalName) ***
-    // -H ldap://ad.example.org \
-    'ldapUri' => 'ldap://ad.example.org',
-    // -D "fkooman@example.org" \
-    'bindDnTemplate' => '{{UID}}',
-
-    // when the user does NOT specify the realm, e.g. only "fkooman", this
-    // option will add "@example.org" to the "User Name" as specified on
-    // the login page. If and only if there is no "@" in the provided
-    // "User Name".!
-    'addRealm' => 'example.org',
-    // -b "dc=example,dc=org" \
-    'baseDn' => 'dc=example,dc=org',
-    // "(userPrincipalName=fkooman@example.org)"
-    'userFilterTemplate' => '(userPrincipalName={{UID}})',
-    // to normalize the entered user ID, specify the attribute you want to
-    // use to identify the user in the VPN server
-    'userIdAttribute' => 'userPrincipalName',
-
-    // *** Search First ***
-    // -H ldap://server.ipa.test \
-    'ldapUri' => 'ldap://server.ipa.test',
-    // -b "cn=users,cn=accounts,dc=ipa,dc=test" \
-    'baseDn' => 'cn=users,cn=accounts,dc=ipa,dc=test',
-    // "(uidNumber=572600001)" \
-    'userFilterTemplate' => '(uidNumber={{UID}})',
-    // to normalize the entered user ID, specify the attribute you want to
-    // use to identify the user in the VPN server
-    'userIdAttribute' => 'uidNumber',
-    // you can also perform a bind before searching as not all LDAP servers
-    // allow anonymous bind to search the directory. If at all possible,
-    // allow anonymous bind on your LDAP server from the VPN server.
-    // NEVER USE THE LDAP ADMIN ACCOUNT HERE!
-    //'searchBindDn' => 'cn=Anonymous Search User,dc=example,dc=org',
-    //'searchBindPass' => 's3r3t',
-
-    //'permissionAttributeList' => [],
-],
-```
-
-This should be all to configure your LDAP!
-
-## Active Directory
-
-When using Active Directory, you always need to set `baseDn` and 
-`userFilterTempalate`, this is because when "binding" with AD the DN used is 
-not a real DN, but has the format `EXAMPLE\user` or `user@example.org`. An 
-example:
-
-```php
-'LdapAuthModule' => [
-    'ldapUri' => 'ldaps://ad.example.org',
-    'bindDnTemplate' =>  'EXAMPLE\\{{UID}}',
-    'baseDn' => 'dc=example,dc=org',
-    'userFilterTemplate' => '(sAMAccountName={{UID}})',
-    'userIdAttribute' => 'sAMAccountName',
-    'permissionAttributeList' => ['memberOf'],
-],
-```
-
-Alternatively, you can also _first_ search for the user, then you do not need
-to set `bindDnTemplate`, but you MAY have to set `searchBindDn` and 
-`searchBindPass` if the AD does not allow anonymous search (and bind) to 
-perform the search. An example:
-
-```php
-'LdapAuthModule' => [
-    'ldapUri' => 'ldaps://ad.example.org',
-    'baseDn' => 'dc=example,dc=org',
-    'userFilterTemplate' => '(sAMAccountName={{UID}})',
-    'userIdAttribute' => 'sAMAccountName',
-    'permissionAttributeList' => ['memberOf'],
-    'searchBindDn' => 'EXAMPLE\user',
-    'searchBindPass' => 's3r3t',    
-],
-```
-
-Where `EXAMPLE\user` is a user that has the option to search the AD, you do NOT
-want this to be a privileged account!
-
-If is recommended to use `bindDnTemplate` as in that case you do not need to
-store any secrets in the LDAP configuration.
 
 ## LDAPS
 
