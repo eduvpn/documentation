@@ -156,8 +156,12 @@ user specifies in the "User Name" box at login in the portal. If you specify
 will become `DOMAIN\fkooman` assuming the user entered `fkooman` as 
 "User Name" in the portal.
 
-**NOTE**: _*_ you MUST either specify `bindDnTemplate`, or `baseDn` together with 
-`userFilterTemplate` to be able to find a DN for a particular user.
+**NOTE**: _*_ you MUST either specify `bindDnTemplate`, or `baseDn` together 
+with `userFilterTemplate` to be able to find a DN for a particular user. If you 
+are using a `bindDnTemplate` that is not a "real DN", e.g. when using 
+`DOMAIN\{{UID}}` you MUST also specify `baseDn` and `userFilterTemplate` in 
+order to search for the actual DN of the user account. See 
+[Active Directory](#active-directory).
 
 The `userIdAttribute` is used to _normalize_ the user identity. For LDAP both 
 `fkooman` and `FKOOMAN` are the same. By querying the `userIdAttribute` we take
@@ -236,6 +240,47 @@ specific filter.
 ```
 
 This should be all to configure your LDAP!
+
+## Active Directory
+
+When using Active Directory, you always need to set `baseDn` and 
+`userFilterTempalate`, this is because when "binding" with AD the DN used is 
+not a real DN, but has the format `EXAMPLE\user` or `user@example.org`. An 
+example:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldaps://ad.example.org',
+    'bindDnTemplate' =>  'EXAMPLE\\{{UID}}',
+    'baseDn' => 'dc=example,dc=org',
+    'userFilterTemplate' => '(sAMAccountName={{UID}})',
+    'userIdAttribute' => 'sAMAccountName',
+    'permissionAttributeList' => ['memberOf'],
+],
+```
+
+Alternatively, you can also _first_ search for the user, then you do not need
+to set `bindDnTemplate`, but you MAY have to set `searchBindDn` and 
+`searchBindPass` if the AD does not allow anonymous search (and bind) to 
+perform the search. An example:
+
+```php
+'LdapAuthModule' => [
+    'ldapUri' => 'ldaps://ad.example.org',
+    'baseDn' => 'dc=example,dc=org',
+    'userFilterTemplate' => '(sAMAccountName={{UID}})',
+    'userIdAttribute' => 'sAMAccountName',
+    'permissionAttributeList' => ['memberOf'],
+    'searchBindDn' => 'EXAMPLE\user',
+    'searchBindPass' => 's3r3t',    
+],
+```
+
+Where `EXAMPLE\user` is a user that has the option to search the AD, you do NOT
+want this to be a privileged account!
+
+If is recommended to use `bindDnTemplate` as in that case you do not need to
+store any secrets in the LDAP configuration.
 
 ## LDAPS
 
