@@ -8,8 +8,8 @@ The LDAP integration can be used both for _authentication_ and _authorization_.
 This document talks about _authentication_. See [ACL](ACL.md) for more on 
 _authorization_.
 
-**NOTE**: from version 3.4.0 of `vpn-user-portal`, the `userIdAttribute` key 
-MUST be set, it is no longer optional.
+**NOTE**: in vpn-user-portal >= 3.4.0  the `userIdAttribute` key MUST be set, 
+it is no longer optional!
 
 ## Introduction
 
