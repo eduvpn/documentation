@@ -11,18 +11,18 @@ manually got through the portal once the upgrade is complete.
 
 ## Requirements
 
-You MUST be running the server on Debian 11, if you are not running on Debian 
-11, but on a previous version of Debian, follow the instructions here first:
+You MUST be running the server on Debian >= 11. If you are not running on 
+Debian 12, it is highly recommended to upgrade to Debian 12 first:
 
-* [Debian 9 to Debian 10](https://codeberg.org/eduVPN/documentation/src/branch/v2/UPGRADE_DEBIAN_9_TO_10.md);
 * [Debian 10 to Debian 11](https://codeberg.org/eduVPN/documentation/src/branch/v2/UPGRADE_DEBIAN_10_TO_11.md)
+* [Debian 11 to Debian 12](https://codeberg.org/eduVPN/documentation/src/branch/v2/UPGRADE_DEBIAN_11_TO_12.md)
 
-You probably have to go first from Debian 9 to 10 and then to 11 if you are 
-still running Debian 9. If you try to go in 1 step, be extra careful and read
+You probably have to go first from Debian 10 to 11 and then to 12 if you are 
+still running Debian 10. If you try to go in 1 step, be extra careful and read
 all upgrade instructions carefully to make sure this is actually possible.
 
-When you already run Debian 11, make sure your system is fully up to date and 
-freshly rebooted:
+When you already run Debian >= 11, make sure your system is fully up to date 
+and freshly rebooted:
 
 ```
 $ sudo vpn-maint-update-system
