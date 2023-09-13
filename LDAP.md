@@ -98,10 +98,8 @@ like this: `cn=Bob,ou=people,dc=example,dc=org`. In that case, you'll need
 to search for the user first with the attribute you want to use, for example:
 
 ```bash
-$ ldapsearch -LLL -x -H ldap://ldap.example.org -b 'ou=people,dc=example,dc=org' '(uid=alice)' uid memberOf
-dn: uid=alice,ou=people,dc=example,dc=org
-uid: alice
-memberOf: cn=employees,ou=groups,dc=example,dc=org
+$ ldapsearch -LLL -x -H ldap://ldap.example.org -b 'ou=people,dc=example,dc=org' '(uid=bob)'
+dn: cn=Bob,ou=people,dc=example,dc=org
 ```
 
 This LDAP server allows for _anonymous binds_ to search through the LDAP. If 
@@ -111,7 +109,7 @@ order to perform the search for the user's DN. In the example below we use an
 that can only be used to search the LDAP.
 
 ```bash
-$ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'cn=admin,dc=example,dc=org' -b 'ou=people,dc=example,dc=org' '(uid=alice)'
+$ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'cn=admin,dc=example,dc=org' -b 'ou=people,dc=example,dc=org' '(uid=bob)'
 Enter LDAP Password: 
 dn: cn=Bob,ou=people,dc=example,dc=org
 ```
@@ -123,7 +121,7 @@ and obtain the attributes we want:
 $ ldapsearch -LLL -W -x -H ldap://ldap.example.org -D 'cn=Bob,ou=people,dc=example,dc=org' -b 'cn=Bob,ou=people,dc=example,dc=org' uid memberOf
 Enter LDAP Password: 
 cn=Bob,ou=people,dc=example,dc=org
-uid: alice
+uid: bob
 memberOf: cn=employees,ou=groups,dc=example,dc=org
 ```
 
