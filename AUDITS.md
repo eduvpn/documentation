@@ -1,14 +1,11 @@
 # Audits
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-| Date    | Type                                    | By                      |
-| ------- | --------------------------------------- | ----------------------- | 
-| Q4-2016 | Server audit                            | Radically Open Security |
-| Q4-2017 | Windows app audit                       | Fox-IT                  |
-| Q1-2018 | Server audit                            | Radboud University      |
-| Q3-2018 | Android app audit                       | GÉANT                   |
-| Q4-2018 | iOS/macOS app audit                     | Radically Open Security |
-| Q4-2019 | TunnelKit (iOS/macOS) library “fuzzing” | Guido Vranken           |
-| Q4-2020 | SAML (php-saml-sp) audit                | Cure53                  |
-| Q1-2021 | iOS/macOS app audit                     | Midnight Blue           |
-| Q4-2022 | 3.x Server audit                        | Cure53                  |
-| Q4-2022 | eduvpn-common (VPN client library)      | Radically Open Security |
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
+
+The _specific_ document you tried to reach is available in its new location:
+
+[https://docs.eduvpn.org/server/v3/audits.html](https://docs.eduvpn.org/server/v3/audits.html)

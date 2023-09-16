@@ -1,24 +1,11 @@
 # BBR
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-There's this shiny 
-[BBR](https://en.wikipedia.org/wiki/TCP_congestion_control#TCP_BBR) congestion 
-control! It is not universally accepted as a good solution according to 
-Wikipedia, but it is an option to improve TCP throughput in some cases it 
-seems.
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-Create the file `/etc/sysctl.d/71-congestion.conf` and put these lines in it:
+The _specific_ document you tried to reach is available in its new location:
 
-```
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
-```
-
-To enable, use `sysctl --system` or reboot. To verify it is configured 
-properly:
-
-```
-$ /sbin/sysctl net.ipv4.tcp_congestion_control
-net.ipv4.tcp_congestion_control = bbr
-$ /sbin/sysctl net.core.default_qdisc
-net.core.default_qdisc = fq
-```
+[https://docs.eduvpn.org/server/v3/bbr.html](https://docs.eduvpn.org/server/v3/bbr.html)
