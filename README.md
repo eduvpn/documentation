@@ -8,4 +8,4 @@ bookmarks / favorites.
 
 The _specific_ document you tried to reach is available in its new location:
 
-[https://docs.eduvpn.org/server/v2/readme.html](https://docs.eduvpn.org/server/v2/readme.html)
+[https://docs.eduvpn.org/server/v2](https://docs.eduvpn.org/server/v2)
