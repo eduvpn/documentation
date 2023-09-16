@@ -1,26 +1,11 @@
 # Branding
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-This document describes how to add the Let's Connect! or eduVPN branding to 
-your server installation. By default a simple "plain" branding is used.
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-## Installation
+The _specific_ document you tried to reach is available in its new location:
 
-### CentOS 
-
-    $ sudo yum -y install vpn-portal-artwork-LC
-    $ sudo yum -y install vpn-portal-artwork-eduVPN
-
-### Fedora
-
-    $ sudo dnf -y install vpn-portal-artwork-LC
-    $ sudo dnf -y install vpn-portal-artwork-eduVPN
-
-### Debian
-
-    $ sudo apt -y install vpn-portal-artwork-lc
-    $ sudo apt -y install vpn-portal-artwork-eduvpn
-
-## Configuration
-
-Now you can enable the `styleName` in `/etc/vpn-user-portal/config.php`. Set it 
-to `LC` (or `eduVPN`).
+[https://docs.eduvpn.org/server/v2/branding.html](https://docs.eduvpn.org/server/v2/branding.html)

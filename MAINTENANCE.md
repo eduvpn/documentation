@@ -1,37 +1,11 @@
 # Maintenance
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-Since 2020-05-05 the package `vpn-maint-scripts` is available in the package
-repositories and from this day on will be installed automatically on new 
-deployments using the `deploy_${DIST}.sh` scripts. If you deployed before this 
-moment, you may need to install the package manually first.
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-This document is for deploys where only 1 server is involved. For multi node 
-maintenance instructions, you can go [here](MULTI_NODE.md#maintenance).
+The _specific_ document you tried to reach is available in its new location:
 
-## CentOS / Red Hat Enterprise Linux
-
-    $ sudo yum install vpn-maint-scripts
-
-## Fedora
-
-    $ sudo dnf install vpn-maint-scripts
-
-## Debian
-
-    $ sudo apt install vpn-maint-scripts
-
-# Apply Configuration Changes
-
-In order to apply changes, run the following command:
-
-    $ sudo vpn-maint-apply-changes
-
-# Install Updates
-
-In order to install OS updates and VPN server updates, run the following 
-command periodically, e.g. every week during a maintainance windows:
-
-    $ sudo vpn-maint-update-system
-
-**NOTE**: you may also need to reboot your server in case the kernel or system
-libraries were updated!
+[https://docs.eduvpn.org/server/v2/maintenance.html](https://docs.eduvpn.org/server/v2/maintenance.html)

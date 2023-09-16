@@ -1,16 +1,11 @@
 # SAML
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-This document describes how to configure SAML authentication for deployed
-systems. We assume you used the `deploy_${DIST}.sh` script to deploy the 
-software. 
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-There are three, yeah I know, options for configuring SAML for your VPN server:
+The _specific_ document you tried to reach is available in its new location:
 
-1. Shibboleth on [Debian](SHIBBOLETH_SP.md), [CentOS](SHIBBOLETH_SP_CENTOS.md)
-2. [php-saml-sp](PHP_SAML_SP.md)
-3. [mod_auth_mellon](MOD_AUTH_MELLON.md) (*NOT RECOMMENDED*)
-
-They are listed here in order of preference.
-
-In order to make a particular user an "administrator" in the portal, see 
-[PORTAL_ADMIN](PORTAL_ADMIN.md).
+[https://docs.eduvpn.org/server/v2/saml.html](https://docs.eduvpn.org/server/v2/saml.html)

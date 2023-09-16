@@ -1,34 +1,11 @@
 # Contribute Translations
+    
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-If you'd like to contribute translations to the VPN software this document
-explains how.
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-## Server
+The _specific_ document you tried to reach is available in its new location:
 
-You can check which translations are already available, and possibly update 
-them if they are out of date:
-
-* [vpn-user-portal](https://github.com/eduvpn/vpn-user-portal/tree/v2/locale)
-
-If you want to contribute a new translation you can take the 
-[empty](https://github.com/eduvpn/vpn-user-portal/blob/v2/locale/empty.php) 
-file and translate all strings in there and send it.
-
-The files use the PHP 
-[Array](https://secure.php.net/manual/en/language.types.array.php) syntax.
-
-The "key" is the English string, the value should be the translation.
-
-## Apps
-
-TBD.
-
-## Submitting
-
-Once you are done, you can submit your translation file either by creating a 
-"Pull Request" on GitHub, or simply mailing the file with your translations to
-[eduvpn-support@lists.geant.org](mailto:eduvpn-support@lists.geant.org). Don't
-forget to mention how you want to be 
-[credited](https://github.com/eduvpn/vpn-user-portal/blob/v2/locale/CREDITS.md).
-
-Thanks!
+[https://docs.eduvpn.org/server/v2/contribute-translations.html](https://docs.eduvpn.org/server/v2/contribute-translations.html)

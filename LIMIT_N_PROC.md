@@ -1,29 +1,11 @@
 # LimitNPROC
-
-**NOTE**: for new deployments (after 2022-12-07) we do this automatically now
-just like in 3.x.
-
-By default the `systemd` unit file for `openvpn-server` only allows 10 
-OpenVPN processes. If you have (many) profiles and many OpenVPN processes this
-may fail to start some OpenVPN processes.
-
-To fix this we need to override this setting by adding a systemd drop-in snippet
-changing only this value. You can either create a file
-
-    /etc/systemd/system/openvpn-server@.service.d/override.conf
     
-or execute the matching systemd command spawning an editor for this file
+Our documentation moved to its own dedicated site 
+[https://docs.eduvpn.org/](https://docs.eduvpn.org).
 
-    $ sudo systemctl edit openvpn-server@.service
+You can reach the document at its new location. Please update your links and 
+bookmarks / favorites.
 
-In the editor, add
+The _specific_ document you tried to reach is available in its new location:
 
-    [Service]
-    LimitNPROC=128
-
-Now we have to apply the changes:
-
-    $ sudo systemctl daemon-reload
-    $ sudo vpn-maint-apply-changes
-
-This should make everything work fine (again).
+[https://docs.eduvpn.org/server/v2/limit-n-proc.html](https://docs.eduvpn.org/server/v2/limit-n-proc.html)
