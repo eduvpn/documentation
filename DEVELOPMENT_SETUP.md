@@ -9,3 +9,5 @@ bookmarks / favorites.
 The _specific_ document you tried to reach is available in its new location:
 
 [https://docs.eduvpn.org/server/v3/development-setup.html](https://docs.eduvpn.org/server/v3/development-setup.html)
+
+The source of this document can now be found [here](https://codeberg.org/eduVPN/documentation/src/branch/v3/development-setup.md).

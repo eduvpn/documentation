@@ -9,3 +9,5 @@ bookmarks / favorites.
 The _specific_ document you tried to reach is available in its new location:
 
 [https://docs.eduvpn.org/server/v3/upgrade-debian-11-to-12.html](https://docs.eduvpn.org/server/v3/upgrade-debian-11-to-12.html)
+
+The source of this document can now be found [here](https://codeberg.org/eduVPN/documentation/src/branch/v3/upgrade-debian-11-to-12.md).
